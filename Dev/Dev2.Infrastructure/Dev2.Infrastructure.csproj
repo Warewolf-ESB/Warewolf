@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Collections\ObservableCollectionThreadSafe.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
+    <Compile Include="Communication\ExecuteMessage.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
     <Compile Include="Communication\IMemo.cs" />

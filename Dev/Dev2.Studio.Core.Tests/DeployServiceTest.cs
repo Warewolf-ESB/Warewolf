@@ -59,11 +59,11 @@ namespace Dev2.Core.Tests
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
+            connection.Setup(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
-            envMock.Setup(e => e.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             envMock.Setup(e => e.IsConnected).Returns(true);
 
             var dtoMock = new Mock<IDeployDTO>();

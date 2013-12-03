@@ -413,23 +413,7 @@ namespace Dev2.DynamicServices.Test
             //------------Assert Results-------------------------
             Assert.AreEqual(string.Empty, xaml);
         }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Foo()
-        {
-            var workspace = new Mock<IWorkspace>();
-            workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
-
-            IEsbManagementEndpoint endpoint = new FindResourcesByID();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["GuidCsv"] = null;
-            data["Type"] = null;
-
-            endpoint.Execute(data, workspace.Object);
-        }
-
-
+        
         #endregion
 
         #region FindSourcesByType

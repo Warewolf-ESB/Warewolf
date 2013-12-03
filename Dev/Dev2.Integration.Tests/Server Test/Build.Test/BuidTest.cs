@@ -3,6 +3,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.MEF;
+using Dev2.Network;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -26,13 +27,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             //
         }
 
-        IEnvironmentConnection _connection;
-        IStudioEsbChannel _dataChannel;
-        MockSecurityProvider _mockSecurityProvider;
 
         private TestContext testContextInstance;
         protected const string WebserverUrl = "http://localhost:2234/";
         private string DsfChannelUrl = ServerSettings.DsfAddress;
+        static IEnvironmentConnection _connection;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -54,9 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 
         static IEnvironmentConnection SetupEnvironmentConnection()
         {
-            var securityMock = new Mock<IFrameworkSecurityContext>();
-            securityMock.Setup(context => context.UserIdentity).Returns(WindowsIdentity.GetCurrent);
-            TcpConnection connection = new TcpConnection(securityMock.Object, new Uri(ServerSettings.DsfAddress), 77);
+            IEnvironmentConnection connection = new ServerProxy(new Uri(ServerSettings.DsfAddress));
             return connection;
         }
 
@@ -99,9 +96,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             _connection = setupEnvironmentConnection;
             _connection.Connect();
-            _dataChannel = _connection.DataChannel;
-
-            _mockSecurityProvider = new MockSecurityProvider("Administrator");
         }
         #endregion
 
@@ -143,8 +137,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             string Command = TestResource.Service_Update_Request_String;
 
             //Execute twice to ensure that the resource is actually there
-            string actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
-            actual = _dataChannel.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
+            string actual = _connection.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
+            actual = _connection.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
 
             actual = TestHelper.CleanUp(actual);
             expected = TestHelper.CleanUp(expected);
@@ -156,7 +150,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         {
             string expected = @"<Error><InnerError>Unexpected end of file has occurred. The following elements are not closed: x, x. Line 1, position 62.</InnerError></Error>";
             string xmlRequest = string.Format("<x><Service>{0}</Service><x>", Guid.NewGuid().ToString());
-            string actual = _dataChannel.ExecuteCommand(xmlRequest, Guid.Empty, Guid.NewGuid());
+            string actual = _connection.ExecuteCommand(xmlRequest, Guid.Empty, Guid.NewGuid());
 
             actual = TestHelper.CleanUp(actual);
             expected = TestHelper.CleanUp(expected);

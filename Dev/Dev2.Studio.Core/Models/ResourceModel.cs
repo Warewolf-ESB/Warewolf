@@ -75,9 +75,9 @@ namespace Dev2.Studio.Core.Models
             _tagList = new List<string>();
             Environment = environment;
 
-            if(environment != null && environment.DataListChannel != null)
+            if(environment != null && environment.Connection != null)
             {
-                ServerID = environment.DataListChannel.ServerID;
+                ServerID = environment.Connection.ServerID;
             }
             IsWorkflowSaved = true;
         }

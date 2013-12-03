@@ -135,7 +135,6 @@
     <Compile Include="Common\Field.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
     <Compile Include="Common\JPropertyExtensionMethods.cs" />
-    <Compile Include="Common\MockFrameworkSecurityProvider.cs" />
     <Compile Include="Converters\Base\TO\GatherSystemInformationTO.cs" />
     <Compile Include="Converters\DateAndTime\DateTimeComparer.cs" />
     <Compile Include="Converters\DateAndTime\DateTimeConverterFactory.cs" />
@@ -240,7 +239,6 @@
     <Compile Include="Interfaces\IFrameworkDuplexDataChannel.cs" />
     <Compile Include="Interfaces\IFrameworkFileIO.cs" />
     <Compile Include="Interfaces\IFrameworkPluginComponent.cs" />
-    <Compile Include="Interfaces\IFrameworkSecurityProvider.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackDispatcher.cs" />
     <Compile Include="Network\Execution\ExecutionStatusCallbackMessage.cs" />
     <Compile Include="Network\Execution\IExecutionStatusCallbackDispatcher.cs" />

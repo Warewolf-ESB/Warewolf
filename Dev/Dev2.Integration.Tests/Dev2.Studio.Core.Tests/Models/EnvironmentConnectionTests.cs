@@ -3,6 +3,7 @@ using System.Security.Principal;
 using System.Xml;
 using Caliburn.Micro;
 using Dev2.Integration.Tests;
+using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -82,7 +83,7 @@ namespace Dev2.Studio.Core.Tests
             conn.Connect();
             if(conn.IsConnected)
             {
-                string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                string returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -104,7 +105,7 @@ namespace Dev2.Studio.Core.Tests
             conn.Connect();
             if(conn.IsConnected)
             {
-                string returnData = conn.DataChannel.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                string returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -133,7 +134,7 @@ namespace Dev2.Studio.Core.Tests
             {
                 dataObj.ResourceXml = XmlTextReader.Create(xmlFileLocation).ReadContentAsString();
             }
-            dataObj.Roles = string.Join(",", (new MockSecurityProvider("tester")).Roles);
+            dataObj.Roles = string.Join(",", "tester");
 
             return dataObj.XmlString;
         }
@@ -142,17 +143,15 @@ namespace Dev2.Studio.Core.Tests
 
         #region CreateConnection
 
-        static TcpConnection CreateConnection(bool isAuxiliary = false)
+        static IEnvironmentConnection CreateConnection()
         {
-            return CreateConnection(ServerSettings.DsfAddress, isAuxiliary);
+            return CreateConnection(ServerSettings.DsfAddress);
         }
 
-        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        static IEnvironmentConnection CreateConnection(string appServerUri)
         {
-            var securityContetxt = new Mock<IFrameworkSecurityContext>();
-            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
 
-            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), isAuxiliary);
+            return new ServerProxy(new Uri(appServerUri));
         }
 
         #endregion

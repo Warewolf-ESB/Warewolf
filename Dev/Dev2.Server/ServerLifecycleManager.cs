@@ -21,9 +21,6 @@ using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Network;
-using Dev2.DynamicServices.Network.DataList;
-using Dev2.DynamicServices.Network.Execution;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -202,9 +199,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         Dev2Endpoint[] _endpoints;
         EsbServicesEndpoint _esbEndpoint;
 
-        StudioNetworkServer _networkServer;
-        ExecutionServerChannel _executionChannel;
-        DataListServerChannel _dataListChannel;
 
         string _uriAddress;
         string _configFile;
@@ -220,6 +214,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         ThreadStart _gcmThreadStart;
         Timer _timer;
         IDisposable _owinServer;
+        static string _webServerPort;
+        static string _webServerSslPort;
 
         // END OF GC MANAGEMENT
 
@@ -240,7 +236,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// </summary>
         public Guid ServerID { get { return HostSecurityProvider.Instance.ServerID; } }
 
-        #endregion
+      #endregion
 
         #region Constructor
 
@@ -331,17 +327,17 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
 
-            if(!didBreak && !OpenNetworkExecutionChannel())
-            {
-                result = 97;
-                didBreak = true;
-            }
-
-            if(!didBreak && !OpenNetworkDataListChannel())
-            {
-                result = 96;
-                didBreak = true;
-            }
+//            if(!didBreak && !OpenNetworkExecutionChannel())
+//            {
+//                result = 97;
+//                didBreak = true;
+//            }
+//
+//            if(!didBreak && !OpenNetworkDataListChannel())
+//            {
+//                result = 96;
+//                didBreak = true;
+//            }
 
 
             if(!didBreak && !StartWebServer())
@@ -1301,14 +1297,14 @@ namespace Unlimited.Applications.DynamicServicesHost
                 }
 
                 uriAddress = uriAddress ?? ConfigurationManager.AppSettings["endpointAddress"];
-                webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
-                webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
+                GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
+                GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
                 _esbEndpoint = new EsbServicesEndpoint();
 
                 StudioFileSystem fileSystem = new StudioFileSystem(Path.Combine(Environment.CurrentDirectory, "Studio Server"), new List<string>());
 
 
-                _networkServer = new StudioNetworkServer("Studio Server", fileSystem, _esbEndpoint, ServerID);
+                //_networkServer = new StudioNetworkServer("Studio Server", fileSystem, _esbEndpoint, ServerID);
                 _isWebServerEnabled = false;
 
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
@@ -1411,47 +1407,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 ServerLogger.LogError(ex);
                 result = false;
-            }
-
-            try
-            {
-                if(_networkServer != null)
-                {
-                    _networkServer.Stop();
-                    _networkServer.Dispose();
-                }
-            }
-            catch(Exception ex)
-            {
-                ServerLogger.LogError(ex);
-                result = false;
-            }
-
-            try
-            {
-                if(_executionChannel != null)
-                {
-                    _executionChannel.Dispose();
-                }
-            }
-            catch(Exception ex)
-            {
-                ServerLogger.LogError(ex);
-                result = false;
-            }
-
-            try
-            {
-                if(_dataListChannel != null)
-                {
-                    _dataListChannel.Dispose();
-                }
-            }
-            catch(Exception ex)
-            {
-                ServerLogger.LogError(ex);
-                result = false;
-            }
+            }          
 
             // shutdown the storage layer ;)
             try
@@ -1651,7 +1607,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             _owinServer = null;
             _esbEndpoint = null;
-            _executionChannel = null;
 
         }
 
@@ -1724,7 +1679,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             Write("Loading resource catalog...  ");
             // First call to start initializes instance
-            ResourceCatalog.Start(_networkServer);
+            ResourceCatalog.Start();
             WriteLine("done.");
             return true;
         }
@@ -1742,8 +1697,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             string webServerUri = string.Format("http://{0}:1234", machineName);
             EnvironmentVariables.WebServerUri = webServerUri;
             SettingsProvider.WebServerUri = webServerUri;
-            var instance = SettingsProvider.Instance;
-            instance.Start(StudioMessaging.MessageAggregator, StudioMessaging.MessageBroker);
+//            var instance = SettingsProvider.Instance;
+//            instance.Start();
             WriteLine("done.");
             return true;
         }
@@ -1752,8 +1707,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             try
             {
-                var instance = SettingsProvider.Instance;
-                instance.Stop(StudioMessaging.MessageAggregator);
+                //var instance = SettingsProvider.Instance;
+                //instance.Stop(StudioMessaging.MessageAggregator);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
@@ -1832,7 +1787,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-                _executionChannel = new ExecutionServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, ExecutionStatusCallbackDispatcher.Instance);
+               // _executionChannel = new ExecutionServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, ExecutionStatusCallbackDispatcher.Instance);
                 Write("done.");
                 WriteLine("");
                 return true;
@@ -1852,7 +1807,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             try
             {
                 IDataListServer datalListServer = DataListFactory.CreateDataListServer();
-                _dataListChannel = new DataListServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, datalListServer);
+                //_dataListChannel = new DataListServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, datalListServer);
                 Write("done.");
                 WriteLine("");
                 return true;
@@ -1873,15 +1828,15 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 try
                 {
-                    // TODO: Rip this out!
-                    var endpoints = new List<string>
-                    {
-                        WebServerResources.LocalServerAddress,
-                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
-                        _uriAddress,
-                    };
-                    StartNetworkServer(endpoints);
-                    // END TODO
+//                    // TODO: Rip this out!
+//                    var endpoints = new List<string>
+//                    {
+//                        WebServerResources.LocalServerAddress,
+//                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
+//                        _uriAddress,
+//                    };
+//                    StartNetworkServer(endpoints);
+//                    // END TODO
 
                     _owinServer = WebServerStartup.Start(_endpoints);
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
@@ -1900,74 +1855,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             return result;
-        }
-
-
-        void StartNetworkServer(IList<string> endpointAddresses)
-        {
-            if(endpointAddresses == null || endpointAddresses.Count == 0)
-            {
-                throw new ArgumentException("No TCP Addresses configured for application server");
-            }
-
-            var entries = endpointAddresses.Where(s => !string.IsNullOrWhiteSpace(s)).Select(a =>
-            {
-                int port;
-                IPHostEntry entry;
-
-                try
-                {
-                    Uri uri = new Uri(a);
-                    string dns = uri.DnsSafeHost;
-                    port = uri.Port;
-                    entry = Dns.GetHostEntry(dns);
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    port = 0;
-                    entry = null;
-                }
-
-                if(entry == null || entry.AddressList == null || entry.AddressList.Length == 0)
-                {
-                    ServerLifecycleManager.WriteLine(string.Format("'{0}' is an invalid address, listening not started for this entry.", a));
-                    return null;
-                }
-
-                return new Tuple<IPHostEntry, int>(entry, port);
-
-            }).Where(e => e != null).ToList();
-
-
-            if(!entries.Any())
-            {
-                throw new ArgumentException("No vailid TCP Addresses configured for application server");
-            }
-
-            var startedIPAddresses = new List<IPAddress>();
-            foreach(var entry in entries)
-            {
-                for(var i = 0; i < entry.Item1.AddressList.Length; i++)
-                {
-                    IPAddress current = entry.Item1.AddressList[i];
-
-                    if(current.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork && !startedIPAddresses.Contains(current))
-                    {
-                        if(_networkServer.Start(new System.Network.ListenerConfig(current.ToString(), entry.Item2, 10)))
-                        {
-                            WriteLine(string.Format("{0} listening on {1}", _networkServer, current + ":" + entry.Item2.ToString()));
-                            startedIPAddresses.Add(current);
-                        }
-                    }
-                }
-            }
-
-            if(startedIPAddresses.Count == 0)
-            {
-                WriteLine(string.Format("{0} failed to start on {1}", _networkServer, string.Join(" or ", endpointAddresses)));
-            }
-
         }
 
         #endregion

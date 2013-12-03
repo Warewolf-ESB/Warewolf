@@ -66,6 +66,7 @@ namespace Dev2.Tests
             dataObject.WorkflowInstanceId = "333";
             dataObject.WorkflowResumeable = false;
             dataObject.WorkspaceID = Guid.NewGuid();            
+            dataObject.ClientID = Guid.NewGuid();            
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid>() { Guid.NewGuid() };
             threadsToDispose.Add(3,guidList);
@@ -78,7 +79,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof (IDSFDataObject).GetProperties();
-            Assert.AreEqual(44, properties.Length);
+            Assert.AreEqual(45, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -120,6 +121,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.ResourceID, clonedObject.ResourceID);
             Assert.AreEqual(dataObject.ReturnType, clonedObject.ReturnType);
             Assert.AreEqual(dataObject.ServerID, clonedObject.ServerID);
+            Assert.AreEqual(dataObject.ClientID, clonedObject.ClientID);
             Assert.AreEqual(dataObject.ServiceName, clonedObject.ServiceName);
             Assert.AreEqual(dataObject.WorkflowInstanceId, clonedObject.WorkflowInstanceId);
             Assert.AreEqual(dataObject.WorkflowResumeable, clonedObject.WorkflowResumeable);

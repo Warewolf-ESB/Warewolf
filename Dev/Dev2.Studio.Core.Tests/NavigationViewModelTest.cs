@@ -1492,7 +1492,6 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             return CreateViewModel(EnvironmentRepository.Instance, isFromActivityDrop, activityType);
         }
 

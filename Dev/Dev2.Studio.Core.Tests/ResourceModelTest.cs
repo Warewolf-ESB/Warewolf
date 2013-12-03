@@ -8,6 +8,7 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -37,7 +38,7 @@ namespace Dev2.Core.Tests
             //   ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
 
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
-            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            
 
             _resourceModel = new ResourceModel(environmentModel.Object)
             {
@@ -70,9 +71,8 @@ namespace Dev2.Core.Tests
         public void ResourceModel_Update_WhenWorkflowXamlChanged_ExpectUpdatedResourceModelWithNewXaml()
         {
             //------------Setup for test--------------------------
-            Setup();
+           // Setup();
             var environmentModel = CreateMockEnvironment(new EventPublisher());
-            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             var resourceModel = new ResourceModel(environmentModel.Object);
             var authorRoles = "TestAuthorRoles";
             var category = "TestCat";
@@ -103,7 +103,6 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             Setup();
             var environmentModel = CreateMockEnvironment(new EventPublisher());
-            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             var resourceModel = new ResourceModel(environmentModel.Object);
             var authorRoles = "TestAuthorRoles";
             var category = "TestCat";
@@ -133,12 +132,12 @@ namespace Dev2.Core.Tests
         #endregion Update Tests
 
         [TestMethod]
-        public void ResourceModel_UnitTesty_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()
+        public void ResourceModel_UnitTest_DataListPropertyWhereChangedToSameString_NotifyPropertyChangedNotFiredTwice()
         {
             //------------Setup for test--------------------------
-            Setup();
-            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
-            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+           // Setup();
+            Mock<IEnvironmentModel> testEnvironmentModel = CreateMockEnvironment();
+            var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var timesFired = 0;
             resourceModel.PropertyChanged += (sender, args) =>
             {
@@ -156,8 +155,8 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            Mock<IEnvironmentModel> _testEnvironmentModel = new Mock<IEnvironmentModel>();
-            var resourceModel = new ResourceModel(_testEnvironmentModel.Object);
+            Mock<IEnvironmentModel> testEnvironmentModel = CreateMockEnvironment(EventPublishers.Studio);
+            var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var eventFired = false;
             IContextualResourceModel eventResourceModel = null;
             resourceModel.OnResourceSaved += model =>
@@ -206,7 +205,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             Setup();
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
-            environmentModel.Setup(model => model.DsfChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            
             //------------Execute Test---------------------------
             var resourceModel = new ResourceModel(environmentModel.Object);
             //------------Assert Results-------------------------
@@ -221,7 +220,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_DesignValidationServicePublishingMemo_UpdatesErrors()
         {
-            Setup();
+            //Setup();
             var instanceID = Guid.NewGuid();
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
             pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
@@ -259,7 +258,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_DesignValidationServicePublishingMemo_NoInstanceID_DoesNotUpdatesErrors()
         {
-            Setup();
+            //Setup();
             var instanceID = Guid.NewGuid();
             var pubMemo = new DesignValidationMemo { InstanceID = instanceID };
             pubMemo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
@@ -288,7 +287,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_Rollback_FixedErrorsRestored()
         {
-            Setup();
+            //Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -338,7 +337,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void ResourceModel_UnitTest_Commit_FixedErrorsNotRestored()
         {
-            Setup();
+            //Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -456,7 +455,7 @@ namespace Dev2.Core.Tests
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
         {
             //------------Setup for test--------------------------
-            Setup();
+            //Setup();
             var eventPublisher = new EventPublisher();
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
@@ -493,6 +492,7 @@ namespace Dev2.Core.Tests
         public static Mock<IEnvironmentModel> CreateMockEnvironment(IEventPublisher eventPublisher)
         {
             var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(model => model.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
 
             var environmentModel = new Mock<IEnvironmentModel>();

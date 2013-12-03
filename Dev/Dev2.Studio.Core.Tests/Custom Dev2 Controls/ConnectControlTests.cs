@@ -13,7 +13,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
@@ -308,18 +307,13 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         public static ImportServiceContext EnviromentRepositoryImportServiceContext;
         static void SetupMef()
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
             var eventAggregator = new Mock<IEventAggregator>();
-            var wizardEngine = new Mock<IWizardEngine>();
 
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer(securityContext.Object);
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-            ImportService.AddExportedValueToContainer(wizardEngine.Object);
 
             EnviromentRepositoryImportServiceContext = importServiceContext;
         }

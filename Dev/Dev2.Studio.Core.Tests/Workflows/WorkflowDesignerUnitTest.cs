@@ -1174,7 +1174,8 @@ namespace Dev2.Core.Tests.Workflows
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
 
-            var wh = new WorkflowHelper();
+            //var wh = new WorkflowHelper();
+            WorkflowHelper wh = null;
 
             //------------Execute Test---------------------------
             var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
@@ -1312,7 +1313,6 @@ namespace Dev2.Core.Tests.Workflows
         {
             var viewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
                 null, null,
-                new Mock<IFrameworkSecurityContext>().Object,
                 new Mock<IPopupController>().Object, false);
 
         }
@@ -1423,7 +1423,7 @@ namespace Dev2.Core.Tests.Workflows
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
-            Assert.IsTrue(testAct.ServiceUri == "http://localhost:1234/");
+            Assert.AreEqual("http://localhost:3142/",testAct.ServiceUri);
             Assert.IsTrue(testAct.ServiceServer == envId2);
 
             var activity = new DsfActivity();
@@ -2061,7 +2061,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
+            var modelItem = TestUtils.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
@@ -2104,7 +2104,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
+            var modelItem = TestUtils.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
@@ -2158,7 +2158,7 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             var modelService = viewModel.Designer.Context.Services.GetService<ModelService>();
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
+            var modelItem = TestUtils.CreateModelItem(Guid.NewGuid(), ServiceID, environmentID);
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
 
             viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironment.Object.ID, envRepository.Object));
@@ -2197,7 +2197,7 @@ namespace Dev2.Core.Tests.Workflows
             prop.Setup(p => p.Name).Returns("ResourceID");
             prop.Setup(p => p.ComputedValue).Returns(Guid.NewGuid());
             var modelProperties = new[] { prop.Object };
-            var modelItem = DsfActivityViewModelTests.CreateModelItem(Guid.NewGuid(), Guid.NewGuid(), parentEnvironmentID, modelProperties);
+            var modelItem = TestUtils.CreateModelItem(Guid.NewGuid(), Guid.NewGuid(), parentEnvironmentID, modelProperties);
             modelItem.Setup(mi => mi.Root).Returns(modelService.Root);
             var mockedEnvironmentRepository = new Mock<IEnvironmentRepository>();
             var mockedEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -2686,7 +2686,6 @@ namespace Dev2.Core.Tests.Workflows
         {
             eventPublisher = eventPublisher ?? new Mock<IEventAggregator>().Object;
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var popupController = new Mock<IPopupController>();
 
             if(workflowHelper == null)
@@ -2696,7 +2695,7 @@ namespace Dev2.Core.Tests.Workflows
                 workflowHelper = wh.Object;
             }
 
-            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, securityContext.Object, popupController.Object, createDesigner);
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, createDesigner);
 
             return viewModel;
 

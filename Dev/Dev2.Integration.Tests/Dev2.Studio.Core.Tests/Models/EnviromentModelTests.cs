@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Principal;
 using Caliburn.Micro;
+using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
@@ -33,11 +34,11 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         static void TestAuxilliaryConnections(string appServerUri)
         {
             var repo = new Mock<IResourceRepository>();
-            var connection = CreateConnection(appServerUri, true);
+            var connection = CreateConnection(appServerUri);
             var environment = new EnvironmentModel(Guid.NewGuid(), connection, repo.Object, false) { Name = "conn" };
 
             var auxRepo = new Mock<IResourceRepository>();
-            var auxConnection = CreateConnection(appServerUri, true);
+            var auxConnection = CreateConnection(appServerUri);
             var auxEnvironment = new EnvironmentModel(Guid.NewGuid(), auxConnection, auxRepo.Object, false) { Name = "auxconn" };
 
             environment.Connect();
@@ -54,12 +55,10 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
         #region CreateConnection
 
-        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        static IEnvironmentConnection CreateConnection(string appServerUri)
         {
-            var securityContetxt = new Mock<IFrameworkSecurityContext>();
-            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
 
-            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), isAuxiliary);
+            return new ServerProxy(new Uri(appServerUri));
         }
 
         #endregion

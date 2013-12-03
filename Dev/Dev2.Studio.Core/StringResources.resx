@@ -267,15 +267,15 @@
     <comment>net.tcp://sameeraw:2094/dsfDevmanager/</comment>
   </data>
   <data name="Uri_Development_Environment" xml:space="preserve">
-    <value>http://localhost:77/dsf</value>
+    <value>http://localhost:3142/dsf</value>
     <comment>http://tuw-devfs:1994/dsfDev/</comment>
   </data>
   <data name="Uri_Live_Environment" xml:space="preserve">
-    <value>http://localhost:77/dsf</value>
+    <value>http://localhost:3142/dsf</value>
     <comment>http://tuw-devfs:1996/dsfLive/</comment>
   </data>
   <data name="Uri_Testing_Environment" xml:space="preserve">
-    <value>http://localhost:77/dsf</value>
+    <value>http://localhost:3142/dsf</value>
     <comment>http://tuw-devfs:1995/dsfTest/</comment>
   </data>
   <data name="Uri_Start_Page" xml:space="preserve">
@@ -338,13 +338,13 @@
     <value>Directory Not found</value>
   </data>
   <data name="Uri_WebServer" xml:space="preserve">
-    <value>http://localhost:1234</value>
+    <value>http://localhost:3142</value>
   </data>
   <data name="Window_Title_Property_Editor" xml:space="preserve">
     <value>{0} Editor</value>
   </data>
   <data name="Default_WebServer_Port" xml:space="preserve">
-    <value>1234</value>
+    <value>3142</value>
   </data>
   <data name="UI_Layout_Grid_Default_Height" xml:space="preserve">
     <value>80</value>

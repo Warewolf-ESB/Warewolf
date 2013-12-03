@@ -293,8 +293,6 @@
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
     <Compile Include="Interfaces\IResourceDependencyService.cs" />
-    <Compile Include="InterfaceImplementors\MockSecurityProvider.cs" />
-    <Compile Include="InterfaceImplementors\FrameworkSecurityProvider.cs" />
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
     <Compile Include="AppResources\Browsers\WebPropertyEditorScriptableClass.cs" />
@@ -312,7 +310,6 @@
     <Compile Include="Interfaces\IServer.cs" />
     <Compile Include="Interfaces\IServerProvider.cs" />
     <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
-    <Compile Include="Interfaces\IStudioClientContext.cs" />
     <Compile Include="Interfaces\IUserMessageProvider.cs" />
     <Compile Include="Interfaces\IWebActivity.cs" />
     <Compile Include="Interfaces\IWebCommunication.cs" />
@@ -365,8 +362,6 @@
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
-    <Compile Include="Messages\ShowActivitySettingsWizardMessage.cs" />
-    <Compile Include="Messages\ShowActivityWizardMessage.cs" />
     <Compile Include="Messages\SettingsSaveCancelMessage.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowEditResourceWizardMessage.cs" />
@@ -411,24 +406,11 @@
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
-    <Compile Include="Network\Channels\DataChannel.cs" />
-    <Compile Include="Network\Channels\DataListClientChannel.cs" />
-    <Compile Include="Network\Channels\ExecutionClientChannel.cs" />
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Network\IServiceLocator.cs" />
-    <Compile Include="Network\ITcpClientHost.cs" />
-    <Compile Include="Network\ServerMessaging.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServiceLocator.cs" />
-    <Compile Include="Network\StudioNetworkChannelContext.cs" />
-    <Compile Include="Network\TcpAsyncExtenstions.cs" />
-    <Compile Include="Network\TcpClientAdapter.cs" />
-    <Compile Include="Network\TcpClientHost.cs" />
-    <Compile Include="Network\TcpClientHostBase.cs" />
-    <Compile Include="Network\TcpConnection.cs" />
-    <Compile Include="Network\TcpConnectionBase.cs" />
-    <Compile Include="Network\TcpLoginBroker.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
@@ -527,9 +509,6 @@
     <Compile Include="Wizards\Interfaces\IActivitySettingsWizardCallbackHandler.cs" />
     <Compile Include="Wizards\Interfaces\IActivitySpecificSettingsWizardCallbackHandler.cs" />
     <Compile Include="Wizards\Interfaces\IWizardCallbackHandler.cs" />
-    <Compile Include="Wizards\Interfaces\IWizardEngine.cs" />
-    <Compile Include="Wizards\WizardEndpointGenerationStrategyProvider.cs" />
-    <Compile Include="Wizards\WizardEngine.cs" />
     <Compile Include="Wizards\WizardInvocationTO.cs" />
     <Compile Include="Workspaces\IWorkspaceItemRepository.cs" />
     <Compile Include="Workspaces\WorkspaceItemRepository.cs" />
@@ -603,6 +582,7 @@
   <ItemGroup>
     <Folder Include="AppResources\UserInterfaceBuilder\" />
     <Folder Include="Core\" />
+    <Folder Include="Network\Channels\" />
     <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />

@@ -76,21 +76,6 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreSame(repo.Object, env.ResourceRepository);
         }
 
-	    [TestMethod]
-	    [TestCategory("EnvironmentModel_Constructor")]
-        [Description("EnvironmentModel ResourceRepository initializes with a wizard engine")]
-	    [Owner("Ashley Lewis")]
-	    // ReSharper disable InconsistentNaming
-        public void EnvironmentModel_UnitTest_Constructor_ResourceRepositoryInitializedCorrectly()
-	    // ReSharper restore InconsistentNaming
-	    {
-            //Isolate EnvironmentModel ResourceRepository as a functional unit
-            var env = new EnvironmentModel(Guid.NewGuid(), CreateConnection().Object);
-		
-		    //Assert Expected
-		    Assert.IsNotNull(env.ResourceRepository.WizardEngine);
-	    }
-
         #endregion
 
         #region Connect
@@ -241,7 +226,6 @@ namespace Dev2.Core.Tests.Environments
             eventAggregator.Setup(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>())).Verifiable();
             EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.IsAuxiliary).Returns(false);
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var envModel = CreateEnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object);
@@ -253,10 +237,8 @@ namespace Dev2.Core.Tests.Environments
 
         EnvironmentModel CreateEnvironmentModel(IEventAggregator aggregator, Guid id, IEnvironmentConnection environmentConnection)
         {
-            var wizard = new Mock<IWizardEngine>();
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.WizardEngine).Returns(wizard.Object);
 
             return new EnvironmentModel(aggregator,id, environmentConnection, repo.Object, false);
         }
@@ -313,7 +295,6 @@ namespace Dev2.Core.Tests.Environments
             eventAggregator.Setup(e => e.Publish(It.IsAny<TExpectedMessage>())).Verifiable();
             EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.IsAuxiliary).Returns(isAuxiliary);
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             var repo = new Mock<IResourceRepository>();
             var envModel = new EnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
@@ -335,16 +316,7 @@ namespace Dev2.Core.Tests.Environments
                     environmentConnection.Raise(c => c.LoginStateChanged += null, new LoginStateEventArgs(eventState == ConnectionEventState.Online ? AuthenticationResponse.Success : AuthenticationResponse.Logout, false));
                     break;
             }
-
-            if(isAuxiliary)
-            {
-                eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentConnectedMessage>()), Times.Never());
-                eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDisconnectedMessage>()), Times.Never());
-            }
-            else
-            {
-                eventAggregator.Verify(e => e.Publish(It.IsAny<TExpectedMessage>()), Times.Once());
-            }
+            eventAggregator.Verify(e => e.Publish(It.IsAny<TExpectedMessage>()), Times.Once());
         }
 
         #endregion
@@ -463,7 +435,6 @@ namespace Dev2.Core.Tests.Environments
             eventAggregator.Setup(e => e.Publish(It.IsAny<IMessage>())).Verifiable();
             EventPublishers.Aggregator = eventAggregator.Object;
             var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(c => c.IsAuxiliary).Returns(false);
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var repo = new Mock<IResourceRepository>();
@@ -480,9 +451,7 @@ namespace Dev2.Core.Tests.Environments
 
         static Mock<IEnvironmentConnection> CreateConnection()
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             return conn;
@@ -494,10 +463,8 @@ namespace Dev2.Core.Tests.Environments
 
         static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
         {
-            var wizard = new Mock<IWizardEngine>();
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.WizardEngine).Returns(wizard.Object);
 
             return new EnvironmentModel(id, connection, repo.Object, false);
         }

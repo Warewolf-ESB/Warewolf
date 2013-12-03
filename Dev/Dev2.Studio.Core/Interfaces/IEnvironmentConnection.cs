@@ -18,9 +18,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         Guid ServerID { get; }
         Guid WorkspaceID { get; }
-        IFrameworkSecurityContext SecurityContext { get; }
-        IStudioNetworkMessageAggregator MessageAggregator { get; }
-        INetworkMessageBroker MessageBroker { get; }
         IDebugWriter DebugWriter { get; }
 
         Uri AppServerUri { get; }
@@ -30,20 +27,11 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         event EventHandler<ServerStateEventArgs> ServerStateChanged;
 
-        void SendNetworkMessage(INetworkMessage message);
-        INetworkMessage RecieveNetworkMessage(IByteReaderBase reader);
-        INetworkMessage SendReceiveNetworkMessage(INetworkMessage message);
         string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID);
-        void AddDebugWriter();
-        void RemoveDebugWriter();
 
         bool IsConnected { get; }
-        bool IsAuxiliary { get; }
         string Alias { get; set; }
         string DisplayName { get; set; }
-        IStudioEsbChannel DataChannel { get; }
-        INetworkExecutionChannel ExecutionChannel { get; }
-        INetworkDataListChannel DataListChannel { get; }
 
         void Connect(bool isAuxiliary = false);
         void Disconnect();

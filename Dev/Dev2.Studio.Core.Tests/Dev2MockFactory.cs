@@ -37,7 +37,6 @@ namespace Dev2.Core.Tests
         private static Mock<MainViewModel> _mockMainViewModel;
         private static Mock<IEnvironmentModel> _mockEnvironmentModel;
         private static Mock<IContextualResourceModel> _mockResourceModel;
-        private static Mock<IStudioClientContext> _mockFrameworkDataChannel;
         private static Mock<IFilePersistenceProvider> _mockFilePersistenceProvider;
 
 
@@ -266,27 +265,10 @@ namespace Dev2.Core.Tests
 
         }
 
-        public static Mock<IStudioClientContext> SetupIFrameworkDataChannel_EmptyReturn()
-        {
-            Mock<IStudioClientContext> mockDataChannel = new Mock<IStudioClientContext>();
-            mockDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
-
-            return mockDataChannel;
-        }
-
-        static public Mock<IStudioClientContext> SetupIFrameworkDataChannel()
-        {
-            _mockFrameworkDataChannel = new Mock<IStudioClientContext>();
-            _mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
-
-            return _mockFrameworkDataChannel;
-        }
-
-        static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection(INetworkMessage resultMessage)
+        static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection()
         {
             Mock<IEnvironmentConnection> mockIEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockIEnvironmentConnection.Setup(e => e.ServerEvents).Returns(new EventPublisher());
-            mockIEnvironmentConnection.Setup(c => c.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>())).Returns(resultMessage);
 
             // PBI 9598 - 2013.06.10 - TWR : added FetchCurrentServerLogService return value
             mockIEnvironmentConnection.Setup(c => c.ExecuteCommand(It.Is<string>(s => s.Contains("FetchCurrentServerLogService")), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
@@ -294,48 +276,16 @@ namespace Dev2.Core.Tests
             return mockIEnvironmentConnection;
         }
 
-        static public Mock<IStudioClientContext> SetupIFrameworkDataChannel<T>(INetworkMessage resultMessage) where T : INetworkMessage, new()
-        {
-            Mock<IStudioClientContext> mockFrameworkDataChannel = new Mock<IStudioClientContext>();
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendMessage(It.IsAny<T>())).Returns(resultMessage);
-
-            return mockFrameworkDataChannel;
-        }
 
         static public Mock<IEnvironmentConnection> SetupIEnvironmentConnection(Exception messageSendingException)
         {
             Mock<IEnvironmentConnection> mockIEnvironmentConnection = new Mock<IEnvironmentConnection>();
-
-            mockIEnvironmentConnection.Setup(c => c.SendReceiveNetworkMessage(It.IsAny<INetworkMessage>()))
-                .Throws(messageSendingException);
             return mockIEnvironmentConnection;
         }
 
-        static public Mock<IStudioClientContext> SetupIFrameworkDataChannel<T>(Exception messageSendingException) where T : INetworkMessage, new()
-        {
-            Mock<IStudioClientContext> mockFrameworkDataChannel = new Mock<IStudioClientContext>();
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.ExecuteCommand("<x>String</x>", Guid.Empty, Guid.Empty)).Returns("success");
-            mockFrameworkDataChannel.Setup(dataChannel => dataChannel.SendMessage(It.IsAny<T>())).Throws(messageSendingException);
 
-            return mockFrameworkDataChannel;
-        }
 
-        static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(INetworkMessage resultMessage) where T : INetworkMessage, new()
-        {
-            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
-            mockEnvironmentModel.Setup(e => e.LoadResources()).Verifiable();
-            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(new EventPublisher());
-
-            mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(resultMessage).Object);
-            return mockEnvironmentModel;
-        }
-
-        static public Mock<IEnvironmentModel> SetupEnvironmentModel<T>(Exception messageSendingException) where T : INetworkMessage, new()
+        static public Mock<IEnvironmentModel> SetupEnvironmentModel(Exception messageSendingException)
         {
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
@@ -357,7 +307,6 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel).Returns(SetupIFrameworkDataChannel_EmptyReturn().Object);
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
             return _mockEnvironmentModel;
         }
@@ -368,7 +317,6 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
@@ -381,7 +329,6 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.DsfChannel.ExecuteCommand("", Guid.Empty, Guid.Empty)).Returns("");
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
@@ -596,37 +543,7 @@ namespace Dev2.Core.Tests
             return mockExecutionStatusCallbackDispatcher;
         }
 
-        public static Mock<INetworkMessageBroker> SetupNetworkMessageBroker<T>(bool sendThrowsException = false) where T : INetworkMessage, new()
-        {
-            Mock<INetworkMessageBroker> mockNetworkMessageBroker = new Mock<INetworkMessageBroker>();
-
-            if(sendThrowsException)
-            {
-                mockNetworkMessageBroker.Setup(e => e.Send<T>(It.IsAny<T>(), It.IsAny<INetworkOperator>())).Throws(new Exception());
-            }
-            else
-            {
-                mockNetworkMessageBroker.Setup(e => e.Send<ExecutionStatusCallbackMessage>(It.IsAny<ExecutionStatusCallbackMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
-            }
-
-            return mockNetworkMessageBroker;
-        }
-
-        public static Mock<IStudioNetworkChannelContext> SetupStudioNetworkChannelContext()
-        {
-            Mock<IStudioNetworkChannelContext> mockSetupServerNetworkChannelContext = new Mock<IStudioNetworkChannelContext>();
-            mockSetupServerNetworkChannelContext.Setup(s => s.Account).Returns(Guid.Empty);
-            mockSetupServerNetworkChannelContext.Setup(s => s.Server).Returns(Guid.Empty);
-
-            return mockSetupServerNetworkChannelContext;
-        }
-
-        public static Mock<IStudioNetworkMessageAggregator> SetupStudioNetworkMessageAggregator()
-        {
-            Mock<IStudioNetworkMessageAggregator> mockStudioNetworkMessageAggregator = new Mock<IStudioNetworkMessageAggregator>();
-
-            return mockStudioNetworkMessageAggregator;
-        }
+       
 
         public static Mock<IDataListItemModel> SetupDataListItemViewModel()
         {

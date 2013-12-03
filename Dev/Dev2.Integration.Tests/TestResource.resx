@@ -2865,7 +2865,7 @@ alert("You pressed Cancel!");&amp;lt;br/&amp;gt;\
 &lt;/Dev2XMLResult&gt;&lt;/WebPart&gt;&lt;Rows&gt;10&lt;/Rows&gt;&lt;Cols&gt;6&lt;/Cols&gt;&lt;/WebParts&gt;&lt;/WebPage&gt;</value>
   </data>
   <data name="WebserverURI_Local" xml:space="preserve">
-    <value>http://localhost:1234/services/</value>
+    <value>http://localhost:3142/services/</value>
   </data>
   <data name="xmlDataList" xml:space="preserve">
     <value>&lt;DataList&gt;

@@ -243,7 +243,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
         public static Uri GetWorkflowUrl(IContextualResourceModel resourceModel)
         {
             var relativeUrl = String.Format("/services/{0}?wid={1}", resourceModel.ResourceName,
-                                            ((IStudioClientContext)resourceModel.Environment.DsfChannel).WorkspaceID);
+                                            resourceModel.Environment.Connection.WorkspaceID);
             return new Uri(resourceModel.Environment.Connection.WebServerUri, relativeUrl);
         }
     }

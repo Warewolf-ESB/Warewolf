@@ -195,9 +195,6 @@
     <Compile Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml.cs">
       <DependentUpon>DsfScriptingJavaScriptDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfActivityDesigner.xaml.cs">
-      <DependentUpon>DsfActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfAssertActivityDesigner.xaml.cs">
       <DependentUpon>DsfAssertActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -243,7 +240,6 @@
     <Compile Include="AppResources\Behaviors\TreeViewFocusOnAddBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="AppResources\Behaviors\UserControlFocusNextAndPreviousBehaviour.cs" />
-    <Compile Include="AppResources\Behaviors\WebControlBrowseOnEventBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
@@ -341,7 +337,6 @@
     <Compile Include="Settings\SettingsViewModel.cs" />
     <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
-    <Compile Include="ViewModels\ActivityViewModels\DsfActivityViewModel.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
@@ -478,7 +473,6 @@
     <Compile Include="ViewModels\Navigation\ServiceTypeTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\TreeViewModelHelper.cs" />
     <Compile Include="ViewModels\UiAutomation\AutomationIdCreaterViewModel.cs" />
-    <Compile Include="ViewModels\Wizards\ActivitySettingsViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModel.cs" />
     <Compile Include="Views\DataList\DataListView.xaml.cs">
       <DependentUpon>DataListView.xaml</DependentUpon>
@@ -491,9 +485,6 @@
     </Compile>
     <Compile Include="Views\UIAutomation\AutomationIdCreaterView.xaml.cs">
       <DependentUpon>AutomationIdCreaterView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Wizards\ActivitySettingsView.xaml.cs">
-      <DependentUpon>ActivitySettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Administration\DialogueView.xaml.cs">
       <DependentUpon>DialogueView.xaml</DependentUpon>
@@ -562,9 +553,6 @@
     <Compile Include="Views\Workflow\ConfigureDecisionWindow.xaml.cs">
       <DependentUpon>ConfigureDecisionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Workflow\WorkflowDebuggerWindow.xaml.cs">
-      <DependentUpon>WorkflowDebuggerWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
     </Compile>
@@ -588,10 +576,6 @@
     <Page Include="ActivityDesigners\Scripting\DsfScriptingJavaScriptDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ActivityDesigners\DsfActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ActivityDesigners\DsfAssertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -913,10 +897,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Wizards\ActivitySettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Administration\DialogueView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1012,10 +992,6 @@
     <Page Include="Views\Workflow\DsfActivityDropWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Workflow\WorkflowDebuggerWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Workflow\WorkflowDesignerView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -1306,8 +1282,10 @@
     <Folder Include="ActivityDesigners\PathOperationDesigners\" />
     <Folder Include="ActivityDesigners\Singeltons\" />
     <Folder Include="AppResources\Messages\" />
+    <Folder Include="ViewModels\ActivityViewModels\" />
     <Folder Include="ViewModels\Configuration\" />
     <Folder Include="ViewModels\Web\" />
+    <Folder Include="ViewModels\Wizards\" />
     <Folder Include="Views\Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

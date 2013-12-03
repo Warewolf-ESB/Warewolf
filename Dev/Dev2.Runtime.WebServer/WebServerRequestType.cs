@@ -18,6 +18,11 @@
         HubConnect,
 
         EsbSendMemo,
+        EsbAddDebugWriter,
+        EsbExecuteCommand,
+        EsbSendDebugState,
+        EsbWrite,
+        EsbOnConnected,
 
         ResourcesSend,
         ResourcesSendMemo,

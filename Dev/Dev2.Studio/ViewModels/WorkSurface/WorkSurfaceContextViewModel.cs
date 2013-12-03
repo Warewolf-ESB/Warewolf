@@ -60,7 +60,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         IContextualResourceModel _contextualResourceModel;
 
         readonly IWindowManager _windowManager;
-        IFrameworkSecurityContext _securityContext;
         IWorkspaceItemRepository _workspaceItemRepository;
 
         ICommand _viewInBrowserCommand;
@@ -233,7 +232,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel = workSurfaceViewModel;
 
              ImportService.TryGetExportValue(out _windowManager);
-             ImportService.TryGetExportValue(out _securityContext);
              _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
@@ -414,14 +412,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             dynamic buildRequest = new UnlimitedObject();
 
             buildRequest.Service = "TerminateExecutionService";
-            buildRequest.Roles = String.Join(",", _securityContext.Roles);
+             string[] securityRoles = {"Administrators"};
+             buildRequest.Roles = String.Join(",", securityRoles);
 
             buildRequest.ResourceID = ContextualResourceModel.ID;
 
-            Guid workspaceID = ((IStudioClientContext)ContextualResourceModel.Environment.DsfChannel).WorkspaceID;
+            Guid workspaceID = ContextualResourceModel.Environment.Connection.WorkspaceID;
 
             string result =
-                ContextualResourceModel.Environment.DsfChannel.
+                ContextualResourceModel.Environment.Connection.
                       ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
                 string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
 

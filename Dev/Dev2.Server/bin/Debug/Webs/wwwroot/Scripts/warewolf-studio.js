@@ -30,12 +30,6 @@ studio.saveAndClose = function (value) {
     }
 };
 
-studio.navigateTo = function (uri, args, returnUri) {
-    if (studio.isAvailable()) {
-        Dev2Awesomium.NavigateTo(uri, args, returnUri);
-    }
-};
-
 studio.setValue = function (args) {
     if (studio.isAvailable()) {
         Dev2Awesomium.Dev2SetValue(args);

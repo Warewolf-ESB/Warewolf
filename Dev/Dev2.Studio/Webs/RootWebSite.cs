@@ -144,7 +144,7 @@ namespace Dev2.Studio.Webs
             }
 
             // Silly people not checking for nulls on properties that wraper other properties?! ;)
-            if (environment.DsfChannel == null)
+            if (environment.Connection == null)
             {
                 if (!environment.IsConnected)
                 {
@@ -164,73 +164,76 @@ namespace Dev2.Studio.Webs
             double width;
             double height;
 
-            var workspaceID = ((IStudioClientContext)environment.DsfChannel).WorkspaceID;
-
-            switch(resourceType)
+            if(environment.Connection != null)
             {
-                case ResourceType.Server:
-                    workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
-                    pageName = "sources/server";
-                    pageHandler = new ConnectCallbackHandler(context);
-                    width = 704;
-                    height = 492;
-                    break;
+                var workspaceID = environment.Connection.WorkspaceID;
 
-                case ResourceType.DbService:
-                    pageName = "services/dbservice";
-                    pageHandler = new DbServiceCallbackHandler();
-                    width = ServiceDialogWidth;
-                    height = ServiceDialogHeight;
-                    break;
+                switch(resourceType)
+                {
+                    case ResourceType.Server:
+                        workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
+                        pageName = "sources/server";
+                        pageHandler = new ConnectCallbackHandler(context);
+                        width = 704;
+                        height = 492;
+                        break;
 
-                case ResourceType.DbSource:
-                    pageName = "sources/dbsource";
-                    pageHandler = new SourceCallbackHandler();
-                    width = 704;
-                    height = 492;
-                    break;
+                    case ResourceType.DbService:
+                        pageName = "services/dbservice";
+                        pageHandler = new DbServiceCallbackHandler();
+                        width = ServiceDialogWidth;
+                        height = ServiceDialogHeight;
+                        break;
 
-                case ResourceType.PluginService:
-                    pageName = "services/pluginservice";
-                    pageHandler = new ServiceCallbackHandler();
-                    width = ServiceDialogWidth;
-                    height = ServiceDialogHeight;
-                    break;
+                    case ResourceType.DbSource:
+                        pageName = "sources/dbsource";
+                        pageHandler = new SourceCallbackHandler();
+                        width = 704;
+                        height = 492;
+                        break;
 
-                case ResourceType.PluginSource:
-                    pageName = "sources/pluginsource";
-                    pageHandler = new SourceCallbackHandler();
-                    width = 704;
-                    height = 492;
-                    break;
+                    case ResourceType.PluginService:
+                        pageName = "services/pluginservice";
+                        pageHandler = new ServiceCallbackHandler();
+                        width = ServiceDialogWidth;
+                        height = ServiceDialogHeight;
+                        break;
 
-                case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
-                    pageName = "sources/emailsource";
-                    pageHandler = new SourceCallbackHandler();
-                    width = 706;
-                    height = 494;
-                    break;
+                    case ResourceType.PluginSource:
+                        pageName = "sources/pluginsource";
+                        pageHandler = new SourceCallbackHandler();
+                        width = 704;
+                        height = 492;
+                        break;
 
-                case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
-                    pageName = "sources/websource";
-                    pageHandler = new WebSourceCallbackHandler();
-                    width = 704;
-                    height = 492;
-                    break;
+                    case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
+                        pageName = "sources/emailsource";
+                        pageHandler = new SourceCallbackHandler();
+                        width = 706;
+                        height = 494;
+                        break;
 
-                case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
-                    pageName = "services/webservice";
-                    pageHandler = new WebServiceCallbackHandler();
-                    width = ServiceDialogWidth;
-                    height = ServiceDialogHeight;
-                    break;
-                default:
-                    return false;
+                    case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
+                        pageName = "sources/websource";
+                        pageHandler = new WebSourceCallbackHandler();
+                        width = 704;
+                        height = 492;
+                        break;
+
+                    case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
+                        pageName = "services/webservice";
+                        pageHandler = new WebServiceCallbackHandler();
+                        width = ServiceDialogWidth;
+                        height = ServiceDialogHeight;
+                        break;
+                    default:
+                        return false;
+                }
+
+                var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
+                resourcePath = HttpUtility.UrlEncode(resourcePath);
+                environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath), pageHandler, width, height);
             }
-
-            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            resourcePath = HttpUtility.UrlEncode(resourcePath);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath), pageHandler, width, height);
             return true;
         }
 

@@ -14,9 +14,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsConnected { get; }
         bool CanStudioExecute { get; set; }
 
-        IStudioEsbChannel DsfChannel { get; }
-        INetworkExecutionChannel ExecutionChannel { get; }
-        INetworkDataListChannel DataListChannel { get; }
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }
 

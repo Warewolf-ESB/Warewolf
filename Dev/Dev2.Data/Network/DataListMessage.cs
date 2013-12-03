@@ -1,9 +1,8 @@
 ﻿using System;
-using Dev2.Network.Messaging;
 
 namespace Dev2.DataList.Contract.Network
 {
-    public abstract class DataListMessage : INetworkMessage
+    public abstract class DataListMessage
     {
         public long Handle { get; set; }
 

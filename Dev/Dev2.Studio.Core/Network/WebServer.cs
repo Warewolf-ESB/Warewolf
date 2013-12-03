@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Network
                 return;
             }
 
-            var clientContext = resourceModel.Environment.DsfChannel as IStudioClientContext;
+            var clientContext = resourceModel.Environment.Connection;
             if(clientContext == null)
             {
                 return;

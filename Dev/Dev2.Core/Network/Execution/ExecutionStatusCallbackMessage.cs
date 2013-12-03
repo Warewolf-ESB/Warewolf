@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Network.Execution
 {
@@ -18,7 +17,7 @@ namespace Dev2.Network.Execution
         ErrorCallback = 7,
     }
 
-    public class ExecutionStatusCallbackMessage : NetworkMessage
+    public class ExecutionStatusCallbackMessage
     {
         #region Constructors
 
@@ -43,13 +42,13 @@ namespace Dev2.Network.Execution
 
         #region INetworkMessage
 
-        public override void Read(IByteReaderBase reader)
+        public void Read(IByteReaderBase reader)
         {
             CallbackID = reader.ReadGuid();
             MessageType = (ExecutionStatusCallbackMessageType)reader.ReadInt32();
         }
 
-        public override void Write(IByteWriterBase writer)
+        public void Write(IByteWriterBase writer)
         {
             writer.Write(CallbackID);
             writer.Write((int)MessageType);

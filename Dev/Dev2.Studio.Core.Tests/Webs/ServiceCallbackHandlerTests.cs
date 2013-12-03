@@ -9,7 +9,6 @@ using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -42,7 +41,6 @@ namespace Dev2.Core.Tests.Webs
             {
                 new FullTestAggregateCatalog()
             });
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             _eventAgrregator = new Mock<IEventAggregator>();
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);

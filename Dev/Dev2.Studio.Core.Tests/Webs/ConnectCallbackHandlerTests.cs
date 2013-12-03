@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
@@ -42,8 +41,6 @@ namespace Dev2.Core.Tests
 
         static ImportServiceContext ImportContext;
 
-        private static Mock<IEventAggregator> _eventAgrregator;
-
         #region Class/TestInitialize
 
         [ClassInitialize]
@@ -56,8 +53,7 @@ namespace Dev2.Core.Tests
             {
                 new FullTestAggregateCatalog()
             });
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
-            _eventAgrregator = new Mock<IEventAggregator>();
+            new Mock<IEventAggregator>();
         }
 
         [TestInitialize]
@@ -106,15 +102,11 @@ namespace Dev2.Core.Tests
         public void Save_WithValidConnection_Expected_InvokesAddResourceService()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
-            var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.WorkspaceID).Returns(It.IsAny<Guid>());
-            dsfChannel.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("").Verifiable();
-
             var targetEnv = new Mock<IEnvironmentModel>();
-            targetEnv.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
 
             var rand = new Random();
             var connection = new Mock<IEnvironmentConnection>();
+            connection.Setup(c => c.WorkspaceID).Returns(It.IsAny<Guid>());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);

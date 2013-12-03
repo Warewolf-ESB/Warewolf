@@ -21,6 +21,7 @@ namespace Dev2
         Guid WorkspaceID { get; set; }
         Guid ResourceID { get; set; }
         Guid OriginalInstanceID { get; set; }
+        Guid ClientID { get; set; }
         bool IsOnDemandSimulation { get; set; }
         Guid ServerID { get; set; }
         ErrorResultTO Errors { get; set; }

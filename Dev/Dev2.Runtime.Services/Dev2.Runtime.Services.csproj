@@ -157,7 +157,6 @@
     <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Network\StudioAccount.cs" />
-    <Compile Include="Network\StudioMessaging.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Security\ProcessHost.cs" />

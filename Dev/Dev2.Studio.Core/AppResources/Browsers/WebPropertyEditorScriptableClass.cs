@@ -45,15 +45,7 @@ namespace Dev2.Studio.Core
                 InvokeActionAsync(() => PropertyEditorViewModel.Save(value, closeBrowserWindow));
             }
         }
-
-        public void NavigateTo(string uri, string args, string returnUri)
-        {
-            if(PropertyEditorViewModel != null)
-            {
-                InvokeAction(() => PropertyEditorViewModel.NavigateTo(uri, args, returnUri));
-            }
-        }
-
+        
         public void OpenPropertyEditor()
         {
             if(PropertyEditorViewModel != null)

@@ -9,14 +9,12 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Messages;
 using Dev2.Providers.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
@@ -124,7 +122,7 @@ namespace Dev2.Core.Tests
             var c1 = Mock.Get(e1.Object.Connection);
             c1.Setup(c => c.Disconnect()).Verifiable();
 
-            var resourceRepo1 = new ResourceRepository(e1.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
+            var resourceRepo1 = new ResourceRepository(e1.Object);
             e1.Setup(e => e.ResourceRepository).Returns(resourceRepo1);
             var r1 = new Mock<IContextualResourceModel>();
             r1.Setup(r => r.Category).Returns("test");
@@ -137,7 +135,7 @@ namespace Dev2.Core.Tests
             var c2 = Mock.Get(e2.Object.Connection);
             c2.Setup(c => c.Disconnect()).Verifiable();
 
-            var resourceRepo2 = new ResourceRepository(e2.Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object);
+            var resourceRepo2 = new ResourceRepository(e2.Object);
             e2.Setup(e => e.ResourceRepository).Returns(resourceRepo2);
 
             var serverProvider = new Mock<IServerProvider>();
@@ -321,7 +319,6 @@ namespace Dev2.Core.Tests
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             //New Mocks
             var mockedServerRepo = new Mock<IEnvironmentRepository>();

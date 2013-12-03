@@ -78,6 +78,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\InfragisticsWPF4.v12.1.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.ActiveDs">
+      <HintPath>..\Binaries\ActiveDirectory\Interop.ActiveDs.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -174,9 +182,9 @@
     <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\NavigationViewTests.cs" />
-    <Compile Include="DataListClientChannelTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
-    <Compile Include="ConfigureDecisionViewModelTest.cs" />
+    <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
+    <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSecurityViewModel.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
@@ -209,7 +217,6 @@
     <Compile Include="Environments\TestEnvironmentRespository.cs" />
     <Compile Include="Environments\TestLoadEnvironmentRespository.cs" />
     <Compile Include="Environments\TestServerProvider.cs" />
-    <Compile Include="ExecutionClientChannelTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="Factories\DsfActivityFactoryTests.cs" />
     <Compile Include="Feedback\Actions\RecorderFeedbackActionTests.cs" />
@@ -231,10 +238,7 @@
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="Network\TcpClientHostTests.cs" />
-    <Compile Include="Network\TestTcpClientHostWithEvents.cs" />
     <Compile Include="Network\TestTcpConnectionWithMockHost.cs" />
-    <Compile Include="Network\TestTcpClientHost.cs" />
-    <Compile Include="Network\TestTcpClientHostAsync.cs" />
     <Compile Include="Network\TestTcpConnection.cs" />
     <Compile Include="Network\TcpConnectionTests.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
@@ -270,6 +274,7 @@
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
+    <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\CategoryTreeViewModelMock.cs" />
     <Compile Include="Views\Global\ToolboxUserControlTests.cs" />
@@ -290,7 +295,6 @@
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewModelTests\Configuration\RuntimeConfigurationViewModelTests.cs" />
     <Compile Include="ViewModelTests\Dialogs\Dev2MessageBoxViewModelTests.cs" />
-    <Compile Include="ViewModelTests\DsfActivityViewModelTests.cs" />
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
@@ -305,8 +309,6 @@
     <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
     <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
-    <Compile Include="WizardTests\WizardEndpointGenerationStrategyProviderTests.cs" />
-    <Compile Include="WizardTests\WizardEngineTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfActivityWizCallbackTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfBaseConvertActivityWizCallbackHandlerTests.cs" />
     <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfBaseWizCallbackTests.cs" />

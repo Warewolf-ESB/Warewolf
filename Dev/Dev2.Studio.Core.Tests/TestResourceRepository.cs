@@ -1,5 +1,4 @@
 ﻿using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Moq;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -12,14 +11,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         public TestResourceRepository(IEnvironmentModel environmentModel)
-            : this(environmentModel, new Mock<IWizardEngine>().Object)
+            : base(environmentModel)
         {
         }
 
-        public TestResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine)
-            : base(environmentModel, wizardEngine, new Mock<IFrameworkSecurityContext>().Object)
-        {
-        }
 
         public void AddMockResource(IResourceModel mockRes)
         {

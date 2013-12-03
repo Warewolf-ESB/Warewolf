@@ -112,8 +112,8 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             test.Service = "FindDependencyService";
             test.ResourceName = ResourceModel.ResourceName;
             test.GetDependsOnMe = GetDependsOnMe;
-            var workspaceID = ((IStudioClientContext)ResourceModel.Environment.DsfChannel).WorkspaceID;
-            dynamic data = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.DsfChannel.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
+            var workspaceID = ResourceModel.Environment.Connection.WorkspaceID;
+            dynamic data = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(ResourceModel.Environment.Connection.ExecuteCommand(test.XmlString, workspaceID, GlobalConstants.NullDataListID));
 
             if (data == null)
             {

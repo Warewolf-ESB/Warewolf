@@ -218,7 +218,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1234.
+        ///   Looks up a localized string similar to 3142.
         /// </summary>
         public static string Default_WebServer_Port {
             get {
@@ -1348,7 +1348,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:3142/dsf.
         /// </summary>
         public static string Uri_Development_Environment {
             get {
@@ -1375,7 +1375,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:3142/dsf.
         /// </summary>
         public static string Uri_Live_Environment {
             get {
@@ -1438,7 +1438,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:3142/dsf.
         /// </summary>
         public static string Uri_Testing_Environment {
             get {
@@ -1456,7 +1456,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:1234.
+        ///   Looks up a localized string similar to http://localhost:3142.
         /// </summary>
         public static string Uri_WebServer {
             get {

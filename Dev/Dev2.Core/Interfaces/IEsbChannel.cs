@@ -1,19 +1,9 @@
 ﻿using System.Collections.Generic;
 using Dev2.DataList.Contract;
 using System;
-using Dev2.Network.Messaging;
 
 namespace Dev2
 {
-    /// <summary>
-    /// Used studio side to replicate old channel functionality
-    /// </summary>
-    public interface IStudioEsbChannel
-    {
-        string ExecuteCommand(string xmlRequest, Guid workspaceID, Guid dataListID);
-        INetworkMessage SendMessage<T>(T message) where T : INetworkMessage, new();
-    }
-
     public interface IEsbChannel
     {
         /// <summary>

@@ -155,6 +155,7 @@ namespace Dev2.DynamicServices
         #region Properties
 
         public Guid DebugSessionID { get; set; }
+        public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
         public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
@@ -307,6 +308,7 @@ namespace Dev2.DynamicServices
             result.ResourceID = ResourceID;
             result.ReturnType = ReturnType;
             result.ServerID = ServerID;
+            result.ClientID = ClientID;
             result.ServiceName = ServiceName;
             result.WorkflowInstanceId = WorkflowInstanceId;
             result.WorkflowResumeable = WorkflowResumeable;

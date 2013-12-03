@@ -14,7 +14,6 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -44,18 +43,13 @@ namespace Dev2.Core.Tests.Environments
 
         static void SetupMef()
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
             var eventAggregator = new Mock<IEventAggregator>();
-            var wizardEngine = new Mock<IWizardEngine>();
 
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer(securityContext.Object);
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-            ImportService.AddExportedValueToContainer(wizardEngine.Object);
 
             EnviromentRepositoryImportServiceContext = importServiceContext;
         }
@@ -714,7 +708,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepository_UnitTest_LookupEnvironmentsWithDefaultEnvironmentExpectDoesNotThrowException()
         {
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, new ResourceRepository(CreateMockEnvironment(new[] { "localhost" }).Object, new Mock<IWizardEngine>().Object, new Mock<IFrameworkSecurityContext>().Object));
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, new ResourceRepository(CreateMockEnvironment(new[] { "localhost" }).Object));
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -731,7 +725,6 @@ namespace Dev2.Core.Tests.Environments
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<Payload>{0}</Payload>", Server1Source));
-            env.Setup(e => e.Connection.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
            // env.Setup(e => e.WizardEngine).Returns(new Mock<IWizardEngine>().Object);
             env.Setup(e => e.IsConnected).Returns(true);
 
@@ -798,11 +791,9 @@ namespace Dev2.Core.Tests.Environments
         {
             var rand = new Random();
             var connection = CreateMockConnection(rand, sources);
-            var wizardEngine = new Mock<IWizardEngine>();
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
-            //env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(Guid.NewGuid());
 
@@ -822,8 +813,6 @@ namespace Dev2.Core.Tests.Environments
 
         public static Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
             var eventAggregator = new Mock<IEventAggregator>();
 
@@ -831,7 +820,6 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));

@@ -19,15 +19,15 @@ namespace Dev2.Studio.Webs.Callbacks
             : base(environmentRepository)
         {
         }
-
-        public override void NavigateTo(string uri, string args, string returnUri)
-        {
-            Uri theUri;
-            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out theUri) && ValidSchemes.Contains(theUri.Scheme.ToLowerInvariant()))
-            {
-                StartUriProcess(uri);
-            }
-        }
+//
+//        protected override void NavigateTo(string uri, string args, string returnUri)
+//        {
+//            Uri theUri;
+//            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out theUri) && ValidSchemes.Contains(theUri.Scheme.ToLowerInvariant()))
+//            {
+//                StartUriProcess(uri);
+//            }
+//        }
 
         protected virtual void StartUriProcess(string uri)
         {

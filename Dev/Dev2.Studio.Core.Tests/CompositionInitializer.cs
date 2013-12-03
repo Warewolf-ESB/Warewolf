@@ -10,7 +10,6 @@ using Dev2.Core.Tests.ProperMoqs;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
@@ -19,7 +18,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.Wizards;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
@@ -42,10 +40,7 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(securityContext.Object);
-
+            
            // IMainViewModel mainViewModel = new MainViewModel();
             IMainViewModel mainViewModel = new Mock<IMainViewModel>().Object;
             ImportService.AddExportedValueToContainer(mainViewModel);
@@ -104,11 +99,7 @@ namespace Dev2.Core.Tests
             var webCommunication = new Mock<IWebCommunication>();
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
-            var wizardEngine = new Mock<IWizardEngine>();
-            ImportService.AddExportedValueToContainer(wizardEngine.Object);
 
-           var securityContext = new Mock<IFrameworkSecurityContext>();
-            ImportService.AddExportedValueToContainer(securityContext.Object);
 
             return importServiceContext;
         }
@@ -134,12 +125,8 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(webCommunication.Object);
 
             // PBI 9598 - 2013.06.10 - TWR : added
-            ImportService.AddExportedValueToContainer(new Mock<IWizardEngine>().Object);
 
             // PBI 9598 - 2013.06.10 - TWR : added
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.UserIdentity).Returns(new GenericIdentity("TestUser"));
-            ImportService.AddExportedValueToContainer(securityContext.Object);
 
             return importServiceContext;
         }
@@ -153,7 +140,6 @@ namespace Dev2.Core.Tests
             Mock<IFeedBackRecorder> feedbackRecorder = null,
             Mock<IFrameworkRepository<UserInterfaceLayoutModel>> layoutRepo = null,
             Mock<IResourceDependencyService> resourceDepService = null,
-            Mock<IFrameworkSecurityContext> securityContext = null,
             IWorkspaceItemRepository workspaceItemRepository = null)
         {
             var importServiceContext = new ImportServiceContext();
@@ -177,7 +163,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer((feedbackRecorder == null) ? new FeedbackRecorder() : feedbackRecorder.Object);
             ImportService.AddExportedValueToContainer((layoutRepo == null) ? new UserInterfaceLayoutRepository() : layoutRepo.Object);
             ImportService.AddExportedValueToContainer((resourceDepService == null) ? new ResourceDependencyService() : resourceDepService.Object);
-            ImportService.AddExportedValueToContainer((securityContext == null) ? new FrameworkSecurityProvider() : securityContext.Object);
             //ImportService.AddExportedValueToContainer((workspaceItemRepository == null) ? new WorkspaceItemRepository() : workspaceItemRepository.Object);
 
             return importServiceContext;
@@ -233,7 +218,6 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
             ImportService.AddExportedValueToContainer(webCommunication);
 
@@ -251,7 +235,6 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer<IPopupController>(new MoqPopup());
 
             //IMainViewModel mainViewModel = new MainViewModel();
@@ -270,7 +253,6 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
             repo.Setup(l => l.Load()).Verifiable();
@@ -302,7 +284,6 @@ namespace Dev2.Core.Tests
             var mainViewModel = new Mock<IMainViewModel>();          
 
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
@@ -337,7 +318,6 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();
@@ -436,72 +416,7 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeForDataListChannelTests(Mock<INetworkMessageBroker> networkMessageBroker, Mock<IStudioNetworkMessageAggregator> studioNetworkMessageAggregator)
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
 
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(networkMessageBroker.Object);
-            ImportService.AddExportedValueToContainer(studioNetworkMessageAggregator.Object);
-
-            return importServiceContext;
-        }
-
-        internal static ImportServiceContext InitializeForDataListChannelTests(Mock<INetworkMessageBroker> networkMessageBroker, IStudioNetworkMessageAggregator studioNetworkMessageAggregator)
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(networkMessageBroker.Object);
-            ImportService.AddExportedValueToContainer(studioNetworkMessageAggregator);
-
-            return importServiceContext;
-        }
-
-        internal static ImportServiceContext InitializeForExecutionChannelMessaegRecievingTests(INetworkMessageBroker networkMessageBroker, IStudioNetworkMessageAggregator studioNetworkMessageAggregator)
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(networkMessageBroker);
-            ImportService.AddExportedValueToContainer(studioNetworkMessageAggregator);
-
-            return importServiceContext;
-        }
-
-        internal static ImportServiceContext InitializeForExecutionChannelTests(Mock<IExecutionStatusCallbackDispatcher> executionStatusCallbackDispatcher, Mock<INetworkMessageBroker> networkMessageBroker, Mock<IStudioNetworkMessageAggregator> studioNetworkMessageAggregator)
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(executionStatusCallbackDispatcher.Object);
-            ImportService.AddExportedValueToContainer(networkMessageBroker.Object);
-            ImportService.AddExportedValueToContainer(studioNetworkMessageAggregator.Object);
-
-            return importServiceContext;
-        }
-
-        internal static ImportServiceContext InitializeForExecutionChannelTests(Mock<IExecutionStatusCallbackDispatcher> executionStatusCallbackDispatcher, INetworkMessageBroker networkMessageBroker, IStudioNetworkMessageAggregator studioNetworkMessageAggregator)
-        {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-
-            ImportService.AddExportedValueToContainer(executionStatusCallbackDispatcher.Object);
-            ImportService.AddExportedValueToContainer(networkMessageBroker);
-            ImportService.AddExportedValueToContainer(studioNetworkMessageAggregator);
-
-            return importServiceContext;
-        }
 
         internal static ImportServiceContext InitializeEmailFeedbackTest(Mock<ISystemInfoService> systemInfoService)
         {
@@ -570,14 +485,13 @@ namespace Dev2.Core.Tests
             return importServiceContext;
         }
 
-        internal static ImportServiceContext InitializeTreeViewModelTests(Mock<IWizardEngine> wizardEngine)
+        internal static ImportServiceContext InitializeTreeViewModelTests()
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            ImportService.AddExportedValueToContainer(wizardEngine.Object);
 
             return importServiceContext;
         }
@@ -592,7 +506,6 @@ namespace Dev2.Core.Tests
 //                new FullTestAggregateCatalog()
 //            });
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
             ImportService.AddExportedValueToContainer(repo.Object);
 
             return importServiceContext;
@@ -610,7 +523,6 @@ namespace Dev2.Core.Tests
 
             var mainViewModel = new Mock<IMainViewModel>();
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             // setup env repo
             var repo = new Mock<IEnvironmentRepository>();

@@ -13,8 +13,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         void Save(string value, bool closeBrowserWindow = true);
 
-        void NavigateTo(string uri, string args, string returnUri);
-
         void OpenPropertyEditor();
 
         void Dev2Set(string data, string uri);

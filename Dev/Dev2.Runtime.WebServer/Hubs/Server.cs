@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using Dev2.Communication;
 using Dev2.Workspaces;
+using Dev2.Diagnostics;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -19,7 +20,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<ResourcesHub>().Clients, WorkspaceRepository.Instance));
+        readonly static Lazy<Server> TheInstance = new Lazy<Server>(() => new Server(GlobalHost.ConnectionManager.GetHubContext<EsbHub>().Clients, WorkspaceRepository.Instance));
 
         readonly IHubConnectionContext _clients;
         readonly IWorkspaceRepository _workspaceRepository;
@@ -49,5 +50,28 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
+        public void SendDebugState(DebugState debugState, string connectionID = null)
+        {
+            if(string.IsNullOrEmpty(connectionID))
+            {
+                _clients.All.SendDebugState(debugState);
+            }
+            else
+            {
+                _clients.Client(connectionID).SendDebugState(debugState);
+            }
+        }
+
+        public void SendWorkspaceID(Guid workspaceID, string connectionID = null)
+        {
+            if(string.IsNullOrEmpty(connectionID))
+            {
+                _clients.All.SendWorkspaceID(workspaceID);
+            }
+            else
+            {
+                _clients.Client(connectionID).SendWorkspaceID(workspaceID);
+            }
+        }
     }
 }

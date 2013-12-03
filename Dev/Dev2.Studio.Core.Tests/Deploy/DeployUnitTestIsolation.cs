@@ -7,7 +7,6 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -46,7 +45,6 @@ namespace Dev2.Core.Tests.Deploy
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
 
             //New Mocks
             var mockedServerRepo = new Mock<IEnvironmentRepository>();

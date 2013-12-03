@@ -72,43 +72,6 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
 
-        protected override void Navigate(IEnvironmentModel environmentModel, string uri, dynamic jsonArgs, string returnUri)
-        {
-            if(environmentModel == null || environmentModel.ResourceRepository == null || jsonArgs == null)
-            {
-                return;
-            }
-
-            Guid dataListID;
-            var relativeUri = "/services/DatabaseSourceManagement";
-            var sourceName = jsonArgs.ResourceName.Value;
-            var contextualResource = string.IsNullOrEmpty(sourceName)
-                                         ? null
-                                         : environmentModel.ResourceRepository.All().FirstOrDefault(r => r.ResourceName.Equals(sourceName, StringComparison.InvariantCultureIgnoreCase)) as IContextualResourceModel;
-            if(contextualResource == null)
-            {
-                relativeUri += "?Dev2ServiceType=Database";
-                dataListID = Guid.Empty;
-            }
-            else
-            {
-                ErrorResultTO errors;
-                var args = StudioToWizardBridge.BuildStudioEditPayload(contextualResource.ResourceType.ToString(), contextualResource);
-                dataListID = environmentModel.UploadToDataList(args, out errors);
-            }
-
-            Uri requestUri;
-            if(!Uri.TryCreate(environmentModel.Connection.WebServerUri, relativeUri, out requestUri))
-            {
-                requestUri = new Uri(new Uri(StringResources.Uri_WebServer), relativeUri);
-            }
-            var uriString = Browser.FormatUrl(requestUri.AbsoluteUri, dataListID);
-
-            _isEditingSource = true;
-            _returnUri = returnUri;
-            Navigate(uriString);
-        }
-
         public override void Cancel()
         {
             if(_isEditingSource)

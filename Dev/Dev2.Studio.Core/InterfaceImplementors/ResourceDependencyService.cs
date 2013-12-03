@@ -37,9 +37,9 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             request.Service = "FindDependencyService";
             request.ResourceName = resourceModel.ResourceName;
             request.GetDependsOnMe = true;
-            var workspaceID = ((IStudioClientContext)resourceModel.Environment.DsfChannel).WorkspaceID;
+            var workspaceID = resourceModel.Environment.Connection.WorkspaceID;
 
-            var result = resourceModel.Environment.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
+            var result = resourceModel.Environment.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
 
             if (result == null)
             {
@@ -109,9 +109,9 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             request.Service = "GetDependanciesOnListService";
             request.ResourceNames = JsonConvert.SerializeObject(resourceNames);
             request.GetDependsOnMe = getDependsOnMe;
-            var workspaceID = ((IStudioClientContext)environmentModel.DsfChannel).WorkspaceID;
+            var workspaceID = environmentModel.Connection.WorkspaceID;
 
-            var result = environmentModel.DsfChannel.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);    
+            var result = environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);    
 
             List<string> deserializeObject = new List<string>();
             try

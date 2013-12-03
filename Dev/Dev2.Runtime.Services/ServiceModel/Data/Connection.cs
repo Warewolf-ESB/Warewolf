@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
@@ -66,6 +68,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                     case "password":
                         Password = p[1];
                         break;
+                }
+                if(WebServerPort == 77)
+                {
+                    WebServerPort = Int32.Parse(GlobalConstants.WebServerPort);
                 }
             }
         }

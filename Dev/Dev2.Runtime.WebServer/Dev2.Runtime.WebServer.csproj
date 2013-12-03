@@ -92,6 +92,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
@@ -116,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AbstractController.cs" />
+    <Compile Include="Handlers\InternalServiceRequestHandler.cs" />
     <Compile Include="Handlers\WebGetRequestHandler.cs" />
     <Compile Include="Handlers\WebsiteResourceHandler.cs" />
     <Compile Include="Handlers\WebsiteServiceHandler.cs" />

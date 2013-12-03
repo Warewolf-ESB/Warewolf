@@ -348,123 +348,124 @@ namespace Dev2.Settings
 
         private bool FetchRuntimeConfiguration(bool overwriteAssemblyIfExists)
         {
-            // Construct & send read message
-            SettingsMessage settingsMessage = new SettingsMessage
-            {
-                Action = NetworkMessageAction.Read,
-                AssemblyHashCode = "",
-            };
-
-            // Send message
-            INetworkMessage result;
-            try
-            {
-                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
-            }
-            catch(Exception e)
-            {
-                ShowError("An error occured while sending a message to the server.", e);
-                return false;
-            }
-
-            if(result == null)
-            {
-                ShowError("No response was received while sending a message to the server.", null);
-                return false;
-            }
-
-            // Check for error result
-            ErrorMessage errorMessage = result as ErrorMessage;
-            if(errorMessage != null)
-            {
-                ShowError(errorMessage.Message, null);
-                return false;
-            }
-
-            // Check if result is unknown type
-            SettingsMessage resultSettingsMessage = result as SettingsMessage;
-            if(resultSettingsMessage == null)
-            {
-                ShowError("An unknown response was received from the server.", null);
-                return false;
-            }
-
-            // Set data
-            AssemblyHashCode = resultSettingsMessage.AssemblyHashCode;
-            ConfigurationXml = resultSettingsMessage.ConfigurationXml;
-
-            // If assembly not in repository add it
-            if(overwriteAssemblyIfExists || !RuntimeConfigurationAssemblyRepository.AllHashes().Contains(resultSettingsMessage.AssemblyHashCode))
-            {
-                RuntimeConfigurationAssemblyRepository.Add(resultSettingsMessage.AssemblyHashCode, resultSettingsMessage.Assembly);
-            }
+//            // Construct & send read message
+//            SettingsMessage settingsMessage = new SettingsMessage
+//            {
+//                Action = NetworkMessageAction.Read,
+//                AssemblyHashCode = "",
+//            };
+//
+//            // Send message
+//            INetworkMessage result;
+//            try
+//            {
+//                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
+//            }
+//            catch(Exception e)
+//            {
+//                ShowError("An error occured while sending a message to the server.", e);
+//                return false;
+//            }
+//
+//            if(result == null)
+//            {
+//                ShowError("No response was received while sending a message to the server.", null);
+//                return false;
+//            }
+//
+//            // Check for error result
+//            ErrorMessage errorMessage = result as ErrorMessage;
+//            if(errorMessage != null)
+//            {
+//                ShowError(errorMessage.Message, null);
+//                return false;
+//            }
+//
+//            // Check if result is unknown type
+//            SettingsMessage resultSettingsMessage = result as SettingsMessage;
+//            if(resultSettingsMessage == null)
+//            {
+//                ShowError("An unknown response was received from the server.", null);
+//                return false;
+//            }
+//
+//            // Set data
+//            AssemblyHashCode = resultSettingsMessage.AssemblyHashCode;
+//            ConfigurationXml = resultSettingsMessage.ConfigurationXml;
+//
+//            // If assembly not in repository add it
+//            if(overwriteAssemblyIfExists || !RuntimeConfigurationAssemblyRepository.AllHashes().Contains(resultSettingsMessage.AssemblyHashCode))
+//            {
+//                RuntimeConfigurationAssemblyRepository.Add(resultSettingsMessage.AssemblyHashCode, resultSettingsMessage.Assembly);
+//            }
 
             return true;
         }
 
         private XElement SaveImpl(XElement configurationXML, bool overwriteSettings)
         {
-            // Construct write/overwrite message
-            SettingsMessage settingsMessage = new SettingsMessage
-            {
-                Action = (overwriteSettings) ? NetworkMessageAction.Overwrite : NetworkMessageAction.Write,
-                AssemblyHashCode = AssemblyHashCode,
-                ConfigurationXml = configurationXML,
-            };
-
-            // Send message
-            INetworkMessage result;
-            try
-            {
-                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
-            }
-            catch(Exception e)
-            {
-                ShowError("An error occured while sending a message to the server.", e);
-                return null;
-            }
-
-            // Check for error result
-            ErrorMessage errorMessage = result as ErrorMessage;
-            if(errorMessage != null)
-            {
-                ShowError(errorMessage.Message, null);
-                return null;
-            }
-
-            // Check if result is unknown type
-            SettingsMessage resultSettingsMessage = result as SettingsMessage;
-            if(resultSettingsMessage == null)
-            {
-                Popup.Show("An unknown response was received from the server, please try save again.", "Unknown Response", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return null;
-            }
-
-            // Deal with version conflict
-            if(resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
-            {
-                MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                switch(overwriteResult)
-                {
-                    case MessageBoxResult.Yes:
-                        Save(configurationXML, true);
-                        break;
-                    default:
-                        Cancel();
-                        break;
-                }
-                return null;
-            }
-
-            if(resultSettingsMessage.Result == NetworkMessageResult.Unknown)
-            {
-                Popup.Show("An unknown result was received from the server, please try save again.", "Unknown Result", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                return null;
-            }
-
-            //Publish settings save cancel message
-            return resultSettingsMessage.ConfigurationXml;
+//            // Construct write/overwrite message
+//            SettingsMessage settingsMessage = new SettingsMessage
+//            {
+//                Action = (overwriteSettings) ? NetworkMessageAction.Overwrite : NetworkMessageAction.Write,
+//                AssemblyHashCode = AssemblyHashCode,
+//                ConfigurationXml = configurationXML,
+//            };
+//
+//            // Send message
+//            INetworkMessage result;
+//            try
+//            {
+//                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
+//            }
+//            catch(Exception e)
+//            {
+//                ShowError("An error occured while sending a message to the server.", e);
+//                return null;
+//            }
+//
+//            // Check for error result
+//            ErrorMessage errorMessage = result as ErrorMessage;
+//            if(errorMessage != null)
+//            {
+//                ShowError(errorMessage.Message, null);
+//                return null;
+//            }
+//
+//            // Check if result is unknown type
+//            SettingsMessage resultSettingsMessage = result as SettingsMessage;
+//            if(resultSettingsMessage == null)
+//            {
+//                Popup.Show("An unknown response was received from the server, please try save again.", "Unknown Response", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+//                return null;
+//            }
+//
+//            // Deal with version conflict
+//            if(resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
+//            {
+//                MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
+//
+//                switch(overwriteResult)
+//                {
+//                    case MessageBoxResult.Yes:
+//                        Save(configurationXML, true);
+//                        break;
+//                    default:
+//                        Cancel();
+//                        break;
+//                }
+//                return null;
+//            }
+//
+//            if(resultSettingsMessage.Result == NetworkMessageResult.Unknown)
+//            {
+//                Popup.Show("An unknown result was received from the server, please try save again.", "Unknown Result", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+//                return null;
+//            }
+//
+//            //Publish settings save cancel message
+//            return resultSettingsMessage.ConfigurationXml;
+            return null;
         }
 
         private void ShowError(string errorMessage, Exception innerException)

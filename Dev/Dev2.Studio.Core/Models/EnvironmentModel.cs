@@ -63,7 +63,7 @@ namespace Dev2.Studio.Core.Models
             Connection = environmentConnection;
 
             // MUST set Connection before creating new ResourceRepository!!
-            ResourceRepository = resourceRepository ?? new ResourceRepository(this, new WizardEngine(), environmentConnection.SecurityContext); 
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this); 
             
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
@@ -96,18 +96,16 @@ namespace Dev2.Studio.Core.Models
 
         public IResourceRepository ResourceRepository { get; private set; }
 
-        public IStudioEsbChannel DsfChannel { get { return Connection.DataChannel; } }
-
-        public INetworkExecutionChannel ExecutionChannel { get { return Connection.ExecutionChannel; } }
-
-        public INetworkDataListChannel DataListChannel { get { return Connection.DataListChannel; } }
-
         #endregion
 
         #region Connect
 
         public void Connect()
         {
+            if(Connection.IsConnected)
+            {
+                return;
+            }
             if(string.IsNullOrEmpty(Name))
             {
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
@@ -144,10 +142,6 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected)
             {
-                if(_updateWorkFlowFromServerSubToken != Guid.Empty)
-                {
-                    Connection.MessageAggregator.Unsubscibe(_updateWorkFlowFromServerSubToken);
-                }
                 Connection.Disconnect();
 
             }
@@ -239,12 +233,7 @@ namespace Dev2.Studio.Core.Models
         {
             RaiseIsConnectedChanged(isOnline);
 
-            // If auxilliry connection then do nothing
-            if(Connection.IsAuxiliary)
-            {
-                return;
-            }
-
+          
             AbstractEnvironmentMessage message;
             if(isOnline)
             {

@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //init
             var databaseService = new MockServiceExecutionAbstract<DbService, DbSource>(new DsfDataObject("<DataList></DataList>", Guid.NewGuid()), It.IsAny<bool>());
-            var mockResourceCatalog = new Mock<ResourceCatalog>(It.IsAny<IEnumerable<DynamicService>>(), It.IsAny<IContextManager<IStudioNetworkSession>>());
+            var mockResourceCatalog = new Mock<ResourceCatalog>(It.IsAny<IEnumerable<DynamicService>>());
             mockResourceCatalog.Setup(c => c.GetResource<DbService>(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             mockResourceCatalog.Setup(c => c.GetResource<DbService>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DbService());
             mockResourceCatalog.Setup(c => c.GetResource<DbSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();

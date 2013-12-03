@@ -118,32 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DsfAddress" xml:space="preserve">
-    <value>http://localhost:77/dsf</value>
+    <value>http://localhost:3142/dsf</value>
   </data>
   <data name="DsfAddressFormat" xml:space="preserve">
-    <value>http://{0}:77/dsf</value>
+    <value>http://{0}:3142/dsf</value>
   </data>
   <data name="DsfPort" xml:space="preserve">
     <value>77</value>
     <comment>Used by ViewModels</comment>
   </data>
   <data name="WebserverHttpsURI" xml:space="preserve">
-    <value>https://localhost:1236/services/</value>
+    <value>https://localhost:3143/services/</value>
   </data>
   <data name="WebserverPort" xml:space="preserve">
     <value>1234</value>
     <comment>Used in ViewModels</comment>
   </data>
   <data name="WebserverURI" xml:space="preserve">
-    <value>http://localhost:1234/services/</value>
+    <value>http://localhost:3142/services/</value>
     <comment>Keep local, dont update ;)</comment>
   </data>
   <data name="WebsiteServerHttpsUri" xml:space="preserve">
-    <value>https://localhost:1234/wwwroot/</value>
+    <value>https://localhost:3142/wwwroot/</value>
     <comment>Keep local, dont update ;)</comment>
   </data>
   <data name="WebsiteServerUri" xml:space="preserve">
-    <value>http://localhost:1234/wwwroot/</value>
+    <value>http://localhost:3142/wwwroot/</value>
     <comment>Keep local, dont update ;)</comment>
   </data>
 </root>

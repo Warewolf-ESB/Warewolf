@@ -22,7 +22,6 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                new Mock<IFrameworkSecurityContext>().Object,
                 new Mock<IPopupController>().Object,
                 createDesigner)
         {
@@ -32,7 +31,6 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IFrameworkSecurityContext>().Object,
                 new Mock<IPopupController>().Object, createDesigner)
         {
         }

@@ -41,7 +41,6 @@ namespace Dev2.Studio
                 {
                     Assembly.GetAssembly(typeof (Bootstrapper)),
                     Assembly.GetAssembly(typeof (DebugWriter)),
-                    Assembly.GetAssembly(typeof (INetworkMessageBroker))
                 });
             return assemblies.Distinct();
         }

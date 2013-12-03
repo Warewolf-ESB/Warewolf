@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Composition;
 using Dev2.Core.Tests.XML;
-using Dev2.Providers.Events;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -46,14 +45,14 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetDependanciesOnListWithNullModelReturnsEmptyList()
         {
-            var dataChannel2 = new Mock<IStudioClientContext>();
+            var dataChannel2 = new Mock<IEnvironmentConnection>();
             dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(StringResourcesTest.ResourceDependencyTestJsonReturn);
 
             var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
             testEnvironmentModel2.Setup(e => e.ResourceRepository.All()).Returns(testResources);
-            testEnvironmentModel2.Setup(e => e.DsfChannel).Returns(dataChannel2.Object);
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(dataChannel2.Object);
 
             var service = new ResourceDependencyService();
             var resources = new List<IContextualResourceModel>();
@@ -65,14 +64,15 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void GetDependanciesOnListWithModel()
         {
-            var dataChannel2 = new Mock<IStudioClientContext>();
+            var dataChannel2 = new Mock<IEnvironmentConnection>();
+            dataChannel2.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel2.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(StringResourcesTest.ResourceDependencyTestJsonReturn);
 
             var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
             testEnvironmentModel2.Setup(e => e.ResourceRepository.All()).Returns(testResources);
-            testEnvironmentModel2.Setup(e => e.DsfChannel).Returns(dataChannel2.Object);
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(dataChannel2.Object);
 
             var service = new ResourceDependencyService();
             var resources = new List<IContextualResourceModel> { new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" } };
@@ -100,11 +100,12 @@ namespace Dev2.Core.Tests
 
             var resources = new List<IResourceModel>(CreateResourceList(environmentModel.Object));
 
-            var dataChannel = new Mock<IStudioClientContext>();
+            var dataChannel = new Mock<IEnvironmentConnection>();
+            dataChannel.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(TestDependencyGraph.ToString());
 
-            environmentModel.Setup(e => e.DsfChannel).Returns(dataChannel.Object);
+            environmentModel.Setup(e => e.Connection).Returns(dataChannel.Object);
             environmentModel.Setup(e => e.ResourceRepository.All()).Returns(resources);
 
             var service = new ResourceDependencyService();
@@ -123,11 +124,11 @@ namespace Dev2.Core.Tests
 
             var resources = new List<IResourceModel>();
 
-            var dataChannel = new Mock<IStudioClientContext>();
+            var dataChannel = new Mock<IEnvironmentConnection>();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(TestDependencyGraph.ToString());
 
-            environmentModel.Setup(e => e.DsfChannel).Returns(dataChannel.Object);
+            environmentModel.Setup(e => e.Connection).Returns(dataChannel.Object);
             environmentModel.Setup(e => e.ResourceRepository.All()).Returns(resources);
 
             var service = new ResourceDependencyService();
@@ -150,11 +151,12 @@ namespace Dev2.Core.Tests
 
             var resources = new List<IResourceModel>(CreateResourceList(environmentModel.Object));
 
-            var dataChannel = new Mock<IStudioClientContext>();
+            var dataChannel = new Mock<IEnvironmentConnection>();
+            dataChannel.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(TestDependencyGraph.ToString());
 
-            environmentModel.Setup(e => e.DsfChannel).Returns(dataChannel.Object);
+            environmentModel.Setup(e => e.Connection).Returns(dataChannel.Object);
             environmentModel.Setup(e => e.ResourceRepository.All()).Returns(resources);
 
             var service = new ResourceDependencyService();
@@ -170,11 +172,12 @@ namespace Dev2.Core.Tests
             var testExpectedResources = CreateResourceList(environmentModel.Object);
             var resources = new List<IResourceModel>(testExpectedResources);
 
-            var dataChannel = new Mock<IStudioClientContext>();
+            var dataChannel = new Mock<IEnvironmentConnection>();
+            dataChannel.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(TestDependencyGraph.ToString());
 
-            environmentModel.Setup(e => e.DsfChannel).Returns(dataChannel.Object);
+            environmentModel.Setup(e => e.Connection).Returns(dataChannel.Object);
             environmentModel.Setup(e => e.ResourceRepository.All()).Returns(resources);
 
             var service = new ResourceDependencyService();
@@ -187,11 +190,12 @@ namespace Dev2.Core.Tests
         {
             var environmentModel = new Mock<IEnvironmentModel>();
 
-            var dataChannel = new Mock<IStudioClientContext>();
+            var dataChannel = new Mock<IEnvironmentConnection>();
+            dataChannel.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
             dataChannel.Setup(channel => channel.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(TestDependencyGraph.ToString());
 
-            environmentModel.Setup(e => e.DsfChannel).Returns(dataChannel.Object);
+            environmentModel.Setup(e => e.Connection).Returns(dataChannel.Object);
             environmentModel.Setup(e => e.ResourceRepository.All()).Returns(new IResourceModel[0]);
 
             var service = new ResourceDependencyService();

@@ -14,7 +14,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Feedback;
@@ -385,7 +384,6 @@ namespace Dev2.Core.Tests
         static void CreateFullExportsAndVm()
         {
             CreateEnvironmentModel();
-            var securityContext = GetMockSecurityContext();
             _environmentRepo = GetEnvironmentRepository();
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
@@ -397,8 +395,7 @@ namespace Dev2.Core.Tests
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
 
             _importServiceContext =
-                CompositionInitializer.InitializeMockedMainViewModel(securityContext: securityContext,
-                                                                     environmentRepo: _environmentRepo,
+                CompositionInitializer.InitializeMockedMainViewModel(environmentRepo: _environmentRepo,
                                                                          workspaceItemRepository: mockWorkspaceItemRepository.Object,
                 //aggregator: _eventAggregator,
                                                                      popupController: _popupController,
@@ -426,15 +423,6 @@ namespace Dev2.Core.Tests
             return result;
         }
 
-        public static Mock<IFrameworkSecurityContext> GetMockSecurityContext()
-        {
-            var mockIdentity = new Mock<IIdentity>();
-            mockIdentity.Setup(i => i.Name).Returns("Test User");
-            var mockContext = new Mock<IFrameworkSecurityContext>();
-            mockContext.Setup(m => m.UserIdentity).Returns(mockIdentity.Object);
-            return mockContext;
-        }
-
         public static IEnvironmentRepository GetEnvironmentRepository()
         {
             var models = new List<IEnvironmentModel> { _environmentModel.Object };
@@ -456,11 +444,7 @@ namespace Dev2.Core.Tests
             var coll = new Collection<IResourceModel> { _firstResource.Object };
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
-            var channel = new Mock<IStudioClientContext>();
-            channel.SetupGet(c => c.WorkspaceID).Returns(_workspaceID);
-            channel.SetupGet(c => c.ServerID).Returns(_serverID);
-
-            _environmentModel.SetupGet(s => s.DsfChannel).Returns(channel.Object);
+           
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
         }
 
@@ -468,11 +452,9 @@ namespace Dev2.Core.Tests
         {
             var rand = new Random();
             var connection = CreateMockConnection(rand, sources);
-            var wizardEngine = new Mock<IWizardEngine>();
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
-            //env.Setup(e => e.WizardEngine).Returns(wizardEngine.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ID).Returns(Guid.NewGuid());
 
@@ -483,14 +465,11 @@ namespace Dev2.Core.Tests
 
         public static Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(new Guid());
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
 

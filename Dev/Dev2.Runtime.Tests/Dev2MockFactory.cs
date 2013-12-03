@@ -1,6 +1,5 @@
 ﻿using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Network;
 using Dev2.Network.Execution;
 using Moq;
 using System;
@@ -67,36 +66,7 @@ namespace Dev2.DynamicServices.Test
             return mockExecutionStatusCallbackDispatcher;
         }
 
-        public static Mock<INetworkMessageBroker> SetupNetworkMessageBroker(bool sendThrowsException = false)
-        {
-            Mock<INetworkMessageBroker> mockNetworkMessageBroker = new Mock<INetworkMessageBroker>();
-
-            if (sendThrowsException)
-            {
-                mockNetworkMessageBroker.Setup(e => e.Send<ExecutionStatusCallbackMessage>(It.IsAny<ExecutionStatusCallbackMessage>(), It.IsAny<INetworkOperator>())).Throws(new Exception());
-            }
-            else
-            {
-                mockNetworkMessageBroker.Setup(e => e.Send<ExecutionStatusCallbackMessage>(It.IsAny<ExecutionStatusCallbackMessage>(), It.IsAny<INetworkOperator>())).Verifiable();
-            }
-
-            return mockNetworkMessageBroker;
-        }
-
-        public static Mock<IServerNetworkMessageAggregator<StudioNetworkSession>> SetupServerNetworkMessageAggregator()
-        {
-            Mock<IServerNetworkMessageAggregator<StudioNetworkSession>> mockStudioNetworkMessageAggregator = new Mock<IServerNetworkMessageAggregator<StudioNetworkSession>>();
-
-            return mockStudioNetworkMessageAggregator;
-        }
-
-        public static Mock<IServerNetworkChannelContext<StudioNetworkSession>> SetupServerNetworkChannelContext()
-        {
-            Mock<IServerNetworkChannelContext<StudioNetworkSession>> mockSetupServerNetworkChannelContext = new Mock<IServerNetworkChannelContext<StudioNetworkSession>>();
-            mockSetupServerNetworkChannelContext.Setup(s => s.NetworkContext).Returns(new StudioNetworkSession());
-
-            return mockSetupServerNetworkChannelContext;
-        }
+       
 
         public static Mock<IDataReader> SetupDataReader(List<object[]> results)
         {

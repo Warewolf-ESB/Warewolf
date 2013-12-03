@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Xml.Linq;
 using Dev2.Composition;
 using Dev2.DynamicServices;
+using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
@@ -441,8 +442,7 @@ namespace Dev2.Studio.Core
                     #endregion
 
                     var environment = CreateEnvironmentModel(
-                        id, appServerUri, displayName, webServerPort,
-                        defaultEnvironment.Connection.SecurityContext
+                        id, appServerUri, displayName, webServerPort
                         );
 
                     result.Add(environment);
@@ -498,18 +498,16 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
+//        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
+//        {
+//            // MEF!!!!
+//            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort);
+//        }
+
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
         {
-            // MEF!!!!
-            var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
-
-            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort, securityContext);
-        }
-
-        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort,
-                                                        IFrameworkSecurityContext securityContext)
-        {
-            var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
+            //var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
+            var environmentConnection = new ServerProxy(applicationServerUri);
             return new EnvironmentModel(id, environmentConnection) { Name = alias };
         }
 

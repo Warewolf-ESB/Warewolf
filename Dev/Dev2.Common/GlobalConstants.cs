@@ -242,5 +242,8 @@ namespace Dev2.Common
                 "Not XML",
                 "Starts With"
         };
+
+        public static string WebServerPort { get; set; }
+        public static string WebServerSslPort { get; set; }
     }
 }

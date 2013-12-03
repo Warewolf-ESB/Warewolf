@@ -23,7 +23,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML
         /// <returns>The contents of the embedded XML file.</returns>
         public static XElement Fetch(string name)
         {
-            var resourceName = string.Format("Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML.{0}", name);
+            var resourceName = string.Format("Dev2.Integration.Tests.Server_Test.Workspace.XML.{0}", name);
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {

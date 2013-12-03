@@ -130,16 +130,9 @@
       <DependentUpon>AppServerStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="Network\Auxiliary\StudioAuxiliaryAccount.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliaryAccountProvider.cs" />
-    <Compile Include="Network\Auxiliary\StudioAuxiliaryServer.cs" />
     <Compile Include="Network\Auxiliary\StudioAuxiliarySession.cs" />
-    <Compile Include="Network\DataList\DataListServerChannel.cs" />
-    <Compile Include="Network\Execution\ExecutionServerChannel.cs" />
-    <Compile Include="Network\ServerNetworkChannelContext.cs" />
     <Compile Include="Network\StudioTemplates.cs" />
-    <Compile Include="Network\StudioAccountProvider.cs" />
     <Compile Include="Network\StudioFileSystem.cs" />
-    <Compile Include="Network\StudioNetworkServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ESB\Control\DynamicServicesInvoker.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
@@ -216,7 +209,10 @@
       <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Network\DataList\" />
+    <Folder Include="Network\Execution\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

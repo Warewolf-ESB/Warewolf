@@ -11,6 +11,7 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
+using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -37,7 +38,7 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class TreeViewModelsTest
     {
-        TcpConnection _testConnection;
+        IEnvironmentConnection _testConnection;
 
         #region Variables
 
@@ -75,8 +76,7 @@ namespace Dev2.Core.Tests
             EventPublishers.Aggregator = _eventAggregator.Object;
             _eventAggregator.Setup(e => e.Publish(It.IsAny<object>())).Verifiable();
 
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            _testConnection = new TcpConnection(securityContext.Object, new Uri("http://127.0.0.1:77/dsf"), 1234);
+            _testConnection = new ServerProxy(new Uri("http://127.0.0.1:77/dsf"));
 
             //            ImportService.CurrentContext =
             //                CompositionInitializer.InializeWithEventAggregator();

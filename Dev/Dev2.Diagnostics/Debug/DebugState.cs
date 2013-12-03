@@ -67,6 +67,11 @@ namespace Dev2.Diagnostics
         public Guid EnvironmentID { get; set; }
 
         /// <summary>
+        /// Gets or sets the client ID.
+        /// </summary>
+        public Guid ClientID { get; set; }
+
+        /// <summary>
         ///     Gets or sets the type of the state.
         /// </summary>
         public StateType StateType { get; set; }

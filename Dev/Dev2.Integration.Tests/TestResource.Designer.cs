@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class TestResource {
+    internal class TestResource {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -464,7 +464,7 @@ namespace Dev2.Integration.Tests {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Inputs&gt;&lt;Input Name=&quot;innerrec&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innerrec2&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innerdate&quot; Source=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Input Name=&quot;innertest&quot; Source=&quot;[[recset(*).rec2]]&quot; Recordset=&quot;innertesting&quot; /&gt;&lt;Input Name=&quot;innerScalar&quot; Source=&quot;[[recset(*).rec]]&quot; /&gt;&lt;/Inputs&gt;.
         /// </summary>
-        public static string ForEach_Input_Mapping {
+        internal static string ForEach_Input_Mapping {
             get {
                 return ResourceManager.GetString("ForEach_Input_Mapping", resourceCulture);
             }
@@ -473,7 +473,7 @@ namespace Dev2.Integration.Tests {
         /// <summary>
         ///   Looks up a localized string similar to &lt;Outputs&gt;&lt;Output Name=&quot;innerrec&quot; MapsTo=&quot;innerrec&quot; Value=&quot;[[recset().rec]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerrec2&quot; MapsTo=&quot;innerrec2&quot; Value=&quot;[[recset().rec2]]&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innerdate&quot; MapsTo=&quot;innerdate&quot; Value=&quot;&quot; Recordset=&quot;innerrecset&quot; /&gt;&lt;Output Name=&quot;innertest&quot; MapsTo=&quot;innertest&quot; Value=&quot;&quot; Recordset=&quot;innertesting&quot; /&gt;&lt;Output Name=&quot;innerScalar&quot; MapsTo=&quot;innerScalar&quot; Value=&quot;[[resultVar]]&quot; /&gt;&lt;/Outputs&gt;.
         /// </summary>
-        public static string ForEach_Output_Mapping {
+        internal static string ForEach_Output_Mapping {
             get {
                 return ResourceManager.GetString("ForEach_Output_Mapping", resourceCulture);
             }
@@ -1114,7 +1114,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:1234/services/.
+        ///   Looks up a localized string similar to http://localhost:3142/services/.
         /// </summary>
         internal static string WebserverURI_Local {
             get {

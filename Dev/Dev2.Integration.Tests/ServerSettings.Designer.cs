@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ServerSettings {
+    internal class ServerSettings {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -61,7 +61,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:77/dsf.
+        ///   Looks up a localized string similar to http://localhost:3142/dsf.
         /// </summary>
         internal static string DsfAddress {
             get {
@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://{0}:77/dsf.
+        ///   Looks up a localized string similar to http://{0}:3142/dsf.
         /// </summary>
         internal static string DsfAddressFormat {
             get {
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://localhost:1236/services/.
+        ///   Looks up a localized string similar to https://localhost:3143/services/.
         /// </summary>
         internal static string WebserverHttpsURI {
             get {
@@ -106,16 +106,16 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:1234/services/.
+        ///   Looks up a localized string similar to http://localhost:3142/services/.
         /// </summary>
-        public static string WebserverURI {
+        internal static string WebserverURI {
             get {
                 return ResourceManager.GetString("WebserverURI", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://localhost:1234/wwwroot/.
+        ///   Looks up a localized string similar to https://localhost:3142/wwwroot/.
         /// </summary>
         internal static string WebsiteServerHttpsUri {
             get {
@@ -124,7 +124,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:1234/wwwroot/.
+        ///   Looks up a localized string similar to http://localhost:3142/wwwroot/.
         /// </summary>
         internal static string WebsiteServerUri {
             get {

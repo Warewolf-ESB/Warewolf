@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Network.Messaging;
 using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.Runtime.Configuration
@@ -12,7 +11,7 @@ namespace Dev2.Runtime.Configuration
     /// <summary>
     /// Do NOT instantiate directly - use static <see cref="Instance" /> property instead; use for testing only!
     /// </summary>
-    public class SettingsProvider : NetworkMessageProviderBase<SettingsMessage>
+    public class SettingsProvider
     {
         public static string WebServerUri { get; set; }
 
@@ -71,89 +70,19 @@ namespace Dev2.Runtime.Configuration
 
         #region ProcessMessage
 
-        public override SettingsMessage ProcessMessage(SettingsMessage request)
+        public virtual void ProcessMessage()
         {
-            if(request == null)
-            {
-                throw new ArgumentNullException("request");
-            }
-
-            switch(request.Action)
-            {
-                case NetworkMessageAction.Write:
-                case NetworkMessageAction.Overwrite:
-                    return ProcessWrite(request);
-
-                default:
-                    return ProcessRead(request);
-            }
+           
         }
 
         #endregion
 
         #region ProcessRead
 
-        SettingsMessage ProcessRead(SettingsMessage request)
-        {
-            if(request.AssemblyHashCode != AssemblyHashCode)
-            {
-                request.Result = NetworkMessageResult.VersionConflict;
-                request.AssemblyHashCode = AssemblyHashCode;
-                request.Assembly = GetAssemblyBytes();
-            }
-            else
-            {
-                request.Assembly = null;
-                request.Result = NetworkMessageResult.Success;
-            }
-
-            request.ConfigurationXml = Configuration.ToXml();
-
-            return request;
-        }
-
         #endregion
 
         #region ProcessWrite
 
-        SettingsMessage ProcessWrite(SettingsMessage request)
-        {
-            var filePath = GetFilePath();
-            var canSave = request.Action == NetworkMessageAction.Overwrite || !File.Exists(filePath);
-            var configNew = new Settings.Configuration(request.ConfigurationXml);
-            configNew.WebServerUri = WebServerUri;
-            if(!canSave)
-            {
-                var configOld = new Settings.Configuration(XElement.Load(filePath));
-                canSave = configNew.Version >= configOld.Version;
-            }
-
-            if(canSave)
-            {
-                var dir = Path.GetDirectoryName(filePath);
-                if(dir != null)
-                {
-                    if(!Directory.Exists(dir))
-                    {
-                        Directory.CreateDirectory(dir);
-                    }
-                }
-                configNew.IncrementVersion();
-                configNew.ToXml().Save(filePath);
-                Configuration = configNew;
-
-                ServerLogger.UpdateSettings(Configuration.Logging);
-
-                request.Result = NetworkMessageResult.Success;
-                request.ConfigurationXml = configNew.ToXml();
-            }
-            else
-            {
-                request.Result = NetworkMessageResult.VersionConflict;
-            }
-
-            return request;
-        }
 
         #endregion
 

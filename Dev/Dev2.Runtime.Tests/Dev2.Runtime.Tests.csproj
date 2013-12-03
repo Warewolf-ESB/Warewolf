@@ -107,7 +107,6 @@
     <Compile Include="ESB\RemoteWorkflowExecutionContainerTests.cs" />
     <Compile Include="MockConnection.cs" />
     <Compile Include="MockNetworkHost.cs" />
-    <Compile Include="MockStudioNetworkServer.cs" />
     <Compile Include="Poco\PocoTestFactory.cs" />
     <Compile Include="CompileMessages\ServiceModelCompilerTest.cs" />
     <Compile Include="Configuration\NetworkContextMock.cs" />
@@ -159,13 +158,10 @@
     <Compile Include="ServiceModel\ResourcesTests.cs" />
     <Compile Include="ServiceModel\ServicesTests.cs" />
     <Compile Include="Services\HostSecurityProviderTest.cs" />
-    <Compile Include="DataListServerChannelTests.cs" />
     <Compile Include="Dev2MockFactory.cs" />
     <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="DynamicServicesInvokerTest.cs" />
-    <Compile Include="ExecutionServerChannelTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
-    <Compile Include="NetworkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
@@ -187,6 +183,7 @@
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
+    <Compile Include="WebServer\Hubs\EsbHubTests.cs" />
     <Compile Include="WebServer\Responses\StaticFileResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\StatusResponseWriterTests.cs" />
     <Compile Include="WebServer\Responses\DynamicFileResponseWriterTests.cs" />

@@ -8,7 +8,6 @@ namespace Dev2.Studio.ViewModels
 {
     public interface IMainViewModel
     {
-        IFrameworkSecurityContext SecurityContext { get; }
 
         ICommand DeployCommand { get; }
         ICommand ExitCommand { get; }

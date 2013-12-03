@@ -254,6 +254,7 @@ namespace Dev2.DynamicServices
                             Version = string.Empty,
                             SessionID = dataObject.DebugSessionID,
                             EnvironmentID = dataObject.EnvironmentID,
+                            ClientID = dataObject.ClientID,
                             Name = GetType().Name,
                             HasError = AllErrors.HasErrors(),
                             ErrorMessage = AllErrors.MakeDisplayReady()
@@ -369,6 +370,7 @@ namespace Dev2.DynamicServices
                             Version = string.Empty,
                             SessionID = dataObject.DebugSessionID,
                             EnvironmentID = dataObject.EnvironmentID,
+                            ClientID = dataObject.ClientID,
                             Name = GetType().Name,
                             HasError = AllErrors.HasErrors(),
                             ErrorMessage = AllErrors.MakeDisplayReady()

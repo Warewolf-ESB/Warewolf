@@ -341,7 +341,6 @@ namespace Dev2.Core.Tests.Dialogs
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer<IFrameworkSecurityContext>(new MockSecurityProvider(""));
         }
 
     }

@@ -216,7 +216,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 context.BindToModel();
             }
 
-            var clientContext = _resourceModel.Environment.DsfChannel as IStudioClientContext;
+            var clientContext = _resourceModel.Environment.Connection;
             if(clientContext != null)
             {
                 var dataList = XElement.Parse(DebugTO.XmlData);

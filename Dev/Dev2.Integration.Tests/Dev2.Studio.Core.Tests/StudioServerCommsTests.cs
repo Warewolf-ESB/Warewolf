@@ -6,6 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
@@ -88,121 +89,23 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
         #endregion Environment Connection Tests
 
-        #region LoginAsync
 
-        [TestMethod]
-        public void LoginAsyncWithInvalidCredentialsReturnsFalse()
-        {
-            LoginAyncTest("qwerty", "1111", false, 1, AuthenticationResponse.InvalidCredentials, true);
-        }
-
-        [TestMethod]
-        public void LoginAsyncWithValidCredentialsReturnsTrue()
-        {
-            LoginAyncTest("OnlyThePasswordMatters", "abc123xyz", true, 1, AuthenticationResponse.Success, false);
-        }
-
-        [TestMethod]
-        public void LoginAsyncWithValidCredentialsTwiceReturnsDoesNotAuthenticateTwice()
-        {
-            LoginAyncTest("OnlyThePasswordMatters", "abc123xyz", true, 1, AuthenticationResponse.Success, false, true);
-        }
-
-        [TestMethod]
-        public void LoginAsyncWithNullIdentityExpectedReturnFalse()
-        {
-            //Initialize
-            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
-            var task = host.ConnectAsync("RSAKLFSVRGENDEV", 80);
-            task.Wait();
-
-            //Execute
-            var loginTask = host.LoginAsync(null);
-            loginTask.Wait();
-
-            //Assert
-            Assert.IsFalse(loginTask.Result, "Host logged in with null Identity");
-        }
-
-        #endregion
 
         #region LoginAyncTest
-
-        static void LoginAyncTest(string userName, string password, bool expectedResult, int expectedStateChangedCount, AuthenticationResponse expectedStateReply, bool expectedStateIsError, bool retry = false)
-        {
-            var stateChangedCount = 0;
-            EventHandler<LoginStateEventArgs> loginStateChangedHandler = (sender, args) =>
-            {
-                stateChangedCount++;
-                Debug.WriteLine("Reply    : {0}", args.Reply);
-                Debug.WriteLine("LoggedIn : {0}", args.LoggedIn);
-                Debug.WriteLine("Message  : {0}", (object)args.Message);
-
-                Assert.AreEqual(expectedResult, args.LoggedIn);
-                Assert.AreEqual(expectedStateReply, args.Reply);
-                Assert.AreEqual(expectedStateIsError, args.IsError);
-            };
-
-            ITcpClientHost host = new TcpClientHost(new Mock<IEventPublisher>().Object);
-            try
-            {
-                host.LoginStateChanged += loginStateChangedHandler;
-                var task = host
-                .ConnectAsync("127.0.0.1", 77)
-                .ContinueWith(connectTask =>
-                {
-                    if (connectTask.Result)
-                    {
-                        var loginTask = host.LoginAsync(userName, password);
-                        return loginTask.Result;
-                    }
-                    return false;
-                });
-                try
-                {
-                    task.Wait(GlobalConstants.NetworkTimeOut);
-                    if (retry)
-                    {
-                        task = host.LoginAsync(userName, password);
-                        task.Wait();
-                    }
-                }
-                catch (AggregateException aex)
-                {
-                    var errors = new StringBuilder("Unhandled LoginAsync Errors : ");
-                    aex.Handle(ex =>
-                    {
-                        errors.AppendLine(ex.Message);
-                        return true;
-                    });
-                    Assert.Fail(errors.ToString());
-                }
-                Assert.AreEqual(task.Result, expectedResult, expectedResult ? "Could not log into server" : "Should not be logged into server");
-                Assert.AreEqual(expectedStateChangedCount, stateChangedCount);
-            }
-            finally
-            {
-                host.LoginStateChanged -= loginStateChangedHandler;
-                host.Disconnect();
-                host.Dispose();
-            }
-        }
 
         #endregion
 
         #region CreateConnection
 
-        static TcpConnection CreateConnection(bool isAuxiliary = false)
+        static IEnvironmentConnection CreateConnection()
         {
-            return CreateConnection(ServerSettings.DsfAddress,isAuxiliary);
+            return CreateConnection(ServerSettings.DsfAddress);
         }
 
-        static TcpConnection CreateConnection(string appServerUri, bool isAuxiliary = false)
+        static IEnvironmentConnection CreateConnection(string appServerUri)
         {
-            var securityContetxt = new Mock<IFrameworkSecurityContext>();
-            securityContetxt.Setup(c => c.UserIdentity).Returns(WindowsIdentity.GetCurrent());
 
-            return new TcpConnection(securityContetxt.Object, new Uri(appServerUri), Int32.Parse(ServerSettings.WebserverPort), isAuxiliary);
+            return new ServerProxy(new Uri(appServerUri));
         }
 
         #endregion

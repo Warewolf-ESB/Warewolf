@@ -270,8 +270,8 @@ namespace Dev2.Core.Tests.Workspaces
             string resourceName;
             Guid workspaceID;
             Guid serverID;
-            var context = new Mock<IStudioClientContext>();
-            var model = CreateModel(ResourceType.Service, out resourceName, out workspaceID, out serverID, context);
+            var connectionMock = new Mock<IEnvironmentConnection>();
+            var model = CreateModel(ResourceType.Service, out resourceName, out workspaceID, out serverID, connectionMock);
 
             #region Setup ImportService - GRRR!
 
@@ -281,8 +281,6 @@ namespace Dev2.Core.Tests.Workspaces
             {
                 new FullTestAggregateCatalog()
             });
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            ImportService.AddExportedValueToContainer(securityContext.Object);
 
             #endregion
 
@@ -295,17 +293,17 @@ namespace Dev2.Core.Tests.Workspaces
             workspaceItem.Action = WorkspaceItemAction.Commit;
             dynamic requestObj = new UnlimitedObject();
             requestObj.Service = "UpdateWorkspaceItemService";
-            requestObj.Roles = "";
+            requestObj.Roles = "Administrators";
             requestObj.ItemXml = workspaceItem.ToXml();
             requestObj.IsLocalSave = true;
             string requestXml = requestObj.XmlString;
 
             #endregion
-
-            context.Setup(c => c.ExecuteCommand(It.Is<string>(s => s.ToLower() == requestXml.ToLower()), It.Is<Guid>(id => id == workspaceID), It.IsAny<Guid>())).Returns(ExpectedResult).Verifiable();
+            
+            connectionMock.Setup(c => c.ExecuteCommand(It.Is<string>(s => s.ToLower() == requestXml.ToLower()), It.Is<Guid>(id => id == workspaceID), It.IsAny<Guid>())).Returns(ExpectedResult).Verifiable();
 
             var result = repository.UpdateWorkspaceItem(model.Object, true);
-            context.Verify(c => c.ExecuteCommand(It.Is<string>(s => s.ToLower() == requestXml.ToLower()), It.Is<Guid>(id => id == workspaceID), It.IsAny<Guid>()), Times.Once());
+            connectionMock.Verify(c => c.ExecuteCommand(It.Is<string>(s => s.ToLower() == requestXml.ToLower()), It.Is<Guid>(id => id == workspaceID), It.IsAny<Guid>()), Times.Once());
             Assert.AreEqual(ExpectedResult, result);
         }
 
@@ -373,22 +371,21 @@ namespace Dev2.Core.Tests.Workspaces
 
         #region CreateModel
 
-        static Mock<IContextualResourceModel> CreateModel(ResourceType resourceType, out string resourceName, out Guid workspaceID, out Guid serverID, Mock<IStudioClientContext> context = null)
+        static Mock<IContextualResourceModel> CreateModel(ResourceType resourceType, out string resourceName, out Guid workspaceID, out Guid serverID, Mock<IEnvironmentConnection> connectionMock = null)
         {
             resourceName = "Test_" + Guid.NewGuid();
             workspaceID = Guid.NewGuid();
             serverID = Guid.NewGuid();
 
-            if(context == null)
+            if(connectionMock == null)
             {
-                context = new Mock<IStudioClientContext>();
+                connectionMock = new Mock<IEnvironmentConnection>();
             }
-            context.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            context.Setup(c => c.ServerID).Returns(serverID);
+            connectionMock.Setup(c => c.WorkspaceID).Returns(workspaceID);
+            connectionMock.Setup(c => c.ServerID).Returns(serverID);
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.DsfChannel).Returns(context.Object);
-
+            env.Setup(environmentModel => environmentModel.Connection).Returns(connectionMock.Object);
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);
             model.Setup(m => m.ResourceName).Returns(resourceName);
@@ -397,19 +394,18 @@ namespace Dev2.Core.Tests.Workspaces
             return model;
         }
 
-        static Mock<IContextualResourceModel> CreateModel(ResourceType resourceType,string resourceName,Guid workspaceID, Guid serverID,Guid envId, Mock<IStudioClientContext> context = null)
+        static Mock<IContextualResourceModel> CreateModel(ResourceType resourceType,string resourceName,Guid workspaceID, Guid serverID,Guid envId, Mock<IEnvironmentConnection> connectionMock = null)
         {                      
-            if (context == null)
+            if (connectionMock == null)
             {
-                context = new Mock<IStudioClientContext>();
+                connectionMock = new Mock<IEnvironmentConnection>();
             }
-            context.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            context.Setup(c => c.ServerID).Returns(serverID);
+            connectionMock.Setup(c => c.WorkspaceID).Returns(workspaceID);
+            connectionMock.Setup(c => c.ServerID).Returns(serverID);
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.DsfChannel).Returns(context.Object);
             env.Setup(e => e.ID).Returns(envId);
-
+            env.Setup(environmentModel => environmentModel.Connection).Returns(connectionMock.Object);
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.Environment).Returns(env.Object);
             model.Setup(m => m.ResourceName).Returns(resourceName);

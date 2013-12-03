@@ -54,10 +54,8 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Wizards;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.Wizards;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
 using Dev2.Utilities;
@@ -74,8 +72,6 @@ namespace Dev2.Studio.ViewModels.Workflow
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
                                              IHandle<UpdateResourceMessage>,
                                              IHandle<AddStringListToDataListMessage>,
-                                             IHandle<ShowActivityWizardMessage>,
-                                             IHandle<ShowActivitySettingsWizardMessage>,
                                              IHandle<EditActivityMessage>,
                                              IHandle<UpdateWorksurfaceFlowNodeDisplayName>, IWorkflowDesignerViewModel
     {
@@ -122,19 +118,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             : this(eventPublisher, resource, workflowHelper,
-                ImportService.GetExportValue<IFrameworkSecurityContext>(),
                 ImportService.GetExportValue<IPopupController>(), createDesigner)
         {
         }
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper,
-            IFrameworkSecurityContext securityContext, IPopupController popupController, bool createDesigner = true)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
-            VerifyArgument.IsNotNull("securityContext", securityContext);
             VerifyArgument.IsNotNull("popupController", popupController);
 
             _workflowHelper = workflowHelper;
@@ -142,7 +135,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             _resourceModel.OnDataListChanged += FireWdChanged;
             _resourceModel.OnResourceSaved += UpdateOriginalDataList;
 
-            SecurityContext = securityContext;
             PopUp = popupController;
 
             if(_resourceModel.DataList != null)
@@ -193,12 +185,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             get { return ResourceHelper.GetIconPath(ResourceModel); }
         }
 
-        public IFrameworkSecurityContext SecurityContext { get; set; }
 
         //2012.10.01: massimo.guerrera - Add Remove buttons made into one:)
         public IPopupController PopUp { get; set; }
 
-        public IWizardEngine WizardEngine { get; set; }
 
         public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
 
@@ -551,88 +541,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     WorkflowDesignerUtils.EditResource(resource, EventPublisher);
                 }
-            }
-        }
-
-
-        void ShowActivitySettingsWizard(ModelItem modelItem)
-        {
-            var modelService = Designer.Context.Services.GetService<ModelService>();
-            if(modelService.Root == modelItem.Root)
-            {
-                if(WizardEngine == null)
-                {
-                    return;
-                }
-                WizardInvocationTO activityWizardTO = null;
-                try
-                {
-                    activityWizardTO = WizardEngine.GetActivitySettingsWizardInvocationTO(modelItem, _resourceModel);
-                }
-                catch(Exception e)
-                {
-                    PopUp.Show(e.Message, "Error");
-                }
-                ShowWizard(activityWizardTO);
-            }
-        }
-
-        void ShowActivityWizard(ModelItem modelItem)
-        {
-            var modelService = Designer.Context.Services.GetService<ModelService>();
-            if(modelService.Root == modelItem.Root)
-            {
-                if(WizardEngine == null)
-                {
-                    return;
-                }
-                WizardInvocationTO activityWizardTO = null;
-
-
-                if(!WizardEngine.HasWizard(modelItem, _resourceModel.Environment))
-                {
-                    PopUp.Show("Wizard not found.", "Missing Wizard");
-                    return;
-                }
-                try
-                {
-                    activityWizardTO = WizardEngine.GetActivityWizardInvocationTO(modelItem, _resourceModel);
-                }
-                catch(Exception e)
-                {
-                    PopUp.Show(e.Message, "Error");
-                }
-                ShowWizard(activityWizardTO);
-            }
-        }
-
-        void ShowWizard(WizardInvocationTO activityWizardTO)
-        {
-            if(activityWizardTO != null)
-            {
-                var activitySettingsView = new ActivitySettingsView();
-                var activitySettingsViewModel =
-                    new ActivitySettingsViewModel(activityWizardTO, _resourceModel);
-
-                activitySettingsViewModel.Close += delegate
-                {
-                    activitySettingsView.Dispose();
-                    activitySettingsViewModel.Dispose();
-                    activitySettingsView.DataContext = null;
-                    PopupContent = null;
-                };
-
-                activitySettingsView.DataContext = activitySettingsViewModel;
-                bool showPopUp = activitySettingsViewModel.InvokeWizard();
-
-                if(showPopUp)
-                {
-                    PopupContent = activitySettingsView;
-                }
-            }
-            else
-            {
-                PopupContent = null;
             }
         }
 
@@ -1779,26 +1687,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnvironmentModel EnvironmentModel { get { return ResourceModel.Environment; } }
-
-        #region Implementation of IHandle<ShowActivityWizardMessage>
-
-        public void Handle(ShowActivityWizardMessage message)
-        {
-            Logger.TraceInfo(message.GetType().Name);
-            ShowActivityWizard(message.ModelItem);
-        }
-
-        #endregion
-
-        #region Implementation of IHandle<ShowActivitySettingsWizardMessage>
-
-        public void Handle(ShowActivitySettingsWizardMessage message)
-        {
-            Logger.TraceInfo(message.GetType().Name);
-            ShowActivitySettingsWizard(message.ModelItem);
-        }
-
-        #endregion
 
         #region Implementation of IHandle<EditActivityMessage>
 

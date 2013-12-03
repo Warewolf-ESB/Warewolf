@@ -29,7 +29,6 @@ namespace ActivityUnitTests
     {
 
         public IEsbWorkspaceChannel DsfChannel;
-        public IFrameworkSecurityContext SecurityContext;
         public Uri DsfAdddress = new Uri("http://localhost:77/dsf");
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public IDataListCompiler Compiler;

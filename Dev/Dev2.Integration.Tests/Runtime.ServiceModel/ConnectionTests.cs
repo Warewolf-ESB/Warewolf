@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         {
             var testConnection = new Connection
             {
-                Address = "http://localhost:77/dsf",
+                Address = ServerSettings.DsfAddress,
                 AuthenticationType = AuthenticationType.Windows,
                 Password = "secret",
                 ResourceID = Guid.NewGuid(),
@@ -50,7 +50,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 ResourcePath = @"host\Server",
                 ResourceType = ResourceType.Server,
                 UserName = @"Domain\User",
-                WebServerPort = 1234
+                WebServerPort = 3142
             };
 
             return testConnection;

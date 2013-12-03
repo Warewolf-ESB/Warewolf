@@ -170,7 +170,7 @@ namespace Dev2.Studio.Core.Workspaces
                 return;
             }
 
-            var context = (IStudioClientContext)model.Environment.DsfChannel;
+            var context = model.Environment.Connection;
             WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID,model.ID)
             {
                 ServiceName = model.ResourceName,
@@ -217,16 +217,16 @@ namespace Dev2.Studio.Core.Workspaces
                 return string.Empty;
             }
 
-            var securityContext = ImportService.GetExportValue<IFrameworkSecurityContext>();
 
             workspaceItem.Action = WorkspaceItemAction.Commit;
             dynamic publishRequest = new UnlimitedObject();
             publishRequest.Service = "UpdateWorkspaceItemService";
-            publishRequest.Roles = String.Join(",", securityContext.Roles);
+             string[] securityRoles = {"Administrators"};
+             publishRequest.Roles = String.Join(",", securityRoles);
             publishRequest.ItemXml = workspaceItem.ToXml();
             publishRequest.IsLocalSave = isLocalSave;
 
-            string result = resource.Environment.DsfChannel
+            string result = resource.Environment.Connection
                                     .ExecuteCommand(publishRequest.XmlString, workspaceItem.WorkspaceID,
                                         GlobalConstants.NullDataListID) ??
                             string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, publishRequest.Service);

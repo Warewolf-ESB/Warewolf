@@ -219,16 +219,14 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
 
 
-            var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            dsfChannel.Setup(c => c.ServerID).Returns(serverID);
 
             var envConn = new Mock<IEnvironmentConnection>();
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
+            envConn.Setup(conn => conn.ServerID).Returns(serverID);
             envConn.Setup(conn => conn.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -277,13 +275,10 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
 
-            var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            dsfChannel.Setup(c => c.ServerID).Returns(serverID);
-
             var envConn = new Mock<IEnvironmentConnection>();
+            envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
+            envConn.Setup(conn => conn.ServerID).Returns(serverID);
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -333,15 +328,12 @@ namespace Dev2.Core.Tests
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
 
-            var dsfChannel = new Mock<IStudioClientContext>();
-            dsfChannel.Setup(c => c.WorkspaceID).Returns(workspaceID);
-            dsfChannel.Setup(c => c.ServerID).Returns(serverID);
-
             var envConn = new Mock<IEnvironmentConnection>();
+            envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
+            envConn.Setup(conn => conn.ServerID).Returns(serverID);
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.DsfChannel).Returns(dsfChannel.Object);
             env.Setup(e => e.Connection).Returns(envConn.Object);
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
@@ -831,24 +823,19 @@ namespace Dev2.Core.Tests
             _firstResource = CreateResource(ResourceType.WorkflowService);
             var coll = new Collection<IResourceModel> { _firstResource.Object };
             _resourceRepo.Setup(c => c.All()).Returns(coll);
-            var channel = new Mock<IStudioClientContext>();
-            channel.SetupGet(c => c.WorkspaceID).Returns(_workspaceID);
-            channel.SetupGet(c => c.ServerID).Returns(_serverID);
-            _environmentModel.SetupGet(s => s.DsfChannel).Returns(channel.Object);
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
         }
 
-        private static Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
+        private Mock<IEnvironmentConnection> CreateMockConnection(Random rand, params string[] sources)
         {
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.Roles).Returns(new string[0]);
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
+            connection.SetupGet(c => c.WorkspaceID).Returns(_workspaceID);
+            connection.SetupGet(c => c.ServerID).Returns(_serverID);
             connection.Setup(c => c.AppServerUri)
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri)
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.SecurityContext).Returns(securityContext.Object);
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
@@ -856,7 +843,7 @@ namespace Dev2.Core.Tests
             return connection;
         }
 
-        private static Mock<IEnvironmentModel> CreateMockEnvironment(params string[] sources)
+        private Mock<IEnvironmentModel> CreateMockEnvironment(params string[] sources)
         {
             var rand = new Random();
             var connection = CreateMockConnection(rand, sources);
@@ -952,7 +939,6 @@ namespace Dev2.Core.Tests
         {
             ImportService.CurrentContext = new ImportServiceContext();
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer(new Mock<IFrameworkSecurityContext>().Object);
             ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);
             ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
             ImportService.AddExportedValueToContainer<IFeedBackRecorder>(new FeedbackRecorder());
@@ -1006,7 +992,6 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             var datalistchannelmock = new Mock<INetworkDataListChannel>();
             datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-            _environmentModel.SetupGet(e => e.DataListChannel).Returns(datalistchannelmock.Object);
             _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
             _mainViewModel.SettingsCommand.Execute(null);
 
@@ -1394,9 +1379,8 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ID).Returns(resourceID);
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1454,9 +1438,8 @@ namespace Dev2.Core.Tests
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show()).Verifiable();
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1603,9 +1586,8 @@ namespace Dev2.Core.Tests
             #endregion
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1655,9 +1637,8 @@ namespace Dev2.Core.Tests
             #endregion
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            var securityContext = new Mock<IFrameworkSecurityContext>();
             var workflowHelper = new Mock<IWorkflowHelper>();
-            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, securityContext.Object, mockPopUp.Object, false);
+            var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
             var contextViewModel = new WorkSurfaceContextViewModel(
                 new WorkSurfaceKey { ResourceID = resourceID, ServerID = serverID, WorkSurfaceContext = designerViewModel.WorkSurfaceContext },
                 designerViewModel);
@@ -1687,9 +1668,6 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(wsiRepo.Object);
 
             new WorkspaceItemRepository(wsiRepo.Object);
-            var securityContext = new Mock<IFrameworkSecurityContext>();
-            securityContext.Setup(s => s.UserIdentity).Returns(new GenericIdentity("TestUser"));
-            ImportService.AddExportedValueToContainer(securityContext.Object);
             ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);
         }
 

@@ -38,7 +38,7 @@ namespace Dev2.Runtime.WebServer
 
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
-            app.MapSignalR(hubConfiguration);
+            app.MapSignalR("/dsf",hubConfiguration);
 
             // Add web server routing...
             var config = new HttpConfiguration();

@@ -2189,9 +2189,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void StartShouldSetInstance()
         {
             //------------Setup for test--------------------------
-            Mock<IContextManager<IStudioNetworkSession>> mock = new Mock<IContextManager<IStudioNetworkSession>>();
             //------------Execute Test---------------------------
-            var resourceCatalog = ResourceCatalog.Start(mock.Object);
+            var resourceCatalog = ResourceCatalog.Start();
             var instance = ResourceCatalog.Instance;
             //------------Assert Results-------------------------
             Assert.AreSame(resourceCatalog, instance);
@@ -2211,7 +2210,7 @@ namespace Dev2.Tests.Runtime.Hosting
             const string oldResourceName = "Old Resource Name";
             var resourceFilePath = string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\", oldResourceName);
 
-            var getCatalog = ResourceCatalog.Start(new Mock<IContextManager<IStudioNetworkSession>>().Object);
+            var getCatalog = ResourceCatalog.Start();
             var resource = new Resource
             {
                 ResourceName = oldResourceName,

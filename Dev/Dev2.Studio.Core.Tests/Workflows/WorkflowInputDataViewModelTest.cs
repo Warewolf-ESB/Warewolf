@@ -223,7 +223,11 @@ namespace Dev2.Core.Tests
             rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
-            rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
 
             var serviceDebugInfoModel = new ServiceDebugInfoModel
             {
@@ -267,7 +271,6 @@ namespace Dev2.Core.Tests
             rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns("<DataList><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
-            rm.Setup(r => r.Environment.DsfChannel).Returns(new Mock<IStudioClientContext>().Object);
 
             var serviceDebugInfoModel = new ServiceDebugInfoModel
             {

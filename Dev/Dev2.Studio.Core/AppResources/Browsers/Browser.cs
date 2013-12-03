@@ -120,24 +120,6 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #endregion
 
-        #region Post
-
-        public static void Post(this WebView browser, string uriString, IEnvironmentModel environmentModel, string postData, out ErrorResultTO errors) //BUG 8796, added errors parameter
-        {
-            if(!string.IsNullOrWhiteSpace(postData))
-            {
-                var dataListID = environmentModel.UploadToDataList(postData, out errors);
-                uriString = FormatUrl(uriString, dataListID);
-            }
-            else
-            {
-                errors = new ErrorResultTO();
-            }
-            browser.LoadSafe(uriString);
-        }
-
-        #endregion
-
 
         #region FormatUrl
 
@@ -165,53 +147,8 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #endregion
 
-        #region UploadToDataList
-
-        public static Guid UploadToDataList(this IEnvironmentModel environmentModel, string postData, out ErrorResultTO errors) //Bug 8796, Added errors parameter
-        {
-            if(environmentModel == null)
-            {
-                throw new ArgumentNullException("environmentModel");
-            }
-
-            if(!string.IsNullOrEmpty(postData))
-            {
-                string error;
-                var dataList = Dev2BinaryDataListFactory.CreateDataList();
-                dataList.TryCreateScalarTemplate(string.Empty, GlobalConstants.PostData, string.Empty, true, out error);
-                dataList.TryCreateScalarValue(postData, GlobalConstants.PostData, out error);
-
-                var compiler = CreateDataListCompiler(environmentModel);
-                compiler.PushBinaryDataList(dataList.UID, dataList, out errors);
-
-                return dataList.UID;
-            }
-
-            errors = new ErrorResultTO();
-            return Guid.Empty;
-        }
-
-
-        #endregion
-
-        #region CreateDataListCompiler
-
-        static IDataListCompiler CreateDataListCompiler(IEnvironmentModel environmentModel)
-        {
-            if(environmentModel == null)
-            {
-                return null;
-            }
-
-            if(!environmentModel.IsConnected)
-            {
-                environmentModel.Connect();
-            }
-
-            return environmentModel.IsConnected ? DataListFactory.CreateDataListCompiler(environmentModel.DataListChannel) : null;
-        }
-
-        #endregion
+        
+        
 
     }
 }

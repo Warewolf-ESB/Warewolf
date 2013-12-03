@@ -81,14 +81,10 @@ namespace Dev2.Runtime.Hosting
 
         #endregion
 
-        public static ResourceCatalog Start(IContextManager<IStudioNetworkSession> contextManager)
+        public static ResourceCatalog Start()
         {
-            if(contextManager == null)
-            {
-                throw new ArgumentNullException("contextManager");
-            }
 
-            _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices(), contextManager);
+            _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
 
             return _instance;
         }
@@ -102,10 +98,9 @@ namespace Dev2.Runtime.Hosting
         /// </remarks>
         /// </summary>
         /// <param name="managementServices">The management services to be loaded.</param>
-        /// <param name="contextManager">The context manager.</param>
-        public ResourceCatalog(IEnumerable<DynamicService> managementServices = null, IContextManager<IStudioNetworkSession> contextManager = null)
+        public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
-            _contextManager = contextManager;
+            //_contextManager = contextManager;
 
             // MUST load management services BEFORE server workspace!!
             if(managementServices != null)

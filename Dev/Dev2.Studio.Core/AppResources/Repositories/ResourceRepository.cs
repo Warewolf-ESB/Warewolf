@@ -19,7 +19,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Framework;
@@ -34,8 +33,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private IEnvironmentModel _environmentModel;
         private List<string> _reservedServices;
         protected List<IResourceModel> _resourceModels;
-        private IFrameworkSecurityContext _securityContext;
-        private IWizardEngine _wizardEngine;
         private bool _isLoaded;
 
         private IDeployService _deployService = new DeployService();
@@ -62,11 +59,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 _isLoaded = value;
             }
-        }
-
-        public IWizardEngine WizardEngine
-        {
-            get { return _wizardEngine; }
         }
 
         #region Methods
@@ -149,8 +141,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
             IList<IWorkspaceItem> applicableWorkspaceItems = workspaceItems
-                .Where(w => w.ServerID == ((IStudioClientContext)_environmentModel.DsfChannel).ServerID &&
-                            w.WorkspaceID == ((IStudioClientContext)_environmentModel.DsfChannel).WorkspaceID)
+                .Where(w => w.ServerID == _environmentModel.Connection.ServerID &&
+                            w.WorkspaceID == _environmentModel.Connection.WorkspaceID)
                 .ToList();
 
             var rootElement = new XElement("WorkspaceItems");
@@ -159,7 +151,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic package = new UnlimitedObject();
             package.Service = "GetLatestService";
             package.EditedItemsXml = rootElement.ToString();
-            package.Roles = string.Join(",", _securityContext.Roles);
+            string[] securityRoles = {"Administrators"};
+            package.Roles = string.Join(",", securityRoles);
 
             ExecuteCommand(_environmentModel, package, _environmentModel.Connection.WorkspaceID);
 
@@ -270,7 +263,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 _resourceModels.Add(instanceObj);
             }
-            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _securityContext.Roles, _environmentModel.Connection.WorkspaceID);
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _environmentModel.Connection.WorkspaceID);
         }
 
         public string SaveToServer(IResourceModel instanceObj)
@@ -280,7 +273,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 _resourceModels.Add(instanceObj);
             }
-            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), _securityContext.Roles, GlobalConstants.ServerWorkspaceID);
+            return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
         }
 
         public void Rename(string resourceID, string newName)
@@ -420,7 +413,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dynamic package = new UnlimitedObject();
             package.Service = "DeployResourceService";
             package.ResourceDefinition = resource.ToServiceDefinition();
-            package.Roles = string.Join(",", _securityContext.Roles ?? new string[0]);
+            package.Roles = string.Join(",", new string[0]);
             return package;
         }
 
@@ -430,7 +423,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             request.Service = "DeleteResourceService";
             request.ResourceName = resource.ResourceName;
             request.ResourceType = resource.ResourceType.ToString();
-            request.Roles = String.Join(",", _securityContext.Roles ?? new string[0]);
+            request.Roles = String.Join(",", new string[0]);
 
             IEnvironmentModel targetEnvironment = resource.Environment;
             return ExecuteCommand(targetEnvironment, request, targetEnvironment.Connection.WorkspaceID);
@@ -491,7 +484,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "FindResourceService";
             dataObj.ResourceName = "*";
             dataObj.ResourceType = string.Empty;
-            dataObj.Roles = string.Join(",", _securityContext.Roles);
+             string[] securityRoles = {"Administrators"};
+             dataObj.Roles = string.Join(",", securityRoles);
 
             var resultObj = ExecuteCommand(_environmentModel, dataObj, _environmentModel.Connection.WorkspaceID, false);
 
@@ -627,16 +621,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             string sourceDefinition = environment.ToSourceDefinition();
-            string[] securityRoles = environment.Connection.SecurityContext.Roles;
-            SaveResource(targetEnvironment, sourceDefinition, securityRoles, targetEnvironment.Connection.WorkspaceID);
+            string[] securityRoles = {"Administrators"};
+            SaveResource(targetEnvironment, sourceDefinition, targetEnvironment.Connection.WorkspaceID);
         }
 
-        public static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, string[] securityRoles, Guid workspaceID)
+        public static string SaveResource(IEnvironmentModel targetEnvironment, string resourceDefinition, Guid workspaceID)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = "SaveResourceService";
             dataObj.ResourceXml = resourceDefinition;
             dataObj.WorkspaceID = workspaceID;
+            string[] securityRoles = { "Administrators" };
             dataObj.Roles = string.Join(",", securityRoles);
             return ExecuteCommand(targetEnvironment, dataObj, workspaceID, false) as string;
         }
@@ -656,7 +651,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             dataObj.Service = "DeleteResourceService";
             dataObj.ResourceName = environment.Name;
             dataObj.ResourceType = Enums.ResourceType.Source.ToString();
-            dataObj.Roles = string.Join(",", environment.Connection.SecurityContext.Roles);
+            string[] securityRoles = {"Administrators"};
+            dataObj.Roles = string.Join(",", securityRoles);
 
             ExecuteCommand(targetEnvironment, dataObj, targetEnvironment.Connection.WorkspaceID, false);
         }
@@ -844,15 +840,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Constructor
 
-        public ResourceRepository(IEnvironmentModel environmentModel, IWizardEngine wizardEngine, IFrameworkSecurityContext securityContext)
+        public ResourceRepository(IEnvironmentModel environmentModel)
         {
             VerifyArgument.IsNotNull("environmentModel", environmentModel);
-            VerifyArgument.IsNotNull("wizardEngine", wizardEngine);
-            VerifyArgument.IsNotNull("securityContext", securityContext);
 
             _environmentModel = environmentModel;
-            _wizardEngine = wizardEngine;
-            _securityContext = securityContext;
 
             _reservedServices = new List<string>();
             _resourceModels = new List<IResourceModel>();

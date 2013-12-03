@@ -117,13 +117,7 @@ namespace Dev2.Studio.Webs.Callbacks
             dynamic jsonObj = JObject.Parse(value);
             Save(environmentModel, jsonObj);
         }
-
-        public virtual void NavigateTo(string uri, string args, string returnUri)
-        {
-            dynamic jsonArgs = JObject.Parse(args);
-            Navigate(EnvironmentRepository.Instance.Source, uri, jsonArgs, returnUri);
-        }
-
+        
         public virtual void OpenPropertyEditor()
         {
         }

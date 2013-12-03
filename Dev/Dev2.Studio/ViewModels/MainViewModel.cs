@@ -131,8 +131,7 @@ namespace Dev2.Studio.ViewModels
 
         public IResourceDependencyService ResourceDependencyService { get; set; }
 
-        [Import]
-        public IFrameworkSecurityContext SecurityContext { get; set; }
+      
 
         #endregion imports
 
@@ -812,7 +811,7 @@ namespace Dev2.Studio.ViewModels
         public void RemoveSettingsWorkSurface(IEnvironmentModel environment)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings,
-                                                      environment.DataListChannel.ServerID);
+                                                      environment.Connection.ServerID);
 
             var viewModel = FindWorkSurfaceContextViewModel(key);
 
@@ -1113,8 +1112,8 @@ namespace Dev2.Studio.ViewModels
                 foreach(var env in EnvironmentRepository.All())
                 {
                     if(!env.IsConnected) continue;
-                    if(!(env.DsfChannel is IStudioClientContext)) break;
-                    var channel = (IStudioClientContext)env.DsfChannel;
+                    if(env.Connection == null) break;
+                    var channel = env.Connection;
                     if(channel.ServerID == item.ServerID)
                         environment = env;
                 }
