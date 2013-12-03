@@ -21,7 +21,6 @@ using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
-using Dev2.Network.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
@@ -236,7 +235,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         /// </summary>
         public Guid ServerID { get { return HostSecurityProvider.Instance.ServerID; } }
 
-      #endregion
+        #endregion
 
         #region Constructor
 
@@ -327,17 +326,17 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
 
-//            if(!didBreak && !OpenNetworkExecutionChannel())
-//            {
-//                result = 97;
-//                didBreak = true;
-//            }
-//
-//            if(!didBreak && !OpenNetworkDataListChannel())
-//            {
-//                result = 96;
-//                didBreak = true;
-//            }
+            //            if(!didBreak && !OpenNetworkExecutionChannel())
+            //            {
+            //                result = 97;
+            //                didBreak = true;
+            //            }
+            //
+            //            if(!didBreak && !OpenNetworkDataListChannel())
+            //            {
+            //                result = 96;
+            //                didBreak = true;
+            //            }
 
 
             if(!didBreak && !StartWebServer())
@@ -1407,7 +1406,7 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 ServerLogger.LogError(ex);
                 result = false;
-            }          
+            }
 
             // shutdown the storage layer ;)
             try
@@ -1528,27 +1527,24 @@ namespace Unlimited.Applications.DynamicServicesHost
 
         #region Failure Handling
 
-        void Fail(string message)
+        static void Fail(string message, Exception e)
         {
-            Fail(message, "");
-        }
-
-        void Fail(string message, Exception e)
-        {
-            WriteLine("Critical Failure: " + message);
-
-            if(e != null)
+            var ex = e;
+            var errors = new StringBuilder();
+            while(ex != null)
             {
-                WriteLine("Details");
-                WriteLine("--");
-                WriteLine(e.Message);
-                Write(e.StackTrace);
+                errors.AppendLine(ex.Message);
+                errors.AppendLine(ex.StackTrace);
+                ex = ex.InnerException;
             }
+
+            WriteLine("Critical Failure: " + message);
+            WriteLine(errors.ToString());
 
             WriteLine("");
         }
 
-        void Fail(string message, string details)
+        static void Fail(string message, string details = "")
         {
             WriteLine("Critical Failure: " + message);
 
@@ -1697,8 +1693,8 @@ namespace Unlimited.Applications.DynamicServicesHost
             string webServerUri = string.Format("http://{0}:1234", machineName);
             EnvironmentVariables.WebServerUri = webServerUri;
             SettingsProvider.WebServerUri = webServerUri;
-//            var instance = SettingsProvider.Instance;
-//            instance.Start();
+            //            var instance = SettingsProvider.Instance;
+            //            instance.Start();
             WriteLine("done.");
             return true;
         }
@@ -1787,7 +1783,7 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             try
             {
-               // _executionChannel = new ExecutionServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, ExecutionStatusCallbackDispatcher.Instance);
+                // _executionChannel = new ExecutionServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, ExecutionStatusCallbackDispatcher.Instance);
                 Write("done.");
                 WriteLine("");
                 return true;
@@ -1828,15 +1824,15 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 try
                 {
-//                    // TODO: Rip this out!
-//                    var endpoints = new List<string>
-//                    {
-//                        WebServerResources.LocalServerAddress,
-//                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
-//                        _uriAddress,
-//                    };
-//                    StartNetworkServer(endpoints);
-//                    // END TODO
+                    //                    // TODO: Rip this out!
+                    //                    var endpoints = new List<string>
+                    //                    {
+                    //                        WebServerResources.LocalServerAddress,
+                    //                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
+                    //                        _uriAddress,
+                    //                    };
+                    //                    StartNetworkServer(endpoints);
+                    //                    // END TODO
 
                     _owinServer = WebServerStartup.Start(_endpoints);
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
