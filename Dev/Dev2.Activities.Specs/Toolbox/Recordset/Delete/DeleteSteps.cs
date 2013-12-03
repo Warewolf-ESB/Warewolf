@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 
             _delete = new DsfDeleteRecordActivity
                 {
-                    RecordsetName = DataListUtil.RemoveLanguageBrackets(_recordset),
+                    RecordsetName = DataListUtil.RemoveLanguageBrackets(Recordset),
                     Result = ResultVariable
                 };
 
@@ -69,8 +69,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, _recordSetName,
-                                                                           _fieldName, out error);
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, RecordSetName,
+                                                                           FieldName, out error);
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -83,7 +83,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         [Given(@"I delete a record ""(.*)""")]
         public void GivenIDeleteARecord(string recordset)
         {
-            _recordset = recordset;
+            Recordset = recordset;
         }
     }
 }

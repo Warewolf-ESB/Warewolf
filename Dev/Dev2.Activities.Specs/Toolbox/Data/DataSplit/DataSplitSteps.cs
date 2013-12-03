@@ -63,8 +63,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, _recordSetName,
-                                                                           _fieldName, out error);
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, RecordSetName,
+                                                                           FieldName, out error);
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

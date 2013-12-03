@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             _count = new DsfCountRecordsetActivity
                 {
-                    RecordsetName = _recordSetName + "()",
+                    RecordsetName = RecordSetName + "()",
                     CountNumber = ResultVariable
                 };
 

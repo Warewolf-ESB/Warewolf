@@ -17,9 +17,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected const string ResultVariable = "[[result]]";
         protected IDSFDataObject _result;
-        protected string _recordset;
-        protected string _recordSetName = "";
-        protected string _fieldName = "";
+        protected string Recordset;
+        protected string RecordSetName = "";
+        protected string FieldName = "";
         private readonly List<string> _addedRecordsets = new List<string>();
         
 
@@ -62,43 +62,34 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         private void Build(dynamic variable, StringBuilder shape, StringBuilder data)
         {
-            string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-            if (variableName.Contains("(") && variableName.Contains(")"))
+            if (DataListUtil.IsValueRecordset(variable.Item1))
             {
-                var startIndex = variableName.IndexOf("(");
-                var endIndex = variableName.IndexOf(")");
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
+                var recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
 
-                int i = (endIndex - startIndex) - 1;
-
-                if (i > 0)
+                if (!_addedRecordsets.Contains(recordset))
                 {
-                    variableName = variableName.Remove(startIndex + 1, i);
+                    shape.Append(string.Format("<{0}>", recordset));
+                    shape.Append(string.Format("<{0}/>", recordField));
+                    shape.Append(string.Format("</{0}>", recordset));
+                    _addedRecordsets.Add(recordset);
                 }
 
-                variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-                var variableNameSplit = variableName.Split(".".ToCharArray());
+                data.Append(string.Format("<{0}>", recordset));
+                data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
+                data.Append(string.Format("</{0}>", recordset));
 
-                if (!_addedRecordsets.Contains(variableNameSplit[0]))
-                {
-                    shape.Append(string.Format("<{0}>", variableNameSplit[0]));
-                    shape.Append(string.Format("<{0}/>", variableNameSplit[1]));
-                    shape.Append(string.Format("</{0}>", variableNameSplit[0]));
-                    _addedRecordsets.Add(variableNameSplit[0]);
-                }
-
-                data.Append(string.Format("<{0}>", variableNameSplit[0]));
-                data.Append(string.Format("<{0}>{1}</{0}>", variableNameSplit[1], variable.Item2));
-                data.Append(string.Format("</{0}>", variableNameSplit[0]));
-
-                _recordSetName = variableNameSplit[0];
-                _fieldName = variableNameSplit[1];
+                RecordSetName = recordset;
+                FieldName = recordField;
             }
             else
             {
+                string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
                 shape.Append(string.Format("<{0}/>", variableName));
                 data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
             }
         }
+
 
         protected string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {

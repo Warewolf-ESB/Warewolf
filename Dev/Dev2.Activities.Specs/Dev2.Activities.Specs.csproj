@@ -147,6 +147,12 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
+    <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Command.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\Command\CommandSteps.cs" />
     <Compile Include="Toolbox\Scripting\Script\Script.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -250,6 +256,10 @@
     <None Include="Toolbox\Recordset\Unique\Unique.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\Command\Command.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Command.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Script\Script.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

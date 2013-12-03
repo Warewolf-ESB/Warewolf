@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
             BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
             _findRecordsIndex = new DsfFindRecordsActivity
                 {
-                    FieldsToSearch = _recordSetName + "()",
+                    FieldsToSearch = RecordSetName + "()",
                     Result = ResultVariable,
                     SearchCriteria = _criteria,
                     SearchType = _searchType,

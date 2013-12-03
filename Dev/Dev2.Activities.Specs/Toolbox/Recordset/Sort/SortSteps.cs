@@ -28,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 
             _sortRecords = new DsfSortRecordsActivity
             {
-               SortField = _recordset,
+               SortField = Recordset,
               SelectedSort = _sortOrder
             };
 
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         [Given(@"I sort a record ""(.*)""")]
         public void GivenISortARecord(string recordset)
         {
-            _recordset = recordset;
+            Recordset = recordset;
         }
         
         [Given(@"my sort order is ""(.*)""")]
