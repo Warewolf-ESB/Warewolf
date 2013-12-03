@@ -26,27 +26,27 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
                 Action = _caseConvert
             };
 
-            var data = new StringBuilder();
-            data.Append("<ADL>");
+            var shape = new StringBuilder();
+            shape.Append("<ADL>");
 
-            var testData = new StringBuilder();
-            testData.Append("<root>");
+            var data = new StringBuilder();
+            data.Append("<root>");
 
             int row = 1;
             foreach (var variable in _variableList)
             {
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                data.Append(string.Format("<{0}/>", variableName));
+                shape.Append(string.Format("<{0}/>", variableName));
                 _caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item2, variable.Item1, row));
 
-                testData.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item3));
+                data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item3));
                 row++;
             }
-            data.Append("</ADL>");
-            testData.Append("</root>");
+            shape.Append("</ADL>");
+            data.Append("</root>");
 
-            CurrentDl = data.ToString();
-            TestData = testData.ToString();
+            CurrentDl = shape.ToString();
+            TestData = data.ToString();
         }
 
         [Given(@"I convert a sentence ""(.*)"" to ""(.*)""")]

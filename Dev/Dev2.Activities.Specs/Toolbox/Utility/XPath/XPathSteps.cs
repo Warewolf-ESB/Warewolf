@@ -22,7 +22,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
 
         private void BuildDataList()
         {
-            _xPath = new DsfXPathActivity {SourceString = _xmlData};
+            _xPath = new DsfXPathActivity
+                {
+                    SourceString = _xmlData
+                };
 
             TestStartNode = new FlowStep
                 {
@@ -38,9 +41,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             int row = 1;
             foreach (var variable in _variableList)
             {
+                _xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
                 if (variableName.Contains("(") && variableName.Contains(")"))
                 {
+                    var startIndex = variableName.IndexOf("(");
+                    var endIndex = variableName.IndexOf(")");
+
+                    int i = (endIndex - startIndex) - 1;
+
+                    if (i > 0)
+                    {
+                        variableName = variableName.Remove(startIndex + 1, i);
+                    }
+
                     variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     shape.Append(string.Format("<{0}>", variableNameSplit[0]));

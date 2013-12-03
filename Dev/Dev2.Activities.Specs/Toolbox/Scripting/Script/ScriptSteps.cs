@@ -44,6 +44,16 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
                 if (variableName.Contains("(") && variableName.Contains(")"))
                 {
+                    var startIndex = variableName.IndexOf("(");
+                    var endIndex = variableName.IndexOf(")");
+
+                    int i = (endIndex - startIndex) - 1;
+
+                    if (i > 0)
+                    {
+                        variableName = variableName.Remove(startIndex + 1, i);
+                    }
+
                     variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     shape.Append(string.Format("<{0}>", variableNameSplit[0]));

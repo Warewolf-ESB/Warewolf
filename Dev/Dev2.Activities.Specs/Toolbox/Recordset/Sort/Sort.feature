@@ -13,9 +13,10 @@ Scenario: Sort a recordset
 	| rs().row | Warewolf |
 	| rs().row | user     |
 	| rs().row | so far   |
+	And I sort a record "[[rs(*).row]]"
 	And my sort order is "Forward"
 	When the sort records tool is executed
-	Then the recordser will be 
+	Then the sorted recordset "rs"  will be 
 	| rs       | value    |
 	| rs().row | You      |
 	| rs().row | are      |

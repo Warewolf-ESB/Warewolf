@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Globalization;
 
 namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 {
@@ -39,10 +37,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             foreach (var variable in _variableList)
             {
                 _multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
-
+                
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
                 if (variableName.Contains("(") && variableName.Contains(")"))
                 {
+                    var startIndex  = variableName.IndexOf("(");
+                    var endIndex = variableName.IndexOf(")");
+
+                    int i = (endIndex - startIndex) - 1;
+                    
+                    if (i > 0)
+                    {
+                       variableName = variableName.Remove(startIndex + 1, i);
+                    }
+
                     variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     shape.Append(string.Format("<{0}>", variableNameSplit[0]));

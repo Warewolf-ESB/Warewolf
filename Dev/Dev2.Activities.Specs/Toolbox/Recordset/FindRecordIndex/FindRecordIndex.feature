@@ -14,4 +14,4 @@ Scenario: Find an index of data in a recordset
 	| rs().row | user     |
 	And search type is "Starts With" and criteria is "Warewolf"
 	When the find records index tool is executed
-	Then the delete result should be 5
+	Then the index result should be 5

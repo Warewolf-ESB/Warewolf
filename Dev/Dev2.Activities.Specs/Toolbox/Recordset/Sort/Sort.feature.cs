@@ -105,8 +105,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("I have the following recordset to sort", ((string)(null)), table1, "Given ");
 #line 16
- testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I sort a record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
+ testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -130,8 +132,8 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 18
- testRunner.Then("the recordser will be", ((string)(null)), table2, "Then ");
+#line 19
+ testRunner.Then("the sorted recordset \"rs\"  will be", ((string)(null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

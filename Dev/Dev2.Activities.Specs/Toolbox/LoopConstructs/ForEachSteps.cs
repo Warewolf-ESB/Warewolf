@@ -33,13 +33,22 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
             var data = new StringBuilder();
             data.Append("<root>");
 
-
             //int row = 1;
             //foreach (var variable in _variableList)
             //{
             //    string variableName = DataListUtil.RemoveLanguageBrackets(variable);
             //    if (variableName.Contains("(") && variableName.Contains(")"))
             //    {
+            //        var startIndex = variableName.IndexOf("(");
+            //        var endIndex = variableName.IndexOf(")");
+
+            //        int i = (endIndex - startIndex) - 1;
+
+            //        if (i > 0)
+            //        {
+            //            variableName = variableName.Remove(startIndex + 1, i);
+            //        }
+
             //        variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
             //        var variableNameSplit = variableName.Split(".".ToCharArray());
             //        data.Append(string.Format("<{0}>", variableNameSplit[0]));
@@ -53,8 +62,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
             //    }
             //    row++;
             //}
-
-
+            
             data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
             data.Append("</root>");
 

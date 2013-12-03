@@ -37,6 +37,16 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
                 if (variableName.Contains("(") && variableName.Contains(")"))
                 {
+                    var startIndex = variableName.IndexOf("(");
+                    var endIndex = variableName.IndexOf(")");
+
+                    int i = (endIndex - startIndex) - 1;
+
+                    if (i > 0)
+                    {
+                        variableName = variableName.Remove(startIndex + 1, i);
+                    }
+
                     variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
                     var variableNameSplit = variableName.Split(".".ToCharArray());
                     shape.Append(string.Format("<{0}>", variableNameSplit[0]));
@@ -107,8 +117,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
             _result = ExecuteProcess();
         }
         
-        [Then(@"the delete result should be (.*)")]
-        public void ThenTheDeleteResultShouldBe(string result)
+        [Then(@"the index result should be (.*)")]
+        public void ThenTheIndexResultShouldBe(string result)
         {
             string error;
             string actualValue;
@@ -116,5 +126,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }
+
     }
 }
