@@ -11,3 +11,6 @@ Scenario: Merge a scalar to a scalar using merge type none
 
 #BB: Do we test using all merge types individualy and all together or one merge that uses all merge types?
 #BB: How do we test merging a recordset? - it should repeat the pattern for every record if * is used. Can we define the recordset up front similar to SQl Bulk Insert tool?
+
+#Scenario: Merge a recordset table and free text using all merge types
+
