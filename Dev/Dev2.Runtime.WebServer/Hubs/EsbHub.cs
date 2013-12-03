@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,36 +8,29 @@ using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
     [AuthorizeHub]
     [HubName("esb")]
-    [Authorize]
-    public class EsbHub : ServerHub,IDebugWriter
+    public class EsbHub : ServerHub, IDebugWriter
     {
-        static readonly ConcurrentDictionary<Guid,StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>(); 
+        static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
 
         public EsbHub()
         {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);      
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public EsbHub(Server server)
             : base(server)
         {
         }
-
-        #region Overrides of Hub
-        #endregion
 
         public async Task AddDebugWriter(Guid workspaceID)
         {
@@ -64,7 +56,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        public async Task<string> ExecuteCommand(Envelope envelope,bool endOfStream, Guid workspaceID, Guid dataListID,Guid messageID)
+        public async Task<string> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler();
             try
@@ -76,8 +68,8 @@ namespace Dev2.Runtime.WebServer.Hubs
                         StringBuilder sb;
                         if(!MessageCache.TryGetValue(messageID, out sb))
                         {
-                           sb = new StringBuilder();
-                           MessageCache.TryAdd(messageID, sb);
+                            sb = new StringBuilder();
+                            MessageCache.TryAdd(messageID, sb);
                         }
                         sb.Append(envelope.Content);
                         if(endOfStream)
@@ -101,7 +93,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             catch(Exception e)
             {
                 Console.WriteLine(e);
-        }
+            }
             return null;
         }
 
@@ -182,7 +174,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected virtual void WriteEventProviderClientMessage(IMemo memo)
         {
-            SendMemo(memo as Memo);           
+            SendMemo(memo as Memo);
         }
 
         #region Implementation of IDebugWriter

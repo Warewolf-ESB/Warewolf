@@ -13,11 +13,6 @@ namespace Dev2.Runtime.WebServer.Hubs
     [HubName("resources")]
     public class ResourcesHub : ServerHub
     {
-        public void Send(string message)
-        {
-            Clients.Caller.broadcastMessage(message);
-        }
-
         public async Task<string> Save(string resourceXml, Guid workspaceID, Guid dataListID)
         {
             var currentUser = Context.User;
