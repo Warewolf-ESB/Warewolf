@@ -249,26 +249,15 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-        public void EnsureAccessToPort(IPEndPoint endPoint)
+        public void EnsureAccessToPort(string url)
         {
-            var args = string.Format("http add urlacl url=http://+:{0}/ user=\"NT AUTHORITY\\Network Service\"",
-                   endPoint.Port);
+            var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
                 bool invoke = ProcessHost.Invoke(null, "netsh.exe", args);
                 if (!invoke)
                 {
-                    ServerLogger.LogError(string.Format("There was an error accessing port. {0}", endPoint.Port));
-                }
-                else
-                {
-                    args = string.Format("http add urlacl url=http://+:{0}/ user=\"{1}\\{2}\"",
-                   endPoint.Port,Environment.UserDomainName , Environment.UserName);
-                   invoke = ProcessHost.Invoke(null, "netsh.exe", args);
-                   if (!invoke)
-                   {
-                       ServerLogger.LogError(string.Format("There was an error accessing port. {0} for user {1}", endPoint.Port, Environment.UserName));
-                   }
+                    ServerLogger.LogError(string.Format("There was an error adding url: {0}", url));
                 }
             }
             catch (Exception e)
