@@ -212,6 +212,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GatherSystemInformation.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformationSteps.cs" />
     <Compile Include="Toolbox\Utility\Random\Random.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
