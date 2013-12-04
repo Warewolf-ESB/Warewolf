@@ -110,6 +110,7 @@
     <Compile Include="Services\Security\ISecurityService.cs" />
     <Compile Include="Services\Security\Permissions.cs" />
     <Compile Include="Services\Security\ReasonAttribute.cs" />
+    <Compile Include="Services\Security\SecurityServiceBase.cs" />
     <Compile Include="Services\Security\WindowsGroupPermission.cs" />
     <Compile Include="Services\Security\WindowsGroupPermissionComparer.cs" />
     <Compile Include="Services\SubscriptionService.cs" />

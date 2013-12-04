@@ -7,5 +7,7 @@ namespace Dev2.Services.Security
     {
         event EventHandler Changed;
         IReadOnlyList<WindowsGroupPermission> Permissions { get; }
+
+        void Read();
     }
 }

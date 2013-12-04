@@ -1,34 +1,25 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Dev2.Services.Security;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SecurityService : DisposableObject, ISecurityService
+    public class ServerSecurityService : SecurityServiceBase
     {
         public const string FileName = "secure.config";
 
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
-        public SecurityService()
+        public ServerSecurityService()
         {
             InitializeConfigWatcher();
-            InitializePermissions();
         }
 
-        public event EventHandler Changed;
-
-        void InitializePermissions()
+        protected override string ReadPermissions()
         {
             var reader = new SecurityRead();
-            var json = reader.Execute(null, null);
-            Permissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(json);
+            return reader.Execute(null, null);
         }
-
-        public IReadOnlyList<WindowsGroupPermission> Permissions { get; private set; }
 
         void InitializeConfigWatcher()
         {
@@ -41,32 +32,23 @@ namespace Dev2.Runtime.ESB.Management.Services
             _configWatcher.Filter = FileName;
 
             // Add event handlers.
-            _configWatcher.Changed += OnChanged;
-            _configWatcher.Created += OnChanged;
-            _configWatcher.Deleted += OnChanged;
-            _configWatcher.Renamed += OnRenamed;
+            _configWatcher.Changed += OnFileChanged;
+            _configWatcher.Created += OnFileChanged;
+            _configWatcher.Deleted += OnFileChanged;
+            _configWatcher.Renamed += OnFileRenamed;
 
             // Begin watching.
             _configWatcher.EnableRaisingEvents = true;
         }
 
-        void OnChanged(object sender, FileSystemEventArgs e)
+        void OnFileChanged(object sender, FileSystemEventArgs e)
         {
-            RaiseChanged();
+            Read();
         }
 
-        void OnRenamed(object sender, RenamedEventArgs e)
+        void OnFileRenamed(object sender, RenamedEventArgs e)
         {
-            RaiseChanged();
-        }
-
-        void RaiseChanged()
-        {
-            InitializePermissions();
-            if(Changed != null)
-            {
-                Changed(this, EventArgs.Empty);
-            }
+            Read();
         }
 
         protected override void OnDisposed()
@@ -74,14 +56,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(_configWatcher != null)
             {
                 _configWatcher.EnableRaisingEvents = false;
-                _configWatcher.Changed -= OnChanged;
-                _configWatcher.Created -= OnChanged;
-                _configWatcher.Deleted -= OnChanged;
-                _configWatcher.Renamed -= OnRenamed;
+                _configWatcher.Changed -= OnFileChanged;
+                _configWatcher.Created -= OnFileChanged;
+                _configWatcher.Deleted -= OnFileChanged;
+                _configWatcher.Renamed -= OnFileRenamed;
                 _configWatcher.Dispose();
                 _configWatcher = null;
             }
-            Permissions = null;
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -210,7 +211,7 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => CanNewResourceReason);
             }
         }
- 
+
         bool CanNewResource()
         {
             var enabled = IsActiveEnvironmentConnected();
@@ -218,7 +219,7 @@ namespace Dev2.Studio.ViewModels
             {
                 const AuthorizationContext AuthorizationContext = AuthorizationContext.Contribute;
                 enabled = ActiveEnvironment.Connection.AuthorizationService.IsAuthorized(AuthorizationContext, null);
-                CanNewResourceReason = AuthorizationContext.GetReason(enabled);
+                CanNewResourceReason = AuthorizationContext.ToReason(enabled);
             }
             return enabled;
         }
@@ -1001,7 +1002,7 @@ namespace Dev2.Studio.ViewModels
 
         public void OnImportsSatisfied()
         {
-            DisplayName = "Warewolf";
+            DisplayName = "Warewolf" + string.Format(" ({0})", ClaimsPrincipal.Current.Identity.Name).ToUpperInvariant();
         }
 
         #endregion

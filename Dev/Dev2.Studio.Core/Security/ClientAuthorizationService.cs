@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using Dev2.Services.Security;
 
 namespace Dev2.Security
@@ -12,8 +13,7 @@ namespace Dev2.Security
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {
-            return true;
-            //return IsAuthorized(ClaimsPrincipal.Current, context, resource);
+            return IsAuthorized(ClaimsPrincipal.Current, context, resource);
         }
 
         protected override void OnSecurityServiceChanged(object sender, EventArgs args)

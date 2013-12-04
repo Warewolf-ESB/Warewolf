@@ -62,8 +62,8 @@ namespace Dev2.Network
         protected void InitializeAuthorizationService()
         {
             var configService = new ClientSecurityService(this);
+            configService.Read();
             AuthorizationService = new ClientAuthorizationService(configService);
-            //configService.Read();
         }
 
         void HubConnectionOnClosed()

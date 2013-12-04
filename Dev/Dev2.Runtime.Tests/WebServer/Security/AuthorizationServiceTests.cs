@@ -30,27 +30,13 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationService_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AuthorizationService_Constructor_SecurityConfigProviderIsNull_ThrowsArgumentNullException()
+        public void AuthorizationService_Constructor_SecurityServiceChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            //------------Execute Test---------------------------
-            var authorizationService = new TestAuthorizationService(null);
-
-            //------------Assert Results-------------------------
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("AuthorizationService_Constructor")]
-        public void AuthorizationService_Constructor_SecurityConfigProviderChangedEvent_ClearsCachedRequests()
-        {
-            //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityService>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
-
-            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityService.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -62,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
-            securityConfigProvider.Raise(m => m.Changed += null, EventArgs.Empty);
+            securityService.Raise(m => m.Changed += null, EventArgs.Empty);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, authorizationService.CachedRequestCount);
@@ -75,9 +61,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityService>();
+            var securityService = new Mock<ISecurityService>();
 
-            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityService.Object);
 
             //------------Execute Test---------------------------
             authorizationService.IsAuthorized(null);
@@ -91,10 +77,10 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsFirstTime_AuthorizationCalculatedAndCached()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityService>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
 
-            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
+            var authorizationService = new TestAuthorizationService(securityService.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -108,7 +94,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             authorizationService.IsAuthorized(request.Object);
 
             //------------Assert Results-------------------------
-            securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
+            securityService.VerifyGet(p => p.Permissions, Times.Once());
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
@@ -118,9 +104,9 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         public void AuthorizationService_IsAuthorized_RequestIsSecondTime_CachedAuthorizationUsed()
         {
             //------------Setup for test--------------------------
-            var securityConfigProvider = new Mock<ISecurityService>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
-            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission>());
+            var authorizationService = new TestAuthorizationService(securityService.Object);
 
             var request = new Mock<IAuthorizationRequest>();
             request.Setup(r => r.User.IsInRole(It.IsAny<string>())).Returns(true);
@@ -129,14 +115,14 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             request.Setup(r => r.QueryString[It.IsAny<string>()]).Returns(string.Empty);
 
             authorizationService.IsAuthorized(request.Object);
-            securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
+            securityService.VerifyGet(p => p.Permissions, Times.Once());
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
             authorizationService.IsAuthorized(request.Object);
 
             //------------Assert Results-------------------------
-            securityConfigProvider.VerifyGet(p => p.Permissions, Times.Once());
+            securityService.VerifyGet(p => p.Permissions, Times.Once());
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
         }
 
@@ -258,15 +244,15 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         {
             //------------Setup for test--------------------------           
 
-            var securityConfigProvider = new Mock<ISecurityService>();
-            securityConfigProvider.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
-            var authorizationService = new TestAuthorizationService(securityConfigProvider.Object);
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new[] { configPermissions });
+            var authorizationService = new TestAuthorizationService(securityService.Object);
 
             //------------Execute Test---------------------------
             var authorized = authorizationService.IsAuthorized(authorizationRequest);
 
             //------------Assert Results-------------------------
-            var allowedPermissions = AuthorizationServiceBase.GetPermissions(authorizationRequest.AuthorizationContext);
+            var allowedPermissions = AuthorizationHelpers.ToPermissions(authorizationRequest.AuthorizationContext);
             var expected = authorizationRequest.UserIsInRole && (configPermissions.Permissions & allowedPermissions) != 0;
 
             Assert.AreEqual(expected, authorized, string.Format("\nUserIsInRole: {0}\nAllowed: {1}\nConfig: {2}\nIsServer: {3}\nURL: {4}",

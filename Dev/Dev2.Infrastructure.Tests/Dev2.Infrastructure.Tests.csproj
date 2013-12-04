@@ -42,6 +42,10 @@
     <Reference Include="Moq">
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Reactive.Core, Version=2.1.30214.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -84,6 +88,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSetTests.cs" />
     <Compile Include="Providers\Validation\Rules\RuleTests.cs" />
+    <Compile Include="Services\Security\AuthorizationServiceBaseTests.cs" />
+    <Compile Include="Services\Security\AuthorizationHelpersTests.cs" />
+    <Compile Include="Services\Security\SecurityServiceBaseTests.cs" />
+    <Compile Include="Services\Security\TestAuthorizationServiceBase.cs" />
+    <Compile Include="Services\Security\TestSecurityServiceBase.cs" />
+    <Compile Include="Services\Security\WindowsGroupPermissionTests.cs" />
     <Compile Include="Services\Security\WindowsGroupPermissionComparerTests.cs" />
     <Compile Include="Services\SubscriptionServiceTests.cs" />
     <Compile Include="Services\MemoSubscriptionServiceTests.cs" />
