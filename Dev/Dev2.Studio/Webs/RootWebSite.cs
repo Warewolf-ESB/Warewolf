@@ -49,7 +49,7 @@ namespace Dev2.Studio.Webs
         public static Dev2DecisionCallbackHandler ShowDecisionDialog(IEnvironmentModel environment, string webModel)
         {
             const int DialogWidth = 824;
-            const int DialogHeight = 520;
+            const int DialogHeight = 517;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
             environment.ShowWebPageDialog(SiteName, "decisions/wizard", callBackHandler, DialogWidth, DialogHeight);
