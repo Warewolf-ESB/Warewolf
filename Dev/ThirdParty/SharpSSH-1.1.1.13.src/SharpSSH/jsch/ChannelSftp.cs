@@ -1114,10 +1114,10 @@ namespace Tamir.SharpSsh.jsch
 						offset+=data_len;
 						foo-=data_len;
 
-						if(monitor!=null)
-						{
-							if(!monitor.count(data_len))
-							{
+//						if(monitor!=null)
+//						{
+//							if(!monitor.count(data_len))
+//							{
 								while(foo>0)
 								{
 									i=io.ins.read(buf.buffer, 
@@ -1127,8 +1127,8 @@ namespace Tamir.SharpSsh.jsch
 									foo-=i;
 								}
 								goto BREAK;
-							}
-						}
+							//}
+						//}
 					}
 					//System.out.println("length: "+length);  // length should be 0
 				}

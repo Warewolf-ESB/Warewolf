@@ -12,7 +12,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 {
     public class Connection : Resource
     {
-        public const int DefaultWebServerPort = 1234;
+        public const int DefaultWebServerPort = 3142;
 
         public string Address { get; set; }
 

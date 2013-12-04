@@ -18,7 +18,7 @@ namespace Dev2.PathOperations {
     /// </summary>
     [Serializable]
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint {
-        const int SFTP_TIMEOUT = 10;
+        const int SFTP_TIMEOUT = 60;
 
         // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
         // Make sure to replace Uri with IActivity references
@@ -1029,18 +1029,23 @@ namespace Dev2.PathOperations {
         
         bool IsFilePresentSFTP(IActivityIOPath path)
         {
-            var sftp = BuildSftpClient(path);
+            //var sftp = BuildSftpClient(path);
             bool isAlive = false;
 
             try
             {
-                var fromPath = ExtractFileNameFromPath(path.Path);
-                var tempFileName = BuildTempFileName();
-                sftp.Get(fromPath, tempFileName);
-                if(File.ReadAllBytes(tempFileName).Length != 0)
+                //var fromPath = ExtractFileNameFromPath(path.Path);
+                IList<IActivityIOPath> listFilesInDirectory = ListFilesInDirectory(path);
+                if(listFilesInDirectory.Count > 0)
                 {
                     isAlive = true;
                 }
+//                var tempFileName = BuildTempFileName();
+//                sftp.Get(fromPath, tempFileName);
+//                if(File.ReadAllBytes(tempFileName).Length != 0)
+//                {
+//                    isAlive = true;
+//                }
             }
             catch(SftpException ftpException)
             {
@@ -1054,7 +1059,7 @@ namespace Dev2.PathOperations {
             }
             finally
             {
-                sftp.Close();
+                //sftp.Close();
             }
 
             return isAlive;
