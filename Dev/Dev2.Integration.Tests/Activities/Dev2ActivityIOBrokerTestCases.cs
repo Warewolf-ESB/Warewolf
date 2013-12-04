@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnsFtp_FileExists_FileIsDeleted()
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual("Success", result);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Delete")]
         public void Dev2ActivityIOBroker_Delete_FileOnsFtp_FileDoesExists_FileIsDeleted()
@@ -236,7 +236,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -302,7 +302,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -368,7 +368,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -461,7 +461,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -532,7 +532,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -601,7 +601,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -694,7 +694,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -780,7 +780,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -823,7 +823,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -908,7 +908,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -971,7 +971,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1035,7 +1035,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -1788,7 +1788,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1854,7 +1854,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1920,7 +1920,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -1986,7 +1986,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2074,7 +2074,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2140,7 +2140,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Zip")]
         public void Dev2ActivityIOBroker_Zip_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -2378,7 +2378,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2443,7 +2443,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2506,7 +2506,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -2808,7 +2808,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2888,7 +2888,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -2928,7 +2928,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -3006,7 +3006,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3063,7 +3063,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3121,7 +3121,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3771,7 +3771,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Rename")]
         public void Dev2ActivityIOBroker_Rename_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -3885,7 +3885,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -3951,7 +3951,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4017,7 +4017,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4135,7 +4135,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4206,7 +4206,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4275,7 +4275,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4706,7 +4706,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4792,7 +4792,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4835,7 +4835,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -4920,7 +4920,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -4983,7 +4983,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5047,7 +5047,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -5777,7 +5777,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5843,7 +5843,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5909,7 +5909,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -5975,7 +5975,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -6063,7 +6063,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6129,7 +6129,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Copy")]
         public void Dev2ActivityIOBroker_Copy_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -6261,7 +6261,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6327,7 +6327,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6393,7 +6393,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6613,7 +6613,7 @@ namespace Dev2.Integration.Tests.Activities
                });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6684,7 +6684,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -6753,7 +6753,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToFile_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7083,7 +7083,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7171,7 +7171,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7215,7 +7215,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_FtpTosFtp_DirectoryToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -7301,7 +7301,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7364,7 +7364,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -7428,7 +7428,7 @@ namespace Dev2.Integration.Tests.Activities
         }
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_DirectoryToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8158,7 +8158,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8224,7 +8224,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8290,7 +8290,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8356,7 +8356,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -8444,7 +8444,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_sFtpToLocal_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8510,7 +8510,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Move")]
         public void Dev2ActivityIOBroker_Move_LocalTosFtp_FileToFile_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -8643,7 +8643,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -8709,7 +8709,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9163,7 +9163,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_LocalTosFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9229,7 +9229,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToLocal_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9295,7 +9295,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToFtp_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9361,7 +9361,7 @@ namespace Dev2.Integration.Tests.Activities
             }, _zipFile);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_UnZip")]
         public void Dev2ActivityIOBroker_UnZip_sFtpToUnc_FileToDirectory_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9510,7 +9510,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9659,7 +9659,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9732,7 +9732,7 @@ namespace Dev2.Integration.Tests.Activities
 
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -9882,7 +9882,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -9936,7 +9936,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToDirectory_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -10028,7 +10028,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10177,7 +10177,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10250,7 +10250,7 @@ namespace Dev2.Integration.Tests.Activities
 
 
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_DirectoryOnsFtp_OverwriteIsFalse_DestinationDoesNotExist_ResultIsSuccessful()
@@ -10400,7 +10400,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_FileExistsOnDestination_ResultIsSuccessful()
@@ -10454,7 +10454,7 @@ namespace Dev2.Integration.Tests.Activities
             });
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_Create")]
         public void Dev2ActivityIOBroker_Create_ToFile_FileOnsFtp_OverwriteIsTrue_DestinationExists_ResultIsSuccessful()
@@ -10528,7 +10528,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "some data");
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeAppendBottom_DestinationExists_DataIsAppended()
@@ -10596,7 +10596,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data some");
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeAppendTop_DestinationExists_DataIsAppended()
@@ -10664,7 +10664,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data ");
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnsFtp_WriteTypeOverwrite_DestinationExists_DataIsAppended()
@@ -10746,7 +10746,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(data, "data");
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_WriteFile")]
         public void Dev2ActivityIOBroker_WriteFile_FileOnSFtp_DestinationFileDoesNotExist_ResultIsSuccessful()
@@ -10852,7 +10852,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .Get(source.EndPoint);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFile")]
         public void Dev2ActivityIOBroker_ReadFile_FileOnsFtp_DestinationExists_ReadsSuccessfully()
@@ -10970,7 +10970,7 @@ namespace Dev2.Integration.Tests.Activities
                                              .ListDirectory(source.EndPoint, ReadTypes.Files);
         }
 
-        [TestMethod][Ignore]//Bug 10805
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2ActivityIOBroker_ReadFolder")]
         public void Dev2ActivityIOBroker_ReadFolder_FileOnsFtp_DestinationExists_ReadsSuccessfully()
