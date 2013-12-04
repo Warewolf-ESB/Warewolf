@@ -18,6 +18,7 @@ namespace Dev2.PathOperations {
     /// </summary>
     [Serializable]
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint {
+        const int SFTP_TIMEOUT = 10;
 
         // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
         // Make sure to replace Uri with IActivity references
@@ -127,7 +128,7 @@ namespace Dev2.PathOperations {
         Sftp BuildSftpClient(IActivityIOPath path)
         {
             var hostName = ExtractHostNameFromPath(path.Path);
-            var sftp = new Sftp(hostName, path.Username, path.Password);
+            var sftp = new Sftp(hostName, path.Username, path.Password,SFTP_TIMEOUT);
             
             try
             {

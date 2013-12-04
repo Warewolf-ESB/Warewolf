@@ -11215,6 +11215,33 @@ namespace Dev2.Integration.Tests.Activities
             { }
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2FTPProvider_Timeout")]
+        public void Dev2FTPProvider_Timeout_NotSentShouldUseDefault_ShouldTimeoutTimely()
+        {
+            //------------Setup for test--------------------------
+            string ftpSite = ParserStrings.PathOperations_SFTP_Path + "/";
+            IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(ftpSite, ParserStrings.PathOperations_SFTP_Username+1,
+                                                                                            ParserStrings.PathOperations_SFTP_Password);
+            IActivityIOOperationsEndPoint FTPPro =
+                ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+            //------------Execute Test---------------------------
+            var start = DateTime.Now;
+            try
+            {
+                FTPPro.Get(pathFromString);
+            }
+            catch(Exception e)
+            {
+            }
+            var end = DateTime.Now;
+            //------------Assert Results-------------------------
+            var timeToTimeout = end - start;
+            var inRange = timeToTimeout.TotalSeconds <= 6;
+            Assert.IsTrue(inRange,string.Format("Actual timeout: {0}", timeToTimeout.TotalSeconds));
+        }
+
         private void RunsFtpToFtpTestCase(string sourceFileName, string destinationFile, bool createSourceDirectory,
                                   bool isSourceADirectory, bool createDestinationDirectory,
                                   bool isDestinationADirectory,
