@@ -1,9 +1,11 @@
-﻿using System.Activities;
+﻿using System;
+using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Text;
-using ActivityUnitTests;
-using Dev2.Activities.Specs.Toolbox.Recordset.Count;
+using System.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Enums;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,88 +15,62 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
     [Binding]
-    public class ForEachSteps : BaseActivityUnitTest
+    public class ForEachSteps : RecordSetBases
     {
-        private readonly List<string> _variableList = new List<string>();
-        private const string ResultVariable = "[[result]]";
-        private IDSFDataObject _result;
-        private string _recordSetName;
+        public ForEachSteps()
+            : base(new List<Tuple<string, string>>())
+        {
+            
+        }
+
         private DsfForEachActivity _dsfForEach;
-        private enForEachType _forEachType;
-        private string _from = "";
-        private string _numberOfExecutes = "";
-        private string _to = "";
-        private string _csvIndexes;
-        private CountSteps countSteps = new CountSteps();
+        private enForEachType _foreachType;
+        private string _recordSet;
+        private string r = "[[r().v]]";
 
         private void BuildDataList()
         {
-            var data = new StringBuilder();
-            data.Append("<root>");
+            BuildShapeAndTestData(new Tuple<string, string>(r, ""));
 
-            //int row = 1;
-            //foreach (var variable in _variableList)
-            //{
-            //    string variableName = DataListUtil.RemoveLanguageBrackets(variable);
-            //    if (variableName.Contains("(") && variableName.Contains(")"))
-            //    {
-            //        var startIndex = variableName.IndexOf("(");
-            //        var endIndex = variableName.IndexOf(")");
+            var activity = new DsfRandomActivity
+                {
+                    Result =  r,
+                    RandomType = enRandomType.Numbers,
+                    From = "0",
+                    To = "100"
+                };
 
-            //        int i = (endIndex - startIndex) - 1;
-
-            //        if (i > 0)
-            //        {
-            //            variableName = variableName.Remove(startIndex + 1, i);
-            //        }
-
-            //        variableName = variableName.Replace("(", "").Replace(")", "").Replace("*", "");
-            //        var variableNameSplit = variableName.Split(".".ToCharArray());
-            //        data.Append(string.Format("<{0}>", variableNameSplit[0]));
-            //        data.Append(string.Format("<{0}/>", variableNameSplit[1]));
-            //        data.Append(string.Format("</{0}>", variableNameSplit[0]));
-            //        _recordSetName = variableNameSplit[0];
-            //    }
-            //    else
-            //    {
-            //        data.Append(string.Format("<{0}/>", variableName));
-            //    }
-            //    row++;
-            //}
-            
-            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-            data.Append("</root>");
+            var activityFunction = new ActivityFunc<string, bool>{Handler  = activity};
 
             _dsfForEach = new DsfForEachActivity
-            {
-                ForEachType = _forEachType,
-                From = _from,
-                To = _to,
-                NumOfExections = _numberOfExecutes,
-                CsvIndexes = _csvIndexes,
-                DataFunc = new ActivityFunc<string, bool>(),
-                
-            };
+                {
+                    ForEachType = _foreachType,
+                    Recordset = _recordSet,
+                    DataFunc = activityFunction
+                };
 
             TestStartNode = new FlowStep
             {
                 Action = _dsfForEach
             };
 
-            CurrentDl = data.ToString();
-            TestData = data.ToString();
-        }
+           }
 
-        [Given(@"I have the foreach type as ""(.*)""")]
-        public void GivenIHaveTheForeachTypeAs(string forEachType)
+        [Given(@"I there is a recordset in the datalist with this shape")]
+        public void GivenIThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
-            _forEachType = enForEachType.NumOfExecution;
+            var rows = table.Rows.ToList();
+            foreach (TableRow tableRow in rows)
+            {
+                _variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
+            }
         }
         
-        [Given(@"I have the number of executes as ""(.*)""")]
-        public void GivenIHaveTheNumberOfExecutesAs(string numberOfExecutes)
-        {
-            _numberOfExecutes = numberOfExecutes;
+        [Given(@"I have selected the foreach type as ""(.*)"" and used ""(.*)""")]
+        public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
+        {            
+            _foreachType = (enForEachType) Enum.Parse(typeof (enForEachType), foreachType);
+            _recordSet = recordSet;
         }
         
         [When(@"the foreach tool is executed")]
@@ -103,34 +79,17 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
-        //[Given(@"I have an ""(.*)"" tool to execute")]
-        //public void GivenIHaveAnToolToExecute(Table table)
-        //{
-        //    countSteps.GivenIHaveARecordsetWithThisShape(table);
-        //}
-
-        [Given(@"I have the count to execute a recordset with this shape")]
-        public void GivenIHaveTheCountToExecuteARecordsetWithThisShape(Table table)
-        {
-            countSteps.GivenIHaveARecordsetWithThisShape(table);
-        }
-
-
-        //[BeforeFeature("NumberOfRecordsInARecordset")]
-        //public static void ExecuteExternalScenarion()
-        //{
-
-        //}
-
-        [Then(@"the foreach result should be as follows ""(.*)""")]
-        public void ThenTheForeachResultShouldBeAsFollows(string result)
+       
+        [Then(@"the foreach will loop over (.*) records")]
+        public void ThenTheForeachWillLoopOverRecords(int numOfIterations)
         {
             string error;
-            string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(result));
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, r);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, r);
+            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+            Assert.AreEqual(numOfIterations, recordSetValues.Count);
         }
+
     }
 }

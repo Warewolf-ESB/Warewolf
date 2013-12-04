@@ -22,7 +22,6 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 
         private DsfScriptingActivity _dsfScripting;
        
-        private const string ResultVariable = "[[result]]";
         private string _scriptToExecute;
         private enScriptType _language;
         

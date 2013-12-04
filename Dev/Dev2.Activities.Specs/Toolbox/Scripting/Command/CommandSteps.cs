@@ -11,7 +11,6 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
     [Binding]
     public class CommandSteps : RecordSetBases
     {
-        private const string ResultVariable = "[[result]]";
         private DsfExecuteCommandLineActivity _commandLine;
         private string _commandToExecute;
 

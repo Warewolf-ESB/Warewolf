@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Text;
-using ActivityUnitTests;
+using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -57,10 +56,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public void ThenTheValueOfEquals(string variable, string value)
         {
             string error;
-            string actualValue;
-            value = value.Replace('"', ' ').Trim();
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable), out actualValue, out error);
-            Assert.AreEqual(value, actualValue);
+
+            if (DataListUtil.IsValueRecordset(variable))
+            {
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                Assert.AreEqual(recordSetValues[1], value);
+            }
+            else
+            {
+                string actualValue;
+                value = value.Replace('"', ' ').Trim();
+                GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+                                           out actualValue, out error);
+                Assert.AreEqual(value, actualValue);
+            }
         }
     }
 }

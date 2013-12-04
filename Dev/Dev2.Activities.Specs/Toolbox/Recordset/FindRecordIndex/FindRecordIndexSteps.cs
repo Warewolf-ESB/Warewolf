@@ -13,7 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
     [Binding]
     public class FindRecordIndexSteps : RecordSetBases
     {
-        private const string ResultVariable = "[[result]]";
         private string _criteria;
         private DsfFindRecordsActivity _findRecordsIndex;
         private string _searchType;

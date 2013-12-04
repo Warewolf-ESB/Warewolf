@@ -54,3 +54,10 @@ Scenario: Assign a record set to a scalar
 #Assign a scalar equal to a calculation
 #Assign a variable equal to a group calculation (SUM)
 
+Scenario: Assign multiple recordset to the end of a recordset
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value 20 to a variable "[[rec().set]]"
+	And I assign the value 30 to a variable "[[rec().set]]"
+	And I assign the value [[rec(3).set]] to a variable "[[des().val]]"
+	When the assign tool is executed
+	Then the value of "[[des().val]]" equals 30

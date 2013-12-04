@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
+namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 {
     using TechTalk.SpecFlow;
     
@@ -19,20 +19,20 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class CommandFeature
+    public partial class SystemInformationFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Command.feature"
+#line 1 "GatherSystemInformation.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Command", "In order to execute command line scripts\r\nAs a Warewolf user\r\nI want a tool that " +
-                    "allows me to execute commands", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SystemInformation", "In order to use system information\r\nAs a warewolf user\r\nI want a tool that I retr" +
+                    "ieve system info", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Command")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "SystemInformation")))
             {
-                Dev2.Activities.Specs.Toolbox.Scripting.Command.CommandFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation.SystemInformationFeature.FeatureSetup(null);
             }
         }
         
@@ -70,21 +70,19 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute command")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Command")]
-        public virtual void ExecuteCommand()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a system date time into a scalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SystemInformation")]
+        public virtual void AssignASystemDateTimeIntoAScalar()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute command", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system date time into a scalar", ((string[])(null)));
 #line 7
- testRunner.Given("I have a drive \"[[drive]]\" with this value \"C:\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.And("I have this command script to execute \"cmd.exe /c dir [[drive]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a variable \"[[aa]]\" and I selected \"Date & Time\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("the result of the command tool will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of the variable \"[[aa]]\" is a valid \"DateTime\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

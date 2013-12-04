@@ -20,7 +20,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         }
 
         private DsfDataMergeActivity _dataMerge;
-        private const string ResultVariable = "[[result]]";
 
         private void BuildDataList()
         {

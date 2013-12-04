@@ -68,6 +68,18 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseTypes\RecordSetBase.cs" />
+    <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Decision.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Switch.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\ControlFlow\Switch\SwitchSteps.cs" />
     <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,6 +122,12 @@
       <DependentUpon>Replace.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
+    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForEach.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
     <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -177,12 +195,23 @@
       <DependentUpon>DateandTime.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
+    <Compile Include="Toolbox\Utility\Email\Email.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Email.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Email\EmailSteps.cs" />
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FormatNumber.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\FormatNumber\FormatNumberSteps.cs" />
+    <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GatherSystemInformation.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\Utility\Random\Random.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -205,6 +234,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Decision.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Switch.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Data\Assign\Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Assign.feature.cs</LastGenOutput>
@@ -232,6 +269,10 @@
     <None Include="Toolbox\Data\Replace\Replace.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ForEach.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\Count\Count.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -277,9 +318,17 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Utility\Email\Email.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Email.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Utility\FormatNumber\FormatNumber.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FormatNumber.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GatherSystemInformation.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\Random\Random.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -328,9 +377,7 @@
     <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Toolbox\ControlFlow\" />
     <Folder Include="Toolbox\FileAndFolder\" />
-    <Folder Include="Toolbox\LoopConstructs\ForEach\" />
     <Folder Include="Toolbox\Resources\" />
   </ItemGroup>
   <Choose>

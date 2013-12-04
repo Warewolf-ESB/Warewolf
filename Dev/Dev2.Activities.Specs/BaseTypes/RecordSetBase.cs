@@ -89,8 +89,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
             }
         }
-
-
+        
         protected string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
             string rawRef = DataListUtil.StripBracketsFromValue(value);

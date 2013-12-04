@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
+namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "ForEach")))
             {
-                Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEachFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach.ForEachFeature.FeatureSetup(null);
             }
         }
         
@@ -70,32 +70,34 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a tool a number of times")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach for every record in a recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAToolANumberOfTimes()
+        public virtual void ExecuteAForeachForEveryRecordInARecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a tool a number of times", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach for every record in a recordset", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs"});
+                        "rs",
+                        "value"});
             table1.AddRow(new string[] {
-                        "rs().row"});
+                        "rs().row",
+                        "1"});
             table1.AddRow(new string[] {
-                        "rs().row"});
+                        "rs().row",
+                        "2"});
             table1.AddRow(new string[] {
-                        "rs().row"});
+                        "rs().row",
+                        "3"});
 #line 7
- testRunner.Given("I have the count to execute a recordset with this shape", ((string)(null)), table1, "Given ");
+ testRunner.Given("I there is a recordset in the datalist with this shape", ((string)(null)), table1, "Given ");
 #line 12
- testRunner.And("I have the foreach type as \"No. of Executes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I have the number of executes as \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
- testRunner.Then("the foreach result should be as follows \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.Then("the foreach will loop over 3 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
