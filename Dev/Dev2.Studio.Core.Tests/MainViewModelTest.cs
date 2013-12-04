@@ -737,7 +737,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             _mainViewModel.OnImportsSatisfied();
-            const string expected = "Warewolf";
+            const string expected = "Warewolf ()";
             Assert.AreEqual(expected, _mainViewModel.DisplayName);
         }
 
