@@ -1329,7 +1329,10 @@ namespace Unlimited.Applications.DynamicServicesHost
                     var httpEndpoint = new IPEndPoint(IPAddress.Any, realPort);
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
-                    HostSecurityProvider.Instance.EnsureAccessToPort(httpEndpoint);
+
+                    // TODO: This does not work - cause 503 errors
+                    //HostSecurityProvider.Instance.EnsureAccessToPort(httpEndpoint);
+
                     // start SSL traffic if it is enabled ;)
                     if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
                     {
