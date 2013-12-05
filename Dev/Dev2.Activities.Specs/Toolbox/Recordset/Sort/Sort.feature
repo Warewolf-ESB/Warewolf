@@ -26,7 +26,7 @@ Scenario: Sort a recordset forwards using star notation
 	| rs().row | Warewolf |
 	| rs().row | You      |
 
-	Scenario: Sort a recordset backwards using star notation
+Scenario: Sort a recordset backwards using star notation
 	Given I have the following recordset to sort
 	| rs       | value    |
 	| rs().row | You      |
@@ -114,7 +114,7 @@ Scenario: Sort a recordset backwards empty recordset
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
 			
-Scenario: Sort a recordset forwards recordset with one row
+Scenario: Sort a recordset forwards with one row
 	Given I have the following recordset to sort
 	| rs       | value    |	
 	| rs().row | Warewolf |

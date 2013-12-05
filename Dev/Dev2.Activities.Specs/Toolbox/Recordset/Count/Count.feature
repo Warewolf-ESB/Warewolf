@@ -32,3 +32,9 @@ Scenario: Count a number of records in a recordset with 0 rows
 	| rs       |
 	When the count tool is executed
 	Then the result count should be 0
+
+Scenario: Count where a recordset is blank
+	Given I have a recordset with this shape
+	When the count tool is executed
+	Then the result count should be ""
+
