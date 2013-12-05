@@ -73,12 +73,34 @@ namespace Gui
                 _serviceRemoved = true;
 
                 installer.Dispose();
+
+                // close the ports we opened ;)
+                ClosePorts();
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch (Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
+            }
+        }
+
+        private void ClosePorts()
+        {
+            var args = new[] { "http delete urlacl url={http://*:3142}/", "http delete urlacl url={https://*:3143}/" };
+
+            //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
+            try
+            {
+                foreach(var arg in args)
+                {
+                    ProcessHost.Invoke(null, "netsh.exe", arg);
+                }
+
+            }
+            catch(Exception e)
+            {
+
             }
         }
 

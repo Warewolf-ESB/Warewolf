@@ -112,6 +112,7 @@
     <Compile Include="PreInstallProcess.xaml.cs">
       <DependentUpon>PreInstallProcess.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ProcessHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
