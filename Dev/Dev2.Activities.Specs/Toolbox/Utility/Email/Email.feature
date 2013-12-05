@@ -11,3 +11,16 @@ Scenario: Send email to multiple receipients
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the number of emails sent will be ""
+
+#Scenario: Send email with multiple from accounts
+#Scenario: Send email with multiple To Accounts
+#Scenario: Send email with badly formed multiple To Accounts
+#Scenario: Send email with no To Accounts
+#Scenario: Send email with both text and variable To Accounts
+#Scenario: Send email with Subject as both text and variable 
+#Scenario: Send email with no subject
+#Scenario: Send email with variable as subject that is xml
+#Scenario: Send email with Body as both text and variable 
+#Scenario: Send email with no sBody
+#Scenario: Send email with variable as Body that is xml
+#Scenario: Send email with everything blank

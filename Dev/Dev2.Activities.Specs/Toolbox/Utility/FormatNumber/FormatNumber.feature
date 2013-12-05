@@ -9,3 +9,15 @@ Scenario: Format number rounding down
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.894 will be returned
+
+#Scenario: Format number rounding up
+#Scenario: Format number rounding normal
+#Scenario: Format number rounding none
+#Scenario: Format number rounding down to negative number
+#Scenario: Format number large number to negative decimals
+#Scenario: Format number single digit to negative decimals
+#Scenario: Format non numeric
+#Scenario: Format number rounding up to a character
+#Scenario: Format number to charater decimals
+#Scenario: Format number rounding up to negative number and showing negative decimals
+#Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
