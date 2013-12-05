@@ -37,3 +37,83 @@ Scenario: Find an index of data in a recordset with Is Base64
 	And search the recordset with type "Is Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
+
+		#Find records search type is = and record(s) exists
+	#Find records search type is = and record(s) exists multiple results (indexes)
+	#Find records search type is = and record(s) does not exist
+	 
+	#Find records search type is > and record(s) exists
+	#Find records search type is > and record(s) exists multiple results (indexes)
+	#Find records search type is > and record(s) does not exist
+	
+	#Find records search type is < and record(s) exists
+	#Find records search type is < and record(s) exists multiple results (indexes)
+	#Find records search type is < and record(s) does not exist
+
+	#Find records search type is <> and record(s) exists
+	#Find records search type is <> and record(s) exists multiple results (indexes)
+	#Find records search type is <> and record(s) does not exist
+
+	#Find records search type is >= and record(s) exists
+	#Find records search type is >= and record(s) exists multiple results (indexes)
+	#Find records search type is >= and record(s) does not exist
+
+	#Find records search type is <= and record(s) exists
+	#Find records search type is <= and record(s) exists multiple results (indexes)
+	#Find records search type is <= and record(s) does not exist
+
+	#Find records search type is Contains and record(s) exists
+	#Find records search type is Contains and record(s) exists multiple results (indexes)
+	#Find records search type is Contains and record(s) does not exist
+
+	#Find records search type is Doesn't Contain and record(s) exists
+	#Find records search type is Doesn't Contain and record(s) exists multiple results (indexes)
+	#Find records search type is Doesn't Contain and record(s) does not exist
+
+	#Find records search type is Ends with and record(s) exists
+	#Find records search type is Ends with and record(s) exists multiple results (indexes)
+	#Find records search type is Ends with and record(s) does not exist
+
+	#Find records search type is Is Alpha numeric and record(s) exists
+	#Find records search type is Is Alpha numeric and record(s) exists multiple results (indexes)
+	#Find records search type is Is Alpha numeric and record(s) does not exist
+
+	#Find records search type is Is Date and record(s) exists
+	#Find records search type is Is Date and record(s) exists multiple results (indexes)
+	#Find records search type is Is Date and record(s) does not exist
+
+	#Find records search type is Is Email and record(s) exists
+	#Find records search type is Is Email and record(s) exists multiple results (indexes)
+	#Find records search type is Is Email and record(s) does not exist
+
+	#Find records search type is Is Regex and record(s) exists
+	#Find records search type is Is Regex and record(s) exists multiple results (indexes)
+	#Find records search type is Is Regex and record(s) does not exist
+
+	#Find records search type is Is Text and record(s) exists
+	#Find records search type is Is Text and record(s) exists multiple results (indexes)
+	#Find records search type is Is Text and record(s) does not exist
+
+	#Find records search type is Is XML and record(s) exists
+	#Find records search type is Is XML and record(s) exists multiple results (indexes)
+	#Find records search type is Is XML and record(s) does not exist
+	
+	#Find records search type is Not Alphanumeric and record(s) exists
+	#Find records search type is Not Alphanumeric and record(s) exists multiple results (indexes)
+	#Find records search type is Not Alphanumeric and record(s) does not exist
+
+	#Find records search type is Not Date and record(s) exists
+	#Find records search type is Not Date and record(s) exists multiple results (indexes)
+	#Find records search type is Not Date and record(s) does not exist
+
+	#Find records search type is Not Numeric and record(s) exists
+	#Find records search type is Not Numeric and record(s) exists multiple results (indexes)
+	#Find records search type is Not Numeric and record(s) does not exist
+
+	#Find records search type is Not Text and record(s) exists
+	#Find records search type is Not Text and record(s) exists multiple results (indexes)
+	#Find records search type is Not Text and record(s) does not exist
+
+	#Find records search type is Not XML and record(s) exists
+	#Find records search type is Not XML and record(s) exists multiple results (indexes)
+	#Find records search type is Not XML and record(s) does not exist
