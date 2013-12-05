@@ -14,8 +14,9 @@ Scenario: Find the first occurence of a character in a sentence
 #BB
 #Scenario: Find all occurences of a word in a sentence and output to scalar going left to right
 #Scenario: Find all occurences of a word in a sentence and output to recordset going right to left 
-#Scenario: Find last occurence of a bracet in a sentence
+#Scenario: Find last occurence of a bracket in a sentence
 #Scenario: Find first occurence of a character in a blank string
 #Scenario: Find first occurence of a character in a string where it doesnt exist
 #Scenario: Find all occurences of a character in a string where it doesnt exist
+#Scenario: Find an xml fragment in a bigger xml document
 

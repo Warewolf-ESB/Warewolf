@@ -45,3 +45,8 @@ Scenario: Convert a sentence starting with a number to Title Case
 	Given I convert a sentence "1 WAREWOLF Rocks" to "Title Case"	
 	When the case conversion tool is executed
 	Then the sentence will be "1 Warewolf Rocks"
+
+#Scenario: Convert a blank to Title Case
+#Scenario: Convert a blank to Sentencecase
+#Scenario: Convert a blank to UPPER CASE
+#Scenario: Convert a blank to lowercase

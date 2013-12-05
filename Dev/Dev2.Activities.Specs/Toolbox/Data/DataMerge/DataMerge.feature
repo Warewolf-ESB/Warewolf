@@ -9,8 +9,12 @@ Scenario: Merge a scalar to a scalar using merge type none
 	When the data merge tool is executed
 	Then the merged result is "Warewolf Rocks"
 
-#BB: Do we test using all merge types individualy and all together or one merge that uses all merge types?
-#BB: How do we test merging a recordset? - it should repeat the pattern for every record if * is used. Can we define the recordset up front similar to SQl Bulk Insert tool?
-
-#Scenario: Merge a recordset table and free text using all merge types
+#Scenario: Merge a recordset table and free text using None
+#Scenario: Merge a recordset table and free text using Chars
+#Scenario: Merge a recordset table and free text using New Line
+#Scenario: Merge a recordset table and free text using Tab
+#Scenario: Merge a variable using index that is a char
+#Scenario: Merge a variable using index that is a variable and is blank
+#Scenario: Merge multiple variables on new lines with blank lines
+#Scenario: Merge a recordset that has xml data using Tabs
 

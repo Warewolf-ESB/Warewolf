@@ -53,3 +53,4 @@ Scenario: Split text to a recordset using Index
 #Scenario: Split number using Index where index > provided index-Padding is NULL
 #Scenario: Split number using Index where index > provided index-Padding is 0
 #Scenario: Split text using Char and Escape character
+#Scenario: Split variable that is blank into multiple rows
