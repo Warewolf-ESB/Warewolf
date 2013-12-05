@@ -16,7 +16,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isSearchCriteriaEnabled;
 
         string _searchCriteria;
-        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
+        string _from;
+        string _to;
+        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();        
 
         public FindRecordsTO()
             : this("Match On", "Equal", 0)
@@ -25,13 +27,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
         public IList<string> WhereOptionList { get; set; }
-        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool include = false, bool inserted = false)
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool include = false, bool inserted = false,string from = "",string to = "")
         {
             Inserted = inserted;
             SearchCriteria = searchCriteria;
             SearchType = searchType;
             IndexNumber = indexNum;
             IsSearchCriteriaEnabled = false;
+            From = from;
+            To = to;
+        }
+
+        [FindMissing]
+        public string From
+        {
+            get
+            {
+                return _from;
+            }
+            set
+            {
+                _from = value;
+                OnPropertyChanged("From");
+                RaiseCanAddRemoveChanged();
+            }
+        }
+
+        [FindMissing]
+        public string To
+        {
+            get
+            {
+                return _to;
+            }
+            set
+            {
+                _to = value;
+                OnPropertyChanged("To");
+                RaiseCanAddRemoveChanged();
+            }
         }
 
         [FindMissing]

@@ -14,14 +14,14 @@ namespace Dev2.DataList.Contract
         /// Internal constructor, must be created from the DTOFactory
         /// </summary>
         internal SearchTO(string fieldsToSearch, string searchType, string searchCriteria, string result)
-            : this(fieldsToSearch, searchType, searchCriteria, string.Empty, result,false)
+            : this(fieldsToSearch, searchType, searchCriteria, string.Empty, result,false,string.Empty,string.Empty)
         {
 
         }
         /// <summary>
         /// Internal constructor, must be created from the DTOFactory
         /// </summary>
-        internal SearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase, bool requireAllFieldsToMatch=false)
+        internal SearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase,string from ,string to , bool requireAllFieldsToMatch=false)
         {
             FieldsToSearch = fieldsToSearch;
             SearchType = searchType;
@@ -30,7 +30,13 @@ namespace Dev2.DataList.Contract
             Result = result;
             MatchCase = matchCase;
             RequireAllFieldsToMatch = requireAllFieldsToMatch;
+            From = from;
+            To = to;
         }
+
+        public string From { get; set; }
+
+        public string To { get; set; }
 
         public bool RequireAllFieldsToMatch { get; set; }
 

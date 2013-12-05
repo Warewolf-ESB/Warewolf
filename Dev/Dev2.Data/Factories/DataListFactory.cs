@@ -264,12 +264,21 @@ namespace Dev2.DataList.Contract
             return new SearchTO(fieldsToSearch, searchType, searchCriteria, result);
         }
 
+
         /// <summary>
         /// Creating a new SearchTO object
         /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase,bool requireAllFieldsToMatch = false)
+        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result,string from,string to)
         {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase,requireAllFieldsToMatch);
+            return new SearchTO(fieldsToSearch, searchType, searchCriteria,startIndex, result,false,from,to);
+        }        
+
+        /// <summary>
+        /// Creating a new SearchTO object
+        /// </summary>
+        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase, bool requireAllFieldsToMatch = false, string from = "", string to = "")
+        {
+            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase,from,to,requireAllFieldsToMatch);
         }
 
         /// <summary>

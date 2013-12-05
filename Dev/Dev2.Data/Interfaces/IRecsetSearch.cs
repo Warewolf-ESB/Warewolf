@@ -10,6 +10,8 @@ namespace Dev2.DataList.Contract
         string Result { get; set; }
         string SearchCriteria { get; set; }
         string SearchType { get; set; }
+        string From { get; set; }
+        string To { get; set; }
         string StartIndex { get; set; }
         bool MatchCase { get; set; }
         bool RequireAllFieldsToMatch { get; set; }

@@ -56,6 +56,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public string From { get; set; }
+        public string To { get; set; }
+
         /// <summary>
         /// Property for holding a string the user enters into the "Match" box
         /// </summary>

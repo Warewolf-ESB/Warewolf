@@ -225,7 +225,7 @@ namespace Dev2.Common
                 //"Doesn't Ends With",                
                 "Doesn't Contain",                                              
                 "Is Alphanumeric",
-                //"Is Base64",
+                "Is Base64",
                 //"Is Between",
                 //"Is Binary",                 
                 "Is Date",

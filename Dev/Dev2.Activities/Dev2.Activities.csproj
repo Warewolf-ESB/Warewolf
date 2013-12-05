@@ -151,6 +151,8 @@
     <Compile Include="Activities\PathOperations\DsfZip.cs" />
     <Compile Include="Activities\SqlBulkInserter.cs" />
     <Compile Include="Activities\WebRequestInvoker.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
     <Compile Include="Enums\enFindMissingType.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />

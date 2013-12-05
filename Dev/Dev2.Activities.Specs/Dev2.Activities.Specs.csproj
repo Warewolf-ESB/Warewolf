@@ -140,6 +140,12 @@
       <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
+    <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
     <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -282,6 +288,10 @@
     <None Include="Toolbox\Recordset\Delete\Delete.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

@@ -116,6 +116,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var currentResults = results as IList<string> ?? results.ToList();
 
                     var searchType = ResultsCollection[i].SearchType;
+                    var from = ResultsCollection[i].From;
+                    var to = ResultsCollection[i].To;
                     if(string.IsNullOrEmpty(searchType))
                     {
                         continue;
@@ -125,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var cols = itr.FetchNextRowData();
                         foreach(var c in cols)
                         {
-                            var searchTO = ConvertToSearchTO(c.TheValue, searchType, idx.ToString(CultureInfo.InvariantCulture));
+                            var searchTO = ConvertToSearchTO(c.TheValue, searchType, idx.ToString(CultureInfo.InvariantCulture),from,to);
                             var iterationResults = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errorResultTO);
                             allErrors.MergeErrors(errorResultTO);
                             if(RequireAllTrue)
@@ -298,9 +300,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Creates a new instance of the SearchTO object
         /// </summary>
         /// <returns></returns>
-        private IRecsetSearch ConvertToSearchTO(string searchCriteria,string searchType, string startIndex)
+        private IRecsetSearch ConvertToSearchTO(string searchCriteria,string searchType, string startIndex,string from,string to)
         {
-            return DataListFactory.CreateSearchTO(FieldsToSearch, searchType, searchCriteria, startIndex, Result, MatchCase);
+            return DataListFactory.CreateSearchTO(FieldsToSearch, searchType, searchCriteria, startIndex, Result, MatchCase,RequireAllFieldsToMatch,from, to);
         }
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
