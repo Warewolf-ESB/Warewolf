@@ -37,3 +37,5 @@ Scenario: Delete a recordset that does not exist
 	#Delete an indexed record e.g. rs(2)
 	#Delete an indexed record using a variable index e.g.  rs([[index]])
 	#Delete all records e.g rs(*)
+
+#Scenario: Delete an index that does not 

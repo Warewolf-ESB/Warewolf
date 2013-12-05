@@ -27,3 +27,4 @@ Scenario: Count a number of records in a recordset with 8 rows
 	When the count tool is executed
 	Then the result count should be 8
 
+#Scenario: Count an empty recordset
