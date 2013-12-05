@@ -70,33 +70,116 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach for every record in a recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach for every record in a recordset\tusing an activity")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
-        public virtual void ExecuteAForeachForEveryRecordInARecordset()
+        public virtual void ExecuteAForeachForEveryRecordInARecordsetUsingAnActivity()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach for every record in a recordset", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach for every record in a recordset\tusing an activity", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "value"});
+                        "value",
+                        "name",
+                        "type"});
             table1.AddRow(new string[] {
-                        "rs().row",
-                        "1"});
+                        "[[rs().row]]",
+                        "1",
+                        "rowone",
+                        "input"});
             table1.AddRow(new string[] {
-                        "rs().row",
-                        "2"});
+                        "[[rs().row]]",
+                        "2",
+                        "rowtwo",
+                        "input"});
             table1.AddRow(new string[] {
-                        "rs().row",
-                        "3"});
+                        "[[rs().row]]",
+                        "3",
+                        "rowthree",
+                        "input"});
+            table1.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowone",
+                        "output"});
+            table1.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowtwo",
+                        "output"});
+            table1.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowthree",
+                        "output"});
 #line 7
  testRunner.Given("I there is a recordset in the datalist with this shape", ((string)(null)), table1, "Given ");
-#line 12
+#line 15
  testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 16
+ testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
  testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 14
+#line 18
+ testRunner.Then("the foreach will loop over 3 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach for every record in a recordset\tusing a Tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
+        public virtual void ExecuteAForeachForEveryRecordInARecordsetUsingATool()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach for every record in a recordset\tusing a Tool", ((string[])(null)));
+#line 21
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value",
+                        "name",
+                        "type"});
+            table2.AddRow(new string[] {
+                        "[[rs().row]]",
+                        "1",
+                        "rowone",
+                        "input"});
+            table2.AddRow(new string[] {
+                        "[[rs().row]]",
+                        "2",
+                        "rowtwo",
+                        "input"});
+            table2.AddRow(new string[] {
+                        "[[rs().row]]",
+                        "3",
+                        "rowthree",
+                        "input"});
+            table2.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowone",
+                        "output"});
+            table2.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowtwo",
+                        "output"});
+            table2.AddRow(new string[] {
+                        "[[test().data]]",
+                        "",
+                        "rowthree",
+                        "output"});
+#line 22
+ testRunner.Given("I there is a recordset in the datalist with this shape", ((string)(null)), table2, "Given ");
+#line 30
+ testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.And("the underlying dropped activity is a(n) \"Tool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+ testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 33
  testRunner.Then("the foreach will loop over 3 records", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -41,8 +41,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 {
                     EvaluationFn = _decision,
                     Col1 = variables[0] ?? string.Empty,
-                    Col2 = variables[1] ?? string.Empty,
-                    Col3 = variables[2] ?? string.Empty
+                    Col2 = variables[1] ?? string.Empty
+                   // Col3 = variables[2] ?? string.Empty
                 };
             dds.AddModelItem(dev2Decision);
 
