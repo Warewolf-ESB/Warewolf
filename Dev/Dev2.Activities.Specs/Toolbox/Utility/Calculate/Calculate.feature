@@ -8,7 +8,31 @@ Scenario: Calculate using a given formula
 	When the calculate tool is executed
 	Then the result should be 0
 
-#Scenario: Calculate using multiple scalars and recordset inputs
-#Scenario: Calculate using Recordset (*) input in an agregate function like SUM
-#Scenario: Calculate using incorrect formula
-#Scenario: Calculate using variable as full calculation
+Scenario: Calculate using multiple scalars and recordset inputs
+	Given I have a calculate variable "[[var]]" equal to "1"
+	And I have a calculate variable "[[var2]]" equal to "20"
+	And I have the formula "(([[var]]+[[var]])/[[var20]])+[[var20]]*[[var]]"
+	When the calculate tool is executed
+	Then the result should be 20.1
+
+Scenario: Calculate using Recordset (*) input in an agregate function like SUM
+	Given I have a calculate variable "[[var(*).int]]" equal to 
+	| var().int |
+	| 1          |
+	| 2         |
+	| 3        |
+	And I have the formula "SUM([[var(*).int]])"
+	When the calculate tool is executed
+	Then the result should be 6
+
+Scenario: Calculate using incorrect formula
+	Given I have the formula "asdf"
+	When the calculate tool is executed
+	Then the result should be ""
+
+Scenario: Calculate using variable as full calculation
+	Given I have a calculate variable "[[var]]" equal to "sum(1,2,3)-5"
+	And I have the formula ""
+	When the calculate tool is executed
+	Then the result should be "1"
+
