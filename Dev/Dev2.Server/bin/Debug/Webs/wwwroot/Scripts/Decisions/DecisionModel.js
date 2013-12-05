@@ -33,11 +33,12 @@ function DecisionViewModel() {
             { displayValue: "<> (Not Equal)", optionValue: "IsNotEqual", columnCount: 2 },
             { displayValue: ">=", optionValue: "IsGreaterThanOrEqual", columnCount: 2 },
             { displayValue: "<=", optionValue: "IsLessThanOrEqual", columnCount: 2 },
-            { displayValue: "Contains", optionValue: "IsContains", columnCount: 2 },
-            //{ displayValue: "Doesn't Contains", optionValue: "NotContains", columnCount: 2 },
-            //{ displayValue: "Doesn't Ends With", optionValue: "NotEndsWith", columnCount: 2 },
-            //{ displayValue: "Doesn't Start With", optionValue: "NotStartWith", columnCount: 2 },
+            { displayValue: "Starts With", optionValue: "IsStartsWith", columnCount: 2 },
             { displayValue: "Ends With", optionValue: "IsEndsWith", columnCount: 2 },
+            { displayValue: "Contains", optionValue: "IsContains", columnCount: 2 },
+            //{ displayValue: "Doesn't Start With", optionValue: "NotStartWith", columnCount: 2 },
+            //{ displayValue: "Doesn't Ends With", optionValue: "NotEndsWith", columnCount: 2 },
+            //{ displayValue: "Doesn't Contains", optionValue: "NotContains", columnCount: 2 },
             { displayValue: "Is Alphanumeric", optionValue: "IsAlphanumeric", columnCount: 1 },
             { displayValue: "Is Base64", optionValue: "IsBase64", columnCount: 1 },
             { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },
@@ -59,8 +60,7 @@ function DecisionViewModel() {
             { displayValue: "Not Numeric", optionValue: "IsNotNumeric", columnCount: 1 },
             //{ displayValue: "Not RegEx", optionValue: "NotRegEx", columnCount: 2 },
             { displayValue: "Not Text", optionValue: "IsNotText", columnCount: 1 },
-            { displayValue: "Not XML", optionValue: "IsNotXML", columnCount: 1 },
-            { displayValue: "Starts With", optionValue: "IsStartsWith", columnCount: 2 },
+            { displayValue: "Not XML", optionValue: "IsNotXML", columnCount: 1 }            
             ])
     };
     

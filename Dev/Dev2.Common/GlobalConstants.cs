@@ -218,11 +218,12 @@ namespace Dev2.Common
                 "<> (Not Equal)",
                 ">=",
                 "<=",
-                "Contains",
-                "Doesn't Contain",
-                //"Doesn't Ends With",
-                //"Doesn't Start With",
+                "Starts With",
                 "Ends With",
+                "Contains",
+                //"Doesn't Start With",                  
+                //"Doesn't Ends With",                
+                "Doesn't Contain",                                              
                 "Is Alphanumeric",
                 //"Is Base64",
                 //"Is Between",
@@ -244,8 +245,7 @@ namespace Dev2.Common
                 "Not Numeric",
                 //"Not Regex",
                 "Not Text",
-                "Not XML",
-                "Starts With"
+                "Not XML"                
         };
 
         public static string WebServerPort { get; set; }
