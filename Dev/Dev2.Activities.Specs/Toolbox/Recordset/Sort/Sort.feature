@@ -32,3 +32,6 @@ Scenario: Sort a recordset
 	
 	#sort records forward using start notation rec(*).row
 	#sort records forward using start notation rec().row
+
+#Scenario: Sort an empty recordset
+#Scenario: Sort a recordset with only one record
