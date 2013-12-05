@@ -44,5 +44,6 @@ namespace Dev2.Studio.Core.Interfaces
         void StartAutoConnect();
 
         IAuthorizationService AuthorizationService { get; }
+        bool IsLocalHost { get; }
     }
 }

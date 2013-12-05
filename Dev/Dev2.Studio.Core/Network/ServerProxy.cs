@@ -51,6 +51,14 @@ namespace Dev2.Network
             InitializeEsbProxy();
         }
 
+        public bool IsLocalHost
+        {
+            get
+            {
+                return DisplayName == "localhost";
+            }
+        }
+
         protected void InitializeEsbProxy()
         {
             EsbProxy = HubConnection.CreateHubProxy("esb");
@@ -67,6 +75,11 @@ namespace Dev2.Network
         }
 
         void HubConnectionOnClosed()
+        {
+            HasDisconnected();
+        }
+
+        void HasDisconnected()
         {
             IsConnected = false;
             StartReconnectTimer();
@@ -105,11 +118,7 @@ namespace Dev2.Network
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
                 case ConnectionState.Disconnected:
-                    IsConnected = false;
-                    StartReconnectTimer();
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout, false, false, "Logged Out"));
-                    OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
-                    OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
+                    HasDisconnected();
                     break;
             }
 
@@ -137,13 +146,16 @@ namespace Dev2.Network
 
         protected virtual void StartReconnectTimer()
         {
-            if(_reconnectHeartbeat == null)
+            if(IsLocalHost)
             {
-                _reconnectHeartbeat = new System.Timers.Timer();
-                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                _reconnectHeartbeat.Interval = 10000;
-                _reconnectHeartbeat.AutoReset = true;
-                _reconnectHeartbeat.Start();
+                if(_reconnectHeartbeat == null)
+                {
+                    _reconnectHeartbeat = new Timer();
+                    _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                    _reconnectHeartbeat.Interval = 10000;
+                    _reconnectHeartbeat.AutoReset = true;
+                    _reconnectHeartbeat.Start();
+                }
             }
         }
 

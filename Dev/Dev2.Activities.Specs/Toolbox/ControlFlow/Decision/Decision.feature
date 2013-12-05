@@ -11,13 +11,14 @@ Scenario: Check if variable A equals variable B
 	When the decision tool is executed
 	Then the decision result should be "True"
 
-Scenario: Check if variable A equals variable B
-	Given I need to take a decision on variable "[[A]]" with the value "30"
-	And  I need to take a decision on variable "[[B]]" with the value "30"	
-	And I want to find out if the [[A]] "IsEqual" [[B]]
-	And the decision mode is "AND"
-	When the decision tool is executed
-	Then the decision result should be "True"
+	#Duplicate decision causing build to fail
+#Scenario: Check if variable A equals variable B
+#	Given I need to take a decision on variable "[[A]]" with the value "30"
+#	And  I need to take a decision on variable "[[B]]" with the value "30"	
+#	And I want to find out if the [[A]] "IsEqual" [[B]]
+#	And the decision mode is "AND"
+#	When the decision tool is executed
+#	Then the decision result should be "True"
 
 
 

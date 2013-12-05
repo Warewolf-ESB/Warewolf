@@ -237,10 +237,6 @@
     <Compile Include="MockResourceTreeViewModel.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
-    <Compile Include="Network\TcpClientHostTests.cs" />
-    <Compile Include="Network\TestTcpConnectionWithMockHost.cs" />
-    <Compile Include="Network\TestTcpConnection.cs" />
-    <Compile Include="Network\TcpConnectionTests.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ThreadExecuter.cs" />

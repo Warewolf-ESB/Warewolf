@@ -152,7 +152,7 @@ namespace Dev2.Studio.Core.Models
         #region IsLocalHost
         public bool IsLocalHost()
         {
-            return Connection.DisplayName == "localhost";
+            return Connection.IsLocalHost;
         }
         #endregion
 

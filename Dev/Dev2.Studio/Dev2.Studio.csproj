@@ -70,6 +70,7 @@
   <PropertyGroup>
     <ApplicationIcon>Warewolf.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>

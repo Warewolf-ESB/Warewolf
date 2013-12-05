@@ -140,7 +140,7 @@ namespace Dev2.Studio.Core.Helpers
 
         public static string GetStudioLogTempPath()
         {
-            var studioLog = Path.Combine(Environment.CurrentDirectory, "Warewolf Studio.log");
+            var studioLog = CustomTextWriter.LoggingFileName;
             
             if(File.Exists(studioLog))
             {

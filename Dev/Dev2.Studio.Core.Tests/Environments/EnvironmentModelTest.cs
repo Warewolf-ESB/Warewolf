@@ -477,7 +477,8 @@ namespace Dev2.Core.Tests.Environments
         public void IsLocalHost()
         {
             var conn = CreateConnection();
-            conn.Setup(c => c.DisplayName).Returns("localhost");
+            conn.SetupProperty(c => c.DisplayName,"localhost");
+            conn.Setup(connection => connection.IsLocalHost).Returns(conn.Object.DisplayName=="localhost");
             var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
             var isLocalHost = env.IsLocalHost();
             Assert.IsTrue(isLocalHost);
