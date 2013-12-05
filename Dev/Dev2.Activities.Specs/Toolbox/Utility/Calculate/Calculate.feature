@@ -17,10 +17,10 @@ Scenario: Calculate using multiple scalars and recordset inputs
 
 Scenario: Calculate using Recordset (*) input in an agregate function like SUM
 	Given I have a calculate variable "[[var(*).int]]" equal to 
-	| var().int |
-	| 1          |
-	| 2         |
-	| 3        |
+	| var().int	|
+	| 1			|
+	| 2			|
+	| 3			|
 	And I have the formula "SUM([[var(*).int]])"
 	When the calculate tool is executed
 	Then the result should be 6
