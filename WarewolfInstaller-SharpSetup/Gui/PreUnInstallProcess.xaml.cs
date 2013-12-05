@@ -82,6 +82,7 @@ namespace Gui
             // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
+                
             }
         }
 
