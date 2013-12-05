@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Utility.Random
+namespace Dev2.Activities.Specs.Toolbox.Scripting.Utility.Random
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Random")))
             {
-                Dev2.Activities.Specs.Toolbox.Utility.Random.RandomFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Scripting.Utility.Random.RandomFeature.FeatureSetup(null);
             }
         }
         

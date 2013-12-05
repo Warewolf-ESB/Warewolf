@@ -78,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have a drive \"[[drive]]\" with this value \"C:\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a variable \"[[drive]]\" with this value \"C:\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
  testRunner.And("I have this command script to execute \"cmd.exe /c dir [[drive]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9

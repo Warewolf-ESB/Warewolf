@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
+namespace Dev2.Activities.Specs.Toolbox.Scripting.Utility.WebRequest
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "WebRequest")))
             {
-                Dev2.Activities.Specs.Toolbox.Utility.WebRequest.WebRequestFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Scripting.Utility.WebRequest.WebRequestFeature.FeatureSetup(null);
             }
         }
         

@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             };
         }
         
-        [Given(@"I have a drive ""(.*)"" with this value ""(.*)""")]
+        [Given(@"I have a variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveADriveWithThisValue(string variable, string value)
         {
             _variableList.Add(new Tuple<string, string>(variable, value));

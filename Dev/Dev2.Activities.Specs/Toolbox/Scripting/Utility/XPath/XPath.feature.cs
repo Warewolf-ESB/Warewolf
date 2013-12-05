@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
+namespace Dev2.Activities.Specs.Toolbox.Scripting.Utility.XPath
 {
     using TechTalk.SpecFlow;
     
@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "XPath", "In order to run a query against xml\r\nAs a Warewolf user\r\nI want to a tool that I " +
-                    "can use to execute xpath queries", ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "XPath", "In order to run a query against xml\r\nAs a Warewolf user\r\nI want a tool that I can" +
+                    " use to execute xpath queries", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "XPath")))
             {
-                Dev2.Activities.Specs.Toolbox.Utility.XPath.XPathFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Scripting.Utility.XPath.XPathFeature.FeatureSetup(null);
             }
         }
         

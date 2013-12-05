@@ -32,3 +32,15 @@ Scenario: Execute Javascript Variable is 100
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the script result should be "not one or two"
+
+#Scenario: Execute badly formed Javascript
+#Scenario: Execute badly formed Ruby
+#Scenario: Execute badly formed Python
+#Scenario: Execute blank Javascript
+#Scenario: Execute blank formed Ruby
+#Scenario: Execute blank formed Python
+#Scenario: Execute Javascript with 2 variables
+#Scenario: Execute Ruby with 2 variables
+#Scenario: Execute Python with 2 variables
+
+
