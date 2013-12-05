@@ -108,7 +108,7 @@ Given I have this data
 
 
 	#Not tested are :-
-		# Batch size
+		# Batch size (Use a different table count the number of inserts done i.e. trigger on an insert)
 		# Timeout
 		# Keep table lock
 		# Use internal transaction

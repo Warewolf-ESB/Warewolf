@@ -10,3 +10,8 @@ Scenario: Replace placeholders in a sentence with names
 	And I want to replace them with "Warewolf user"
 	When the replace tool is executed
 	Then the replaced result should be "Dear Mr Warewolf user, We welcome you as a customer"
+
+
+	#replace when the in field(s) is blank
+	#replace when  text to find is blank (I ran this on the Studio - looks like a bug)
+	#replace when the replace with is blank
