@@ -19,4 +19,20 @@ Scenario: Execute a foreach for every record in a recordset	using an activity
 	| [[res().data]] | 1    |
 	| [[res().data]] | 2    |
 	| [[res().data]] | 3    |
+
+
+	#Foreach type (For both activities and workflows)
+		#* in Range
+			# Range 0 to 0 (no executions)
+			# Range 0 to 3 (4 executions)
+			# Range 9 to 10 (3 executions)
+			# out of range test
+		#* in CSV
+			# CSV index 0
+			# CSV index 1
+			#  out of range test
+		#No of Execution
+			# N = 0
+			# N = any number
+		#* in Recordset
 	

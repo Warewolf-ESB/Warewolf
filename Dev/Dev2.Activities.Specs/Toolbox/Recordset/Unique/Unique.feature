@@ -18,3 +18,6 @@ Scenario: Find unique records in a  dataset
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
+
+
+	#find unique using comma separated fields
