@@ -8,7 +8,7 @@ Scenario: Import data into table with check contraint disabled
 		| Col1 | Col2     | Col3                                 |
 		| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 		| 1    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
-	And Check constraints is not selected
+	And Check constraints is disabled
 	When the tool is executed
 	Then the new table will have
 		| Col1 | Col2     | Col3                                 |
@@ -20,7 +20,7 @@ Scenario: Import data into Table with check contraint enabled
 		| Col1 | Col2     | Col3                                 |
 		| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 		| 1    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
-	And Check constraints is selected
+	And Check constraints is enabled
 	When the tool is executed
 	Then the new table will will have 0 of rows
 
@@ -30,7 +30,7 @@ Scenario: Import data into Table with keep identity disabled
 		| 4    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 		| 6    | TestData | bc7a9611-102e-4899-82b8-97ff1517d268 |
 		| 8    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Keep identity is not selected
+	And Keep identity is disabled
 	When the tool is executed
 	Then the new table will have
 		| Col1 | Col2     | Col3                                 |
@@ -44,7 +44,7 @@ Scenario: Import data into Table with keep identity enabled
 		| 4    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 		| 6    | TestData | bc7a9611-102e-4899-82b8-97ff1517d268 |
 		| 8    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Keep identity is selected
+	And Keep identity is enabled
 	When the tool is executed
 	Then the new table will have
 		| Col1 | Col2     | Col3                                 |
@@ -60,7 +60,7 @@ Given I have this data
 	|      |          |										 |
 	| 2    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Skip rows is not selected
+	And Skip rows is disabled
 	When the tool is executed
 	Then the new table will will have 0 of rows
 
@@ -72,7 +72,7 @@ Given I have this data
 	|      |          |										 |
 	| 2    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Skip rows is selected
+	And Skip rows is enabled
 	When the tool is executed
 	Then the new table will will have 3 of rows		
 
@@ -83,7 +83,7 @@ Given I have this data
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 2    |          |	b89416b9-5b24-4f95-bd11-25d9db8160a2 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Fire triggers is not selected
+	And Fire triggers is disabled
 	When the tool is executed
 	Then the new table will have
 	| Col1 | Col2     | Col3                                 |
@@ -98,10 +98,17 @@ Given I have this data
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 2    |          |	b89416b9-5b24-4f95-bd11-25d9db8160a2 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
-	And Fire triggers is selected
+	And Fire triggers is enabled
 	When the tool is executed
 	Then the new table will have
 	| Col1 | Col2     | Col3                                 |
 	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 	| 2    | XXXXXXXX |	b89416b9-5b24-4f95-bd11-25d9db8160a2 |
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+
+
+	#Not tested are :-
+		# Batch size
+		# Timeout
+		# Keep table lock
+		# Use internal transaction

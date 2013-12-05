@@ -15,3 +15,44 @@ Scenario: Find an index of data in a recordset
 	And search type is "Starts With" and criteria is "Warewolf"
 	When the find records index tool is executed
 	Then the index result should be 5
+
+
+	#Find records search type is = and record(s) exists
+	#Find records search type is = and record(s) exists multiple results (indexes)
+	#Find records search type is = and record(s) does not exist
+	 
+	#Find records search type is > and record(s) exists
+	#Find records search type is > and record(s) exists multiple results (indexes)
+	#Find records search type is > and record(s) does not exist
+	
+	#Find records search type is < and record(s) exists
+	#Find records search type is < and record(s) exists multiple results (indexes)
+	#Find records search type is < and record(s) does not exist
+
+	#Find records search type is <> and record(s) exists
+	#Find records search type is <> and record(s) exists multiple results (indexes)
+	#Find records search type is <> and record(s) does not exist
+
+	#Find records search type is >= and record(s) exists
+	#Find records search type is >= and record(s) exists multiple results (indexes)
+	#Find records search type is >= and record(s) does not exist
+
+	#Find records search type is <= and record(s) exists
+	#Find records search type is <= and record(s) exists multiple results (indexes)
+	#Find records search type is <= and record(s) does not exist
+
+	#Find records search type is Contains and record(s) exists
+	#Find records search type is Contains and record(s) exists multiple results (indexes)
+	#Find records search type is Contains and record(s) does not exist
+
+	#Find records search type is Doesn't Contain and record(s) exists
+	#Find records search type is Doesn't Contain and record(s) exists multiple results (indexes)
+	#Find records search type is Doesn't Contain and record(s) does not exist
+
+	#Find records search type is Ends with and record(s) exists
+	#Find records search type is Ends with and record(s) exists multiple results (indexes)
+	#Find records search type is Ends with and record(s) does not exist
+
+	#Find records search type is Is Alpha numeric and record(s) exists
+	#Find records search type is Is Alpha numeric and record(s) exists multiple results (indexes)
+	#Find records search type is Is Alpha numeric and record(s) does not exist

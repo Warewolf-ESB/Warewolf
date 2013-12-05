@@ -25,3 +25,10 @@ Scenario: Sort a recordset
 	| rs().row | user     |
 	| rs().row | Warewolf |
 	| rs().row | You      |
+
+
+	#sort records backward using start notation rec(*).row
+	#sort records backward using start notation rec().row
+	
+	#sort records forward using start notation rec(*).row
+	#sort records forward using start notation rec().row

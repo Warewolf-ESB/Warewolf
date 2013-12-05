@@ -90,8 +90,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
         }
         
-        [Given(@"Check constraints is not selected")]
-        public void GivenCheckConstraintsIsNotSelected()
+        [Given(@"Check constraints is disabled")]
+        public void GivenCheckConstraintsIsNotenabled()
         {
             _sqlBulkInsert.CheckConstraints = false;
         }
@@ -145,20 +145,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        [Given(@"Check constraints is selected")]
-        public void GivenCheckConstraintsIsSelected()
+        [Given(@"Check constraints is enabled")]
+        public void GivenCheckConstraintsIsenabled()
         {
             _sqlBulkInsert.CheckConstraints = true;
         }
 
-        [Given(@"Keep identity is not selected")]
-        public void GivenKeepIdentityIsNotSelected()
+        [Given(@"Keep identity is disabled")]
+        public void GivenKeepIdentityIsNotenabled()
         {
             _sqlBulkInsert.KeepIdentity = false;
         }
 
-        [Given(@"Keep identity is selected")]
-        public void GivenKeepIdentityIsSelected()
+        [Given(@"Keep identity is enabled")]
+        public void GivenKeepIdentityIsenabled()
         {
             _sqlBulkInsert.KeepIdentity = true;
         }
@@ -190,26 +190,26 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             Assert.AreEqual(numberOfRows, numberOfRowsInDb);
         }
 
-        [Given(@"Skip rows is selected")]
-        public void GivenSkipRowsIsSelected()
+        [Given(@"Skip rows is enabled")]
+        public void GivenSkipRowsIsenabled()
         {
             _sqlBulkInsert.IgnoreBlankRows = true;
         }
 
-        [Given(@"Skip rows is not selected")]
-        public void GivenSkipRowsIsNotSelected()
+        [Given(@"Skip rows is disabled")]
+        public void GivenSkipRowsIsNotenabled()
         {
             _sqlBulkInsert.IgnoreBlankRows = false;
         }
 
-        [Given(@"Fire triggers is not selected")]
-        public void GivenFireTriggersIsNotSelected()
+        [Given(@"Fire triggers is disabled")]
+        public void GivenFireTriggersIsNotenabled()
         {
             _sqlBulkInsert.FireTriggers = false;
         }
 
-        [Given(@"Fire triggers is selected")]
-        public void GivenFireTriggersIsSelected()
+        [Given(@"Fire triggers is enabled")]
+        public void GivenFireTriggersIsenabled()
         {
             _sqlBulkInsert.FireTriggers = true;
         }

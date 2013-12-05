@@ -93,7 +93,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("I have this data", ((string)(null)), table1, "Given ");
 #line 11
- testRunner.And("Check constraints is not selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Check constraints is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -139,7 +139,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.Given("I have this data", ((string)(null)), table3, "Given ");
 #line 23
- testRunner.And("Check constraints is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
@@ -176,7 +176,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Given("I have this data", ((string)(null)), table4, "Given ");
 #line 33
- testRunner.And("Keep identity is not selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Keep identity is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -230,7 +230,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
  testRunner.Given("I have this data", ((string)(null)), table6, "Given ");
 #line 47
- testRunner.And("Keep identity is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Keep identity is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -288,7 +288,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
 testRunner.Given("I have this data", ((string)(null)), table8, "Given ");
 #line 63
- testRunner.And("Skip rows is not selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Skip rows is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 65
@@ -329,7 +329,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 69
 testRunner.Given("I have this data", ((string)(null)), table9, "Given ");
 #line 75
- testRunner.And("Skip rows is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Skip rows is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 77
@@ -366,7 +366,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
 testRunner.Given("I have this data", ((string)(null)), table10, "Given ");
 #line 86
- testRunner.And("Fire triggers is not selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Fire triggers is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -420,7 +420,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 96
 testRunner.Given("I have this data", ((string)(null)), table12, "Given ");
 #line 101
- testRunner.And("Fire triggers is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Fire triggers is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 102
  testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden

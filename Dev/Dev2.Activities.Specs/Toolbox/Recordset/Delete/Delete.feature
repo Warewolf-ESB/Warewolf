@@ -31,3 +31,9 @@ Scenario: Delete a recordset that does not exist
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
+
+
+	#Delete the first record
+	#Delete an indexed record e.g. rs(2)
+	#Delete an indexed record using a variable index e.g.  rs([[index]])
+	#Delete all records e.g rs(*)

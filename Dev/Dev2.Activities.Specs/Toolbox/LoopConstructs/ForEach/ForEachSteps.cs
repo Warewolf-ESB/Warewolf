@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
     public class ForEachSteps : RecordSetBases
     {
         public ForEachSteps()
-            : base(new List<Tuple<string, string, string, string>>())
+            : base(new List<Tuple<string, string>>())
         {
         }
 
@@ -27,10 +27,18 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         private string _recordSet;
         private string r = "[[r().v]]";
         private string _activity;
+        private string _inMapTo;
+        private string _inMapFrom;
+        private string _outMapFrom;
+        private string _outMapTo;
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string, string, string>(r, "", "", ""));
+            _variableList.Add(new Tuple<string, string>(r,"" ));
+            _variableList.Add(new Tuple<string, string>(_inMapTo, ""));
+            _variableList.Add(new Tuple<string, string>(_outMapTo, ""));
+
+            BuildShapeAndTestData();
 
             dynamic activity;
 
@@ -53,7 +61,6 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                     };
             }
 
-
             var activityFunction = new ActivityFunc<string, bool>{Handler  = activity};
 
             _dsfForEach = new DsfForEachActivity
@@ -75,16 +82,11 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var inputMappings = new StringBuilder();
             inputMappings.Append("<Inputs>");
 
-            foreach (Tuple<string, string, string, string> variable in _variableList)
-            {
-                if (variable.Item4.Equals("input"))
-                {
-                    inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>",
-                                                       RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1), variable.Item1,
-                                                       RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly,
-                                                                                 variable.Item1)));
-                }
-            }
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, _inMapTo);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, _inMapTo);
+
+            inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
+                                               _inMapFrom, inRecordset));
 
             inputMappings.Append("</Inputs>");
             return inputMappings.ToString();
@@ -92,22 +94,17 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
         private string BuildOutputMappings()
         {
-            var inputMappings = new StringBuilder();
-            inputMappings.Append("<Outputs>");
+            var outputMappings = new StringBuilder();
+            outputMappings.Append("<Outputs>");
 
-            foreach (Tuple<string, string, string, string> variable in _variableList)
-            {
-                if (variable.Item4.Equals("output"))
-                {
-                    inputMappings.Append(string.Format("<Output Name=\"{0}\"  MapsTo=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>",
-                                                       RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1), variable.Item1,
-                                                       RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly,
-                                                                                 variable.Item1)));
-                }
-            }
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, _outMapFrom);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, _outMapFrom);
 
-            inputMappings.Append("</Outputs>");
-            return inputMappings.ToString();
+            outputMappings.Append(string.Format("<Output Name=\"{0}\" MapsTo=\"{1}\" Value=\"{1}\" Recordset=\"{2}\"/>", inColumn,
+                                               _outMapTo, inRecordset));
+
+            outputMappings.Append("</Outputs>");
+            return outputMappings.ToString();
         }
 
         [Given(@"I there is a recordset in the datalist with this shape")]
@@ -116,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var rows = table.Rows.ToList();
             foreach (TableRow tableRow in rows)
             {
-                _variableList.Add(new Tuple<string, string, string, string>(tableRow[0], tableRow[1], tableRow[2], tableRow[3]));
+                _variableList.Add(new Tuple<string, string>(tableRow[0], tableRow[1]));
             }
         }
         
@@ -139,16 +136,48 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             BuildDataList();
             _result = ExecuteProcess();
         }
-       
-        [Then(@"the foreach will loop over (.*) records")]
-        public void ThenTheForeachWillLoopOverRecords(int numOfIterations)
+
+        [Given(@"I Map the input recordset ""(.*)"" to ""(.*)""")]
+        public void GivenIMapTheInputRecordsetTo(string inMapFrom, string inMapTo)
         {
+            _inMapFrom = inMapFrom;
+            _inMapTo = inMapTo;
+        }
+
+        [Given(@"I Map the output recordset ""(.*)"" to ""(.*)""")]
+        public void GivenIMapTheOutputRecordsetTo(string outMapFrom, string outMapTo)
+        {
+            _outMapFrom = outMapFrom;
+            _outMapTo = outMapTo;
+        }
+
+        [Then(@"the recordset ""(.*)"" will have data as")]
+        public void ThenTheRecordsetWillHaveDataAs(string resRecordset, Table table)
+        {
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resRecordset);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resRecordset);
+
             string error;
-            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, r);
-            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, r);
             var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-            Assert.AreEqual(numOfIterations, recordSetValues.Count);
+
+            List<TableRow> tableRows = table.Rows.ToList();
+            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+            for (int i = 0; i < tableRows.Count; i++)
+            {
+                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+            }
         }
+        
+        //[Then(@"the foreach will loop over (.*) records")]
+        //public void ThenTheForeachWillLoopOverRecords(int numOfIterations)
+        //{
+        //    string error;
+        //    var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, r);
+        //    var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, r);
+        //    var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+        //    recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+        //    Assert.AreEqual(numOfIterations, recordSetValues.Count);
+        //}
     }
 }

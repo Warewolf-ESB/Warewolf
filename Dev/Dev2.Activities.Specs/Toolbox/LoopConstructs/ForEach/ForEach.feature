@@ -5,29 +5,18 @@
 
 Scenario: Execute a foreach for every record in a recordset	using an activity
 	Given I there is a recordset in the datalist with this shape
-	| rs              | value | name     | type   |
-	| [[rs().row]]    | 1     | rowone   | input  |
-	| [[rs().row]]    | 2     | rowtwo   | input  |
-	| [[rs().row]]    | 3     | rowthree | input  |
-	| [[test().data]] |       | rowone   | output |
-	| [[test().data]] |       | rowtwo   | output |
-	| [[test().data]] |       | rowthree | output |
+	| rs              | value |
+	| [[rs().row]]    | 1     |
+	| [[rs().row]]    | 2     |
+	| [[rs().row]]    | 3     |
+	And I Map the input recordset "[[rs().row]]" to "[[test().data]]"
+	And I Map the output recordset "[[test().data]]" to "[[res().data]]" 	
 	And I have selected the foreach type as "InRecordset" and used "[[rs()]]"	
 	And the underlying dropped activity is a(n) "Activity"
 	When the foreach tool is executed
-	Then the foreach will loop over 3 records
+	Then the recordset "[[res().data]]" will have data as 
+	| res            | data |
+	| [[res().data]] | 1    |
+	| [[res().data]] | 2    |
+	| [[res().data]] | 3    |
 	
-
-Scenario: Execute a foreach for every record in a recordset	using a Tool
-	Given I there is a recordset in the datalist with this shape
-	| rs              | value | name     | type   |
-	| [[rs().row]]    | 1     | rowone   | input  |
-	| [[rs().row]]    | 2     | rowtwo   | input  |
-	| [[rs().row]]    | 3     | rowthree | input  |
-	| [[test().data]] |       | rowone   | output |
-	| [[test().data]] |       | rowtwo   | output |
-	| [[test().data]] |       | rowthree | output |
-	And I have selected the foreach type as "InRecordset" and used "[[rs()]]"	
-	And the underlying dropped activity is a(n) "Tool"
-	When the foreach tool is executed
-	Then the foreach will loop over 3 records
