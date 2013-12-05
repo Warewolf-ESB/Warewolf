@@ -10,3 +10,16 @@ Scenario: Calculate the number of days between two given dates
 	And I selected output in "Weeks" 	
 	When the datetime difference tool is executed
 	Then the difference should be "52"
+
+#Scenario: Calculate the number of Years between two given dates
+#Scenario: Calculate the number of Months between two given dates
+#Scenario: Calculate the number of hours between two given dates
+#Scenario: Calculate the number of minutes between two given dates
+#Scenario: Calculate the number of seconds between two given dates
+#Scenario: Calculate the number of split seconds between two given dates
+#Scenario: Calculate the number of weeks between two given dates
+#Scenario: Calculate the number of minutes between two blank inputs
+#Scenario: Calculate the number of seconds with badly formed input format
+#Scenario: Calculate the number of seconds with no seconds in the input format
+#Scenario: Calculate the number of years with mulitpart text and variable inputs to both input fields
+#Scenario: Calculate the number of days with badly formed inputs
