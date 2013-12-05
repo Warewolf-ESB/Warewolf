@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         IDataListCompiler _compiler;
         DbSource _dbSource;
         private string _dataShape;
-
+      
         public void SetupScenerio()
         {
             _sqlBulkInsert = new DsfSqlBulkInsertActivity();
@@ -68,6 +68,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         {
             AddTableToDataList(table);
             SetupScenerio();
+            ClearCountColumn();
+        }
+
+        private void ClearCountColumn()
+        {
+            using (var connection = new SqlConnection(_dbSource.ConnectionString))
+            {
+                connection.Open();
+                const string q2 = "update SqlBulkInsertSpecFlowTestTableForeign "+
+		                          "set Col2 = 0 " +
+		                          "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                using (var cmd = new SqlCommand(q2, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         void AddTableToDataList(Table table)
@@ -213,5 +229,49 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         {
             _sqlBulkInsert.FireTriggers = true;
         }
+
+        [Given(@"Batch size is (.*)")]
+        public void GivenBatchSizeIs(string batchSize)
+        {
+            _sqlBulkInsert.BatchSize = batchSize;
+            _sqlBulkInsert.FireTriggers = true;
+        }
+
+        [Given(@"Timeout in (.*) seconds")]
+        public void GivenTimeoutInSeconds(string timeout)
+        {
+            _sqlBulkInsert.Timeout = timeout;
+            _sqlBulkInsert.FireTriggers = true;
+        }
+
+
+        [Then(@"number of inserts is (.*)")]
+        public void ThenNumberOfInsertsIs(string numOfInserts)
+        {
+            object actualInserts;
+            using (var connection = new SqlConnection(_dbSource.ConnectionString))
+            {
+                connection.Open();
+                const string q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign " +
+		                           "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                using (var cmd = new SqlCommand(q1, connection))
+                {
+                    actualInserts = cmd.ExecuteScalar();
+                }
+            }
+
+            using (var connection = new SqlConnection(_dbSource.ConnectionString))
+            {
+                connection.Open();
+                const string q2 = "truncate table SqlBulkInsertSpecFlowTestTable";
+                using (var cmd = new SqlCommand(q2, connection))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            Assert.AreEqual(numOfInserts, actualInserts);
+        }
+
     }
 }

@@ -59,3 +59,21 @@ BEGIN
     WHERE Col2 = ''
     )
 END
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign ON  [SqlBulkInsertSpecFlowTestTable]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable ON  [SqlBulkInsertSpecFlowTestTable]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO

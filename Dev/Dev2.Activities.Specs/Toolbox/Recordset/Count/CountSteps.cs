@@ -61,7 +61,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             string actualValue;
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(result));
+            actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
+            Assert.AreEqual(result , actualValue);
         }
     }
 }

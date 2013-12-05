@@ -107,8 +107,60 @@ Given I have this data
 	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
 
 
-	#Not tested are :-
-		# Batch size (Use a different table count the number of inserts done i.e. trigger on an insert)
-		# Timeout
+
+Scenario: Import data into Table Batch size is 0
+Given I have this data
+	| Col1 | Col2     | Col3                                 |
+	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
+	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
+	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+	And Batch size is 0
+	When the tool is executed
+	Then  number of inserts is 1
+
+Scenario: Import data into Table Batch size is 1
+Given I have this data
+	| Col1 | Col2     | Col3                                 |
+	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
+	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
+	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+	And Batch size is 1
+	When the tool is executed
+	Then  number of inserts is 3
+
+Scenario: Import data into Table Batch size is 2
+Given I have this data
+	| Col1 | Col2     | Col3                                 |
+	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
+	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
+	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+	And Batch size is 2
+	When the tool is executed
+	Then  number of inserts is 2
+
+Scenario: Import data into Table timeout after 3 second
+#Note there is a trigger to wait for 2 seconds to simulate inserting large data
+Given I have this data
+	| Col1 | Col2     | Col3                                 |
+	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
+	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
+	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+	And Timeout in 3 seconds
+	When the tool is executed
+	Then  number of inserts is 1
+
+Scenario: Import data into Table timeout after 1 second
+#Note there is a trigger to wait for 2 seconds to simulate inserting large data
+Given I have this data
+	| Col1 | Col2     | Col3                                 |
+	| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
+	| 2    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
+	| 3    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |	
+	And Timeout in 1 seconds
+	When the tool is executed
+	Then  number of inserts is 0
+	
+
+	#Not tested are :-			
 		# Keep table lock
 		# Use internal transaction

@@ -445,6 +445,191 @@ testRunner.Given("I have this data", ((string)(null)), table12, "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableBatchSizeIs0()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 0", ((string[])(null)));
+#line 111
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table14.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table14.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table14.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 112
+testRunner.Given("I have this data", ((string)(null)), table14, "Given ");
+#line 117
+ testRunner.And("Batch size is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 119
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableBatchSizeIs1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 1", ((string[])(null)));
+#line 121
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table15.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table15.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table15.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 122
+testRunner.Given("I have this data", ((string)(null)), table15, "Given ");
+#line 127
+ testRunner.And("Batch size is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 129
+ testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table Batch size is 2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableBatchSizeIs2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table Batch size is 2", ((string[])(null)));
+#line 131
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table16.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table16.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table16.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 132
+testRunner.Given("I have this data", ((string)(null)), table16, "Given ");
+#line 137
+ testRunner.And("Batch size is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 138
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 139
+ testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 3 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableTimeoutAfter3Second()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 3 second", ((string[])(null)));
+#line 141
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table17.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table17.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table17.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 143
+testRunner.Given("I have this data", ((string)(null)), table17, "Given ");
+#line 148
+ testRunner.And("Timeout in 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 150
+ testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table timeout after 1 second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
+        public virtual void ImportDataIntoTableTimeoutAfter1Second()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table timeout after 1 second", ((string[])(null)));
+#line 152
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Col1",
+                        "Col2",
+                        "Col3"});
+            table18.AddRow(new string[] {
+                        "1",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+            table18.AddRow(new string[] {
+                        "2",
+                        "TestData",
+                        "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
+            table18.AddRow(new string[] {
+                        "3",
+                        "TestData",
+                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
+#line 154
+testRunner.Given("I have this data", ((string)(null)), table18, "Given ");
+#line 159
+ testRunner.And("Timeout in 1 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+ testRunner.When("the tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 161
+ testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

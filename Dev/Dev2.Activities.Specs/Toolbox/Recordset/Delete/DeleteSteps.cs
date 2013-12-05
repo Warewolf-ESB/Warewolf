@@ -47,6 +47,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             }
         }
 
+        [Given(@"an index ""(.*)"" exists with a value ""(.*)""")]
+        public void GivenAnIndexExistsWithAValue(string variable, string value)
+        {
+            _variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
         [When(@"the delete tool is executed")]
         public void WhenTheDeleteToolIsExecuted()
         {
