@@ -328,7 +328,7 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Workflow-32}"
-                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Workflow (Ctrl+W)'}"
+                                                   ToolTip="New Workflow (Ctrl+W)"
                                                    />
                                         </Grid>
                                     </Button>
@@ -338,7 +338,7 @@
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Save-32}"
-                                                   ToolTip="{Binding CanSaveReason, TargetNullValue='Save (Ctrl+S)'}"
+                                                   ToolTip="Save (Ctrl+S)"
                                                    />
                                         </Grid>
                                     </Button>
@@ -386,7 +386,7 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
-                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Database Service (Ctrl+Shift+D)'}"
+                                                   ToolTip="New Database Service (Ctrl+Shift+D)"
                                                    />
                                         </Grid>                                       
                                     </Button>
@@ -402,7 +402,7 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
-                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Plugin Service (Ctrl+Shift+P)'}"
+                                                   ToolTip="New Plugin Service (Ctrl+Shift+P)"
                                                    />
                                         </Grid>
                                     </Button>
@@ -418,7 +418,7 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
-                                                   ToolTip="{Binding CanNewResourceReason, TargetNullValue='New Web Service (Ctrl+Shift+W)'}"
+                                                   ToolTip="New Web Service (Ctrl+Shift+W)"
                                                    />
                                         </Grid>
                                     </Button>
@@ -449,7 +449,7 @@
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource ExecuteViewInBrowser-32}"
-                                                   ToolTip="{Binding CanViewInBrowserReason, TargetNullValue='View in Browser'}"
+                                                   ToolTip="View in Browser"
                                                    />
                                         </Grid>
                                     </Button>
@@ -515,11 +515,6 @@
                                     <Button Command="{Binding StartFeedbackCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpFeedback-32}"
                                                    ToolTip="Feedback" />
@@ -528,11 +523,6 @@
                                     <Button Command="{Binding ShowCommunityPageCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpCommunity-32}"
                                                    ToolTip="Community" />
@@ -541,11 +531,6 @@
                                     <Button Command="{Binding AddStudioShortcutsPageCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpShortcutKeys-32}"
                                                    ToolTip="Shortcut Keys" />
@@ -554,11 +539,6 @@
                                     <Button Command="{Binding AddLanguageHelpPageCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpLanguage-32}"
                                                    ToolTip="Warewolf Language Help" />
@@ -567,11 +547,6 @@
                                     <Button Command="{Binding DisplayAboutDialogueCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpAbout-32}"
                                                    ToolTip="About" />
@@ -597,11 +572,6 @@
                                     <Button Command="{Binding SettingsCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Settings-32}"
                                                    ToolTip="Manage Settings" />

@@ -12,7 +12,6 @@ using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -101,8 +100,6 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showStartPageCommand;
         readonly IAsyncWorker _asyncWorker;
         bool _hasActiveConnection;
-        string _canNewResourceReason;
-        string _canDeployReason;
 
         #endregion
 
@@ -194,34 +191,6 @@ namespace Dev2.Studio.ViewModels
                 }
                 return ActiveItem.EditCommand;
             }
-        }
-        public string CanSaveReason { get { return ActiveItem == null ? null : ActiveItem.CanSaveReason; } }
-        public string CanDebugReason { get { return ActiveItem == null ? null : ActiveItem.CanDebugReason; } }
-        public string CanViewInBrowserReason { get { return ActiveItem == null ? null : ActiveItem.CanDebugReason; } }
-        public string CanNewResourceReason
-        {
-            get { return _canNewResourceReason; }
-            set
-            {
-                if(value == _canNewResourceReason)
-                {
-                    return;
-                }
-                _canNewResourceReason = value;
-                NotifyOfPropertyChange(() => CanNewResourceReason);
-            }
-        }
-
-        bool CanNewResource()
-        {
-            var enabled = IsActiveEnvironmentConnected();
-            if(enabled)
-            {
-                const AuthorizationContext AuthorizationContext = AuthorizationContext.Contribute;
-                enabled = ActiveEnvironment.Connection.AuthorizationService.IsAuthorized(AuthorizationContext, null);
-                CanNewResourceReason = AuthorizationContext.ToReason(enabled);
-            }
-            return enabled;
         }
 
         public ICommand SaveCommand
@@ -368,7 +337,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _newResourceCommand ??
-                       (_newResourceCommand = new RelayCommand<string>(ShowNewResourceWizard, param => CanNewResource()));
+                       (_newResourceCommand = new RelayCommand<string>(ShowNewResourceWizard, param => IsActiveEnvironmentConnected()));
             }
         }
 
