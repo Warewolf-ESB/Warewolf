@@ -10,6 +10,10 @@ Scenario: Merge a scalar to a scalar using merge type none
 	Then the merged result is "Warewolf Rocks"
 
 #Scenario: Merge a recordset table and free text using None
+#	Given a 
+
+
+
 #Scenario: Merge a recordset table and free text using Chars
 #Scenario: Merge a recordset table and free text using New Line
 #Scenario: Merge a recordset table and free text using Tab
@@ -17,4 +21,5 @@ Scenario: Merge a scalar to a scalar using merge type none
 #Scenario: Merge a variable using index that is a variable and is blank
 #Scenario: Merge multiple variables on new lines with blank lines
 #Scenario: Merge a recordset that has xml data using Tabs
-
+#Scenario: Merge a short string using padding and alignment
+#Scenario: Merge a long string using small index and padding and allignment
