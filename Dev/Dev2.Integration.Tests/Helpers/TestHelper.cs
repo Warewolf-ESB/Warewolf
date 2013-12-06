@@ -71,6 +71,7 @@ namespace Dev2.Integration.Tests.Helpers
         {
             var myURI = baseURL + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
             WebRequest req = HttpWebRequest.Create(myURI);
+            req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
             using (var response = req.GetResponse() as HttpWebResponse)
@@ -99,6 +100,7 @@ namespace Dev2.Integration.Tests.Helpers
                 string result = string.Empty;
 
                 WebRequest req = HttpWebRequest.Create(postandUrl);
+                req.Credentials = CredentialCache.DefaultCredentials;
                 req.Method = "GET";
 
                 req.Headers.Add(HttpRequestHeader.From, requestID.ToString()); // Set to remote invoke ID ;)

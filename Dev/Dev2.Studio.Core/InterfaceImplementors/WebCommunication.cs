@@ -14,7 +14,9 @@ namespace Dev2.Studio.Core {
 
         public IWebCommunicationResponse Get(string uri) {
             HttpWebRequest request = WebRequest.Create(string.Format("{0}", uri)) as HttpWebRequest;
-            if (request != null) {
+            if (request != null)
+            {
+                request.Credentials = CredentialCache.DefaultCredentials;
                 request.Method = "GET";
 
                 using (var response = request.GetResponse() as HttpWebResponse) {
@@ -35,6 +37,7 @@ namespace Dev2.Studio.Core {
         public IWebCommunicationResponse Post(string uri, string data) {
             HttpWebRequest request = WebRequest.Create(string.Format("{0}", uri)) as HttpWebRequest;
             if (request != null) {
+                request.Credentials = CredentialCache.DefaultCredentials;
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
 
