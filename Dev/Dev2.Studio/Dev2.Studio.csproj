@@ -1049,6 +1049,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\Unauthorized.jpg" />
     <Resource Include="Images\HelpShortcutKeys-32.png" />
     <Resource Include="Resources\HelpCommunity-32_files\image0.png" />
     <Resource Include="Images\PluginService-32.png" />
@@ -1308,7 +1309,7 @@ if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent />
+    <PostBuildEvent>copy "$(SolutionDir)Binaries\ActiveDirectory\Interop.ActiveDs.dll" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

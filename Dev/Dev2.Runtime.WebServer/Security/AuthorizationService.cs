@@ -17,16 +17,22 @@ namespace Dev2.Runtime.WebServer.Security
         protected AuthorizationService(ISecurityService securityService)
             : base(securityService)
         {
+            Load();
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
+
+        public override bool IsAuthorized(AuthorizationContext context, string resource)
+        {
+            return false;
+        }
 
         public bool IsAuthorized(IAuthorizationRequest request)
         {
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
             if(!_cachedRequests.TryGetValue(request.Key, out authorized))
-            {
+            {                
                 authorized = IsAuthorized(request.User, GetContext(request), GetResource(request));
                 _cachedRequests.TryAdd(request.Key, authorized);
             }
@@ -83,16 +89,12 @@ namespace Dev2.Runtime.WebServer.Security
             return string.IsNullOrEmpty(resource) ? null : resource;
         }
 
-        protected override void OnSecurityServiceChanged(object sender, EventArgs args)
+        protected override void RaisePermissionsChanged()
         {
             _cachedRequests.Clear();
+            base.RaisePermissionsChanged();
         }
-
-        public override bool IsAuthorized(AuthorizationContext context, string resource)
-        {
-            return false;
-        }
-
+   
         static string GetWebExecuteName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);

@@ -38,6 +38,9 @@ namespace Dev2.Services.Security
 
                 case AuthorizationContext.DeployFrom:
                     return Permissions.Administrator | Permissions.DeployFrom;
+
+                case AuthorizationContext.Any:
+                    return Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo;
             }
             return Permissions.None;
         }

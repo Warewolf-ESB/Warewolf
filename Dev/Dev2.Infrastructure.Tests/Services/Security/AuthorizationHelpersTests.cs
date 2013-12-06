@@ -162,6 +162,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Verify_ToPermissions(AuthorizationContext.Contribute, Permissions.Administrator | Permissions.Contribute);
             Verify_ToPermissions(AuthorizationContext.DeployTo, Permissions.Administrator | Permissions.DeployTo);
             Verify_ToPermissions(AuthorizationContext.DeployFrom, Permissions.Administrator | Permissions.DeployFrom);
+            Verify_ToPermissions(AuthorizationContext.Any, Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo);
         }
 
         void Verify_ToPermissions(AuthorizationContext authorizationContext, Permissions expectedPermissions)

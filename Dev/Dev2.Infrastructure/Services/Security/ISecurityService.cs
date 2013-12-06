@@ -5,7 +5,8 @@ namespace Dev2.Services.Security
 {
     public interface ISecurityService : IDisposable
     {
-        event EventHandler Changed;
+        event EventHandler PermissionsChanged;
+
         IReadOnlyList<WindowsGroupPermission> Permissions { get; }
 
         void Read();

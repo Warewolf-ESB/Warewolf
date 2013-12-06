@@ -27,7 +27,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_Constructor")]
-        public void AuthorizationServiceBase_Constructor_SecurityServiceChangedEvent_WiredUp()
+        public void AuthorizationServiceBase_Constructor_PermissionsChangedEvent_WiredUp()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
@@ -36,10 +36,10 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
 
             //------------Execute Test---------------------------
-            securityService.Raise(m => m.Changed += null, EventArgs.Empty);
+            securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, authorizationService.OnSecurityServiceChangedHitCount);
+            Assert.AreEqual(1, authorizationService.RaisePermissionsChangedHitCount);
         }
 
         [TestMethod]

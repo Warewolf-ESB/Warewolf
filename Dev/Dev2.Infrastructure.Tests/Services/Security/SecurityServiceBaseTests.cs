@@ -88,7 +88,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test--------------------------
             bool changedEventWasFired = false;
             var securityServiceBase = new TestSecurityServiceBase();
-            securityServiceBase.Changed += (sender, args) => changedEventWasFired = true;
+            securityServiceBase.PermissionsChanged += (sender, args) => changedEventWasFired = true;
 
             //------------Execute Test---------------------------
             securityServiceBase.Read();

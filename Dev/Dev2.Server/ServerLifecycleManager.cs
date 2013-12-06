@@ -1330,6 +1330,8 @@ namespace Unlimited.Applications.DynamicServicesHost
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
+                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);                    
+
                     // TODO: This does not work - cause 503 errors
                     //HostSecurityProvider.Instance.EnsureAccessToPort(httpEndpoint);
 
@@ -1692,10 +1694,7 @@ namespace Unlimited.Applications.DynamicServicesHost
         {
             Write("Loading settings provider...  ");
             // First call to instance loads the provider.
-            var machineName = Environment.MachineName;
-            string webServerUri = string.Format("http://{0}:1234", machineName);
-            EnvironmentVariables.WebServerUri = webServerUri;
-            SettingsProvider.WebServerUri = webServerUri;
+            SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             //            var instance = SettingsProvider.Instance;
             //            instance.Start();
             WriteLine("done.");

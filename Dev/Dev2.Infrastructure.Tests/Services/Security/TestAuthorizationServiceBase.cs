@@ -11,13 +11,15 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         {
         }
 
-        public int OnSecurityServiceChangedHitCount { get; private set; }
-        protected override void OnSecurityServiceChanged(object sender, EventArgs args)
-        {
-            OnSecurityServiceChangedHitCount++;
-        }
+        public int RaisePermissionsChangedHitCount { get; private set; }
 
         public IPrincipal User { get; set; }
+
+        protected override void RaisePermissionsChanged()
+        {
+            RaisePermissionsChangedHitCount++;
+            base.RaisePermissionsChanged();
+        }
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {

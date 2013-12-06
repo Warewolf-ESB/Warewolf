@@ -42,13 +42,15 @@ namespace Dev2.Network
 
             HubConnection = new HubConnection(serverUri);
             HubConnection.Credentials = CredentialCache.DefaultNetworkCredentials;
-            //            HubConnection.TraceLevel = TraceLevels.All;
-            //            HubConnection.TraceWriter = Console.Out;
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
+            //HubConnection.TraceLevel = TraceLevels.All;
+            //HubConnection.TraceWriter = Console.Out;
 
             InitializeEsbProxy();
+
+            AuthorizationService = new ClientAuthorizationService(new ClientSecurityService(this));
         }
 
         public bool IsLocalHost
@@ -67,11 +69,9 @@ namespace Dev2.Network
             EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
         }
 
-        protected void InitializeAuthorizationService()
+        protected void LoadPermissions()
         {
-            var configService = new ClientSecurityService(this);
-            configService.Read();
-            AuthorizationService = new ClientAuthorizationService(configService);
+            AuthorizationService.Load();
         }
 
         void HubConnectionOnClosed()
@@ -108,7 +108,7 @@ namespace Dev2.Network
                     OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true, false, "Logged In"));
                     OnServerStateChanged(new ServerStateEventArgs(ServerState.Online));
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
-                    InitializeAuthorizationService();
+                    LoadPermissions();
                     break;
                 case ConnectionState.Connecting:
                 case ConnectionState.Reconnecting:

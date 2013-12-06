@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_DefaultPermissionsSet()
+        public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_AdministratorsPermissionsSet()
         {
             //------------Setup for test--------------------------
             var securityRead = new SecurityRead();
@@ -41,11 +41,11 @@ namespace Dev2.Tests.Runtime.Services
             var jsonPermissions = securityRead.Execute(null, null);
             var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, windowsGroupPermissions.Count);
+            Assert.IsTrue(windowsGroupPermissions.Count > 0);
             Assert.AreEqual("BuiltIn\\Administrators", windowsGroupPermissions[0].WindowsGroup);
             Assert.AreEqual(true, windowsGroupPermissions[0].IsServer);
-            Assert.AreEqual(false, windowsGroupPermissions[0].View);
-            Assert.AreEqual(false, windowsGroupPermissions[0].Execute);
+            Assert.AreEqual(true, windowsGroupPermissions[0].View);
+            Assert.AreEqual(true, windowsGroupPermissions[0].Execute);
             Assert.AreEqual(true, windowsGroupPermissions[0].Contribute);
             Assert.AreEqual(true, windowsGroupPermissions[0].DeployTo);
             Assert.AreEqual(true, windowsGroupPermissions[0].DeployFrom);

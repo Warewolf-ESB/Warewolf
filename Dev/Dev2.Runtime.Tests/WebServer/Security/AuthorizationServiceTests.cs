@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationService_Constructor")]
-        public void AuthorizationService_Constructor_SecurityServiceChangedEvent_ClearsCachedRequests()
+        public void AuthorizationService_Constructor_PermissionsChangedEvent_ClearsCachedRequests()
         {
             //------------Setup for test--------------------------
             var securityService = new Mock<ISecurityService>();
@@ -48,7 +48,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             Assert.AreEqual(1, authorizationService.CachedRequestCount);
 
             //------------Execute Test---------------------------
-            securityService.Raise(m => m.Changed += null, EventArgs.Empty);
+            securityService.Raise(m => m.PermissionsChanged += null, EventArgs.Empty);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, authorizationService.CachedRequestCount);

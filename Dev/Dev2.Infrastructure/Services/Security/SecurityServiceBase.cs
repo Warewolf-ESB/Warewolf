@@ -8,7 +8,7 @@ namespace Dev2.Services.Security
     {
         readonly List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
         
-        public event EventHandler Changed;
+        public event EventHandler PermissionsChanged;
         
         public IReadOnlyList<WindowsGroupPermission> Permissions { get { return _permissions; } }
 
@@ -22,9 +22,14 @@ namespace Dev2.Services.Security
                 _permissions.AddRange(JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(json));
             }
 
-            if(Changed != null)
+            RaisePermissionsChanged();
+        }
+
+        protected virtual void RaisePermissionsChanged()
+        {
+            if(PermissionsChanged != null)
             {
-                Changed(this, EventArgs.Empty);
+                PermissionsChanged(this, EventArgs.Empty);
             }
         }
 

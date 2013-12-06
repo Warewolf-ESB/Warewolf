@@ -18,7 +18,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 return new List<WindowsGroupPermission>
                 {
-                    WindowsGroupPermission.CreateDefault()
+                    WindowsGroupPermission.CreateAdministrators(),
+                    WindowsGroupPermission.CreateEveryone()
                 };
             }
         }

@@ -271,23 +271,45 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WindowsGroupPermission_CreateDefault")]
-        public void WindowsGroupPermission_CreateDefault_IsNotNull()
+        [TestCategory("WindowsGroupPermission_CreateAdministrators")]
+        public void WindowsGroupPermission_CreateAdministrators_IsNotNull()
         {
             //------------Setup for test--------------------------            
 
             //------------Execute Test---------------------------
-            var p = WindowsGroupPermission.CreateDefault();
+            var p = WindowsGroupPermission.CreateAdministrators();
 
             //------------Assert Results-------------------------
             Assert.IsTrue(p.IsServer);
-            Assert.IsFalse(p.View);
-            Assert.IsFalse(p.Execute);
+            Assert.IsTrue(p.View);
+            Assert.IsTrue(p.Execute);
             Assert.IsTrue(p.Contribute);
             Assert.IsTrue(p.DeployTo);
             Assert.IsTrue(p.DeployFrom);
             Assert.IsTrue(p.Administrator);
             Assert.AreEqual(WindowsGroupPermission.BuiltInAdministratorsText, p.WindowsGroup);
+            Assert.AreEqual(Guid.Empty, p.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WindowsGroupPermission_CreateEveryone")]
+        public void WindowsGroupPermission_CreateEveryone_IsNotNull()
+        {
+            //------------Setup for test--------------------------            
+
+            //------------Execute Test---------------------------
+            var p = WindowsGroupPermission.CreateEveryone();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(p.IsServer);
+            Assert.IsTrue(p.View);
+            Assert.IsTrue(p.Execute);
+            Assert.IsTrue(p.Contribute);
+            Assert.IsTrue(p.DeployTo);
+            Assert.IsTrue(p.DeployFrom);
+            Assert.IsTrue(p.Administrator);
+            Assert.AreEqual("Everyone", p.WindowsGroup);
             Assert.AreEqual(Guid.Empty, p.ResourceID);
         }
     }

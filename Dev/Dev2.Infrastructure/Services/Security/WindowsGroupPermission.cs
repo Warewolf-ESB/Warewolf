@@ -87,20 +87,36 @@ namespace Dev2.Services.Security
             }
         }
 
-        public static WindowsGroupPermission CreateDefault()
+        public static WindowsGroupPermission CreateAdministrators()
         {
             return new WindowsGroupPermission
             {
                 IsServer = true,
                 WindowsGroup = BuiltInAdministratorsText,
-                View = false,
-                Execute = false,
+                View = true,
+                Execute = true,
                 Contribute = true,
                 DeployTo = true,
                 DeployFrom = true,
                 Administrator = true
 
             };
+        }
+
+        public static WindowsGroupPermission CreateEveryone()
+        {
+            return new WindowsGroupPermission
+            {
+                IsServer = true,
+                WindowsGroup = "Everyone",
+                View = true,
+                Execute = true,
+                Contribute = true,
+                DeployTo = true,
+                DeployFrom = true,
+                Administrator = true
+            }
+;
         }
     }
 }

@@ -12,13 +12,30 @@ namespace Dev2.Services.Security
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
             _securityService = securityService;
-            _securityService.Changed += OnSecurityServiceChanged;
+            _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
+        }
+
+        public event EventHandler PermissionsChanged;
+
+        public Permissions GetResourcePermissions(Guid resourceID)
+        {
+            return Permissions.None;
+        }
+
+        public void Load()
+        {
             _securityService.Read();
         }
 
-        protected abstract void OnSecurityServiceChanged(object sender, EventArgs args);
-
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
+
+        protected virtual void RaisePermissionsChanged()
+        {
+            if(PermissionsChanged != null)
+            {
+                PermissionsChanged(this, EventArgs.Empty);
+            }
+        }
 
         protected bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
         {
