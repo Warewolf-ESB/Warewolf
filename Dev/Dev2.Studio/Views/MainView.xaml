@@ -454,8 +454,7 @@
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
-                                            ToolTip="{Binding CanDebugReason}">
+                                            Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
