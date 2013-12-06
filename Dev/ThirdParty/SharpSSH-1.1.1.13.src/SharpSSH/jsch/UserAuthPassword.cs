@@ -121,24 +121,12 @@ class UserAuthPassword : UserAuth{
 	if(buf.buffer[5]==Session.SSH_MSG_USERAUTH_FAILURE){
 	  buf.getInt(); buf.getByte(); buf.getByte(); 
 	  byte[] foo=buf.getString();
-	  int partial_success=buf.getByte();
-	  //System.out.println(new String(foo)+
-	  //		 " partial_success:"+(partial_success!=0));
-	  if(partial_success!=0){
-	    throw new JSchPartialAuthException(Util.getString(foo));
-	  }
-	  break;
+      throw new JSchException("Authorisation Failed");
 	}
-	else{
-//        System.out.println("USERAUTH fail ("+buf.buffer[5]+")");
-//	  throw new JSchException("USERAUTH fail ("+buf.buffer[5]+")");
-	  return false;
-	}
+          return false;
       }
       password=null;
     }
-    //throw new JSchException("USERAUTH fail");
-    //return false;
   }
 }
 

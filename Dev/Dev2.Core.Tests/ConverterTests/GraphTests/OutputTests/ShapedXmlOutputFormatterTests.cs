@@ -604,14 +604,14 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
     <EmployeeName>Brendon</EmployeeName>
     <InnerName>
         RandomData
+    ,
+        RandomData1
     </InnerName>
   </Names>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <EmployeeName>Jayd</EmployeeName>
-    <InnerName>
-        RandomData1
-    </InnerName>
+    <InnerName></InnerName>
   </Names>
   <Names>
     <CompanyName>Dev2</CompanyName>
@@ -657,15 +657,15 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
     <EmployeeName>Brendon</EmployeeName>
     <InnerName>
         RandomData
+    ,
+        RandomData1
     </InnerName>
   </Names>
   <Names>
     <CompanyName>Dev2</CompanyName>
     <DepartmentName>Dev</DepartmentName>
     <EmployeeName>Jayd</EmployeeName>
-    <InnerName>
-        RandomData1
-    </InnerName>
+    <InnerName></InnerName>
   </Names>
   <Names>
     <CompanyName>Dev2</CompanyName>

@@ -280,7 +280,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Jso
 
             Dictionary<IPath, IList<object>> data = JsonNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData|RandomData1||";
+            string expected = "Dev2|Dev2|Dev2|Dev2^Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe^RandomData\r\n    ,\r\n        RandomData1|||";
             string actual = string.Join("|", data[path3].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path1].Select(s => s.ToString().Trim())) + "^" + string.Join("|", data[path2].Select(s => s.ToString().Trim()));
 
             Assert.AreEqual(expected, actual);
