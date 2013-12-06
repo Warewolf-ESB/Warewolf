@@ -385,6 +385,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Toolbox\Data\DataMerge\NewLineExample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Toolbox\Data\DataSplit\CSVExample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

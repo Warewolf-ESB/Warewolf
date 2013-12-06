@@ -83,6 +83,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
  testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 10
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -93,14 +95,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromTextToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", ((string[])(null)));
-#line 11
-this.ScenarioSetup(scenarioInfo);
 #line 12
- testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 13
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
  testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -111,14 +115,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromTextToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal", ((string[])(null)));
-#line 16
-this.ScenarioSetup(scenarioInfo);
-#line 17
- testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 19
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 20
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
  testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 22
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -129,14 +135,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromTextToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", ((string[])(null)));
-#line 21
-this.ScenarioSetup(scenarioInfo);
-#line 22
- testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 23
- testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
+this.ScenarioSetup(scenarioInfo);
+#line 25
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 26
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
  testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -147,14 +155,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBinaryToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", ((string[])(null)));
-#line 26
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 27
+#line 31
  testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 28
+#line 32
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 29
+#line 33
  testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 34
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -165,14 +175,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBinaryToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", ((string[])(null)));
-#line 31
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 32
+#line 37
  testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
+#line 38
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
+#line 39
  testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 40
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -183,14 +195,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBinaryToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal", ((string[])(null)));
-#line 36
+#line 42
 this.ScenarioSetup(scenarioInfo);
-#line 37
+#line 43
  testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 38
+#line 44
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
+#line 45
  testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -201,14 +215,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBinaryToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", ((string[])(null)));
-#line 41
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 42
+#line 49
  testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 50
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 51
  testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 52
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -219,14 +235,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromHexadecimalToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal", ((string[])(null)));
-#line 46
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 47
+#line 55
  testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
+#line 56
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 49
+#line 57
  testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 58
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -237,14 +255,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromHexadecimalToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text", ((string[])(null)));
-#line 51
+#line 60
 this.ScenarioSetup(scenarioInfo);
-#line 52
+#line 61
  testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 62
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 54
+#line 63
  testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 64
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -255,14 +275,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromHexadecimalToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary", ((string[])(null)));
-#line 56
+#line 66
 this.ScenarioSetup(scenarioInfo);
-#line 57
+#line 67
  testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
+#line 68
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
+#line 69
  testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 70
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -273,14 +295,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromHexadecimalToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64", ((string[])(null)));
-#line 61
+#line 72
 this.ScenarioSetup(scenarioInfo);
-#line 62
+#line 73
  testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
+#line 74
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 64
+#line 75
  testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 76
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -291,14 +315,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBase64ToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal", ((string[])(null)));
-#line 66
+#line 78
 this.ScenarioSetup(scenarioInfo);
-#line 67
+#line 79
  testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 80
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 81
  testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 82
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -309,14 +335,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBase64ToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", ((string[])(null)));
-#line 71
+#line 84
 this.ScenarioSetup(scenarioInfo);
-#line 72
+#line 85
  testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 73
+#line 86
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 74
+#line 87
  testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 88
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -327,14 +355,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBase64ToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", ((string[])(null)));
-#line 76
+#line 90
 this.ScenarioSetup(scenarioInfo);
-#line 77
+#line 91
  testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 78
+#line 92
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 79
+#line 93
  testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 94
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -345,14 +375,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertFromBase64ToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", ((string[])(null)));
-#line 81
+#line 96
 this.ScenarioSetup(scenarioInfo);
-#line 82
+#line 97
  testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 83
+#line 98
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 99
  testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 100
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -363,14 +395,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromTextToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary", ((string[])(null)));
-#line 87
+#line 102
 this.ScenarioSetup(scenarioInfo);
-#line 88
+#line 103
  testRunner.Given("I convert value \"\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
+#line 104
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 105
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -381,14 +415,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromTextToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal", ((string[])(null)));
-#line 92
+#line 108
 this.ScenarioSetup(scenarioInfo);
-#line 93
+#line 109
  testRunner.Given("I convert value \"\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 94
+#line 110
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
+#line 111
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 112
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -399,14 +435,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromTextToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64", ((string[])(null)));
-#line 97
+#line 114
 this.ScenarioSetup(scenarioInfo);
-#line 98
+#line 115
  testRunner.Given("I convert value \"\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 99
+#line 116
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
+#line 117
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 118
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -417,14 +455,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBinaryToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text", ((string[])(null)));
-#line 102
+#line 120
 this.ScenarioSetup(scenarioInfo);
-#line 103
+#line 121
  testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 104
+#line 122
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 105
+#line 123
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 124
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -435,14 +475,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBinaryToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal", ((string[])(null)));
-#line 107
+#line 126
 this.ScenarioSetup(scenarioInfo);
-#line 108
+#line 127
  testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 109
+#line 128
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 129
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 130
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -453,14 +495,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBinaryToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64", ((string[])(null)));
-#line 112
+#line 132
 this.ScenarioSetup(scenarioInfo);
-#line 113
+#line 133
  testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 114
+#line 134
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 115
+#line 135
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 136
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -471,14 +515,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromHexadecimalToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text", ((string[])(null)));
-#line 117
+#line 138
 this.ScenarioSetup(scenarioInfo);
-#line 118
+#line 139
  testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
+#line 140
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 141
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 142
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -489,14 +535,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromHexadecimalToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary", ((string[])(null)));
-#line 122
+#line 144
 this.ScenarioSetup(scenarioInfo);
-#line 123
+#line 145
  testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 124
+#line 146
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 125
+#line 147
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 148
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -507,14 +555,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromHexadecimalToBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64", ((string[])(null)));
-#line 127
+#line 150
 this.ScenarioSetup(scenarioInfo);
-#line 128
+#line 151
  testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 129
+#line 152
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 130
+#line 153
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 154
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -525,14 +575,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBase64ToHexadecimal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal", ((string[])(null)));
-#line 132
+#line 156
 this.ScenarioSetup(scenarioInfo);
-#line 133
+#line 157
  testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 134
+#line 158
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 135
+#line 159
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 160
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -543,14 +595,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBase64ToText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text", ((string[])(null)));
-#line 137
+#line 162
 this.ScenarioSetup(scenarioInfo);
-#line 138
+#line 163
  testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 139
+#line 164
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 140
+#line 165
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 166
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -561,14 +615,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertBlankFromBase64ToBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary", ((string[])(null)));
-#line 142
+#line 168
 this.ScenarioSetup(scenarioInfo);
-#line 143
+#line 169
  testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 144
+#line 170
  testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 145
+#line 171
  testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 172
+ testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
