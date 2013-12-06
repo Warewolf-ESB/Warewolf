@@ -105,25 +105,32 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         public void Environment_ServiceNotExistsOnService_ExpectedErrorMessageServiceNotExist()
         {
             // BUG 8593: 2013.02.17 - TWR - changed code to test POST web request
+            //This has no mapping in the webapi there error
             var urls = new[]
             {
-                String.Format("{0}{1}", ServerSettings.WebserverURI, "%3Ctest%3E/test"),
+                String.Format("{0}{1}", ServerSettings.WebserverURI, "test/test"),
                 String.Format("{0}{1}", ServerSettings.WebserverURI, "/")
             };
-
-            var client = new WebClient();
-            foreach (var url in urls)
+            var client = new WebClient { Credentials = CredentialCache.DefaultCredentials };
+            try
             {
-                try
-                {
-                    client.UploadString(url, "hello");
-                }
-                catch (WebException wex)
-                {
-                    var response = (HttpWebResponse)wex.Response;
-                    Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
-                }
+                client.UploadString(urls[0], "hello");
             }
+            catch(WebException wex)
+            {
+                var response = (HttpWebResponse)wex.Response;
+                Assert.AreEqual(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+            }
+            try
+            {
+                client.UploadString(urls[1], "hello");
+            }
+            catch(WebException wex)
+            {
+                var response = (HttpWebResponse)wex.Response;
+                Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            }
+            
         }
 
         /// <summary>
