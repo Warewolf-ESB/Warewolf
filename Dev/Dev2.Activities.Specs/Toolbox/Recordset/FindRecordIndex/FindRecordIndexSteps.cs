@@ -70,6 +70,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);

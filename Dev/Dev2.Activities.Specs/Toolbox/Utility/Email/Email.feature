@@ -12,7 +12,7 @@ Scenario: Send email to multiple receipients
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
-	Then the result will be "Success"
+	Then the email result will be "Success"
 
 Scenario: Send email with multiple from accounts
 	Given I have an email address input "test1@freemail.com"
@@ -21,7 +21,7 @@ Scenario: Send email with multiple from accounts
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
-	Then the result will be "Failure"
+	Then the email result will be "Failure"
 
 Scenario: Send email with badly formed multiple To Accounts
 	Given I have an email address input "test1@freemail"
@@ -30,7 +30,7 @@ Scenario: Send email with badly formed multiple To Accounts
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
-	Then the result will be "Failure"
+	Then the email result will be "Failure"
 
 Scenario: Send email with no To Accounts
 	Given I have an email address input ""
@@ -39,7 +39,7 @@ Scenario: Send email with no To Accounts
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
-	Then the result will be "Failure"
+	Then the email result will be "Failure"
 
 Scenario: Send email with Subject as both text and variable as xml 
 	Given I have an email address input "test1@freemail"
@@ -49,14 +49,14 @@ Scenario: Send email with Subject as both text and variable as xml
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
-	Then the result will be "Success"
+	Then the email result will be "Success"
 
 Scenario: Send email with no subject and no body
 	Given I have an email address input "test1@freemail"
 	And the from account is "me@freemail.com" 
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	When the email tool is executed
-	Then the result will be "Success"
+	Then the email result will be "Success"
 
 Scenario: Send email with Body as both text and variable 
 	Given I have an email address input "test1@freemail"
@@ -66,7 +66,7 @@ Scenario: Send email with Body as both text and variable
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "testing email from [[body]] the cool specflow"
 	When the email tool is executed
-	Then the result will be "Success"
+	Then the email result will be "Success"
 
 Scenario: Send email with variable as Body that is xml
 	Given I have an email address input "test1@freemail"
@@ -76,9 +76,9 @@ Scenario: Send email with variable as Body that is xml
 	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
 	And body is "[[body]]"
 	When the email tool is executed
-	Then the result will be "Success"
+	Then the email result will be "Success"
 
 Scenario: Send email with everything blank
 	Given the from account is "me@freemail.com" 
 	When the email tool is executed
-	Then the result will be "Failure"
+	Then the email result will be "Failure"

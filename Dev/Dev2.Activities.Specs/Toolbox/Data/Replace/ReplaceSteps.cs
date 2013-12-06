@@ -82,6 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(InFields),
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);

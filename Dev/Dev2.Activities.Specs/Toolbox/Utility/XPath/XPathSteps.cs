@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,11 +48,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             _xmlData = xmlData;
         }
-        
-        [Given(@"I have a variable ""(.*)"" with xpath ""(.*)""")]
-        public void GivenIHaveAVariableWithXpath(string variable, string xpath)
+
+        [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
+        public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
         {
             _variableList.Add(new Tuple<string, string>(variable, xpath));
+        }
+
+        [Given(@"I have this xml '(.*)' in a variable ""(.*)""")]
+        public void GivenIHaveThisXmlInAVariable(string xml, string variable)
+        {
+            _variableList.Add(new Tuple<string, string>(variable, xml));
         }
         
         [When(@"the xpath tool is executed")]
@@ -60,7 +67,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             BuildDataList();
             _result = ExecuteProcess();
         }
-        
 
         [Then(@"the variable ""(.*)"" should have a value ""(.*)""")]
         public void ThenTheVariableShouldHaveAValue(string variable, string value)
@@ -70,6 +76,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
+        }
+        
+        [Then(@"the xpath result for this varibale ""(.*)"" will be")]
+        public void ThenTheXpathResultForThisVaribaleWillBe(string variable, Table table)
+        {
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+
+            string error;
+            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+
+            List<TableRow> tableRows = table.Rows.ToList();
+            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+            for (int i = 0; i < tableRows.Count; i++)
+            {
+                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+            }
         }
     }
 }

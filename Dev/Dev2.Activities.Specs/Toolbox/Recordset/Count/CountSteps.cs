@@ -59,6 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;

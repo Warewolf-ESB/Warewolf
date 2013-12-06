@@ -49,7 +49,6 @@ Scenario: Sort a recordset backwards using star notation
 	| rs().row | best     |
 	| rs().row | are      |
 
-
 Scenario: Sort a recordset forwards 
 	Given I have the following recordset to sort
 	| rs       | value    |

@@ -17,14 +17,19 @@ Scenario: Use XPath to get data off XML - Id = 2
 
 Scenario: Use XPath to build a recordset with 2 fields
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
-	And I have a variable "[[rec().id]]"  outputwith xpath "//root/number/@id"
+	And I have a variable "[[rec().id]]" output with xpath "//root/number/@id"
 	And I have a variable "[[rec().text]]" output with xpath "//root/number/text()"
 	When the xpath tool is executed
-	Then the xpath result will be
-	| rec().id | rec().text |
-	| 1        | one        |
-	| 2        | two        |
-	| 3        | three      |
+	Then the xpath result for this varibale "rec().id" will be
+	| rec().id |
+	| 1        |
+	| 2        |
+	| 3        |
+	And the xpath result for this varibale "rec().text" will be
+	| rec().text |
+	| one        |
+	| two        |
+	| three      |
 
 Scenario: Use XPath that does not exist
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
@@ -32,8 +37,8 @@ Scenario: Use XPath that does not exist
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
 
-Scenario: Use XPath with blank variable as XML input
-	Given I have this xml '' in a variable [[myxml]]"
+Scenario: Use XPath with blank variable as XML input	
+	Given I have this xml '' in a variable "[[myxml]]"
 	And I have a variable "[[ids]]" output with xpath "//root/num/@id"
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
@@ -58,6 +63,6 @@ Scenario: Use XPath with no variable result but valid xpath
 
 Scenario: Use XPath to get multiple results into a scalar in CSV
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
-	And I have a variable "[[ids]]"  outputwith xpath "//root/number/@id"
+	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value "1,2,3"

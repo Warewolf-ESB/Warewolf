@@ -82,6 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             string error;
             string actualValue;
+            results = results.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(results, actualValue);

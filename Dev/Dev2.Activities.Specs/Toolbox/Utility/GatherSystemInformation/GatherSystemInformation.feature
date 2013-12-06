@@ -92,4 +92,4 @@ Scenario: Assign a system Number Of Warewolf Agents into a scalar
 Scenario: Assign User Roles into a recordset
 	Given I have a variable "[[my().roles]]" and I selected "UserRoles"	
 	When the gather system infomartion tool is executed
-	Then the value of the variable "[[my(2).roles]]" is a valid "String" with a length > "3"
+	Then the value of the variable "[[my(2).roles]]" is a valid "String"

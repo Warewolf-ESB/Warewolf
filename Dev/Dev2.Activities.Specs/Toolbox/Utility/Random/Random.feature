@@ -53,9 +53,9 @@ Scenario: Generate Numbers with a negative range
 
 Scenario: Generate Letters with blank length
 	Given I have a type as "Numbers"
-	And I have a range from "" 
+	And I have a range from "" to ""  
 	When the random tool is executed 
-	Then the result from the random tool should be of type "System.Int32" with a length of "2"
+	Then random execution has "AN" error
 
 Scenario: Generate Letters with a negative length
 	Given I have a type as "Letters"
@@ -79,7 +79,8 @@ Scenario: Generate a Number between 5 and 5
 	Given I have a type as "Numbers"
 	And I have a range from "5" to "5" 
 	When the random tool is executed 
-	Then the result from the random tool should be 5
+	Then the result from the random tool should be of type "System.Int32" with a length of "1"
+	And the random value will be "5"
 
 
 

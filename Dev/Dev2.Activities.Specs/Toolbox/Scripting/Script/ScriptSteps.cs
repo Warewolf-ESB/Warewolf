@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Text;
-using ActivityUnitTests;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract;
@@ -36,14 +34,13 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 Action = _dsfScripting
             };
         }
-
-        [Given(@"I have a variable ""(.*)"" with this value ""(.*)""")]
-        public void GivenIHaveAVariableWithThisValue(string variable, string value)
+        
+        [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
+        public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
             _variableList.Add(new Tuple<string, string>(variable, value));
         }
-
-
+        
         [Given(@"I have this script to execute ""(.*)""")]
         public void GivenIHaveThisScriptToExecute(string scriptToExecute)
         {
@@ -68,9 +65,18 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.IsTrue(actualValue.Contains(result));
+        }
+        
+        [Then(@"script execution has ""(.*)"" error")]
+        public void ThenScriptExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("AN");
+            var actual = !string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            Assert.AreEqual(expected, actual);
         }
     }
 }

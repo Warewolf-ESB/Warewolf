@@ -55,6 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.IsTrue(actualValue.Contains(result));

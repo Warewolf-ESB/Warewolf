@@ -192,7 +192,6 @@ namespace ActivityUnitTests
             return dataObject;
         }
 
-
         #region ForEach Execution
 
         /// <summary>
@@ -401,6 +400,8 @@ namespace ActivityUnitTests
         {
             ErrorResultTO errorResult;
             IBinaryDataListEntry entry;
+           
+
             bool fine = Compiler.FetchBinaryDataList(dataListId, out errorResult).TryGetEntry(fieldToRetrieve, out entry, out error);
             if (entry != null && fine)
             {
@@ -460,5 +461,12 @@ namespace ActivityUnitTests
         }
 
         #endregion Retrieve DataList Values
+
+        #region Retrieve Errors
+         public string FetchErrors(Guid dataListId)
+         {
+           return Compiler.FetchErrors(dataListId);
+         }
+        #endregion
     }
 }

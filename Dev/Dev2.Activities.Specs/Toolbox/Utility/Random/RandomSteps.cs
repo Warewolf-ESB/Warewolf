@@ -97,5 +97,25 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var res = converter.ConvertFrom(actualValue);
             Assert.AreEqual(length , actualValue.Length);
         }
+
+        [Then(@"the random value will be ""(.*)""")]
+        public void ThenTheRandomValueWillBe(string value)
+        {
+            string error;
+            string actualValue;
+            value = value.Replace("\"\"", "");
+            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out actualValue, out error);
+            Assert.AreEqual(value, actualValue);
+        }
+
+        [Then(@"random execution has ""(.*)"" error")]
+        public void ThenRandomExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("AN");
+            var actual = !string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            Assert.AreEqual(expected, actual);
+        }
+
     }
 }

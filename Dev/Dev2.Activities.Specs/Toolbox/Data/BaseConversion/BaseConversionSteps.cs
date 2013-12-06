@@ -56,6 +56,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         {
             string error;
             string actualValue;
+            value = value.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, "var", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }

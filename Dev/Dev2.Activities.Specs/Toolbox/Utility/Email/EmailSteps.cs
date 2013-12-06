@@ -3,9 +3,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Activities.Specs.Toolbox.Utility.Email
 {
@@ -19,8 +18,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         private string _serverName;
         private string _simulationOutput;
         private string _subject;
-
-
+        private string _to;
+        
         public EmailSteps()
             : base(new List<Tuple<string, string>>())
         {
@@ -29,9 +28,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         private void BuildDataList()
         {
             BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
-
-            var builder = new StringBuilder();
-            ((List<Tuple<string, string>>) _variableList).ForEach(t => builder.Append(string.Format("{0}{1}", t.Item2, ";")));
 
             _sendEmail = new DsfSendEmailActivity
                 {
@@ -42,7 +38,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                     Password = _password,
                     IsSimulationEnabled = true,
                     SimulationOutput = _simulationOutput,
-                    To = builder.ToString()
+                    To = _to
                 };
 
             TestStartNode = new FlowStep
@@ -51,12 +47,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 };
         }
 
-        [Given(@"the from account is ""(.*)"" with the subject ""(.*)""")]
-        public void GivenTheFromAccountIsWithTheSubject(string fromAccount, string subject)
+        [Given(@"I have an email address input ""(.*)""")]
+        public void GivenIHaveAnEmailAddressInput(string emailAddress)
+        {
+            _to = emailAddress;
+        }
+
+        [Given(@"the from account is ""(.*)""")]
+        public void GivenTheFromAccountIs(string fromAccount)
         {
             _fromAccount = fromAccount;
+        }
+
+        [Given(@"the subject is ""(.*)""")]
+        public void GivenTheSubjectIs(string subject)
+        {
             _subject = subject;
         }
+
 
         [Given(@"the sever name is ""(.*)"" with password as ""(.*)""")]
         public void GivenTheSeverNameIsWithPasswordAs(string serverName, string password)
@@ -65,12 +73,18 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             _password = password;
         }
 
+        [Given(@"I have an email variable ""(.*)"" equal to ""(.*)""")]
+        public void GivenIHaveAnEmailVariableEqualTo(string variable, string value)
+        {
+            _variableList.Add(new Tuple<string, string>(variable, string.Empty));
+        }
+
         [Given(@"body is ""(.*)""")]
         public void GivenBodyIs(string body)
         {
             _body = body;
         }
-        
+
         [Given(@"I have a variable ""(.*)"" with this email address ""(.*)""")]
         public void GivenIHaveAVariableWithThisEmailAddress(string variable, string emailAddress)
         {
@@ -84,14 +98,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             _result = ExecuteProcess();
         }
 
-        [Then(@"the number of emails sent will be ""(.*)""")]
-        public void ThenTheNumberOfEmailsSentWillBe(string numberSent)
+        [Then(@"the email result will be ""(.*)""")]
+        public void ThenTheEmailResultWillBe(string result)
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            // Assert.IsTrue(actualValue.Contains(result));
+            Assert.AreEqual(result, actualValue);
         }
     }
 }

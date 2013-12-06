@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Activities.Statements;
+using System.ComponentModel;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
@@ -62,7 +63,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             _inputFormat = inputFormat;
         }
         
-        [Given(@"I selected Add time as ""(.*)"" with a value of ""(.*)""")]
+        [Given(@"I selected Add time as ""(.*)"" with a value of (.*)")]
         public void GivenISelectedAddTimeAsWithAValueOf(string datePart, int value)
         {
             _timeModifierType = datePart;
@@ -82,15 +83,27 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             _result = ExecuteProcess();
         }
 
-        [Then(@"the date should be ""(.*)""")]
-        public void ThenTheDateShouldBe(string result)
+        [Then(@"the datetime result should be a ""(.*)""")]
+        public void ThenTheDatetimeResultShouldBeA(string type)
         {
             string error;
             string actualValue;
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+            var res = converter.ConvertFrom(actualValue);
         }
 
+
+        [Then(@"the datetime result should be ""(.*)""")]
+        public void ThenTheDatetimeResultShouldBe(string result)
+        {
+            string error;
+            string actualValue;
+            result = result.Replace("\"\"", "");
+            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out actualValue, out error);
+            Assert.AreEqual(result, actualValue);
+        }
     }
 }

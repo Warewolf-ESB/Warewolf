@@ -120,6 +120,70 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find unique records in a  dataset comma separated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unique")]
+        public virtual void FindUniqueRecordsInADatasetCommaSeparated()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find unique records in a  dataset comma separated", ((string[])(null)));
+#line 22
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "val"});
+            table3.AddRow(new string[] {
+                        "rs().row",
+                        "1"});
+            table3.AddRow(new string[] {
+                        "rs().row",
+                        "2"});
+            table3.AddRow(new string[] {
+                        "rs().row",
+                        "2"});
+            table3.AddRow(new string[] {
+                        "rs().row",
+                        "3"});
+            table3.AddRow(new string[] {
+                        "rs().data",
+                        "1"});
+            table3.AddRow(new string[] {
+                        "rs().data",
+                        "2"});
+            table3.AddRow(new string[] {
+                        "rs().data",
+                        "2"});
+            table3.AddRow(new string[] {
+                        "rs().data",
+                        "3"});
+#line 23
+ testRunner.Given("I have the following duplicated recordset", ((string)(null)), table3, "Given ");
+#line 33
+ testRunner.And("I want to find unique in field \"[[rs().row]],[[rs().data]]\" with the return field" +
+                    " \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "val"});
+            table4.AddRow(new string[] {
+                        "rs().row",
+                        "1"});
+            table4.AddRow(new string[] {
+                        "rs().row",
+                        "2"});
+            table4.AddRow(new string[] {
+                        "rs().row",
+                        "3"});
+#line 36
+ testRunner.Then("the unique result will be", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

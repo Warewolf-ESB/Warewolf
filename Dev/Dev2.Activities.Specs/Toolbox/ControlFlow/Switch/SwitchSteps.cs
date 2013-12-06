@@ -55,6 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         {
             string error;
             string actualValue;
+            result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);

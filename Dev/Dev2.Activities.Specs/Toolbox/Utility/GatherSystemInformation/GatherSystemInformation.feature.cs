@@ -388,8 +388,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 94
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 95
- testRunner.Then("the value of the variable \"[[my(2).roles]]\" is a valid \"String\" with a length > \"" +
-                    "3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the value of the variable \"[[my(2).roles]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

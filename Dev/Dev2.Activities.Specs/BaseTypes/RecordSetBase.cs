@@ -3,6 +3,8 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -21,18 +23,20 @@ namespace Dev2.Activities.Specs.BaseTypes
         protected string RecordSetName = "";
         protected string FieldName = "";
         private readonly List<string> _addedRecordsets = new List<string>();
-        
+        private readonly List<string> _addedFieldset = new List<string>();
 
         protected void BuildShapeAndTestData(Tuple<string, string> variable)
         {
             _variableList.Add(variable);
             BuildShapeAndTestData();
         }
+
         protected void BuildShapeAndTestData(Tuple<string, string, string> variable)
         {
             _variableList.Add(variable);
             BuildShapeAndTestData();
         }
+
         protected void BuildShapeAndTestData(Tuple<string, string, string, string> variable)
         {
             _variableList.Add(variable);
@@ -67,12 +71,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
                 var recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
 
-                if (!_addedRecordsets.Contains(recordset))
+                if (!(_addedRecordsets.Contains(recordset) && _addedFieldset.Contains(recordField)))
                 {
                     shape.Append(string.Format("<{0}>", recordset));
                     shape.Append(string.Format("<{0}/>", recordField));
                     shape.Append(string.Format("</{0}>", recordset));
                     _addedRecordsets.Add(recordset);
+                    _addedFieldset.Add(recordField);
                 }
 
                 data.Append(string.Format("<{0}>", recordset));
