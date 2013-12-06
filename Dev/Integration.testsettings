@@ -6,7 +6,7 @@
     <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Execution parallelTestCount="2">
+  <Execution>
     <Timeouts testTimeout="120000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
