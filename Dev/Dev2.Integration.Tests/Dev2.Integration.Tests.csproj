@@ -473,6 +473,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DeploymentScripts\AutomatedStart.pdb" />
+    <EmbeddedResource Include="Server Test\Workspace\XML\Google_Address_Lookup.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>

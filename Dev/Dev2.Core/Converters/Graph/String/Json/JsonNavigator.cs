@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using System.Text;
 using Dev2;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
@@ -332,7 +333,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         {
             foreach (IPath path in paths)
             {
-                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode[indexedPathSegments[path].Select(p => p.ActualSegment).ToList()];
+                List<IPathSegment> indexedPathSegment = indexedPathSegments[path];
+                List<string> complexKey = indexedPathSegment.Select(p => p.ActualSegment).ToList();
+                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode[complexKey];
                 results[path].Add(IndexedPathSegmentTreeNode.CurrentValue.ToString());
             }
         }
@@ -378,8 +381,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             {
                 if (pathSegment.IsEnumarable)
                 {
-                    newIndexedValueTreeNode.EnumerableValue = GetEnumerableValueForPathSegment(pathSegment, parentNode.CurrentValue as JToken);
-
+                    var data = parentNode.CurrentValue as JToken;
+                    newIndexedValueTreeNode.EnumerableValue = GetEnumerableValueForPathSegment(pathSegment, data);
+                    
                     if (newIndexedValueTreeNode.EnumerableValue == null)
                     {
                         newIndexedValueTreeNode.CurrentValue = string.Empty;
@@ -387,18 +391,40 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     else
                     {
-                        newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
+                        bool isPrimitiveArray = false;
+                        JObject jObject = data as JObject;
+                        if(jObject != null)
+                        {
+                            JProperty property = jObject.Property(pathSegment.ActualSegment);
+                            isPrimitiveArray = property.IsEnumerableOfPrimitives();
+                        }
 
+                        newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
                         newIndexedValueTreeNode.Enumerator.Reset();
 
-                        if (!newIndexedValueTreeNode.Enumerator.MoveNext())
+                        if(isPrimitiveArray)
                         {
-                            newIndexedValueTreeNode.CurrentValue = string.Empty;
+                            var valueBuilder = new StringBuilder();
+                            while(newIndexedValueTreeNode.Enumerator.MoveNext())
+                            {
+                                valueBuilder.Append(newIndexedValueTreeNode.Enumerator.Current);
+                                valueBuilder.Append(",");
+                            }
                             newIndexedValueTreeNode.EnumerationComplete = true;
+                            newIndexedValueTreeNode.CurrentValue = valueBuilder.ToString().TrimEnd(',');
                         }
                         else
                         {
-                            newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+
+                            if(!newIndexedValueTreeNode.Enumerator.MoveNext())
+                            {
+                                newIndexedValueTreeNode.CurrentValue = string.Empty;
+                                newIndexedValueTreeNode.EnumerationComplete = true;
+                            }
+                            else
+                            {
+                                newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+                            }
                         }
                     }
                 }
@@ -443,7 +469,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             if (jObject != null)
             {
                 JProperty property = jObject.Property(pathSegment.ActualSegment);
-
+                
                 if (property != null && property.IsEnumerable())
                 {
                     returnVal = property.Value as JArray;

@@ -79,8 +79,18 @@ namespace Dev2.Runtime.ServiceModel.Data
             var indexOf = path.ActualPath.LastIndexOf("()", StringComparison.InvariantCultureIgnoreCase);
             if(indexOf != -1)
             {
-                rsName = path.ActualPath.Substring(0, indexOf + 2).Replace("()", "").Replace(".", "_");
-                fieldName = path.ActualPath.Substring(indexOf + 2).Replace(".", "");
+                int length = path.ActualPath.Length;
+                if(indexOf + 2 == length) // This means we have a primitive array as property
+                {
+                    var upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
+                    rsName = path.ActualPath.Substring(0, upperRecsetName).Replace("()", "").Replace(".", "_");
+                    fieldName = path.ActualPath.Substring(upperRecsetName).Replace(".", "").Replace("()", "");
+                }
+                else
+                {
+                    rsName = path.ActualPath.Substring(0, indexOf + 2).Replace("()", "").Replace(".", "_");
+                    fieldName = path.ActualPath.Substring(indexOf + 2).Replace(".", "");
+                }
             }
             return new Tuple<string, string>(rsName, fieldName);
         }

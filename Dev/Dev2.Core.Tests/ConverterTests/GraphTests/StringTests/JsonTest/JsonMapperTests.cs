@@ -80,7 +80,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.Jso
             string json = GivenPrimitiveRecordset();
             IEnumerable<IPath> paths = jsonMapper.Map(json);
 
-            Assert.IsTrue(paths.Any(p => p.ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol));
+            bool condition = paths.Any(p => p.ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol);
+            Assert.IsTrue(condition);
         }
 
         /// <summary>
