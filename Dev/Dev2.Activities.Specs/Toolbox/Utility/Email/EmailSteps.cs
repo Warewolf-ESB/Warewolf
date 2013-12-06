@@ -108,5 +108,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }
+
+        [Then(@"email execution has ""(.*)"" error")]
+        public void ThenEmailExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

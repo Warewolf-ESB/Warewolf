@@ -9,6 +9,7 @@ Scenario: Format number rounding down
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.894 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number rounding up
 	Given I have a number 788.894564545645
@@ -16,6 +17,7 @@ Scenario: Format number rounding up
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.895 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number rounding normal
 	Given I have a number 788.894564545645
@@ -23,6 +25,7 @@ Scenario: Format number rounding normal
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.890 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number rounding none
 	Given I have a number 788.894564545645
@@ -30,6 +33,7 @@ Scenario: Format number rounding none
 	And I want to show 4 decimals 
 	When the format number is executed
 	Then the result 788.8945 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number rounding down to negative number
 	Given I have a number 788.894564545645
@@ -37,6 +41,7 @@ Scenario: Format number rounding down to negative number
 	And I want to show 0 decimals 
 	When the format number is executed
 	Then the result 700 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number large number to negative decimals
 	Given I have a number 788.894564545645
@@ -44,6 +49,7 @@ Scenario: Format number large number to negative decimals
 	And I want to show -2 decimals 
 	When the format number is executed
 	Then the result 7 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number single digit to negative decimals
 	Given I have a number 7
@@ -51,6 +57,7 @@ Scenario: Format number single digit to negative decimals
 	And I want to show -2 decimals 
 	When the format number is executed
 	Then the result 0 will be returned
+	And formart number execution has "NO" error
 
 Scenario: Format number rounding up to a character
 	Given I have a number 34.2
@@ -58,12 +65,14 @@ Scenario: Format number rounding up to a character
 	And I want to show 2 decimals 
 	When the format number is executed
 	Then the result 35.00 will be returned
+	And formart number execution has "NO" error
 
 # Number is a decimal type and therefore won't allow for a string varibale
 #Scenario: Format number that is blank
 #	Given I have a number ""
 #	When the format number is executed
 #	Then the result "" will be returned
+#   And formart number execution has "NO" error
 
 #
 #Scenario: Format non numeric
@@ -72,6 +81,7 @@ Scenario: Format number rounding up to a character
 #	And I want to show -2 decimals 
 #	When the format number is executed
 #	Then the result "" will be returned
+#   And formart number execution has "NO" error
 #
 #Scenario: Format number to charater decimals
 #	Given I have a number 34.2
@@ -79,6 +89,7 @@ Scenario: Format number rounding up to a character
 #	And I want to show "asdf" decimals 
 #	When the format number is executed
 #	Then the result 35 will be returned
+#   And formart number execution has "NO" error
 
 #Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
 #	Given I have a formatnumber variable "[[int]]" equal to 788
@@ -89,3 +100,4 @@ Scenario: Format number rounding up to a character
 #	And I want to show "[[decimals]]1" decimals 
 #	When the format number is executed
 #	Then the result 80 will be returned
+#   And formart number execution has "NO" error

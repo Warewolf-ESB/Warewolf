@@ -83,6 +83,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 11
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -93,14 +95,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemServicePackIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system service pack into a scalar", ((string[])(null)));
-#line 12
-this.ScenarioSetup(scenarioInfo);
 #line 13
- testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"ServicePack\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"ServicePack\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 16
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 17
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -111,14 +115,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemOSBitValueIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system OS Bit Value into a scalar", ((string[])(null)));
-#line 17
-this.ScenarioSetup(scenarioInfo);
-#line 18
- testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"OSBitValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 20
+ testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"OSBitValue\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 21
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 22
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"Int32\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -129,14 +135,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemDateTimeIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system date time into a scalar", ((string[])(null)));
-#line 22
-this.ScenarioSetup(scenarioInfo);
-#line 23
- testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"FullDateTime\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 24
- testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
+this.ScenarioSetup(scenarioInfo);
+#line 26
+ testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"FullDateTime\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 27
+ testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 28
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"DateTime\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -147,14 +155,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemDateTimeFormatIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Date Time Format into a scalar", ((string[])(null)));
-#line 27
+#line 31
 this.ScenarioSetup(scenarioInfo);
-#line 28
+#line 32
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"DateTimeFormat\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 29
+#line 33
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 30
+#line 34
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -165,14 +175,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemDiskAvailableIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Disk Available into a scalar", ((string[])(null)));
-#line 32
+#line 37
 this.ScenarioSetup(scenarioInfo);
-#line 33
+#line 38
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"DiskAvailable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 34
+#line 39
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 40
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 41
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -183,14 +195,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemDiskTotalIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Disk Total into a scalar", ((string[])(null)));
-#line 37
+#line 43
 this.ScenarioSetup(scenarioInfo);
-#line 38
+#line 44
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"DiskTotal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 39
+#line 45
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 40
+#line 46
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 47
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -201,14 +215,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemPhysicalMemoryAvailableIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Physical Memory Available into a scalar", ((string[])(null)));
-#line 42
+#line 49
 this.ScenarioSetup(scenarioInfo);
-#line 43
+#line 50
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"PhysicalMemoryAvailable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 44
+#line 51
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
+#line 52
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"Int32\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 53
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -219,14 +235,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemPhysicalMemoryTotalIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Physical Memory Total into a scalar", ((string[])(null)));
-#line 47
+#line 55
 this.ScenarioSetup(scenarioInfo);
-#line 48
+#line 56
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"PhysicalMemoryTotal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 49
+#line 57
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 50
+#line 58
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"Int32\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 59
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -237,14 +255,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemCPUAvailableIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system CPU Available into a scalar", ((string[])(null)));
-#line 52
+#line 61
 this.ScenarioSetup(scenarioInfo);
-#line 53
+#line 62
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"CPUAvailable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 63
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 64
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 65
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -255,14 +275,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemCPUTotalIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system CPU Total into a scalar", ((string[])(null)));
-#line 57
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 58
+#line 68
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"CPUTotal\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 59
+#line 69
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 60
+#line 70
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 71
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -273,14 +295,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemLanguageIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Language into a scalar", ((string[])(null)));
-#line 62
+#line 73
 this.ScenarioSetup(scenarioInfo);
-#line 63
+#line 74
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"Language\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 64
+#line 75
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 76
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 77
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -291,14 +315,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemRegionIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Region into a scalar", ((string[])(null)));
-#line 67
+#line 79
 this.ScenarioSetup(scenarioInfo);
-#line 68
+#line 80
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"Region\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 81
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
+#line 82
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 83
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -309,14 +335,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemUserRolesIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system User Roles into a scalar", ((string[])(null)));
-#line 72
+#line 85
 this.ScenarioSetup(scenarioInfo);
-#line 73
+#line 86
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"UserRoles\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 87
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 75
+#line 88
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 89
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -327,14 +355,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemUserNameIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system User Name into a scalar", ((string[])(null)));
-#line 77
+#line 91
 this.ScenarioSetup(scenarioInfo);
-#line 78
+#line 92
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"UserName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 93
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 80
+#line 94
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 95
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -345,14 +375,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemDomainIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Domain into a scalar", ((string[])(null)));
-#line 82
+#line 97
 this.ScenarioSetup(scenarioInfo);
-#line 83
+#line 98
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"Domain\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 84
+#line 99
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 85
+#line 100
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 101
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -363,14 +395,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignASystemNumberOfWarewolfAgentsIntoAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a system Number Of Warewolf Agents into a scalar", ((string[])(null)));
-#line 87
+#line 103
 this.ScenarioSetup(scenarioInfo);
-#line 88
+#line 104
  testRunner.Given("I have a variable \"[[testvar]]\" and I selected \"NumberOfWarewolfAgents\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
+#line 105
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 106
  testRunner.Then("the value of the variable \"[[testvar]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 107
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -381,14 +415,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignUserRolesIntoARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign User Roles into a recordset", ((string[])(null)));
-#line 92
+#line 109
 this.ScenarioSetup(scenarioInfo);
-#line 93
+#line 110
  testRunner.Given("I have a variable \"[[my().roles]]\" and I selected \"UserRoles\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 94
+#line 111
  testRunner.When("the gather system infomartion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
+#line 112
  testRunner.Then("the value of the variable \"[[my(2).roles]]\" is a valid \"String\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 113
+ testRunner.And("gather system info execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

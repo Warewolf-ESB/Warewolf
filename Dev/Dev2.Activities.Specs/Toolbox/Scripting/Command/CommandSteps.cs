@@ -31,12 +31,6 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             };
         }
         
-        [Given(@"I have a variable ""(.*)"" with this value ""(.*)""")]
-        public void GivenIHaveADriveWithThisValue(string variable, string value)
-        {
-            _variableList.Add(new Tuple<string, string>(variable, value));
-        }
-
         [Given(@"I have this command script to execute ""(.*)""")]
         public void GivenIHaveThisCommandScriptToExecute(string commandToExecute)
         {
@@ -58,7 +52,23 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(result));
+            Assert.IsTrue(actualValue.Contains(actualValue));
         }
+
+        [Given(@"I have a command variable ""(.*)"" equal to ""(.*)""")]
+        public void GivenIHaveACommandVariableEqualTo(string variable, string value)
+        {
+            _variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+        [Then(@"command execution has ""(.*)"" error")]
+        public void ThenCommandExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

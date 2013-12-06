@@ -68,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(result));
+            Assert.AreEqual(result , actualValue);
         }
 
         [Then(@"the recordset ""(.*)"" will be as follows")]

@@ -1,29 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
+        protected const string ResultVariable = "[[result]]";
+        private readonly List<string> _addedFieldset = new List<string>();
+        private readonly List<string> _addedRecordsets = new List<string>();
+        protected readonly dynamic _variableList;
+        protected string FieldName = "";
+        protected string RecordSetName = "";
+        protected string Recordset;
+        protected IDSFDataObject _result;
+
         protected RecordSetBases(dynamic variableList)
         {
             _variableList = variableList;
         }
-
-        protected readonly dynamic _variableList;
-
-        protected const string ResultVariable = "[[result]]";
-        protected IDSFDataObject _result;
-        protected string Recordset;
-        protected string RecordSetName = "";
-        protected string FieldName = "";
-        private readonly List<string> _addedRecordsets = new List<string>();
-        private readonly List<string> _addedFieldset = new List<string>();
 
         protected void BuildShapeAndTestData(Tuple<string, string> variable)
         {
@@ -52,7 +49,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             data.Append("<root>");
 
             int row = 1;
-            foreach (var variable in _variableList)
+            foreach (dynamic variable in _variableList)
             {
                 Build(variable, shape, data);
                 row++;
@@ -68,8 +65,8 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             if (DataListUtil.IsValueRecordset(variable.Item1))
             {
-                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
-                var recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
+                dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
+                dynamic recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
 
                 if (!(_addedRecordsets.Contains(recordset) && _addedFieldset.Contains(recordField)))
                 {
@@ -94,7 +91,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
             }
         }
-        
+
         protected string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
             string rawRef = DataListUtil.StripBracketsFromValue(value);

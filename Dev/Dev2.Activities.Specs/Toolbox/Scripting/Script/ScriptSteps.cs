@@ -68,15 +68,16 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(result));
+            Assert.AreEqual(result , actualValue);
         }
         
         [Then(@"script execution has ""(.*)"" error")]
         public void ThenScriptExecutionHasError(string anError)
         {
-            var expected = anError.Equals("AN");
-            var actual = !string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            Assert.AreEqual(expected, actual);
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
         }
     }
 }
