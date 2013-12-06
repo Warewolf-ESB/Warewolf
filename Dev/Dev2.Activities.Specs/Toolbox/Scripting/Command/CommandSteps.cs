@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -36,7 +38,20 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         {
             _commandToExecute = commandToExecute;
         }
-        
+
+        [Given(@"I have these command scripts to execute in a single execution run")]
+        public void GivenIHaveTheseCommandScriptsToExecuteInASingleExecutionRun(Table table)
+        {
+            var commands = table.Rows.ToList();
+            var commandBuilder = new StringBuilder();
+            foreach (var tableRow in commands)
+            {
+                commandBuilder.AppendLine(tableRow[0]);
+            }
+            _commandToExecute = commandBuilder.ToString();
+        }
+
+
         [When(@"the command tool is executed")]
         public void WhenTheCommandToolIsExecuted()
         {

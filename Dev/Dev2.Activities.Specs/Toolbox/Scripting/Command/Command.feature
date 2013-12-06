@@ -5,9 +5,11 @@
 
 Scenario: Execute commands 
 	Given I have a command variable "[[drive]]" equal to "C:\"
-	#Given I have this command script to execute "@echo off"
-	#And	REM Next command returns a list of programs on the given drive
-	Given I have this command script to execute "dir [[drive]]Program Files"	
+	Given I have these command scripts to execute in a single execution run
+	| script                     |
+	| @echo off                  |
+	| REM                        |
+	| dir [[drive]]Program Files |
 	When the command tool is executed
 	Then the result of the command tool will be "Volume in drive C has no label"
 	And command execution has "NO" error

@@ -57,17 +57,15 @@ Scenario: Date and Time with badly formed output format
 	Then the datetime result should be "as1f"
 	And datetime execution has "AN" error
 
-	#Value can only be numeric ???
-#Scenario: Date and Time with characters for time to add
-#	Given I have a first date "12:30"
-#	And the input format as "24h:min"
-#	And I selected Add time as "Seconds" with a value of "asdf"
-#	And the output format as ""
-#	When the datetime tool is executed
-#	Then the datetime result should be ""
-#   And datetime execution has "NO" error
+Scenario: Date and Time with characters for time to add
+	Given I have a first date "12:30"
+	And the input format as "24h:min"
+	And I selected Add time as "Seconds" with a value of "asdf"
+	And the output format as ""
+	When the datetime tool is executed
+	Then the datetime result should be ""
+   And datetime execution has "AN" error
 
-###Fragile (Datetime dependant)
 Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
 	Given I have a first date "2013/12/05 04:18:51 PM"
 	And the input format as ""
@@ -77,7 +75,6 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	Then the datetime result should be "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
 	And datetime execution has "NO" error
 
-	###Fragile (Datetime dependant)
 Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
 	Given I have a first date "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
 	And the input format as "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"

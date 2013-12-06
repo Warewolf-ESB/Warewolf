@@ -12,10 +12,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
     [Binding]
     public class FormatNumberSteps : RecordSetBases
     {
-        private int _decimalToShow;
-        private decimal _number;
+        private string _decimalToShow;
+        private string _number;
         private DsfNumberFormatActivity _numberFormat;
-        private int _roundingDecimalPlaces;
+        private string _roundingDecimalPlaces;
         private string _roundingType;
 
         public FormatNumberSteps()
@@ -29,10 +29,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             _numberFormat = new DsfNumberFormatActivity
                 {
                     Result = ResultVariable,
-                    Expression = _number.ToString(),
+                    Expression = _number,
                     RoundingType = _roundingType,
-                    RoundingDecimalPlaces = _roundingDecimalPlaces.ToString(),
-                    DecimalPlacesToShow = _decimalToShow.ToString()
+                    RoundingDecimalPlaces = _roundingDecimalPlaces,
+                    DecimalPlacesToShow = _decimalToShow
                 };
 
             TestStartNode = new FlowStep
@@ -42,20 +42,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         }
 
         [Given(@"I have a number (.*)")]
-        public void GivenIHaveANumber(Decimal number)
+        public void GivenIHaveANumber(string number)
         {
             _number = number;
         }
 
         [Given(@"I selected rounding ""(.*)"" to (.*)")]
-        public void GivenISelectedRoundingTo(string rounding, int to)
+        public void GivenISelectedRoundingTo(string rounding, string to)
         {
             _roundingType = rounding;
             _roundingDecimalPlaces = to;
         }
 
         [Given(@"I want to show (.*) decimals")]
-        public void GivenIWantToShowDecimals(int decimalToShow)
+        public void GivenIWantToShowDecimals(string decimalToShow)
         {
             _decimalToShow = decimalToShow;
         }

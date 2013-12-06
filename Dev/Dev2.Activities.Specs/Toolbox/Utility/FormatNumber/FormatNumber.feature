@@ -61,43 +61,41 @@ Scenario: Format number single digit to negative decimals
 
 Scenario: Format number rounding up to a character
 	Given I have a number 34.2
-	And I selected rounding "Up" to 0
+	And I selected rounding "Up" to "c"
 	And I want to show 2 decimals 
 	When the format number is executed
 	Then the result 35.00 will be returned
-	And formart number execution has "NO" error
+	And formart number execution has "AN" error
 
-# Number is a decimal type and therefore won't allow for a string varibale
-#Scenario: Format number that is blank
-#	Given I have a number ""
-#	When the format number is executed
-#	Then the result "" will be returned
-#   And formart number execution has "NO" error
+Scenario: Format number that is blank
+	Given I have a number ""
+	When the format number is executed
+	Then the result "" will be returned
+   And formart number execution has "AN" error
 
-#
-#Scenario: Format non numeric
-#	Given I have a number "asdf"
-#	And I selected rounding "None" to 0
-#	And I want to show -2 decimals 
-#	When the format number is executed
-#	Then the result "" will be returned
-#   And formart number execution has "NO" error
-#
-#Scenario: Format number to charater decimals
-#	Given I have a number 34.2
-#	And I selected rounding "Up" to 0
-#	And I want to show "asdf" decimals 
-#	When the format number is executed
-#	Then the result 35 will be returned
-#   And formart number execution has "NO" error
+Scenario: Format non numeric
+	Given I have a number "asdf"
+	And I selected rounding "None" to 0
+	And I want to show -2 decimals 
+	When the format number is executed
+	Then the result "" will be returned
+   And formart number execution has "AN" error
 
-#Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
-#	Given I have a formatnumber variable "[[int]]" equal to 788
-#	And I have a number "[[int]].894564545645"
-#	And I have a formatnumber variable "[[rounding]]" equal to 2
-#	And I selected rounding "Up" to "-[[rounding]]"
-#	And I have a formatnumber variable "[[decimals]]" equal to "-"
-#	And I want to show "[[decimals]]1" decimals 
-#	When the format number is executed
-#	Then the result 80 will be returned
-#   And formart number execution has "NO" error
+Scenario: Format number to charater decimals
+	Given I have a number 34.2
+	And I selected rounding "Up" to "jklf"
+	And I want to show 0 decimals 
+	When the format number is executed
+	Then the result 35 will be returned
+   And formart number execution has "AN" error
+
+Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
+	Given I have a formatnumber variable "[[int]]" equal to 788
+	And I have a number "[[int]].894564545645"
+	And I have a formatnumber variable "[[rounding]]" equal to 2
+	And I selected rounding "Up" to "-[[rounding]]"
+	And I have a formatnumber variable "[[decimals]]" equal to "-"
+	And I want to show "[[decimals]]1" decimals 
+	When the format number is executed
+	Then the result 80 will be returned
+   And formart number execution has "NO" error

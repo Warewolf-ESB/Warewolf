@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         private string _inputDate;
         private string _inputFormat;
         private string _timeModifierType;
-        private int _timeModifierAmount;
+        private string _timeModifierAmount;
         private string _outputFormat;
 
         private void BuildDataList()
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 InputFormat = _inputFormat, 
                 OutputFormat = _outputFormat,
                 TimeModifierType = _timeModifierType,
-                TimeModifierAmountDisplay = _timeModifierAmount.ToString()
+                TimeModifierAmountDisplay = _timeModifierAmount
             };
 
             TestStartNode = new FlowStep
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         }
         
         [Given(@"I selected Add time as ""(.*)"" with a value of (.*)")]
-        public void GivenISelectedAddTimeAsWithAValueOf(string datePart, int value)
+        public void GivenISelectedAddTimeAsWithAValueOf(string datePart, string value)
         {
             _timeModifierType = datePart;
             _timeModifierAmount = value;

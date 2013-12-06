@@ -53,7 +53,7 @@ Scenario: Use invalid xpath query
 	And I have a variable "[[ids]]" output with xpath "@@#$"
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
-	And the xpath execution has "NO" error
+	And the xpath execution has "AN" error
 
 Scenario: Use XPath with invalid XML as input inside a variable
 	Given I have this xml '<root></end>' in a variable "[[myxml]]"

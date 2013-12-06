@@ -98,5 +98,5 @@ Scenario: Calculate the number of seconds with badly formed input format
 Scenario: Leave input dates blank
 	Given I selected output in "Years"
 	When the datetime difference tool is executed
-	Then the difference should be "0"
+	Then the difference should be ""
 	And datetimediff execution has "AN" error
