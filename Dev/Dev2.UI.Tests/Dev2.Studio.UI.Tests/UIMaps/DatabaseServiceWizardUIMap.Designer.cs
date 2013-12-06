@@ -173,7 +173,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         public void TabToInputMappings()
         {
             TabToMappingsTab();
-            Keyboard.SendKeys("{TAB}");
+            Playback.Wait(200);
+            SendKeys.SendWait("{TAB}");
             Playback.Wait(200);
         }
 

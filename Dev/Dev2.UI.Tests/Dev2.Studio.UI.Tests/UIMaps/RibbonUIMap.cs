@@ -88,8 +88,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void ClickRibbonMenuItem(string itemName)
         {
-            var ribbonButtons = UIBusinessDesignStudioWindow.GetChildren();
-            var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName == itemName));
+            var ribbonButtons = StudioWindow.GetChildren();
+            var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName.Contains(itemName)));
             control.WaitForControlEnabled();
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
@@ -109,7 +109,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public UITestControl GetControlByName(string name)
         {
             var children = UIBusinessDesignStudioWindow.GetChildren();
-            var control = children.FirstOrDefault(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName == name));
+            var control = children.FirstOrDefault(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName.Contains(name)));
 
             return control;
         }

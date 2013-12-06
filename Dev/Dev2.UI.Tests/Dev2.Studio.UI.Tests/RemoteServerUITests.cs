@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 
 namespace Dev2.Studio.UI.Tests
@@ -206,7 +207,7 @@ namespace Dev2.Studio.UI.Tests
             {
                 //Edit remote db source
                 OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-                Keyboard.SendKeys("{TAB}{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{TAB}{ENTER}");
+                SendKeys.SendWait("{TAB}{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{TAB}{ENTER}");
                 Playback.Wait(100);
                 SaveDialogUIMap.ClickSave();
             }
@@ -215,7 +216,7 @@ namespace Dev2.Studio.UI.Tests
                 //Change it back
                 ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
                 userName = DatabaseSourceUIMap.GetUserName();
-                Keyboard.SendKeys("{TAB}{TAB}{LEFT}{TAB}{TAB}{ENTER}");
+                SendKeys.SendWait("{TAB}{TAB}{LEFT}{TAB}{TAB}{ENTER}");
                 Playback.Wait(100);
                 SaveDialogUIMap.ClickSave();
             }
@@ -257,14 +258,12 @@ namespace Dev2.Studio.UI.Tests
         [Ignore]//Bug 10828
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
         {
-            Assert.Fail("Bad test! Not indicative that things worked!");
-
-            //const string TextToSearchWith = "WebService";
-            //OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            //Playback.Wait(3500);
-            //SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            //Playback.Wait(1000);
-            //SaveDialogUIMap.ClickSave();
+            const string TextToSearchWith = "WebService";
+            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(3500);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(1000);
+            SaveDialogUIMap.ClickSave();
 
 
         }
@@ -309,24 +308,31 @@ namespace Dev2.Studio.UI.Tests
             //Edit remote email source
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
-            Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}1234{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}1234{TAB}{ENTER}");
             wizard.WaitForControlReady();
-            Keyboard.SendKeys("@gmail.com{TAB}dev2developer@yahoo.com{ENTER}");
-            Playback.Wait(10000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("@gmail.com{TAB}dev2developer@yahoo.com");
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(12000);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUIMap.ClickSave();
 
             //Change it back
             ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             var persistClipboard = Clipboard.GetText();
-            Keyboard.SendKeys(wizard, "{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{CTRL}c100{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            wizard.WaitForControlReady();
+            Keyboard.SendKeys(wizard, "{CTRL}c");
+            SendKeys.SendWait("100{TAB}{ENTER}");
             timeout = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
             wizard.WaitForControlReady();
-            Keyboard.SendKeys("@gmail.com{TAB}dev2developer@yahoo.com{ENTER}");
-            Playback.Wait(10000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("@gmail.com{TAB}dev2developer@yahoo.com");
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(12000);
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
             SaveDialogUIMap.ClickSave();
 
             //Assert remote email source changed its timeout

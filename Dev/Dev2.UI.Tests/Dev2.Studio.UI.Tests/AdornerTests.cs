@@ -716,7 +716,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands and the resize control is visible")]
         [Owner("Travis Frisinger")]
-        [Ignore]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "CalculateTaxReturns";
