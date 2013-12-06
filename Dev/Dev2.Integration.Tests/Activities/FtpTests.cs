@@ -245,7 +245,7 @@ namespace Dev2.Integration.Tests.Activities
             //------------Assert Results-------------------------
         } 
         
-        [TestMethod][Ignore]//Until local sftp server is up
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2FTPProvider_Get")]
         public void Dev2FTPProvider_Get_SFTPCorrectFile_DataReturned()
@@ -303,7 +303,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.IsTrue(len > 0);
         }
 
-        [TestMethod][Ignore]//Until local sftp server is up
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2FTPProvider_Put")]
         public void Dev2FTPProvider_Put_SFTP_OverwriteFalse_FileNotExist_ExpectedStream()
@@ -339,7 +339,7 @@ namespace Dev2.Integration.Tests.Activities
             Assert.AreEqual(-1,len);
         }
 
-        [TestMethod][Ignore]//Until local sftp server is up
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2FTPProvider_Put")]
         public void Dev2FTPProvider_Put_SFTP_OverwriteFalse_FileExist_ExpectNothingReturned()
