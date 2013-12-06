@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
@@ -83,7 +84,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     }
                     catch(Exception e)
                     {
-                        Console.WriteLine(e);
+                        ServerLogger.LogError(e);
                     }
                     return null;
                 });

@@ -1842,7 +1842,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e);
+                        ServerLogger.LogError(e);
                     }
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
