@@ -153,6 +153,15 @@
     <Compile Include="Activities\WebRequestInvoker.cs" />
     <Compile Include="BussinessLogic\RsOpIsBase64.cs" />
     <Compile Include="BussinessLogic\RsOpIsBetween.cs" />
+    <Compile Include="BussinessLogic\RsOpIsBinary.cs" />
+    <Compile Include="BussinessLogic\RsOpIsHex.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBase64.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBetween.cs" />
+    <Compile Include="BussinessLogic\RsOpNotBinary.cs" />
+    <Compile Include="BussinessLogic\RsOpNotEndsWith.cs" />
+    <Compile Include="BussinessLogic\RsOpNotHex.cs" />
+    <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
+    <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
     <Compile Include="Enums\enFindMissingType.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />

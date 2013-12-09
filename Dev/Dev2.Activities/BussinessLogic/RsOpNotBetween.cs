@@ -2,19 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.BussinessLogic
 {
-    public class RsOpIsBetween : AbstractRecsetSearchValidation
+    public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
-        public RsOpIsBetween()
+        public RsOpNotBetween()
         {
 
         }
@@ -39,7 +35,7 @@ namespace Dev2.BussinessLogic
                     {
                         throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
                     }
-                    return FindRecordIndexForDateTime(operationRange, to,fromDt,toDt).Distinct().ToList();
+                    return FindRecordIndexForDateTime(operationRange, to, fromDt, toDt).Distinct().ToList();
                 }
                 if(double.TryParse(to.From, out fromNum))
                 {
@@ -47,7 +43,7 @@ namespace Dev2.BussinessLogic
                     {
                         throw new InvalidDataException("IsBetween Numeric and DateTime mis-match");
                     }
-                    return FindRecordIndexForNumeric(operationRange, to,fromNum,toNum).Distinct().ToList();
+                    return FindRecordIndexForNumeric(operationRange, to, fromNum, toNum).Distinct().ToList();
                 }
                 return new List<string>();
             };
@@ -64,31 +60,7 @@ namespace Dev2.BussinessLogic
                 DateTime recDateTime = new DateTime();
                 if(DateTime.TryParse(p.Payload, out recDateTime))
                 {
-                    if(recDateTime > fromDateTime && recDateTime < toDateTime)
-                    {
-                        fnResult.Add(p.Index.ToString());
-                    }
-                    else
-                    {
-                        if(to.RequireAllFieldsToMatch)
-                        {
-                            return new List<string>();
-                        }
-                    }
-                }                
-            }
-            return fnResult;
-        }
-
-        private IList<string> FindRecordIndexForNumeric(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to,double fromNum,double toNum)
-        {
-            IList<string> fnResult = new List<string>();
-            foreach(RecordSetSearchPayload p in operationRange)
-            {
-                double recNum = new double();
-                if(double.TryParse(p.Payload, out recNum))
-                {
-                    if(recNum > fromNum && recNum < toNum)
+                    if(!(recDateTime > fromDateTime && recDateTime < toDateTime))
                     {
                         fnResult.Add(p.Index.ToString());
                     }
@@ -104,10 +76,33 @@ namespace Dev2.BussinessLogic
             return fnResult;
         }
 
+        private IList<string> FindRecordIndexForNumeric(IList<RecordSetSearchPayload> operationRange, IRecsetSearch to, double fromNum, double toNum)
+        {
+            IList<string> fnResult = new List<string>();
+            foreach(RecordSetSearchPayload p in operationRange)
+            {
+                double recNum = new double();
+                if(double.TryParse(p.Payload, out recNum))
+                {
+                    if(!(recNum > fromNum && recNum < toNum))
+                    {
+                        fnResult.Add(p.Index.ToString());
+                    }
+                    else
+                    {
+                        if(to.RequireAllFieldsToMatch)
+                        {
+                            return new List<string>();
+                        }
+                    }
+                }
+            }
+            return fnResult;
+        }
 
         public override string HandlesType()
         {
-            return "Is Between";
+            return "Not Between";
         }
     }
 }

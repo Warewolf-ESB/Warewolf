@@ -8,9 +8,9 @@ using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.BussinessLogic
 {
-    public class RsOpIsBase64 : AbstractRecsetSearchValidation
+    public class RsOpNotBase64 : AbstractRecsetSearchValidation
     {
-        public RsOpIsBase64()
+        public RsOpNotBase64()
         {
 
         }
@@ -20,14 +20,17 @@ namespace Dev2.BussinessLogic
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
-            result = () => {
+            result = () =>
+            {
                 ErrorResultTO err = new ErrorResultTO();
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
 
-                    if (p.Payload.IsBase64()) {
+                    if(!p.Payload.IsBase64())
+                    {
                         fnResult.Add(p.Index.ToString());
                     }
                     else
@@ -48,7 +51,7 @@ namespace Dev2.BussinessLogic
 
         public override string HandlesType()
         {
-            return "Is Base64";
+            return "Not Base64";
         }
     }
 }

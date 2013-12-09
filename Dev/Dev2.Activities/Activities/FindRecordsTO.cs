@@ -18,7 +18,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _searchCriteria;
         string _from;
         string _to;
-        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();        
+        bool _isSearchCriteriaVisible;
+        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
+        
 
         public FindRecordsTO()
             : this("Match On", "Equal", 0)
@@ -34,6 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             SearchType = searchType;
             IndexNumber = indexNum;
             IsSearchCriteriaEnabled = false;
+            IsSearchCriteriaVisible = true;
             From = from;
             To = to;
         }
@@ -113,6 +116,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _isSearchCriteriaEnabled = value;
                 OnPropertyChanged("IsSearchCriteriaEnabled");
+            }
+        }
+
+        public bool IsSearchCriteriaVisible
+        {
+            get
+            {
+                return _isSearchCriteriaVisible;
+            }
+            set
+            {
+                _isSearchCriteriaVisible = value;
+                OnPropertyChanged("IsSearchCriteriaVisible");
             }
         }
 

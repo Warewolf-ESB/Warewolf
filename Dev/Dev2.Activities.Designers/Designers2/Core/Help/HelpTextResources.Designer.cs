@@ -1571,6 +1571,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value that the search will start at, this must be a number, date or time and must be the same type as the &quot;To&quot; type..
+        /// </summary>
+        public static string FindRecordsFromHelpText {
+            get {
+                return ResourceManager.GetString("FindRecordsFromHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the match data to find..
         /// </summary>
         public static string FindRecordsMatchHelpText {
@@ -1598,6 +1607,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string FindRecordsSearchTypeHelpText {
             get {
                 return ResourceManager.GetString("FindRecordsSearchTypeHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value that the search will end at, this must be a number, date or time and must be the same type as the &quot;From&quot; type..
+        /// </summary>
+        public static string FindRecordsToHelpText {
+            get {
+                return ResourceManager.GetString("FindRecordsToHelpText", resourceCulture);
             }
         }
         

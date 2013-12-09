@@ -1755,4 +1755,10 @@ Leaving the Archive Password blank will result in no password being required to 
   <data name="SqlBulkInsertToolTipIgnoreBlankRows" xml:space="preserve">
     <value>Blank rows will be ignored</value>
   </data>
+  <data name="FindRecordsFromHelpText" xml:space="preserve">
+    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.</value>
+  </data>
+  <data name="FindRecordsToHelpText" xml:space="preserve">
+    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+  </data>
 </root>

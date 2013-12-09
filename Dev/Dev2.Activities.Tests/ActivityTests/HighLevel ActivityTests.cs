@@ -288,7 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfFindRecordsActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 7);
+            Assert.AreEqual(9,properties.Count());
         }
 
         [TestMethod]

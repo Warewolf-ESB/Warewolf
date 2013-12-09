@@ -1,4 +1,7 @@
-﻿#region Usings
+﻿using System.IO;
+using Dev2.BussinessLogic;
+
+#region Usings
 
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
@@ -1752,5 +1755,785 @@ namespace Dev2.Tests.RecordsetSearch
 
             Assert.AreEqual(3, result.Count);
         }
+
+        #region New Implementation Tests
+
+        #region Is Between Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenNumbersMatchAllFieldsFalse_ResultsCountOne()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false,"25","75");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);            
+           
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+            
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenNumbersMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "25", "75");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenDateTimeMatchAllFieldsFalse_ResultsCountOne()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenDateTimeMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        [ExpectedException(typeof(InvalidDataException), "IsBetween Numeric and DateTime mis-match")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenDateTimeWrongTypesUsed_ExceptionThrown()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------           
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBetween_BuildSearchExpression")]
+        [ExpectedException(typeof(InvalidDataException), "IsBetween Numeric and DateTime mis-match")]
+        public void RsOpIsBetween_BuildSearchExpression_IsBetweenNumberWrongTypesUsed_ExceptionThrown()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>5</Field1></Recset><Recset><Field1>54</Field1></Recset><Recset><Field1>11</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
+            var rsOpIsBetween = new RsOpIsBetween();
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------           
+        }
+
+        #endregion
+
+        #region Not Between Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenNumbersMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "25", "75");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenNumbersMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "25", "75");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenDateTimeMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenDateTimeMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        [ExpectedException(typeof(InvalidDataException), "NotBetween Numeric and DateTime mis-match")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenDateTimeWrongTypesUsed_ExceptionThrown()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------           
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBetween_BuildSearchExpression")]
+        [ExpectedException(typeof(InvalidDataException), "NotBetween Numeric and DateTime mis-match")]
+        public void RsOpNotBetween_BuildSearchExpression_NotBetweenNumberWrongTypesUsed_ExceptionThrown()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>5</Field1></Recset><Recset><Field1>54</Field1></Recset><Recset><Field1>11</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
+            var rsOpNotBetween = new RsOpNotBetween();
+            var func = rsOpNotBetween.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------           
+        }
+
+        #endregion
+
+        #region Is Binary Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBinary_BuildSearchExpression")]
+        public void RsOpIsBinary_BuildSearchExpression_IsBinaryMatchAllFieldsFalse_ResultsCountOne()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false);
+            var rsOpIsBinary = new RsOpIsBinary();
+            var func = rsOpIsBinary.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsBinary_BuildSearchExpression")]
+        public void RsOpIsBinary_BuildSearchExpression_IsBinaryMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false,true);
+            var rsOpIsBinary = new RsOpIsBinary();
+            var func = rsOpIsBinary.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Not Binary Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBinary_BuildSearchExpression")]
+        public void RsOpNotBinary_BuildSearchExpression_NotBinaryMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false);
+            var RsOpNotBinary = new RsOpNotBinary();
+            var func = RsOpNotBinary.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBinary_BuildSearchExpression")]
+        public void RsOpNotBinary_BuildSearchExpression_NotBinaryMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false, true);
+            var RsOpNotBinary = new RsOpNotBinary();
+            var func = RsOpNotBinary.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Is Hex Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsHex_BuildSearchExpression")]
+        public void RsOpIsHex_BuildSearchExpression_IsHexMatchAllFieldsFalse_ResultsCountOne()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false);
+            var RsOpIsHex = new RsOpIsHex();
+            var func = RsOpIsHex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpIsHex_BuildSearchExpression")]
+        public void RsOpIsHex_BuildSearchExpression_IsHexMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false,true);
+            var RsOpIsHex = new RsOpIsHex();
+            var func = RsOpIsHex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+        
+        #region Not Hex Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotHex_BuildSearchExpression")]
+        public void RsOpNotHex_BuildSearchExpression_NotHexMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false);
+            var RsOpNotHex = new RsOpNotHex();
+            var func = RsOpNotHex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotHex_BuildSearchExpression")]
+        public void RsOpNotHex_BuildSearchExpression_NotHexMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false, true);
+            var RsOpNotHex = new RsOpNotHex();
+            var func = RsOpNotHex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Not Base64 Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBase64_BuildSearchExpression")]
+        public void RsOpNotBase64_BuildSearchExpression_NotBase64MatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false);
+            var RsOpNotBase64 = new RsOpNotBase64();
+            var func = RsOpNotBase64.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotBase64_BuildSearchExpression")]
+        public void RsOpNotBase64_BuildSearchExpression_NotBase64MatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false,true);
+            var RsOpNotBase64 = new RsOpNotBase64();
+            var func = RsOpNotBase64.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Not Ends With Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotEndsWith_BuildSearchExpression")]
+        public void RsOpNotEndsWith_BuildSearchExpression_NotEndsWithMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false);
+            var RsOpNotEndsWith = new RsOpNotEndsWith();
+            var func = RsOpNotEndsWith.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotEndsWith_BuildSearchExpression")]
+        public void RsOpNotEndsWith_BuildSearchExpression_NotEndsWithMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false,true);
+            var RsOpNotEndsWith = new RsOpNotEndsWith();
+            var func = RsOpNotEndsWith.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Not Starts With Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotStartsWith_BuildSearchExpression")]
+        public void RsOpNotStartsWith_BuildSearchExpression_NotStartsWithMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false);
+            var RsOpNotStartsWith = new RsOpNotStartsWith();
+            var func = RsOpNotStartsWith.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotStartsWith_BuildSearchExpression")]
+        public void RsOpNotStartsWith_BuildSearchExpression_NotStartsWithMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false, true);
+            var RsOpNotStartsWith = new RsOpNotStartsWith();
+            var func = RsOpNotStartsWith.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #region Not Regex Tests
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotRegex_BuildSearchExpression")]
+        public void RsOpNotRegex_BuildSearchExpression_NotRegexMatchAllFieldsFalse_ResultsCountTwo()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>999.999.999.999</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false);
+            var RsOpNotRegex = new RsOpNotRegex();
+            var func = RsOpNotRegex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("RsOpNotRegex_BuildSearchExpression")]
+        public void RsOpNotRegex_BuildSearchExpression_NotRegexMatchAllFieldsTrue_ResultsCountZero()
+        {
+            //------------Setup for test--------------------------            
+
+            var dlc = DataListFactory.CreateDataListCompiler();
+
+            const string data = @"<DataList><Recset><Field1>999.999.999.999</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset><DataList>";
+
+            ErrorResultTO tmpErrors;
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
+
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false, true);
+            var RsOpNotRegex = new RsOpNotRegex();
+            var func = RsOpNotRegex.BuildSearchExpression(bdl, props);
+
+            //------------Execute Test---------------------------
+            var result = func.Invoke();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, result.Count);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

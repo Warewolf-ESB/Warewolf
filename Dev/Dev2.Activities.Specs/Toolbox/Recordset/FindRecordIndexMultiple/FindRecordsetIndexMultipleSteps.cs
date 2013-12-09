@@ -50,12 +50,31 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             }
         }
         
+        [Given(@"I have the following recordset in my datalist")]
+        public void GivenIHaveTheFollowingRecordsetInMyDatalist(Table table)
+        {
+            List<TableRow> tableRows = table.Rows.ToList();
+            foreach(TableRow t in tableRows)
+            {
+                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
+            }
+        }
+
+        
         [Given(@"search the recordset with type ""(.*)"" and criteria is ""(.*)""")]
         public void GivenSearchTheRecordsetWithTypeAndCriteriaIs(string searchType, string searchCriteria)
         {
             _row++;
             _searchList.Add(new FindRecordsTO(searchCriteria, searchType, _row));
         }
+        
+        [Given(@"is between search the recordset with type ""(.*)"" and criteria is ""(.*)"" and ""(.*)""")]
+        public void GivenIsBetweenSearchTheRecordsetWithTypeAndCriteriaIsAnd(string searchType, string from, string to)
+        {
+            _row++;
+            _searchList.Add(new FindRecordsTO(string.Empty, searchType, _row, false, false, from, to));
+        }
+
         
         [When(@"the find records index multiple tool is executed")]
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
@@ -68,11 +87,23 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void ThenTheFindRecordsIndexMultipleResultShouldBe(string result)
         {
             string error;
+            if(DataListUtil.IsValueRecordset(ResultVariable))
+            {
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultVariable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+                Assert.AreEqual(recordSetValues[1], result);
+            }
+            else
+            {
             string actualValue;
             result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }
+        }
+
     }
 }

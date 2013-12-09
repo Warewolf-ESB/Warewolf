@@ -10,6 +10,7 @@ namespace Dev2.DataList.Contract
         All,
         RecorsetsOnly,
         ScalarsOnly,      
-        RecordsetFields
+        RecordsetFields,
+        AllButRecordsets
     }
 }

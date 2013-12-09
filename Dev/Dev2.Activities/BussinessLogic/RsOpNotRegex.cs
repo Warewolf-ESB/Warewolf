@@ -1,16 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using Dev2.Common.ExtMethods;
-using Dev2.DataList;
+using System.Text;
+using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
-namespace Dev2.BussinessLogic
+namespace Dev2.DataList
 {
-    public class RsOpIsBase64 : AbstractRecsetSearchValidation
+    /// <summary>
+    /// Class for the "regex" recordset search option 
+    /// </summary>
+    public class RsOpNotRegex : AbstractRecsetSearchValidation
     {
-        public RsOpIsBase64()
+        public RsOpNotRegex()
         {
 
         }
@@ -20,15 +24,18 @@ namespace Dev2.BussinessLogic
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
-            result = () => {
+            result = () =>
+            {
                 ErrorResultTO err = new ErrorResultTO();
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
 
-                foreach (RecordSetSearchPayload p in operationRange) {
-
-                    if (p.Payload.IsBase64()) {
-                        fnResult.Add(p.Index.ToString());
+                foreach(RecordSetSearchPayload p in operationRange)
+                {
+                    Regex exp = new Regex(to.SearchCriteria);
+                    if(!exp.IsMatch(p.Payload) && !string.IsNullOrEmpty(p.Payload))
+                    {
+                        fnResult.Add(p.Index.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
@@ -48,8 +55,7 @@ namespace Dev2.BussinessLogic
 
         public override string HandlesType()
         {
-            return "Is Base64";
+            return "Not Regex";
         }
     }
 }
-

@@ -72,16 +72,18 @@ namespace Dev2.DataList.Contract
                             if (FilterTO.FilterType == enIntellisensePartType.All) {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
-                            if (FilterTO.FilterType == enIntellisensePartType.RecorsetsOnly) {
+                            if(FilterTO.FilterType == enIntellisensePartType.RecorsetsOnly)
+                            {
                                 result.Add(DataListFactory.CreateIntellisensePart(string.Concat(recordsetName, "()"), ExtractDescription(tmpNode)));
                             }
-                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields) {
+                            if (FilterTO.FilterType == enIntellisensePartType.RecordsetFields || FilterTO.FilterType == enIntellisensePartType.AllButRecordsets) {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
-                            }
+                            }                            
                         }
                         else {
                             // scalar value, make it as such
-                            if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly) {
+                            if(FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly || FilterTO.FilterType == enIntellisensePartType.AllButRecordsets)
+                            {
                                 result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                             }
                         }

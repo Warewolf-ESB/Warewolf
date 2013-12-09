@@ -630,7 +630,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 FieldsToSearch = "[[Customers(*)]]", 
                 ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1),new FindRecordsTO("Wallis","Equal",2)},
                 RequireAllTrue = false,
-                RequireAllFieldsToMatch = true,
+                RequireAllFieldsToMatch = false,
                 Result = "[[res]]" };
 
             List<DebugItem> inRes;
@@ -670,7 +670,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, fetchInputList.Count);
             Assert.AreEqual("Require All Fields To Match", fetchInputList[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchInputList[0].Type);
-            Assert.AreEqual("YES", fetchInputList[1].Value);
+            Assert.AreEqual("NO", fetchInputList[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchInputList[1].Type);
 
             fetchInputList = inRes[3].FetchResultsList();

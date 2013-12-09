@@ -80,6 +80,22 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
+            else if(activityType == typeof(DsfFindRecordsMultipleCriteriaActivity))
+            {
+                DsfFindRecordsMultipleCriteriaActivity frmAct = activity as DsfFindRecordsMultipleCriteriaActivity;
+                if(frmAct != null)
+                {
+                    results.AddRange(InternalFindMissing(frmAct.ResultsCollection));
+                    if(!string.IsNullOrEmpty(frmAct.FieldsToSearch))
+                    {
+                        results.Add(frmAct.FieldsToSearch);
+                    }
+                    if(!string.IsNullOrEmpty(frmAct.Result))
+                    {
+                        results.Add(frmAct.Result);
+                    }
+                }
+            }
 
             return results;
         }        
