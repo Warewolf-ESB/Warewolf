@@ -177,6 +177,9 @@ Global
 		SccProjectName32 = Dev2.Data.Tests
 		SccLocalPath32 = Dev2.Data.Tests
 	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Studio.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
