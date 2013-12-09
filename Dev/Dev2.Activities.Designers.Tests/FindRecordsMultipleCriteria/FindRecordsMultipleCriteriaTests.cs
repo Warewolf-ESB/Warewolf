@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
         [TestCategory("FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged")]
         public void FindRecordsMultipleCriteriaViewModel_OnSearchTypeChanged_NotContains_RequiresCriteriaInput_IsCriteriaEnabledTrue()
         {
-            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Doesn't Contains", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
+            Verify_OnSearchTypeChanged_IsSearchCriteriaEnabled(searchType: "Doesn't Contain", isSearchCriteriaEnabled: true, isSearchCriteriaBlank: false);
         }
 
         [TestMethod]

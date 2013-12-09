@@ -98,6 +98,10 @@
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
     <Compile Include="BinaryDataList\Dev2DataListUpsertPayloadBuilderTest.cs" />
     <Compile Include="ConverterTest\DataListConverterTest.cs" />
+    <Compile Include="DecisionsTests\NotBetweenTests.cs" />
+    <Compile Include="DecisionsTests\NotContainsTests.cs" />
+    <Compile Include="DecisionsTests\NotEndsWithTests.cs" />
+    <Compile Include="DecisionsTests\NotStartsWithTests.cs" />
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="Operations\Dev2DecisionOperationTests.cs" />
     <Compile Include="Operations\Dev2IndexFinderTests.cs" />

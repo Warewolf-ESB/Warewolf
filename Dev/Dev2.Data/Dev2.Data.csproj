@@ -109,6 +109,11 @@
     <Compile Include="Compilers\RecordsetGroup.cs" />
     <Compile Include="Compilers\TransientRecordsetProcessGroup.cs" />
     <Compile Include="Decisions\Operations\DecisionUtils.cs" />
+    <Compile Include="Decisions\Operations\NotBetween.cs" />
+    <Compile Include="Decisions\Operations\NotContains.cs" />
+    <Compile Include="Decisions\Operations\NotEndsWith.cs" />
+    <Compile Include="Decisions\Operations\NotRegex.cs" />
+    <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Enums\CompileMessageType.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />

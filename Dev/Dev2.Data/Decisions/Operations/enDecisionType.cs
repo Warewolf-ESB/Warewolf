@@ -71,6 +71,8 @@ namespace Dev2.Data.Decisions.Operations
         IsNotEmail,
         [DecisionTypeDisplayValue("Is Regular Expression")]
         IsRegEx,
+        [DecisionTypeDisplayValue("Not Regular Expression")]
+        NotRegEx,
         [DecisionTypeDisplayValue("=")]
         IsEqual,
         [DecisionTypeDisplayValue("<> (Not Equal)")]
@@ -85,12 +87,20 @@ namespace Dev2.Data.Decisions.Operations
         IsGreaterThanOrEqual,
         [DecisionTypeDisplayValue("Contains")]
         IsContains,
+        [DecisionTypeDisplayValue("Doesn't Contain")]
+        NotContains,
         [DecisionTypeDisplayValue("Ends With")]
         IsEndsWith,
+        [DecisionTypeDisplayValue("Doesn't End With")]
+        NotEndsWith,
         [DecisionTypeDisplayValue("Starts With")]
         IsStartsWith,
+        [DecisionTypeDisplayValue("Doesn't Start With")]
+        DoesntStartWith,
         [DecisionTypeDisplayValue("Is Between")]
         IsBetween,
+        [DecisionTypeDisplayValue("Not Between")]
+        NotBetween,
         [DecisionTypeDisplayValue("Is Binary")]
         IsBinary,
         [DecisionTypeDisplayValue("Not Binary")]
