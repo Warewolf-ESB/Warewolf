@@ -105,6 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var concatRes = string.Empty;
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 var iterationIndex = 0;
+                bool isFirstIteration = true;
                 for(var i = 0; i < ResultsCollection.Count; i++)
                 {
                     IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
@@ -135,8 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(string.IsNullOrEmpty(searchType))
                     {
                         continue;
-                    }
-                    bool isFirstIteration = true;
+                    }                    
                     while(itrCollection.HasMoreData())
                     {
                         var currentResults = results as IList<string> ?? results.ToList();
@@ -160,6 +160,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach(var region in regions)
                 {
                     var allResults = results as IList<string> ?? results.ToList();
+                    if(allResults.Count == 0)
+                    {
+                        allResults.Add("-1");
+                    }
+
                     if(!DataListUtil.IsValueRecordset(region))
                     {
                         foreach(var r in allResults)

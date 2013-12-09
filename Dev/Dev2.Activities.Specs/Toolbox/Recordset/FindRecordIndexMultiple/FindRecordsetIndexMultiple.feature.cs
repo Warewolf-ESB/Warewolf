@@ -102,6 +102,8 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
  testRunner.Then("the find records index multiple result should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -112,7 +114,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithIsBetweenDateTime()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Is Between DateTime", ((string[])(null)));
-#line 17
+#line 18
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -130,15 +132,17 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "rs().row",
                         "11/11/2012"});
-#line 18
+#line 19
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table2, "Given ");
-#line 24
+#line 25
  testRunner.And("is between search the recordset with type \"Is Between\" and criteria is \"1/3/2013\"" +
                     " and \"3/3/2013\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
- testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
  testRunner.Then("the find records index multiple result should be 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -151,7 +155,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Is Between Numbers and recordsets with " +
                     "stars", ((string[])(null)));
-#line 28
+#line 30
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -163,7 +167,7 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "BetweenFrom().from",
                         "0"});
-#line 29
+#line 31
  testRunner.Given("I have the following recordset in my datalist", ((string)(null)), table3, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -175,7 +179,7 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "BetweenTo().to",
                         "26"});
-#line 33
+#line 35
  testRunner.Given("I have the following recordset in my datalist", ((string)(null)), table4, "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -190,15 +194,19 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "rs().row",
                         "25"});
-#line 37
+#line 39
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table5, "Given ");
-#line 42
+#line 44
  testRunner.And("is between search the recordset with type \"Is Between\" and criteria is \"[[Between" +
                     "From(*).from]]\" and \"[[BetweenTo(*).to]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 45
+ testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 47
  testRunner.Then("the find records index multiple result should be 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 48
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -209,7 +217,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithIsBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Is Base64", ((string[])(null)));
-#line 46
+#line 50
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -227,14 +235,16 @@ this.ScenarioSetup(scenarioInfo);
             table6.AddRow(new string[] {
                         "rs().row",
                         "d2FyZXdvbGY="});
-#line 47
+#line 51
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table6, "Given ");
-#line 53
+#line 57
  testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 58
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 59
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 60
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -245,7 +255,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithIsBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Is Binary", ((string[])(null)));
-#line 57
+#line 62
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
@@ -263,14 +273,16 @@ this.ScenarioSetup(scenarioInfo);
             table7.AddRow(new string[] {
                         "rs().row",
                         "101011110010"});
-#line 58
+#line 63
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table7, "Given ");
-#line 64
+#line 69
  testRunner.And("search the recordset with type \"Is Binary\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 70
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 66
+#line 71
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -281,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithIsHex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Is Hex", ((string[])(null)));
-#line 68
+#line 74
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
@@ -299,14 +311,16 @@ this.ScenarioSetup(scenarioInfo);
             table8.AddRow(new string[] {
                         "rs().row",
                         "77617265776f6c66"});
-#line 69
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table8, "Given ");
 #line 75
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table8, "Given ");
+#line 81
  testRunner.And("search the recordset with type \"Is Hex\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 76
+#line 82
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 77
+#line 83
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 84
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -317,7 +331,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Base64", ((string[])(null)));
-#line 79
+#line 86
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
@@ -335,14 +349,16 @@ this.ScenarioSetup(scenarioInfo);
             table9.AddRow(new string[] {
                         "rs().row",
                         "You"});
-#line 80
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table9, "Given ");
-#line 86
- testRunner.And("search the recordset with type \"Not Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table9, "Given ");
+#line 93
+ testRunner.And("search the recordset with type \"Not Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 94
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 88
+#line 95
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 96
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -353,7 +369,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotBetweenDateTime()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Between DateTime", ((string[])(null)));
-#line 90
+#line 98
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
@@ -371,15 +387,17 @@ this.ScenarioSetup(scenarioInfo);
             table10.AddRow(new string[] {
                         "rs().row",
                         "2/3/2013"});
-#line 91
+#line 99
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table10, "Given ");
-#line 97
+#line 105
  testRunner.And("is between search the recordset with type \"Not Between\" and criteria is \"1/3/2013" +
                     "\" and \"3/3/2013\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 106
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 107
  testRunner.Then("the find records index multiple result should be 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 108
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -390,7 +408,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotBetweenNumeric()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Between numeric", ((string[])(null)));
-#line 101
+#line 110
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
@@ -408,15 +426,17 @@ this.ScenarioSetup(scenarioInfo);
             table11.AddRow(new string[] {
                         "rs().row",
                         "31"});
-#line 102
+#line 111
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table11, "Given ");
-#line 108
+#line 117
  testRunner.And("is between search the recordset with type \"Not Between\" and criteria is \"16\" and " +
                     "\"33\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 118
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 119
  testRunner.Then("the find records index multiple result should be 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 120
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -427,7 +447,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotBinary()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Binary", ((string[])(null)));
-#line 112
+#line 122
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
@@ -445,14 +465,16 @@ this.ScenarioSetup(scenarioInfo);
             table12.AddRow(new string[] {
                         "rs().row",
                         "warewolf"});
-#line 113
+#line 123
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table12, "Given ");
-#line 119
+#line 129
  testRunner.And("search the recordset with type \"Not Binary\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 130
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 121
+#line 131
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 132
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -463,7 +485,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotHex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Hex", ((string[])(null)));
-#line 123
+#line 134
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
@@ -481,14 +503,16 @@ this.ScenarioSetup(scenarioInfo);
             table13.AddRow(new string[] {
                         "rs().row",
                         "warewolf"});
-#line 124
+#line 135
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table13, "Given ");
-#line 130
+#line 141
  testRunner.And("search the recordset with type \"Not Hex\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 142
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 132
+#line 143
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 144
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -499,7 +523,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithNotRegex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Not Regex", ((string[])(null)));
-#line 134
+#line 146
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
@@ -517,15 +541,17 @@ this.ScenarioSetup(scenarioInfo);
             table14.AddRow(new string[] {
                         "rs().row",
                         "warewolf"});
-#line 135
+#line 147
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table14, "Given ");
-#line 141
+#line 153
  testRunner.And("search the recordset with type \"Not Regex\" and criteria is \"\\b\\d{1,3}\\.\\d{1,3}\\.\\" +
                     "d{1,3}\\.\\d{1,3}\\b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 142
+#line 154
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 143
+#line 155
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 156
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -536,7 +562,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithDoesnTStartWith()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t Start With", ((string[])(null)));
-#line 145
+#line 158
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -554,14 +580,16 @@ this.ScenarioSetup(scenarioInfo);
             table15.AddRow(new string[] {
                         "rs().row",
                         "yay"});
-#line 146
+#line 159
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table15, "Given ");
-#line 152
+#line 165
  testRunner.And("search the recordset with type \"Doesn\'t Start With\" and criteria is \"w\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 153
+#line 166
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 154
+#line 167
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 168
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -572,7 +600,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetWithDoesnTEndWith()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset with Doesn\'t End With", ((string[])(null)));
-#line 156
+#line 170
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -590,14 +618,16 @@ this.ScenarioSetup(scenarioInfo);
             table16.AddRow(new string[] {
                         "rs().row",
                         "yay"});
-#line 157
+#line 171
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table16, "Given ");
-#line 163
+#line 177
  testRunner.And("search the recordset with type \"Doesn\'t End With\" and criteria is \"v\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
+#line 178
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 165
+#line 179
  testRunner.Then("the find records index multiple result should be 4", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 180
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -608,7 +638,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To", ((string[])(null)));
-#line 167
+#line 182
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -632,14 +662,16 @@ this.ScenarioSetup(scenarioInfo);
             table17.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 168
+#line 183
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table17, "Given ");
-#line 176
+#line 191
  testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 192
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 178
+#line 193
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 194
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -650,7 +682,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To multiple results", ((string[])(null)));
-#line 180
+#line 196
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -677,14 +709,16 @@ this.ScenarioSetup(scenarioInfo);
             table18.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 181
+#line 197
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table18, "Given ");
-#line 190
+#line 206
  testRunner.And("search the recordset with type \"=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 191
+#line 207
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 192
+#line 208
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 209
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -695,7 +729,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEqualToResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Equal To result doesnt exist", ((string[])(null)));
-#line 194
+#line 211
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -719,14 +753,16 @@ this.ScenarioSetup(scenarioInfo);
             table19.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 195
+#line 212
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table19, "Given ");
-#line 203
+#line 220
  testRunner.And("search the recordset with type \"=\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 204
+#line 221
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 205
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 222
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 223
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -737,7 +773,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterThan()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Than", ((string[])(null)));
-#line 207
+#line 225
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -745,7 +781,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table20.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "4"});
             table20.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -754,21 +790,23 @@ this.ScenarioSetup(scenarioInfo);
                         "the"});
             table20.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "2"});
             table20.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table20.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 208
+#line 226
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table20, "Given ");
-#line 216
- testRunner.And("search the recordset with type \">\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 217
+#line 234
+ testRunner.And("search the recordset with type \">\" and criteria is \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 235
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 218
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 236
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 237
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -781,7 +819,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Than multiple results" +
                     "", ((string[])(null)));
-#line 220
+#line 239
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
@@ -789,7 +827,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table21.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "4"});
             table21.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -804,18 +842,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table21.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "8"});
             table21.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 221
+#line 240
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table21, "Given ");
-#line 230
- testRunner.And("search the recordset with type \">\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 231
+#line 249
+ testRunner.And("search the recordset with type \">\" and criteria is \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 250
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 232
+#line 251
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 252
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -828,7 +868,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Than result doesnt ex" +
                     "ist", ((string[])(null)));
-#line 234
+#line 254
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -836,7 +876,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table22.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "4"});
             table22.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -848,18 +888,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table22.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "8"});
             table22.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 235
+#line 255
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table22, "Given ");
-#line 243
- testRunner.And("search the recordset with type \">\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 244
+#line 263
+ testRunner.And("search the recordset with type \">\" and criteria is \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 264
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 245
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 265
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 266
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -870,7 +912,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsLessThan()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Than", ((string[])(null)));
-#line 247
+#line 268
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -878,7 +920,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table23.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "4"});
             table23.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -890,18 +932,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table23.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "8"});
             table23.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 248
+#line 269
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table23, "Given ");
-#line 256
- testRunner.And("search the recordset with type \"<\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 277
+ testRunner.And("search the recordset with type \"<\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 278
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 279
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 280
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -912,7 +956,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsLessThanMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Than multiple results", ((string[])(null)));
-#line 260
+#line 282
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -920,7 +964,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table24.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "4"});
             table24.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -935,18 +979,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table24.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "2"});
             table24.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 261
+#line 283
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table24, "Given ");
-#line 270
- testRunner.And("search the recordset with type \"<\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 271
+#line 292
+ testRunner.And("search the recordset with type \"<\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 293
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 272
+#line 294
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 295
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -959,7 +1005,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Than result doesnt exist" +
                     "", ((string[])(null)));
-#line 274
+#line 297
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
@@ -967,7 +1013,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table25.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "2"});
             table25.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -979,18 +1025,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table25.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "5"});
             table25.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 275
+#line 298
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table25, "Given ");
-#line 283
- testRunner.And("search the recordset with type \"<\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 284
+#line 306
+ testRunner.And("search the recordset with type \"<\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 307
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 285
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 308
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 309
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1001,7 +1049,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEqualTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To", ((string[])(null)));
-#line 287
+#line 311
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1012,27 +1060,29 @@ this.ScenarioSetup(scenarioInfo);
                         "You"});
             table26.AddRow(new string[] {
                         "rs().row",
-                        "are"});
-            table26.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table26.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
+                        "Warewolf"});
             table26.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table26.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 288
+                        "Warewolf"});
+            table26.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+            table26.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+#line 312
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table26, "Given ");
-#line 296
- testRunner.And("search the recordset with type \"<>\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 297
+#line 320
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 321
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 298
- testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 322
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 323
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1045,15 +1095,12 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To multiple results" +
                     "", ((string[])(null)));
-#line 300
+#line 325
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table27.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
             table27.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -1072,14 +1119,16 @@ this.ScenarioSetup(scenarioInfo);
             table27.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 301
+#line 326
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table27, "Given ");
-#line 310
- testRunner.And("search the recordset with type \"<>\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 334
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 335
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 312
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 336
+ testRunner.Then("the find records index multiple result should be 1,2,3,4,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 337
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1092,7 +1141,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Equal To result doesnt ex" +
                     "ist", ((string[])(null)));
-#line 314
+#line 339
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1100,30 +1149,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "Mars"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "Mars"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "Mars"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "Mars"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "Mars"});
             table28.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 315
+                        "Mars"});
+#line 340
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table28, "Given ");
-#line 323
- testRunner.And("search the recordset with type \"<>\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 324
+#line 348
+ testRunner.And("search the recordset with type \"<> (Not Equal)\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 349
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 325
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 350
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 351
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1134,7 +1185,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsGreaterOrEqualTo()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To", ((string[])(null)));
-#line 327
+#line 353
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1142,7 +1193,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table29.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "2"});
             table29.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -1154,18 +1205,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table29.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "4"});
             table29.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 328
+#line 354
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table29, "Given ");
-#line 336
- testRunner.And("search the recordset with type \">=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 362
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 338
+#line 364
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 365
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1178,7 +1231,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To multiple " +
                     "results", ((string[])(null)));
-#line 340
+#line 367
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1186,10 +1239,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table30.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
-            table30.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
+                        "50"});
             table30.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -1204,15 +1254,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table30.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 341
+                        "4"});
+#line 368
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table30, "Given ");
-#line 350
- testRunner.And("search the recordset with type \">=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
+#line 376
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 377
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 352
+#line 378
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 379
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1225,7 +1277,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Greater Or Equal To result do" +
                     "esnt exist", ((string[])(null)));
-#line 354
+#line 381
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1233,30 +1285,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "1"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "2"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "3"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "1"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "2"});
             table31.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 355
+                        "3"});
+#line 382
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table31, "Given ");
-#line 363
- testRunner.And("search the recordset with type \">=\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 364
+#line 390
+ testRunner.And("search the recordset with type \">=\" and criteria is \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 391
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 365
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 392
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 393
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1267,7 +1321,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsLessOrEqual()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Or Equal", ((string[])(null)));
-#line 367
+#line 395
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1287,18 +1341,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table32.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "5"});
             table32.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 368
+#line 396
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table32, "Given ");
-#line 376
- testRunner.And("search the recordset with type \"<=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 377
+#line 404
+ testRunner.And("search the recordset with type \"<=\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 405
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 378
+#line 406
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 407
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1311,7 +1367,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Or Equal multiple result" +
                     "s", ((string[])(null)));
-#line 380
+#line 409
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1319,10 +1375,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table33.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
-            table33.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
+                        "1"});
             table33.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -1337,15 +1390,17 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table33.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 381
+                        "5"});
+#line 410
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table33, "Given ");
-#line 390
- testRunner.And("search the recordset with type \"<=\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 391
+#line 418
+ testRunner.And("search the recordset with type \"<=\" and criteria is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 419
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 392
+#line 420
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 421
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1358,7 +1413,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Less Or Equal result doesnt e" +
                     "xist", ((string[])(null)));
-#line 394
+#line 423
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1366,7 +1421,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table34.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "2"});
             table34.AddRow(new string[] {
                         "rs().row",
                         "are"});
@@ -1378,18 +1433,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table34.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "5"});
             table34.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 395
+#line 424
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table34, "Given ");
-#line 403
- testRunner.And("search the recordset with type \"<=\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 404
+#line 432
+ testRunner.And("search the recordset with type \"<=\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 433
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 405
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 434
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 435
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1400,7 +1457,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWith()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With", ((string[])(null)));
-#line 407
+#line 437
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1424,14 +1481,16 @@ this.ScenarioSetup(scenarioInfo);
             table35.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 408
+#line 438
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table35, "Given ");
-#line 416
+#line 446
  testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 417
+#line 447
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 418
+#line 448
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 449
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1442,7 +1501,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsStartsWithMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With multiple results", ((string[])(null)));
-#line 420
+#line 451
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1469,14 +1528,16 @@ this.ScenarioSetup(scenarioInfo);
             table36.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 421
+#line 452
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table36, "Given ");
-#line 430
+#line 461
  testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 431
+#line 462
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 432
+#line 463
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 464
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1489,7 +1550,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Starts With result doesnt exi" +
                     "st", ((string[])(null)));
-#line 434
+#line 466
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1513,14 +1574,16 @@ this.ScenarioSetup(scenarioInfo);
             table37.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 435
+#line 467
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table37, "Given ");
-#line 443
+#line 475
  testRunner.And("search the recordset with type \"Starts With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 444
+#line 476
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 445
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 477
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 478
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1531,7 +1594,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWith()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With", ((string[])(null)));
-#line 447
+#line 480
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1555,14 +1618,16 @@ this.ScenarioSetup(scenarioInfo);
             table38.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 448
+#line 481
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table38, "Given ");
-#line 456
+#line 489
  testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 457
+#line 490
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 458
+#line 491
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 492
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1573,7 +1638,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsEndsWithMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With multiple results", ((string[])(null)));
-#line 460
+#line 494
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1600,14 +1665,16 @@ this.ScenarioSetup(scenarioInfo);
             table39.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 461
+#line 495
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table39, "Given ");
-#line 470
+#line 504
  testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 471
+#line 505
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 472
+#line 506
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 507
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1620,7 +1687,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Ends With result doesnt exist" +
                     "", ((string[])(null)));
-#line 474
+#line 509
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1644,14 +1711,16 @@ this.ScenarioSetup(scenarioInfo);
             table40.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 475
+#line 510
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table40, "Given ");
-#line 483
+#line 518
  testRunner.And("search the recordset with type \"Ends With\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 484
+#line 519
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 485
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 520
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 521
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1662,7 +1731,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContains()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains", ((string[])(null)));
-#line 487
+#line 523
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1686,14 +1755,16 @@ this.ScenarioSetup(scenarioInfo);
             table41.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 488
+#line 524
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table41, "Given ");
-#line 496
+#line 532
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 497
+#line 533
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 498
+#line 534
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 535
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1704,7 +1775,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains multiple results", ((string[])(null)));
-#line 500
+#line 537
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1731,14 +1802,16 @@ this.ScenarioSetup(scenarioInfo);
             table42.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 501
+#line 538
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table42, "Given ");
-#line 510
+#line 547
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 511
+#line 548
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 512
+#line 549
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 550
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1749,7 +1822,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsContainsResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Contains result doesnt exist", ((string[])(null)));
-#line 514
+#line 552
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1773,14 +1846,16 @@ this.ScenarioSetup(scenarioInfo);
             table43.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 515
+#line 553
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table43, "Given ");
-#line 523
+#line 561
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 524
+#line 562
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 525
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 563
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 564
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1791,7 +1866,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsDoesnTContain()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain", ((string[])(null)));
-#line 527
+#line 566
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1799,30 +1874,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table44.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "Warewolf"});
             table44.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "Warewolf"});
             table44.AddRow(new string[] {
                         "rs().row",
-                        "the"});
-            table44.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
+                        "Warewolf"});
             table44.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table44.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 528
+            table44.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+#line 567
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table44, "Given ");
-#line 536
+#line 575
  testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 537
+#line 576
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 538
+#line 577
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 578
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1835,7 +1912,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain multiple resu" +
                     "lts", ((string[])(null)));
-#line 540
+#line 580
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1843,33 +1920,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table45.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
-            table45.AddRow(new string[] {
-                        "rs().row",
                         "You"});
             table45.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "Warewolf"});
             table45.AddRow(new string[] {
                         "rs().row",
-                        "the"});
-            table45.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
+                        "Warewolf"});
             table45.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table45.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 541
+            table45.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+#line 581
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table45, "Given ");
-#line 550
+#line 589
  testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 551
+#line 590
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 552
- testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 591
+ testRunner.Then("the find records index multiple result should be 1,5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 592
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1882,7 +1958,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Doesn\'t Contain result doesnt" +
                     " exist", ((string[])(null)));
-#line 554
+#line 594
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1890,30 +1966,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "Mars"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "Mars"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "Mars"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "Mars"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "Mars"});
             table46.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 555
+                        "Mars"});
+#line 595
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table46, "Given ");
-#line 563
+#line 603
  testRunner.And("search the recordset with type \"Doesn\'t Contain\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 564
+#line 604
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 565
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 605
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 606
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1924,7 +2002,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsAlphanumeric()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric", ((string[])(null)));
-#line 567
+#line 608
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1932,30 +2010,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table47.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "$$"});
             table47.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "$$"});
             table47.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "$$"});
             table47.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "$$"});
             table47.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table47.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 568
+                        "$$"});
+#line 609
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table47, "Given ");
-#line 576
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 577
+#line 617
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 618
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 578
+#line 619
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 620
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1968,7 +2048,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric multiple resu" +
                     "lts", ((string[])(null)));
-#line 580
+#line 622
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1979,30 +2059,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table48.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "$$"});
             table48.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "$$"});
             table48.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "$$"});
             table48.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "$$"});
             table48.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table48.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 581
+                        "$$"});
+#line 623
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table48, "Given ");
-#line 590
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 591
+#line 632
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 633
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 592
+#line 634
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 635
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2015,7 +2097,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Alphanumeric result doesnt" +
                     " exist", ((string[])(null)));
-#line 594
+#line 637
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2023,30 +2105,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "$$"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "$$"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "$$"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "$$"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "$$"});
             table49.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 595
+                        "$$"});
+#line 638
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table49, "Given ");
-#line 603
- testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 604
+#line 646
+ testRunner.And("search the recordset with type \"Is Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 647
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 605
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 648
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 649
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2057,7 +2141,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64", ((string[])(null)));
-#line 607
+#line 651
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2068,27 +2152,29 @@ this.ScenarioSetup(scenarioInfo);
                         "You"});
             table50.AddRow(new string[] {
                         "rs().row",
+                        "You"});
+            table50.AddRow(new string[] {
+                        "rs().row",
                         "are"});
             table50.AddRow(new string[] {
                         "rs().row",
                         "the"});
             table50.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "d2FyZXdvbGY="});
             table50.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
-            table50.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-#line 608
+                        "You"});
+#line 652
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table50, "Given ");
-#line 616
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 617
+#line 660
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 661
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 618
+#line 662
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 663
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2099,7 +2185,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsBase64MultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 multiple results", ((string[])(null)));
-#line 620
+#line 665
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2107,7 +2193,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table51.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "d2FyZXdvbGY="});
             table51.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -2119,21 +2205,23 @@ this.ScenarioSetup(scenarioInfo);
                         "the"});
             table51.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "You"});
             table51.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "d2FyZXdvbGY="});
             table51.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 621
+                        "You"});
+#line 666
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table51, "Given ");
-#line 630
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 631
+#line 675
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 676
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 632
+#line 677
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 678
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2146,7 +2234,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Base64 result doesnt exist" +
                     "", ((string[])(null)));
-#line 634
+#line 680
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2163,21 +2251,23 @@ this.ScenarioSetup(scenarioInfo);
                         "the"});
             table52.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "You"});
             table52.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "You"});
             table52.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 635
+                        "You"});
+#line 681
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table52, "Given ");
-#line 643
- testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 644
+#line 689
+ testRunner.And("search the recordset with type \"Is Base64\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 690
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 645
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 691
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 692
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2188,7 +2278,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date", ((string[])(null)));
-#line 647
+#line 694
  this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2208,18 +2298,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table53.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "12/10/2013"});
             table53.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 648
+#line 695
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table53, "Given ");
-#line 656
- testRunner.And("search the recordset with type \"Is Date\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 657
+#line 703
+ testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 704
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 658
+#line 705
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 706
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2230,7 +2322,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date multiple results", ((string[])(null)));
-#line 660
+#line 708
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2238,7 +2330,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table54.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "12/10/2013"});
             table54.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -2253,18 +2345,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table54.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "12/10/2013"});
             table54.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 661
+#line 709
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table54, "Given ");
-#line 670
- testRunner.And("search the recordset with type \"Is Date\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 671
+#line 718
+ testRunner.And("search the recordset with type \"Is Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 719
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 672
+#line 720
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 721
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2275,7 +2369,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsDateResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Date result doesnt exist", ((string[])(null)));
-#line 674
+#line 723
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2299,14 +2393,16 @@ this.ScenarioSetup(scenarioInfo);
             table55.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 675
+#line 724
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table55, "Given ");
-#line 683
+#line 732
  testRunner.And("search the recordset with type \"Is Date\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 684
+#line 733
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 685
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 734
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 735
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2317,7 +2413,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmail()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email", ((string[])(null)));
-#line 687
+#line 737
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2337,18 +2433,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table56.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "test@testEmail.co.za"});
             table56.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 688
+#line 738
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table56, "Given ");
-#line 696
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 697
+#line 746
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 747
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 698
+#line 748
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 749
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2359,7 +2457,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email multiple results", ((string[])(null)));
-#line 700
+#line 751
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2367,7 +2465,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table57.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "test@testEmail.co.za"});
             table57.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -2382,18 +2480,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table57.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "test@testEmail.co.za"});
             table57.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 701
+#line 752
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table57, "Given ");
-#line 710
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 711
+#line 761
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 762
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 712
+#line 763
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 764
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2404,7 +2504,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsEmailResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Email result doesnt exist", ((string[])(null)));
-#line 714
+#line 766
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2428,14 +2528,16 @@ this.ScenarioSetup(scenarioInfo);
             table58.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 715
+#line 767
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table58, "Given ");
-#line 723
- testRunner.And("search the recordset with type \"Is Email\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 724
+#line 775
+ testRunner.And("search the recordset with type \"Is Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 776
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 725
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 777
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 778
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2446,7 +2548,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumeric()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric", ((string[])(null)));
-#line 727
+#line 780
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2466,18 +2568,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table59.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "45"});
             table59.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 728
+#line 781
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table59, "Given ");
-#line 736
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 737
+#line 789
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 790
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 738
+#line 791
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 792
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2488,7 +2592,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsNumericMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric multiple results", ((string[])(null)));
-#line 740
+#line 794
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2496,7 +2600,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table60.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "41"});
             table60.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -2511,18 +2615,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table60.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "54"});
             table60.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 741
+#line 795
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table60, "Given ");
-#line 750
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 751
+#line 804
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 805
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 752
+#line 806
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 807
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2535,7 +2641,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Numeric result doesnt exis" +
                     "t", ((string[])(null)));
-#line 754
+#line 809
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2559,14 +2665,16 @@ this.ScenarioSetup(scenarioInfo);
             table61.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 755
+#line 810
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table61, "Given ");
-#line 763
- testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 764
+#line 818
+ testRunner.And("search the recordset with type \"Is Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 819
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 765
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 820
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 821
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2577,7 +2685,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex", ((string[])(null)));
-#line 767
+#line 823
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2601,14 +2709,16 @@ this.ScenarioSetup(scenarioInfo);
             table62.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 768
+#line 824
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table62, "Given ");
-#line 776
+#line 832
  testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 777
+#line 833
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 778
+#line 834
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 835
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2619,7 +2729,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex multiple results", ((string[])(null)));
-#line 780
+#line 837
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2646,14 +2756,16 @@ this.ScenarioSetup(scenarioInfo);
             table63.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 781
+#line 838
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table63, "Given ");
-#line 790
+#line 847
  testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 791
+#line 848
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 792
+#line 849
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 850
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2664,7 +2776,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsRegexResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Regex result doesnt exist", ((string[])(null)));
-#line 794
+#line 852
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table64 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2688,14 +2800,16 @@ this.ScenarioSetup(scenarioInfo);
             table64.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 795
+#line 853
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table64, "Given ");
-#line 803
+#line 861
  testRunner.And("search the recordset with type \"Is Regex\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 804
+#line 862
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 805
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 863
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 864
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2706,7 +2820,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text", ((string[])(null)));
-#line 807
+#line 866
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table65 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2714,30 +2828,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table65.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "15"});
             table65.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "56"});
             table65.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "45"});
             table65.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "7"});
             table65.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table65.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 808
+                        "16"});
+#line 867
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table65, "Given ");
-#line 816
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 817
+#line 875
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 876
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 818
+#line 877
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 878
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2748,7 +2864,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text multiple results", ((string[])(null)));
-#line 820
+#line 880
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table66 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2759,30 +2875,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table66.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "45"});
             table66.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "54"});
             table66.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "51"});
             table66.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "86"});
             table66.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table66.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 821
+                        "8"});
+#line 881
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table66, "Given ");
-#line 830
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 831
+#line 890
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 891
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 832
+#line 892
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 893
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2793,7 +2911,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsTextResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is Text result doesnt exist", ((string[])(null)));
-#line 834
+#line 895
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table67 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2801,30 +2919,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "1"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "2"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "3"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "4"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "6"});
             table67.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 835
+                        "5"});
+#line 896
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table67, "Given ");
-#line 843
- testRunner.And("search the recordset with type \"Is Text\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 844
+#line 904
+ testRunner.And("search the recordset with type \"Is Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 905
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 845
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 906
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 907
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2835,7 +2955,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML", ((string[])(null)));
-#line 847
+#line 909
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table68 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2855,18 +2975,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table68.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "<test></test>"});
             table68.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 848
+#line 910
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table68, "Given ");
-#line 856
- testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 857
+#line 918
+ testRunner.And("search the recordset with type \"Is XML\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 919
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 858
+#line 920
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 921
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2877,7 +2999,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML multiple results", ((string[])(null)));
-#line 860
+#line 923
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table69 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2885,7 +3007,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table69.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "<test></test>"});
             table69.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -2900,18 +3022,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table69.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "<test></test>"});
             table69.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 861
+#line 924
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table69, "Given ");
-#line 870
+#line 933
  testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 871
+#line 934
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 872
+#line 935
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 936
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2922,7 +3046,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsIsXMLResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Is XML result doesnt exist", ((string[])(null)));
-#line 874
+#line 938
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table70 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2946,14 +3070,16 @@ this.ScenarioSetup(scenarioInfo);
             table70.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 875
+#line 939
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table70, "Given ");
-#line 883
+#line 947
  testRunner.And("search the recordset with type \"Is XML\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 884
+#line 948
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 885
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 949
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 950
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2964,7 +3090,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotAlphanumeric()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Alphanumeric", ((string[])(null)));
-#line 887
+#line 953
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table71 = new TechTalk.SpecFlow.Table(new string[] {
@@ -2984,18 +3110,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table71.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "$$"});
             table71.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 888
+#line 954
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table71, "Given ");
-#line 896
- testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 897
+#line 962
+ testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 963
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 898
+#line 964
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 965
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3008,7 +3136,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Alphanumeric multiple res" +
                     "ults", ((string[])(null)));
-#line 900
+#line 967
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table72 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3016,7 +3144,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table72.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "$$"});
             table72.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -3031,18 +3159,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table72.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "$$"});
             table72.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 901
+#line 968
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table72, "Given ");
-#line 910
- testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 911
+#line 977
+ testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 978
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 912
+#line 979
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 980
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3055,7 +3185,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Alphanumeric result doesn" +
                     "t exist", ((string[])(null)));
-#line 914
+#line 982
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table73 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3079,14 +3209,16 @@ this.ScenarioSetup(scenarioInfo);
             table73.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 915
+#line 983
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table73, "Given ");
-#line 923
- testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 924
+#line 991
+ testRunner.And("search the recordset with type \"Not Alphanumeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 992
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 925
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 993
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 994
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3097,7 +3229,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotDate()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Date", ((string[])(null)));
-#line 927
+#line 996
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table74 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3105,30 +3237,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table74.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "12/11/2013"});
             table74.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "12/11/2013"});
             table74.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "12/11/2013"});
             table74.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "12/11/2013"});
             table74.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table74.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 928
+                        "12/11/2013"});
+#line 997
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table74, "Given ");
-#line 936
+#line 1005
  testRunner.And("search the recordset with type \"Not Date\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 937
+#line 1006
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 938
+#line 1007
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1008
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3139,7 +3273,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotDateMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Date multiple results", ((string[])(null)));
-#line 940
+#line 1010
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table75 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3150,30 +3284,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table75.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "12/11/2013"});
             table75.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "12/11/2013"});
             table75.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "12/11/2013"});
             table75.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "12/11/2013"});
             table75.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table75.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 941
+                        "12/11/2013"});
+#line 1011
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table75, "Given ");
-#line 950
+#line 1020
  testRunner.And("search the recordset with type \"Not Date\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 951
+#line 1021
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 952
+#line 1022
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1023
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3184,7 +3320,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotDateResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Date result doesnt exist", ((string[])(null)));
-#line 954
+#line 1025
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table76 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3192,30 +3328,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "12/11/2013"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "12/11/2013"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "12/11/2013"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "12/11/2013"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "12/11/2013"});
             table76.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 955
+                        "12/11/2013"});
+#line 1026
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table76, "Given ");
-#line 963
- testRunner.And("search the recordset with type \"Not Date\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 964
+#line 1034
+ testRunner.And("search the recordset with type \"Not Date\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1035
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 965
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1036
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1037
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3226,7 +3364,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEmail()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Email", ((string[])(null)));
-#line 967
+#line 1039
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table77 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3234,30 +3372,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table77.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "test@testEmail.co.za"});
             table77.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "test@testEmail.co.za"});
             table77.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "test@testEmail.co.za"});
             table77.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "test@testEmail.co.za"});
             table77.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table77.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 968
+                        "test@testEmail.co.za"});
+#line 1040
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table77, "Given ");
-#line 976
- testRunner.And("search the recordset with type \"Not Email\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 977
+#line 1048
+ testRunner.And("search the recordset with type \"Not Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1049
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 978
+#line 1050
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1051
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3268,7 +3408,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotEmailMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Email multiple results", ((string[])(null)));
-#line 980
+#line 1053
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table78 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3279,30 +3419,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table78.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "test@testEmail.co.za"});
             table78.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "test@testEmail.co.za"});
             table78.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "test@testEmail.co.za"});
             table78.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "test@testEmail.co.za"});
             table78.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table78.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 981
+                        "test@testEmail.co.za"});
+#line 1054
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table78, "Given ");
-#line 990
- testRunner.And("search the recordset with type \"Not Email\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 991
+#line 1063
+ testRunner.And("search the recordset with type \"Not Email\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1064
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 992
+#line 1065
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1066
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3315,7 +3457,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Email result doesnt exist" +
                     "", ((string[])(null)));
-#line 994
+#line 1068
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table79 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3323,30 +3465,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "test@testEmail.co.za"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "test@testEmail.co.za"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "test@testEmail.co.za"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "test@testEmail.co.za"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "test@testEmail.co.za"});
             table79.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 995
+                        "test@testEmail.co.za"});
+#line 1069
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table79, "Given ");
-#line 1003
+#line 1077
  testRunner.And("search the recordset with type \"Not Email\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1004
+#line 1078
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1005
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1079
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1080
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3357,7 +3501,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotNumeric()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Numeric", ((string[])(null)));
-#line 1007
+#line 1082
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table80 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3365,30 +3509,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table80.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "152"});
             table80.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "5"});
             table80.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "6"});
             table80.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "7"});
             table80.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table80.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1008
+                        "5"});
+#line 1083
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table80, "Given ");
-#line 1016
- testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1017
+#line 1091
+ testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1092
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1018
+#line 1093
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1094
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3399,7 +3545,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotNumericMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Numeric multiple results", ((string[])(null)));
-#line 1020
+#line 1096
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table81 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3410,30 +3556,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table81.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "45"});
             table81.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "2"});
             table81.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "4"});
             table81.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "5"});
             table81.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table81.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1021
+                        "5"});
+#line 1097
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table81, "Given ");
-#line 1030
- testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1031
+#line 1106
+ testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1107
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1032
+#line 1108
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1109
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3446,7 +3594,7 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Numeric result doesnt exi" +
                     "st", ((string[])(null)));
-#line 1034
+#line 1111
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table82 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3454,30 +3602,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "1"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "1"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "2"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "2"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "3"});
             table82.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1035
+                        "3"});
+#line 1112
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table82, "Given ");
-#line 1043
- testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1044
+#line 1120
+ testRunner.And("search the recordset with type \"Not Numeric\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1121
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1045
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1122
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1123
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3488,7 +3638,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Text", ((string[])(null)));
-#line 1047
+#line 1125
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table83 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3508,18 +3658,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table83.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "52"});
             table83.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 1048
+#line 1126
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table83, "Given ");
-#line 1056
- testRunner.And("search the recordset with type \"Not Text\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1057
+#line 1134
+ testRunner.And("search the recordset with type \"Not Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1135
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1058
+#line 1136
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1137
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3530,7 +3682,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotTextMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Text multiple results", ((string[])(null)));
-#line 1060
+#line 1139
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table84 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3538,7 +3690,7 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table84.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "45"});
             table84.AddRow(new string[] {
                         "rs().row",
                         "You"});
@@ -3553,18 +3705,20 @@ this.ScenarioSetup(scenarioInfo);
                         "best"});
             table84.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "741"});
             table84.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 1061
+#line 1140
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table84, "Given ");
-#line 1070
- testRunner.And("search the recordset with type \"Not Text\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1071
+#line 1149
+ testRunner.And("search the recordset with type \"Not Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1150
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1072
+#line 1151
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1152
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3575,7 +3729,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotTextResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not Text result doesnt exist", ((string[])(null)));
-#line 1074
+#line 1154
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table85 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3599,14 +3753,16 @@ this.ScenarioSetup(scenarioInfo);
             table85.AddRow(new string[] {
                         "rs().row",
                         "user"});
-#line 1075
+#line 1155
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table85, "Given ");
-#line 1083
- testRunner.And("search the recordset with type \"Not Text\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1084
+#line 1163
+ testRunner.And("search the recordset with type \"Not Text\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1164
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1085
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1165
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1166
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3617,7 +3773,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not XML", ((string[])(null)));
-#line 1087
+#line 1168
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table86 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3625,30 +3781,32 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table86.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "<test></test>"});
             table86.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "<test></test>"});
             table86.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "<test></test>"});
             table86.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "<test></test>"});
             table86.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table86.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1088
+                        "<test></test>"});
+#line 1169
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table86, "Given ");
-#line 1096
- testRunner.And("search the recordset with type \"Not XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1097
+#line 1177
+ testRunner.And("search the recordset with type \"Not XML\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1178
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1098
+#line 1179
  testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1180
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3659,7 +3817,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotXMLMultipleResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not XML multiple results", ((string[])(null)));
-#line 1100
+#line 1182
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3670,30 +3828,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Warewolf"});
             table87.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "<test></test>"});
             table87.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "<test></test>"});
             table87.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "<test></test>"});
             table87.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "<test></test>"});
             table87.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table87.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1101
+                        "<test></test>"});
+#line 1183
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table87, "Given ");
-#line 1110
+#line 1192
  testRunner.And("search the recordset with type \"Not XML\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1111
+#line 1193
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1112
+#line 1194
  testRunner.Then("the find records index multiple result should be 1,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1195
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3704,7 +3864,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindAnIndexOfDataInARecordsetSearchTypeIsNotXMLResultDoesntExist()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type is Not XML result doesnt exist", ((string[])(null)));
-#line 1114
+#line 1197
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table88 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3712,30 +3872,368 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "You"});
+                        "<test></test>"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "are"});
+                        "<test></test>"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "the"});
+                        "<test></test>"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "best"});
+                        "<test></test>"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "Warewolf"});
+                        "<test></test>"});
             table88.AddRow(new string[] {
                         "rs().row",
-                        "user"});
-#line 1115
+                        "<test></test>"});
+#line 1198
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table88, "Given ");
-#line 1123
- testRunner.And("search the recordset with type \"Not XML\" and criteria is \"Mars\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1124
+#line 1206
+ testRunner.And("search the recordset with type \"Not XML\" and criteria is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1207
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1125
- testRunner.Then("the find records index multiple result should be 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1208
+ testRunner.Then("the find records index multiple result should be -1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1209
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type Contains and requires all fields" +
+            " to match true and match all rows true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeContainsAndRequiresAllFieldsToMatchTrueAndMatchAllRowsTrue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type Contains and requires all fields" +
+                    " to match true and match all rows true", ((string[])(null)));
+#line 1211
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table89 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table89.AddRow(new string[] {
+                        "rs(1).row1",
+                        "123"});
+            table89.AddRow(new string[] {
+                        "rs(2).row1",
+                        "2"});
+            table89.AddRow(new string[] {
+                        "rs(3).row1",
+                        "5"});
+#line 1212
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table89, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table90 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table90.AddRow(new string[] {
+                        "rs1(1).row2",
+                        "214"});
+            table90.AddRow(new string[] {
+                        "rs1(2).row2",
+                        "51"});
+            table90.AddRow(new string[] {
+                        "rs1(3).row2",
+                        "56"});
+#line 1217
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table90, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table91 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table91.AddRow(new string[] {
+                        "rs2(1).row3",
+                        "512"});
+            table91.AddRow(new string[] {
+                        "rs2(2).row3",
+                        "84"});
+            table91.AddRow(new string[] {
+                        "rs2(3).row3",
+                        "12"});
+#line 1222
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table91, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table92 = new TechTalk.SpecFlow.Table(new string[] {
+                        "field"});
+            table92.AddRow(new string[] {
+                        "[[rs().row1]]"});
+            table92.AddRow(new string[] {
+                        "[[rs1().row2]]"});
+            table92.AddRow(new string[] {
+                        "[[rs2().row3]]"});
+#line 1227
+ testRunner.And("the fields to search is", ((string)(null)), table92, "And ");
+#line 1232
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1233
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1234
+ testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1235
+ testRunner.And("when requires all fields to match is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1236
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1237
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1238
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type Contains and requires all fields" +
+            " to match false and match all rows true")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeContainsAndRequiresAllFieldsToMatchFalseAndMatchAllRowsTrue()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type Contains and requires all fields" +
+                    " to match false and match all rows true", ((string[])(null)));
+#line 1240
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table93 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table93.AddRow(new string[] {
+                        "rs(1).row1",
+                        "123"});
+            table93.AddRow(new string[] {
+                        "rs(2).row1",
+                        "2"});
+            table93.AddRow(new string[] {
+                        "rs(3).row1",
+                        "5"});
+#line 1241
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table93, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table94 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table94.AddRow(new string[] {
+                        "rs1(1).row2",
+                        "214"});
+            table94.AddRow(new string[] {
+                        "rs1(2).row2",
+                        "51"});
+            table94.AddRow(new string[] {
+                        "rs1(3).row2",
+                        "56"});
+#line 1246
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table94, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table95.AddRow(new string[] {
+                        "rs2(1).row3",
+                        "512"});
+            table95.AddRow(new string[] {
+                        "rs2(2).row3",
+                        "84"});
+            table95.AddRow(new string[] {
+                        "rs2(3).row3",
+                        "12"});
+#line 1251
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table95, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table96 = new TechTalk.SpecFlow.Table(new string[] {
+                        "field"});
+            table96.AddRow(new string[] {
+                        "[[rs().row1]]"});
+            table96.AddRow(new string[] {
+                        "[[rs1().row2]]"});
+            table96.AddRow(new string[] {
+                        "[[rs2().row3]]"});
+#line 1256
+ testRunner.And("the fields to search is", ((string)(null)), table96, "And ");
+#line 1261
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1262
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1263
+ testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1264
+ testRunner.And("when requires all fields to match is \"fale\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1265
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1266
+ testRunner.Then("the find records index multiple result should be 1,3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1267
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type Contains and requires all fields" +
+            " to match false and match all rows false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeContainsAndRequiresAllFieldsToMatchFalseAndMatchAllRowsFalse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type Contains and requires all fields" +
+                    " to match false and match all rows false", ((string[])(null)));
+#line 1269
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table97 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table97.AddRow(new string[] {
+                        "rs(1).row1",
+                        "123"});
+            table97.AddRow(new string[] {
+                        "rs(2).row1",
+                        "2"});
+            table97.AddRow(new string[] {
+                        "rs(3).row1",
+                        "5"});
+#line 1270
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table97, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table98 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table98.AddRow(new string[] {
+                        "rs1(1).row2",
+                        "214"});
+            table98.AddRow(new string[] {
+                        "rs1(2).row2",
+                        "51"});
+            table98.AddRow(new string[] {
+                        "rs1(3).row2",
+                        "56"});
+#line 1275
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table98, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table99.AddRow(new string[] {
+                        "rs2(1).row3",
+                        "512"});
+            table99.AddRow(new string[] {
+                        "rs2(2).row3",
+                        "84"});
+            table99.AddRow(new string[] {
+                        "rs2(3).row3",
+                        "12"});
+#line 1280
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table99, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table100 = new TechTalk.SpecFlow.Table(new string[] {
+                        "field"});
+            table100.AddRow(new string[] {
+                        "[[rs().row1]]"});
+            table100.AddRow(new string[] {
+                        "[[rs1().row2]]"});
+            table100.AddRow(new string[] {
+                        "[[rs2().row3]]"});
+#line 1285
+ testRunner.And("the fields to search is", ((string)(null)), table100, "And ");
+#line 1290
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1291
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1292
+ testRunner.And("when all row true is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1293
+ testRunner.And("when requires all fields to match is \"fale\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1294
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1295
+ testRunner.Then("the find records index multiple result should be 1,2,3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1296
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset search type Contains and requires all fields" +
+            " to match true and match all rows false")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordsetIndexMultiple")]
+        public virtual void FindAnIndexOfDataInARecordsetSearchTypeContainsAndRequiresAllFieldsToMatchTrueAndMatchAllRowsFalse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset search type Contains and requires all fields" +
+                    " to match true and match all rows false", ((string[])(null)));
+#line 1298
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table101 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table101.AddRow(new string[] {
+                        "rs(1).row1",
+                        "123"});
+            table101.AddRow(new string[] {
+                        "rs(2).row1",
+                        "2"});
+            table101.AddRow(new string[] {
+                        "rs(3).row1",
+                        "5"});
+#line 1299
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table101, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table102.AddRow(new string[] {
+                        "rs1(1).row2",
+                        "214"});
+            table102.AddRow(new string[] {
+                        "rs1(2).row2",
+                        "52"});
+            table102.AddRow(new string[] {
+                        "rs1(3).row2",
+                        "56"});
+#line 1304
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table102, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table103.AddRow(new string[] {
+                        "rs2(1).row3",
+                        "512"});
+            table103.AddRow(new string[] {
+                        "rs2(2).row3",
+                        "82"});
+            table103.AddRow(new string[] {
+                        "rs2(3).row3",
+                        "12"});
+#line 1309
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table103, "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table104 = new TechTalk.SpecFlow.Table(new string[] {
+                        "field"});
+            table104.AddRow(new string[] {
+                        "[[rs().row1]]"});
+            table104.AddRow(new string[] {
+                        "[[rs1().row2]]"});
+            table104.AddRow(new string[] {
+                        "[[rs2().row3]]"});
+#line 1314
+ testRunner.And("the fields to search is", ((string)(null)), table104, "And ");
+#line 1319
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1320
+ testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1321
+ testRunner.And("when all row true is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1322
+ testRunner.And("when requires all fields to match is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1323
+ testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1324
+ testRunner.Then("the find records index multiple result should be 1,2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1325
+ testRunner.And("the find record index has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

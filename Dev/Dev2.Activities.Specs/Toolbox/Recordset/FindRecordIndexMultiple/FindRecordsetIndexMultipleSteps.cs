@@ -17,6 +17,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         private DsfFindRecordsMultipleCriteriaActivity _findRecordsMultipleIndex;
         List<FindRecordsTO> _searchList = new List<FindRecordsTO>();        
         int _row = 0;
+        bool _requireAllTrue;
+        bool _requireAllFieldsToMatch = false;
+        string _fieldsToSearch;
 
         public FindRecordsetIndexMultipleSteps()
             : base(new List<Tuple<string, string>>())
@@ -28,9 +31,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
             _findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
-                    FieldsToSearch = RecordSetName + "()",
+                    FieldsToSearch = string.IsNullOrEmpty(_fieldsToSearch) ? RecordSetName + "()" : _fieldsToSearch,
                     ResultsCollection = _searchList,
-                    RequireAllFieldsToMatch = false,
+                    RequireAllTrue = _requireAllTrue,
+                    RequireAllFieldsToMatch = _requireAllFieldsToMatch,
                     Result = ResultVariable
                 };
 
@@ -49,6 +53,21 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 _variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
+
+        [Given(@"the fields to search is")]
+        public void GivenTheFieldsToSearchIs(Table table)
+        {
+            List<TableRow> tableRows = table.Rows.ToList();
+            foreach(TableRow t in tableRows)
+            {
+                _fieldsToSearch += t[0] + ",";
+            }
+            if(_fieldsToSearch.EndsWith(","))
+            {
+                _fieldsToSearch = _fieldsToSearch.Remove(_fieldsToSearch.Length - 1);
+            }
+        }
+
         
         [Given(@"I have the following recordset in my datalist")]
         public void GivenIHaveTheFollowingRecordsetInMyDatalist(Table table)
@@ -73,6 +92,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         {
             _row++;
             _searchList.Add(new FindRecordsTO(string.Empty, searchType, _row, false, false, from, to));
+        }
+
+        [Given(@"when all row true is ""(.*)""")]
+        public void GivenWhenAllRowTrueIs(bool matchAllFields)
+        {
+            _requireAllTrue = matchAllFields;
+        }
+
+        [Given(@"when requires all fields to match is ""(.*)""")]
+        public void GivenWhenRequiresAllFieldsToMatchIs(bool requireAllFieldsToMatch)
+        {
+            _requireAllFieldsToMatch = requireAllFieldsToMatch;
         }
 
         
@@ -104,6 +135,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             Assert.AreEqual(result, actualValue);
         }
         }
+
+        [Then(@"the find record index has ""(.*)"" error")]
+        public void ThenTheFindRecordIndexHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }        
 
     }
 }
