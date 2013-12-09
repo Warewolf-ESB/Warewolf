@@ -40,6 +40,7 @@ namespace Dev2.Workspaces
         //
         static volatile WorkspaceRepository _instance;
         static readonly object SyncRoot = new Object();
+        readonly object _readLock = new object();
 
         /// <summary>
         /// Gets the repository instance.
@@ -153,25 +154,28 @@ namespace Dev2.Workspaces
         /// </returns>
         public IWorkspace Get(Guid workspaceID, bool force = false, bool loadResources = true)
         {
-            // PBI 9363 - 2013.05.29 - TWR: Added loadResources parameter
-            IWorkspace workspace;
-            if(force || !_items.TryGetValue(workspaceID, out workspace))
+            lock(_readLock)
             {
-                workspace = Read(workspaceID);
-
-                if(workspaceID != ServerWorkspaceID)
+                // PBI 9363 - 2013.05.29 - TWR: Added loadResources parameter
+                IWorkspace workspace;
+                if(force || !_items.TryGetValue(workspaceID, out workspace))
                 {
-                    var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                    _resourceCatalog.SyncTo(ServerWorkspacePath, workspacePath, false, false);
-                }
+                    workspace = Read(workspaceID);
 
-                if(loadResources)
-                {
-                    _resourceCatalog.LoadWorkspace(workspaceID);
+                    if(workspaceID != ServerWorkspaceID)
+                    {
+                        var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+                        _resourceCatalog.SyncTo(ServerWorkspacePath, workspacePath, false, false);
+                    }
+
+                    if(loadResources)
+                    {
+                        _resourceCatalog.LoadWorkspace(workspaceID);
+                    }
+                    _items[workspaceID] = workspace;
                 }
-                _items[workspaceID] = workspace;
+                return workspace;
             }
-            return workspace;
         }
 
         #endregion
@@ -205,9 +209,12 @@ namespace Dev2.Workspaces
         /// <param name="servicesToIgnore">The services being to be ignored.</param>
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
-            var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
-            var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
-            _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
+            lock(_readLock)
+            {
+                var filesToIgnore = servicesToIgnore.Select(s => s += ".xml").ToList();
+                var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
+                _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
+            }
         }
 
         #endregion

@@ -1,19 +1,9 @@
-﻿using System.Security.Principal;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Integration.Tests.Helpers;
-using Dev2.Integration.Tests.MEF;
-using Dev2.Network;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Network;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
-using Moq;
-using Unlimited.Framework;
+using Dev2.Integration.Tests.Helpers;
+using Dev2.Network;
+using Dev2.Studio.Core.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 {
@@ -29,8 +19,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 
 
         private TestContext testContextInstance;
-        protected const string WebserverUrl = "http://localhost:2234/";
-        private string DsfChannelUrl = ServerSettings.DsfAddress;
         static IEnvironmentConnection _connection;
 
         /// <summary>
@@ -80,7 +68,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             var res = conn.IsConnected;
             conn.Disconnect();
             Assert.IsTrue(res);
-            
+
         }
 
         #endregion Server Listening Tests
@@ -130,7 +118,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
                 var response = (HttpWebResponse)wex.Response;
                 Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
             }
-            
+
         }
 
         /// <summary>

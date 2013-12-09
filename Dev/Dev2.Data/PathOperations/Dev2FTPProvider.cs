@@ -18,7 +18,7 @@ namespace Dev2.PathOperations {
     /// </summary>
     [Serializable]
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint {
-        const int SFTP_TIMEOUT = 60;
+        const int SFTP_TIMEOUT_MILLISECONDS = 300;
 
         // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
         // Make sure to replace Uri with IActivity references
@@ -128,7 +128,7 @@ namespace Dev2.PathOperations {
         Sftp BuildSftpClient(IActivityIOPath path)
         {
             var hostName = ExtractHostNameFromPath(path.Path);
-            var sftp = new Sftp(hostName, path.Username, path.Password,SFTP_TIMEOUT);
+            var sftp = new Sftp(hostName, path.Username, path.Password,SFTP_TIMEOUT_MILLISECONDS);
             
             try
             {
@@ -136,6 +136,14 @@ namespace Dev2.PathOperations {
             }
             catch(Exception e)
             {
+                if(e.Message.Contains("timeout"))
+                {
+                    throw new Exception("Connection timed out.");
+                }
+                if(e.Message.Contains("Auth failed"))
+                {
+                    throw new Exception(string.Format("Incorrect user name and password for {0}", path.Path));
+                }
                 if(path.Path.Contains("\\"))
                 {
                     throw new Exception(string.Format("Bad format for SFTP. Path {0}. Please correct path.", path.Path));
@@ -1029,39 +1037,20 @@ namespace Dev2.PathOperations {
         
         bool IsFilePresentSFTP(IActivityIOPath path)
         {
-            //var sftp = BuildSftpClient(path);
-            bool isAlive = false;
-
+            var isAlive = false;
             try
             {
-                //var fromPath = ExtractFileNameFromPath(path.Path);
-                IList<IActivityIOPath> listFilesInDirectory = ListFilesInDirectory(path);
+                var listFilesInDirectory = ListFilesInDirectory(path);
                 if(listFilesInDirectory.Count > 0)
                 {
                     isAlive = true;
                 }
-//                var tempFileName = BuildTempFileName();
-//                sftp.Get(fromPath, tempFileName);
-//                if(File.ReadAllBytes(tempFileName).Length != 0)
-//                {
-//                    isAlive = true;
-//                }
-            }
-            catch(SftpException ftpException)
-            {
-                ServerLogger.LogError(ftpException);
-                isAlive = false;
             }
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw;
+                isAlive = false;                
             }
-            finally
-            {
-                //sftp.Close();
-            }
-
             return isAlive;
         }
 

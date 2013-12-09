@@ -100,8 +100,6 @@ namespace Dev2.Runtime.Hosting
         /// <param name="managementServices">The management services to be loaded.</param>
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
-            //_contextManager = contextManager;
-
             // MUST load management services BEFORE server workspace!!
             if(managementServices != null)
             {
@@ -881,13 +879,20 @@ namespace Dev2.Runtime.Hosting
 
         static T GetResource<T>(string resourceContents) where T : Resource, new()
         {
-            using (var stringReader = new StringReader(resourceContents))
+            using(var stringReader = new StringReader(resourceContents))
             {
                 XElement resourceElement = XElement.Load(stringReader, LoadOptions.None);
                 object[] args = { resourceElement };
-                return (T)Activator.CreateInstance(typeof(T), args);    
+                try
+                {
+                    return (T)Activator.CreateInstance(typeof(T), args);
+                }
+                catch(Exception e)
+                {
+                    ServerLogger.LogError(e);
+                    return null;
+                }
             }
-            
         }
 
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new()

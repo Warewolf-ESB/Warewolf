@@ -15,7 +15,7 @@
         authenticationType: ko.observable("User"),
         userName: ko.observable(""),
         password: ko.observable(""),
-        webServerPort: ko.observable(1234)
+        webServerPort: ko.observable(3142)
     };
     
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
@@ -38,7 +38,7 @@
             minLength: 0,
             source: [],
             select: function(event, ui) {
-                var addr = "http://" + ui.item.value + ":77/dsf";
+                var addr = "http://" + ui.item.value + ":3142/dsf";
                 self.data.address(addr);
                 $address.removeClass("ui-autocomplete-loading");
                 return false;

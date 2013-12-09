@@ -90,7 +90,7 @@ namespace Dev2.Data.Binary_Objects
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                ServerLogger.LogError(e);
             }
             finally
             {

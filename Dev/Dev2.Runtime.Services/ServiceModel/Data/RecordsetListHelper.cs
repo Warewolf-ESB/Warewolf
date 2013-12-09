@@ -83,8 +83,15 @@ namespace Dev2.Runtime.ServiceModel.Data
                 if(indexOf + 2 == length) // This means we have a primitive array as property
                 {
                     var upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
-                    rsName = path.ActualPath.Substring(0, upperRecsetName).Replace("()", "").Replace(".", "_");
-                    fieldName = path.ActualPath.Substring(upperRecsetName).Replace(".", "").Replace("()", "");
+                    if(upperRecsetName == -1)
+                    {
+                        rsName = path.ActualPath.Substring(0, indexOf + 2).Replace("()", "").Replace(".", "_");
+                    }
+                    else
+                    {
+                        rsName = path.ActualPath.Substring(0, upperRecsetName).Replace("()", "").Replace(".", "_");
+                        fieldName = path.ActualPath.Substring(upperRecsetName).Replace(".", "").Replace("()", "");
+                    }
                 }
                 else
                 {
