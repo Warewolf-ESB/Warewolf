@@ -15,8 +15,6 @@ namespace Dev2.Data.Tests.BinaryDataList
     [ExcludeFromCodeCoverage]
     public class BinaryDataListEntryTest
     {
-
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
