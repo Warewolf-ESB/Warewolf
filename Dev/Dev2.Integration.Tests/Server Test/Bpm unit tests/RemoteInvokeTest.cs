@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Threading;
-using Dev2.Development.Languages.Scripting;
 using Dev2.Integration.Tests.Helpers;
-using IronPython.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
@@ -13,12 +10,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
     [TestClass]
     public class RemoteInvokeTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
         [TestMethod]
         // TFS Migration Issue
         public void CanInvokeARemoteService()
