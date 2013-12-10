@@ -62,7 +62,7 @@ Scenario: Delete a record using an index from a variable
 	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
 	| rs().row | 1   |
-	| rs().row | 2   |
+	| rs().row | 3   |
 	And the delete execution has "NO" error
 
 Scenario: Delete a record using a star notation
@@ -77,3 +77,20 @@ Scenario: Delete a record using a star notation
 	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
 	And the delete execution has "NO" error
+
+Scenario: Delete a record using a negative integer -1
+	Given I have the following recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And I delete a record "[[rs(-1)]]"
+	When the delete tool is executed
+	Then the delete result should be "Failure"
+	And the recordset "[[rs().row]]" will be as follows
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And the delete execution has "AN" error
+
