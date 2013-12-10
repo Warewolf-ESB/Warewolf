@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Interfaces;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
-using Dev2.Integration.Tests;
 using System.Xml.Linq;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Studio.Core.Tests {
+namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests {
 
     [TestClass]
     public class WebCommunicationTest {
 
-        private string webserverURI = ServerSettings.WebserverURI;
+        private readonly string webserverURI = ServerSettings.WebserverURI;
 
         [Export(typeof(CompositionContainer))]
         public CompositionContainer Container { get; set; }
@@ -35,7 +35,6 @@ namespace Dev2.Studio.Core.Tests {
         public void TestInitialize() {
             _webRequest = new WebCommunication();
             _webCommResp = new WebCommunicationResponse();
-            //_webResponseFactory = new WebCommunicationResponseFactory();
             AssemblyCatalog catalog = new AssemblyCatalog(Assembly.GetAssembly(typeof(IWebCommunication)));
             Container = new CompositionContainer(catalog);
 
@@ -46,9 +45,6 @@ namespace Dev2.Studio.Core.Tests {
             catch (Exception) {
                 Assert.Fail("Composition Error");
             }
-
-            //_webResponseFactory.Container = Container;
-            //_webRequest.WebCommunicationResponseFactory = _webResponseFactory;
         }
 
         [TestMethod]
@@ -67,13 +63,12 @@ namespace Dev2.Studio.Core.Tests {
             var uri = String.Format("{0}{1}", webserverURI, "TabIndexInject"); 
             var data = "Dev2tabIndex=1";
             IWebCommunicationResponse actual = _webRequest.Post(uri, data);
-            IWebCommunicationResponse expected = _webCommResp;
             XElement serializedActual = XElement.Parse(actual.Content);
 
             Assert.AreNotEqual(0, serializedActual.Descendants().Count());
             XElement actualFinding = serializedActual.Descendants().First(c => c.Name == "tabIndex");
 
-            Assert.AreNotEqual(string.Empty, actualFinding.Value);
+            StringAssert.Contains(actualFinding.Value, "tabindex=\"1\"");
         }
     }
 }
