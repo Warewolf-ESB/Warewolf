@@ -185,6 +185,7 @@
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
+    <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSecurityViewModel.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
