@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Integration.Tests.Activities
 {

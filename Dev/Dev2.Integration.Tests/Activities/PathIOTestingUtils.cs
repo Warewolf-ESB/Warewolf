@@ -9,9 +9,8 @@ using System.IO;
 using System.Security.Principal;
 using System.Net;
 using Ionic.Zip;
-using Dev2.Integration.Tests;
 
-namespace Unlimited.UnitTest.Framework.PathOperationTests {
+namespace Dev2.Integration.Tests.Activities {
 
     /// <summary>
     /// Used for internal security reasons
@@ -48,7 +47,6 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             const int LOGON32_LOGON_INTERACTIVE = 2;
 
             // handle UNC path
-            SafeTokenHandle safeTokenHandle;
 
             byte[] data = new byte[3];
 
@@ -67,7 +65,6 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
             const int LOGON32_LOGON_INTERACTIVE = 2;
 
             // handle UNC path
-            SafeTokenHandle safeTokenHandle;
 
             byte[] data = null;
 

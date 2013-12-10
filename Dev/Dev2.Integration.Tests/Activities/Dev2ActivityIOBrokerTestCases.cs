@@ -3,7 +3,6 @@ using System.IO;
 using Dev2.PathOperations;
 using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.UnitTest.Framework.PathOperationTests;
 
 namespace Dev2.Integration.Tests.Activities
 {

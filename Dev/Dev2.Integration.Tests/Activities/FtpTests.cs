@@ -5,7 +5,6 @@ using System.Net;
 using System.Text;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.UnitTest.Framework.PathOperationTests;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Activities
