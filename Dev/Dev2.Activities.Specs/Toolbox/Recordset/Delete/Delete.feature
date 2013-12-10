@@ -32,7 +32,7 @@ Scenario: Delete a recordset that does not exist
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
-	And the delete execution has "NO" error
+	And the delete execution has "AN" error
 
 Scenario: Delete the first record in a recordset 
 	Given I have the following recordset
@@ -94,3 +94,18 @@ Scenario: Delete a record using a negative integer -1
 	| rs().row | 3   |
 	And the delete execution has "AN" error
 
+Scenario: Delete a record that does not exist
+	Given I have the following recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And I delete a record "[[rs(5)]]"
+	When the delete tool is executed
+	Then the delete result should be "Failure"
+	And the recordset "[[rs().row]]" will be as follows
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	And the delete execution has "AN" error
