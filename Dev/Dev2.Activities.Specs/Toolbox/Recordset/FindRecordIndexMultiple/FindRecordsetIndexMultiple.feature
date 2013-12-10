@@ -264,7 +264,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than resul
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
 	And  the find record index has "NO" error
-
+	
 Scenario: Find an index of data in a recordset search type is Less Than
 	Given I have the following recordset to search for multiple criteria
 	| rs       | value    |
@@ -324,7 +324,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To
 
 Scenario: Find an index of data in a recordset search type is Not Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |	
+	| rs       | value    |
 	| rs().row | You      |
 	| rs().row | are      |
 	| rs().row | the      |
@@ -408,7 +408,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal multiple results
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |	
+	| rs       | value    |
 	| rs().row | 1      |
 	| rs().row | are      |
 	| rs().row | the      |

@@ -136,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if(string.IsNullOrEmpty(searchType))
                     {
                         continue;
-                    }                    
+                    }
                     while(itrCollection.HasMoreData())
                     {
                         var currentResults = results as IList<string> ?? results.ToList();

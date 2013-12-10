@@ -68,7 +68,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1)},
+                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("32", ">", 1) },
                     StartIndex = "",
                     Result = "[[Result().res]]"
                 }
@@ -149,13 +149,59 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
                     ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("jimmy",">",1)},
-                    StartIndex = "",
+                    StartIndex = "",                    
                     Result = "[[Result().res]]"
                 }
             };
 
             CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            string data = "<ADL>\r\n  <Recset>\r\n\t<Field1>Mr A</Field1>\r\n\t<Field2>25</Field2>\r\n\t<Field3>a@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr B</Field1>\r\n\t<Field2>651</Field2>\r\n\t<Field3>b@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr C</Field1>\r\n\t<Field2>48</Field2>\r\n\t<Field3>c@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr D</Field1>\r\n\t<Field2>1</Field2>\r\n\t<Field3>d@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr E</Field1>\r\n\t<Field2>22</Field2>\r\n\t<Field3>e@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr F</Field1>\r\n\t<Field2>321</Field2>\r\n\t<Field3>f@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr G</Field1>\r\n\t<Field2>51</Field2>\r\n\t<Field3>g@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr H</Field1>\r\n\t<Field2>2120</Field2>\r\n\t<Field3>h@abc.co.za</Field3>\r\n  </Recset>\r\n  <Recset>\r\n\t<Field1>Mr I</Field1>\r\n\t<Field2>46</Field2>\r\n\t<Field3>i@abc.co.za</Field3>\r\n  </Recset>\r\n  <Result>\r\n\t<res></res>\r\n  </Result>\t\r\n</ADL>";
+            var data = @"<ADL>
+  <Recset>
+	<Field1>Mr A</Field1>
+	<Field2>25</Field2>
+	<Field3>a@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr B</Field1>
+	<Field2>651</Field2>
+	<Field3>b@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr C</Field1>
+	<Field2>48</Field2>
+	<Field3>c@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr D</Field1>
+	<Field2>1</Field2>
+	<Field3>d@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr E</Field1>
+	<Field2>22</Field2>
+	<Field3>e@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr F</Field1>
+	<Field2>321</Field2>
+	<Field3>f@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr G</Field1>
+	<Field2>51</Field2>
+	<Field3>g@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr H</Field1>
+	<Field2>2120</Field2>
+	<Field3>h@abc.co.za</Field3>
+  </Recset>
+  <Recset>
+	<Field1>Mr I</Field1>
+	<Field2>46</Field2>
+	<Field3>i@abc.co.za</Field3>
+  </Recset>
+</ADL>";
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
@@ -164,7 +210,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
 
             Assert.AreEqual(1,actual.Count);
-            Assert.AreEqual("",actual[0].TheValue);
+            Assert.AreEqual("-1",actual[0].TheValue);
         }
 
 
@@ -322,7 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual("", actual[0].TheValue);
+            Assert.AreEqual("-1", actual[0].TheValue);
         }
 
         [TestMethod]

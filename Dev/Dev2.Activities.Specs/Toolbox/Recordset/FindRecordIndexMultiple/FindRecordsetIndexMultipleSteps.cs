@@ -53,7 +53,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 _variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
-
+        
         [Given(@"the fields to search is")]
         public void GivenTheFieldsToSearchIs(Table table)
         {
