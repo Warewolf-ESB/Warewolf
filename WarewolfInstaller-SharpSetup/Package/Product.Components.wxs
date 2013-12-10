@@ -198,6 +198,9 @@
             <Component Id="cmpA412A959A432586401E620A527B22C41" Directory="dirServerRoot" Guid="{AEDB8B54-438E-437A-8EDB-29D3B67FB43C}">
                 <File Id="filAC752907FFA75BF873BD025873F58396" KeyPath="yes" Source="..\ProductBuild\Server\IronPython.dll" />
             </Component>
+            <Component Id="cmpA412A959B431586401E620A527B22C41" Directory="dirServerRoot" Guid="{AEDC3B54-438E-437A-8EDB-29D3B67FB43C}">
+                <File Id="filAC752907FFA75BF813AA025873F58396" KeyPath="yes" Source="..\ProductBuild\Server\IronPython.Modules.dll" />
+            </Component>
             <Component Id="cmpFC11B9B92767B7261AB8D9616E816968" Directory="dirServerRoot" Guid="{F2B6188C-9605-4CC9-A14D-2981C29D6699}">
                 <File Id="fil774A13E9A22C33F91CEC97F306826A0F" KeyPath="yes" Source="..\ProductBuild\Server\IronRuby.dll" />
             </Component>
