@@ -173,7 +173,7 @@ namespace Dev2.Server.Datalist
                                 if(bde.IsRecordset)
                                 {
                                     // recordset op - build up the correct string to inject
-                                    IIndexIterator idxItr = bde.FetchRecordsetIndexes();
+                                    IIndexIterator idxItr = bde.FetchRecordsetIndexes(true);
                                     StringBuilder sb = new StringBuilder();
 
                                     while(idxItr.HasMore())

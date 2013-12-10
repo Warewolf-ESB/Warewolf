@@ -522,14 +522,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Fetches the recordset indexs.
         /// </summary>
         /// <returns></returns>
-        public IIndexIterator FetchRecordsetIndexes()
+        public IIndexIterator FetchRecordsetIndexes(bool overrideAlias = false)
         {
-            // TODO : Check for a master entry
 
             var aliases = FetchAlias();
             var theAlias = aliases.FirstOrDefault();
 
-            if(theAlias.Value != null)
+            if(theAlias.Value != null && !overrideAlias)
             {
                 var me = theAlias.Value.MasterEntry;
                 if(me != null)

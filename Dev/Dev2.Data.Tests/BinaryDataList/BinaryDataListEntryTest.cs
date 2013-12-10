@@ -15,10 +15,137 @@ namespace Dev2.Data.Tests.BinaryDataList
     [ExcludeFromCodeCoverage]
     public class BinaryDataListEntryTest
     {
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
-        public void BinaryDataListEntry_MethodName_Scenerio_Result()
+        public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliases_ExpectAliasKeys()
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // dl1 - Child
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+           
+            entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
+
+            entry.MakeRecordsetEvaluateReady(1, "f1", out error);
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            var idxes = entry.FetchRecordsetIndexes();
+            var minIdx = idxes.MinIndex();
+            var maxIdx = idxes.MaxIndex();
+            var gapsCount = idxes.FetchGaps().Count;
+
+            Assert.AreEqual(3, idxes.Count);
+            Assert.AreEqual(0, gapsCount);
+            Assert.AreEqual(1, minIdx);
+            Assert.AreEqual(3, maxIdx);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
+        public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliasesWithOverrideTrue_ExpectChildEntryKeys()
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // dl1 - Child
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
+
+            entry.MakeRecordsetEvaluateReady(2, "f1", out error);
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            var idxes = entry.FetchRecordsetIndexes(true);
+            var minIdx = idxes.MinIndex();
+            var maxIdx = idxes.MaxIndex();
+            var gapsCount = idxes.FetchGaps().Count;
+
+            Assert.AreEqual(1, idxes.Count);
+            Assert.AreEqual(1, gapsCount);
+            Assert.AreEqual(2, minIdx);
+            Assert.AreEqual(2, maxIdx);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
+        public void BinaryDataListEntry_MakeRecordsetEvaluateReady_NormalUsage_ExpectEvaluateReadyRecordset()
         {
             //------------Setup for test--------------------------
             string error;

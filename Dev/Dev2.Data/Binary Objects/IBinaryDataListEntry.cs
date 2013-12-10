@@ -1,7 +1,7 @@
-﻿using Dev2.Data.Audit;
-using Dev2.Data.Binary_Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Dev2.Data.Audit;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
 
 namespace Dev2.DataList.Contract.Binary_Objects
@@ -192,13 +192,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Merges this instance.
         /// </summary>
         /// <param name="mergeWith">The merge with.</param>
+        /// <param name="error">The error.</param>
         void Merge(IBinaryDataListEntry mergeWith, out string error);
 
         /// <summary>
         /// Fetches the index of the recordset.
         /// </summary>
         /// <returns></returns>
-        IIndexIterator FetchRecordsetIndexes();
+        IIndexIterator FetchRecordsetIndexes(bool overrideAlias = false);
 
         /// <summary>
         /// Fetches the last index of the recordset.
