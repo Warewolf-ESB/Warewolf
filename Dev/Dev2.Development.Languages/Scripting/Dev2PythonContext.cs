@@ -12,7 +12,9 @@ namespace Dev2.Development.Languages.Scripting
         public string Execute(string scriptValue)
         {
             var pyEng = Python.CreateEngine();
-            string pyFunc = @"def __result__(): " + scriptValue;
+            
+            string pyFunc =  @"def __result__(): " + scriptValue;     
+
             ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
