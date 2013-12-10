@@ -273,5 +273,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             Assert.AreEqual(numOfInserts, actualInserts);
         }
 
+        [Then(@"the sqlbulkinsert execution has ""(.*)"" error")]
+        public void ThenTheSqlbulkinsertExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_dlID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

@@ -15,8 +15,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     {
         public AssignSteps(): base (new List<Tuple<string, string>>())
         {
-            
         }
+
         private DsfMultiAssignActivity _multiAssign;
 
         private void BuildDataList()
@@ -71,8 +71,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 value = value.Replace('"', ' ').Trim();
                 GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
+                actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);
             }
         }
+
+        [Then(@"the assign execution has ""(.*)"" error")]
+        public void ThenTheAssignExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

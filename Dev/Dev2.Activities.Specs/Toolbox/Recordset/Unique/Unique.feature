@@ -18,6 +18,7 @@ Scenario: Find unique records in a  dataset
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
+	And the unique execution has "NO" error
 		
 Scenario: Find unique records in a  dataset comma separated
 	Given I have the following duplicated recordset
@@ -38,4 +39,5 @@ Scenario: Find unique records in a  dataset comma separated
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
+	And the unique execution has "NO" error
 

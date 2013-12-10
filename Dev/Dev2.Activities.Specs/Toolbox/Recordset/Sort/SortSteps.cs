@@ -84,5 +84,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }
         }
+
+        [Then(@"the sort execution has ""(.*)"" error")]
+        public void ThenTheSortExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

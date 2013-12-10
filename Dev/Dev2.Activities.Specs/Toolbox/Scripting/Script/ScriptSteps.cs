@@ -12,45 +12,51 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
     [Binding]
     public class ScriptSteps : RecordSetBases
     {
+        private DsfScriptingActivity _dsfScripting;
+
+        private enScriptType _language;
+        private string _scriptToExecute;
 
         public ScriptSteps()
             : base(new List<Tuple<string, string>>())
         {
         }
 
-        private DsfScriptingActivity _dsfScripting;
-       
-        private string _scriptToExecute;
-        private enScriptType _language;
-        
         private void BuildDataList()
         {
             BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
 
-            _dsfScripting = new DsfScriptingActivity { Script = _scriptToExecute, ScriptType = _language, Result = ResultVariable };
+            _dsfScripting = new DsfScriptingActivity
+                {
+                    Script = _scriptToExecute,
+                    ScriptType = _language,
+                    Result = ResultVariable
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _dsfScripting
-            };
+                {
+                    Action = _dsfScripting
+                };
         }
-        
+
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
             _variableList.Add(new Tuple<string, string>(variable, value));
         }
-        
+
         [Given(@"I have this script to execute ""(.*)""")]
-        public void GivenIHaveThisScriptToExecute(string scriptToExecute)
+        public void GivenIHaveThisScriptToExecute(string scriptFileName)
         {
-            _scriptToExecute = scriptToExecute;
+            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Scripting.Script.testfiles.{0}",
+                                                scriptFileName);
+            _scriptToExecute = ReadFile(resourceName);
         }
 
         [Given(@"I have selected the language as ""(.*)""")]
         public void GivenIHaveSelectedTheLanguageAs(string language)
         {
-            _language = (enScriptType)Enum.Parse(typeof(enScriptType), language);
+            _language = (enScriptType) Enum.Parse(typeof (enScriptType), language);
         }
 
         [When(@"I execute the script tool")]
@@ -68,15 +74,16 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             result = result.Replace("\"\"", "");
             GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result , actualValue);
+            Assert.AreEqual(result, actualValue);
         }
-        
+
         [Then(@"script execution has ""(.*)"" error")]
         public void ThenScriptExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            bool actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
     }

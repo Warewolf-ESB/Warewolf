@@ -385,13 +385,40 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Toolbox\Data\DataMerge\NewLineExample.txt">
+    <EmbeddedResource Include="Toolbox\Data\DataMerge\NewLineExample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Toolbox\Data\DataSplit\CSVExample.txt">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Data\DataSplit\CSVExample.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Toolbox\FileAndFolder\" />

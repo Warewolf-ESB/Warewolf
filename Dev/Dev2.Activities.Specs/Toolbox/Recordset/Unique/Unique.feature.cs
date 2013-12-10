@@ -117,6 +117,8 @@ this.ScenarioSetup(scenarioInfo);
                         "3"});
 #line 16
  testRunner.Then("the unique result will be", ((string)(null)), table2, "Then ");
+#line 21
+ testRunner.And("the unique execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -127,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindUniqueRecordsInADatasetCommaSeparated()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find unique records in a  dataset comma separated", ((string[])(null)));
-#line 22
+#line 23
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -157,14 +159,14 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "rs().data",
                         "3"});
-#line 23
+#line 24
  testRunner.Given("I have the following duplicated recordset", ((string)(null)), table3, "Given ");
-#line 33
+#line 34
  testRunner.And("I want to find unique in field \"[[rs().row]],[[rs().data]]\" with the return field" +
                     " \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
+ testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -179,8 +181,10 @@ this.ScenarioSetup(scenarioInfo);
             table4.AddRow(new string[] {
                         "rs().row",
                         "3"});
-#line 36
+#line 37
  testRunner.Then("the unique result will be", ((string)(null)), table4, "Then ");
+#line 42
+ testRunner.And("the unique execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

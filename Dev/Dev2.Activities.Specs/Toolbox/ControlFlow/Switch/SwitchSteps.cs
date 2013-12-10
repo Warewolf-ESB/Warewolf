@@ -60,5 +60,15 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
                                        out actualValue, out error);
             Assert.AreEqual(result, actualValue);
         }
+
+        [Then(@"the switch execution has ""(.*)"" error")]
+        public void ThenTheSwitchExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }

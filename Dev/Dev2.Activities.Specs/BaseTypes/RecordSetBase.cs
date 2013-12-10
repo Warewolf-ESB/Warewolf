@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
@@ -107,6 +109,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
 
             return objRef;
+        }
+
+        protected string ReadFile(string resourceName)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                var reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
         }
     }
 }

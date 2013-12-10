@@ -14,7 +14,7 @@ Scenario: Split text to a recordset using Index
 	| c		  |
 	| d		  |
 	| e		  |
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split characters using Index Going Backwards
 	Given A string to split with value "@!?><":}{+_)(*&^~"
@@ -25,15 +25,15 @@ Scenario: Split characters using Index Going Backwards
 	| _)(*&^~	|
 	| ><":}{+	|
 	| @!?		|
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split text using All split types - Some with Include selected
 	Given A string to split with value "IndexTab	Chars,space end"
-	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape "\"
-	And assign to variable "[[vowels().letters]]" split type "Tab"
-	And assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "Selected"
-	And assign to variable "[[vowels().letters]]" split type "Space" and Escapre "\"
-	And assign to variable "[[vowels().letters]]" split type "End"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape "\"	
+	And  assign to variable "[[vowels(*).letters]]" split type "Tab" at ""	
+	And  assign to variable "[[vowels().letters]]" split type as "Chars" at "ars," and escape "" and include is "unselected"
+	And  assign to variable "[[vowels().letters]]" split type as "Space" at "1" and escape "\" and include is "unselected"		
+	And  assign to variable "[[vowels(*).letters]]" split type "End" at ""
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -42,16 +42,16 @@ Scenario: Split text using All split types - Some with Include selected
 	| Chars,	  |
 	| space		  |
 	| end		  |
-	And there is NO error
+	And the data split execution has "NO" error
 
 
 Scenario: Split CSV file format into recordset - some fields blank
 	Given A file "CSVExample.txt" to split
 	And assign to variable "[[rec().id]]" split type "Chars" at "," and Include "Unselected"
-	And assign to variable "[[rec().name]]" split type "Chars" at "," and Include "Unselected"
-	And assign to variable "" split type "Chars" at "," and Include "Unselected"
-	And assign to variable "[[rec().phone]]" split type "NewLine"
-	And skip blank rows is "Unselected"
+	And assign to variable "[[rec().name]]" split type "Chars" at "," and Include "Unselected"	
+	And  assign to variable "" split type as "Chars" at "," and escape "" and include is "unselected"
+	And  assign to variable "[[rec().phone]]" split type "NewLine" at ""	
+	And  assign to variable "" split type as "" at "" and escape "" and include is "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| rec().id | rec().name | rec().phone |
@@ -60,15 +60,15 @@ Scenario: Split CSV file format into recordset - some fields blank
 	| 2        | Tshepo     | 5678        |
 	|          |            |             |
 	| 3        | Mo         |             |
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split CSV file format into recordset - Skip blank rows selected
 	Given A file "CSVExample.txt" to split
 	And assign to variable "[[rec().id]]" split type "Chars" at "," and Include "Unselected"
 	And assign to variable "[[rec().name]]" split type "Chars" at "," and Include "Unselected"
-	And assign to variable "" split type "Chars" at "," and Include "Unselected"
-	And assign to variable "[[rec().phone]]" split type "NewLine"
-	And skip blank rows is "Selected"
+	And assign to variable "" split type "Chars" at "," and Include "Unselected"	
+	And  assign to variable "[[rec().phone]]" split type "NewLine" at ""	
+	And  assign to variable "" split type as "" at "" and escape "" and include is "selected"
 	When the data split tool is executed
 	Then the split result will be
 	| rec().id | rec().name | rec().phone |
@@ -76,32 +76,32 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	| 1        | Barney     | 1234        |
 	| 2        | Tshepo     | 5678        |
 	| 3        | Mo         | 01          |
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
-	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape "\"
-	And assign to variable "[[vowels().letters]]" split type "Tab"
-	And assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "Selected"
-	And assign to variable "[[vowels().letters]]" split type "Space" and Escapre "\"
-	And assign to variable "[[vowels().letters]]" split type "End"
-	And assign to variable "[[vowels().letters]]" split type "NewLine"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape "\"	
+	And  assign to variable "[[vowels().letters]]" split type "Tab" at ""
+	And assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "Selected"	
+	And  assign to variable "[[vowels().letters]]" split type as "Space" at "" and escape "\" and include is "unselected"
+	And  assign to variable "[[vowels().letters]]" split type "End" at ""	
+	And  assign to variable "[[vowels().letters]]" split type "NewLine" at ""
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split text using Index where index > provided
 	Given A string to split with value "123"
 	And assign to variable "[[var]]" split type "Index" at "5" and Include "Selected"
-	When the data split tool is executed
+	When the data split tool is executed	
 	Then the split result for "[[var]]" will be "123"
-	And there is NO error
+	And the data split execution has "NO" error
 
 Scenario: Split text using Char and Escape character
 	Given A string to split with value "123|,45,1"
 	And assign to variable "[[var]]" split type "Chars" at "," and Include "Unselected" and Escape "|"
 	When the data split tool is executed
 	Then the split result for "[[var]]" will be "123|,45"
-	And there is NO error
+	And the data split execution has "NO" error
 

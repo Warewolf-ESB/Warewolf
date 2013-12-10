@@ -99,7 +99,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.Then("the split result will be", ((string)(null)), table1, "Then ");
 #line 17
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.Then("the split result will be", ((string)(null)), table2, "Then ");
 #line 28
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -149,14 +149,15 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"Tab\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Chars\" at \"ars,\" and Includ" +
-                    "e \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type as \"Chars\" at \"ars,\" and esc" +
+                    "ape \"\" and include is \"unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" and Escapre \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type as \"Space\" at \"1\" and escape" +
+                    " \"\\\" and include is \"unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels(*).letters]]\" split type \"End\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -175,7 +176,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.Then("the split result will be", ((string)(null)), table3, "Then ");
 #line 45
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -197,11 +198,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("assign to variable \"[[rec().name]]\" split type \"Chars\" at \",\" and Include \"Unsele" +
                     "cted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
- testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"\" split type as \"Chars\" at \",\" and escape \"\" and include is \"" +
+                    "unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
- testRunner.And("assign to variable \"[[rec().phone]]\" split type \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[rec().phone]]\" split type \"NewLine\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 54
- testRunner.And("skip blank rows is \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"\" split type as \"\" at \"\" and escape \"\" and include is \"unsele" +
+                    "cted\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -232,7 +235,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.Then("the split result will be", ((string)(null)), table4, "Then ");
 #line 63
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -256,9 +259,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 69
  testRunner.And("assign to variable \"\" split type \"Chars\" at \",\" and Include \"Unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
- testRunner.And("assign to variable \"[[rec().phone]]\" split type \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[rec().phone]]\" split type \"NewLine\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 71
- testRunner.And("skip blank rows is \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"\" split type as \"\" at \"\" and escape \"\" and include is \"select" +
+                    "ed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -285,7 +289,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 73
  testRunner.Then("the split result will be", ((string)(null)), table5, "Then ");
 #line 79
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -304,16 +308,17 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Index\" at \"5\" and Include \"" +
                     "Selected\" and Escape \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Tab\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
  testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Chars\" at \"ars,\" and Includ" +
                     "e \"Selected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"Space\" and Escapre \"\\\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type as \"Space\" at \"\" and escape " +
+                    "\"\\\" and include is \"unselected\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"End\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
- testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"NewLine\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("assign to variable \"[[vowels().letters]]\" split type \"NewLine\" at \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -322,7 +327,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 90
  testRunner.Then("the split result will be", ((string)(null)), table6, "Then ");
 #line 92
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -344,7 +349,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 98
  testRunner.Then("the split result for \"[[var]]\" will be \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 99
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -367,7 +372,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 105
  testRunner.Then("the split result for \"[[var]]\" will be \"123|,45\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 106
- testRunner.And("there is NO error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the data split execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

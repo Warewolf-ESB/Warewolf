@@ -60,5 +60,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             GetScalarValueFromDataList(_result.DataListID, "var", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
+
+        [Then(@"the base convert execution has ""(.*)"" error")]
+        public void ThenTheBaseConvertExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
     }
 }

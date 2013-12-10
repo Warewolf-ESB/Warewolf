@@ -11,7 +11,7 @@ Scenario: Find the first occurence of a character in a sentence
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "49"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find all occurences of a word in a sentence and output to scalar going left to right
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
@@ -21,7 +21,7 @@ Scenario: Find all occurences of a word in a sentence and output to scalar going
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "4,9,11,35,43,59,72"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find all occurences of a word in a sentence and output to recordset going right to left 
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
@@ -39,7 +39,7 @@ Scenario: Find all occurences of a word in a sentence and output to recordset go
 	| 68     |
 	| 70     |
 	| 75     |
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find last occurence of a bracket in a sentence
 	Given I have a findindex variable "[[a]]" equal to "!@#$%)@#$%)"
@@ -49,7 +49,7 @@ Scenario: Find last occurence of a bracket in a sentence
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "11"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find first occurence of a character in a blank string
 	Given I have a findindex variable "[[a]]" equal to ""
@@ -59,7 +59,7 @@ Scenario: Find first occurence of a character in a blank string
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "-1"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find first occurence of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to "fff"
@@ -69,7 +69,7 @@ Scenario: Find first occurence of a character in a string where it doesnt exist
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "-1"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find all occurences of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to ""
@@ -79,7 +79,7 @@ Scenario: Find all occurences of a character in a string where it doesnt exist
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "-1"
-	And there is NO error
+	And the find index execution has "NO" error
 
 Scenario: Find an xml fragment in a bigger xml document
 	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
@@ -90,4 +90,4 @@ Scenario: Find an xml fragment in a bigger xml document
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "4"
-	And there is NO error
+	And the find index execution has "NO" error

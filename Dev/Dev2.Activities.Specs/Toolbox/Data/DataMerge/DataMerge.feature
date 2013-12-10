@@ -5,99 +5,100 @@
 
 Scenario: Merge a scalar to a scalar using merge type none
 	Given a merge variable "[[a]]" equal to "Warewolf " 
-	And a merge variable "[[b]]" equal to "Rocks"
-	And an Input "[[a]]" and merge type "None" and string at as ""	
-	And an Input "[[b]]" and merge type "None" and string at as ""	
+	And a merge variable "[[b]]" equal to "Rocks"		
+	And an Input "[[a]]" and merge type "None" and string at as "" and Padding "" and Alignment "Left"	
+	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf Rocks"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using None
 	Given a merge recordset
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
-	| rs().row | 3   |
-	And an Input "[[rs(*).row]]0" and merge type "None" and string at as ""
-	And an Input "0" and merge type "None" and string at as ""
+	| rs().row | 3   |	
+	And an Input "[[rs(*).row]]0" and merge type "None" and string at as "" and Padding "" and Alignment "Left"	
+	And an Input "0" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "100200300"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Chars
 	Given a merge recordset
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
-	| rs().row | 3   |
-	And an Input "[[rs(*).row]]" and merge type "Chars" and string at as "0"
-	And an Input "0" and merge type "Chars" and string at as "0"
+	| rs().row | 3   |	
+	And an Input "[[rs(*).row]]" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"	
+	And an Input "0" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"
+	And an Input "0" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "100020003000"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using New Line
 	Given a merge recordset
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
-	| rs().row | 3   |
-	And an Input "[[rs(*).row]]" and merge type "NewLine" and string at as ""
-	And an Input "0" and merge type "NewLine" and string at as ""
+	| rs().row | 3   |	
+	And an Input "[[rs(*).row]]" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"	
+	And an Input "0" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is the same as file "NewLineExample.txt"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Tab
 	Given a merge recordset
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
-	| rs().row | 3   |
-	And an Input "[[rs(*).row]]tab->" and merge type "Tab" and string at as ""
-	And an Input "<-" and merge type "None" and string at as ""
+	| rs().row | 3   |	
+	And an Input "[[rs(*).row]]tab->" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"	
+	And an Input "<-" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "1tab->	<-2tab->	<-3tab->	<-"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a variable using index that is a char
-	Given a merge variable "[[a]]" equal to "aA " 
-	And an Input "[[a]]" and merge type "Index" and string at as "b"	
+	Given a merge variable "[[a]]" equal to "aA " 	
+	And an Input "[[a]]" and merge type "Index" and string at as "b" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And there is AN error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a variable using index that is a variable and is blank
 	Given a merge variable "[[a]]" equal to "aA "
-	And a merge variable "[[b]]" equal to ""
-	And an Input "[[a]]" and merge type "Index" and string at as "[[b]]"	
+	And a merge variable "[[b]]" equal to ""	
+	And an Input "[[a]]" and merge type "Index" and string at as "[[b]]" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge multiple variables on Chars with blank lines
 	Given a merge variable "[[a]]" equal to "Warewolf " 
-	And a merge variable "[[b]]" equal to "Rocks"
-	And an Input "[[a]]" and merge type "Chars" and string at as "|"	
-	And an Input "" and merge type "None" and string at as ""	
-	And an Input "[[b]]" and merge type "Chars" and string at as "|"	
-	And an Input "" and merge type "Chars" and string at as "|"	
+	And a merge variable "[[b]]" equal to "Rocks"	
+	And an Input "[[a]]" and merge type "Chars" and string at as "|" and Padding " " and Alignment "Left"	
+	And an Input "" and merge type "None" and string at as "" and Padding " " and Alignment "Left"	
+	And an Input "[[b]]" and merge type "Chars" and string at as "|" and Padding " " and Alignment "Left"	
+	And an Input "" and merge type "Chars" and string at as "|" and Padding " " and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf |Rocks||"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset that has xml data using Tabs
 	Given a merge recordset
 	| rs       | val                 |
 	| rs().row | <x id="1">One</x>   |
 	| rs().row | <x id="2">two</x>   |
-	| rs().row | <x id="3">three</x> |
-	And an Input "<recordset>" and merge type "Tab" and string at as ""
-	And an Input "[[rs(*).row]]" and merge type "Tab" and string at as ""
-	And an Input "</recordset>" and merge type "None" and string at as ""
+	| rs().row | <x id="3">three</x> |	
+	And an Input "<recordset>" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"		
+	And an Input "[[rs(*).row]]" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"		
+	And an Input "</recordset>" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "<record>	<x id="1">One</x>	</record><record>	<x id="2">two</x>	</record><record>	<x id="3">three</x>	</record>"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a short string using big index and padding and alignment
 	Given a merge variable "[[a]]" equal to "Warewolf" 
@@ -106,7 +107,7 @@ Scenario: Merge a short string using big index and padding and alignment
 	And an Input "[[b]]" and merge type "Index" and string at as "5" and Padding "0" and Alignment "Right"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf  00123"
-	And there is NO error
+	And the data merge execution has "NO" error
 
 Scenario: Merge a long string using small index and padding and allignment
 	Given a merge variable "[[a]]" equal to "Warewolf" 
@@ -115,4 +116,4 @@ Scenario: Merge a long string using small index and padding and allignment
 	And an Input "[[b]]" and merge type "Index" and string at as "3" and Padding "0" and Alignment "Right"
 	When the data merge tool is executed
 	Then the merged result is "War123"
-	And there is NO error
+	And the data merge execution has "NO" error

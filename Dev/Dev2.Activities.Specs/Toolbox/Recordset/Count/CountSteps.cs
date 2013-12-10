@@ -65,5 +65,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(result , actualValue);
         }
+
+        [Then(@"the count execution has ""(.*)"" error")]
+        public void ThenTheCountExecutionHasError(string anError)
+        {
+            var expected = anError.Equals("NO");
+            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
+        }
+
     }
 }
