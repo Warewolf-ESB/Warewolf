@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.Services.Sql;
-using Dev2.Runtime;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -551,6 +552,28 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             //------------Assert Results-------------------------
             StringAssert.Contains(responseData, expected);
 
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DatabaseService_Execute")]
+        public void DatabaseService_Execute_CustomOutputMappings_DataReturned()
+        {
+            //------------Setup for test--------------------------
+            var postData = String.Format("{0}{1}", _webserverURI, "10638 - Service IO - TEST");
+
+            var expectedXml = XmlResource.Fetch("BUG_10638_Result.xml");
+            var expected = expectedXml.ToString(SaveOptions.None);
+
+            //------------Execute Test---------------------------
+            var responseData = TestHelper.PostDataToWebserver(postData);
+
+            var actualXml = XElement.Parse(responseData);
+            var actual = actualXml.ToString(SaveOptions.None);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(expected, actual);
         }
 
         #endregion
