@@ -24,7 +24,14 @@ namespace Dev2.Development.Languages.Scripting
             //get a delegate to the python function
             var result = scope.GetVariable<Func<dynamic>>("__result__");
 
-            return result.Invoke().ToString();
+            var toReturn = result.Invoke();
+
+            if(toReturn != null)
+            {
+                return toReturn.ToString();
+            }
+
+            return string.Empty;
         }
 
         public enScriptType HandlesType()
