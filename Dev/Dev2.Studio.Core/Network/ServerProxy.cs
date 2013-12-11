@@ -134,9 +134,10 @@ namespace Dev2.Network
             {
                 if(HubConnection.State == ConnectionState.Disconnected)
                 {
-                    //HubConnection.Start().Wait();
-                    var t = HubConnection.Start();
-                    Wait(t);
+                    //TODO: take the waiting off the UI thread 
+                    //var t = HubConnection.Start();
+                    //Wait(t);
+                    HubConnection.Start().Wait();                    
                 }
             }
             catch(Exception e)

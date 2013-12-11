@@ -112,7 +112,7 @@ namespace Dev2.Studio.Core.Models
             }
 
             Logger.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
-            Connection.Connect();
+            Connection.Connect();            
         }
 
         public void Connect(IEnvironmentModel other)
