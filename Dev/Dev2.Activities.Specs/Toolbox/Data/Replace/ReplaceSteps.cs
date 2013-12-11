@@ -13,37 +13,44 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     public class ReplaceSteps : RecordSetBases
     {
         private const string InFields = "[[sentence]]";
-        private string _find;
-        private DsfReplaceActivity _replace;
-        private string _replaceWith;
-        private string _sentence;
-
+       
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
-            variableList.Add(new Tuple<string, string>(InFields, _sentence));
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _replace = new DsfReplaceActivity
+            string find;
+            ScenarioContext.Current.TryGetValue("find", out find);
+            string replaceWith;
+            ScenarioContext.Current.TryGetValue("replaceWith", out replaceWith);
+
+            var replace = new DsfReplaceActivity
                 {
                     Result = ResultVariable,
                     FieldsToSearch = InFields,
-                    Find = _find,
-                    ReplaceWith = _replaceWith
+                    Find = find,
+                    ReplaceWith = replaceWith
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _replace
+                    Action = replace
                 };
         }
 
         [Given(@"I have a sentence ""(.*)""")]
         public void GivenIHaveASentence(string sentence)
         {
-            _sentence = sentence;
+            ScenarioContext.Current.Add("sentence", sentence);
         }
 
         [Given(@"I have a replace variable ""(.*)"" equal to ""(.*)""")]
@@ -63,13 +70,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Given(@"I want to find the characters ""(.*)""")]
         public void GivenIWantToFindTheCharacters(string find)
         {
-            _find = find;
+            ScenarioContext.Current.Add("find", find);
         }
 
         [Given(@"I want to replace them with ""(.*)""")]
         public void GivenIWantToReplaceThemWith(string replaceWith)
         {
-            _replaceWith = replaceWith;
+            ScenarioContext.Current.Add("replaceWith", replaceWith);
         }
 
         [When(@"the replace tool is executed")]

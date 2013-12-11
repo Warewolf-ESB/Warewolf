@@ -16,7 +16,7 @@ Scenario: Find the first occurence of a character in a sentence
 Scenario: Find all occurences of a word in a sentence and output to scalar going left to right
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
-	And I selected Index "All Occurences"
+	And I selected Index "All Occurrences"
 	And I search for characters "a"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
@@ -26,7 +26,7 @@ Scenario: Find all occurences of a word in a sentence and output to scalar going
 Scenario: Find all occurences of a word in a sentence and output to recordset going right to left 
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
-	And I selected Index "All Occurences"
+	And I selected Index "All Occurrences"
 	And I search for characters "a"
 	And I selected direction as "Right to Left"
 	When the data find index tool is executed

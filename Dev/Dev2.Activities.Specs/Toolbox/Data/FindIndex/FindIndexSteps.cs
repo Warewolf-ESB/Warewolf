@@ -13,54 +13,66 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
     [Binding]
     public class FindIndexSteps : RecordSetBases
     {
-        private string _characters;
-        private string _direction;
-        private DsfIndexActivity _findIndex;
-        private string _inField;
-        private string _index;
-
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            _findIndex = new DsfIndexActivity
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
+            string inField;
+            ScenarioContext.Current.TryGetValue("inField", out inField);
+            string index;
+            ScenarioContext.Current.TryGetValue("index", out index);
+            string characters;
+            ScenarioContext.Current.TryGetValue("characters", out characters);
+            string direction;
+            ScenarioContext.Current.TryGetValue("direction", out direction);
+
+            var findIndex = new DsfIndexActivity
                 {
                     Result = ResultVariable,
-                    InField = _inField,
-                    Index = _index,
-                    Characters = _characters,
-                    Direction = _direction
+                    InField = inField,
+                    Index = index,
+                    Characters = characters,
+                    Direction = direction
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _findIndex
+                    Action = findIndex
                 };
         }
 
         [Given(@"the sentence ""(.*)""")]
-        public void GivenTheSentence(string sentence)
+        public void GivenTheSentence(string inField)
         {
-            _inField = sentence;
+            ScenarioContext.Current.Add("inField", inField);
         }
 
         [Given(@"I selected Index ""(.*)""")]
         public void GivenISelectedIndex(string index)
         {
-            _index = index;
+            ScenarioContext.Current.Add("index", index);
         }
 
         [Given(@"I search for characters ""(.*)""")]
         public void GivenISearchForCharacters(string characters)
         {
-            _characters = characters;
+            ScenarioContext.Current.Add("characters", characters);
         }
 
         [Given(@"I selected direction as ""(.*)""")]
         public void GivenISelectedDirectionAs(string direction)
         {
-            _direction = direction;
+            ScenarioContext.Current.Add("direction", direction);
         }
 
         [Given(@"I have a findindex variable ""(.*)"" equal to ""(.*)""")]

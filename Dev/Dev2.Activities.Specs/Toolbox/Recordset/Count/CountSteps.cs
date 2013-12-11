@@ -29,8 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             string recordSetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
-
-
+            
             var count = new DsfCountRecordsetActivity
                 {
                     RecordsetName = string.IsNullOrEmpty(recordSetName) ? "" : recordSetName + "()",
