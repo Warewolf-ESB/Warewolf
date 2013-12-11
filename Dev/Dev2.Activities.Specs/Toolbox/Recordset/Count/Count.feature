@@ -33,13 +33,13 @@ Scenario: Count a number of records in a recordset with 0 rows
 	Given I have a recordset with this shape
 	| rs       |
 	When the count tool is executed
-	Then the result count should be 0
+	Then the result count should be -1
 	And the count execution has "AN" error
 
 Scenario: Count where a recordset is blank
 	Given I have a recordset with this shape
 	| rs       |
 	When the count tool is executed
-	Then the result count should be ""
+	Then the result count should be -1
 	And the count execution has "AN" error
 

@@ -13,8 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        private DsfCountRecordsetActivity _count;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -33,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
 
 
-            _count = new DsfCountRecordsetActivity
+            var count = new DsfCountRecordsetActivity
                 {
                     RecordsetName = string.IsNullOrEmpty(recordSetName) ? "" : recordSetName + "()",
                     CountNumber = ResultVariable
@@ -41,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             TestStartNode = new FlowStep
                 {
-                    Action = _count
+                    Action = count
                 };
         }
 

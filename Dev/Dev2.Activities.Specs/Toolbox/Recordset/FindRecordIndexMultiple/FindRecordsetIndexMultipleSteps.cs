@@ -13,34 +13,44 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
     [Binding]
     public class FindRecordsetIndexMultipleSteps : RecordSetBases
     {
-        private readonly List<FindRecordsTO> _searchList = new List<FindRecordsTO>();
-        private string _fieldsToSearch;
-        private DsfFindRecordsMultipleCriteriaActivity _findRecordsMultipleIndex;
-        private bool _requireAllFieldsToMatch;
-        private bool _requireAllTrue;
-        private int _row;
-
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
+            string fieldsToSearch;
+            ScenarioContext.Current.TryGetValue("fieldsToSearch", out fieldsToSearch);
+            List<FindRecordsTO> searchList;
+            ScenarioContext.Current.TryGetValue("searchList", out searchList);
+            bool requireAllTrue;
+            ScenarioContext.Current.TryGetValue("requireAllTrue", out requireAllTrue);
+            bool requireAllFieldsToMatch;
+            ScenarioContext.Current.TryGetValue("requireAllFieldsToMatch", out requireAllFieldsToMatch);
 
-            _findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
+            string recordsetName;
+            ScenarioContext.Current.TryGetValue("recordset", out recordsetName);
+            
+            var findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
-                    FieldsToSearch = string.IsNullOrEmpty(_fieldsToSearch) ? recordsetName + "()" : _fieldsToSearch,
-                    ResultsCollection = _searchList,
-                    RequireAllTrue = _requireAllTrue,
-                    RequireAllFieldsToMatch = _requireAllFieldsToMatch,
+                    FieldsToSearch = string.IsNullOrEmpty(fieldsToSearch) ? recordsetName + "()" : fieldsToSearch,
+                    ResultsCollection = searchList,
+                    RequireAllTrue = requireAllTrue,
+                    RequireAllFieldsToMatch = requireAllFieldsToMatch,
                     Result = ResultVariable
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _findRecordsMultipleIndex
+                    Action = findRecordsMultipleIndex
                 };
         }
 
@@ -66,14 +76,17 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void GivenTheFieldsToSearchIs(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
+            string fieldsToSearch = string.Empty;
+
             foreach (TableRow t in tableRows)
             {
-                _fieldsToSearch += t[0] + ",";
+                fieldsToSearch += t[0] + ",";
             }
-            if (_fieldsToSearch.EndsWith(","))
+            if (fieldsToSearch.EndsWith(","))
             {
-                _fieldsToSearch = _fieldsToSearch.Remove(_fieldsToSearch.Length - 1);
+                fieldsToSearch = fieldsToSearch.Remove(fieldsToSearch.Length - 1);
             }
+            ScenarioContext.Current.Add("fieldsToSearch", fieldsToSearch);
         }
 
 
@@ -100,27 +113,55 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"search the recordset with type ""(.*)"" and criteria is ""(.*)""")]
         public void GivenSearchTheRecordsetWithTypeAndCriteriaIs(string searchType, string searchCriteria)
         {
-            _row++;
-            _searchList.Add(new FindRecordsTO(searchCriteria, searchType, _row));
+            var row = GetRowCount();
+            var searchList = GetSearchList();
+            searchList.Add(new FindRecordsTO(searchCriteria, searchType, row));
+        }
+
+        private static int GetRowCount()
+        {
+            int row;
+            bool rowAdded = ScenarioContext.Current.TryGetValue("row", out row);
+            if (rowAdded)
+            {
+                ScenarioContext.Current.Add("row", row);
+            }
+
+            row++;
+            return row;
         }
 
         [Given(@"is between search the recordset with type ""(.*)"" and criteria is ""(.*)"" and ""(.*)""")]
         public void GivenIsBetweenSearchTheRecordsetWithTypeAndCriteriaIsAnd(string searchType, string from, string to)
         {
-            _row++;
-            _searchList.Add(new FindRecordsTO(string.Empty, searchType, _row, false, false, from, to));
+            var row = GetRowCount();
+            var searchList = GetSearchList();
+            searchList.Add(new FindRecordsTO(string.Empty, searchType, row, false, false, from, to));
+        }
+
+        private  List<FindRecordsTO> GetSearchList()
+        {
+            List<FindRecordsTO> searchList;
+            ScenarioContext.Current.TryGetValue("searchList", out searchList);
+
+            if (searchList == null)
+            {
+                searchList = new List<FindRecordsTO>();
+                ScenarioContext.Current.Add("searchList", searchList);
+            }
+            return searchList;
         }
 
         [Given(@"when all row true is ""(.*)""")]
-        public void GivenWhenAllRowTrueIs(bool matchAllFields)
+        public void GivenWhenAllRowTrueIs(bool requireAllTrue)
         {
-            _requireAllTrue = matchAllFields;
+            ScenarioContext.Current.Add("requireAllTrue", requireAllTrue);
         }
 
         [Given(@"when requires all fields to match is ""(.*)""")]
         public void GivenWhenRequiresAllFieldsToMatchIs(bool requireAllFieldsToMatch)
         {
-            _requireAllFieldsToMatch = requireAllFieldsToMatch;
+            ScenarioContext.Current.Add("requireAllFieldsToMatch", requireAllFieldsToMatch);
         }
 
 
@@ -128,7 +169,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

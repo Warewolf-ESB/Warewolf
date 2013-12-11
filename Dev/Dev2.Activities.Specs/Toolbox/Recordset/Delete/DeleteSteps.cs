@@ -17,9 +17,16 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
-            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
             var recordset = ScenarioContext.Current.Get<string>("recordset");

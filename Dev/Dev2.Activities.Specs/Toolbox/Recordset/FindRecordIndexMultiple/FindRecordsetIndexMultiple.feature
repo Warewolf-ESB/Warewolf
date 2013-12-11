@@ -5,23 +5,56 @@
 
 Scenario: Find an index of data in a recordset with Is Between numeric
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs().row | 1|
-	| rs().row | 15|
-	| rs().row | 20|	
-	| rs().row | 34|	
+	| rs       | value |
+	| rs().row | 1     |
+	| rs().row | 15    |
+	| rs().row | 20    |
+	| rs().row | 34    |	
 	And  is between search the recordset with type "Is Between" and criteria is "16" and "33"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
 	And  the find record index has "NO" error
 
+Scenario: Find an index of data in an empty recordset
+	Given I have the following recordset to search for multiple criteria
+	| rs       | value |
+	And  is between search the recordset with type "Is Between" and criteria is "16" and "33"
+	When the find records index multiple tool is executed
+	Then the find records index multiple result should be ""
+	And  the find record index has "AN" error
+
+Scenario: Find an index of data in a recordset with a blank from
+	Given I have the following recordset to search for multiple criteria
+	| rs       | value |
+	| rs().row | 1     |
+	| rs().row | 15    |
+	| rs().row | 20    |
+	| rs().row | 34    |	
+	And  is between search the recordset with type "Is Between" and criteria is "" and "33"
+	When the find records index multiple tool is executed
+	Then the find records index multiple result should be ""
+	And  the find record index has "AN" error
+
+	Scenario: Find an index of data in a recordset with blank to
+	Given I have the following recordset to search for multiple criteria
+	| rs       | value |
+	| rs().row | 1     |
+	| rs().row | 15    |
+	| rs().row | 20    |
+	| rs().row | 34    |	
+	And  is between search the recordset with type "Is Between" and criteria is "16" and ""
+	When the find records index multiple tool is executed
+	Then the find records index multiple result should be ""
+	And  the find record index has "AN" error
+
+
 Scenario: Find an index of data in a recordset with Is Between DateTime
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs().row | 5/3/2013|
-	| rs().row | 2/3/2013|
-	| rs().row | 7/4/2013|	
-	| rs().row | 11/11/2012|	
+	| rs       | value      |
+	| rs().row | 5/3/2013   |
+	| rs().row | 2/3/2013   |
+	| rs().row | 7/4/2013   |
+	| rs().row | 11/11/2012 |	
 	And  is between search the recordset with type "Is Between" and criteria is "1/3/2013" and "3/3/2013"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
@@ -1261,7 +1294,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And search the recordset with type "Contains" and criteria is "1"	
 	And search the recordset with type "Contains" and criteria is "2"	
 	And when all row true is "true"
-	And when requires all fields to match is "fale"
+	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,3
 	And  the find record index has "NO" error
@@ -1290,7 +1323,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And search the recordset with type "Contains" and criteria is "1"	
 	And search the recordset with type "Contains" and criteria is "2"	
 	And when all row true is "false"
-	And when requires all fields to match is "fale"
+	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2,3
 	And  the find record index has "NO" error

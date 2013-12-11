@@ -12,6 +12,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     {
         protected const string ResultVariable = "[[result]]";
 
+
         protected void BuildShapeAndTestData()
         {
             var shape = new StringBuilder();
