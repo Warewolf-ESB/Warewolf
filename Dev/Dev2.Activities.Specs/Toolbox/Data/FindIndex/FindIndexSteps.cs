@@ -126,7 +126,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             for (int i = 0; i < tableRows.Count; i++)
             {
-                Assert.AreEqual(tableRows[i][1], records[i]);
+                Assert.AreEqual(tableRows[i][0], records[i]);
             }
         }
 

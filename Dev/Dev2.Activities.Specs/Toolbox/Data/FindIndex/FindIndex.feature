@@ -3,7 +3,7 @@
 	As a Warewolf user
 	I want a tool that finds indexes
 
-Scenario: Find the first occurence of a character in a sentence
+Scenario: Find the first Occurrence of a character in a sentence
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
@@ -13,7 +13,7 @@ Scenario: Find the first occurence of a character in a sentence
 	Then the find index result is "49"
 	And the find index execution has "NO" error
 
-Scenario: Find all occurences of a word in a sentence and output to scalar going left to right
+Scenario: Find all Occurrences of a word in a sentence and output to scalar going left to right
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrences"
@@ -23,7 +23,7 @@ Scenario: Find all occurences of a word in a sentence and output to scalar going
 	Then the find index result is "4,9,11,35,43,59,72"
 	And the find index execution has "NO" error
 
-Scenario: Find all occurences of a word in a sentence and output to recordset going right to left 
+Scenario: Find all Occurrences of a word in a sentence and output to recordset going right to left 
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
 	And the sentence "[[a]]"
 	And I selected Index "All Occurrences"
@@ -41,40 +41,40 @@ Scenario: Find all occurences of a word in a sentence and output to recordset go
 	| 75     |
 	And the find index execution has "NO" error
 
-Scenario: Find last occurence of a bracket in a sentence
+Scenario: Find last Occurrence of a bracket in a sentence
 	Given I have a findindex variable "[[a]]" equal to "!@#$%)@#$%)"
 	And the sentence "[[a]]"
-	And I selected Index "Last Occurence"
+	And I selected Index "Last Occurrence"
 	And I search for characters "a"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "11"
 	And the find index execution has "NO" error
 
-Scenario: Find first occurence of a character in a blank string
+Scenario: Find first Occurrence of a character in a blank string
 	Given I have a findindex variable "[[a]]" equal to ""
 	And the sentence "[[a]]"
-	And I selected Index "First Occurence"
+	And I selected Index "First Occurrence"
 	And I search for characters "a"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "-1"
 	And the find index execution has "NO" error
 
-Scenario: Find first occurence of a character in a string where it doesnt exist
+Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to "fff"
 	And the sentence "[[a]]"
-	And I selected Index "First Occurence"
+	And I selected Index "First Occurrence"
 	And I search for characters "a"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "-1"
 	And the find index execution has "NO" error
 
-Scenario: Find all occurences of a character in a string where it doesnt exist
+Scenario: Find all Occurrences of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to ""
 	And the sentence "[[a]]"
-	And I selected Index "All Occurence"
+	And I selected Index "All Occurrence"
 	And I search for characters "a"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
@@ -84,7 +84,7 @@ Scenario: Find all occurences of a character in a string where it doesnt exist
 Scenario: Find an xml fragment in a bigger xml document
 	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
 	And the sentence "[[a]]"
-	And I selected Index "First Occurence"
+	And I selected Index "First Occurrence"
 	And I have a findindex variable "[[id]]" equal to "1"
 	And I search for characters "<b id=""[[id]]"">"
 	And I selected direction as "Left to Right"
