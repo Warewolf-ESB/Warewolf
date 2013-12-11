@@ -50,11 +50,14 @@ namespace Dev2.CodedUI.Tests
 
         //PBI_8853
         [TestMethod]
-        [Ignore]
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            Keyboard.SendKeys("{CTRL}W");
+            StudioWindow.SetFocus();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            StudioWindow.WaitForControlReady();
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            Keyboard.SendKeys(StudioWindow, "{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
             Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");

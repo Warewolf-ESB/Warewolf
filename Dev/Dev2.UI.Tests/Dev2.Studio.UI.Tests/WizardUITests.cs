@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
@@ -130,10 +131,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
-            //StudioWindow.WaitForControlReady();
-            SendKeys.SendWait("{CTRL}{SHIFT}D");
-            //Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
-            WizardsUIMap.WaitForWizard();
+            StudioWindow.WaitForControlReady(1000);
+            Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
+            if(!WizardsUIMap.TryWaitForWizard(10000))
+            {
+                Assert.Fail("New db service shortcut key doesnt work");
+            }
             DatabaseServiceWizardUIMap.ClickCancel();
         }
 
@@ -152,7 +155,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             StudioWindow.WaitForControlReady(1000);
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
-            WizardsUIMap.WaitForWizard();
+            if (!WizardsUIMap.TryWaitForWizard(10000))
+            {
+                Assert.Fail("New web service shortcut key doesnt work");
+            }
             WebServiceWizardUIMap.Cancel();
         }
 
