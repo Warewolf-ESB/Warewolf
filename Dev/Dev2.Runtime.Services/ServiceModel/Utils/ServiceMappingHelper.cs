@@ -52,7 +52,8 @@ namespace Dev2.Runtime.ServiceModel.Utils
 
                 theService.Recordset.Fields.Add(field);
 
-                var data = path.SampleData.Split(GlobalConstants.AnytingToXmlCommaToken.ToCharArray()).Where(c=>c!=string.Empty);
+                // 2013.12.11 - COMMUNITY BUG - 341463 - data with empty cells displays incorrectly
+                var data = path.SampleData.Split(new[] { GlobalConstants.AnytingToXmlCommaToken }, StringSplitOptions.None);
                 var recordIndex = 0;
 
                 foreach (var item in data)

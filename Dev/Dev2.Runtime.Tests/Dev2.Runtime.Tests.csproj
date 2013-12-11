@@ -400,6 +400,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\WebserviceWithRecordsetFieldsMissing.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\DbServiceLocationsOutputDescription.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
