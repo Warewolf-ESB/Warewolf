@@ -213,7 +213,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var errorResults = theStep.GetChildren()
                                       .ToList()
-                                      .Where(c => c.FriendlyName.Contains("RemoteConnection"))
+                                      .Where(c => c.FriendlyName.Contains("Remote Connection"))
                                       .ToList();
 
             if(errorResults.Count == 0)

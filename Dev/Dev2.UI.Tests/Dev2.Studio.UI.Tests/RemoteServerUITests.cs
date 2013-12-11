@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
-            Assert.IsTrue(activeTabName.Contains("RemoteConnection"));
+            Assert.IsTrue(activeTabName.Contains("Remote Connection"));
 
         }
 
@@ -87,7 +87,7 @@ namespace Dev2.Studio.UI.Tests
             var p = WorkflowDesignerUIMap.GetPointUnderControl(uiControl);
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", p);
             var activeTabName = TabManagerUIMap.GetActiveTabName();
-            Assert.IsTrue(activeTabName.Contains("Find Records - RemoteConnection *"));
+            Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
 
         }
 
