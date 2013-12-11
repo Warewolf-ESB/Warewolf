@@ -12,46 +12,50 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
     [Binding]
     public class UniqueSteps : RecordSetBases
     {
-        public UniqueSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-            
-        }
-
         private string _inField;
+        private string _resultVariable;
         private string _returnField;
         private DsfUniqueActivity _unique;
-        private string _resultVariable;
 
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(_resultVariable, ""));
-            
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
             _unique = new DsfUniqueActivity
-            {
-                InFields = _inField,
-                ResultFields = _returnField,
-                Result = _resultVariable
-            };
+                {
+                    InFields = _inField,
+                    ResultFields = _returnField,
+                    Result = _resultVariable
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _unique
-            };
+                {
+                    Action = _unique
+                };
         }
-        
+
 
         [Given(@"I have the following duplicated recordset")]
         public void GivenIHaveTheFollowingDuplicatedRecordset(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach (var t in tableRows)
+            foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
-        
+
         [Given(@"I want to find unique in field ""(.*)"" with the return field ""(.*)""")]
         public void GivenIWantToFindUniqueInFieldWithTheReturnField(string inField, string returnField)
         {
@@ -70,17 +74,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         public void WhenTheUniqueToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the unique result will be")]
         public void ThenTheUniqueResultWillBe(Table table)
         {
-            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, _resultVariable);
-            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, _resultVariable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, _resultVariable);
+            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, _resultVariable);
 
             string error;
-            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                                                                           out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
             List<TableRow> tableRows = table.Rows.ToList();
@@ -94,9 +101,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         [Then(@"the unique execution has ""(.*)"" error")]
         public void ThenTheUniqueExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
     }

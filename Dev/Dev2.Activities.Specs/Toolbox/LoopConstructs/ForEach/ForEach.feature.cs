@@ -9,118 +9,148 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
+
 #region Designer generated code
+
+using TechTalk.SpecFlow;
+
 #pragma warning disable
+
 namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 {
-    using TechTalk.SpecFlow;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ForEachFeature
     {
-        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
+
 #line 1 "ForEach.feature"
 #line hidden
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ForEach", "In order to loop through constructs\r\nAs a Warewolf user\r\nI want to a tool that wi" +
-                    "ll allow me to execute other tools in an loop", ProgrammingLanguage.CSharp, ((string[])(null)));
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ForEach",
+                                                                "In order to loop through constructs\r\nAs a Warewolf user\r\nI want to a tool that wi" +
+                                                                "ll allow me to execute other tools in an loop",
+                                                                ProgrammingLanguage.CSharp, ((string[]) (null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "ForEach")))
+            if (((TechTalk.SpecFlow.FeatureContext.Current != null)
+                 && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "ForEach")))
             {
-                Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach.ForEachFeature.FeatureSetup(null);
+                FeatureSetup(null);
             }
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-        
+
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-        
+
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute a foreach for every record in a recordset\tusing an activity")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute(
+            "Execute a foreach for every record in a recordset\tusing an activity")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ForEach")]
         public virtual void ExecuteAForeachForEveryRecordInARecordsetUsingAnActivity()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a foreach for every record in a recordset\tusing an activity", ((string[])(null)));
+            var scenarioInfo =
+                new TechTalk.SpecFlow.ScenarioInfo(
+                    "Execute a foreach for every record in a recordset\tusing an activity", ((string[]) (null)));
 #line 6
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table1.AddRow(new string[] {
-                        "[[rs().row]]",
-                        "1"});
-            table1.AddRow(new string[] {
-                        "[[rs().row]]",
-                        "2"});
-            table1.AddRow(new string[] {
-                        "[[rs().row]]",
-                        "3"});
+            var table1 = new TechTalk.SpecFlow.Table(new string[]
+                {
+                    "rs",
+                    "value"
+                });
+            table1.AddRow(new string[]
+                {
+                    "[[rs().row]]",
+                    "1"
+                });
+            table1.AddRow(new string[]
+                {
+                    "[[rs().row]]",
+                    "2"
+                });
+            table1.AddRow(new string[]
+                {
+                    "[[rs().row]]",
+                    "3"
+                });
 #line 7
- testRunner.Given("I there is a recordset in the datalist with this shape", ((string)(null)), table1, "Given ");
+            testRunner.Given("I there is a recordset in the datalist with this shape", ((string) (null)), table1,
+                             "Given ");
 #line 12
- testRunner.And("I Map the input recordset \"[[rs().row]]\" to \"[[test().data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I Map the input recordset \"[[rs().row]]\" to \"[[test().data]]\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 13
- testRunner.And("I Map the output recordset \"[[test().data]]\" to \"[[res().data]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I Map the output recordset \"[[test().data]]\" to \"[[res().data]]\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 14
- testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the foreach type as \"InRecordset\" and used \"[[rs()]]\"",
+                           ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 15
- testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("the underlying dropped activity is a(n) \"Activity\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 16
- testRunner.When("the foreach tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("the foreach tool is executed", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "res",
-                        "data"});
-            table2.AddRow(new string[] {
-                        "[[res().data]]",
-                        "1"});
-            table2.AddRow(new string[] {
-                        "[[res().data]]",
-                        "2"});
-            table2.AddRow(new string[] {
-                        "[[res().data]]",
-                        "3"});
+            var table2 = new TechTalk.SpecFlow.Table(new string[]
+                {
+                    "res",
+                    "data"
+                });
+            table2.AddRow(new string[]
+                {
+                    "[[res().data]]",
+                    "1"
+                });
+            table2.AddRow(new string[]
+                {
+                    "[[res().data]]",
+                    "2"
+                });
+            table2.AddRow(new string[]
+                {
+                    "[[res().data]]",
+                    "3"
+                });
 #line 17
- testRunner.Then("the recordset \"[[res().data]]\" will have data as", ((string)(null)), table2, "Then ");
+            testRunner.Then("the recordset \"[[res().data]]\" will have data as", ((string) (null)), table2, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
     }
 }
+
 #pragma warning restore
+
 #endregion

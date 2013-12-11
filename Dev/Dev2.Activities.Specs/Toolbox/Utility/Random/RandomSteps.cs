@@ -13,11 +13,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
     [Binding]
     public class RandomSteps : BaseActivityUnitTest
     {
-        private DsfRandomActivity _dsfRandom;
         private const string ResultVariable = "[[result]]";
-        private IDSFDataObject _result;
-        private enRandomType _randomType;
+        private DsfRandomActivity _dsfRandom;
+        //private IDSFDataObject _result;
         private string _length;
+        private enRandomType _randomType;
         private string _rangeFrom;
         private string _rangeTo;
 
@@ -29,10 +29,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             data.Append("</root>");
 
             _dsfRandom = new DsfRandomActivity
-            {
-                RandomType = _randomType,
-                Result = ResultVariable
-            };
+                {
+                    RandomType = _randomType,
+                    Result = ResultVariable
+                };
 
             if (!string.IsNullOrEmpty(_length))
             {
@@ -50,9 +50,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             }
 
             TestStartNode = new FlowStep
-            {
-                Action = _dsfRandom
-            };
+                {
+                    Action = _dsfRandom
+                };
 
             CurrentDl = data.ToString();
             TestData = data.ToString();
@@ -62,9 +62,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         [Given(@"I have a type as ""(.*)""")]
         public void GivenIHaveATypeAs(string randomType)
         {
-            _randomType = (enRandomType)Enum.Parse(typeof(enRandomType), randomType);
+            _randomType = (enRandomType) Enum.Parse(typeof (enRandomType), randomType);
         }
-        
+
         [Given(@"I have a length as ""(.*)""")]
         public void GivenIHaveALengthAs(string length)
         {
@@ -78,24 +78,26 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             _rangeTo = rangeTo;
         }
 
-        
+
         [When(@"the random tool is executed")]
         public void WhenTheRandomToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the result from the random tool should be of type ""(.*)"" with a length of ""(.*)""")]
         public void ThenTheResultFromTheRandomToolShouldBeOfTypeWithALengthOf(string type, int length)
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            var res = converter.ConvertFrom(actualValue);
-            Assert.AreEqual(length , actualValue.Length);
+            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
+            object res = converter.ConvertFrom(actualValue);
+            Assert.AreEqual(length, actualValue.Length);
         }
 
         [Then(@"the random value will be ""(.*)""")]
@@ -104,7 +106,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             string error;
             string actualValue;
             value = value.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
@@ -112,11 +115,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         [Then(@"random execution has ""(.*)"" error")]
         public void ThenRandomExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError , actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

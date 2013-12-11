@@ -19,14 +19,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         private string _inField;
         private string _index;
 
-        public FindIndexSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
             _findIndex = new DsfIndexActivity
                 {
@@ -66,18 +62,28 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             _direction = direction;
         }
-        
+
         [Given(@"I have a findindex variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAFindindexVariableEqualTo(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, value));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [When(@"the data find index tool is executed")]
         public void WhenTheDataFindIndexToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the find index result is ""(.*)""")]
@@ -86,20 +92,22 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             string error;
             string actualValue;
             results = results.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(results, actualValue);
         }
-        
+
         [Then(@"the find index result is")]
         public void ThenTheFindIndexResultIs(Table table)
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
 
-            var records = actualValue.Split(',').ToList();
+            List<string> records = actualValue.Split(',').ToList();
             List<TableRow> tableRows = table.Rows.ToList();
 
             Assert.AreEqual(tableRows.Count, records.Count);
@@ -109,12 +117,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
                 Assert.AreEqual(tableRows[i][1], records[i]);
             }
         }
-        
+
         [Then(@"the find index execution has ""(.*)"" error")]
         public void ThenTheFindIndexExecutionHasError(string anError)
         {
             bool expected = anError.Equals("NO");
-            bool actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
             string message = string.Format("expected {0} error but an error was {1}", anError,
                                            actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);

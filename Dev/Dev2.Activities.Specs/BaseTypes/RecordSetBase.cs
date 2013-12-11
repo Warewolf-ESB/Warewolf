@@ -1,46 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
+using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
         protected const string ResultVariable = "[[result]]";
-        private readonly List<string> _addedFieldset = new List<string>();
-        private readonly List<string> _addedRecordsets = new List<string>();
-        protected readonly dynamic _variableList;
-        protected string FieldName = "";
-        protected string RecordSetName = "";
-        protected string Recordset;
-        protected IDSFDataObject _result;
-
-        protected RecordSetBases(dynamic variableList)
-        {
-            _variableList = variableList;
-        }
-
-        protected void BuildShapeAndTestData(Tuple<string, string> variable)
-        {
-            _variableList.Add(variable);
-            BuildShapeAndTestData();
-        }
-
-        protected void BuildShapeAndTestData(Tuple<string, string, string> variable)
-        {
-            _variableList.Add(variable);
-            BuildShapeAndTestData();
-        }
-
-        protected void BuildShapeAndTestData(Tuple<string, string, string, string> variable)
-        {
-            _variableList.Add(variable);
-            BuildShapeAndTestData();
-        }
 
         protected void BuildShapeAndTestData()
         {
@@ -51,11 +21,19 @@ namespace Dev2.Activities.Specs.BaseTypes
             data.Append("<root>");
 
             int row = 1;
-            foreach (dynamic variable in _variableList)
+
+            dynamic variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList != null)
             {
-                Build(variable, shape, data);
-                row++;
+                foreach (dynamic variable in variableList)
+                {
+                    Build(variable, shape, data);
+                    row++;
+                }
             }
+
             shape.Append("</root>");
             data.Append("</root>");
 
@@ -70,21 +48,52 @@ namespace Dev2.Activities.Specs.BaseTypes
                 dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
                 dynamic recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
 
-                if (!(_addedRecordsets.Contains(recordset) && _addedFieldset.Contains(recordField)))
+                List<string> addedRecordsets;
+                ScenarioContext.Current.TryGetValue("addedRecordsets", out addedRecordsets);
+
+                if (addedRecordsets == null)
+                {
+                    addedRecordsets = new List<string>();
+                    ScenarioContext.Current.Add("addedRecordsets", addedRecordsets);
+                }
+
+                List<string> addedFieldset;
+                ScenarioContext.Current.TryGetValue("addedFieldset", out addedFieldset);
+
+                if (addedFieldset == null)
+                {
+                    addedFieldset = new List<string>();
+                    ScenarioContext.Current.Add("addedFieldset", addedFieldset);
+                }
+
+                if (!(addedRecordsets.Contains(recordset) && addedFieldset.Contains(recordField)))
                 {
                     shape.Append(string.Format("<{0}>", recordset));
                     shape.Append(string.Format("<{0}/>", recordField));
                     shape.Append(string.Format("</{0}>", recordset));
-                    _addedRecordsets.Add(recordset);
-                    _addedFieldset.Add(recordField);
+                    addedRecordsets.Add(recordset);
+                    addedFieldset.Add(recordField);
                 }
 
                 data.Append(string.Format("<{0}>", recordset));
                 data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
                 data.Append(string.Format("</{0}>", recordset));
+                
+                string rec;
+                ScenarioContext.Current.TryGetValue("recordset", out rec);
 
-                RecordSetName = recordset;
-                FieldName = recordField;
+                if (string.IsNullOrEmpty(rec))
+                {
+                    ScenarioContext.Current.Add("recordset", recordset);
+                }
+
+                string field;
+                ScenarioContext.Current.TryGetValue("recordField", out field);
+
+                if (string.IsNullOrEmpty(field))
+                {
+                    ScenarioContext.Current.Add("recordField", recordField);
+                }
             }
             else
             {

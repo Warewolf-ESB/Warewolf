@@ -2,8 +2,6 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ActivityUnitTests;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,17 +13,23 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
-        public CalculateSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private DsfCalculateActivity _calculate;
         private string _formula;
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
             _calculate = new DsfCalculateActivity
                 {
                     Result = ResultVariable,
@@ -43,18 +47,27 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         {
             _formula = formula;
         }
-        
+
         [When(@"the calculate tool is executed")]
         public void WhenTheCalculateToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Given(@"I have a calculate variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveACalculateVariableEqualTo(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, string.Empty));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, string.Empty));
         }
 
 
@@ -64,29 +77,39 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<TableRow> tableRows = table.Rows.ToList();
             for (int i = 0; i < tableRows.Count; i++)
             {
-                _variableList.Add(new Tuple<string, string>(recordset, tableRows[i][0]));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(recordset, tableRows[i][0]));
             }
         }
 
         [Then(@"the calculate result should be ""(.*)""")]
-        public void ThenTheCalculateResultShouldBe(string result)
+        public void ThenTheCalculateResultShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"the calculate execution has ""(.*)"" error")]
         public void ThenTheCalculateExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

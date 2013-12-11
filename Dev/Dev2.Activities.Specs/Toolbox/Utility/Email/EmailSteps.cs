@@ -19,15 +19,20 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         private string _simulationOutput;
         private string _subject;
         private string _to;
-        
-        public EmailSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
 
             _sendEmail = new DsfSendEmailActivity
                 {
@@ -76,7 +81,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"I have an email variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAnEmailVariableEqualTo(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, string.Empty));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, string.Empty));
         }
 
         [Given(@"body is ""(.*)""")]
@@ -88,35 +102,46 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"I have a variable ""(.*)"" with this email address ""(.*)""")]
         public void GivenIHaveAVariableWithThisEmailAddress(string variable, string emailAddress)
         {
-            _variableList.Add(new Tuple<string, string>(variable, emailAddress));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, emailAddress));
         }
 
         [When(@"the email tool is executed")]
         public void WhenTheEmailToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the email result will be ""(.*)""")]
-        public void ThenTheEmailResultWillBe(string result)
+        public void ThenTheEmailResultWillBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"email execution has ""(.*)"" error")]
         public void ThenEmailExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

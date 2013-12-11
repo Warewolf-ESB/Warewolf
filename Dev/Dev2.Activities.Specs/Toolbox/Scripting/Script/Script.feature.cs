@@ -9,499 +9,599 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
+
 #region Designer generated code
+
+using TechTalk.SpecFlow;
+
 #pragma warning disable
+
 namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 {
-    using TechTalk.SpecFlow;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ScriptFeature
     {
-        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
+
 #line 1 "Script.feature"
 #line hidden
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Script", "In order to execute scripts\r\nAs a Warewolf user\r\nI want a tool that allows me to " +
-                    "execute javascripts, ruby or python", ProgrammingLanguage.CSharp, ((string[])(null)));
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Script",
+                                                                "In order to execute scripts\r\nAs a Warewolf user\r\nI want a tool that allows me to " +
+                                                                "execute javascripts, ruby or python",
+                                                                ProgrammingLanguage.CSharp, ((string[]) (null)));
             testRunner.OnFeatureStart(featureInfo);
             FeatureContext.Current.Add("testContext", testContext);
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Script")))
+            if (((TechTalk.SpecFlow.FeatureContext.Current != null)
+                 && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Script")))
             {
-                Dev2.Activities.Specs.Toolbox.Scripting.Script.ScriptFeature.FeatureSetup(null);
+                FeatureSetup(null);
             }
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-        
+
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-        
+
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript Variable is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteJavascriptVariableIs1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 1", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 1",
+                                                                  ((string[]) (null)));
 #line 6
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 8
- testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 9
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 10
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 11
- testRunner.Then("the script result should be \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"one\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 12
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript Variable is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteJavascriptVariableIs2()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 2", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 2",
+                                                                  ((string[]) (null)));
 #line 14
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 16
- testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 17
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 18
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 19
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 20
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript Variable is 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteJavascriptVariableIs3()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 3", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 3",
+                                                                  ((string[]) (null)));
 #line 22
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 23
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 24
- testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 25
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 26
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 27
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 28
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript Variable is 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteJavascriptVariableIs100()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 100", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript Variable is 100",
+                                                                  ((string[]) (null)));
 #line 30
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 31
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 32
- testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 33
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 34
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 35
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 36
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute badly formed Javascript")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteBadlyFormedJavascript()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Javascript", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Javascript", ((string[]) (null)));
 #line 38
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 39
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 40
- testRunner.And("I have this script to execute \"javascript_badly_formatted.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_badly_formatted.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 41
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 42
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 43
- testRunner.Then("script execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("script execution has \"AN\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Javascript with 2 variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteJavascriptWith2Variables()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript with 2 variables", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Javascript with 2 variables",
+                                                                  ((string[]) (null)));
 #line 45
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 46
- testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 47
- testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 48
- testRunner.And("I have this script to execute \"javascript_two_variables.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"javascript_two_variables.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 49
- testRunner.And("I have selected the language as \"JavaScript\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"JavaScript\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 50
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 51
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 52
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Python Variable is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecutePythonVariableIs1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 1", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 1", ((string[]) (null)));
 #line 54
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 55
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 56
- testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 57
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 58
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 59
- testRunner.Then("the script result should be \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"one\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 60
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Python Variable is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecutePythonVariableIs2()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 2", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 2", ((string[]) (null)));
 #line 62
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 63
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 64
- testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 65
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 66
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 67
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 68
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Python Variable is 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecutePythonVariableIs3()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 3", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 3", ((string[]) (null)));
 #line 70
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 71
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 72
- testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 73
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 74
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 75
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 76
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Python Variable is 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecutePythonVariableIs100()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 100", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python Variable is 100", ((string[]) (null)));
 #line 78
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 79
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 80
- testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 81
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 82
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 83
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 84
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute badly formed Python")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteBadlyFormedPython()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Python", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Python", ((string[]) (null)));
 #line 86
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 87
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 88
- testRunner.And("I have this script to execute \"python_badly_formatted.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_badly_formatted.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 89
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 90
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 91
- testRunner.Then("script execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("script execution has \"AN\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Python with 2 variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecutePythonWith2Variables()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python with 2 variables", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Python with 2 variables", ((string[]) (null)));
 #line 93
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 94
- testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 95
- testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 96
- testRunner.And("I have this script to execute \"python_two_variables.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"python_two_variables.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 97
- testRunner.And("I have selected the language as \"Python\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Python\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 98
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 99
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 100
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteRubyVariableIs1()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 1", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 1", ((string[]) (null)));
 #line 102
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 103
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 104
- testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 105
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 106
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 107
- testRunner.Then("the script result should be \"one\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"one\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 108
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteRubyVariableIs2()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 2", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 2", ((string[]) (null)));
 #line 110
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 111
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"2\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 112
- testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 113
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 114
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 115
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 116
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteRubyVariableIs3()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 3", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 3", ((string[]) (null)));
 #line 118
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 119
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"3\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 120
- testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 121
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 122
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 123
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 124
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby Variable is 100")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteRubyVariableIs100()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 100", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby Variable is 100", ((string[]) (null)));
 #line 126
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 127
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"100\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 128
- testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_one_variable.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 129
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 130
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 131
- testRunner.Then("the script result should be \"not one or two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"not one or two\"", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "Then ");
 #line 132
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute badly formed Ruby")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteBadlyFormedRuby()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Ruby", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute badly formed Ruby", ((string[]) (null)));
 #line 134
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 135
- testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 136
- testRunner.And("I have this script to execute \"ruby_badly_formatted.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_badly_formatted.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 137
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 138
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 139
- testRunner.Then("script execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("script execution has \"AN\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute Ruby with 2 variables")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Script")]
         public virtual void ExecuteRubyWith2Variables()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby with 2 variables", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Ruby with 2 variables", ((string[]) (null)));
 #line 141
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 142
- testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val1]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 143
- testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a script variable \"[[val2]]\" with this value \"1\"", ((string) (null)),
+                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
 #line 144
- testRunner.And("I have this script to execute \"ruby_two_variables.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have this script to execute \"ruby_two_variables.txt\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 145
- testRunner.And("I have selected the language as \"Ruby\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("I have selected the language as \"Ruby\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 146
- testRunner.When("I execute the script tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("I execute the script tool", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 147
- testRunner.Then("the script result should be \"two\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the script result should be \"two\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line 148
- testRunner.And("script execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("script execution has \"NO\" error", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                           "And ");
 #line hidden
             this.ScenarioCleanup();
         }
     }
 }
+
 #pragma warning restore
+
 #endregion

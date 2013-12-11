@@ -13,16 +13,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
-        public XPathSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private DsfXPathActivity _xPath;
         private string _xmlData;
 
         private void BuildDataList()
         {
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             BuildShapeAndTestData();
 
             _xPath = new DsfXPathActivity
@@ -36,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 };
 
             int row = 1;
-            foreach (var variable in _variableList)
+            foreach (var variable in variableList)
             {
                 _xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
@@ -52,20 +48,37 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
         public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
         {
-            _variableList.Add(new Tuple<string, string>(variable, xpath));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, xpath));
         }
 
         [Given(@"I have this xml '(.*)' in a variable ""(.*)""")]
         public void GivenIHaveThisXmlInAVariable(string xml, string variable)
         {
-            _variableList.Add(new Tuple<string, string>(variable, xml));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, xml));
         }
-        
+
         [When(@"the xpath tool is executed")]
         public void WhenTheXpathToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the variable ""(.*)"" should have a value ""(.*)""")]
@@ -73,19 +86,22 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
-        
+
         [Then(@"the xpath result for this varibale ""(.*)"" will be")]
         public void ThenTheXpathResultForThisVaribaleWillBe(string variable, Table table)
         {
-            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
-            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
+            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             string error;
-            var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                                                                           out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
             List<TableRow> tableRows = table.Rows.ToList();
@@ -99,11 +115,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Then(@"the xpath execution has ""(.*)"" error")]
         public void ThenTheXpathExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

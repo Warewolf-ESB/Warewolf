@@ -15,20 +15,18 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     {
         private DsfFlowSwitchActivity _flowSwitch;
 
-        public SwitchSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private void BuildDataList()
         {
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+
             BuildShapeAndTestData();
             _flowSwitch = new DsfFlowSwitchActivity
                 {
                     ExpressionText =
                         string.Format(
                             "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.FetchSwitchData(\"{0}\",AmbientDataList)",
-                            ((List<Tuple<string, string>>) _variableList).First().Item1)
+                            (variableList).First().Item1)
                 };
 
             TestStartNode = new FlowStep
@@ -40,35 +38,47 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
         public void GivenINeedToSwitchOnVariableWithTheValue(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, value));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [When(@"the switch tool is executed")]
         public void WhenTheSwitchToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the variable ""(.*)"""" will evaluate to ""(.*)""")]
-        public void ThenTheVariableWillEvaluateTo(string variable, string result)
+        public void ThenTheVariableWillEvaluateTo(string variable, string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"the switch execution has ""(.*)"" error")]
         public void ThenTheSwitchExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

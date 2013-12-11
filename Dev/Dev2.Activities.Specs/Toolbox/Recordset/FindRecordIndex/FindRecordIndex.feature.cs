@@ -9,108 +9,132 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
+
 #region Designer generated code
+
+using TechTalk.SpecFlow;
+
 #pragma warning disable
+
 namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
 {
-    using TechTalk.SpecFlow;
-    
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class FindRecordIndexFeature
     {
-        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
+
 #line 1 "FindRecordIndex.feature"
 #line hidden
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FindRecordIndex", "In order to search for pieces of data in a recordset\r\nAs a Warewolf user\r\nI want " +
-                    "a tool I can use to find an index", ProgrammingLanguage.CSharp, ((string[])(null)));
+            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"),
+                                                                "FindRecordIndex",
+                                                                "In order to search for pieces of data in a recordset\r\nAs a Warewolf user\r\nI want " +
+                                                                "a tool I can use to find an index",
+                                                                ProgrammingLanguage.CSharp, ((string[]) (null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "FindRecordIndex")))
+            if (((TechTalk.SpecFlow.FeatureContext.Current != null)
+                 && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "FindRecordIndex")))
             {
-                Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex.FindRecordIndexFeature.FeatureSetup(null);
+                FeatureSetup(null);
             }
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-        
+
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-        
+
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find an index of data in a recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FindRecordIndex")]
         public virtual void FindAnIndexOfDataInARecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset", ((string[])(null)));
+            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find an index of data in a recordset",
+                                                                  ((string[]) (null)));
 #line 6
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table1.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
+            var table1 = new TechTalk.SpecFlow.Table(new string[]
+                {
+                    "rs",
+                    "value"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "You"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "are"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "the"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "best"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "Warewolf"
+                });
+            table1.AddRow(new string[]
+                {
+                    "rs().row",
+                    "user"
+                });
 #line 7
- testRunner.Given("I have the following recordset to search", ((string)(null)), table1, "Given ");
+            testRunner.Given("I have the following recordset to search", ((string) (null)), table1, "Given ");
 #line 15
- testRunner.And("search type is \"Starts With\" and criteria is \"Warewolf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("search type is \"Starts With\" and criteria is \"Warewolf\"", ((string) (null)),
+                           ((TechTalk.SpecFlow.Table) (null)), "And ");
 #line 16
- testRunner.When("the find records index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("the find records index tool is executed", ((string) (null)),
+                            ((TechTalk.SpecFlow.Table) (null)), "When ");
 #line 17
- testRunner.Then("the index result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the index result should be 5", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
+                            "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
     }
 }
+
 #pragma warning restore
+
 #endregion

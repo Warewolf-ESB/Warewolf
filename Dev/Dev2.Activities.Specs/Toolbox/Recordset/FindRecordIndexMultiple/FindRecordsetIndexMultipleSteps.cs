@@ -2,7 +2,6 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,26 +11,27 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
 {
     [Binding]
-    public class FindRecordsetIndexMultipleSteps: RecordSetBases
+    public class FindRecordsetIndexMultipleSteps : RecordSetBases
     {
+        private readonly List<FindRecordsTO> _searchList = new List<FindRecordsTO>();
+        private string _fieldsToSearch;
         private DsfFindRecordsMultipleCriteriaActivity _findRecordsMultipleIndex;
-        List<FindRecordsTO> _searchList = new List<FindRecordsTO>();        
-        int _row = 0;
-        bool _requireAllTrue;
-        bool _requireAllFieldsToMatch = false;
-        string _fieldsToSearch;
-
-        public FindRecordsetIndexMultipleSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
+        private bool _requireAllFieldsToMatch;
+        private bool _requireAllTrue;
+        private int _row;
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+
+            BuildShapeAndTestData();
+
+            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
+
             _findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
-                    FieldsToSearch = string.IsNullOrEmpty(_fieldsToSearch) ? RecordSetName + "()" : _fieldsToSearch,
+                    FieldsToSearch = string.IsNullOrEmpty(_fieldsToSearch) ? recordsetName + "()" : _fieldsToSearch,
                     ResultsCollection = _searchList,
                     RequireAllTrue = _requireAllTrue,
                     RequireAllFieldsToMatch = _requireAllFieldsToMatch,
@@ -48,9 +48,17 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void GivenIHaveTheFollowingRecordsetToSearchForMultipleCriteria(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach(TableRow t in tableRows)
+            foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
         
@@ -58,35 +66,44 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void GivenTheFieldsToSearchIs(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach(TableRow t in tableRows)
+            foreach (TableRow t in tableRows)
             {
                 _fieldsToSearch += t[0] + ",";
             }
-            if(_fieldsToSearch.EndsWith(","))
+            if (_fieldsToSearch.EndsWith(","))
             {
                 _fieldsToSearch = _fieldsToSearch.Remove(_fieldsToSearch.Length - 1);
             }
         }
 
-        
+
         [Given(@"I have the following recordset in my datalist")]
         public void GivenIHaveTheFollowingRecordsetInMyDatalist(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            foreach(TableRow t in tableRows)
+            foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+
+                variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
 
-        
+
         [Given(@"search the recordset with type ""(.*)"" and criteria is ""(.*)""")]
         public void GivenSearchTheRecordsetWithTypeAndCriteriaIs(string searchType, string searchCriteria)
         {
             _row++;
             _searchList.Add(new FindRecordsTO(searchCriteria, searchType, _row));
         }
-        
+
         [Given(@"is between search the recordset with type ""(.*)"" and criteria is ""(.*)"" and ""(.*)""")]
         public void GivenIsBetweenSearchTheRecordsetWithTypeAndCriteriaIsAnd(string searchType, string from, string to)
         {
@@ -106,44 +123,49 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             _requireAllFieldsToMatch = requireAllFieldsToMatch;
         }
 
-        
+
         [When(@"the find records index multiple tool is executed")]
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the find records index multiple result should be (.*)")]
-        public void ThenTheFindRecordsIndexMultipleResultShouldBe(string result)
+        public void ThenTheFindRecordsIndexMultipleResultShouldBe(string expectedResult)
         {
             string error;
-            if(DataListUtil.IsValueRecordset(ResultVariable))
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+
+            if (DataListUtil.IsValueRecordset(ResultVariable))
             {
-                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultVariable);
-                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
-                var recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, recordset, column, out error);
+                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultVariable);
+                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                                                                               out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-                Assert.AreEqual(recordSetValues[1], result);
+                Assert.AreEqual(recordSetValues[1], expectedResult);
             }
             else
             {
-            string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
-        }
+                string actualValue;
+                expectedResult = expectedResult.Replace("\"\"", "");
+                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                           out actualValue, out error);
+                Assert.AreEqual(expectedResult, actualValue);
+            }
         }
 
         [Then(@"the find record index has ""(.*)"" error")]
         public void ThenTheFindRecordIndexHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
-        }        
-
+        }
     }
 }

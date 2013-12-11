@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common;
 using Dev2.Data.Decision;
@@ -16,76 +15,177 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
-
-        //private DsfFlowDecisionActivity _decisionActivity;
-        private Dev2DecisionMode _mode;
-        private enDecisionType _decision;
-        private string _modelData;
-
-        public DecisionSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-
-        }
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
-
             var decisionActivity = new DsfFlowDecisionActivity();
+            Dev2DecisionMode mode;
+            ScenarioContext.Current.TryGetValue("mode", out mode);
 
-            var variables = (from v in (List<Tuple<string, string>>) _variableList select v.Item1).ToList();
+            var decisionModels =
+                ScenarioContext.Current.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
+            var dds = new Dev2DecisionStack {TheStack = new List<Dev2Decision>(), Mode = mode};
 
-            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = _mode };
-            var dev2Decision = new Dev2Decision
-                {
-                    EvaluationFn = _decision,
-                    Col1 = variables[0] ?? string.Empty,
-                    Col2 = variables[1] ?? string.Empty
-                   // Col3 = variables[2] ?? string.Empty
-                };
-            dds.AddModelItem(dev2Decision);
-
-            _modelData = dds.ToVBPersistableModel();
-            decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", _modelData, "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
-            
-            TestStartNode = new FlowStep
+            foreach (var dm in decisionModels)
             {
-                Action = decisionActivity
-            };
-        }
-        
-        [Given(@"I need to take a decision on variable ""(.*)"" with the value ""(.*)""")]
-        public void GivenINeedToTakeADecisionOnVariableWithTheValue(string variable, string value)
-        {
-            _variableList.Add(new Tuple<string, string>(variable, value));
-        }
-        
-        [Given(@"I want to find out if the \[\[A]] ""(.*)"" \[\[B]]")]
-        public void GivenIWantToFindOutIfTheAB(string decision)
-        {
-            _decision = (enDecisionType)Enum.Parse(typeof(enDecisionType), decision);
-        }
+                var dev2Decision = new Dev2Decision
+                    {
+                        Col1 = dm.Item1 ?? string.Empty,
+                        EvaluationFn = dm.Item2,
+                        Col2 = dm.Item3 ?? string.Empty,
+                        Col3 = dm.Item4 ?? string.Empty
+                    };
 
+                dds.AddModelItem(dev2Decision);
+            }
+
+            string modelData = dds.ToVBPersistableModel();
+            ScenarioContext.Current.Add("modelData", modelData);
+
+            decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
+                                                          "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
+
+            TestStartNode = new FlowStep
+                {
+                    Action = decisionActivity
+                };
+        }
+        
+        [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
+        public void GivenADecisionVariableValue(string variable, string value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(variable, value));
+        }
+        
         [Given(@"the decision mode is ""(.*)""")]
         public void GivenTheDecisionModeIs(string mode)
         {
-            _mode = (Dev2DecisionMode)Enum.Parse(typeof(Dev2DecisionMode), mode);
+            ScenarioContext.Current.Add("mode", (Dev2DecisionMode) Enum.Parse(typeof (Dev2DecisionMode), mode));
         }
         
+        [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
+        public void GivenIs(string variable1, string decision, string variable2)
+        {
+            List<Tuple<string, enDecisionType, string, string>> decisionModels;
+            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                ScenarioContext.Current.Add("decisionModels", decisionModels);
+            }
+
+            decisionModels.Add(
+                new Tuple<string, enDecisionType, string, string>(
+                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), variable2, null
+                    ));
+        }
+
+        [Given(@"""(.*)"" error occurred")]
+        public void GivenErrorOccurred(string anError)
+        {
+            bool errorOccurred = anError.Equals("An");
+            //Simulate an error condition
+            if (errorOccurred)
+            {
+               throw new Exception("How to create an error before execution ???");
+            }
+        }
+
+        [Given(@"I want to check ""(.*)""")]
+        public void GivenIWantToCheck(string decision)
+        {
+            List<Tuple<string, enDecisionType, string, string>> decisionModels;
+            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                ScenarioContext.Current.Add("decisionModels", decisionModels);
+            }
+
+            decisionModels.Add(
+                new Tuple<string, enDecisionType, string, string>(
+                    null, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null
+                    ));
+        }
+
+        [Given(@"decide if ""(.*)"" ""(.*)""")]
+        public void GivenDecideIf(string variable1, string decision)
+        {
+            List<Tuple<string, enDecisionType, string, string>> decisionModels;
+            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                ScenarioContext.Current.Add("decisionModels", decisionModels);
+            }
+
+            decisionModels.Add(
+                new Tuple<string, enDecisionType, string, string>(
+                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), null, null
+                    ));
+        }
+
+        [Given(@"check if ""(.*)"" ""(.*)"" ""(.*)"" and ""(.*)""")]
+        public void GivenCheckIfAnd(string variable1, string decision, string variable2, string variable3)
+        {
+            List<Tuple<string, enDecisionType, string, string>> decisionModels;
+            ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
+
+            if (decisionModels == null)
+            {
+                decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
+                ScenarioContext.Current.Add("decisionModels", decisionModels);
+            }
+
+            decisionModels.Add(
+                new Tuple<string, enDecisionType, string, string>(
+                    variable1, (enDecisionType)Enum.Parse(typeof(enDecisionType), decision), variable2, variable3
+                    ));
+        }
+
         [When(@"the decision tool is executed")]
         public void WhenTheDecisionToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the decision result should be ""(.*)""")]
-        public void ThenTheDecisionResultShouldBe(string result)
+        public void ThenTheDecisionResultShouldBe(string expectedRes)
         {
-            var actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(_modelData, new List<string> { _result.DataListID.ToString() });
-            bool expected = Boolean.Parse(result);
-            Assert.AreEqual(expected , actual);
+            var modelData = ScenarioContext.Current.Get<string>("modelData");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = new Dev2DataListDecisionHandler().ExecuteDecisionStack(modelData,
+                                                                                 new List<string>
+                                                                                     {
+                                                                                         result.DataListID.ToString()
+                                                                                     });
+            bool expected = Boolean.Parse(expectedRes);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Then(@"the decision execution has ""(.*)"" error")]
+        public void ThenTheDecisionExecutionHasError(string anError)
+        {
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
+            Assert.AreEqual(expected, actual, message);
         }
     }
 }

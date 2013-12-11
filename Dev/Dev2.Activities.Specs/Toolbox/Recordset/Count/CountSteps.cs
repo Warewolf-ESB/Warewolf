@@ -13,21 +13,29 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        private const string ResultVariable = "[[result]]";
         private DsfCountRecordsetActivity _count;
-
-        public CountSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
 
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
+            string recordSetName;
+            ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
+
 
             _count = new DsfCountRecordsetActivity
                 {
-                    RecordsetName = RecordSetName + "()",
+                    RecordsetName = string.IsNullOrEmpty(recordSetName) ? "" : recordSetName + "()",
                     CountNumber = ResultVariable
                 };
 
@@ -43,7 +51,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             List<TableRow> tableRows = table.Rows.ToList();
             foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string, string>(t[0], ""));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(t[0], ""));
             }
         }
 
@@ -51,29 +67,32 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the result count should be (.*)")]
-        public void ThenTheResultCountShouldBe(string result)
+        public void ThenTheResultCountShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
-            Assert.AreEqual(result , actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"the count execution has ""(.*)"" error")]
         public void ThenTheCountExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.DataList.Contract;
@@ -14,14 +13,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
+        private readonly List<Tuple<string, string, string>> _splitCollection =
+            new List<Tuple<string, string, string>>();
+
         private DsfDataSplitActivity _dataSplit;
         private string _stringToSplit;
-        private readonly List<Tuple<string, string, string>> _splitCollection = new List<Tuple<string, string, string>>();
-
-        public DataSplitSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
 
         private void BuildDataList()
         {
@@ -46,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void GivenAFileToSplit(string fileName)
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataSplit.{0}",
-                                               fileName);
+                                                fileName);
             _stringToSplit = ReadFile(resourceName);
         }
 
@@ -59,22 +55,34 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAt(string variable, string splitType, string splitAt)
         {
-            _variableList.Add(new Tuple<string, string>(variable, ""));
-            _splitCollection.Add(new Tuple<string, string, string>(variable ,splitType, splitAt));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, ""));
+            _splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
         }
-        
-        [Given(@"assign to variable ""(.*)"" split type as ""(.*)"" at ""(.*)"" and escape ""(.*)"" and include is ""(.*)""")]
-        public void GivenAssignToVariableSplitTypeAsAtAndEscapeAndIncludeIs(string variable, string splitType, string at, string escape, string include)
+
+        [Given(
+            @"assign to variable ""(.*)"" split type as ""(.*)"" at ""(.*)"" and escape ""(.*)"" and include is ""(.*)"""
+            )]
+        public void GivenAssignToVariableSplitTypeAsAtAndEscapeAndIncludeIs(string variable, string splitType, string at,
+                                                                            string escape, string include)
         {
             //Note that both the escape and include are not implemeted on the activity this will pass once these are implemented
             ScenarioContext.Current.Pending();
         }
-        
+
         [When(@"the data split tool is executed")]
         public void WhenTheDataSplitToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the split result will be")]
@@ -82,8 +90,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             List<TableRow> tableRows = table.Rows.ToList();
             string error;
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(_result.DataListID, RecordSetName,
-                                                                           FieldName, out error);
+
+            var recordset = ScenarioContext.Current.Get<string>("recordset");
+            var field = ScenarioContext.Current.Get<string>("recordField");
+
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset,
+                                                                           field, out error);
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
@@ -96,9 +109,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Then(@"the data split execution has ""(.*)"" error")]
         public void ThenTheDataSplitExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
 
@@ -108,7 +123,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string actualValue;
             string error;
             value = value.Replace('"', ' ').Trim();
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             actualValue = actualValue.Replace('"', ' ').Trim();
             Assert.AreEqual(value, actualValue);

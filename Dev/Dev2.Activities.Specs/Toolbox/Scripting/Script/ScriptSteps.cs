@@ -17,14 +17,11 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         private enScriptType _language;
         private string _scriptToExecute;
 
-        public ScriptSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
 
             _dsfScripting = new DsfScriptingActivity
                 {
@@ -42,7 +39,15 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, value));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [Given(@"I have this script to execute ""(.*)""")]
@@ -63,25 +68,28 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public void WhenIExecuteTheScriptTool()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the script result should be ""(.*)""")]
-        public void ThenTheScriptResultShouldBe(string result)
+        public void ThenTheScriptResultShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"script execution has ""(.*)"" error")]
         public void ThenScriptExecutionHasError(string anError)
         {
             bool expected = anError.Equals("NO");
-            bool actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
             string message = string.Format("expected {0} error but an error was {1}", anError,
                                            actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);

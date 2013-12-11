@@ -15,30 +15,30 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
     {
         private const string ResultVariable = "[[result]]";
         private DsfDateTimeActivity _dateTime;
-        private IDSFDataObject _result;
+        //private IDSFDataObject _result;
 
         private string _inputDate;
         private string _inputFormat;
-        private string _timeModifierType;
-        private string _timeModifierAmount;
         private string _outputFormat;
+        private string _timeModifierAmount;
+        private string _timeModifierType;
 
         private void BuildDataList()
         {
             _dateTime = new DsfDateTimeActivity
-            {
-                Result = ResultVariable,
-                DateTime = _inputDate ,
-                InputFormat = _inputFormat, 
-                OutputFormat = _outputFormat,
-                TimeModifierType = _timeModifierType,
-                TimeModifierAmountDisplay = _timeModifierAmount
-            };
+                {
+                    Result = ResultVariable,
+                    DateTime = _inputDate,
+                    InputFormat = _inputFormat,
+                    OutputFormat = _outputFormat,
+                    TimeModifierType = _timeModifierType,
+                    TimeModifierAmountDisplay = _timeModifierAmount
+                };
 
             TestStartNode = new FlowStep
-            {
-                Action = _dateTime
-            };
+                {
+                    Action = _dateTime
+                };
 
 
             var data = new StringBuilder();
@@ -56,31 +56,32 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             _inputDate = inputDate;
         }
-        
+
         [Given(@"the input format as ""(.*)""")]
         public void GivenTheInputFormatAs(string inputFormat)
         {
             _inputFormat = inputFormat;
         }
-        
+
         [Given(@"I selected Add time as ""(.*)"" with a value of (.*)")]
         public void GivenISelectedAddTimeAsWithAValueOf(string datePart, string value)
         {
             _timeModifierType = datePart;
             _timeModifierAmount = value;
         }
-        
+
         [Given(@"the output format as ""(.*)""")]
         public void GivenTheOutputFormatAs(string outputFormat)
         {
             _outputFormat = outputFormat;
         }
-        
+
         [When(@"the datetime tool is executed")]
         public void WhenTheDatetimeToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the datetime result should be a ""(.*)""")]
@@ -88,32 +89,35 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         {
             string error;
             string actualValue;
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            var res = converter.ConvertFrom(actualValue);
+            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
+            object res = converter.ConvertFrom(actualValue);
         }
 
 
         [Then(@"the datetime result should be ""(.*)""")]
-        public void ThenTheDatetimeResultShouldBe(string result)
+        public void ThenTheDatetimeResultShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            expectedResult = expectedResult.Replace("\"\"", "");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"datetime execution has ""(.*)"" error")]
         public void ThenDatetimeExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }

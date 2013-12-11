@@ -17,17 +17,16 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
         private DsfFindRecordsActivity _findRecordsIndex;
         private string _searchType;
 
-        public FindRecordIndexSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
         private void BuildDataList()
         {
-            BuildShapeAndTestData(new Tuple<string, string>(ResultVariable, ""));
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
+            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
             _findRecordsIndex = new DsfFindRecordsActivity
                 {
-                    FieldsToSearch = RecordSetName + "()",
+                    FieldsToSearch = recordsetName + "()",
                     Result = ResultVariable,
                     SearchCriteria = _criteria,
                     SearchType = _searchType,
@@ -46,7 +45,15 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
             List<TableRow> tableRows = table.Rows.ToList();
             foreach (TableRow t in tableRows)
             {
-                _variableList.Add(new Tuple<string, string>(t[0], t[1]));
+                List<Tuple<string, string>> variableList;
+                ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+                if (variableList == null)
+                {
+                    variableList = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("variableList", variableList);
+                }
+                variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
 
@@ -62,18 +69,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
         public void WhenTheFindRecordsIndexToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the index result should be (.*)")]
-        public void ThenTheIndexResultShouldBe(string result)
+        public void ThenTheIndexResultShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
     }
 }

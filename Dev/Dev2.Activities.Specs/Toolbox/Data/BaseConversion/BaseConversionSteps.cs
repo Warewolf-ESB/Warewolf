@@ -13,11 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     {
         private DsfBaseConvertActivity _baseConvert;
 
-        public BaseConversionSteps()
-            : base(new List<Tuple<string, string, string, string>>())
-        {
-        }
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
@@ -30,7 +25,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
                 };
 
             int row = 1;
-            foreach (dynamic variable in _variableList)
+
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string, string, string>>>("variableList");
+
+            foreach (dynamic variable in variableList)
             {
                 _baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item3, variable.Item4,
                                                                      variable.Item1, row));
@@ -41,14 +39,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Given(@"I convert value ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
         public void GivenIConvertValueFromTypeToType(string value, string fromType, string toType)
         {
-            _variableList.Add(new Tuple<string, string, string, string>("[[var]]", value, fromType, toType));
+            List<Tuple<string, string, string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string, string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string, string, string>("[[var]]", value, fromType, toType));
         }
 
         [When(@"the base conversion tool is executed")]
         public void WhenTheBaseConversionToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the result is ""(.*)""")]
@@ -57,16 +65,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             string error;
             string actualValue;
             value = value.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, "var", out actualValue, out error);
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, "var", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
 
         [Then(@"the base convert execution has ""(.*)"" error")]
         public void ThenTheBaseConvertExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
     }

@@ -12,24 +12,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     [Binding]
     public class ReplaceSteps : RecordSetBases
     {
-        private const string ResultVariable = "[[result]]";
         private const string InFields = "[[sentence]]";
         private string _find;
         private DsfReplaceActivity _replace;
         private string _replaceWith;
-        private IDSFDataObject _result;
         private string _sentence;
-
-        public ReplaceSteps()
-            : base(new List<Tuple<string, string>>())
-        {
-        }
-
 
         private void BuildDataList()
         {
-            _variableList.Add(new Tuple<string, string>(InFields, _sentence));
-            _variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            variableList.Add(new Tuple<string, string>(InFields, _sentence));
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
             BuildShapeAndTestData();
 
@@ -56,7 +49,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Given(@"I have a replace variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAReplaceVariableEqualTo(string variable, string value)
         {
-            _variableList.Add(new Tuple<string, string>(variable, value));
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [Given(@"I want to find the characters ""(.*)""")]
@@ -75,18 +76,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         public void WhenTheReplaceToolIsExecuted()
         {
             BuildDataList();
-            _result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess();
+            ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the replace result should be ""(.*)""")]
-        public void ThenTheReplaceResultShouldBe(string result)
+        public void ThenTheReplaceResultShouldBe(string expectedResult)
         {
             string error;
             string actualValue;
-            result = result.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+            expectedResult = expectedResult.Replace("\"\"", "");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(result, actualValue);
+            Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"""(.*)"" should be ""(.*)""")]
@@ -95,7 +98,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string error;
             string actualValue;
             value = value.Replace("\"\"", "");
-            GetScalarValueFromDataList(_result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
@@ -103,9 +107,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Then(@"the replace execution has ""(.*)"" error")]
         public void ThenTheReplaceExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
     }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract;
@@ -18,12 +18,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
-        Guid _dlID;
-        DsfSqlBulkInsertActivity _sqlBulkInsert;
-        IDataListCompiler _compiler;
-        DbSource _dbSource;
+        private IDataListCompiler _compiler;
         private string _dataShape;
-      
+        private DbSource _dbSource;
+        private Guid _dlID;
+        private DsfSqlBulkInsertActivity _sqlBulkInsert;
+
         public void SetupScenerio()
         {
             _sqlBulkInsert = new DsfSqlBulkInsertActivity();
@@ -31,34 +31,46 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             _sqlBulkInsert.Database = _dbSource;
             _sqlBulkInsert.TableName = "SqlBulkInsertSpecFlowTestTable";
             var dataColumnMappings = new List<DataColumnMapping>
-            {
-                new DataColumnMapping
                 {
-                    InputColumn = "[[rs(*).Col1]]",
-                    OutputColumn = new DbColumn {ColumnName = "Col1",
-                    DataType = typeof(Int32),
-                    MaxLength = 100},
-                }, new DataColumnMapping
-                {
-                    InputColumn = "[[rs(*).Col2]]",
-                    OutputColumn = new DbColumn { ColumnName = "Col2",
-                    DataType = typeof(String),
-                    MaxLength = 100 }
-                }, new DataColumnMapping
-                {
-                    InputColumn = "[[rs(*).Col3]]",
-                    OutputColumn = new DbColumn { ColumnName = "Col3",
-                    DataType = typeof(Guid),
-                    MaxLength = 100 }
-                }
-            };
+                    new DataColumnMapping
+                        {
+                            InputColumn = "[[rs(*).Col1]]",
+                            OutputColumn = new DbColumn
+                                {
+                                    ColumnName = "Col1",
+                                    DataType = typeof (Int32),
+                                    MaxLength = 100
+                                },
+                        },
+                    new DataColumnMapping
+                        {
+                            InputColumn = "[[rs(*).Col2]]",
+                            OutputColumn = new DbColumn
+                                {
+                                    ColumnName = "Col2",
+                                    DataType = typeof (String),
+                                    MaxLength = 100
+                                }
+                        },
+                    new DataColumnMapping
+                        {
+                            InputColumn = "[[rs(*).Col3]]",
+                            OutputColumn = new DbColumn
+                                {
+                                    ColumnName = "Col3",
+                                    DataType = typeof (Guid),
+                                    MaxLength = 100
+                                }
+                        }
+                };
             _sqlBulkInsert.InputMappings = dataColumnMappings;
             TestStartNode = new FlowStep
-            {
-                Action = _sqlBulkInsert
-            };
+                {
+                    Action = _sqlBulkInsert
+                };
             ErrorResultTO errors;
-            var data = _compiler.ConvertFrom(_dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            string data = _compiler.ConvertFrom(_dlID, DataListFormat.CreateFormat(GlobalConstants._XML),
+                                                enTranslationDepth.Data, out errors);
             CurrentDl = _dataShape;
             TestData = data;
         }
@@ -76,9 +88,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             using (var connection = new SqlConnection(_dbSource.ConnectionString))
             {
                 connection.Open();
-                const string q2 = "update SqlBulkInsertSpecFlowTestTableForeign "+
-		                          "set Col2 = 0 " +
-		                          "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                const string q2 = "update SqlBulkInsertSpecFlowTestTableForeign " +
+                                  "set Col2 = 0 " +
+                                  "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -86,32 +98,32 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        void AddTableToDataList(Table table)
+        private void AddTableToDataList(Table table)
         {
             _compiler = DataListFactory.CreateDataListCompiler();
             // build up DataTable
             var dbData = new DataTable("rs");
-            foreach(var columnName in table.Header)
+            foreach (string columnName in table.Header)
             {
                 dbData.Columns.Add(columnName);
             }
-            foreach(TableRow row in table.Rows)
+            foreach (TableRow row in table.Rows)
             {
-                dbData.Rows.Add(row[0],row[1],row[2]);    
+                dbData.Rows.Add(row[0], row[1], row[2]);
             }
             // Execute Translator
             ErrorResultTO errors;
             _dataShape = "<root><rs><Col1/><Col2/><Col3/></rs></root>";
-            _dlID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, _dataShape, out errors);
-
+            _dlID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, _dataShape,
+                                        out errors);
         }
-        
+
         [Given(@"Check constraints is disabled")]
         public void GivenCheckConstraintsIsNotenabled()
         {
             _sqlBulkInsert.CheckConstraints = false;
         }
-        
+
         [When(@"the tool is executed")]
         public void WhenTheToolIsExecuted()
         {
@@ -122,14 +134,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void ThenTheNewTableWillHave(Table table)
         {
             var t1 = new DataTable();
-            using(var connection = new SqlConnection(_dbSource.ConnectionString))
+            using (var connection = new SqlConnection(_dbSource.ConnectionString))
             {
                 connection.Open();
                 const string Query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable";
 
-                using(var cmd = new SqlCommand(Query, connection))
+                using (var cmd = new SqlCommand(Query, connection))
                 {
-                    using(var a = new SqlDataAdapter(cmd))
+                    using (var a = new SqlDataAdapter(cmd))
                     {
                         a.Fill(t1);
                     }
@@ -152,7 +164,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
 
             Assert.AreEqual(dataRows.Count, tableRows.Count);
-           
+
             for (int i = 0; i < dataRows.Count; i++)
             {
                 Assert.AreEqual(dataRows[i][0].ToString(), tableRows[i][0]);
@@ -189,7 +201,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                 const string q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable";
                 using (var cmd = new SqlCommand(q1, connection))
                 {
-                   numberOfRowsInDb = cmd.ExecuteScalar();
+                    numberOfRowsInDb = cmd.ExecuteScalar();
                 }
             }
 
@@ -253,7 +265,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             {
                 connection.Open();
                 const string q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign " +
-		                           "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
+                                  "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
                 using (var cmd = new SqlCommand(q1, connection))
                 {
                     actualInserts = cmd.ExecuteScalar();
@@ -276,11 +288,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         [Then(@"the sqlbulkinsert execution has ""(.*)"" error")]
         public void ThenTheSqlbulkinsertExecutionHasError(string anError)
         {
-            var expected = anError.Equals("NO");
-            var actual = string.IsNullOrEmpty(FetchErrors(_dlID));
-            string message = string.Format("expected {0} error but an error was {1}", anError, actual ? "not found" : "found");
+            bool expected = anError.Equals("NO");
+            bool actual = string.IsNullOrEmpty(FetchErrors(_dlID));
+            string message = string.Format("expected {0} error but an error was {1}", anError,
+                                           actual ? "not found" : "found");
             Assert.AreEqual(expected, actual, message);
         }
-
     }
 }
