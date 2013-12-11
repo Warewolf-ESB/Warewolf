@@ -255,7 +255,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore]//Bug 10828
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
         {
             const string TextToSearchWith = "WebService";
@@ -271,7 +270,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore] // Broken test ;)
         public void RemoteServerUITests_EditRemoteDbService_DbServiceIsEdited()
         {
             const string TextToSearchWith = "RemoteDBService";
@@ -342,7 +340,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore] // Real Failure
         public void RemoteServerUITests_EditRemotePluginSource_PluginSourceIsEdited()
         {
             const string TextToSearchWith = "PluginSource";
@@ -401,7 +398,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore] // Broken
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
         {
             const string TextToSearchWith = "PluginService";

@@ -223,7 +223,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
-        [Ignore] // Hugs Changes?
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
@@ -322,7 +321,6 @@ namespace Dev2.Studio.UI.Tests
 
         // Bug 6617
         [TestMethod]
-        [Ignore]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
             // The workflow so we have a second tab

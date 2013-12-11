@@ -424,7 +424,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
         }
 
-        [Ignore]
         // Not functioning right now ;)
         public void RightClickShowProjectDependancies(string serverName, string serviceType, string folderName, string projectName)
         {

@@ -502,7 +502,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
-        [Ignore]
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
@@ -648,7 +647,6 @@ namespace Dev2.Studio.UI.Tests
         }
         
         [TestMethod]
-        [Ignore]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "Bug_10528";

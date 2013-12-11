@@ -81,7 +81,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
-        [Ignore] // This is not safe nor quick - Needs local web service ;)
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -141,7 +140,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
-        [Ignore]
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
@@ -169,7 +167,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
         [Owner("Travis Frisinger")]
-        [Ignore] // External Smtp Server required ;)
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization
