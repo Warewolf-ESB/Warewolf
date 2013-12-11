@@ -71,7 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public void WhenTheDeleteToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

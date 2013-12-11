@@ -12,34 +12,53 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
     [Binding]
     public class UniqueSteps : RecordSetBases
     {
-        private string _inField;
-        private string _resultVariable;
-        private string _returnField;
-        private DsfUniqueActivity _unique;
-
-
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _unique = new DsfUniqueActivity
+            string inField;
+            ScenarioContext.Current.TryGetValue("inField", out inField);
+            string returnField;
+            ScenarioContext.Current.TryGetValue("returnField", out returnField);
+            string resultVariable;
+            ScenarioContext.Current.TryGetValue("resultVariable", out resultVariable);
+
+            var unique = new DsfUniqueActivity
                 {
-                    InFields = _inField,
-                    ResultFields = _returnField,
-                    Result = _resultVariable
+                    InFields = inField,
+                    ResultFields = returnField,
+                    Result = resultVariable
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _unique
+                    Action = unique
                 };
         }
 
+        [Given(@"I have the following empty recordset")]
+        public void GivenIHaveTheFollowingEmptyRecordset(Table table)
+        {
+            FillDataset(table);
+        }
 
         [Given(@"I have the following duplicated recordset")]
         public void GivenIHaveTheFollowingDuplicatedRecordset(Table table)
+        {
+            FillDataset(table);
+        }
+
+        private static void FillDataset(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
             foreach (TableRow t in tableRows)
@@ -59,30 +78,30 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         [Given(@"I want to find unique in field ""(.*)"" with the return field ""(.*)""")]
         public void GivenIWantToFindUniqueInFieldWithTheReturnField(string inField, string returnField)
         {
-            _inField = inField;
-            _returnField = returnField;
+            ScenarioContext.Current.Add("inField", inField);
+            ScenarioContext.Current.Add("returnField", returnField);
         }
 
         [Given(@"The result variable is ""(.*)""")]
         public void GivenTheResultVariableIs(string resultVariable)
         {
-            _resultVariable = resultVariable;
+            ScenarioContext.Current.Add("resultVariable", resultVariable);
         }
-
-
+        
         [When(@"the unique tool is executed")]
         public void WhenTheUniqueToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the unique result will be")]
         public void ThenTheUniqueResultWillBe(Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, _resultVariable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, _resultVariable);
+            string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
+            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resultVariable);
+            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
 
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");

@@ -13,25 +13,31 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
     [Binding]
     public class SortSteps : RecordSetBases
     {
-        private string _sortOrder;
-        private DsfSortRecordsActivity _sortRecords;
-
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
-            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
-
-            _sortRecords = new DsfSortRecordsActivity
+            
+            var recordsetName = ScenarioContext.Current.Get<string>("recordset");
+            var sortOrder = ScenarioContext.Current.Get<string>("sortOrder");
+            var sortRecords = new DsfSortRecordsActivity
                 {
                     SortField = recordsetName,
-                    SelectedSort = _sortOrder
+                    SelectedSort = sortOrder
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _sortRecords
+                    Action = sortRecords
                 };
         }
 
@@ -62,14 +68,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         [Given(@"my sort order is ""(.*)""")]
         public void GivenMySortOrderIs(string sortOrder)
         {
-            _sortOrder = sortOrder;
+            ScenarioContext.Current.Add("sortOrder", sortOrder);
         }
 
         [When(@"the sort records tool is executed")]
         public void WhenTheSortRecordsToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

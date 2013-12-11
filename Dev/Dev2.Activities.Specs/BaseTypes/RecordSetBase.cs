@@ -125,6 +125,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
+                if (stream == null)
+                {
+                    return string.Empty;
+                }
+
                 var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
             }

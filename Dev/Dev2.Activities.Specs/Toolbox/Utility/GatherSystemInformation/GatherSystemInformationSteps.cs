@@ -14,30 +14,36 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
     [Binding]
     public class GatherSystemInformationSteps : RecordSetBases
     {
-        private readonly List<GatherSystemInformationTO> _systemInformationCollection =
-            new List<GatherSystemInformationTO>();
-
-        private DsfGatherSystemInformationActivity _dsfGatherSystemInformationActivity;
-
-        private int row;
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            _dsfGatherSystemInformationActivity = new DsfGatherSystemInformationActivity();
-            _dsfGatherSystemInformationActivity.SystemInformationCollection = _systemInformationCollection;
+            var systemInformationCollection =
+                ScenarioContext.Current.Get<List<GatherSystemInformationTO>>("systemInformationCollection");
+
+            var dsfGatherSystemInformationActivity = new DsfGatherSystemInformationActivity
+                {
+                    SystemInformationCollection = systemInformationCollection
+                };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _dsfGatherSystemInformationActivity
+                    Action = dsfGatherSystemInformationActivity
                 };
         }
 
         [Given(@"I have a variable ""(.*)"" and I selected ""(.*)""")]
         public void GivenIHaveAVariableAndISelected(string variable, string informationType)
         {
+            int row;
+
+            bool isRowAdded = ScenarioContext.Current.TryGetValue("row", out row);
+            if (isRowAdded)
+            {
+                ScenarioContext.Current.Add("row", row);
+            }
             row++;
+
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
@@ -51,17 +57,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             var type =
                 (enTypeOfSystemInformationToGather)
                 Enum.Parse(typeof (enTypeOfSystemInformationToGather), informationType);
-            _systemInformationCollection.Add(new GatherSystemInformationTO(type, variable, row));
+            
+            List<GatherSystemInformationTO> systemInformationCollection;
+            ScenarioContext.Current.TryGetValue("systemInformationCollection", out systemInformationCollection);
+
+            if (systemInformationCollection == null)
+            {
+                systemInformationCollection = new List<GatherSystemInformationTO>();
+                ScenarioContext.Current.Add("systemInformationCollection", systemInformationCollection);
+            }
+            systemInformationCollection.Add(new GatherSystemInformationTO(type, variable, row));
         }
 
         [When(@"the gather system infomartion tool is executed")]
         public void WhenTheGatherSystemInfomartionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
-            row = 0;
-            _systemInformationCollection.Clear();
         }
 
         [Then(@"the value of the variable ""(.*)"" is a valid ""(.*)""")]

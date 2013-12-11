@@ -11,6 +11,13 @@ Scenario: Execute Javascript Variable is 1
 	Then the script result should be "one"
 	And script execution has "NO" error
 
+Scenario: Execute Javascript blank script	
+	Given I have this script to execute ""
+	And I have selected the language as "JavaScript"
+	When I execute the script tool
+	Then the script result should be ""
+	And script execution has "AN" error
+
 Scenario: Execute Javascript Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"
 	And I have this script to execute "javascript_one_variable.txt"
@@ -59,6 +66,13 @@ Scenario: Execute Python Variable is 1
 	Then the script result should be "one"
 	And script execution has "NO" error
 
+Scenario: Execute Python blank script	
+	Given I have this script to execute ""
+	And I have selected the language as "Python"
+	When I execute the script tool
+	Then the script result should be ""
+	And script execution has "AN" error
+
 Scenario: Execute Python Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"
 	And I have this script to execute "python_one_variable.txt"
@@ -106,6 +120,13 @@ Scenario: Execute Ruby Variable is 1
 	When I execute the script tool
 	Then the script result should be "one"
 	And script execution has "NO" error
+
+Scenario: Execute Ruby blank script	
+	Given I have this script to execute ""
+	And I have selected the language as "Ruby"
+	When I execute the script tool
+	Then the script result should be ""
+	And script execution has "AN" error
 
 Scenario: Execute Ruby Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"

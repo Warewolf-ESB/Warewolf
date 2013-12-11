@@ -13,9 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
     [Binding]
     public class CommandSteps : RecordSetBases
     {
-        private DsfExecuteCommandLineActivity _commandLine;
-        private string _commandToExecute;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -30,22 +27,25 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _commandLine = new DsfExecuteCommandLineActivity
+            string commandToExecute;
+            ScenarioContext.Current.TryGetValue("commandToExecute", out commandToExecute);
+
+            var commandLine = new DsfExecuteCommandLineActivity
                 {
-                    CommandFileName = _commandToExecute,
+                    CommandFileName = commandToExecute,
                     CommandResult = ResultVariable,
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _commandLine
+                    Action = commandLine
                 };
         }
 
         [Given(@"I have this command script to execute ""(.*)""")]
         public void GivenIHaveThisCommandScriptToExecute(string commandToExecute)
         {
-            _commandToExecute = commandToExecute;
+            ScenarioContext.Current.Add("commandToExecute", commandToExecute);
         }
 
         [Given(@"I have these command scripts to execute in a single execution run")]
@@ -57,15 +57,15 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             {
                 commandBuilder.AppendLine(tableRow[0]);
             }
-            _commandToExecute = commandBuilder.ToString();
+            var commandToExecute = commandBuilder.ToString();
+            ScenarioContext.Current.Add("commandToExecute", commandToExecute);
         }
-
 
         [When(@"the command tool is executed")]
         public void WhenTheCommandToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

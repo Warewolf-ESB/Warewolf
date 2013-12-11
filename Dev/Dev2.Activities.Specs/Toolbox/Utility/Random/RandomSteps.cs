@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
-using ActivityUnitTests;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,71 +11,75 @@ using TechTalk.SpecFlow;
 namespace Dev2.Activities.Specs.Toolbox.Utility.Random
 {
     [Binding]
-    public class RandomSteps : BaseActivityUnitTest
+    public class RandomSteps : RecordSetBases
     {
-        private const string ResultVariable = "[[result]]";
-        private DsfRandomActivity _dsfRandom;
-        //private IDSFDataObject _result;
-        private string _length;
-        private enRandomType _randomType;
-        private string _rangeFrom;
-        private string _rangeTo;
-
         private void BuildDataList()
         {
-            var data = new StringBuilder();
-            data.Append("<root>");
-            data.Append(string.Format("<{0}></{0}>", DataListUtil.RemoveLanguageBrackets(ResultVariable)));
-            data.Append("</root>");
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            _dsfRandom = new DsfRandomActivity
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+            BuildShapeAndTestData();
+
+            enRandomType randomType;
+            ScenarioContext.Current.TryGetValue("randomType", out randomType);
+            string length;
+            ScenarioContext.Current.TryGetValue("length", out length);
+            string rangeFrom;
+            ScenarioContext.Current.TryGetValue("rangeFrom", out rangeFrom);
+            string rangeTo;
+            ScenarioContext.Current.TryGetValue("rangeTo", out rangeTo);
+
+            var dsfRandom = new DsfRandomActivity
                 {
-                    RandomType = _randomType,
+                    RandomType = randomType,
                     Result = ResultVariable
                 };
 
-            if (!string.IsNullOrEmpty(_length))
+            if (!string.IsNullOrEmpty(length))
             {
-                _dsfRandom.Length = _length;
+                dsfRandom.Length = length;
             }
 
-            if (!string.IsNullOrEmpty(_rangeFrom))
+            if (!string.IsNullOrEmpty(rangeFrom))
             {
-                _dsfRandom.From = _rangeFrom;
+                dsfRandom.From = rangeFrom;
             }
 
-            if (!string.IsNullOrEmpty(_rangeTo))
+            if (!string.IsNullOrEmpty(rangeTo))
             {
-                _dsfRandom.To = _rangeTo;
+                dsfRandom.To = rangeTo;
             }
 
             TestStartNode = new FlowStep
                 {
-                    Action = _dsfRandom
+                    Action = dsfRandom
                 };
-
-            CurrentDl = data.ToString();
-            TestData = data.ToString();
         }
-
 
         [Given(@"I have a type as ""(.*)""")]
         public void GivenIHaveATypeAs(string randomType)
         {
-            _randomType = (enRandomType) Enum.Parse(typeof (enRandomType), randomType);
+            ScenarioContext.Current.Add("randomType", (enRandomType) Enum.Parse(typeof (enRandomType), randomType));
         }
 
         [Given(@"I have a length as ""(.*)""")]
         public void GivenIHaveALengthAs(string length)
         {
-            _length = length;
+            ScenarioContext.Current.Add("length", length);
         }
 
         [Given(@"I have a range from ""(.*)"" to ""(.*)""")]
         public void GivenIHaveARangeFromTo(string rangeFrom, string rangeTo)
         {
-            _rangeFrom = rangeFrom;
-            _rangeTo = rangeTo;
+            ScenarioContext.Current.Add("rangeFrom", rangeFrom);
+            ScenarioContext.Current.Add("rangeTo", rangeTo);
         }
 
 
@@ -83,7 +87,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         public void WhenTheRandomToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

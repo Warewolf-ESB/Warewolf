@@ -12,27 +12,35 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
     [Binding]
     public class ScriptSteps : RecordSetBases
     {
-        private DsfScriptingActivity _dsfScripting;
-
-        private enScriptType _language;
-        private string _scriptToExecute;
-
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _dsfScripting = new DsfScriptingActivity
+            string scriptToExecute;
+            ScenarioContext.Current.TryGetValue("scriptToExecute", out scriptToExecute);
+            enScriptType language;
+            ScenarioContext.Current.TryGetValue("language", out language);
+
+            var dsfScripting = new DsfScriptingActivity
                 {
-                    Script = _scriptToExecute,
-                    ScriptType = _language,
+                    Script = scriptToExecute,
+                    ScriptType = language,
                     Result = ResultVariable
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _dsfScripting
+                    Action = dsfScripting
                 };
         }
 
@@ -55,20 +63,21 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Scripting.Script.testfiles.{0}",
                                                 scriptFileName);
-            _scriptToExecute = ReadFile(resourceName);
+            var scriptToExecute = ReadFile(resourceName);
+            ScenarioContext.Current.Add("scriptToExecute", scriptToExecute);
         }
 
         [Given(@"I have selected the language as ""(.*)""")]
         public void GivenIHaveSelectedTheLanguageAs(string language)
         {
-            _language = (enScriptType) Enum.Parse(typeof (enScriptType), language);
+            ScenarioContext.Current.Add("language", (enScriptType)Enum.Parse(typeof(enScriptType), language));
         }
 
         [When(@"I execute the script tool")]
         public void WhenIExecuteTheScriptTool()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

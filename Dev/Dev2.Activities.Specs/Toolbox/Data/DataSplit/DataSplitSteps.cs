@@ -81,7 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void WhenTheDataSplitToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

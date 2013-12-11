@@ -138,7 +138,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void WhenTheForeachToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

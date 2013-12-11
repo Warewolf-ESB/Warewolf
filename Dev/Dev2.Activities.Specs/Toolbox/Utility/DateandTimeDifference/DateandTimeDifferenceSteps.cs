@@ -12,13 +12,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
     [Binding]
     public class DateandTimeDifferenceSteps : RecordSetBases
     {
-        private DsfDateTimeDifferenceActivity _dateTimeDifference;
-
-        private string _input1;
-        private string _input2;
-        private string _inputFormat;
-        private string _outputIn;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -33,43 +26,52 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _dateTimeDifference = new DsfDateTimeDifferenceActivity
+            string inputFormat;
+            ScenarioContext.Current.TryGetValue("inputFormat", out inputFormat);
+            string input1;
+            ScenarioContext.Current.TryGetValue("input1", out input1);
+            string input2;
+            ScenarioContext.Current.TryGetValue("input2", out input2);
+            string outputIn;
+            ScenarioContext.Current.TryGetValue("outputIn", out outputIn);
+            
+            var dateTimeDifference = new DsfDateTimeDifferenceActivity
                 {
                     Result = ResultVariable,
-                    InputFormat = _inputFormat,
-                    Input1 = _input1,
-                    Input2 = _input2,
-                    OutputType = _outputIn
+                    InputFormat = inputFormat,
+                    Input1 = input1,
+                    Input2 = input2,
+                    OutputType = outputIn
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _dateTimeDifference
+                    Action = dateTimeDifference
                 };
         }
 
         [Given(@"I have a first date ""(.*)""")]
         public void GivenIHaveAFirstDate(string input1)
         {
-            _input1 = input1;
+            ScenarioContext.Current.Add("input1", input1);
         }
 
         [Given(@"I have a second date ""(.*)""")]
         public void GivenIHaveASecondDate(string input2)
         {
-            _input2 = input2;
+            ScenarioContext.Current.Add("input2", input2);
         }
 
         [Given(@"I selected output in ""(.*)""")]
         public void GivenISelectedOutputIn(string outputIn)
         {
-            _outputIn = outputIn;
+            ScenarioContext.Current.Add("outputIn", outputIn);
         }
 
         [Given(@"the date format as ""(.*)""")]
         public void GivenTheDateFormatAs(string inputFormat)
         {
-            _inputFormat = inputFormat;
+            ScenarioContext.Current.Add("inputFormat", inputFormat);
         }
 
         [Given(@"I have a DateAndTimeDifference variable ""(.*)"" equal to (.*)")]
@@ -90,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         public void WhenTheDatetimeDifferenceToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

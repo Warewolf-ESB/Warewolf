@@ -174,6 +174,15 @@ Given I have this data
 	Then  number of inserts is 0
 	And the sqlbulkinsert execution has "NO" error
 	
+Scenario: Import data into table with blank data
+	Given I have this data
+		| Col1 | Col2     | Col3                           |
+	When the tool is executed
+	Then the new table will have
+		| Col1 | Col2     | Col3                           |
+	And the sqlbulkinsert execution has "AN" error
+    
+
 
 	#Not tested are :-			
 		# Keep table lock

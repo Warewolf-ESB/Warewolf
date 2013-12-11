@@ -159,7 +159,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void WhenTheDecisionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

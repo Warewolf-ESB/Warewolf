@@ -54,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public void WhenTheAssignToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

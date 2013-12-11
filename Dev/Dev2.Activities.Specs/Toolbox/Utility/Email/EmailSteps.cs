@@ -11,14 +11,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
     [Binding]
     public class EmailSteps : RecordSetBases
     {
-        private string _body;
-        private string _fromAccount;
-        private string _password;
-        private DsfSendEmailActivity _sendEmail;
-        private string _serverName;
-        private string _simulationOutput;
-        private string _subject;
-        private string _to;
 
         private void BuildDataList()
         {
@@ -34,48 +26,62 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _sendEmail = new DsfSendEmailActivity
+            string body;
+            ScenarioContext.Current.TryGetValue("body", out body);
+            string subject;
+            ScenarioContext.Current.TryGetValue("subject", out subject);
+            string fromAccount;
+            ScenarioContext.Current.TryGetValue("fromAccount", out fromAccount);
+            string password;
+            ScenarioContext.Current.TryGetValue("password", out password);
+            string simulationOutput;
+            ScenarioContext.Current.TryGetValue("simulationOutput", out simulationOutput);
+            string to;
+            ScenarioContext.Current.TryGetValue("to", out to);
+
+
+            var sendEmail = new DsfSendEmailActivity
                 {
                     Result = ResultVariable,
-                    Body = _body,
-                    Subject = _subject,
-                    FromAccount = _fromAccount,
-                    Password = _password,
+                    Body = body,
+                    Subject = subject,
+                    FromAccount = fromAccount,
+                    Password = password,
                     IsSimulationEnabled = true,
-                    SimulationOutput = _simulationOutput,
-                    To = _to
+                    SimulationOutput = simulationOutput,
+                    To = to
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _sendEmail
+                    Action = sendEmail
                 };
         }
 
         [Given(@"I have an email address input ""(.*)""")]
-        public void GivenIHaveAnEmailAddressInput(string emailAddress)
+        public void GivenIHaveAnEmailAddressInput(string to)
         {
-            _to = emailAddress;
+            ScenarioContext.Current.Add("to", to);
         }
 
         [Given(@"the from account is ""(.*)""")]
         public void GivenTheFromAccountIs(string fromAccount)
         {
-            _fromAccount = fromAccount;
+            ScenarioContext.Current.Add("fromAccount", fromAccount);
         }
 
         [Given(@"the subject is ""(.*)""")]
         public void GivenTheSubjectIs(string subject)
         {
-            _subject = subject;
+            ScenarioContext.Current.Add("subject", subject);
         }
 
 
         [Given(@"the sever name is ""(.*)"" with password as ""(.*)""")]
         public void GivenTheSeverNameIsWithPasswordAs(string serverName, string password)
         {
-            _serverName = serverName;
-            _password = password;
+            ScenarioContext.Current.Add("serverName", serverName);
+            ScenarioContext.Current.Add("password", password);
         }
 
         [Given(@"I have an email variable ""(.*)"" equal to ""(.*)""")]
@@ -96,7 +102,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Given(@"body is ""(.*)""")]
         public void GivenBodyIs(string body)
         {
-            _body = body;
+            ScenarioContext.Current.Add("body", body);
         }
 
         [Given(@"I have a variable ""(.*)"" with this email address ""(.*)""")]
@@ -117,7 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         public void WhenTheEmailToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

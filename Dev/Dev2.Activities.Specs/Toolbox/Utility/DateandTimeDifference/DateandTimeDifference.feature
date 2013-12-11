@@ -86,6 +86,24 @@ Scenario: Calculate the number of minutes between two blank inputs
 	Then the difference should be ""
 	And datetimediff execution has "AN" error
 
+Scenario: Calculate the number of minutes first date is blank
+	Given I have a first date "" 
+	And I have a second date "2014-11-01" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And datetimediff execution has "AN" error
+
+Scenario: Calculate the number of minutes second date is blank
+	Given I have a first date "2014-11-01" 
+	And I have a second date "" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And datetimediff execution has "AN" error
+
 Scenario: Calculate the number of seconds with badly formed input format
 	Given I have a first date "2013-11-29" 
 	And I have a second date "2014-11-01" 
@@ -97,6 +115,24 @@ Scenario: Calculate the number of seconds with badly formed input format
 
 Scenario: Leave input dates blank
 	Given I selected output in "Years"
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And datetimediff execution has "AN" error
+
+	Scenario: Calculate the number of weeks dates do not match date format
+	Given I have a first date "20131212" 
+	And I have a second date "20141212" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Hours" 	
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And datetimediff execution has "AN" error
+	
+Scenario: Calculate the number of weeks using an invalid date
+	Given I have a first date "2" 
+	And I have a second date "20141212" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
 	And datetimediff execution has "AN" error

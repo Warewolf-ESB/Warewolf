@@ -13,28 +13,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
-        private DsfXPathActivity _xPath;
-        private string _xmlData;
-
         private void BuildDataList()
         {
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             BuildShapeAndTestData();
 
-            _xPath = new DsfXPathActivity
+            string xmlData;
+              ScenarioContext.Current.TryGetValue("xmlData", out xmlData);
+
+            var xPath = new DsfXPathActivity
                 {
-                    SourceString = _xmlData
+                    SourceString = xmlData
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _xPath
+                    Action = xPath
                 };
 
             int row = 1;
             foreach (var variable in variableList)
             {
-                _xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
+                xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
         }
@@ -42,7 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Given(@"I have this xml '(.*)'")]
         public void GivenIHaveThisXml(string xmlData)
         {
-            _xmlData = xmlData;
+            ScenarioContext.Current.Add("xmlData", xmlData);
         }
 
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         public void WhenTheXpathToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

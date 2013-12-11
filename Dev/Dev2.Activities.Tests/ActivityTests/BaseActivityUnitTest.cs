@@ -124,7 +124,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false,IEsbChannel channel=null,bool isRemoteInvoke = false)
+        public dynamic ExecuteProcess(DsfDataObject dataObject = null,bool isDebug = false,IEsbChannel channel=null,bool isRemoteInvoke = false, bool throwException = true)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -153,7 +153,10 @@ namespace ActivityUnitTests
             {
                 string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
-                throw new Exception(errorString);
+                if (throwException)
+                {
+                    throw new Exception(errorString);
+                }
             }
 
             if (dataObject == null)
@@ -424,6 +427,12 @@ namespace ActivityUnitTests
             bool isCool = true;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(dataListId, out errorResult);
             bdl.TryGetEntry(recordSet, out entry, out error);
+
+            if (entry == null)
+            {
+                result = dLItems;
+                return false;
+            }
 
             IIndexIterator idxItr = entry.FetchRecordsetIndexes();
             while (idxItr.HasMore())

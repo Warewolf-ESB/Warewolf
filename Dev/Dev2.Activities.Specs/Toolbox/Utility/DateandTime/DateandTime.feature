@@ -54,7 +54,7 @@ Scenario: Date and Time with badly formed output format
 	And I selected Add time as "Seconds" with a value of 61
 	And the output format as "asdf"
 	When the datetime tool is executed
-	Then the datetime result should be "as1f"
+	Then the datetime result should be ""
 	And datetime execution has "AN" error
 
 Scenario: Date and Time with characters for time to add

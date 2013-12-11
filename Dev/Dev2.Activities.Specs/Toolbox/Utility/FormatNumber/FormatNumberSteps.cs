@@ -12,12 +12,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
     [Binding]
     public class FormatNumberSteps : RecordSetBases
     {
-        private string _decimalToShow;
-        private string _number;
-        private DsfNumberFormatActivity _numberFormat;
-        private string _roundingDecimalPlaces;
-        private string _roundingType;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -32,38 +26,47 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _numberFormat = new DsfNumberFormatActivity
+            string number;
+            ScenarioContext.Current.TryGetValue("number", out number);
+            string roundingType;
+            ScenarioContext.Current.TryGetValue("rounding", out roundingType);
+            string roundingDecimalPlaces;
+            ScenarioContext.Current.TryGetValue("to", out roundingDecimalPlaces);
+            string decimalToShow;
+            ScenarioContext.Current.TryGetValue("decimalToShow", out decimalToShow);
+
+            var numberFormat = new DsfNumberFormatActivity
                 {
                     Result = ResultVariable,
-                    Expression = _number,
-                    RoundingType = _roundingType,
-                    RoundingDecimalPlaces = _roundingDecimalPlaces,
-                    DecimalPlacesToShow = _decimalToShow
+                    Expression = number,
+                    RoundingType = roundingType,
+                    RoundingDecimalPlaces = roundingDecimalPlaces,
+                    DecimalPlacesToShow = decimalToShow
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _numberFormat
+                    Action = numberFormat
                 };
         }
 
         [Given(@"I have a number (.*)")]
         public void GivenIHaveANumber(string number)
         {
-            _number = number;
+            ScenarioContext.Current.Add("number", number.Replace("\"\"", ""));
         }
 
         [Given(@"I selected rounding ""(.*)"" to (.*)")]
         public void GivenISelectedRoundingTo(string rounding, string to)
         {
-            _roundingType = rounding;
-            _roundingDecimalPlaces = to;
+            ScenarioContext.Current.Add("rounding", rounding.Replace("\"\"", ""));
+            ScenarioContext.Current.Add("to", to.Replace("\"\"", ""));
         }
 
         [Given(@"I want to show (.*) decimals")]
         public void GivenIWantToShowDecimals(string decimalToShow)
         {
-            _decimalToShow = decimalToShow;
+            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace("\"\"", ""));
         }
 
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
@@ -77,14 +80,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, string.Empty));
+            variableList.Add(new Tuple<string, string>(variable.Replace("\"\"", ""), string.Empty));
         }
 
         [When(@"the format number is executed")]
         public void WhenTheFormatNumberIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

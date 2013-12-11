@@ -13,8 +13,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
-        private DsfCalculateActivity _calculate;
-        private string _formula;
+        //private DsfCalculateActivity _calculate;
+        //private string _formula;
 
         private void BuildDataList()
         {
@@ -30,29 +30,32 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _calculate = new DsfCalculateActivity
+            string formula;
+            ScenarioContext.Current.TryGetValue("formula", out formula);
+
+            var calculate = new DsfCalculateActivity
                 {
                     Result = ResultVariable,
-                    Expression = _formula
+                    Expression = formula
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _calculate
+                    Action = calculate
                 };
         }
 
         [Given(@"I have the formula ""(.*)""")]
         public void GivenIHaveTheFormula(string formula)
         {
-            _formula = formula;
+            ScenarioContext.Current.Add("formula", formula);
         }
 
         [When(@"the calculate tool is executed")]
         public void WhenTheCalculateToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void WhenTheDataMergeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 

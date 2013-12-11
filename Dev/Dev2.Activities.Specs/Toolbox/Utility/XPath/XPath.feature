@@ -41,13 +41,6 @@ Scenario: Use XPath that does not exist
 	Then the variable "[[ids]]" should have a value ""
 	And the xpath execution has "NO" error
 
-Scenario: Use XPath with blank variable as XML input	
-	Given I have this xml '' in a variable "[[myxml]]"
-	And I have a variable "[[ids]]" output with xpath "//root/num/@id"
-	When the xpath tool is executed
-	Then the variable "[[ids]]" should have a value ""
-	And the xpath execution has "NO" error
-
 Scenario: Use invalid xpath query
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>' in a variable "[[myxml]]"
 	And I have a variable "[[ids]]" output with xpath "@@#$"
@@ -60,7 +53,7 @@ Scenario: Use XPath with invalid XML as input inside a variable
 	And I have a variable "[[ids]]" output with xpath "//root"
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
-	And the xpath execution has "NO" error
+	And the xpath execution has "AN" error
 
 Scenario: Use XPath with no variable result but valid xpath
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
@@ -75,3 +68,24 @@ Scenario: Use XPath to get multiple results into a scalar in CSV
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value "1,2,3"
 	And the xpath execution has "NO" error
+
+Scenario: Use the XPath to process blank XML
+	Given I have this xml ''
+	And I have a variable "[[ids]]" output with xpath "//root/number/@id"
+	When the xpath tool is executed
+	Then the variable "[[ids]]" should have a value ""
+	And the xpath execution has "AN" error
+
+Scenario: Use the XPath without any xpath query
+	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
+	And I have a variable "[[ids]]" output with xpath ""
+	When the xpath tool is executed
+	Then the variable "[[ids]]" should have a value ""
+	And the xpath execution has "AN" error
+	
+Scenario: Use XPath with blank variable as XML input	
+	Given I have this xml '' in a variable "[[myxml]]"
+	And I have a variable "[[ids]]" output with xpath "//root/num/@id"
+	When the xpath tool is executed
+	Then the variable "[[ids]]" should have a value ""
+	And the xpath execution has "AN" error

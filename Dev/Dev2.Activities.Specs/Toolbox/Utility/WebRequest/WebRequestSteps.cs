@@ -11,10 +11,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     [Binding]
     public class WebRequestSteps : RecordSetBases
     {
-        private string _header;
-        private string _url;
-        private DsfWebGetRequestActivity _webGet;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -29,30 +25,35 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _webGet = new DsfWebGetRequestActivity
+            string header;
+                ScenarioContext.Current.TryGetValue("header", out header);
+            string url;
+                ScenarioContext.Current.TryGetValue("url", out url);
+
+            var webGet = new DsfWebGetRequestActivity
                 {
                     Result = ResultVariable,
-                    Url = _url,
-                    Headers = _header
+                    Url = url,
+                    Headers = header
                 };
 
             TestStartNode = new FlowStep
                 {
-                    Action = _webGet
+                    Action = webGet
                 };
         }
 
         [Given(@"I have the url ""(.*)""")]
         public void GivenIHaveTheUrl(string url)
         {
-            _url = url;
+            ScenarioContext.Current.Add("url", url);
         }
 
         [When(@"the web request tool is executed")]
         public void WhenTheWebRequestToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         [Given(@"I have the Header ""(.*)""")]
         public void GivenIHaveTheHeader(string header)
         {
-            _header = header;
+            ScenarioContext.Current.Add("header", header);
         }
 
 

@@ -52,7 +52,7 @@ Scenario: Enter a blank URL
 	And the web request execution has "AN" error
 
 Scenario: Enter a URL that returns complex html over https
-	Given I have the url "https://www.google.co.za/"
+	Given I have the url "https://www.google.co.za"
 	When the web request tool is executed	
 	Then the result should contain the string "http://schema.org/WebPage"
 	And the web request execution has "NO" error

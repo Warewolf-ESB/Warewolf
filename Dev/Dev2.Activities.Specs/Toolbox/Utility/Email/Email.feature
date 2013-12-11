@@ -90,4 +90,12 @@ Scenario: Send email with everything blank
 	Given the from account is "me@freemail.com" 
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "NO" error
+	And email execution has "AN" error
+
+Scenario: Send email with a blank from account
+	Given I have an email address input "test1@freemail"
+	And the from account is "" 
+	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
+	When the email tool is executed
+	Then the email result will be "Failure"
+	And email execution has "AN" error
