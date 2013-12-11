@@ -898,7 +898,7 @@ namespace Dev2.Core.Tests
             var models = new List<IEnvironmentModel> { _environmentModel.Object };
             var mock = new Mock<IEnvironmentRepository>();
             mock.Setup(s => s.All()).Returns(models);
-            mock.Setup(s => s.Get(It.IsAny<string>())).Returns(_environmentModel.Object);
+            mock.Setup(s => s.Get(It.IsAny<Guid>())).Returns(_environmentModel.Object);
             mock.Setup(s => s.Source).Returns(_environmentModel.Object);
             mock.Setup(s => s.ReadSession()).Returns(new[] { _environmentModel.Object.ID });
             mock.Setup(s => s.Remove(It.IsAny<IEnvironmentModel>()))

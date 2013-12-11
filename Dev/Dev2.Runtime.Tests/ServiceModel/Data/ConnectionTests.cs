@@ -35,11 +35,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var conn = new Connection
             {
                 ResourceType = ResourceType.Server,
-                Address = "http://192.168.13.42:788/dsf"
+                Address = "http://192.168.13.42:3142/dsf"
             };
-            var connections = new ConnectionsMock { CanConnectToTcpClientHitCount = 0 };
+            var connections = new ConnectionsMock { CanConnectToWebClientHitCount = 0 };
             var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-            Assert.AreEqual(1, connections.CanConnectToTcpClientHitCount);
+            Assert.AreEqual(1, connections.CanConnectToWebClientHitCount);
             Assert.AreEqual(true, result.IsValid);
         }
 

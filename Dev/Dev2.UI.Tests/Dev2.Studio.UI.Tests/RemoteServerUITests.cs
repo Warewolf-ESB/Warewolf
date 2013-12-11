@@ -17,7 +17,7 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Fields
 
-        const string RemoteServerName = "RemoteConnection";
+        const string RemoteServerName = "Remote Connection";
         const string LocalHostServerName = "localhost";
 
         #endregion

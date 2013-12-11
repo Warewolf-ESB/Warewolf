@@ -88,9 +88,9 @@ namespace Dev2.Tests.Runtime.ESB
         public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenNoDataListFragments_HasProvidedUriToExecute()
         {
             //------------Setup for test--------------------------
-            const string LogUri = "http://localhost:1234/Services?Error=Error";
+            const string LogUri = "http://localhost:3142/Services?Error=Error";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
             var container = CreateExecutionContainer(resourceCatalog.Object);
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string LogUri = "http://localhost:1234/Services?Error=[[Err]]";
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
             var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Err/></DataList>","<ADL><Err>Error Message</Err></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
@@ -126,7 +126,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string LogUri = "http://localhost:1234/Services?Error=[[Errors().Err]]";
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
             var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Errors><Err></Err></Errors></DataList>","<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);

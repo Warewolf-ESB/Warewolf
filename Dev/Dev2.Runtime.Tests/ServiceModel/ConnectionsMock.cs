@@ -6,11 +6,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
 {
     public class ConnectionsMock : Connections
     {
-        public int CanConnectToTcpClientHitCount { get; set; }
+        public int CanConnectToWebClientHitCount { get; set; }
 
-        protected override ValidationResult CanConnectToTcpClient(Connection connection)
+        protected override ValidationResult CanConnectToWebClient(Connection connection)
         {
-            CanConnectToTcpClientHitCount++;
+            CanConnectToWebClientHitCount++;
             return new ValidationResult { IsValid = true };
         }
     }

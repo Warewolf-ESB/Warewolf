@@ -147,16 +147,15 @@ namespace Dev2.Studio.Core
             LoadInternal();
         }
 
-        public void Remove(string appserverUri)
+        public void Remove(Guid id)
         {
-            var toRemove = Get(appserverUri);
+            var toRemove = Get(id);
             Remove(toRemove);
         }
 
-        public IEnvironmentModel Get(string appserverUri)
-        {
-            var uri = new Uri(appserverUri);
-            return All().FirstOrDefault(e => e.Connection.AppServerUri == uri);
+        public IEnvironmentModel Get(Guid id)
+        {            
+            return All().FirstOrDefault(e => e.ID == id);
         }
 
         #endregion

@@ -718,7 +718,7 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Travis Frisinger")]
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
-            const string resourceToUse = "CalculateTaxReturns";
+            const string resourceToUse = "NewForeachUpgradeDifferentExecutionTests";
             RibbonUIMap.CreateNewWorkflow();
 
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
@@ -730,7 +730,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Get a sample workflow
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
-            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "MO", resourceToUse, workflowPoint1);
+            ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse, workflowPoint1);
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));

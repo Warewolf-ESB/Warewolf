@@ -1059,10 +1059,7 @@ namespace Dev2.Studio.ViewModels
                     {
                         if(contextualModel.ServerResourceType == "Server")
                         {
-                            var appserUri =
-                                Core.EnvironmentRepository.GetAppServerUriFromConnectionString(
-                                    contextualModel.ConnectionString);
-                            var environment = EnvironmentRepository.Get(appserUri);
+                            var environment = EnvironmentRepository.Get(contextualModel.ID);
 
                             if(environment != null)
                             {

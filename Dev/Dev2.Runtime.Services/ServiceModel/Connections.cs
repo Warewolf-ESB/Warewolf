@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Network;
 using System.Threading;
 using System.Xml.Linq;
@@ -145,7 +146,7 @@ namespace Dev2.Runtime.ServiceModel
             // EXPECTED FORMAT: http://{hostname}:{port}/dsf
             if(uri.Port > 0 && uri.PathAndQuery == "/dsf")
             {
-                return CanConnectToTcpClient(connection);
+                return CanConnectToWebClient(connection);
             }
 
             return new ValidationResult
@@ -154,6 +155,31 @@ namespace Dev2.Runtime.ServiceModel
                 ErrorFields = new ArrayList(new[] { "address" }),
                 ErrorMessage = "Invalid URI: The format is not correct."
             };
+        }
+
+        #endregion
+
+        #region CanConnectToWebClient
+
+        protected virtual ValidationResult CanConnectToWebClient(Connection connection)
+        {
+            var result = new ValidationResult();
+            try
+            {
+                var uriBuilder = new UriBuilder(connection.Address);
+                var client = new WebClient() { UseDefaultCredentials = true };
+                var testAddress = uriBuilder.Uri + "/services/ping";
+                var download = client.DownloadString(testAddress); // not sure if this is correct????  
+                //If the connection cant be made an exception will be throwin
+                result.IsValid = true;                
+                }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError(ex);
+                result.IsValid = false;
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
         }
 
         #endregion

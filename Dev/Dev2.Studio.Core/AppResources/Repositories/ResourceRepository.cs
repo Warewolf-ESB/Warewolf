@@ -566,6 +566,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var isNewWorkflow = data.IsNewResource;
 
                 var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
+                
                 resource.ResourceType = resourceType;
                 resource.ID = id;
                 resource.ServerID = serverID;

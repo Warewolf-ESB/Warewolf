@@ -21,8 +21,8 @@ namespace Dev2.Studio.Core.Interfaces
 
         void ForceLoad();
 
-        void Remove(string appserverUri);
+        void Remove(Guid id);
 
-        IEnvironmentModel Get(string appserverUri);
+        IEnvironmentModel Get(Guid id);
     }
 }

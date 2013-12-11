@@ -134,7 +134,9 @@ namespace Dev2.Network
             {
                 if(HubConnection.State == ConnectionState.Disconnected)
                 {
-                    HubConnection.Start().Wait();
+                    //HubConnection.Start().Wait();
+                    var t = HubConnection.Start();
+                    Wait(t);
                 }
             }
             catch(Exception e)

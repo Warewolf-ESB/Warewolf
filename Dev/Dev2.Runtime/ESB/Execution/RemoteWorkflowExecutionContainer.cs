@@ -49,6 +49,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public void PerformLogExecution(string logUri)
         {
+            var connection = GetConnection(DataObject.EnvironmentID);
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             var expressionsEntry = dataListCompiler.Evaluate(DataObject.DataListID, enActionType.User, logUri, false, out errors);
@@ -58,7 +59,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var cols = itr.FetchNextRowData();
                 foreach(var c in cols)
                 {
-                    var buildGetWebRequest = BuildGetWebRequest(c.TheValue);
+                    var buildGetWebRequest = BuildGetWebRequest(c.TheValue, connection.AuthenticationType, connection.UserName, connection.Password);
                     if(buildGetWebRequest == null)
                     {
                         throw new Exception("Invalid Url to execute for logging");
@@ -100,10 +101,9 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                // Invoke Remote WF Here ;)
-                var remoteInvokeUri = connection.WebAddress;
-                result = ExecuteGetRequest(remoteInvokeUri, serviceName, dataListFragment);
-                IList<DebugState> msg = FetchRemoteDebugItems(remoteInvokeUri);
+                // Invoke Remote WF Here ;)                
+                result = ExecuteGetRequest(connection, serviceName, dataListFragment);
+                IList<DebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch(Exception e)
@@ -131,9 +131,9 @@ namespace Dev2.Runtime.ESB.Execution
             return Guid.Empty;
         }
 
-        protected virtual IList<DebugState> FetchRemoteDebugItems(string uri)
+        protected virtual IList<DebugState> FetchRemoteDebugItems(Connection connection)
         {
-            var data = ExecuteGetRequest(uri, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
+            var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
             // Dev2System.ManagmentServicePayload
 
             if(data != null)
@@ -146,12 +146,12 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        protected virtual string ExecuteGetRequest(string uri, string serviceName, string payload)
+        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload)
         {
             string result = string.Empty;
 
-            var myURI = uri + "Services/" + serviceName + "?" + payload;
-            var req = BuildGetWebRequest(myURI);
+            var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
+            var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
 
             // TODO : Start background worker to fetch messages ;)
             // FetchRemoteDebugMessagesService
@@ -170,11 +170,20 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        WebRequest BuildGetWebRequest(string myURI)
+        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password)
         {
             try
             {
-                WebRequest req = HttpWebRequest.Create(myURI);
+                var req = WebRequest.Create(requestUri);
+                if(authenticationType == AuthenticationType.Windows)
+                {
+                    req.UseDefaultCredentials = true;
+                }
+                else
+                {
+                    req.UseDefaultCredentials = false;
+                    req.Credentials = new NetworkCredential(userName, password);
+                }
                 req.Method = "GET";
 
                 // set header for server to know this is a remote invoke ;)
