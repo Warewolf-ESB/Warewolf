@@ -1,46 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ConnectionTests
     {
-        #region Test
-
         [TestMethod]
-        public void Test_With_InvalidUriFormat_Expected_ReturnsInvalidResult()
+        public void Connections_Test_InvalidPortNumber_InvalidResult()
         {
-            var conn = new Connection
-            {
-                ResourceType = ResourceType.Server,
-                Address = "http://www.google.co.za"
-            };
-            var connections = CreateConnection();
-            var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-            Assert.AreEqual(false, result.IsValid);
-
+            Verify_Test("http://testurl:-1", "Invalid URI: Invalid port specified.", () => null);
         }
 
         [TestMethod]
-        public void Test_With_ValidUriFormat_Expected_ReturnsValidResult()
+        public void Connections_Test_WebExceptionThrown_InvalidResult()
+        {
+            const string Error = "Unable to connect to the remote server";
+            const WebExceptionStatus Status = WebExceptionStatus.ConnectFailure;
+            Verify_Test("http://testurl:333", string.Format("{0} - {1}", Status, Error), () => { throw new WebException(Error, Status); });
+        }
+
+        [TestMethod]
+        public void Connections_Test_ExceptionThrown_InvalidResult()
+        {
+            const string Error = "An unexpected error occurre";
+            Verify_Test("http://testurl:333", Error, () => { throw new Exception(Error); });
+        }
+
+        [TestMethod]
+        public void Connections_Test_FatalErrorThrown_InvalidResult()
+        {
+            const string Message = "An internal error occured while executing the service request";
+            const string InnerError = "Service [ ping ] not found.";
+            const string FatalError = "<FatalError><Message>" + Message + "</Message><InnerError>" + InnerError + "</InnerError></FatalError>";
+            const string Error = Message + " - " + InnerError;
+
+            Verify_Test("http://testurl:333", Error, () => FatalError);
+        }
+
+        [TestMethod]
+        public void Connections_Test_ValidUri_ValidResult()
+        {
+            Verify_Test("http://testurl:333", "", () => "<DataList/>");
+        }
+
+        static void Verify_Test(string address, string errorMessage, Func<string> connectToServerResult)
         {
             var conn = new Connection
             {
                 ResourceType = ResourceType.Server,
-                Address = "http://192.168.13.42:3142/dsf"
+                Address = address
             };
-            var connections = new ConnectionsMock { CanConnectToWebClientHitCount = 0 };
+            var connections = new ConnectionsMock(connectToServerResult);
             var result = connections.Test(JsonConvert.SerializeObject(conn), Guid.Empty, Guid.Empty);
-            Assert.AreEqual(1, connections.CanConnectToWebClientHitCount);
-            Assert.AreEqual(true, result.IsValid);
+
+            Assert.AreEqual(string.IsNullOrEmpty(errorMessage), result.IsValid);
+            Assert.AreEqual(errorMessage, result.ErrorMessage);
         }
 
         [TestMethod]
@@ -50,15 +74,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             var upperedSearchString = search.ToUpper();
-            StringAssert.Contains(upperedSearchString,"[");
-            StringAssert.Contains(upperedSearchString,"rsaklfsvrtfsbld".ToUpper());
+            StringAssert.Contains(upperedSearchString, "[");
+            StringAssert.Contains(upperedSearchString, "rsaklfsvrtfsbld".ToUpper());
             StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
-            StringAssert.Contains(upperedSearchString,"]");
+            StringAssert.Contains(upperedSearchString, "]");
         }
 
         [TestMethod]
@@ -68,15 +92,15 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search(null, Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             var upperedSearchString = search.ToUpper();
-            StringAssert.Contains(upperedSearchString,"[");
-            StringAssert.Contains(upperedSearchString,"rsaklfsvrtfsbld".ToUpper());
+            StringAssert.Contains(upperedSearchString, "[");
+            StringAssert.Contains(upperedSearchString, "rsaklfsvrtfsbld".ToUpper());
             StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
-            StringAssert.Contains(upperedSearchString,"]");
+            StringAssert.Contains(upperedSearchString, "]");
         }
 
         [TestMethod]
@@ -86,14 +110,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("gendev", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             var upperedSearchString = search.ToUpper();
-            StringAssert.Contains(upperedSearchString,"[");
+            StringAssert.Contains(upperedSearchString, "[");
             StringAssert.Contains(upperedSearchString, "rsaklfsvrgendev".ToUpper());
-            StringAssert.Contains(upperedSearchString,"]");
+            StringAssert.Contains(upperedSearchString, "]");
         }
 
         [TestMethod]
@@ -103,14 +127,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var connections = CreateConnection();
-            
+
             //------------Execute Test---------------------------
             var search = connections.Search("testgreenmonster", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
-            Assert.AreEqual("[]",search);
+            Assert.AreEqual("[]", search);
         }
-
-        #endregion
 
         #region ToString Tests
 
@@ -203,9 +225,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             return () =>
             {
-                return new List<string>(){"RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD"};
+                return new List<string>() { "RSAKLFSVRGENDEV", "RSAKLFSVRTFSBLD" };
             };
-        } 
+        }
 
         #endregion Private Test Methods
     }

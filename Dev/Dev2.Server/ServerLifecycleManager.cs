@@ -1679,8 +1679,8 @@ namespace Unlimited.Applications.DynamicServicesHost
         bool LoadResourceCatalog()
         {
             Write("Loading resource catalog...  ");
-            // First call to start initializes instance
-            ResourceCatalog.Start();
+            // First call initializes instance
+            var catalog = ResourceCatalog.Instance;
             WriteLine("done.");
             return true;
         }

@@ -10,14 +10,21 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class Ping : IEsbManagementEndpoint
     {
+        public Ping()
+        {
+            Now = () => DateTime.Now;
+        }
+
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
-            return "Pong @ " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff");
+            return "Pong @ " + Now().ToString("yyyy-MM-dd hh:mm:ss.fff");
         }
+
+        public Func<DateTime> Now { get; set; }
 
         public string HandlesType()
         {
-            return "Reconcile";
+            return "Ping";
         }
 
 

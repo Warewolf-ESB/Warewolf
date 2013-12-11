@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     case "Server":
                         result.Add("default", "<h4>New Server Details</h4><p>This creates a connection to an existing server.</p>");
-                        result.Add("address", "Enter the <b>server url</b> e.g. http://192.168.0.1:77/dsf.");
+                        result.Add("address", "Enter the <b>server url</b> e.g.<p>http://server:<b>3142</b><br/>https://server:<b>3143</b> (secure)</p>3142 &amp; 3143 are the default ports used for unsecured and secured communication respectively.");
                         result.Add("authenticationType", "Determines how to authenticate with the server: "
                             + "<p><b>Windows</b> - the current user's windows account will be used.</p>"
                             + "<p><b>User</b> - the given user account will be used.</p>");

@@ -2183,20 +2183,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         #endregion
 
-        #region Start
-
-        [TestMethod]
-        public void StartShouldSetInstance()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var resourceCatalog = ResourceCatalog.Start();
-            var instance = ResourceCatalog.Instance;
-            //------------Assert Results-------------------------
-            Assert.AreSame(resourceCatalog, instance);
-        }
-        #endregion
-
         #region Rename Resource
 
         [TestMethod]
@@ -2210,7 +2196,7 @@ namespace Dev2.Tests.Runtime.Hosting
             const string oldResourceName = "Old Resource Name";
             var resourceFilePath = string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\", oldResourceName);
 
-            var getCatalog = ResourceCatalog.Start();
+            var getCatalog = ResourceCatalog.Instance;
             var resource = new Resource
             {
                 ResourceName = oldResourceName,

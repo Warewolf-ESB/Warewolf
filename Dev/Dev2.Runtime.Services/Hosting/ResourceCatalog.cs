@@ -37,7 +37,7 @@ namespace Dev2.Runtime.Hosting
         IContextManager<IStudioNetworkSession> _contextManager;
 
         readonly object _cacheLock = new object();
-        readonly IDictionary<string, string> _cachedResources = new Dictionary<string, string>(); 
+        readonly IDictionary<string, string> _cachedResources = new Dictionary<string, string>();
 
         #region Singleton Instance
 
@@ -80,14 +80,6 @@ namespace Dev2.Runtime.Hosting
 
 
         #endregion
-
-        public static ResourceCatalog Start()
-        {
-
-            _instance = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
-
-            return _instance;
-        }
 
         #region CTOR
 
@@ -455,7 +447,7 @@ namespace Dev2.Runtime.Hosting
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
 
             return builder.ResourceList;
-        } 
+        }
 
         #endregion
 
@@ -613,7 +605,7 @@ namespace Dev2.Runtime.Hosting
                                                  List<IResource> workspaceResources)
         {
             var resource = resources[0];
-            if (userRoles!=string.Empty && !resource.IsUserInAuthorRoles(userRoles))
+            if(userRoles != string.Empty && !resource.IsUserInAuthorRoles(userRoles))
             {
                 return new ResourceCatalogResult
                     {
@@ -628,7 +620,7 @@ namespace Dev2.Runtime.Hosting
             VersionControl(Path.GetDirectoryName(resource.FilePath), resource);
 
             workspaceResources.Remove(resource);
-            if (File.Exists(resource.FilePath))
+            if(File.Exists(resource.FilePath))
             {
                 File.Delete(resource.FilePath);
             }
@@ -920,36 +912,36 @@ namespace Dev2.Runtime.Hosting
 
         static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
-            if (resource != null)
+            if(resource != null)
             {
-                if (typeof (T) == typeof (Workflow) && resource.ResourceType != ResourceType.WorkflowService)
+                if(typeof(T) == typeof(Workflow) && resource.ResourceType != ResourceType.WorkflowService)
                 {
-                return true;
-            }
-                if (typeof (T) == typeof (DbService) && resource.ResourceType != ResourceType.DbService)
-            {
-                return true;
-            }
-                if (typeof (T) == typeof (DbSource) && resource.ResourceType != ResourceType.DbSource)
-            {
-                return true;
-            }
-                if (typeof (T) == typeof (PluginService) && resource.ResourceType != ResourceType.PluginService)
-            {
-                return true;
-            }
-                if (typeof (T) == typeof (PluginSource) && resource.ResourceType != ResourceType.PluginSource)
-            {
-                return true;
-            }
-                if (typeof (T) == typeof (WebService) && resource.ResourceType != ResourceType.WebService)
-            {
-                return true;
-            }
-                if (typeof (T) == typeof (WebSource) && resource.ResourceType != ResourceType.WebSource)
-            {
-                return true;
-            }
+                    return true;
+                }
+                if(typeof(T) == typeof(DbService) && resource.ResourceType != ResourceType.DbService)
+                {
+                    return true;
+                }
+                if(typeof(T) == typeof(DbSource) && resource.ResourceType != ResourceType.DbSource)
+                {
+                    return true;
+                }
+                if(typeof(T) == typeof(PluginService) && resource.ResourceType != ResourceType.PluginService)
+                {
+                    return true;
+                }
+                if(typeof(T) == typeof(PluginSource) && resource.ResourceType != ResourceType.PluginSource)
+                {
+                    return true;
+                }
+                if(typeof(T) == typeof(WebService) && resource.ResourceType != ResourceType.WebService)
+                {
+                    return true;
+                }
+                if(typeof(T) == typeof(WebSource) && resource.ResourceType != ResourceType.WebSource)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -1002,8 +994,8 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, string contents, string userRoles = null)
         {
             // Find the service before edits ;)
-            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
-                        
+            DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();
+
             ServiceAction beforeAction = null;
             if(beforeService != null)
             {
@@ -1014,8 +1006,8 @@ namespace Dev2.Runtime.Hosting
 
             if(result.Status == ExecStatus.Success)
             {
-            CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
-            SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
+                CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                SavedResourceCompileMessage(workspaceID, resource, string.Format("<CompilerMessage>{0}'</CompilerMessage>", result.Message));
             }
 
             return result;
@@ -1095,7 +1087,7 @@ namespace Dev2.Runtime.Hosting
             resource.UpdateErrorsBasedOnXML(xml);
 
             resources.Add(resource);
-            
+
 
             #endregion
 
@@ -1126,7 +1118,7 @@ namespace Dev2.Runtime.Hosting
         }
 
         public void CompileTheResourceAfterSave(Guid workspaceID, IResource resource, string contents, ServiceAction beforeAction)
-            {
+        {
             if(beforeAction != null)
             {
                 // Compile the service 
@@ -1184,9 +1176,9 @@ namespace Dev2.Runtime.Hosting
                     dependsMessageList.Add(compileMessageTO.Clone());
                 }
                 UpdateResourceXML(workspaceID, affectedResource, messages);
-                }
-            CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
             }
+            CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
+        }
 
         void UpdateResourceXML(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
         {
@@ -1202,7 +1194,7 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateXMLToDisk(IResource resource, IList<CompileMessageTO> compileMessagesTO, string resourceContents)
         {
-            using (var stringReader = new StringReader(resourceContents))
+            using(var stringReader = new StringReader(resourceContents))
             {
                 var resourceElement = XElement.Load(stringReader);
                 if(compileMessagesTO.Count > 0)
@@ -1221,9 +1213,9 @@ namespace Dev2.Runtime.Hosting
                 {
                     var key = resource.FilePath;
                     _cachedResources[key] = contents;
+                }
             }
-            }
-            
+
         }
 
         void SetErrors(XElement resourceElement, IList<CompileMessageTO> compileMessagesTO)
@@ -1250,7 +1242,7 @@ namespace Dev2.Runtime.Hosting
                         if(xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
-            }
+                        }
                         return false;
                     });
                     if(firstOrDefault != null)
@@ -1378,7 +1370,7 @@ namespace Dev2.Runtime.Hosting
             foreach(var serviceName in serviceNames)
             {
                 var resourceName = serviceName;
-                
+
                 var theTask = new Task(() =>
                 {
                     var resource = GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
@@ -1427,7 +1419,7 @@ namespace Dev2.Runtime.Hosting
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == Guid.Parse(resourceID)).ToArray();
             try
             {
-                if (!resourcesToUpdate.Any())
+                if(!resourcesToUpdate.Any())
                 {
                     return new ResourceCatalogResult
                     {
@@ -1440,7 +1432,7 @@ namespace Dev2.Runtime.Hosting
 
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
-                if (renameResult.Status != ExecStatus.Success)
+                if(renameResult.Status != ExecStatus.Success)
                 {
                     return new ResourceCatalogResult
                     {
@@ -1474,7 +1466,7 @@ namespace Dev2.Runtime.Hosting
             //rename resource
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
 
-            using (var stringReader =new StringReader(resourceContents))
+            using(var stringReader = new StringReader(resourceContents))
             {
                 var resourceElement = XElement.Load(stringReader, LoadOptions.None);
                 //xml name attibute
@@ -1508,9 +1500,9 @@ namespace Dev2.Runtime.Hosting
                 //object name
                 resource.ResourceName = newName;
                 //delete old resource in local workspace without updating dependants with compile messages
-                if (File.Exists(resource.FilePath))
+                if(File.Exists(resource.FilePath))
                 {
-                    lock (GetFileLock(resource.FilePath))
+                    lock(GetFileLock(resource.FilePath))
                     {
                         File.Delete(resource.FilePath);
                     }
@@ -1520,18 +1512,18 @@ namespace Dev2.Runtime.Hosting
                 //re-create, resign and save to file system the new resource
                 return SaveImpl(workspaceID, resource, resourceElement.ToString(SaveOptions.DisableFormatting));
             }
-            
+
         }
 
         private void RenameWhereUsed(List<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
         {
-            foreach (var dependant in dependants)
+            foreach(var dependant in dependants)
             {
                 var dependantResource = GetResource(workspaceID, dependant.ResourceID);
                 //rename where used
                 var resourceContents = GetResourceContents(workspaceID, dependantResource.ResourceID);
 
-                using (var stringReader = new StringReader(resourceContents))
+                using(var stringReader = new StringReader(resourceContents))
                 {
                     var resourceElement = XElement.Load(stringReader, LoadOptions.None);
                     //in the xaml only
@@ -1557,7 +1549,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     //update dependancies
                     var renameDependent = dependantResource.Dependencies.FirstOrDefault(dep => dep.ResourceName == oldName);
-                    if (renameDependent != null)
+                    if(renameDependent != null)
                     {
                         renameDependent.ResourceName = newName;
                     }
@@ -1605,10 +1597,10 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourceCategory(Guid workspaceID, IResource resource, string newCategory)
         {
-            
+
             string resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
 
-            using (var stringReader = new StringReader(resourceContents))
+            using(var stringReader = new StringReader(resourceContents))
             {
                 XElement resourceElement = XElement.Load(stringReader, LoadOptions.None);
                 XElement categoryElement = resourceElement.Element("Category");
