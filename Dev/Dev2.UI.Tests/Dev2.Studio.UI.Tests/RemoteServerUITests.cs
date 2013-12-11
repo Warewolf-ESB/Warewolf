@@ -207,8 +207,13 @@ namespace Dev2.Studio.UI.Tests
             {
                 //Edit remote db source
                 OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-                SendKeys.SendWait("{TAB}{TAB}{RIGHT}{TAB}testuser{TAB}test123{TAB}{ENTER}{TAB}{TAB}{ENTER}");
+                Keyboard.SendKeys("{TAB}{TAB}{RIGHT}");
                 Playback.Wait(100);
+                Keyboard.SendKeys("{TAB}testuser{TAB}test123{TAB}");
+                Playback.Wait(100);
+                Keyboard.SendKeys("{ENTER}{TAB}");
+                Playback.Wait(100);
+                Keyboard.SendKeys("{TAB}{ENTER}");
                 SaveDialogUIMap.ClickSave();
             }
             finally
