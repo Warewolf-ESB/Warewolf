@@ -32,4 +32,9 @@ Scenario: Execute invalid cmd
 	Then the result of the command tool will be ""
 	And command execution has "AN" error
 
+Scenario: Execute cmd with negative recordset index
+	Given I have this command script to execute "dir [[my(-1).dir]]"
+	When the command tool is executed
+	Then command execution has "AN" error
+
 

@@ -99,3 +99,22 @@ Scenario: Format number with multipart variables and numbers for number rounding
 	When the format number is executed
 	Then the result 80 will be returned
    And formart number execution has "NO" error
+
+Scenario: Format number with negative recordset index for number
+	Given I have a number "[[my(-1).int]]"
+	When the format number is executed
+	Then formart number execution has "AN" error
+
+Scenario: Format number with negative recordset index for rounding
+	Given I have a formatnumber variable "[[int]]" equal to 788
+	And I have a number "[[int]].894564545645"
+	And I selected rounding "Up" to "[[my(-1).rounding]]"
+	When the format number is executed
+	Then formart number execution has "AN" error
+
+Scenario: Format number with negative recordset index for decimals to show
+	Given I have a formatnumber variable "[[int]]" equal to 788
+	And I have a number "[[int]].894564545645"
+	And I want to show "[[my(-1).decimals]]" decimals 
+	When the format number is executed
+	Then formart number execution has "AN" error

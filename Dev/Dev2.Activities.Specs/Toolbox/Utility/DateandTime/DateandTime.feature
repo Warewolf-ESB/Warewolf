@@ -84,3 +84,35 @@ Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:y
 	Then the datetime result should be "2013/12/05 04:18:51 PM"
 	And datetime execution has "NO" error
 
+Scenario: Calculate for a negative recordset index for Date 1
+	Given I have a date "[[my(-1).date]]" 
+	And the input format as "yyyy-mm-dd"
+	And I selected Add time as "Weeks" with a value of 52
+	And the output format as "yyyy-mm-dd"
+	When the datetime tool is executed
+	Then datetime execution has "AN" error
+
+Scenario: Calculate for a negative recordset index for Format
+	Given I have a date "2013-11-29" 
+	And the input format as "[[my(-1).format]]"
+	And I selected Add time as "Weeks" with a value of 52
+	And the output format as "yyyy-mm-dd"
+	When the datetime tool is executed
+	Then datetime execution has "AN" error
+
+Scenario: Calculate for a negative recordset index for Time Value
+	Given I have a date "2013-11-29" 
+	And the input format as "yyyy-mm-dd"
+	And I selected Add time as "Weeks" with a value of "[[my(-1).int]]"
+	And the output format as "yyyy-mm-dd"
+	When the datetime tool is executed
+	Then datetime execution has "AN" error
+
+Scenario: Calculate for a negative recordset index for Output Format
+	Given I have a date "2013-11-29" 
+	And the input format as "yyyy-mm-dd"
+	And I selected Add time as "Weeks" with a value of 52
+	And the output format as "[[my(-1).format]]"
+	When the datetime tool is executed
+	Then datetime execution has "AN" error
+

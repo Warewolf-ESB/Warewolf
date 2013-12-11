@@ -99,3 +99,43 @@ Scenario: Send email with a blank from account
 	When the email tool is executed
 	Then the email result will be "Failure"
 	And email execution has "AN" error
+
+Scenario: Send email with a negative index recordset for From Accounts
+	Given I have an email address input "me@freemail.com"
+	And the from account is "[[me(-1).from]]" 
+	And the subject is "Just testing"
+	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
+	And body is "testing email from the cool specflow"
+	When the email tool is executed
+	Then the email result will be "Failure"
+	And email execution has "AN" error
+
+Scenario: Send email with a negative index recordset for Recipients
+	Given I have an email address input "[[me(-1).to]]"
+	And the from account is "me@freemail.com" 
+	And the subject is "Just testing"
+	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
+	And body is "testing email from the cool specflow"
+	When the email tool is executed
+	Then the email result will be "Failure"
+	And email execution has "AN" error
+
+Scenario: Send email with a negative index recordset for Subject
+	Given I have an email address input "test1@freemail"
+	And the from account is "me@freemail.com" 
+	And the subject is "[[my(-1).subject]]"
+	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
+	And body is "testing email from the cool specflow"
+	When the email tool is executed
+	Then the email result will be "Failure"
+	And email execution has "AN" error
+
+Scenario: Send email with a negative index recordset for Body
+	Given I have an email address input "test1@freemail"
+	And the from account is "me@freemail.com" 
+	And the sever name is "pop3@freemail.com" with password as "3LittleP6"
+	And body is "[[my(-1).body]]"
+	When the email tool is executed
+	Then the email result will be "Failure"
+	And email execution has "AN" error
+

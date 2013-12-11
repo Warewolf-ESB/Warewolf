@@ -1356,3 +1356,12 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2
 	And  the find record index has "NO" error
+
+Scenario: Search using a negative index recordset criteria
+	Given I have the following recordset to search for multiple criteria
+	| rs       | value    |
+	| rs().row | Warewolf |
+	| rs().row | <test></test>      |
+	And search the recordset with type "Not XML" and criteria is "[[my(-1).set]]"
+	When the find records index multiple tool is executed
+	Then the find record index has "AN" error

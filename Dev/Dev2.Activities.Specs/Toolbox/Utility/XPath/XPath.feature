@@ -22,7 +22,7 @@ Scenario: Use XPath to build a recordset with 2 fields
 	And I have a variable "[[rec().id]]" output with xpath "//root/number/@id"
 	And I have a variable "[[rec().text]]" output with xpath "//root/number/text()"
 	When the xpath tool is executed
-	Then the xpath result for this varibale "rec().id" will be
+	Then the xpath result for this varibale "[[rec().id]]" will be
 	| rec().id |
 	| 1        |
 	| 2        |
@@ -89,3 +89,17 @@ Scenario: Use XPath with blank variable as XML input
 	When the xpath tool is executed
 	Then the variable "[[ids]]" should have a value ""
 	And the xpath execution has "AN" error
+
+Scenario: Use XPath with negative recordset index as XML input	
+	Given I have this xml '<x></b></x>' in a variable "[[rec(-1).myxml]]"
+	And I have a variable "[[ids]]" output with xpath "//b"
+	When the xpath tool is executed
+	Then the variable "[[ids]]" should have a value ""
+	And the xpath execution has "AN" error
+
+Scenario: Use XPath with negative recordset index as output variable
+	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>' in a variable "[[xml]]"
+	And I have a variable "[[rec(-1).ids]]" output with xpath "//root/number[@id='2']/text()"
+	When the xpath tool is executed
+	Then the xpath execution has "AN" error
+

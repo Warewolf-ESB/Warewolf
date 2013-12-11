@@ -94,5 +94,27 @@ Scenario: Generate a Number between 5 and 5
 	And the random value will be "5"
 	And random execution has "NO" error
 
+Scenario: Generate a Number between a negative index in a recordset and 5
+	Given I have a type as "Numbers"
+	And I have a range from "[[rec(-1).set]]" to "5" 
+	When the random tool is executed 
+	Then random execution has "AN" error
 
+Scenario: Generate a Number between 5 and a negative index in a recordset
+	Given I have a type as "Numbers"
+	And I have a range from "5" to "[[rec(-1).set]]" 
+	When the random tool is executed 
+	Then random execution has "AN" error
+
+Scenario: Generate Letters with a negative recordset index for length
+	Given I have a type as "Letters"
+	And I have a length as "[[rec(-1).set]]"
+	When the random tool is executed 
+	Then random execution has "AN" error
+
+Scenario: Generate Letters and Numbers with a negative recordset index for length
+	Given I have a type as "LetterAndNumbers"
+	And I have a length as "[[rec(-1).set]]"
+	When the random tool is executed 
+	Then random execution has "AN" error
 

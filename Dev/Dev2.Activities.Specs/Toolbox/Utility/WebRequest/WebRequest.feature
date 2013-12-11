@@ -56,3 +56,9 @@ Scenario: Enter a URL that returns complex html over https
 	When the web request tool is executed	
 	Then the result should contain the string "http://schema.org/WebPage"
 	And the web request execution has "NO" error
+
+Scenario: Enter a URL that is a negative index recordset
+	Given I have the url "[[rec(-1).set"
+	When the web request tool is executed	
+	Then the result should contain the string ""
+	And the web request execution has "NO" error

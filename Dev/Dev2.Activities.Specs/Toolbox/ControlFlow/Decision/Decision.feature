@@ -556,3 +556,9 @@ Scenario: decide if There Is No Error (False)
 	And I want to check "IsNotError"
 	When the decision tool is executed
 	Then the decision result should be "False"
+
+Scenario: Decide using a negative recordset index
+	Given is "[[my(-1).var]]" "Contains" ""
+	When the decision tool is executed
+	Then the decision result should be "False"
+	And the decision execution has "AN" error

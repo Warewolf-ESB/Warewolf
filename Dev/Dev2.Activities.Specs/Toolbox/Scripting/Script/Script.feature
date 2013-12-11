@@ -167,3 +167,21 @@ Scenario: Execute Ruby with 2 variables
 	When I execute the script tool
 	Then the script result should be "two"
 	And script execution has "NO" error
+
+Scenario: Execute Ruby with a negative recordset index
+	Given I have this script to execute "[[my(-1).val]]"
+	And I have selected the language as "Ruby"
+	When I execute the script tool
+	Then script execution has "AN" error
+
+Scenario: Execute JavaScript with a negative recordset index
+	Given I have this script to execute "[[my(-1).val]]"
+	And I have selected the language as "JavaScript"
+	When I execute the script tool
+	Then script execution has "AN" error
+
+Scenario: Execute Python with a negative recordset index
+	Given I have this script to execute "[[my(-1).val]]"
+	And I have selected the language as "Python"
+	When I execute the script tool
+	Then script execution has "AN" error

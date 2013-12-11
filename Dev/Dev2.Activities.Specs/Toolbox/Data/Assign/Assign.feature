@@ -92,3 +92,15 @@ Scenario: Assign multiple recordset to the end of a recordset
 	When the assign tool is executed
 	Then the value of "[[des().val]]" equals 30
 	And the assign execution has "NO" error
+
+Scenario: Assign the value of a negative recordset index
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+	When the assign tool is executed
+	Then the value of "[[var]]" equals ""
+	And the assign execution has "AN" error
+
+Scenario: Assign to a negative recordset index
+	Given And I assign the value "10" to a variable "[[des(-1).val]]"
+	When the assign tool is executed
+	Then the assign execution has "AN" error

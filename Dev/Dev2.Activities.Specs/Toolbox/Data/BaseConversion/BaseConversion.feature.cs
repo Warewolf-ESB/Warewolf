@@ -9,739 +9,866 @@
 //      the code is regenerated.
 //  </auto-generated>
 // ------------------------------------------------------------------------------
-
 #region Designer generated code
-
-using TechTalk.SpecFlow;
-
 #pragma warning disable
-
 namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 {
+    using TechTalk.SpecFlow;
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class BaseConversionFeature
     {
+        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-
+        
 #line 1 "BaseConversion.feature"
 #line hidden
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            var featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"),
-                                                                "BaseConversion",
-                                                                "In order to convert base encoding types\r\nAs a Warewolf user\r\nI want a tool that c" +
-                                                                "onverts data from one base econding to another",
-                                                                ProgrammingLanguage.CSharp, ((string[]) (null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BaseConversion", "In order to convert base encoding types\r\nAs a Warewolf user\r\nI want a tool that c" +
+                    "onverts data from one base econding to another", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if (((TechTalk.SpecFlow.FeatureContext.Current != null)
-                 && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "BaseConversion")))
+            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "BaseConversion")))
             {
-                FeatureSetup(null);
+                Dev2.Activities.Specs.Toolbox.Data.BaseConversion.BaseConversionFeature.FeatureSetup(null);
             }
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-
+        
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-
+        
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromTextToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to text", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to text", ((string[])(null)));
 #line 6
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 7
-            testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 9
-            testRunner.Then("the result is \"AA\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 10
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromTextToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to binary", ((string[])(null)));
 #line 12
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 13
-            testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
-            testRunner.Then("the result is \"0100000101000001\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                            "Then ");
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromTextToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to hexadecimal", ((string[])(null)));
 #line 18
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 19
-            testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 21
-            testRunner.Then("the result is \"0x4141\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 22
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromTextToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from text to base64", ((string[])(null)));
 #line 24
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 25
-            testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"AA\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
-            testRunner.Then("the result is \"QUE=\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBinaryToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to binary", ((string[])(null)));
 #line 30
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 31
-            testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Binary\"",
-                             ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 32
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 33
-            testRunner.Then("the result is \"0100000101000001\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                            "Then ");
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 34
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBinaryToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to text", ((string[])(null)));
 #line 36
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 37
-            testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Text\"",
-                             ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 38
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
-            testRunner.Then("the result is \"AA\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 40
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBinaryToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to hexadecimal", ((string[])(null)));
 #line 42
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 43
-            testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Hex\"",
-                             ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 44
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
-            testRunner.Then("the result is \"0x4141\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 46
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBinaryToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from binary to base64", ((string[])(null)));
 #line 48
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 49
-            testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Base 64\"",
-                             ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0100000101000001\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
-            testRunner.Then("the result is \"QUE=\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 52
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromHexadecimalToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to hexadecimal", ((string[])(null)));
 #line 54
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 55
-            testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
-            testRunner.Then("the result is \"0x4141\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 58
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromHexadecimalToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to text", ((string[])(null)));
 #line 60
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 61
-            testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
-            testRunner.Then("the result is \"AA\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromHexadecimalToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to binary", ((string[])(null)));
 #line 66
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 67
-            testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 68
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
-            testRunner.Then("the result is \"0100000101000001\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                            "Then ");
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 70
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromHexadecimalToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from hexadecimal to base64", ((string[])(null)));
 #line 72
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 73
-            testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"0x4141\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 75
-            testRunner.Then("the result is \"QUE=\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 76
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBase64ToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to hexadecimal", ((string[])(null)));
 #line 78
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 79
-            testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 81
-            testRunner.Then("the result is \"0x4141\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"0x4141\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 82
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBase64ToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to text", ((string[])(null)));
 #line 84
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 85
-            testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 86
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 87
-            testRunner.Then("the result is \"AA\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 88
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBase64ToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to binary", ((string[])(null)));
 #line 90
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 91
-            testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 92
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 93
-            testRunner.Then("the result is \"0100000101000001\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)),
-                            "Then ");
+ testRunner.Then("the result is \"0100000101000001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 94
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert from base64 to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertFromBase64ToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert from base64 to base64", ((string[])(null)));
 #line 96
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 97
-            testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"QUE=\" from type \"Base 64\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 98
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 99
-            testRunner.Then("the result is \"QUE=\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"QUE=\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 100
-            testRunner.And("the base convert execution has \"NO\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromTextToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to binary", ((string[])(null)));
 #line 102
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 103
-            testRunner.Given("I convert value \"\" from type \"Text\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 104
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 105
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 106
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromTextToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to hexadecimal", ((string[])(null)));
 #line 108
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 109
-            testRunner.Given("I convert value \"\" from type \"Text\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 110
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 111
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 112
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from text to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromTextToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from text to base64", ((string[])(null)));
 #line 114
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 115
-            testRunner.Given("I convert value \"\" from type \"Text\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 116
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 117
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 118
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBinaryToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to text", ((string[])(null)));
 #line 120
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 121
-            testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 122
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 123
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 124
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBinaryToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to hexadecimal", ((string[])(null)));
 #line 126
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 127
-            testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 128
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 129
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 130
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from binary to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBinaryToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from binary to base64", ((string[])(null)));
 #line 132
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 133
-            testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 134
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 135
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 136
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromHexadecimalToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to text", ((string[])(null)));
 #line 138
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 139
-            testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 140
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 141
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 142
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromHexadecimalToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to binary", ((string[])(null)));
 #line 144
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 145
-            testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 146
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 147
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 148
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from hexadecimal to base64")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromHexadecimalToBase64()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from hexadecimal to base64", ((string[])(null)));
 #line 150
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 151
-            testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Base 64\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 152
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 153
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 154
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to hexadecimal")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBase64ToHexadecimal()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to hexadecimal", ((string[])(null)));
 #line 156
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 157
-            testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Hex\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 158
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 159
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 160
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBase64ToText()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to text", ((string[])(null)));
 #line 162
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 163
-            testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Text\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 164
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 165
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 166
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert blank from base64 to binary")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
         public virtual void ConvertBlankFromBase64ToBinary()
         {
-            var scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary",
-                                                                  ((string[]) (null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert blank from base64 to binary", ((string[])(null)));
 #line 168
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 169
-            testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Binary\"", ((string) (null)),
-                             ((TechTalk.SpecFlow.Table) (null)), "Given ");
+ testRunner.Given("I convert value \"\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 170
-            testRunner.When("the base conversion tool is executed", ((string) (null)),
-                            ((TechTalk.SpecFlow.Table) (null)), "When ");
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 171
-            testRunner.Then("the result is \"\"", ((string) (null)), ((TechTalk.SpecFlow.Table) (null)), "Then ");
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 172
-            testRunner.And("the base convert execution has \"AN\" error", ((string) (null)),
-                           ((TechTalk.SpecFlow.Table) (null)), "And ");
+ testRunner.And("the base convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to binary")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromTextToBinary()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to binary", ((string[])(null)));
+#line 174
+this.ScenarioSetup(scenarioInfo);
+#line 175
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Text\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 176
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 177
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 178
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to hexadecimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromTextToHexadecimal()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to hexadecimal", ((string[])(null)));
+#line 180
+this.ScenarioSetup(scenarioInfo);
+#line 181
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Text\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 182
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 183
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 184
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from text to base64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromTextToBase64()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from text to base64", ((string[])(null)));
+#line 186
+this.ScenarioSetup(scenarioInfo);
+#line 187
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Text\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 188
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 189
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 190
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBinaryToText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to text", ((string[])(null)));
+#line 192
+this.ScenarioSetup(scenarioInfo);
+#line 193
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Binary\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 194
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 195
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 196
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to hexadecimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBinaryToHexadecimal()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to hexadecimal", ((string[])(null)));
+#line 198
+this.ScenarioSetup(scenarioInfo);
+#line 199
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Binary\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 200
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 201
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 202
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from binary to base64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBinaryToBase64()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from binary to base64", ((string[])(null)));
+#line 204
+this.ScenarioSetup(scenarioInfo);
+#line 205
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Binary\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 206
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 207
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 208
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to text", ((string[])(null)));
+#line 210
+this.ScenarioSetup(scenarioInfo);
+#line 211
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Hex\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 212
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 213
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 214
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to binary")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBinary()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to binary", ((string[])(null)));
+#line 216
+this.ScenarioSetup(scenarioInfo);
+#line 217
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Hex\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 218
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 219
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 220
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from hexadecimal to base64")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromHexadecimalToBase64()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from hexadecimal to base64", ((string[])(null)));
+#line 222
+this.ScenarioSetup(scenarioInfo);
+#line 223
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Hex\" to type \"Base 64\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 224
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 225
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 226
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to hexadecimal")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBase64ToHexadecimal()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to hexadecimal", ((string[])(null)));
+#line 228
+this.ScenarioSetup(scenarioInfo);
+#line 229
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Base 64\" to type \"Hex\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 230
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 231
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 232
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to text")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBase64ToText()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to text", ((string[])(null)));
+#line 234
+this.ScenarioSetup(scenarioInfo);
+#line 235
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Base 64\" to type \"Text\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 236
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 237
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 238
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert negative recordset index from base64 to binary")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "BaseConversion")]
+        public virtual void ConvertNegativeRecordsetIndexFromBase64ToBinary()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert negative recordset index from base64 to binary", ((string[])(null)));
+#line 240
+this.ScenarioSetup(scenarioInfo);
+#line 241
+ testRunner.Given("I convert value \"[[my(-1).var]]\" from type \"Base 64\" to type \"Binary\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 242
+ testRunner.When("the base conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 243
+ testRunner.Then("the result is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 244
+ testRunner.And("the base convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
     }
 }
-
 #pragma warning restore
-
 #endregion

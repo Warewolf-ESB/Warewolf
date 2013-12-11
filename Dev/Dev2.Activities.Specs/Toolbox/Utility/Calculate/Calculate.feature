@@ -41,3 +41,7 @@ Scenario: Calculate using variable as full calculation
 	Then the calculate result should be "1"
 	And the calculate execution has "NO" error
 
+Scenario: Calculate using a negative index recordset value
+	Given I have the formula "[[my(-1).formula]]"
+	When the calculate tool is executed
+	Then the calculate execution has "AN" error

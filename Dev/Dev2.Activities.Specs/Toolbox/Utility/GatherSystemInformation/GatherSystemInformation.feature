@@ -111,3 +111,22 @@ Scenario: Assign User Roles into a recordset
 	When the gather system infomartion tool is executed
 	Then the value of the variable "[[my(2).roles]]" is a valid "String"
 	And gather system info execution has "NO" error
+
+Scenario: Assign a system Domain into a negative recordset index
+	Given I have a variable "[[rec(-1).set]]" and I selected "Domain"	
+	When the gather system infomartion tool is executed
+	Then gather system info execution has "AN" error
+
+#This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
+Scenario: Assign Disk Total into a recordset
+	Given I have a variable "[[my().disks]]" and I selected "DiskTotal"	
+	When the gather system infomartion tool is executed
+	Then the value of the variable "[[my(2).disks]]" is a valid "String"
+	And gather system info execution has "NO" error
+
+#This scenario requires the machine the test runs on to have more than 1 drive. You can map a network drive if it only has 1 logical.
+Scenario: Assign Disk Available into a recordset
+	Given I have a variable "[[my().disks]]" and I selected "DiskAvailable"	
+	When the gather system infomartion tool is executed
+	Then the value of the variable "[[my(2).disks]]" is a valid "String"
+	And gather system info execution has "NO" error

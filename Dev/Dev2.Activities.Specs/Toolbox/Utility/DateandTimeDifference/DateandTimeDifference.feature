@@ -136,3 +136,27 @@ Scenario: Calculate the number of weeks using an invalid date
 	When the datetime difference tool is executed
 	Then the difference should be ""
 	And datetimediff execution has "AN" error
+
+Scenario: Calculate with negative recordset index for Input 1
+	Given I have a first date "[[my(-1).date]]" 
+	And I have a second date "2014-11-01" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then datetimediff execution has "AN" error
+
+Scenario: Calculate with negative recordset index for Input 2
+	Given I have a first date "2014-11-01" 
+	And I have a second date "[[my(-1).date]]" 
+	And the date format as "yyyy-mm-dd"
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then datetimediff execution has "AN" error
+
+Scenario: Calculate with negative recordset index for Format
+	Given I have a first date "2014-11-01" 
+	And I have a second date "2014-11-01" 
+	And the date format as "[[my(-1).format]]"
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then datetimediff execution has "AN" error
