@@ -16,7 +16,7 @@
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Execution hostProcessPlatform="MSIL">
     <Hosts skipUnhostableTests="false" />
-    <Timeouts runTimeout="1800000" testTimeout="300000" />
+    <Timeouts testTimeout="300000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
