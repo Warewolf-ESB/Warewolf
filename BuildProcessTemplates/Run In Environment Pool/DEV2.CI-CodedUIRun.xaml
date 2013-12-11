@@ -73,7 +73,7 @@
     <x:Property Name="WarewolfServerUriOnError" Type="InArgument(x:String)" />
     <x:Property Name="BuildStagingDirectory" Type="InArgument(x:String)" />
     <x:Property Name="GLVBatFileName" Type="InArgument(x:String)" />
-    <x:Property Name="TestNames" Type="InArgument(scg:IEnumerable(x:String))" />
+    <x:Property Name="TestNames" Type="InArgument(s:String[])" />
   </x:Members>
   <this:Process.MSBuildArguments>
     <InArgument x:TypeArguments="x:String" />
