@@ -13,24 +13,22 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     [Binding]
     public class AssignSteps : RecordSetBases
     {
-        private DsfMultiAssignActivity _multiAssign;
-
         private void BuildDataList()
         {
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             BuildShapeAndTestData();
 
-            _multiAssign = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignActivity();
 
             TestStartNode = new FlowStep
                 {
-                    Action = _multiAssign
+                    Action = multiAssign
                 };
 
             int row = 1;
             foreach (var variable in variableList)
             {
-                _multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
+                multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
         }

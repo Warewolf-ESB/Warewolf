@@ -13,9 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     [Binding]
     public class DataMergeSteps : RecordSetBases
     {
-        private readonly List<Tuple<string, string, string, string, string>> _mergeCollection =
-            new List<Tuple<string, string, string, string, string>>();
-
         private DsfDataMergeActivity _dataMerge;
 
         private void BuildDataList()
@@ -26,18 +23,22 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             _dataMerge = new DsfDataMergeActivity {Result = ResultVariable};
 
-            TestStartNode = new FlowStep
-                {
-                    Action = _dataMerge
-                };
+            List<Tuple<string, string, string, string, string>> mergeCollection;
+            ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
 
             int row = 1;
-            foreach (var variable in _mergeCollection)
+            foreach (var variable in mergeCollection)
             {
                 _dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
                                                                 variable.Item4, variable.Item5));
                 row++;
             }
+            
+            TestStartNode = new FlowStep
+                {
+                    Action = _dataMerge
+                };
+          
         }
 
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
@@ -62,7 +63,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                                                                 string stringAt, string padding,
                                                                                 string alignment)
         {
-            _mergeCollection.Add(new Tuple<string, string, string, string, string>(input, mergeType, stringAt, padding,
+            List<Tuple<string, string, string, string, string>> mergeCollection;
+            ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
+
+            if (mergeCollection == null)
+            {
+                mergeCollection = new List<Tuple<string, string, string, string, string>>();
+                ScenarioContext.Current.Add("mergeCollection", mergeCollection);
+            }
+
+            mergeCollection.Add(new Tuple<string, string, string, string, string>(input, mergeType, stringAt, padding,
                                                                                    alignment));
         }
 

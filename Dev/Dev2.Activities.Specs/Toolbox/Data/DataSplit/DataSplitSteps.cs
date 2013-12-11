@@ -13,29 +13,30 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
-        private readonly List<Tuple<string, string, string>> _splitCollection =
-            new List<Tuple<string, string, string>>();
-
-        private DsfDataSplitActivity _dataSplit;
-        private string _stringToSplit;
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            _dataSplit = new DsfDataSplitActivity {SourceString = _stringToSplit};
+            string stringToSplit;
+            ScenarioContext.Current.TryGetValue("stringToSplit", out stringToSplit);
 
-            TestStartNode = new FlowStep
-                {
-                    Action = _dataSplit
-                };
+            List<Tuple<string, string, string>> splitCollection;
+            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
+
+            var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
+
 
             int row = 1;
-            foreach (dynamic variable in _splitCollection)
+            foreach (dynamic variable in splitCollection)
             {
-                _dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
+                dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
                 row++;
             }
+            
+            TestStartNode = new FlowStep
+                {
+                    Action = dataSplit
+                };
         }
 
         [Given(@"A file ""(.*)"" to split")]
@@ -43,13 +44,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
-            _stringToSplit = ReadFile(resourceName);
+            var stringToSplit = ReadFile(resourceName);
+            ScenarioContext.Current.Add("stringToSplit", stringToSplit);
         }
 
         [Given(@"A string to split with value ""(.*)""")]
         public void GivenAStringToSplitWithValue(string stringToSplit)
         {
-            _stringToSplit = stringToSplit;
+            ScenarioContext.Current.Add("stringToSplit", stringToSplit);
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)""")]
@@ -64,9 +66,32 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 ScenarioContext.Current.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, ""));
-            _splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
+           
+            List<Tuple<string, string, string>> splitCollection;
+            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
+
+            if (splitCollection == null)
+            {
+                splitCollection = new List<Tuple<string, string, string>>();
+                ScenarioContext.Current.Add("splitCollection", splitCollection);
+            }
+
+            splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
+
         }
 
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)""")]
+        public void GivenAssignToVariableSplitTypeAtAndInclude(string variable, string splitType, string splitAt, string include)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape '(.*)'")]
+        public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string at, string include, string escape)
+        {
+            ScenarioContext.Current.Pending();
+        }
+        
         [Given(
             @"assign to variable ""(.*)"" split type as ""(.*)"" at ""(.*)"" and escape ""(.*)"" and include is ""(.*)"""
             )]

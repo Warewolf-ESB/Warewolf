@@ -32,7 +32,7 @@ Scenario: Merge a recordset table and free text using Chars
 	| rs().row | 3   |	
 	And an Input "[[rs(*).row]]" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"	
 	And an Input "0" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"
-	And an Input "0" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "0" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "100020003000"
 	And the data merge execution has "NO" error
@@ -43,10 +43,10 @@ Scenario: Merge a recordset table and free text using New Line
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |	
-	And an Input "[[rs(*).row]]" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"	
-	And an Input "0" and merge type "NewLine" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "[[rs(*).row]]" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"	
+	And an Input "0" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
-	Then the merged result is the same as file "NewLineExample.txt"
+	Then the merged result is the same as file "New LineExample.txt"
 	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Tab
@@ -109,7 +109,7 @@ Scenario: Merge a short string using big index and padding and alignment
 	Then the merged result is "Warewolf  00123"
 	And the data merge execution has "NO" error
 
-Scenario: Merge a long string using small index and padding and allignment
+Scenario: Merge a long string using small index and padding and alignment
 	Given a merge variable "[[a]]" equal to "Warewolf" 
 	And a merge variable "[[b]]" equal to "12345"
 	And an Input "[[a]]" and merge type "Index" and string at as "3" and Padding " " and Alignment "Left"	
@@ -117,3 +117,13 @@ Scenario: Merge a long string using small index and padding and allignment
 	When the data merge tool is executed
 	Then the merged result is "War123"
 	And the data merge execution has "NO" error
+
+	 
+Scenario: Merge a long string using small index and padding and alignment at invalid index
+	Given a merge variable "[[a]]" equal to "Warewolf" 
+	And a merge variable "[[b]]" equal to "12345"
+	And an Input "[[a]]" and merge type "Index" and string at as "-1" and Padding " " and Alignment "Left"	
+	And an Input "[[b]]" and merge type "Index" and string at as "-1" and Padding "0" and Alignment "Right"
+	When the data merge tool is executed
+	Then the merged result is ""
+	And the data merge execution has "AN" error

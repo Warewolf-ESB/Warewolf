@@ -90,3 +90,18 @@ Scenario: Convert a recordset * to Upper
 	| rs().row | <X ID="2">TWO</X>   |
 	| rs().row | <X ID="3">THREE</X> |
 	And the case convert execution has "NO" error
+
+Scenario: Convert an empty recordset * to Upper
+	Given I have a CaseConversion recordset
+	| rs       | val                 |
+	And I convert a variable "[[rs(*).row]]" to "UPPER"
+	When the case conversion tool is executed
+	Then the case convert result for this varibale "rs().row" will be
+	| rs       | val                 |
+	And the case convert execution has "AN" error
+
+Scenario: Convert a empty sentence starting with a number to upper
+	Given I convert a sentence "" to "UPPER"	
+	When the case conversion tool is executed
+	Then the sentence will be ""
+	And the case convert execution has "AN" error

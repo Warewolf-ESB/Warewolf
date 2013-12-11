@@ -13,17 +13,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
     [Binding]
     public class CaseConversionSteps : RecordSetBases
     {
-        private DsfCaseConvertActivity _caseConvert;
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            _caseConvert = new DsfCaseConvertActivity();
+            var caseConvert = new DsfCaseConvertActivity();
 
             TestStartNode = new FlowStep
                 {
-                    Action = _caseConvert
+                    Action = caseConvert
                 };
 
             int row = 1;
@@ -31,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string, string>>>("variableList");
             foreach (dynamic variable in variableList)
             {
-                _caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item3, variable.Item1, row));
+                caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item3, variable.Item1, row));
                 row++;
             }
         }

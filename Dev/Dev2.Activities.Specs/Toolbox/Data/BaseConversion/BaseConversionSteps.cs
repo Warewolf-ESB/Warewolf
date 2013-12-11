@@ -11,17 +11,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     [Binding]
     public class BaseConversionSteps : RecordSetBases
     {
-        private DsfBaseConvertActivity _baseConvert;
-
         private void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            _baseConvert = new DsfBaseConvertActivity();
+            var baseConvert = new DsfBaseConvertActivity();
 
             TestStartNode = new FlowStep
                 {
-                    Action = _baseConvert
+                    Action = baseConvert
                 };
 
             int row = 1;
@@ -30,7 +28,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 
             foreach (dynamic variable in variableList)
             {
-                _baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item3, variable.Item4,
+                baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item3, variable.Item4,
                                                                      variable.Item1, row));
                 row++;
             }
