@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +10,8 @@ namespace Unlimited.UnitTest.Framework.DataList
     /// <summary>
     /// Summary description for BinaryDataListTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BinaryDataListTest
     {
         private IBinaryDataList dl1;
