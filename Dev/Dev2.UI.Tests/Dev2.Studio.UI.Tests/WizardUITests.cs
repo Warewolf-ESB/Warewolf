@@ -205,7 +205,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             WizardsUIMap.WaitForWizard();
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(500);
-            _decisionWizardUiMap.SelectMenuItem(12); // select between ;)
+            _decisionWizardUiMap.SelectMenuItem(15); // select between ;)
 
             _decisionWizardUiMap.SendTabs(11);
             _decisionWizardUiMap.GetFirstIntellisense("[[V", false, new Point(100, 150));
@@ -279,7 +279,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(100);
-            _decisionWizardUiMap.SelectMenuItem(11);
+            _decisionWizardUiMap.SelectMenuItem(15);
             //Assert intellisense works
             Playback.Wait(100);
             _decisionWizardUiMap.SendTabs(11);
