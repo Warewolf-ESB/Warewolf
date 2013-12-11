@@ -125,7 +125,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         /// <summary>
-        /// News the database service shortcut key expected database service opens.
+        /// News the database service shortcut key expected new database service wizard opens.
         /// </summary>
         [TestMethod]
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
