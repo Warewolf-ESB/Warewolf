@@ -382,7 +382,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 99
  testRunner.Then("the case convert result for this varibale \"rs().row\" will be", ((string)(null)), table4, "Then ");
 #line 101
- testRunner.And("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -402,7 +402,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 106
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 107
- testRunner.And("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

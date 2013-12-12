@@ -1293,8 +1293,8 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	| [[rs2().row3]] |
 	And search the recordset with type "Contains" and criteria is "1"	
 	And search the recordset with type "Contains" and criteria is "2"	
-	And when all row true is "true"
-	And when requires all fields to match is "false"
+	And when All Contains true is "true"
+	And when requires All Fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,3
 	And  the find record index has "NO" error
@@ -1302,24 +1302,24 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows false
 	Given I have the following recordset to search for multiple criteria
 	| rs       | value    |
-	| rs(1).row1 |123 |
-	| rs(2).row1 |2 |
-	| rs(3).row1 |5 |
-	Given I have the following recordset to search for multiple criteria
+	| AB(1).f1 |123 |
+	| AB(2).f1 |2 |
+	| AB(3).f1 |5 |
+	And I have the following recordset to search for multiple criteria
 	| rs       | value    |	
-	| rs1(1).row2 |214 |
-	| rs1(2).row2 |51 |
-	| rs1(3).row2 |56 |
-	Given I have the following recordset to search for multiple criteria
+	| CD(1).f2 |214 |
+	| CD(2).f2 |51 |
+	| CD(3).f2 |56 |
+	And I have the following recordset to search for multiple criteria
 	| rs       | value    |
-	| rs2(1).row3 |512 |
-	| rs2(2).row3 |84 |
-	| rs2(3).row3 |12 |
+	| EF(1).f3 |512 |
+	| EF(2).f3 |84 |
+	| EF(3).f3 |12 |
 	And the fields to search is
 	| field    |
-	| [[rs().row1]] |
-	| [[rs1().row2]] |
-	| [[rs2().row3]] |
+	| [[AB().f1]] |
+	| [[CD().f2]] |
+	| [[EF().f3]] |
 	And search the recordset with type "Contains" and criteria is "1"	
 	And search the recordset with type "Contains" and criteria is "2"	
 	And when all row true is "false"

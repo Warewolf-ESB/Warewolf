@@ -32,9 +32,9 @@ Scenario: Merge a recordset table and free text using Chars
 	| rs().row | 3   |	
 	And an Input "[[rs(*).row]]" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"	
 	And an Input "0" and merge type "Chars" and string at as "0" and Padding "" and Alignment "Left"
-	And an Input "0" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "0" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
-	Then the merged result is "100020003000"
+	Then the merged result is "100002000030000"
 	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using New Line
@@ -46,7 +46,7 @@ Scenario: Merge a recordset table and free text using New Line
 	And an Input "[[rs(*).row]]" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"	
 	And an Input "0" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
-	Then the merged result is the same as file "New LineExample.txt"
+	Then the merged result is the same as file "NewLineExample.txt"
 	And the data merge execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Tab
@@ -93,9 +93,9 @@ Scenario: Merge a recordset that has xml data using Tabs
 	| rs().row | <x id="1">One</x>   |
 	| rs().row | <x id="2">two</x>   |
 	| rs().row | <x id="3">three</x> |	
-	And an Input "<recordset>" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"		
+	And an Input "<record>" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"		
 	And an Input "[[rs(*).row]]" and merge type "Tab" and string at as "" and Padding "" and Alignment "Left"		
-	And an Input "</recordset>" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "</record>" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "<record>	<x id="1">One</x>	</record><record>	<x id="2">two</x>	</record><record>	<x id="3">three</x>	</record>"
 	And the data merge execution has "NO" error

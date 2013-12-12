@@ -101,6 +101,6 @@ Scenario: Assign the value of a negative recordset index
 	And the assign execution has "AN" error
 
 Scenario: Assign to a negative recordset index
-	Given And I assign the value "10" to a variable "[[des(-1).val]]"
+	Given I assign the value 10 to a variable "[[des(-1).val]]"
 	When the assign tool is executed
 	Then the assign execution has "AN" error

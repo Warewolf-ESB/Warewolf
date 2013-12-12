@@ -98,13 +98,13 @@ Scenario: Convert an empty recordset * to Upper
 	When the case conversion tool is executed
 	Then the case convert result for this varibale "rs().row" will be
 	| rs       | val                 |
-	And the case convert execution has "AN" error
+	And the case convert execution has "NO" error
 
 Scenario: Convert a empty sentence starting with a number to upper
 	Given I convert a sentence "" to "UPPER"	
 	When the case conversion tool is executed
 	Then the sentence will be ""
-	And the case convert execution has "AN" error
+	And the case convert execution has "NO" error
 
 Scenario: Convert a negative recordset index to uppercase
 	Given I convert a sentence "[[my(-1).sentenct]]" to "UPPER"	

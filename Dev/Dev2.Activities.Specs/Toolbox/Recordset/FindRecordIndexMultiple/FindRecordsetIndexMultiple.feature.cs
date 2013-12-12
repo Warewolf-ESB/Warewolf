@@ -4162,9 +4162,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 1295
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1296
- testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when All Contains true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1297
- testRunner.And("when requires all fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when requires All Fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1298
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1299
@@ -4190,13 +4190,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table100.AddRow(new string[] {
-                        "rs(1).row1",
+                        "AB(1).f1",
                         "123"});
             table100.AddRow(new string[] {
-                        "rs(2).row1",
+                        "AB(2).f1",
                         "2"});
             table100.AddRow(new string[] {
-                        "rs(3).row1",
+                        "AB(3).f1",
                         "5"});
 #line 1303
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table100, "Given ");
@@ -4205,40 +4205,40 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table101.AddRow(new string[] {
-                        "rs1(1).row2",
+                        "CD(1).f2",
                         "214"});
             table101.AddRow(new string[] {
-                        "rs1(2).row2",
+                        "CD(2).f2",
                         "51"});
             table101.AddRow(new string[] {
-                        "rs1(3).row2",
+                        "CD(3).f2",
                         "56"});
 #line 1308
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table101, "Given ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table101, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table102 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table102.AddRow(new string[] {
-                        "rs2(1).row3",
+                        "EF(1).f3",
                         "512"});
             table102.AddRow(new string[] {
-                        "rs2(2).row3",
+                        "EF(2).f3",
                         "84"});
             table102.AddRow(new string[] {
-                        "rs2(3).row3",
+                        "EF(3).f3",
                         "12"});
 #line 1313
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table102, "Given ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table102, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table103 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
             table103.AddRow(new string[] {
-                        "[[rs().row1]]"});
+                        "[[AB().f1]]"});
             table103.AddRow(new string[] {
-                        "[[rs1().row2]]"});
+                        "[[CD().f2]]"});
             table103.AddRow(new string[] {
-                        "[[rs2().row3]]"});
+                        "[[EF().f3]]"});
 #line 1318
  testRunner.And("the fields to search is", ((string)(null)), table103, "And ");
 #line 1323

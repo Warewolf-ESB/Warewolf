@@ -18,20 +18,15 @@ Scenario: Delete last record in a recordset
 	| rs().row | 2   |
 	And the delete execution has "NO" error
 
-Scenario: Delete a recordset that does not exist
+Scenario: Delete an invalid recordset (recordset with no fields declared)
 	Given I have the following recordset
 	| rs       | val |
 	| rs().row | 1   |
 	| rs().row | 2   |
 	| rs().row | 3   |
-	And I delete a record "[[rd()]]"
+	And I delete a record "[[GG()]]"
 	When the delete tool is executed
 	Then the delete result should be "Failure"
-	And the recordset "[[rs().row]]" will be as follows
-	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
 	And the delete execution has "AN" error
 
 Scenario: Delete the first record in a recordset 
@@ -119,3 +114,11 @@ Scenario: Delete a record an empty recordset
 	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
 	And the delete execution has "AN" error
+
+Scenario: Delete a scalar insted of a recordset
+	Given I have a delete variable "[[var]]" equal to ""
+	And I delete a record "[[var]]"
+	When the delete tool is executed
+	Then the delete result should be "Failure"
+	And the delete execution has "AN" error
+

@@ -45,7 +45,7 @@ Scenario: Find last Occurrence of a bracket in a sentence
 	Given I have a findindex variable "[[a]]" equal to "!@#$%)@#$%)"
 	And the sentence "[[a]]"
 	And I selected Index "Last Occurrence"
-	And I search for characters "a"
+	And I search for characters ")"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "11"
@@ -86,7 +86,7 @@ Scenario: Find an xml fragment in a bigger xml document
 	And the sentence "[[a]]"
 	And I selected Index "First Occurrence"
 	And I have a findindex variable "[[id]]" equal to "1"
-	And I search for characters "<b id=""[[id]]"">"
+	And I search for characters "<b id="[[id]]">"
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the find index result is "4"

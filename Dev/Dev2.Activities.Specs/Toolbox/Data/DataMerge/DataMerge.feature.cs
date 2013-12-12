@@ -166,12 +166,12 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("an Input \"0\" and merge type \"Chars\" and string at as \"0\" and Padding \"\" and Align" +
                     "ment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("an Input \"0\" and merge type \"New Line\" and string at as \"\" and Padding \"\" and Ali" +
-                    "gnment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("an Input \"0\" and merge type \"None\" and string at as \"\" and Padding \"\" and Alignme" +
+                    "nt \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
- testRunner.Then("the merged result is \"100020003000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the merged result is \"100002000030000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
  testRunner.And("the data merge execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -210,7 +210,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 48
  testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 49
- testRunner.Then("the merged result is the same as file \"New LineExample.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the merged result is the same as file \"NewLineExample.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 50
  testRunner.And("the data merge execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -362,14 +362,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 91
  testRunner.Given("a merge recordset", ((string)(null)), table5, "Given ");
 #line 96
- testRunner.And("an Input \"<recordset>\" and merge type \"Tab\" and string at as \"\" and Padding \"\" an" +
-                    "d Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("an Input \"<record>\" and merge type \"Tab\" and string at as \"\" and Padding \"\" and A" +
+                    "lignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
  testRunner.And("an Input \"[[rs(*).row]]\" and merge type \"Tab\" and string at as \"\" and Padding \"\" " +
                     "and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.And("an Input \"</recordset>\" and merge type \"None\" and string at as \"\" and Padding \"\" " +
-                    "and Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("an Input \"</record>\" and merge type \"None\" and string at as \"\" and Padding \"\" and" +
+                    " Alignment \"Left\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
  testRunner.When("the data merge tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100

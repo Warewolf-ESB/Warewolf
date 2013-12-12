@@ -21,6 +21,7 @@ Scenario: Split text to a recordset using Index
 Scenario: Split characters using Index Going Backwards
 	Given A string to split with value "@!?><":}{+_)(*&^~"
 	And assign to variable "[[vowels(*).chars]]" split type "Index" at "7"
+	And the direction is "RightToLeft"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().chars		|
@@ -114,7 +115,7 @@ Scenario: Split blank text
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	And the data split execution has "AN" error
+	And the data split execution has "NO" error
 
 Scenario: Split text to a recordset using a negative Index 
 	Given A string to split with value "abcde"
