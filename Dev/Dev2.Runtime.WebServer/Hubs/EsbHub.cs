@@ -128,7 +128,8 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendMemo(Memo memo)
         {
-            Server.SendMemo(memo, Context.ConnectionId);
+            var serializedMemo = JsonConvert.SerializeObject(memo);
+            Server.SendMemo(serializedMemo, Context.ConnectionId);
         }
 
         public void SendDebugState(DebugState debugState)

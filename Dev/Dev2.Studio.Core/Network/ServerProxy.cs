@@ -65,7 +65,7 @@ namespace Dev2.Network
         protected void InitializeEsbProxy()
         {
             EsbProxy = HubConnection.CreateHubProxy("esb");
-            EsbProxy.On<DesignValidationMemo>("SendMemo", OnMemoReceived);
+            EsbProxy.On<string>("SendMemo", OnMemoReceived);
             EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
             EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
         }
@@ -230,11 +230,12 @@ namespace Dev2.Network
             this.LogError(exception.Message);
         }
 
-        void OnMemoReceived(DesignValidationMemo obj)
+        void OnMemoReceived(string objString)
         {
 
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
+            var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
             this.TraceInfo("Publish message of type - " + typeof(Memo));
             ServerEvents.PublishObject(obj);
         }

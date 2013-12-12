@@ -6,6 +6,7 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Workspaces;
 using Microsoft.AspNet.SignalR.Hubs;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -38,7 +39,8 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendMemo(Memo memo)
         {
-            Server.SendMemo(memo, Context.ConnectionId);
+            var serializedMemo = JsonConvert.SerializeObject(memo);
+            Server.SendMemo(serializedMemo, Context.ConnectionId);
         }
     }
 }

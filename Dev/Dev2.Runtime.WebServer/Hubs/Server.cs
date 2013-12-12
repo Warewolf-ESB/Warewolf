@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Principal;
-using Dev2.Communication;
 using Dev2.Workspaces;
-using Dev2.Diagnostics;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -38,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             return _workspaceRepository.GetWorkspaceID(identity as WindowsIdentity);
         }
 
-        public void SendMemo(Memo memo, string connectionID = null)
+        public void SendMemo(string memo, string connectionID = null)
         {
             if(string.IsNullOrEmpty(connectionID))
             {
