@@ -123,3 +123,29 @@ Scenario: Split text to a recordset using a negative Index
 	Then the split result will be
 	| vowels().letters |
 	And the data split execution has "AN" error
+
+Scenario: Split negative record index as Input
+	Given A string to split with value "[[my(-1).var]]"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	When the data split tool is executed
+	Then the data split execution has "AN" error
+
+Scenario: Split text into negative recordset index
+	Given A string to split with value "abcd"
+	And assign to variable "[[vowels(-1).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	When the data split tool is executed
+	Then the data split execution has "AN" error
+
+Scenario: Split text into negative recordset index as the index to split at
+	Given A string to split with value "abcd"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "[[my(-1).index]]" and Include "Selected" and Escape '\'	
+	When the data split tool is executed
+	Then the data split execution has "AN" error
+
+Scenario: Split text using a negative recordset index as escape character
+	Given A string to split with value "abcd"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "2" and Include "Selected" and Escape '[[my(-1).escape]]'	
+	When the data split tool is executed
+	Then the data split execution has "AN" error
+
+

@@ -91,3 +91,21 @@ Scenario: Find an xml fragment in a bigger xml document
 	When the data find index tool is executed
 	Then the find index result is "4"
 	And the find index execution has "NO" error
+
+Scenario: Find a negative recordset index in a string
+	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
+	And the sentence "[[a]]"
+	And I selected Index "First Occurrence"
+	And I search for characters "[[my(-1).data]]"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the find index execution has "AN" error
+
+Scenario: Find something with a negative recordset index as Input
+	Given the sentence "[[a(-1).b]]"
+	And I selected Index "First Occurrence"
+	And I search for characters "12"
+	And I selected direction as "Left to Right"
+	When the data find index tool is executed
+	Then the find index execution has "AN" error
+

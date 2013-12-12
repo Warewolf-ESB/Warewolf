@@ -127,3 +127,18 @@ Scenario: Merge a long string using small index and padding and alignment at inv
 	When the data merge tool is executed
 	Then the merged result is ""
 	And the data merge execution has "AN" error
+
+Scenario: Merge a negative recordset index Input
+	Given an Input "[[my(-1).a]]" and merge type "Index" and string at as "10" and Padding " " and Alignment "Left"	
+	When the data merge tool is executed
+	Then the data merge execution has "AN" error
+
+Scenario: Merge a negative recordset index for String At
+	Given an Input "12" and merge type "Index" and string at as "[[my(-1).a]]" and Padding " " and Alignment "Left"	
+	When the data merge tool is executed
+	Then the data merge execution has "AN" error
+
+Scenario: Merge a negative recordset index for Padding
+	Given an Input "12" and merge type "Index" and string at as "10" and Padding "[[my(-1).a]]" and Alignment "Left"	
+	When the data merge tool is executed
+	Then the data merge execution has "AN" error

@@ -105,3 +105,23 @@ Scenario: Convert a empty sentence starting with a number to upper
 	When the case conversion tool is executed
 	Then the sentence will be ""
 	And the case convert execution has "AN" error
+
+Scenario: Convert a negative recordset index to uppercase
+	Given I convert a sentence "[[my(-1).sentenct]]" to "UPPER"	
+	When the case conversion tool is executed
+	Then the case convert execution has "AN" error
+
+Scenario: Convert a negative recordset index to lowercase
+	Given I convert a sentence "[[my(-1).sentenct]]" to "lower"	
+	When the case conversion tool is executed
+	Then the case convert execution has "AN" error
+
+Scenario: Convert a negative recordset index to Sentence
+	Given I convert a sentence "[[my(-1).sentenct]]" to "Sentence"	
+	When the case conversion tool is executed
+	Then the case convert execution has "AN" error
+
+Scenario: Convert a negative recordset index to Title Case
+	Given I convert a sentence "[[my(-1).sentenct]]" to "Title Case"	
+	When the case conversion tool is executed
+	Then the case convert execution has "AN" error

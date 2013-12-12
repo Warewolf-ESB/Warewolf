@@ -54,3 +54,26 @@ Scenario: Replace using lower case to find uppercase value
 	Then the replace result should be "1"
 	And "[[sentence]]" should be "Dear Mr Case, We welcome you as a customer"
 	And the replace execution has "NO" error
+
+Scenario: Replace when text to find is negative recordset index
+	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
+	And I have a sentence "[[sentence]]"
+	And I want to find the characters "[[my(-1).text]]"
+	And I want to replace them with "Warewolf user"
+	When the replace tool is executed
+	Then the replace execution has "AN" error
+
+Scenario: Replace when the replace with is negative recordset index
+	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
+	And I have a sentence "[[sentence]]"
+	And I want to find the characters "XXXX"
+	And I want to replace them with "[[my(-1).text]]"
+	When the replace tool is executed
+	Then the replace execution has "AN" error
+
+Scenario: Replace when negative recordset index is input
+	Given I have a sentence "[[my(-1).sentence]]"
+	And I want to find the characters "XXXX"
+	And I want to replace them with "YYYY"
+	When the replace tool is executed
+	Then the replace execution has "AN" error
