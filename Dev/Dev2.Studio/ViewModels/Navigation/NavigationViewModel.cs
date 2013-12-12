@@ -226,7 +226,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(environment.CanStudioExecute)
             {
-                ITreeNode newEnvNode = new EnvironmentTreeViewModel(_eventPublisher, Root, environment);
+                ITreeNode newEnvNode = new EnvironmentTreeViewModel(_eventPublisher, Root, environment,new AsyncWorker());
                 newEnvNode.IsSelected = true;
             }
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
@@ -313,7 +313,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(returnNavigationItemViewModel == null && createIfMissing)
             {
-                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment);
+                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment,new AsyncWorker());
             }
 
             return returnNavigationItemViewModel;

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -52,7 +53,7 @@ namespace Dev2.Core.Tests
 
             _rootVm = new RootTreeViewModel(eventAggregator);
 
-            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, _mockEnvironmentModel.Object);
+            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, _environmentVm, ResourceType.WorkflowService);
             _categoryVm = new CategoryTreeViewModel(eventAggregator, _serviceTypeVm, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
             _resourceVm = new ResourceTreeViewModel(eventAggregator, _categoryVm, _mockResourceModel.Object);
@@ -460,7 +461,7 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
             var resourceModel = CreateResourceModel();
-            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, new Mock<IEnvironmentModel>().Object);
+            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, new Mock<IEnvironmentModel>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, _environmentVm, ResourceType.WorkflowService);
             _categoryVm = new CategoryTreeViewModel(eventAggregator, _serviceTypeVm, "Test Category", _mockResourceModel.Object.ResourceType);
             _resourceVm = new ResourceTreeViewModel(eventAggregator, _categoryVm, resourceModel.Object);

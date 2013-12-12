@@ -10,6 +10,7 @@ using Dev2.Activities;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
+using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests.ViewModelMocks;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -99,7 +100,7 @@ namespace Dev2.Core.Tests
             _mockResourceModel2.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             _rootVm = new RootTreeViewModel(_eventAggregator.Object);
-            _environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, _rootVm, _mockEnvironmentModel.Object);
+            _environmentVm = new EnvironmentTreeViewModel(_eventAggregator.Object, _rootVm, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.WorkflowService);
             _serviceTypeVm2 = new ServiceTypeTreeViewModel(_eventAggregator.Object, _environmentVm, ResourceType.Service);
 
@@ -234,7 +235,7 @@ namespace Dev2.Core.Tests
         {
             var eventAggregator = new Mock<IEventAggregator>().Object;
             var rootVM = new RootTreeViewModel(eventAggregator);
-            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object);
+            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var serviceTypeVM = new ServiceTypeTreeViewModel(eventAggregator, environmentVM, ResourceType.WorkflowService);
             var categoryVM = new CategoryTreeViewModel(eventAggregator, serviceTypeVM, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
             var resource1 = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "cake1").Object;
@@ -258,7 +259,7 @@ namespace Dev2.Core.Tests
         {
             var eventAggregator = new Mock<IEventAggregator>().Object;
             var rootVM = new RootTreeViewModel(eventAggregator);
-            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object);
+            var environmentVM = new EnvironmentTreeViewModel(eventAggregator, rootVM, _mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var serviceTypeVM = new ServiceTypeTreeViewModel(eventAggregator, environmentVM, ResourceType.WorkflowService);
             var categoryVM = new CategoryTreeViewModel(eventAggregator, serviceTypeVM, _mockResourceModel.Object.Category, _mockResourceModel.Object.ResourceType);
 
@@ -825,7 +826,7 @@ namespace Dev2.Core.Tests
 
             // ReSharper disable ObjectCreationAsStatement
             var vmRoot = new RootTreeViewModel(eventAggregator);
-            new EnvironmentTreeViewModel(eventAggregator, vmRoot, new Mock<IEnvironmentModel>().Object);
+            new EnvironmentTreeViewModel(eventAggregator, vmRoot, new Mock<IEnvironmentModel>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             new ServiceTypeTreeViewModel(eventAggregator, vmRoot.Children[0], ResourceType.WorkflowService);
             new CategoryTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0], "TESTCATEGORY", ResourceType.WorkflowService);
 
@@ -866,7 +867,7 @@ namespace Dev2.Core.Tests
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
 
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object,AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
@@ -898,7 +899,7 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
@@ -933,7 +934,7 @@ namespace Dev2.Core.Tests
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
@@ -1110,7 +1111,7 @@ namespace Dev2.Core.Tests
         {
             var envModel = new Mock<IEnvironmentModel>();
 
-            var envTreeViewModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, _rootVm, envModel.Object);
+            var envTreeViewModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, _rootVm, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             envTreeViewModel.PropertyChanged += (sender, args) =>
             {
                 Assert.AreEqual("IsConnected", args.PropertyName, "EnvironmentTreeViewModel did not raise IsConnected property changed event.");

@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -115,7 +116,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             var treeViewModelEnvironmentModel = new Mock<IEnvironmentModel>().Object;
-            var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, treeViewModelEnvironmentModel);
+            var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, treeViewModelEnvironmentModel, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
             var controlViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);

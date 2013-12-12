@@ -12,6 +12,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Views;
 
 #endregion
@@ -36,13 +37,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _removeCommand;
         private RelayCommand<string> _newResourceCommand;
         private RelayCommand _refreshCommand;
+        private IAsyncWorker _asyncWorker;
 
         #endregion
 
         #region ctor + init
-        public EnvironmentTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IEnvironmentModel environmentModel)
+        public EnvironmentTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IEnvironmentModel environmentModel,IAsyncWorker asyncWorker)
             : base(eventPublisher, parent)
         {
+            _asyncWorker = asyncWorker;
             EnvironmentModel = environmentModel;
             IsExpanded = true;           
         }
@@ -423,7 +426,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(EnvironmentModel.IsConnected && EnvironmentModel.CanStudioExecute) return;
 
             EnvironmentModel.CanStudioExecute = true;
-            EnvironmentModel.Connect();
+            _asyncWorker.Start(EnvironmentModel.Connect,()=>{});             
             EnvironmentModel.ForceLoadResources();
             var vm = FindRootNavigationViewModel();
             vm.LoadEnvironmentResources(EnvironmentModel);
