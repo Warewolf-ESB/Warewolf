@@ -282,6 +282,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Edit remote db service
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(2000);
             DatabaseServiceWizardUIMap.ClickScrollActionListUp();
             DatabaseServiceWizardUIMap.ClickFirstAction();
             DatabaseServiceWizardUIMap.ClickTestAction();

@@ -117,9 +117,11 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.TabToInputMappings();
 
             //set the first input to required
-            SendKeys.SendWait("{TAB}");
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            wizard.WaitForControlReady();
+            Keyboard.SendKeys(wizard,"{TAB}");
             Playback.Wait(150);
-            SendKeys.SendWait(" ");
+            Keyboard.SendKeys(" ");
 
             // Save
             DatabaseServiceWizardUIMap.ClickOK();

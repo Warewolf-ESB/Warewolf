@@ -172,9 +172,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
         public void TabToInputMappings()
         {
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             TabToMappingsTab();
-            Playback.Wait(200);
-            SendKeys.SendWait("{TAB}");
+            wizard.WaitForControlReady();
+            Keyboard.SendKeys(wizard, "{TAB}");
             Playback.Wait(200);
         }
 
