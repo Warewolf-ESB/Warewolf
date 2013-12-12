@@ -135,7 +135,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         public void SendDebugState(DebugState debugState)
         {
             var debugSerializated = JsonConvert.SerializeObject(debugState);
-            Server.SendDebugState(debugSerializated);
+            var hubCallerConnectionContext = Clients;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            user.SendDebugState(debugSerializated);
+
+            // Server.SendDebugState(debugSerializated, Context.User.Identity.Name);
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<CompileMessageTO> messages, Action<TMemo, CompileMessageTO> coalesceErrors)
