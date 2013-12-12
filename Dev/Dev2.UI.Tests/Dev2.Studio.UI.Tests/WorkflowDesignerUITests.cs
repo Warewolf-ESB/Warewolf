@@ -305,17 +305,14 @@ namespace Dev2.Studio.UI.Tests
             UITestControl tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Move(new Point(StudioWindow.Left + 200, StudioWindow.Top + 200));
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
             tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(firstName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Move(new Point(StudioWindow.Left + 200, StudioWindow.Top + 200));
             Mouse.Click(TabManagerUIMap.FindTabByName(firstName));
             tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Move(new Point(StudioWindow.Left + 200, StudioWindow.Top + 200));
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
         }
 
