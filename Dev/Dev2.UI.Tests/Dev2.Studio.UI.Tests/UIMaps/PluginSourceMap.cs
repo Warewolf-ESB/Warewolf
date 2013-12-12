@@ -1,4 +1,7 @@
-﻿namespace Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses
+﻿using System.Windows.Forms;
+using Clipboard = System.Windows.Clipboard;
+
+namespace Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses
 {
     using System;
     using System.Collections.Generic;
@@ -25,6 +28,18 @@
         public void ClickPluginSourceAssemblyPath()
         {
             Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(423, 406));
+        }
+
+        public string GetAssemblyPathText()
+        {
+            Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(423, 406));
+            StudioWindow.GetChildren()[0].GetChildren()[0].WaitForControlReady();            
+            Keyboard.SendKeys(StudioWindow.GetChildren()[0].GetChildren()[0],"{CTRL}a");
+            StudioWindow.GetChildren()[0].GetChildren()[0].WaitForControlReady();
+            Keyboard.SendKeys(StudioWindow.GetChildren()[0].GetChildren()[0],"{CTRL}c");
+            StudioWindow.GetChildren()[0].GetChildren()[0].WaitForControlReady();
+            Keyboard.SendKeys(StudioWindow.GetChildren()[0].GetChildren()[0], "{RIGHT}");
+            return Clipboard.GetText();
         }
     }
 }

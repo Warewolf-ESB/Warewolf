@@ -289,7 +289,7 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickOK();
             
             //Change it back
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             actionName = DatabaseServiceWizardUIMap.GetActionName();
             DatabaseServiceWizardUIMap.ClickSecondAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
@@ -353,7 +353,8 @@ namespace Dev2.Studio.UI.Tests
             //Edit remote plugin source
             OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             PluginSourceMap.ClickPluginSourceAssemblyPath();
-            Keyboard.SendKeys("{LEFT}{LEFT}{LEFT}{LEFT} ");
+            Keyboard.SendKeys("{LEFT}{LEFT}{LEFT}{LEFT}");
+            Keyboard.SendKeys(" ");
             Keyboard.SendKeys("-");
             Keyboard.SendKeys(" ");
             Keyboard.SendKeys("C");
@@ -365,10 +366,8 @@ namespace Dev2.Studio.UI.Tests
             SaveDialogUIMap.ClickSave();
 
             //Change it back
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            PluginSourceMap.ClickPluginSourceAssemblyPath();
-            var persistClipboard = Clipboard.GetText();
-            Keyboard.SendKeys("{CTRL}a{CTRL}c{END}");
+            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            path = PluginSourceMap.GetAssemblyPathText();
             Playback.Wait(100);
             Keyboard.SendKeys("{LEFT}");
             Playback.Wait(100);
@@ -393,10 +392,8 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{BACK}");
             Playback.Wait(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
-            SaveDialogUIMap.ClickSave();
-            path = Clipboard.GetText();
-            Clipboard.SetText(persistClipboard);
-
+            SaveDialogUIMap.ClickSave();            
+            
             Assert.AreEqual(@"C:\DevelopmentDropOff\Integration Tests\Pugin1 - Copy.dll", path, "Cannot change remote plugin source");
         }
 
