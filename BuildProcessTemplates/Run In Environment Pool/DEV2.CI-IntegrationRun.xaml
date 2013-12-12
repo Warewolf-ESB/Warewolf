@@ -252,7 +252,7 @@
                 </Sequence>
                 <Sequence DisplayName="Get, Unzip and Run Builds" sap2010:WorkflowViewState.IdRef="Sequence_38">
                   <Sequence DisplayName="Get Builds" sap2010:WorkflowViewState.IdRef="Sequence_62">
-                    <If Condition="[Not (BuildGroomingBranch)]" DisplayName="If grooming" sap2010:WorkflowViewState.IdRef="If_61">
+                    <If Condition="[Not (BuildGroomingBranch)]" DisplayName="If NOT grooming" sap2010:WorkflowViewState.IdRef="If_61">
                       <If.Then>
                         <Sequence DisplayName="Get Integration Solution Build" sap2010:WorkflowViewState.IdRef="Sequence_69">
                           <If Condition="[SpecifiedChangeSet Is Nothing]" DisplayName="If No Changeset Specified" sap2010:WorkflowViewState.IdRef="If_62">
