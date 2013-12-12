@@ -44,8 +44,9 @@
       <Variable x:TypeArguments="mtbc:IBuildAgent" Name="BuildAgent" />
       <Variable x:TypeArguments="mtbc:IBuildDetail" Name="BuildDetail" />
     </Sequence.Variables>
-    <mtbwa:UpdateBuildNumber BuildNumberFormat="Workspace Cleanup Util_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
+    <mtbwa:UpdateBuildNumber BuildNumberFormat="Waiting To Send Report_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run On Agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.MaxExecutionTime]" MaxWaitTime="[AgentSettings.MaxWaitTime]" ReservationSpec="[AgentSettings.GetAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
+      <mtbwa:WriteBuildMessage Message="[&quot;Waiting for test runs &quot; &amp; BuildIDs &amp; &quot; queued by checkin &quot; &amp; ChangeSetID &amp; &quot; on branch &quot; &amp; BranchID]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_7" />
       <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;]" DisplayName="Wait for All Test Runs" FileName="C:\Builds\WaitForBuilds\WaitForBuild.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_1">
         <mtbwa:InvokeProcess.ErrorDataReceived>
           <ActivityAction x:TypeArguments="x:String">
@@ -80,23 +81,24 @@
       </mtbwa:InvokeProcess>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBEBkAMBxgMBAwFhAe8CAQIqA1QOAgEBLwUvvQECARkwBVIYAgECLzAvYgIBGjCxATDOAQIBBzCCATCkAQIBBTDfATCKAgIBAzEHQB0CARRBB1AdAgEMUQdRmQICAQkxJjHUAQIBFjGDAjGtAgIBFUEmQfIBAgEOQZYCQbgCAgENUX5RsgECAQs=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBMBkAMBxgMBAwFhAe8CAQIqA1UOAgEBLwUvvQECAR8wBVMYAgECLzAvYgIBIDCxATDOAQIBBzCCATCkAQIBBTDfATCKAgIBAzEHMd8CAgEZMgdBHQIBFEIHUR0CAQxSB1KZAgIBCTEoMcIBAgEbMiYy1AECARYygwIyrQICARVCJkLyAQIBDkKWAkK4AgIBDVJ+UrIBAgEL</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="222,22" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_7" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="222,754" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="244,940">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="222,816" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="244,1002">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="284,1020" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="284,1082" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
