@@ -1,4 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -7,17 +12,13 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Framework;
-using Dev2.Runtime.ESB.Execution;
 
 // ReSharper disable CheckNamespace
 namespace ActivityUnitTests
@@ -32,8 +33,6 @@ namespace ActivityUnitTests
         public Uri DsfAdddress = new Uri("http://localhost:77/dsf");
         public Mock<IEsbWorkspaceChannel> MockChannel;
         public IDataListCompiler Compiler;
-
-        
 
         public BaseActivityUnitTest()
         {
@@ -74,8 +73,6 @@ namespace ActivityUnitTests
             {
                 var builder = new ActivityBuilder
                 {
-                    //Name = _workflowModel.ResourceName,
-                    //Name = _workflowModel.ResourceName, //string.Format("{0}.{1}.{2}.{3}", _workflowModel.Module, _workflowModel.SubModule, _workflowModel.Action, _workflowModel.ResourceName),
                     Properties = {
                     new DynamicActivityProperty{Name = "AmbientDataList",Type = typeof(InOutArgument<List<string>>)}
                     ,new DynamicActivityProperty{ Name = "ParentWorkflowInstanceId", Type = typeof(InOutArgument<Guid>)}
@@ -83,7 +80,7 @@ namespace ActivityUnitTests
                 },
                     Implementation = new Flowchart
                     {
-                        //DisplayName = _workflowModel.ResourceName,//string.Format("{0}.{1}.{2}.{3}",_workflowModel.Module, _workflowModel.SubModule, _workflowModel.Action, _workflowModel.ResourceName),
+                        
                         Variables = {
                          new Variable<List<string>>{Name = "InstructionList"},
                          new Variable<string>{Name = "LastResult"},
