@@ -154,7 +154,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.BatchSize = batchSize;
             sqlBulkInsert.Timeout = timeout;
 
-            ExecuteProcess();
+            IDSFDataObject result = ExecuteProcess(throwException: false);
+            ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the new table will have")]
