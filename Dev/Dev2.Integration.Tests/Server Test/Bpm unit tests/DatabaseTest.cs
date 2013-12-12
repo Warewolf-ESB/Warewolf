@@ -23,7 +23,6 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         // Ensure we can map portions of a recordset as input and other portionas as output
         public void RecordsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
         {
-
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_10247_Outter");
             string expected = @"<rs><result>2</result></rs><rs><result>3</result></rs>";

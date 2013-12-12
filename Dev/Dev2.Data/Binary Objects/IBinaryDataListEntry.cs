@@ -199,7 +199,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Fetches the index of the recordset.
         /// </summary>
         /// <returns></returns>
-        IIndexIterator FetchRecordsetIndexes(bool overrideAlias = false);
+        IIndexIterator FetchRecordsetIndexes();
 
         /// <summary>
         /// Fetches the last index of the recordset.

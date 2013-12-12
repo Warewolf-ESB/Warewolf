@@ -61,8 +61,6 @@ namespace Dev2.Data.Tests.BinaryDataList
            
             entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
 
-            entry.MakeRecordsetEvaluateReady(1, "f1", out error);
-
             //------------Assert Results-------------------------
 
             // ensure that it has fetched the alias indexes ;)
@@ -82,7 +80,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
-        public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliasesWithOverrideTrue_ExpectChildEntryKeys()
+        public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliasesPresentAndMadeEvaluateReady_ExpectChildEntryKeys()
         {
             //------------Setup for test--------------------------
             string error;
@@ -130,7 +128,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // ensure that it has fetched the alias indexes ;)
 
-            var idxes = entry.FetchRecordsetIndexes(true);
+            var idxes = entry.FetchRecordsetIndexes();
             var minIdx = idxes.MinIndex();
             var maxIdx = idxes.MaxIndex();
             var gapsCount = idxes.FetchGaps().Count;
@@ -168,7 +166,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             dl1.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 4, out error);
             dl1.TryCreateRecordsetValue("r4.f2.value", "f2", "recset", 4, out error);
-
 
 
             //------------Execute Test---------------------------

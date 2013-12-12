@@ -17,6 +17,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Fields
         SBinaryDataListEntry _internalObj;
+        private bool _isEvalauteReady = false;
         #endregion Fields
 
         #region Properties
@@ -522,13 +523,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Fetches the recordset indexs.
         /// </summary>
         /// <returns></returns>
-        public IIndexIterator FetchRecordsetIndexes(bool overrideAlias = false)
+        public IIndexIterator FetchRecordsetIndexes()
         {
 
             var aliases = FetchAlias();
             var theAlias = aliases.FirstOrDefault();
 
-            if(theAlias.Value != null && !overrideAlias)
+            if(theAlias.Value != null && !_isEvalauteReady)
             {
                 var me = theAlias.Value.MasterEntry;
                 if(me != null)
@@ -654,6 +655,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public void MakeRecordsetEvaluateReady(int keepIdx, string keepCol, out string error)
         {
             error = string.Empty;
+            _isEvalauteReady = true;
 
             // use only wants a specific column retained, not the entire row
             if(keepCol != null)
