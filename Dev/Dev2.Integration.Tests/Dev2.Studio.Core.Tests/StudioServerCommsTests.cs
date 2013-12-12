@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Network;
-using System.Security.Principal;
-using System.Text;
-using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Network;
-using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 {
@@ -21,7 +12,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
     //                              synchronous fashion.
     [TestClass]
     public class StudioServerCommsTests
-    {                      
+    {
         #region Environment Connection Tests
 
         // Sashen.Naidoo: 13-02-2012 : Bug 8801 + Bug 8796
@@ -32,8 +23,8 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         // that was just ignored by the Studio.
         [TestMethod]
         public void EnvironmentConnectionWithServerAuthenticationExpectedClientDetailsRecieved()
-        {            
-            IEnvironmentConnection conn = CreateConnection();         
+        {
+            IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
             // The IsConnected property of the EnvironmentConnection references the TCPDispatch Client
@@ -48,7 +39,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
         [TestMethod]
         public void EnvironmentConnectionReconnectToServerExpecetedClientConnectionSuccessful()
-        {            
+        {
             IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
@@ -76,7 +67,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
             List<bool> actualConnections = new List<bool>();
             List<bool> expectedConnections = new List<bool>();
-            for (int i = 0; i < 10; i++)
+            for(int i = 0; i < 10; i++)
             {
                 environmentConn.Connect();
                 expectedConnections.Add(true);

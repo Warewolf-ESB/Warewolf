@@ -71,6 +71,7 @@ namespace Dev2.Core.Tests.Services
         [TestCategory("UserConfigurationService_Persistence")]
         [Description("UserConfigurationService must read/write it's properties to/from disk correctly.")]
         [Owner("Trevor Williams-Ros")]
+        [Ignore] // Not used
         public void UserConfigurationService_UnitTest_PersistenceWrite_CanRead()
         {
             var filePath = Path.Combine(_testDir, Guid.NewGuid() + ".config");
