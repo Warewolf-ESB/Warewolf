@@ -1084,6 +1084,6 @@
     <value>sftp://sftp.theunlimited.co.za</value>
   </data>
   <data name="PathOperations_SFTP_Username" xml:space="preserve">
-    <value>dev2testing</value>
+    <value>dev2</value>
   </data>
 </root>

@@ -18,6 +18,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
+using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -65,7 +66,7 @@ namespace Dev2.Network
         {
             EsbProxy = HubConnection.CreateHubProxy("esb");
             EsbProxy.On<DesignValidationMemo>("SendMemo", OnMemoReceived);
-            EsbProxy.On<DebugState>("SendDebugState", OnDebugStateReceived);
+            EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
             EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
         }
 
@@ -94,8 +95,9 @@ namespace Dev2.Network
             WorkspaceID = obj;
         }
 
-        void OnDebugStateReceived(DebugState obj)
+        void OnDebugStateReceived(string objString)
         {
+            var obj = JsonConvert.DeserializeObject<DebugState>(objString);
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
@@ -137,7 +139,7 @@ namespace Dev2.Network
                     //TODO: take the waiting off the UI thread 
                     //var t = HubConnection.Start();
                     //Wait(t);
-                    HubConnection.Start().Wait();                    
+                    HubConnection.Start().Wait();
                 }
             }
             catch(Exception e)

@@ -50,7 +50,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
-        public void SendDebugState(DebugState debugState, string connectionID = null)
+        public void SendDebugState(string debugState, string connectionID = null)
         {
             if(string.IsNullOrEmpty(connectionID))
             {

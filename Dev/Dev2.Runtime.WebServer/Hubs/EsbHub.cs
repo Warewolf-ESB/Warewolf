@@ -14,6 +14,7 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Microsoft.AspNet.SignalR.Hubs;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -132,7 +133,8 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendDebugState(DebugState debugState)
         {
-            Server.SendDebugState(debugState);
+            var debugSerializated = JsonConvert.SerializeObject(debugState);
+            Server.SendDebugState(debugSerializated);
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<CompileMessageTO> messages, Action<TMemo, CompileMessageTO> coalesceErrors)

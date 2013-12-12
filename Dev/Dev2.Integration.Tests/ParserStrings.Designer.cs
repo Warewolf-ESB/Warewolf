@@ -672,7 +672,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to dev2testing.
+        ///   Looks up a localized string similar to dev2.
         /// </summary>
         internal static string PathOperations_SFTP_Username {
             get {
