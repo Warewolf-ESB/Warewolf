@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using Dev2.Session;
 
@@ -10,7 +10,8 @@ namespace Dev2.Tests.DataList
     /// <summary>
     /// Summary description for BrokerTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BrokerTest {
 
         /// <summary>
