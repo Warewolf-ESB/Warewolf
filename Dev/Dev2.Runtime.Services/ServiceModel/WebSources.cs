@@ -13,6 +13,9 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
 {
+    public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
+    public delegate string WebExecuteBinary(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null);
+
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSources : ExceptionManager
     {
@@ -180,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel
             errors = new ErrorResultTO();
             try
             {
-                switch (method)
+                switch(method)
                 {
                     case WebRequestMethod.Get:
                         return FixResponse(client.DownloadString(address));
@@ -189,10 +192,10 @@ namespace Dev2.Runtime.ServiceModel
                         return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant()));
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 errors.AddError(e.Message);
-                if (throwError)
+                if(throwError)
                 {
                     throw;
                 }

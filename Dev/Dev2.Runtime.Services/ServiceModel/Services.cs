@@ -48,10 +48,11 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
-                string resourceTypeStr = webRequestPoco.ResourceType;
+                var resourceTypeStr = webRequestPoco.ResourceType;
                 var resourceType = Resources.ParseResourceType(resourceTypeStr);
-                string resourceID = webRequestPoco.ResourceID;
-                var xmlStr = Resources.ReadXml(workspaceID, resourceType, resourceID);
+                var resourceID = webRequestPoco.ResourceID;
+                var xmlStr = _resourceCatalog.GetResourceContents(workspaceID, Guid.Parse(resourceID));
+                //var xmlStr = Resources.ReadXml(workspaceID, resourceType, resourceID);
                 var xml = string.IsNullOrEmpty(xmlStr) ? null : XElement.Parse(xmlStr);
                 return DeserializeService(xml, resourceType);
             }

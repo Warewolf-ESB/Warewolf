@@ -9,6 +9,7 @@ using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Diagnostics;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
@@ -155,21 +156,27 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestCategory("DBServices_DbMethods")]
         public void DBServices_Get_ValidArgs_ReturnsService()
         {
-            var svc = CreateDev2TestingDbService();
-            var saveArgs = svc.ToString();
-            var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"{1}\"}}", svc.ResourceID, ResourceType.DbService);
-
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             try
             {
-                var services = new TestDbServices();
-                services.Save(saveArgs, workspaceID, Guid.Empty);
+                //------------Setup for test--------------------------
+                var svc = CreateDev2TestingDbService();
+                var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"{1}\"}}", svc.ResourceID, ResourceType.DbService);
+
+                var resourceCatalog = new Mock<IResourceCatalog>();
+                resourceCatalog.Setup(c => c.GetResourceContents(workspaceID, svc.ResourceID, It.IsAny<Version>()))
+                    .Returns((Guid wsID, Guid resourceID, Version version) => svc.ToXml().ToString())
+                    .Verifiable();
+
+                var services = new TestDbServices(resourceCatalog.Object);
 
                 //------------Execute Test---------------------------
                 var getResult = services.Get(getArgs, workspaceID, Guid.Empty);
 
-                //Assert Returns Service
+                //------------Assert Results-------------------------
+                resourceCatalog.Verify(c => c.GetResourceContents(workspaceID, svc.ResourceID, It.IsAny<Version>()));
+
                 Assert.AreEqual(svc.ResourceID, getResult.ResourceID);
                 Assert.AreEqual(svc.ResourceName, getResult.ResourceName);
                 Assert.AreEqual(svc.ResourcePath, getResult.ResourcePath);

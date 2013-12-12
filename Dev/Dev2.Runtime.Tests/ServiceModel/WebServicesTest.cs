@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.ServiceModel;
+using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Test.XML;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -20,6 +23,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var serviceXml = XmlResource.Fetch("WebService");
             var sourceXml = XmlResource.Fetch("WebSource");
+            var responseXml = XmlResource.Fetch("WebServiceResponse");
+
             var service = new WebService(serviceXml) { Source = new WebSource(sourceXml) };
 
             foreach(var parameter in service.Method.Parameters)
@@ -27,12 +32,22 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 parameter.Value = parameter.DefaultValue;
             }
 
-            var services = new WebServicesMock();
+            var webExecuteHitCount = 0;
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var services = new WebServicesMock(resourceCatalog.Object,
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                {
+                    webExecuteHitCount++;
+                    errors = new ErrorResultTO();
+                    return responseXml.ToString();
+                });
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
 
+            Assert.AreEqual(1, webExecuteHitCount);
+
             // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
-            Assert.AreEqual(2, result.Recordsets.Count);
-            Assert.AreEqual("", result.Recordsets[0].Name);            
+            Assert.AreEqual(1, result.Recordsets.Count);
+            Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
         #region CTOR
@@ -41,7 +56,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            var services = new WebServices(null);
+            var services = new WebServices(null, null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void WebServicesContructorWithNullWebExectueExpectedThrowsArgumentNullException()
+        {
+            var services = new WebServices(new Mock<IResourceCatalog>().Object, null);
         }
 
         #endregion
@@ -114,8 +136,19 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 parameter.Value = parameter.DefaultValue;
             }
 
-            var services = new WebServicesMock();
+            var webExecuteHitCount = 0;
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var services = new WebServicesMock(resourceCatalog.Object,
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                {
+                    webExecuteHitCount++;
+                    errors = new ErrorResultTO();
+                    return string.Empty;
+                });
+
             var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
+
+            Assert.AreEqual(0, webExecuteHitCount);
 
             // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
             Assert.AreEqual(1, result.Recordsets.Count);

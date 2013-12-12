@@ -13,15 +13,20 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 1220 - 2013.05.20 - TWR - Created
     public class WebServices : Services
     {
+        static readonly WebExecuteString DefaultWebExecute = WebSources.Execute;
+        readonly WebExecuteString _webExecute = DefaultWebExecute;
+
         #region CTOR
 
         public WebServices()
         {
         }
 
-        public WebServices(IResourceCatalog resourceCatalog)
+        public WebServices(IResourceCatalog resourceCatalog, WebExecuteString webExecute)
             : base(resourceCatalog)
         {
+            VerifyArgument.IsNotNull("webExecute", webExecute);
+            _webExecute = webExecute;
         }
 
         #endregion
@@ -52,7 +57,7 @@ namespace Dev2.Runtime.ServiceModel
                 if(string.IsNullOrEmpty(service.RequestResponse))
                 {
                     ErrorResultTO errors;
-                    ExecuteRequest(service, true, out errors);
+                    ExecuteRequest(service, true, out errors, _webExecute);
                     ((WebSource)service.Source).DisposeClient();
                 }
 
@@ -73,17 +78,22 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
+        
         #region ExecuteRequest
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
+        {
+            ExecuteRequest(service, throwError, out errors, DefaultWebExecute);
+        }
+
+        static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
             var headers = string.IsNullOrEmpty(service.RequestHeaders)
                               ? new string[0]
                               : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
-            service.RequestResponse = WebSources.Execute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
+            service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
         }
 
         #endregion
@@ -99,4 +109,5 @@ namespace Dev2.Runtime.ServiceModel
 
     }
 
+    
 }
