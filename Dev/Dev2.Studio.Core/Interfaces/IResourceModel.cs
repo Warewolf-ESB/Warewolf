@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Activities;
 using System.Collections.Generic;
 using Dev2.Collections;
 using Dev2.Providers.Errors;
@@ -11,6 +10,8 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceModel : IWorkSurfaceObject
     {
         Guid ID { get; set; }
+        string Inputs { get; set; }
+        string Outputs { get; set; }
         bool AllowCategoryEditing { get; set; }
         string AuthorRoles { get; set; }
         string Category { get; set; }

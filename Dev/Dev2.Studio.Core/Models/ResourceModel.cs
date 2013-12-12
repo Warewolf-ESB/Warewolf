@@ -86,6 +86,10 @@ namespace Dev2.Studio.Core.Models
 
         #region Properties
 
+        public string Inputs { get; set; }
+
+        public string Outputs { get; set; }
+
         public bool IsValid
         {
             get

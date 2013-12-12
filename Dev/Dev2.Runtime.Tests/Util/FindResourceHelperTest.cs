@@ -73,6 +73,8 @@ namespace Dev2.Tests.Runtime.Util
 
             Resource res = new Resource
             {
+                Inputs = "inputs",
+                Outputs = "outputs",
                 ResourceID = id,
                 IsNewResource = false,
                 DataList = "abc",
@@ -101,6 +103,8 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual("Workflow", result.ResourceName);
             Assert.AreEqual(ResourceType.WorkflowService, result.ResourceType);
             Assert.AreEqual(errorString, resultErrorString);
+            Assert.AreEqual("inputs", result.Inputs);
+            Assert.AreEqual("outputs", result.Outputs);
         }
 
     }

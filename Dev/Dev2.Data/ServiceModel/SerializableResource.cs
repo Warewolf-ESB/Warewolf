@@ -13,6 +13,16 @@ namespace Dev2.Data.ServiceModel
     public class SerializableResource
     {
         /// <summary>
+        /// The resource input mapping.
+        /// </summary>
+        public string Inputs { get; set; }
+
+        /// <summary>
+        /// The resource output mapping.
+        /// </summary>
+        public string Outputs { get; set; }
+
+        /// <summary>
         /// The resource ID that uniquely identifies the resource.
         /// </summary>
         public Guid ResourceID { get; set; }

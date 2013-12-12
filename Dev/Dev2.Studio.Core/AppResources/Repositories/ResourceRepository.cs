@@ -566,7 +566,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var isNewWorkflow = data.IsNewResource;
 
                 var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
-                
+
+                resource.Inputs = data.Inputs;
+                resource.Outputs = data.Outputs;
                 resource.ResourceType = resourceType;
                 resource.ID = id;
                 resource.ServerID = serverID;
@@ -582,7 +584,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ServerResourceType = data.ResourceType.ToString();
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
-                resource.IsNewWorkflow = isNewWorkflow;
+                resource.IsNewWorkflow = isNewWorkflow;                
 
                 // set the errors ;)
                 foreach(var error in data.Errors)

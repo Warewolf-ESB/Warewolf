@@ -116,7 +116,9 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         #region Properties
 
+        public string Inputs { get; set; }
 
+        public string Outputs { get; set; }
 
         #endregion Properties
 

@@ -88,6 +88,27 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Hydrate Resource Model
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ResourceRepository_HydrateResourceModel")]
+        public void ResourceRepository_HydrateResourceModel_ResourceTypeIsWorkflow_InputAndOutputMappingsAreValid()
+        {
+            string inputData = "inputs";
+            string outputData = "outputs";
+            //------------Setup for test--------------------------
+            var resourceRepository = GetResourceRepository();
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.DbService);
+            resourceData.Inputs = inputData;
+            resourceData.Outputs = outputData;
+
+            //------------Execute Test---------------------------
+            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(model);
+            Assert.AreEqual(inputData, model.Inputs);
+            Assert.AreEqual(outputData, model.Outputs);
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ResourceRepository_HydrateResourceModel")]
         public void ResourceRepository_HydrateResourceModel_ResourceTypeIsDbService_IconPathIsValid()
@@ -1643,7 +1664,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
 
             SerializableResource sr = new SerializableResource()
-            {
+            {                 
                 ResourceCategory = "Test Category",
                 DataList = "",
                 Errors = new List<ErrorInfo>(),

@@ -34,6 +34,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return new SerializableResource
             {
+                Inputs = resource.Inputs,
+                Outputs = resource.Outputs,
                 ResourceCategory = resource.ResourcePath,
                 ResourceID = resource.ResourceID,
                 ResourceName = resource.ResourceName,

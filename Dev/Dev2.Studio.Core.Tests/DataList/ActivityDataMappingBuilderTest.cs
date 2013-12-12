@@ -25,33 +25,16 @@ namespace Dev2.Core.Tests.DataList
         #region Test
 
         [TestMethod]
-        [Owner("Travis Frisinger")]
+        [Owner("Massimo Guerrera")]
         [TestCategory("ActivityDataMappingBuilder_Generate")]
-        public void ActivityDataMappingBuilder_SetupActivityData_WhenValidServiceDefintion_ExpectValidInputsAndOutputs()
+        public void ActivityDataMappingBuilder_SetupActivityData_WhenValidInputOutputMappingAndNoServiceDef_ExpectValidInputsAndOutputs()
         {
             //------------Setup for test--------------------------
 
             #region ServiceDef
-            var serviceDefStr = @"
-    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
-      <Inputs>
-        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
-      </Inputs>
-      <Outputs>
-        <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
-        <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
-        <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
-        <Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" />
-        <Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" />
-        <Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" />
-        <Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" />
-        <Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" />
-        <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
-        <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
-        <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
-      </Outputs>
-      
-    </Action>";
+            var inputString = @"<Inputs><Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" /></Inputs>";
+            var outputString = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" /><Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" /><Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" /><Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" /><Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" /><Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" /><Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" /><Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" /><Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" /></Outputs>";
+            
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -63,7 +46,51 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);            
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
+
+            //------------Execute Test---------------------------
+
+            activityDataMappingBuilder.SetupActivityData(activity.Object);
+
+            //------------Assert Results-------------------------
+
+            const string inputExpected = @"<Inputs><Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" /></Inputs>";
+            const string outputExpected = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" /><Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" /><Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" /><Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" /><Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" /><Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" /><Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" /><Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" /><Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" /></Outputs>";
+
+            Assert.AreEqual(inputExpected, activityDataMappingBuilder.ActivityInputDefinitions);
+            Assert.AreEqual(outputExpected, activityDataMappingBuilder.ActivityOutputDefinitions);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ActivityDataMappingBuilder_Generate")]
+        public void ActivityDataMappingBuilder_SetupActivityData_WhenValidServiceDefintion_ExpectValidInputsAndOutputs()
+        {
+            //------------Setup for test--------------------------
+
+            #region ServiceDef
+
+            var inputString = @"<Inputs><Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" /></Inputs>";
+
+            var outputString = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" /><Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" /><Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" /><Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" /><Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" /><Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" /><Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" /><Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" /><Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" /></Outputs>";
+            
+            #endregion
+
+            var activityDataMappingBuilder = new ActivityDataMappingBuilder();
+
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
+
+            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+
+            activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
+            activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
             //------------Execute Test---------------------------
@@ -140,12 +167,12 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
-            var serviceDefStr = @"
-    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
-      <Inputs>
+
+            var inputString = @"<Inputs>
         <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
-      </Inputs>
-      <Outputs>
+      </Inputs>";
+
+            var outputString = @"<Outputs>
         <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
         <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
         <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
@@ -157,9 +184,8 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
         <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
-      </Outputs>
-      
-    </Action>";
+      </Outputs>";
+            
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -171,7 +197,9 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -214,18 +242,13 @@ namespace Dev2.Core.Tests.DataList
 
             #region Setup Data
 
-            var inputDefStr = @"<Inputs>
-        <Input Name=""Rows"" Source=""[[RowCnt]]""/>
-      </Inputs>";
-
-            var serviceDefStr = @"
-    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
-      <Inputs>
+            var inputString = @"<Inputs>
         <Input Name=""Rows"" Source=""Rows"" DefaultValue=""5"" EmptyToNull=""true"">
             <Validator Type=""Required"" />
         </Input>
-      </Inputs>
-      <Outputs>
+</Inputs>";
+
+            var outputString = @"<Outputs>
         <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
         <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
         <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
@@ -237,9 +260,12 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
         <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
-      </Outputs>
-      
-    </Action>";
+      </Outputs>";
+
+            var inputDefStr = @"<Inputs>
+        <Input Name=""Rows"" Source=""[[RowCnt]]""/>
+      </Inputs>";
+            
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -251,7 +277,9 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -284,6 +312,24 @@ namespace Dev2.Core.Tests.DataList
 
             #region Setup Data
 
+            var inputString = @"<Inputs>
+        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
+      </Inputs>";
+
+            var outputString = @"<Outputs>
+        <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
+        <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
+        <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
+        <Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" />
+        <Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" />
+        <Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" />
+        <Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" />
+        <Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" />
+        <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
+        <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
+        <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
+      </Outputs>";
+
             var outputDefStr = @"      <Outputs>
         <Output Name=""BigID"" MapsTo=""[[BigID]]"" Value=""[[Rowz().BigIDs]]"" Recordset=""Row"" />
         <Output Name=""Column1"" MapsTo=""[[Column1]]"" Value=""[[Rowz().Column1]]"" Recordset=""Row"" />
@@ -301,27 +347,7 @@ namespace Dev2.Core.Tests.DataList
             var inputDefStr = @"<Inputs>
         <Input Name=""Rows"" Source=""[[RowCnt]]""/>
       </Inputs>";
-
-            var serviceDefStr = @"
-    <Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
-      <Inputs>
-        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
-      </Inputs>
-      <Outputs>
-        <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
-        <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
-        <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
-        <Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" />
-        <Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" />
-        <Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" />
-        <Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" />
-        <Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" />
-        <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
-        <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
-        <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
-      </Outputs>
-      
-    </Action>";
+           
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -333,7 +359,9 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -393,11 +421,10 @@ namespace Dev2.Core.Tests.DataList
         <Input Name=""Rows"" Source=""5""/>
       </Inputs>";
 
-            var serviceDefStr = @"<Action Name=""Row"" Type=""InvokeStoredProc"" SourceID=""62505a00-b304-4ac0-a55c-50ce85111f16"" SourceName=""GenDev"" SourceMethod=""dbo.proc_get_Rows"">
-      <Inputs>
-        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
-      </Inputs>
-      <Outputs>
+            var inputString = @"<Inputs>
+<Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
+      </Inputs>";
+            var outputString = @"<Outputs>
         <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
         <Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" />
         <Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" />
@@ -409,9 +436,8 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" />
         <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
-      </Outputs>
-      
-    </Action>";
+      </Outputs>";
+            
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -423,7 +449,9 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
+            activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
