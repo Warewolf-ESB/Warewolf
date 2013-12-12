@@ -249,7 +249,7 @@ namespace Dev2.UI
                 if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
                 {
                     EnvironmentChangedCommand.Execute(environment);
-                }    
+                }     
             });                                    
         }
 
