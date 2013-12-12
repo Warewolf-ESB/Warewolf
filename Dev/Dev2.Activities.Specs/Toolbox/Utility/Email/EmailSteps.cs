@@ -144,9 +144,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError,
-                                           actual ? "not found" : "found");
+            string fetchErrors = FetchErrors(result.DataListID);
+            bool actual = string.IsNullOrEmpty(fetchErrors);
+            string message = string.Format("expected {0} error but it {1}", anError,
+                                           actual ? "did not occur" : "did occur" + fetchErrors);
             Assert.AreEqual(expected, actual, message);
         }
     }

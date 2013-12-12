@@ -115,11 +115,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         [Then(@"gather system info execution has ""(.*)"" error")]
         public void ThenGatherSystemInfoExecutionHasError(string anError)
         {
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             bool expected = anError.Equals("NO");
-            bool actual = string.IsNullOrEmpty(FetchErrors(result.DataListID));
-            string message = string.Format("expected {0} error but an error was {1}", anError,
-                                           actual ? "not found" : "found");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            string fetchErrors = FetchErrors(result.DataListID);
+            bool actual = string.IsNullOrEmpty(fetchErrors);
+            string message = string.Format("expected {0} error but it {1}", anError,
+                                           actual ? "did not occur" : "did occur with the following :-" + fetchErrors);
             Assert.AreEqual(expected, actual, message);
         }
     }

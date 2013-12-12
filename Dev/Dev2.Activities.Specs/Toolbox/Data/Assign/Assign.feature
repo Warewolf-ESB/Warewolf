@@ -76,7 +76,7 @@ Scenario: Assign a scalar equal to a calculation
 	Then the value of "[[Result]]" equals "0"
 	And the assign execution has "NO" error
 
-Scenario: Assign a variable equal to a group calculation (SUM)
+Scenario: Assign a variable equal to a group calculation (sum)
 	Given I assign the value 30 to a variable "[[var1]]"
 	And I assign the value 30 to a variable "[[var2]]"
 	And I assign the value "=SUM([[var1]],[[var2]])" to a variable "[[Result]]"

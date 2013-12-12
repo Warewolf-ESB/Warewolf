@@ -1,7 +1,4 @@
 ﻿return {
-        '0 + 1': "one",
-		'1 + 0': "one",
-		'1 + 1': "two",
-		'0 + 2': "two",
-		'2 + 0': "two",       
-        }.get('([[val1]] + [[val2]])', "not one or two")
+        1: "one",				    
+		2: "two",   
+        }.get(([[val1]] + [[val2]]), "not one or two")

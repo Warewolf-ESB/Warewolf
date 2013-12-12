@@ -323,10 +323,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void ThenTheSqlbulkinsertExecutionHasError(string anError)
         {
             bool expected = anError.Equals("NO");
-            var dlID = ScenarioContext.Current.Get<Guid>("dlID");
-            bool actual = string.IsNullOrEmpty(FetchErrors(dlID));
-            string message = string.Format("expected {0} error but an error was {1}", anError,
-                                           actual ? "not found" : "found");
+            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
+            string fetchErrors = FetchErrors(result.DataListID);
+            bool actual = string.IsNullOrEmpty(fetchErrors);
+            string message = string.Format("expected {0} error but it {1}", anError,
+                                           actual ? "did not occur" : "did occur" + fetchErrors);
             Assert.AreEqual(expected, actual, message);
         }
     }
