@@ -17,15 +17,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryUtils", "Directory
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sonar Job Lanucher", "Sonar Job Lanucher\Sonar Job Lanucher.csproj", "{65EE90EB-FF96-4640-A4BB-6877F27FF952}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - Gated", "QueueBuildPlugin\QueueBuildPlugin - Gated.csproj", "{645BB595-B82F-4622-A94D-07D7372E556B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResolveDomainEmailAddress", "ResolveDomainEmailAddress\ResolveDomainEmailAddress.csproj", "{CF4E03B0-90CC-4C9E-ACE2-52AFBC6F6C76}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - CI", "QueueBuildPlugin - CI\QueueBuildPlugin - CI.csproj", "{20F2E46F-C30E-4AEB-8C70-FBE2A707D674}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - Gated", "QueueBuildPlugin - Gated\QueueBuildPlugin - Gated.csproj", "{645BB595-B82F-4622-A94D-07D7372E556B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueWait", "QueueWait\QueueWait.csproj", "{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
+		SccNumberOfProjects = 13
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -56,12 +58,15 @@ Global
 		SccProjectUniqueName9 = ResolveDomainEmailAddress\\ResolveDomainEmailAddress.csproj
 		SccProjectName9 = ResolveDomainEmailAddress
 		SccLocalPath9 = ResolveDomainEmailAddress
-		SccProjectUniqueName10 = QueueBuildPlugin\\QueueBuildPlugin\u0020-\u0020Gated.csproj
-		SccProjectName10 = QueueBuildPlugin
-		SccLocalPath10 = QueueBuildPlugin
-		SccProjectUniqueName11 = QueueBuildPlugin\u0020-\u0020CI\\QueueBuildPlugin\u0020-\u0020CI.csproj
-		SccProjectName11 = QueueBuildPlugin\u0020-\u0020CI
-		SccLocalPath11 = QueueBuildPlugin\u0020-\u0020CI
+		SccProjectUniqueName10 = QueueBuildPlugin\u0020-\u0020CI\\QueueBuildPlugin\u0020-\u0020CI.csproj
+		SccProjectName10 = QueueBuildPlugin\u0020-\u0020CI
+		SccLocalPath10 = QueueBuildPlugin\u0020-\u0020CI
+		SccProjectUniqueName11 = QueueBuildPlugin\u0020-\u0020Gated\\QueueBuildPlugin\u0020-\u0020Gated.csproj
+		SccProjectName11 = QueueBuildPlugin\u0020-\u0020Gated
+		SccLocalPath11 = QueueBuildPlugin\u0020-\u0020Gated
+		SccProjectUniqueName12 = QueueWait\\QueueWait.csproj
+		SccProjectName12 = QueueWait
+		SccLocalPath12 = QueueWait
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,10 +105,6 @@ Global
 		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65EE90EB-FF96-4640-A4BB-6877F27FF952}.Release|Any CPU.Build.0 = Release|Any CPU
-		{645BB595-B82F-4622-A94D-07D7372E556B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{645BB595-B82F-4622-A94D-07D7372E556B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF4E03B0-90CC-4C9E-ACE2-52AFBC6F6C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF4E03B0-90CC-4C9E-ACE2-52AFBC6F6C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF4E03B0-90CC-4C9E-ACE2-52AFBC6F6C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -112,6 +113,14 @@ Global
 		{20F2E46F-C30E-4AEB-8C70-FBE2A707D674}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20F2E46F-C30E-4AEB-8C70-FBE2A707D674}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20F2E46F-C30E-4AEB-8C70-FBE2A707D674}.Release|Any CPU.Build.0 = Release|Any CPU
+		{645BB595-B82F-4622-A94D-07D7372E556B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{645BB595-B82F-4622-A94D-07D7372E556B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
