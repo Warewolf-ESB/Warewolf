@@ -1780,7 +1780,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 560
 this.ScenarioSetup(scenarioInfo);
 #line 561
- testRunner.Given("is \"[[my(-1).var]]\" \"Contains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("is \"[[my(-1).var]]\" \"IsContains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 562
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 563

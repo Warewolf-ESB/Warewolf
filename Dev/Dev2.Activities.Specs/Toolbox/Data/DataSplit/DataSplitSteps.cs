@@ -54,6 +54,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             ScenarioContext.Current.Add("stringToSplit", stringToSplit);
         }
 
+        [Given(@"the direction is ""(.*)""")]
+        public void GivenTheDirectionIs(string direction)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAt(string variable, string splitType, string splitAt)
         {
@@ -138,9 +145,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but an error {1}", anError,
+            string message = string.Format("expected {0} error but an error {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
 
         [Then(@"the split result for ""(.*)"" will be ""(.*)""")]

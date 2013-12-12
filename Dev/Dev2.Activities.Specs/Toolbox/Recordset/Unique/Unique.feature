@@ -91,10 +91,7 @@ Scenario: Find unique records using a negative recordset index for In Field
 	When the unique tool is executed	
 	Then the unique result will be
 	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
-	And the unique execution has "NO" error
+	And the unique execution has "AN" error
 
 Scenario: Find unique records using a * for In Field
 	Given I have the following duplicated recordset
@@ -125,10 +122,7 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	When the unique tool is executed	
 	Then the unique result will be
 	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
-	And the unique execution has "NO" error
+	And the unique execution has "AN" error
 
 Scenario: Find unique records using a * for Return Field
 	Given I have the following duplicated recordset

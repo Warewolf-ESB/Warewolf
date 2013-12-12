@@ -408,7 +408,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "value"});
+                        "row"});
 #line 113
  testRunner.Given("I have the following recordset to sort", ((string)(null)), table11, "Given ");
 #line 115
@@ -420,7 +420,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "value"});
+                        "row"});
 #line 118
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table12, "Then ");
 #line 120

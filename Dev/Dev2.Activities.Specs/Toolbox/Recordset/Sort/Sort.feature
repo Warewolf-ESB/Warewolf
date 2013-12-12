@@ -111,12 +111,12 @@ Scenario: Sort a recordset forwards empty recordset
 	
 Scenario: Sort a recordset backwards empty recordset
 	Given I have the following recordset to sort
-	| rs       | value    |	
+	| rs       | row    |	
 	And I sort a record "[[rs().row]]"
 	And my sort order is "Backwards"
 	When the sort records tool is executed
 	Then the sorted recordset "[[rs().row]]"  will be 
-	| rs       | value    |
+	| rs       | row    |
 	And the sort execution has "AN" error
 			
 Scenario: Sort a recordset forwards with one row

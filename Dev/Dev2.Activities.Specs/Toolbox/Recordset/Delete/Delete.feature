@@ -107,12 +107,12 @@ Scenario: Delete a record that does not exist
 
 Scenario: Delete a record an empty recordset
 	Given I have the following recordset
-	| rs       | val |
+	| rs       | row |
 	And I delete a record "[[rs()]]"
 	When the delete tool is executed
 	Then the delete result should be "Failure"
 	And the recordset "[[rs().row]]" will be as follows
-	| rs       | val |
+	| rs       | row |
 	And the delete execution has "AN" error
 
 Scenario: Delete a scalar insted of a recordset

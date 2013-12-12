@@ -98,7 +98,7 @@ Scenario: Format number with multipart variables and numbers for number rounding
 	And I want to show "[[decimals]]1" decimals 
 	When the format number is executed
 	Then the result 80 will be returned
-   And formart number execution has "NO" error
+    And formart number execution has "NO" error
 
 Scenario: Format number with negative recordset index for number
 	Given I have a number "[[my(-1).int]]"

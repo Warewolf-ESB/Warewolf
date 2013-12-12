@@ -558,7 +558,7 @@ Scenario: decide if There Is No Error (False)
 	Then the decision result should be "False"
 
 Scenario: Decide using a negative recordset index
-	Given is "[[my(-1).var]]" "Contains" ""
+	Given is "[[my(-1).var]]" "IsContains" ""
 	When the decision tool is executed
 	Then the decision result should be "False"
 	And the decision execution has "AN" error

@@ -118,9 +118,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

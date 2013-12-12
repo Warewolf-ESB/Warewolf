@@ -26,42 +26,42 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
             int row = 1;
 
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string, string>>>("variableList");
-            foreach (dynamic variable in variableList)
+            var caseConversion = ScenarioContext.Current.Get<List<Tuple<string, string>>>("caseConversion");
+            foreach (dynamic variable in caseConversion)
             {
-                caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item3, variable.Item1, row));
+                caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item2, variable.Item1, row));
                 row++;
             }
         }
 
-        [Given(@"I convert a sentence ""(.*)"" to ""(.*)""")]
-        public void GivenIConvertASentenceTo(string sentence, string toCase)
+        [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
+        public void GivenIHaveACaseConvertVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string, string>> variableList;
+            List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
-                variableList = new List<Tuple<string, string, string>>();
+                variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string, string>("[[var]]", sentence, toCase));
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
         public void GivenIConvertAVariableTo(string variable, string toCase)
         {
-            List<Tuple<string, string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            List<Tuple<string, string>> caseConversion;
+            ScenarioContext.Current.TryGetValue("caseConversion", out caseConversion);
 
-            if (variableList == null)
+            if (caseConversion == null)
             {
-                variableList = new List<Tuple<string, string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
+                caseConversion = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("caseConversion", caseConversion);
             }
-
-            variableList.Add(new Tuple<string, string, string>(variable, "", toCase));
+            
+            caseConversion.Add(new Tuple<string, string>(variable, toCase));
         }
 
         [When(@"the case conversion tool is executed")]
@@ -76,6 +76,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void GivenIHaveACaseConversionRecordset(Table table)
         {
             List<TableRow> records = table.Rows.ToList();
+
+            if (records.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string ,string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
             foreach (TableRow record in records)
             {
                 List<Tuple<string, string, string>> variableList;
@@ -128,9 +145,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

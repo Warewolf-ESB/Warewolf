@@ -78,12 +78,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I convert a sentence \"Warewolf Rocks\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.Then("the sentence will be \"WAREWOLF ROCKS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
+ testRunner.Then("the sentence will be \"WAREWOLF ROCKS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 12
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -95,15 +97,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertASentenceToLowercase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence to lowercase", ((string[])(null)));
-#line 13
-this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I convert a sentence \"Warewolf Rocks\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.Then("the sentence will be \"warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 18
+ testRunner.Then("the sentence will be \"warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 19
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -115,15 +119,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertASentenceToSentence()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence to Sentence", ((string[])(null)));
-#line 19
-this.ScenarioSetup(scenarioInfo);
-#line 20
- testRunner.Given("I convert a sentence \"WAREWOLF Rocks\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 22
- testRunner.Then("the sentence will be \"Warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
+ testRunner.And("I convert a variable \"[[var]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 25
+ testRunner.Then("the sentence will be \"Warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -135,15 +141,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertASentenceToTitleCase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence to Title Case", ((string[])(null)));
-#line 25
-this.ScenarioSetup(scenarioInfo);
-#line 26
- testRunner.Given("I convert a sentence \"WAREWOLF Rocks\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
- testRunner.Then("the sentence will be \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 29
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 30
+ testRunner.And("I convert a variable \"[[var]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 32
+ testRunner.Then("the sentence will be \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 33
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -155,15 +163,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertASentenceStartingWithANumberToUPPERCASE()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence starting with a number to UPPER CASE", ((string[])(null)));
-#line 31
-this.ScenarioSetup(scenarioInfo);
-#line 32
- testRunner.Given("I convert a sentence \"1 Warewolf Rocks\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 34
- testRunner.Then("the sentence will be \"1 WAREWOLF ROCKS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
+this.ScenarioSetup(scenarioInfo);
+#line 36
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"1 Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 37
+ testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 39
+ testRunner.Then("the sentence will be \"1 WAREWOLF ROCKS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 40
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -175,30 +185,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertASentenceStartingWithANumberToLowerCase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence starting with a number to lower case", ((string[])(null)));
-#line 37
+#line 42
 this.ScenarioSetup(scenarioInfo);
-#line 38
- testRunner.Given("I convert a sentence \"1 Warewolf Rocks\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 39
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 40
- testRunner.Then("the sentence will be \"1 warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 41
- testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a sentence starting with a number to Sentence case")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
-        public virtual void ConvertASentenceStartingWithANumberToSentenceCase()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence starting with a number to Sentence case", ((string[])(null)));
 #line 43
-this.ScenarioSetup(scenarioInfo);
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"1 Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 44
- testRunner.Given("I convert a sentence \"1 WAREWOLF Rocks\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 46
@@ -210,20 +202,44 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a sentence starting with a number to Sentence case")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
+        public virtual void ConvertASentenceStartingWithANumberToSentenceCase()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence starting with a number to Sentence case", ((string[])(null)));
+#line 49
+this.ScenarioSetup(scenarioInfo);
+#line 50
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"1 WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 51
+ testRunner.And("I convert a variable \"[[var]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 53
+ testRunner.Then("the sentence will be \"1 warewolf rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 54
+ testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert a sentence starting with a number to Title Case")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
         public virtual void ConvertASentenceStartingWithANumberToTitleCase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a sentence starting with a number to Title Case", ((string[])(null)));
-#line 49
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 50
- testRunner.Given("I convert a sentence \"1 WAREWOLF Rocks\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 51
+#line 57
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"1 WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 58
+ testRunner.And("I convert a variable \"[[var]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 52
+#line 60
  testRunner.Then("the sentence will be \"1 Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
+#line 61
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -235,15 +251,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertABlankToTitleCase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a blank to Title Case", ((string[])(null)));
-#line 55
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 56
- testRunner.Given("I convert a sentence \"\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 57
+#line 64
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 65
+ testRunner.And("I convert a variable \"[[var]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 58
+#line 67
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 59
+#line 68
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -255,15 +273,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertABlankToSentencecase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a blank to Sentencecase", ((string[])(null)));
-#line 61
+#line 70
 this.ScenarioSetup(scenarioInfo);
-#line 62
- testRunner.Given("I convert a sentence \"\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
+#line 71
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 72
+ testRunner.And("I convert a variable \"[[var]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 73
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 64
+#line 74
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 65
+#line 75
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -275,15 +295,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertABlankToUPPERCASE()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a blank to UPPER CASE", ((string[])(null)));
-#line 67
+#line 77
 this.ScenarioSetup(scenarioInfo);
-#line 68
- testRunner.Given("I convert a sentence \"\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 78
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 79
+ testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 80
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
+#line 81
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
+#line 82
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -295,15 +317,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertABlankToLowercase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a blank to lowercase", ((string[])(null)));
-#line 73
+#line 84
 this.ScenarioSetup(scenarioInfo);
-#line 74
- testRunner.Given("I convert a sentence \"\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 75
+#line 85
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 86
+ testRunner.And("I convert a variable \"[[var]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 87
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
+#line 88
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 77
+#line 89
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -315,7 +339,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertARecordsetToUpper()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a recordset * to Upper", ((string[])(null)));
-#line 79
+#line 91
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -330,11 +354,11 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "rs().row",
                         "<x id=\"3\">three</x>"});
-#line 80
+#line 92
  testRunner.Given("I have a CaseConversion recordset", ((string)(null)), table1, "Given ");
-#line 85
+#line 97
  testRunner.And("I convert a variable \"[[rs(*).row]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 86
+#line 98
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -349,9 +373,9 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "rs().row",
                         "<X ID=\"3\">THREE</X>"});
-#line 87
+#line 99
  testRunner.Then("the case convert result for this varibale \"rs().row\" will be", ((string)(null)), table2, "Then ");
-#line 92
+#line 104
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -363,25 +387,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAnEmptyRecordsetToUpper()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an empty recordset * to Upper", ((string[])(null)));
-#line 94
+#line 106
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "val"});
-#line 95
+                        "row"});
+#line 107
  testRunner.Given("I have a CaseConversion recordset", ((string)(null)), table3, "Given ");
-#line 97
+#line 109
  testRunner.And("I convert a variable \"[[rs(*).row]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 110
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "val"});
-#line 99
+                        "row"});
+#line 111
  testRunner.Then("the case convert result for this varibale \"rs().row\" will be", ((string)(null)), table4, "Then ");
-#line 101
+#line 113
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -393,15 +417,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAEmptySentenceStartingWithANumberToUpper()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a empty sentence starting with a number to upper", ((string[])(null)));
-#line 103
+#line 115
 this.ScenarioSetup(scenarioInfo);
-#line 104
- testRunner.Given("I convert a sentence \"\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 116
+ testRunner.Given("I have a case convert variable \"[[var]]\" with a value of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 117
+ testRunner.And("I convert a variable \"[[var]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 118
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
+#line 119
  testRunner.Then("the sentence will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 107
+#line 120
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -413,13 +439,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertANegativeRecordsetIndexToUppercase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to uppercase", ((string[])(null)));
-#line 109
+#line 122
 this.ScenarioSetup(scenarioInfo);
-#line 110
- testRunner.Given("I convert a sentence \"[[my(-1).sentenct]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 111
+#line 123
+ testRunner.Given("I have a case convert variable \"[[[my().sentenct]]\" with a value of \"Warewolf Roc" +
+                    "ks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 124
+ testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 112
+#line 126
  testRunner.Then("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -431,13 +460,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertANegativeRecordsetIndexToLowercase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to lowercase", ((string[])(null)));
-#line 114
+#line 128
 this.ScenarioSetup(scenarioInfo);
-#line 115
- testRunner.Given("I convert a sentence \"[[my(-1).sentenct]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 116
+#line 129
+ testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
+                    "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 130
+ testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"lower\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 131
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 117
+#line 132
  testRunner.Then("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -449,13 +481,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertANegativeRecordsetIndexToSentence()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to Sentence", ((string[])(null)));
-#line 119
+#line 134
 this.ScenarioSetup(scenarioInfo);
-#line 120
- testRunner.Given("I convert a sentence \"[[my(-1).sentenct]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 121
+#line 135
+ testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
+                    "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 136
+ testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"Sentence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 122
+#line 138
  testRunner.Then("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -467,13 +502,16 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertANegativeRecordsetIndexToTitleCase()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert a negative recordset index to Title Case", ((string[])(null)));
-#line 124
+#line 140
 this.ScenarioSetup(scenarioInfo);
-#line 125
- testRunner.Given("I convert a sentence \"[[my(-1).sentenct]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 126
+#line 141
+ testRunner.Given("I have a case convert variable \"[[my().sentenct]]\" with a value of \"Warewolf Rock" +
+                    "s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 142
+ testRunner.And("I convert a variable \"[[my(-1).sentenct]]\" to \"Title Case\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 127
+#line 144
  testRunner.Then("the case convert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

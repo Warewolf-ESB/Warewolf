@@ -24,29 +24,44 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 
             int row = 1;
 
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string, string, string>>>("variableList");
+            var baseCollection = ScenarioContext.Current.Get<List<Tuple<string, string, string>>>("baseCollection");
 
-            foreach (dynamic variable in variableList)
+            foreach (dynamic variable in baseCollection)
             {
-                baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item3, variable.Item4,
-                                                                     variable.Item1, row));
+                baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item2, variable.Item3,
+                                                                    variable.Item1, row));
                 row++;
             }
         }
 
-        [Given(@"I convert value ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
-        public void GivenIConvertValueFromTypeToType(string value, string fromType, string toType)
+        [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
+        public void GivenIHaveAConvertVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string, string, string>> variableList;
+            List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
             {
-                variableList = new List<Tuple<string, string, string, string>>();
+                variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string, string, string>("[[var]]", value, fromType, toType));
+            variableList.Add(new Tuple<string, string>(variable, value));
+        }
+
+        [Given(@"I convert a variable ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
+        public void GivenIConvertAVariableFromTypeToType(string variable, string fromType, string toType)
+        {
+            List<Tuple<string, string, string>> baseCollection;
+            ScenarioContext.Current.TryGetValue("baseCollection", out baseCollection);
+
+            if (baseCollection == null)
+            {
+                baseCollection = new List<Tuple<string, string, string>>();
+                ScenarioContext.Current.Add("baseCollection", baseCollection);
+            }
+
+            baseCollection.Add(new Tuple<string, string, string>(variable, fromType, toType));
         }
 
         [When(@"the base conversion tool is executed")]
@@ -62,7 +77,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         {
             string error;
             string actualValue;
-            value = value.Replace("\"\"", "");
+            value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, "var", out actualValue, out error);
             Assert.AreEqual(value, actualValue);
@@ -75,9 +90,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

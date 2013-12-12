@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -32,6 +33,18 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     Build(variable, shape, data);
                     row++;
+                }
+            }
+
+            List<Tuple<string, string>> emptyRecordset;
+            bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+            if (isAdded)
+            {
+                foreach (Tuple<string, string> emptyRecord in emptyRecordset)
+                {
+                    shape.Append(string.Format("<{0}>", emptyRecord.Item1));
+                    shape.Append(string.Format("<{0}/>", emptyRecord.Item2));
+                    shape.Append(string.Format("</{0}>", emptyRecord.Item1));
                 }
             }
 
@@ -75,7 +88,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     addedRecordsets.Add(recordset);
                     addedFieldset.Add(recordField);
                 }
-
+                
                 data.Append(string.Format("<{0}>", recordset));
                 data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
                 data.Append(string.Format("</{0}>", recordset));

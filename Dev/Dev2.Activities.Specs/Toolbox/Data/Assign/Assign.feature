@@ -71,7 +71,7 @@ Scenario: Assign a scalar equal to a record set
 
 Scenario: Assign a scalar equal to a calculation
 	Given I assign the value 30 to a variable "[[var]]"
-	And I assign the value "=30-[[var]]" to a variable "[[Result]]"
+	And I assign the value "=30-[[var]]" to a variable "[[Result]]"	
 	When the assign tool is executed
 	Then the value of "[[Result]]" equals "0"
 	And the assign execution has "NO" error

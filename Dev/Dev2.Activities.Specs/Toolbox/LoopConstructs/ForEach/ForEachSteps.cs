@@ -107,6 +107,23 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void GivenIThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
             List<TableRow> rows = table.Rows.ToList();
+
+            if (rows.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
             foreach (TableRow tableRow in rows)
             {
                 List<Tuple<string, string>> variableList;

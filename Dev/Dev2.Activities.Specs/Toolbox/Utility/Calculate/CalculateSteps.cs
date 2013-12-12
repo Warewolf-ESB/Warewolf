@@ -13,9 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
-        //private DsfCalculateActivity _calculate;
-        //private string _formula;
-
         private void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -70,7 +67,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, string.Empty));
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
 
@@ -111,9 +108,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

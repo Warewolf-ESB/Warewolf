@@ -63,7 +63,7 @@ Scenario: Calculate the number of split seconds between two given dates
 	Given I have a first date "2013-11-29" 
 	And I have a second date "2014-11-01" 
 	And the date format as "yyyy-mm-dd"
-	And I selected output in "SplitSeconds" 	
+	And I selected output in "Split Secs" 	
 	When the datetime difference tool is executed
 	Then the difference should be "29116800000"
 	And datetimediff execution has "NO" error

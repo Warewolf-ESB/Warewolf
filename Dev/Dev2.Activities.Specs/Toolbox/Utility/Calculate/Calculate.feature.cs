@@ -102,7 +102,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.And("I have a calculate variable \"[[var2]]\" equal to \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I have the formula \"(([[var]]+[[var]])/[[var20]])+[[var20]]*[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have the formula \"((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]])\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
  testRunner.When("the calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17

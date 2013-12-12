@@ -36,6 +36,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]
         public void GivenIAssignTheValueToAVariable(string value, string variable)
         {
+            value = value.Replace('"', ' ').Trim();
+
+            if (value.StartsWith("="))
+            {
+                value = value.Replace("=", "");
+                value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+            }
+
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
@@ -69,7 +77,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-                Assert.AreEqual(recordSetValues[1], value);
+                value = value.Replace('"', ' ').Trim();
+
+                if (string.IsNullOrEmpty(value))
+                {
+                    Assert.IsTrue(recordSetValues.Count == 0);
+                }
+                else
+                {
+                    Assert.AreEqual(recordSetValues[1], value);
+                }
             }
             else
             {
@@ -89,9 +106,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

@@ -12,7 +12,7 @@ Scenario: Calculate using a given formula
 Scenario: Calculate using multiple scalars and recordset inputs
 	Given I have a calculate variable "[[var]]" equal to "1"
 	And I have a calculate variable "[[var2]]" equal to "20"
-	And I have the formula "(([[var]]+[[var]])/[[var20]])+[[var20]]*[[var]]"
+	And I have the formula "((([[var]]+[[var]])/[[var2]])+[[var2]]*[[var]])"
 	When the calculate tool is executed
 	Then the calculate result should be "20.1"
 	And the calculate execution has "NO" error

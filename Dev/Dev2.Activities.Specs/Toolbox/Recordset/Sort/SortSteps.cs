@@ -45,6 +45,23 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public void GivenIHaveTheFollowingRecordsetToSort(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
+
+            if (tableRows.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
             foreach (TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
@@ -106,9 +123,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

@@ -399,7 +399,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "val"});
+                        "row"});
 #line 109
  testRunner.Given("I have the following recordset", ((string)(null)), table14, "Given ");
 #line 111
@@ -411,7 +411,7 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
-                        "val"});
+                        "row"});
 #line 114
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table15, "And ");
 #line 116

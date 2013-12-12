@@ -53,26 +53,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Given(@"I have a number (.*)")]
         public void GivenIHaveANumber(string number)
         {
-            ScenarioContext.Current.Add("number", number.Replace("\"\"", ""));
+            ScenarioContext.Current.Add("number", number.Replace('"', ' ').Trim());
         }
 
         [Given(@"I selected rounding ""(.*)"" to (.*)")]
         public void GivenISelectedRoundingTo(string rounding, string to)
         {
-            ScenarioContext.Current.Add("rounding", rounding.Replace("\"\"", ""));
-            ScenarioContext.Current.Add("to", to.Replace("\"\"", ""));
+            ScenarioContext.Current.Add("rounding", rounding.Replace('"', ' ').Trim());
+            ScenarioContext.Current.Add("to", to.Replace('"', ' ').Trim());
         }
 
         [Given(@"I want to show (.*) decimals")]
         public void GivenIWantToShowDecimals(string decimalToShow)
         {
-            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace("\"\"", ""));
+            ScenarioContext.Current.Add("decimalToShow", decimalToShow.Replace('"', ' ').Trim());
         }
 
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
-        public void GivenIHaveAFormatnumberVariableEqualTo(string variable, int value)
+        public void GivenIHaveAFormatnumberVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
+            value = value.Replace('"', ' ').Trim();
+            variable = variable.Replace('"', ' ').Trim();
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
             if (variableList == null)
@@ -80,7 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable.Replace("\"\"", ""), string.Empty));
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [When(@"the format number is executed")]
@@ -96,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
@@ -110,9 +112,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
     }
 }

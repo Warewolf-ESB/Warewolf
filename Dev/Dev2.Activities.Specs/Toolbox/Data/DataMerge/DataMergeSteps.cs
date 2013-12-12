@@ -17,7 +17,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
@@ -80,6 +88,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void GivenAMergeRecordset(Table table)
         {
             List<TableRow> records = table.Rows.ToList();
+
+            if (records.Count == 0)
+            {
+                var rs = table.Header.ToArray()[0];
+                var field = table.Header.ToArray()[1];
+
+                List<Tuple<string, string>> emptyRecordset;
+
+                bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
+                if (!isAdded)
+                {
+                    emptyRecordset = new List<Tuple<string, string>>();
+                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                }
+                emptyRecordset.Add(new Tuple<string, string>(rs, field));
+            }
+
             foreach (TableRow record in records)
             {
                 List<Tuple<string, string>> variableList;
@@ -121,9 +146,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             string fetchErrors = FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError,
+            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.AreEqual(expected, actual, message);
+             Assert.IsTrue(expected == actual, message);
         }
 
         [Then(@"the merged result is the same as file ""(.*)""")]
