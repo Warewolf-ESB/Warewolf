@@ -8,11 +8,13 @@ using System.Windows.Documents;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Utils;
 using Dev2.Messages;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Moq;
@@ -35,7 +37,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var syncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var connectControl = new ConnectControl(mockEventAggregator.Object, syncWorker.Object);
             connectControl.TheServerComboBox.ItemsSource = new List<ServerDTO> { localhostServer, remoteServer, otherServer };
             //------------Execute Test---------------------------
             connectControl.TheServerComboBox.SelectedItem = remoteServer;
@@ -56,7 +59,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var syncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var connectControl = new ConnectControl(mockEventAggregator.Object,syncWorker.Object);
             var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
             connectControlViewModel.SelectedServer = remoteServer;
             connectControlViewModel.IsSelectedFromDropDown = false;
@@ -85,7 +89,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var syncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var connectControl = new ConnectControl(mockEventAggregator.Object,syncWorker.Object);
             var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
             connectControlViewModel.SelectedServer = localhostServer;
             connectControlViewModel.IsSelectedFromDropDown = false;
@@ -114,7 +119,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var syncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var connectControl = new ConnectControl(mockEventAggregator.Object,syncWorker.Object);
             var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
             connectControlViewModel.SelectedServer = null;
             connectControlViewModel.IsSelectedFromDropDown = false;
@@ -143,7 +149,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-            var connectControl = new ConnectControl(mockEventAggregator.Object);
+            var syncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var connectControl = new ConnectControl(mockEventAggregator.Object,syncWorker.Object);
             var connectControlViewModel = new ConnectControlViewModel(localhostServer.Environment);
             connectControlViewModel.IsSelectedFromDropDown = true;
             var serverDtos = new List<ServerDTO> { localhostServer, remoteServer, otherServer };

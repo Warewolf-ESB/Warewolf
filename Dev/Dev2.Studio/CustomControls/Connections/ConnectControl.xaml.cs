@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Annotations;
 using Dev2.Data.ServiceModel;
@@ -15,6 +16,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.Webs;
+using Dev2.Threading;
 using Action = System.Action;
 
 namespace Dev2.UI
@@ -25,20 +27,23 @@ namespace Dev2.UI
     public partial class ConnectControl : IConnectControl,INotifyPropertyChanged,IHandle<UpdateSelectedServer>
     {
         readonly IEventAggregator _eventPublisher;
+        readonly IAsyncWorker _asyncWorker;
         ConnectControlViewModel _viewModel;
 
         #region CTOR
 
         public ConnectControl()
-            : this(EventPublishers.Aggregator)
+            : this(EventPublishers.Aggregator,new AsyncWorker())
         {
         }
 
-        public ConnectControl(IEventAggregator eventPublisher)
+        public ConnectControl(IEventAggregator eventPublisher, IAsyncWorker asyncWorker)
         {
             InitializeComponent();
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _eventPublisher = eventPublisher;
+            _asyncWorker = asyncWorker;
             _eventPublisher.Subscribe(this);
             Loaded += OnLoaded;
         }
@@ -231,20 +236,21 @@ namespace Dev2.UI
             var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
             environment.CanStudioExecute = true;
 
-            //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
-            environment.Connect();
-
-            //Used by deployviewmodel and settings - to do, please use only one.
-            if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+            //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect            
+            _asyncWorker.Start(environment.Connect,() =>
             {
-                Dispatcher.BeginInvoke(new Action(() => ServerChangedCommand.Execute(server)));
-            }
+                //Used by deployviewmodel and settings - to do, please use only one.
+                if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+                {
+                   ServerChangedCommand.Execute(server);
+                }
 
-            //Used by rest.
-            if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
-            {
-                Dispatcher.BeginInvoke(new Action(() => EnvironmentChangedCommand.Execute(environment)));
-            }
+                //Used by rest.
+                if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
+                {
+                    EnvironmentChangedCommand.Execute(environment);
+                }    
+            });                                    
         }
 
         #endregion
