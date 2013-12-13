@@ -88,23 +88,26 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                         if(theRow != null)
                         {
-
                             var myCols = fedKey.ImpactedColumns;
 
                             if(myCols != null)
                             {
                                 foreach(var col in myCols)
                                 {
-                                    // TODO : Fetch index value from
+                                    // Fetch index value 
                                     var internalIdx = InternalFetchColumnIndex(col);
 
-                                    IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
+                                    // FOR : Bug_10247_Outter
+                                    // if -1 skip and try next key ;) 
+                                    if (internalIdx != -1)
+                                    {
+                                        IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
 
-                                    // normal object build
-                                    tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
-                                    tmp.UpdateIndex(key);
+                                        // normal object build
+                                        tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
+                                        tmp.UpdateIndex(key);
+                                    }
                                 }
-
                             }
                             else
                             {

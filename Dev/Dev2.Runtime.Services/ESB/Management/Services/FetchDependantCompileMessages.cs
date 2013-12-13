@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
             var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
-
+            var msgs = new CompileMessageList();
             if(thisService != null)
             {
                 var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceName);
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
                 if(deps.Count > 0)
                 {
-                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
+                    msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
                     return serializer.SerializeToBuilder(msgs);
 
                 }
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.Message.Append("Could not locate service with ID [ " + sGuid + " ]");
             }
 
-            return serializer.SerializeToBuilder(result);
+            return serializer.SerializeToBuilder(msgs);
         }
 
         public DynamicService CreateServiceEntry()

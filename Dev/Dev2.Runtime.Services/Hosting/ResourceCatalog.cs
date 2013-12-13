@@ -662,17 +662,6 @@ namespace Dev2.Runtime.Hosting
                                                  List<IResource> workspaceResources)
         {
             var resource = resources[0];
-            if(userRoles != string.Empty && !resource.IsUserInAuthorRoles(userRoles))
-            {
-                return new ResourceCatalogResult
-                    {
-                        Status = ExecStatus.AccessViolation,
-                        Message =
-                            string.Format(
-                                "<Error>{0} '{1}' deletion failed: Access Violation: you are attempting to delete a resource that you do not have rights to.</Error>",
-                                type, resource.ResourceID)
-                    };
-            }
 
             VersionControl(Path.GetDirectoryName(resource.FilePath), resource);
 

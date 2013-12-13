@@ -44,6 +44,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var windowsGroupPermissions = serializer.Deserialize<List<WindowsGroupPermission>>(permissions);
 
+                if (windowsGroupPermissions == null)
+                {
+                    throw new InvalidDataException("permissions");
+                }
+
                 DoFileEncryption(permissions.ToString());
 
                 try
