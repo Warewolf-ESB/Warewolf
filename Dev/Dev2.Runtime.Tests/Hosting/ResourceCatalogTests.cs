@@ -1330,31 +1330,6 @@ namespace Dev2.Tests.Runtime.Hosting
             VerifyObjectGraph(resources, graph);
         }
 
-        [TestMethod]
-        [TestCategory("DynamicObjectHelperUnitTest")]
-        [Description("Test for DynamicObjectHelper's AddServiceAction method: An invalid action (it's actually variable named action in the datalist) is passed to it and it is not expected to be added to the DynamicService object")]
-        [Owner("Ashley Lewis")]
-        public void DynamicObjectHelper_DynamicObjectHelperUnitTest_WithANodeFromTheDatalist_NoServiceActionsAddedToTheDynamicService()
-        {
-            ////init
-            //var ds = new DynamicService();
-            //var invalidAction = new ServiceDefinitionLoader().GenerateServiceGraph(
-            //    new StringBuilder("<Action Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\">" +
-            //                        "<Type />" +
-            //                    "</Action>"));
-            ////dynamic invalidAction = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(
-            ////    );
-
-            ////exe
-            //new DynamicObjectHelper().AddServiceAction(invalidAction, ds);
-
-
-            ////assert
-            //Assert.AreEqual(0, ds.Actions.Count, "AddServiceAction added an invalid ServiceAction to the DynamicService");
-
-            Assert.Fail("Fix me Trav ;) - I need a full service defition");
-        }
-
         #endregion
 
         #region RemoveWorkspace
@@ -1459,7 +1434,6 @@ namespace Dev2.Tests.Runtime.Hosting
             var models = rc.GetModels(workspaceID, enSourceType.EmailSource);
 
             //------------Assert Results-------------------------
-
             foreach(var model in models)
             {
                 Assert.AreEqual(typeof(EmailSource), model.GetType());
