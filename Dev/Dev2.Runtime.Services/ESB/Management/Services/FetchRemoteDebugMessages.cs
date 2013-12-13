@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -14,15 +15,19 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchRemoteDebugMessages : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string invokerID;
+            string invokerID = null;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
-            StringBuilder result = new StringBuilder();
+            StringBuilder tmp;
+            values.TryGetValue("InvokerID", out tmp);
+            if (tmp != null)
+            {
+                invokerID = tmp.ToString();
+            }
 
-            values.TryGetValue("InvokerID", out invokerID);
-
-            if (string.IsNullOrEmpty(invokerID))
+            if(string.IsNullOrEmpty(invokerID))
             {
                 throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
@@ -31,14 +36,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             // RemoteDebugMessageRepo
             Guid.TryParse(invokerID, out iGuid);
 
-            if (iGuid != Guid.Empty)
+            if(iGuid != Guid.Empty)
             {
                 var items = RemoteDebugMessageRepo.Instance.FetchDebugItems(iGuid);
-                var tmp = JsonConvert.SerializeObject(items);
-                result.Append(tmp);
+
+                return serializer.SerializeToBuilder(items);
             }
 
-            return result.ToString();
+            return new StringBuilder();
         }
 
         public DynamicService CreateServiceEntry()

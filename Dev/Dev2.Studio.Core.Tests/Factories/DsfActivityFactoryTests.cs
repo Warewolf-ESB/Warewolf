@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -31,7 +32,7 @@ namespace Dev2.Core.Tests.Factories
             model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
             model.Setup(m => m.ID).Returns(expectedResourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);
-            model.Setup(m => m.WorkflowXaml).Returns("<root/>");
+            model.Setup(m => m.WorkflowXaml).Returns(new StringBuilder("<root/>"));
 
             DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
 
@@ -50,8 +51,8 @@ namespace Dev2.Core.Tests.Factories
         {
             var activity = new DsfServiceActivity();
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
-            mockRes.Setup(r => r.WorkflowXaml).Returns(StringResources.xmlNullSourceMethodServiceDef);
-            DsfActivity act = DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
+            mockRes.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlNullSourceMethodServiceDef));
+            DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true);
 
             //If no exception - pass
             Assert.IsTrue(true);

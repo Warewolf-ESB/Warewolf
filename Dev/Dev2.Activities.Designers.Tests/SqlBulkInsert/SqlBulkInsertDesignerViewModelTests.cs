@@ -5,19 +5,20 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Xml.Linq;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
+using Dev2.Common.Common;
+using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
@@ -459,7 +460,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var resourceModel = new Mock<IResourceModel>();
 
-            var viewModel = CreateViewModel(modelItem, databases, eventPublisher.Object, resourceModel.Object);
+            var viewModel = CreateViewModel(modelItem, databases, eventPublisher.Object, resourceModel.Object, true);
 
             //------------Execute Test---------------------------
             viewModel.EditDatabaseCommand.Execute(null);
@@ -872,60 +873,61 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         static TestSqlBulkInsertDesignerViewModel CreateViewModel(Dictionary<DbSource, DbTableList> sources, string columnListErrors = "")
         {
             var modelItem = CreateModelItem();
-            return CreateViewModel(modelItem, sources, columnListErrors);
+            return CreateViewModel(modelItem, sources, false, columnListErrors);
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, string columnListErrors = "")
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, bool single = false, string columnListErrors = "")
         {
-            return CreateViewModel(modelItem, sources, new Mock<IEventAggregator>().Object, new Mock<IResourceModel>().Object, columnListErrors);
+            return CreateViewModel(modelItem, sources, new Mock<IEventAggregator>().Object, new Mock<IResourceModel>().Object, single, columnListErrors);
         }
 
-        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, IEventAggregator eventAggregator, IResourceModel resourceModel, string columnListErrors = "")
+        static TestSqlBulkInsertDesignerViewModel CreateViewModel(ModelItem modelItem, Dictionary<DbSource, DbTableList> sources, IEventAggregator eventAggregator, IResourceModel resourceModel, bool configureFindSingle = false, string columnListErrors = "")
         {
             var sourceDefs = sources == null ? null : sources.Select(s => s.Key.ToXml().ToString());
 
             var envModel = new Mock<IEnvironmentModel>();
             envModel.Setup(e => e.Connection.WorkspaceID).Returns(Guid.NewGuid());
 
-            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<string>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<XmlData>{0}</XmlData>", sourceDefs == null ? "" : string.Join("\n", sourceDefs)));
+            var resourceRepo = new Mock<IResourceRepository>();
 
-            var tableJson = string.Empty;
-            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<string>(s => s.Contains("GetDatabaseTablesService")), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Callback((string xmlRequest, Guid workspaceID, Guid dataListID) =>
+            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<StringBuilder>(s => s.Contains("FindSourcesByType")), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", sourceDefs == null ? "" : string.Join("\n", sourceDefs))));
+
+            // return the resource repository now ;)
+            envModel.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
+
+            // setup the FindSourcesByType command
+            var dbs = sources.Keys.ToList();
+            resourceRepo.Setup(r => r.FindSourcesByType<DbSource>(It.IsAny<IEnvironmentModel>(), enSourceType.SqlDatabase)).Returns(dbs);
+
+            var tableJson = new DbTableList();
+            resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
+            {
+                var tableList = sources[src];
+                tableJson = tableList;
+            }).Returns(() => tableJson);
+
+            var columnsJson = new DbColumnList();
+            resourceRepo.Setup(r => r.GetDatabaseTableColumns(It.IsAny<DbSource>(), It.IsAny<DbTable>())).Callback((DbSource src, DbTable tbl) =>
+            {
+                var tableName = tbl.TableName;
+                var tables = sources[src];
+
+                var table = tables.Items.First(t => t.TableName == tableName.Trim(new[] { '"' }));
+                var columnList = new DbColumnList();
+                columnList.Items.AddRange(table.Columns);
+                if(!string.IsNullOrEmpty(columnListErrors))
                 {
-                    var xml = XElement.Parse(xmlRequest);
-                    var database = xml.Element("Database");
-                    var dbSource = JsonConvert.DeserializeObject<DbSource>(database.Value);
-                    var tableList = sources[dbSource];
-                    tableJson = tableList.ToString();
-                })
-                .Returns(() => tableJson);
+                    columnList.HasErrors = true;
+                    columnList.Errors = columnListErrors;
+                }
+                columnsJson = columnList;
+            }).Returns(() => columnsJson);
 
-            var columnsJson = string.Empty;
-            envModel.Setup(e => e.Connection.ExecuteCommand(It.Is<string>(s => s.Contains("GetDatabaseColumnsForTableService")), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Callback((string xmlRequest, Guid workspaceID, Guid dataListID) =>
-                {
-                    var xml = XElement.Parse(xmlRequest);
-                    var database = xml.Element("Database");
-                    var tableName = xml.Element("TableName");
-
-                    var dbSource = JsonConvert.DeserializeObject<DbSource>(database.Value);
-                    var tables = sources[dbSource];
-
-                    var table = tables.Items.First(t => t.TableName == tableName.Value.Trim(new[] { '"' }));
-                    var columnList = new DbColumnList();
-                    columnList.Items.AddRange(table.Columns);
-                    if(!string.IsNullOrEmpty(columnListErrors))
-                    {
-                        columnList.HasErrors = true;
-                        columnList.Errors = columnListErrors;
-                    }
-                    columnsJson = columnList.ToString();
-                })
-                .Returns(() => columnsJson);
-
-            envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel);
+            if (configureFindSingle)
+            {
+                envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel);
+            }
 
             return new TestSqlBulkInsertDesignerViewModel(modelItem, envModel.Object, eventAggregator);
         }

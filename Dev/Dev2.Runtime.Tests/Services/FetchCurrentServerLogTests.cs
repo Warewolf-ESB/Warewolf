@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FetchCurrentServerLogTests
     {
         #region Static Class Init
@@ -22,6 +25,14 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         #endregion
+
+
+        ExecuteMessage ConvertToMsg(StringBuilder msg)
+        {
+            var serialier = new Dev2JsonSerializer();
+            var result = serialier.Deserialize<ExecuteMessage>(msg);
+            return result;
+        }
 
         #region CTOR
 
@@ -45,7 +56,8 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new FetchCurrentServerLog(serverLogPath);
             var actual = esb.Execute(null, null);
-            Assert.AreEqual(string.Empty, actual);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
 
@@ -58,7 +70,8 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new FetchCurrentServerLog(serverLogPath);
             var actual = esb.Execute(null, null);
-            Assert.AreEqual(Expected, actual);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(Expected, msg.Message.ToString());
         }
 
         #endregion

@@ -1,12 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Dialogs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Threading;
-using System.Windows;
 
 namespace Dev2.Core.Tests.ViewModelTests.Dialogs
 {

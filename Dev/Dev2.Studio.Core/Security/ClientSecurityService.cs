@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using Dev2.Common;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Dev2.Controller;
 using Dev2.Services.Security;
 
 namespace Dev2.Security
@@ -19,12 +20,16 @@ namespace Dev2.Security
             Task.Factory.StartNew(() => base.Read());
         }
 
-        protected override string ReadPermissions()
+        protected override List<WindowsGroupPermission> ReadPermissions()
         {
-            dynamic dataObj = new Unlimited.Framework.UnlimitedObject();
-            dataObj.Service = "SecurityReadService";
 
-            return _serverProxy.ExecuteCommand(dataObj.XmlString, _serverProxy.WorkspaceID, GlobalConstants.NullDataListID);
+            CommunicationController communicationController = new CommunicationController()
+            {
+                ServiceName = "SecurityReadService"
+            };
+
+            return communicationController.ExecuteCommand<List<WindowsGroupPermission>>(_serverProxy, _serverProxy.WorkspaceID);
+
         }
 
         protected override void OnDisposed()

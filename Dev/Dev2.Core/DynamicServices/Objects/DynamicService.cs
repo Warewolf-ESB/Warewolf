@@ -9,6 +9,8 @@
 //                  
 #endregion
 
+using Dev2.DynamicServices.Objects;
+using Dev2.DynamicServices.Objects.Base;
 
 namespace Dev2.DynamicServices
 {

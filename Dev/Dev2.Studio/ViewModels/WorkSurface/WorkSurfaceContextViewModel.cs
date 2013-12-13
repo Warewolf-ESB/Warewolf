@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Activities.Presentation.View;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
@@ -31,8 +27,6 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Utils;
-using Newtonsoft.Json;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -358,10 +352,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         bool CanExecute()
-        {
-            var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
-            return enabled;
-        }
+            {
+                var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
+                return enabled;
+            }
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
@@ -406,20 +400,21 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             CommandManager.InvalidateRequerySuggested();
 
-            dynamic buildRequest = new UnlimitedObject();
+            var result  = ContextualResourceModel.Environment.ResourceRepository.StopExecution(ContextualResourceModel);
 
-            buildRequest.Service = "TerminateExecutionService";
-            string[] securityRoles = { "Administrators" };
-            buildRequest.Roles = String.Join(",", securityRoles);
+            //dynamic buildRequest = new UnlimitedObject();
 
-            buildRequest.ResourceID = ContextualResourceModel.ID;
+            //buildRequest.Service = "TerminateExecutionService";
+            //buildRequest.Roles = String.Join(",", _securityContext.Roles);
 
-            Guid workspaceID = ContextualResourceModel.Environment.Connection.WorkspaceID;
+            //buildRequest.ResourceID = ContextualResourceModel.ID;
 
-            string result =
-                ContextualResourceModel.Environment.Connection.
-                      ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
-                string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
+            //Guid workspaceID = ((IStudioClientContext)ContextualResourceModel.Environment.DsfChannel).WorkspaceID;
+
+            //string result =
+            //    ContextualResourceModel.Environment.DsfChannel.
+            //          ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
+            //    string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
 
             DispatchServerDebugMessage(result, ContextualResourceModel);
 
@@ -508,7 +503,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     CheckForServerMessages(resource);
                     _hasMappingChange = false;
                 }
-                var saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
+                ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
             }
@@ -522,38 +517,26 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return;
             }
-            var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
-            if(string.IsNullOrEmpty(compileMessagesFromServer))
-            {
-                return;
-            }
-            if(compileMessagesFromServer.Contains("<Error>"))
-            {
-                return;
-            }
-            var compileMessageList = JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
+
+            var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
+            
             if(compileMessageList.Count == 0)
             {
                 return;
             }
+
             var showResourceChangedUtil = new ResourceChangeHandler(EventPublisher);
             showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);
         }
 
-        void DisplaySaveResult(string result, IContextualResourceModel resource)
+        void DisplaySaveResult(ExecuteMessage result, IContextualResourceModel resource)
         {
-            var sb = new StringBuilder();
-            sb.AppendLine(String.Format("<Save StartDate=\"{0}\">",
-                                        DateTime.Now.ToString(CultureInfo.InvariantCulture)));
-            sb.AppendLine(result);
-            sb.AppendLine(String.Format("</Save>"));
-
-            DispatchServerDebugMessage(sb.ToString(), resource);
+            DispatchServerDebugMessage(result, resource);
         }
 
-        void DispatchServerDebugMessage(string message, IContextualResourceModel resource)
+        void DispatchServerDebugMessage(ExecuteMessage message, IContextualResourceModel resource)
         {
-            var debugstate = DebugStateFactory.Create(message, resource);
+            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
             if(_debugOutputViewModel != null)
             {
                 debugstate.SessionID = _debugOutputViewModel.SessionID;

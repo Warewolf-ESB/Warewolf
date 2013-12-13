@@ -12,6 +12,7 @@ using System.Reflection;
 using System.Text;
 using System.Xaml;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Decision;
 using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -40,9 +41,9 @@ namespace Dev2.Utilities
 
         #region SerializeWorkflow
 
-        public string SerializeWorkflow(ModelService modelService)
+        public StringBuilder SerializeWorkflow(ModelService modelService)
         {
-            var text = string.Empty;
+            StringBuilder text = new StringBuilder();
             var builder = EnsureImplementation(modelService);
             if(builder != null)
             {
@@ -51,7 +52,8 @@ namespace Dev2.Utilities
                 {
                     var xw = ActivityXamlServices.CreateBuilderWriter(new XamlXmlWriter(sw, new XamlSchemaContext()));
                     XamlServices.Save(xw, builder);
-                    text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").ToString();
+
+                    text = sb.Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "");
                 }
             }
             text = SanitizeXaml(text);
@@ -156,8 +158,6 @@ namespace Dev2.Utilities
                 FixExpressions(chart, true);
             }
 
-            chart = null;
-
             CompileExpressionsImpl(dynamicActivity);
         }
 
@@ -198,7 +198,6 @@ namespace Dev2.Utilities
 
             var compiler = new TextExpressionCompiler(settings);
             var results = compiler.Compile(); // Nasty MS memory leak ;(
-            compiler = null;
 
             if(results.HasErrors)
             {
@@ -349,7 +348,7 @@ namespace Dev2.Utilities
 
         #region SanitizeXaml
 
-        public string SanitizeXaml(string workflowXaml)
+        public StringBuilder SanitizeXaml(StringBuilder workflowXaml)
         {
             // A rehosted designer generates the following exception when trying to export (serialize) a workflow:
             //
@@ -363,19 +362,21 @@ namespace Dev2.Utilities
 
         #region RemoveNodeValue
 
-        string RemoveNodeValue(string xml, string nodeName)
+        StringBuilder RemoveNodeValue(StringBuilder xml, string nodeName)
         {
-            if(string.IsNullOrEmpty(xml))
+            if(xml == null || xml.Length == 0)
             {
                 return xml;
             }
-            var startIdx = xml.IndexOf(nodeName, StringComparison.InvariantCultureIgnoreCase);
+
+            var startIdx = xml.IndexOf(nodeName, 0, true);
+
             if(startIdx == -1)
             {
                 return xml;
             }
             startIdx += nodeName.Length;
-            var endIdx = xml.IndexOf(nodeName.Insert(1, "/"), startIdx, StringComparison.InvariantCultureIgnoreCase);
+            var endIdx = xml.IndexOf(nodeName.Insert(1, "/"), startIdx, true);
             var length = endIdx - startIdx;
             return length > 0 ? xml.Remove(startIdx, length) : xml;
         }

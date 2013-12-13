@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices.Objects;
 using Dev2.Web;
 using Unlimited.Framework;
 
@@ -34,9 +35,10 @@ namespace Dev2.DynamicServices
 
         public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
         {
+            ThreadsToDispose = new Dictionary<int, List<Guid>>();
+
             if(!string.IsNullOrEmpty(xmldata))
             {
-                ThreadsToDispose = new Dictionary<int, List<Guid>>();
                 dynamic dataObject = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(xmldata);
 
                 if(!dataObject.HasError)

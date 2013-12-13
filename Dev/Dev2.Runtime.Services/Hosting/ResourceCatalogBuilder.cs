@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -97,7 +98,9 @@ namespace Dev2.Runtime.Hosting
                         ServerLogger.LogError("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
-                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(xml.ToString(SaveOptions.None));
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    var isValid = xml != null && HostSecurityProvider.Instance.VerifyXml(result);
                     if(isValid)
                     {
                         var resource = new Resource(xml)
@@ -119,14 +122,10 @@ namespace Dev2.Runtime.Hosting
                             currentItem.FileStream.Close();
 
                             xml = resource.UpgradeXml(xml);
-                            var signedXml = HostSecurityProvider.Instance.SignXml(xml.ToString(SaveOptions.DisableFormatting));
-                            var encodedText = Encoding.UTF8.GetBytes(signedXml);
 
-                            // 4096
-                            using(var targetStream = new FileStream(currentItem.FilePath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite, 4096, true))
-                            {
-                                targetStream.Write(encodedText, 0, encodedText.Length);
-                            }
+                            StringBuilder updateXml = xml.ToStringBuilder();
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
                         }
 
                         lock(addLock)
@@ -138,9 +137,6 @@ namespace Dev2.Runtime.Hosting
                     {
                         ServerLogger.LogError(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
-
-                    xml = null;
-
                 });
             }
             finally

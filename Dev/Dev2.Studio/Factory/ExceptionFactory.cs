@@ -102,7 +102,7 @@ namespace Dev2.Studio.Factory
         }
 
         public static Func<string, string> GetUniqueOutputPath = (extension) => FileHelper.GetUniqueOutputPath(extension);
-        public static Func<IEnvironmentModel,string> GetServerLogTempPath = (environmentModel) => FileHelper.GetServerLogTempPath(environmentModel);
+        public static Func<IEnvironmentModel, string> GetServerLogTempPath = (environmentModel) => environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel);
         public static Func<string> GetStudioLogTempPath = () => FileHelper.GetStudioLogTempPath();
 
         /// <summary>

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -22,15 +25,23 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string ServerLogPath { get { return _serverLogPath; } }
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var logData = "";
+            var result = new ExecuteMessage { HasError = false };
             if(File.Exists(_serverLogPath))
             {
-                logData = File.ReadAllText(_serverLogPath);
+                var lines = File.ReadLines(_serverLogPath);
+
+                foreach (var line in lines)
+                {
+                    result.Message.Append(line);
+                }
+
                 File.Delete(_serverLogPath);
             }
-            return logData;
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(result);
         }
 
         public DynamicService CreateServiceEntry()

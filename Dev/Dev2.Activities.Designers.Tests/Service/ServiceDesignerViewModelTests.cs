@@ -4,6 +4,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
@@ -43,15 +44,17 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resourceID = Guid.NewGuid();
 
-            var errors = new List<IErrorInfo>();
-            errors.Add(new ErrorInfo()
+            var errors = new List<IErrorInfo>
                 {
-                    FixData = null,
-                    FixType = FixType.None,
-                    ErrorType = ErrorType.None,
-                    InstanceID = Guid.NewGuid(),
-                    Message = "Message Data"
-                });
+                    new ErrorInfo
+                        {
+                            FixData = null,
+                            FixType = FixType.None,
+                            ErrorType = ErrorType.None,
+                            InstanceID = Guid.NewGuid(),
+                            Message = "Message Data"
+                        }
+                };
 
             var rootModel = new Mock<IContextualResourceModel>();
             rootModel.Setup(m => m.Errors.Count).Returns(0);
@@ -1014,7 +1017,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var model = new Mock<IContextualResourceModel>();
             model.Setup(r => r.ResourceName).Returns("TestResource");
             model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
-            model.Setup(r => r.WorkflowXaml).Returns("<root/>");
+            model.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);

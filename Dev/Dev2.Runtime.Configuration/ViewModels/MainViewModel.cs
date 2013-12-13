@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
-using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System;
 using System.Collections.Generic;

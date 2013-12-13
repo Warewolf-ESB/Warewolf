@@ -9,7 +9,7 @@ using Dev2.Studio;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 

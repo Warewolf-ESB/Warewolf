@@ -5,7 +5,6 @@ using ActivityUnitTests;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.PathOperations;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -20,7 +19,10 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass][ExcludeFromCodeCoverage]
     public class PathMoveTests : BaseActivityUnitTest
     {
+        #pragma warning disable 649
         static string _tempFile;
+        #pragma warning restore 649
+        
         const string _newFileName = "MovedTempFile";
 
         /// <summary>

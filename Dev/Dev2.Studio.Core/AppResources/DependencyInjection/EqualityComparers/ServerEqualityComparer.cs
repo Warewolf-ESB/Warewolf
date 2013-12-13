@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
 
-namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
+namespace Dev2.AppResources.DependencyInjection.EqualityComparers
 {
-    public class ServerEqualityComparer : IEqualityComparer<IServer>
+    public class ServerEqualityComparer : IEqualityComparer<IEnvironmentModel>
     {
         #region Class Members
 
@@ -16,24 +13,19 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         #region Methods
 
-        public bool Equals(IServer x, IServer y)
+        public bool Equals(IEnvironmentModel x, IEnvironmentModel y)
         {
             if (x == null || y == null) return false;
-            return x.AppAddress == y.AppAddress;
+            return x.Connection.AppServerUri == y.Connection.AppServerUri;
         }
 
-        public bool Equals(IServer x, object y)
+        public bool Equals(IEnvironmentModel x, object y)
         {
-            IServer server = y as IServer;
-            return server != null && x.AppAddress == server.AppAddress;
+            IEnvironmentModel server = y as IEnvironmentModel;
+            return server != null && x.Connection.AppServerUri == server.Connection.AppServerUri;
         }
 
-        public bool Equals(IServer x, IEnvironmentModel y)
-        {
-            return x.AppAddress == y.Connection.AppServerUri.AbsoluteUri;
-        }
-
-        public int GetHashCode(IServer obj)
+        public int GetHashCode(IEnvironmentModel obj)
         {
             return obj.GetHashCode();
         }

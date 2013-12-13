@@ -5,10 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 
@@ -148,7 +146,7 @@ namespace Dev2.Studio
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+            //e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
         }
     }
 }

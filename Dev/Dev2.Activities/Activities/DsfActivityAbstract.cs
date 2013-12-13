@@ -230,8 +230,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
             IBinaryDataList inputsAndOutputs = compiler.Merge(ActivityInputOutputUtils.GetSimpleInputs(this), ActivityInputOutputUtils.GetSimpleOutputs(this), enDataListMergeTypes.Union, enTranslationDepth.Data, true, out errors);
             return inputsAndOutputs;
-
-            return null;
         }
 
         #endregion Get Wizard Data

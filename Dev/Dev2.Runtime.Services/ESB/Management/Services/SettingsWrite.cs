@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -15,46 +17,56 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SettingsWrite : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = "Success";
+            ExecuteMessage msg = new ExecuteMessage {HasError = false};
+            msg.SetMessage("Success");
             if(values == null)
             {
                 throw new InvalidDataException("Empty values passed.");
             }
-            string settingsJson;
+            StringBuilder settingsJson;
             values.TryGetValue("Settings", out settingsJson);
-            if(string.IsNullOrEmpty(settingsJson))
+            if(settingsJson ==null || settingsJson.Length == 0)
             {
                 throw new InvalidDataException("Error: Unable to parse values.");
             }
-            var errors = new StringBuilder();
+           
             try
             {
-                var settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
-                ExecuteService(new SecurityWrite(), "Permissions", settings.Security, theWorkspace, errors);
+                var settings = JsonConvert.DeserializeObject<Settings>(settingsJson.ToString());
+                var errors = ExecuteService(new SecurityWrite(), "Permissions", settings.Security, theWorkspace);
+
+                if (errors.Length > 0)
+                {
+                    msg.HasError = true;
+                    msg.SetMessage(errors.ToString());
+                }
             }
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                errors.AppendLine("Error writing settings configuration.");
+                msg.HasError = true;
+                msg.SetMessage("Error writing settings configuration.");
             }
 
-            if(errors.Length > 0)
-            {
-                result = errors.ToString();
-            }
-            return result;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(msg);
         }
 
-        static void ExecuteService(IEsbManagementEndpoint service, string key, object value, IWorkspace theWorkspace, StringBuilder errors)
+        StringBuilder ExecuteService(IEsbManagementEndpoint service, string key, object value, IWorkspace theWorkspace)
         {
-            var values = new Dictionary<string, string> { { key, JsonConvert.SerializeObject(value) } };
-            var result = service.Execute(values, theWorkspace);
-            if(result.ToLowerInvariant() != "success")
+            Dev2JsonSerializer serializer= new Dev2JsonSerializer();
+            var values = new Dictionary<string, StringBuilder> { { key, serializer.SerializeToBuilder(value)} };
+            var result = service.Execute(values, theWorkspace).ToString();
+            var msg = serializer.Deserialize<ExecuteMessage>(result);
+
+            if (msg.HasError)
             {
-                errors.AppendLine(result);
+                return msg.Message;
             }
+
+            return new StringBuilder();
         }
 
         public DynamicService CreateServiceEntry()

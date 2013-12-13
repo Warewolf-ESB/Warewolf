@@ -1,13 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Windows.Controls;
-using Dev2.Common;
-using Dev2.Studio.Core.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Controls;
+using Dev2.Common;
+using Dev2.Studio.Core.Configuration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Configuration
 {

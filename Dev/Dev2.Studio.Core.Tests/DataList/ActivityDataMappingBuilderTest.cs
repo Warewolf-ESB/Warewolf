@@ -1,4 +1,5 @@
-﻿using Dev2.Activities;
+﻿using System.Text;
+using Dev2.Activities;
 using Dev2.DataList;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -48,7 +49,7 @@ namespace Dev2.Core.Tests.DataList
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);            
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
             //------------Execute Test---------------------------
@@ -72,7 +73,7 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
 
             #region ServiceDef
-
+      
             var inputString = @"<Inputs><Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" /></Inputs>";
 
             var outputString = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" /><Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" /><Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" /><Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" /><Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" /><Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" /><Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" /><Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" /><Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" /></Outputs>";
@@ -90,7 +91,7 @@ namespace Dev2.Core.Tests.DataList
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
             //------------Execute Test---------------------------
@@ -99,7 +100,7 @@ namespace Dev2.Core.Tests.DataList
 
             //------------Assert Results-------------------------
 
-            const string inputExpected = @"<Inputs><Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" /></Inputs>";
+            const string inputExpected = "<Inputs><Input Name=\"Rows\" Source=\"Rows\" EmptyToNull=\"false\" DefaultValue=\"\" /></Inputs>";
             const string outputExpected = @"<Outputs><Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" /><Output Name=""Column1"" MapsTo=""Column1"" Value=""[[Row().Column1]]"" Recordset=""Row"" /><Output Name=""Column2"" MapsTo=""Column2"" Value=""[[Row().Column2]]"" Recordset=""Row"" /><Output Name=""Column3"" MapsTo=""Column3"" Value=""[[Row().Column3]]"" Recordset=""Row"" /><Output Name=""Column4"" MapsTo=""Column4"" Value=""[[Row().Column4]]"" Recordset=""Row"" /><Output Name=""Column5"" MapsTo=""Column5"" Value=""[[Row().Column5]]"" Recordset=""Row"" /><Output Name=""Column6"" MapsTo=""Column6"" Value=""[[Row().Column6]]"" Recordset=""Row"" /><Output Name=""Column7"" MapsTo=""Column7"" Value=""[[Row().Column7]]"" Recordset=""Row"" /><Output Name=""Column8"" MapsTo=""Column8"" Value=""[[Row().Column8]]"" Recordset=""Row"" /><Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" /><Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" /></Outputs>";
 
             Assert.AreEqual(inputExpected, activityDataMappingBuilder.ActivityInputDefinitions);
@@ -145,7 +146,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
 
             //------------Execute Test---------------------------
@@ -185,7 +186,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>";
-            
+      
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -199,7 +200,7 @@ namespace Dev2.Core.Tests.DataList
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -265,7 +266,7 @@ namespace Dev2.Core.Tests.DataList
             var inputDefStr = @"<Inputs>
         <Input Name=""Rows"" Source=""[[RowCnt]]""/>
       </Inputs>";
-            
+      
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -279,7 +280,7 @@ namespace Dev2.Core.Tests.DataList
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -347,7 +348,7 @@ namespace Dev2.Core.Tests.DataList
             var inputDefStr = @"<Inputs>
         <Input Name=""Rows"" Source=""[[RowCnt]]""/>
       </Inputs>";
-           
+
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -361,7 +362,7 @@ namespace Dev2.Core.Tests.DataList
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
             activity.Setup(c => c.ResourceModel.ResourceType).Returns(ResourceType.Service);
 
@@ -422,7 +423,7 @@ namespace Dev2.Core.Tests.DataList
       </Inputs>";
 
             var inputString = @"<Inputs>
-<Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
+        <Input Name=""Rows"" Source=""Rows"" EmptyToNull=""false"" DefaultValue="""" />
       </Inputs>";
             var outputString = @"<Outputs>
         <Output Name=""BigID"" MapsTo=""BigID"" Value=""[[Row().BigID]]"" Recordset=""Row"" />
@@ -437,7 +438,7 @@ namespace Dev2.Core.Tests.DataList
         <Output Name=""Column9"" MapsTo=""Column9"" Value=""[[Row().Column9]]"" Recordset=""Row"" />
         <Output Name=""Column10"" MapsTo=""Column10"" Value=""[[Row().Column10]]"" Recordset=""Row"" />
       </Outputs>";
-            
+      
             #endregion
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
@@ -449,7 +450,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(inputDefStr);
             activity.Setup(c => c.SavedOutputMapping).Returns(outputDefStr);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns("");
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder());
             activity.Setup(c => c.ResourceModel.Inputs).Returns(inputString);
             activity.Setup(c => c.ResourceModel.Outputs).Returns(outputString);
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfDatabaseActivity));
@@ -554,7 +555,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -645,7 +646,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -737,7 +738,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -820,7 +821,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -906,7 +907,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(@"<Inputs><Input Name=""f1"" Source=""[[recset1(*).f1a]]"" Recordset=""recset1"" /><Input Name=""f2"" Source=""[[recset2(*).f2a]]"" Recordset=""recset2"" /></Inputs>");
             activity.Setup(c => c.SavedOutputMapping).Returns(@"<Outputs><Output Name=""result"" MapsTo=""[[result]]"" Value=""[[resultValue]]"" /></Outputs>");
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -995,7 +996,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 
@@ -1079,7 +1080,7 @@ namespace Dev2.Core.Tests.DataList
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
-            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(serviceDefStr);
+            activity.Setup(c => c.ResourceModel.WorkflowXaml).Returns(new StringBuilder(serviceDefStr));
             activity.Setup(c => c.UnderlyingWebActivityObjectType).Returns(typeof(DsfActivity));
             activity.Setup(c => c.ResourceModel.DataList).Returns(datalistFragment);
 

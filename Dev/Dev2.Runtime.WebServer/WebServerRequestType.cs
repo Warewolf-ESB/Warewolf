@@ -25,6 +25,7 @@
         EsbOnConnected,
 
         ResourcesSend,
+        ResourcesDeleteResource,
         ResourcesSendMemo,
         ResourcesSave,
     }

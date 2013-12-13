@@ -12,6 +12,9 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        // Max String Size
+        public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
+
         // Force Webserver Contants
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 
@@ -223,7 +226,7 @@ namespace Dev2.Common
                 "Contains",
                 "Doesn't Start With",                  
                 "Doesn't End With",                
-                "Doesn't Contain",                                              
+                "Doesn't Contain",
                 "Is Alphanumeric",
                 "Is Base64",
                 "Is Between",

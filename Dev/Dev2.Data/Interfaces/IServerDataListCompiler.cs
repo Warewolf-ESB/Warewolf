@@ -10,7 +10,7 @@ using Dev2.Diagnostics;
 
 namespace Dev2.Server.Datalist {
 
-    public interface IServerDataListCompiler {
+    public interface IEnvironmentModelDataListCompiler {
 
         #region Evaluation Operations
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Web.UI.WebControls;
 
 namespace Dev2.Runtime.WebServer.Responses
 {

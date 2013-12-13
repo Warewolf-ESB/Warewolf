@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.Interfaces;
@@ -44,7 +45,7 @@ namespace Dev2.Core.Tests.Activities
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) {WorkflowXaml = "<x><HelpLink>a:\\help.txt</HelpLink></x>"};
+            var resource = new ResourceModel(env.Object, evtAg) {WorkflowXaml = new StringBuilder("<x><HelpLink>a:\\help.txt</HelpLink></x>")};
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
             //------------Execute Test---------------------------
@@ -67,7 +68,7 @@ namespace Dev2.Core.Tests.Activities
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<x><HelpLink2>a:\\help.txt</HelpLink2></x>" };
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<x><HelpLink2>a:\\help.txt</HelpLink2></x>") };
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
             //------------Execute Test---------------------------

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Dev2.Services.Security;
-using Newtonsoft.Json;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
@@ -12,9 +11,9 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         public List<WindowsGroupPermission> ReadPermissionsResult { get; set; }
 
-        protected override string ReadPermissions()
+        protected override List<WindowsGroupPermission> ReadPermissions()
         {
-            return ReadPermissionsResult == null ? null : JsonConvert.SerializeObject(ReadPermissionsResult);
+            return ReadPermissionsResult ?? null;
         }
     }
 }

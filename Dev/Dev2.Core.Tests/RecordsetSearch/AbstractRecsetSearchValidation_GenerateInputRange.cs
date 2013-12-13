@@ -1,22 +1,13 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Dev2.DataList.Contract;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework.RecordsetSearch {
+namespace Dev2.Tests.RecordsetSearch {
     /// <summary>
     /// Summary description for AbstractRecsetSearchValidation_GenerateInputRange
     /// </summary>
     [TestClass][ExcludeFromCodeCoverage]
     public class AbstractRecsetSearchValidation_GenerateInputRange {
-        public AbstractRecsetSearchValidation_GenerateInputRange() {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+
 
         //        #region Test Variables
 

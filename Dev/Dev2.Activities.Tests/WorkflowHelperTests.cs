@@ -20,8 +20,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities
 {
-    // BUG 9304 - 2013.05.08 - TWR - .NET 4.5 upgrade
-
     [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowHelperTests
     {
@@ -54,7 +52,7 @@ namespace Dev2.Tests.Activities
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowHelperCreateWorkflowWithNullDisplayNameExpectedThrowsArgumentNullException()
         {
-            var result = new WorkflowHelper().CreateWorkflow((string)null);
+            new WorkflowHelper().CreateWorkflow(null);
         }
 
         [TestMethod]
@@ -79,7 +77,7 @@ namespace Dev2.Tests.Activities
         public void WorkflowHelperSerializeWorkflowWithNullModelServiceExpectedReturnsEmptyString()
         {
             var result = new WorkflowHelper().SerializeWorkflow(null);
-            Assert.AreEqual(string.Empty, result);
+            Assert.AreEqual(string.Empty, result.ToString());
         }
 
         [TestMethod]
@@ -87,7 +85,7 @@ namespace Dev2.Tests.Activities
         {
             var modelService = CreateModelService();
 
-            var result = new WorkflowHelper().SerializeWorkflow(modelService.Object);
+            var result = new WorkflowHelper().SerializeWorkflow(modelService.Object).ToString();
 
             Assert.IsFalse(result.Contains("<?xml version=\"1.0\" encoding=\"utf-16\"?>"));
 

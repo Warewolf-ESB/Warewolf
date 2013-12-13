@@ -87,6 +87,7 @@
     <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
+    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDefintition.cs" />
     <Compile Include="ESB\Management\Services\FindResourceHelper.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseColumnsForTable.cs" />
@@ -127,7 +128,6 @@
     <Compile Include="ESB\Management\Services\SaveResource.cs" />
     <Compile Include="ESB\Management\Services\CheckCredentials.cs" />
     <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
-    <Compile Include="ESB\Management\Services\DeleteResource.cs" />
     <Compile Include="ESB\Management\Services\DeployResource.cs" />
     <Compile Include="ESB\Management\Services\FindDependencies.cs" />
     <Compile Include="ESB\Management\Services\FindDirectory.cs" />
@@ -149,7 +149,7 @@
     <Compile Include="Execution\ExecutableServiceRepository.cs" />
     <Compile Include="Execution\IExecutableService.cs" />
     <Compile Include="Execution\ExecutableServiceKey.cs" />
-    <Compile Include="Hosting\DynamicObjectHelper.cs" />
+    <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
     <Compile Include="Hosting\IResourceCatalog.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
@@ -161,11 +161,6 @@
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\SSLCertificateBuilder.cs" />
-    <Compile Include="ServiceModel\Data\DbTableList.cs" />
-    <Compile Include="ServiceModel\Data\DbColumn.cs" />
-    <Compile Include="ServiceModel\Data\DbColumnList.cs" />
-    <Compile Include="ServiceModel\Data\DbTable.cs" />
-    <Compile Include="ServiceModel\Data\ResultList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetList.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelper.cs" />
     <Compile Include="ServiceModel\Data\WebService.cs" />
@@ -205,7 +200,6 @@
     <Compile Include="ServiceModel\Data\ResourceList.cs" />
     <Compile Include="ServiceModel\Data\Service.cs" />
     <Compile Include="ServiceModel\Data\ServiceMethod.cs" />
-    <Compile Include="ServiceModel\Data\Connection.cs" />
     <Compile Include="ServiceModel\Connections.cs" />
     <Compile Include="Hosting\ResourceDelimiter.cs" />
     <Compile Include="Hosting\ResourceIteratorResult.cs" />
@@ -272,9 +266,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

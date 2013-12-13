@@ -25,7 +25,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}", _webServerURI, "RenameResourceService", "ResourceID=b88337db-36f5-4089-98b6-9cfd1925fc13&NewName=New-Test-Resource-Name&ResourceType=WorkflowService");
             string actual = TestHelper.PostDataToWebserver(postData);
             Assert.IsFalse(string.IsNullOrEmpty(actual));
-            Assert.AreEqual("<DataList><Dev2System.ManagmentServicePayload><CompilerMessage>Renamed Resource 'b88337db-36f5-4089-98b6-9cfd1925fc13' to 'New-Test-Resource-Name'</CompilerMessage></Dev2System.ManagmentServicePayload></DataList>", actual, "Failed to rename resource with dashes");
+            StringAssert.Contains(actual, "Renamed Resource 'b88337db-36f5-4089-98b6-9cfd1925fc13' to 'New-Test-Resource-Name'");            
         }
 
     }

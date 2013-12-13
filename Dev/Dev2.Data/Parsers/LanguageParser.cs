@@ -22,7 +22,6 @@ namespace Dev2.DataList.Contract
         private static readonly string _magicEval = "[[";
         private static readonly string _outputMapsToAdjust = "Name";
 
-
         internal LanguageParser(string elementTag, string mapsTo, bool defaultValueToMapsTo) {
             _elementTag = elementTag;
             _mapsToAttribute = mapsTo;

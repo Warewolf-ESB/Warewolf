@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Util;
 
 namespace Dev2.DynamicServices.Objects
@@ -22,23 +23,27 @@ namespace Dev2.DynamicServices.Objects
         /// <param name="workflowPool">The workflow pool.</param>
         /// <param name="workflowActivity">The workflow activity.</param>
         /// <exception cref="System.ArgumentNullException">xamlDefinition</exception>
-        public void Load(string xamlDefinition, ref MemoryStream xamlStream, ref Queue<PooledServiceActivity> workflowPool, ref Activity workflowActivity)
+        public void Load(StringBuilder xamlDefinition, ref Stream xamlStream, ref Queue<PooledServiceActivity> workflowPool, ref Activity workflowActivity)
         {
+
+            if(xamlDefinition == null || xamlDefinition.Length == 0)
+            {
+                throw new ArgumentNullException("xamlDefinition");
+            }
+
             // Travis.Frisinger : 13.11.2012 - Remove bad namespaces
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(GlobalConstants.runtimeNamespaceClean)
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 xamlDefinition = new Dev2XamlCleaner().CleanServiceDef(xamlDefinition);
             }
             // End Mods
 
-            if(string.IsNullOrEmpty(xamlDefinition))
-            {
-                throw new ArgumentNullException("xamlDefinition");
-            }
 
             int generation = 0;
 
-            using(xamlStream = new MemoryStream(Encoding.UTF8.GetBytes(xamlDefinition)))
+            using(xamlStream =  xamlDefinition.EncodeForXmlDocument())
             {
                 workflowActivity = ActivityXamlServices.Load(xamlStream);
                 xamlStream.Seek(0, SeekOrigin.Begin);

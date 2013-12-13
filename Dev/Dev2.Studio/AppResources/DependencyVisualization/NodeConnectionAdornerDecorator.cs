@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Documents;
+using Dev2.AppResources.DependencyVisualization;
 
 namespace CircularDependencyTool
 {

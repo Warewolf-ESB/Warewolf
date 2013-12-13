@@ -61,7 +61,6 @@ namespace Dev2.Data.Operations
 
                     default:
                         throw new Exception("Error In Dev2MergeOperations");
-                    break;
                 }
             }
             else
@@ -110,7 +109,6 @@ namespace Dev2.Data.Operations
 
                 default:
                     throw new Exception("Error In Dev2MergeOperations");
-                break;
             }
             Merge(value, mergingType, at, padding, mergeAlignment);
         }

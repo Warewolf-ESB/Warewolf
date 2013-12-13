@@ -74,8 +74,6 @@ namespace Dev2.Common
             }
         }
 
-        private static string _evtSrc = "Warewolf Server";
-
         #endregion private fields
 
         #region public properties

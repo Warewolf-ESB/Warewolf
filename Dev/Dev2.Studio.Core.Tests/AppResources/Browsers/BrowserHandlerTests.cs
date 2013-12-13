@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Browsers

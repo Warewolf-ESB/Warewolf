@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using ActivityUnitTests;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +16,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for RemoteDebugItemGenerationTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RemoteDebugItemGenerationTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -84,7 +87,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tmp = JsonConvert.SerializeObject(msgs);
 
             var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(tmp);
-            
+
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);
 
@@ -105,15 +108,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject dObj = (obj as IDSFDataObject);
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);
-            
+
             FetchRemoteDebugMessages frm = new FetchRemoteDebugMessages();
 
-            IDictionary<string, string> d = new Dictionary<string, string>();
-            d["InvokerID"] = id.ToString();
+            Dictionary<string, StringBuilder> d = new Dictionary<string, StringBuilder>();
+            d["InvokerID"] = new StringBuilder(id.ToString());
 
-            var str = frm.Execute(d,null);
+            var str = frm.Execute(d, null);
 
-            var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(str);
+            var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(str.ToString());
 
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);

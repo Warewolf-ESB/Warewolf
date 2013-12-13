@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -182,7 +183,7 @@ namespace Dev2.Core.Tests
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns(ResourceName);
-            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
 
@@ -202,7 +203,8 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(rm.Object.DataList, workflowInputDataViewModel.DebugTO.DataList);
             Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTO.ServiceName);
             Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTO.WorkflowID);
-            Assert.AreEqual(rm.Object.WorkflowXaml, workflowInputDataViewModel.DebugTO.WorkflowXaml);
+            // Travis 05.12 - Was rm.Object.WorkflowXaml.ToString(), since we no longer carry strings this was silly ;)
+            Assert.AreEqual(string.Empty, workflowInputDataViewModel.DebugTO.WorkflowXaml);
             Assert.AreEqual(serviceDebugInfoModel.ServiceInputData, workflowInputDataViewModel.DebugTO.XmlData);
             Assert.AreEqual(rm.Object.ID, workflowInputDataViewModel.DebugTO.ResourceID);
             Assert.AreEqual(rm.Object.ServerID, workflowInputDataViewModel.DebugTO.ServerID);
@@ -220,7 +222,7 @@ namespace Dev2.Core.Tests
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns(ResourceName);
-            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -268,7 +270,7 @@ namespace Dev2.Core.Tests
             var rm = new Mock<IContextualResourceModel>();
             rm.Setup(r => r.ServerID).Returns(_serverID);
             rm.Setup(r => r.ResourceName).Returns(ResourceName);
-            rm.Setup(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             rm.Setup(r => r.ID).Returns(_resourceID);
             rm.Setup(r => r.DataList).Returns("<DataList><rs Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" ><val Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" /></rs></DataList>");
 
@@ -371,7 +373,7 @@ namespace Dev2.Core.Tests
             var mockResource = new Mock<IContextualResourceModel>();
             mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
             mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
-            mockResource.SetupGet(r => r.WorkflowXaml).Returns(StringResourcesTest.DebugInputWindow_WorkflowXaml);
+            mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             mockResource.SetupGet(r => r.ID).Returns(_resourceID);
             mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
             return mockResource;

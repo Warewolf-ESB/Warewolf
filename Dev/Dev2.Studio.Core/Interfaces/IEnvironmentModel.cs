@@ -1,6 +1,5 @@
 ﻿using System;
-using Dev2.DataList.Contract.Network;
-using Dev2.Network.Execution;
+using System.Text;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -27,7 +26,7 @@ namespace Dev2.Studio.Core.Interfaces
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         string Category { get; set; }
 
-        string ToSourceDefinition();
+        StringBuilder ToSourceDefinition();
     }
 
     public class ConnectedEventArgs : EventArgs

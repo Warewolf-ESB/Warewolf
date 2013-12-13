@@ -1,5 +1,5 @@
-﻿
-using System.Xml;
+﻿using System.Xml;
+using Dev2.Common.Common;
 using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -13,34 +13,49 @@ namespace Dev2.Studio.Core.Activities.Interegators
         {
             activity.IsWorkflow = false;
 
-            if (resource.WorkflowXaml != null)
+            if (resource.WorkflowXaml != null && resource.WorkflowXaml.Length > 0)
             {
-                XmlDocument document = new XmlDocument();
-                document.LoadXml(resource.WorkflowXaml);
 
-                if(document.DocumentElement != null)
+                var startIdx = resource.WorkflowXaml.IndexOf("<Action ", 0, true);
+
+                if (startIdx >= 0)
                 {
-                    XmlNode node = document.SelectSingleNode("//Action");
-                    if(node != null)
+                    var endIdx = resource.WorkflowXaml.IndexOf(">", startIdx, true);
+                    if (endIdx > 0)
                     {
-                        if(node.Attributes != null)
+                        var len = (endIdx - startIdx) + 1;
+                        var fragment = resource.WorkflowXaml.Substring(startIdx, len);
+
+                        fragment += "</Action>";
+
+                        XmlDocument document = new XmlDocument();
+                        document.LoadXml(fragment);
+
+                        if(document.DocumentElement != null)
                         {
-                            var attr = node.Attributes["SourceName"];
-                            if(attr != null)
+                            XmlNode node = document.SelectSingleNode("//Action");
+                            if(node != null)
                             {
-                                activity.FriendlySourceName = attr.Value;
-                            }
+                                if(node.Attributes != null)
+                                {
+                                    var attr = node.Attributes["SourceName"];
+                                    if(attr != null)
+                                    {
+                                        activity.FriendlySourceName = attr.Value;
+                                    }
 
-                            attr = node.Attributes["Type"];
-                            if(attr != null)
-                            {
-                                activity.Type = attr.Value;
-                            }
+                                    attr = node.Attributes["Type"];
+                                    if(attr != null)
+                                    {
+                                        activity.Type = attr.Value;
+                                    }
 
-                            attr = node.Attributes["SourceMethod"];
-                            if(attr != null)
-                            {
-                                activity.ActionName = attr.Value;
+                                    attr = node.Attributes["SourceMethod"];
+                                    if(attr != null)
+                                    {
+                                        activity.ActionName = attr.Value;
+                                    }
+                                }
                             }
                         }
                     }

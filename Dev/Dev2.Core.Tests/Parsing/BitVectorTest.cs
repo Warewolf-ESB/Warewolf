@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System.Parsing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework.Parsing
+namespace Dev2.Tests.Parsing
 {
     /// <summary>
     /// Summary description for BitVectorTest

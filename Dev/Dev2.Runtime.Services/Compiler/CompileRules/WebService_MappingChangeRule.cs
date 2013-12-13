@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
@@ -6,7 +7,6 @@ using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
-using enActionType = Dev2.DynamicServices.enActionType;
 
 namespace Dev2.Runtime.Compiler.CompileRules
 {
@@ -20,7 +20,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
             return ServerCompileMessageType.WebServiceMappingChangeRule;
         }
 
-        public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)
+        public CompileMessageTO ApplyRule(Guid serviceID, StringBuilder beforeAction, StringBuilder afterAction)
         {
             // Inputs, Outputs ;)
             beforeAction = beforeAction.Replace(GlobalConstants.EmptyNativeTypeTag, ""); // clean up stilly XML tags

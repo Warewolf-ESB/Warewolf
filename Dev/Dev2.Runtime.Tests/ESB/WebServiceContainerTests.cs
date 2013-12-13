@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Test.XML;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
+using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -204,11 +206,11 @@ namespace Dev2.Tests.Runtime.ESB
 
         static ServiceAction CreateServiceAction(XElement serviceXml, XElement sourceXml)
         {
-            var graph = new DynamicObjectHelper().GenerateObjectGraphFromString(serviceXml.ToString());
+            var graph = new ServiceDefinitionLoader().GenerateServiceGraph(new StringBuilder(serviceXml.ToString()));
 
             var ds = (DynamicService)graph[0];
             var sa = ds.Actions[0];
-            sa.Source = new Source { ResourceDefinition = sourceXml.ToString() };
+            sa.Source = new Source { ResourceDefinition = new StringBuilder(sourceXml.ToString()) };
             return sa;
         }
 

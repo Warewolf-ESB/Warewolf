@@ -1,5 +1,8 @@
-﻿using Dev2.Common;
+﻿using System.Text;
+using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System.Collections.Generic;
@@ -11,23 +14,36 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class DeleteResource : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string resourceName;
-            string type;
-            string roles;
+            string resourceName = null;
+            string type = null;
 
-            values.TryGetValue("ResourceName", out resourceName);
-            values.TryGetValue("ResourceType", out type);
-            values.TryGetValue("Roles", out roles);
+            StringBuilder tmp;
+            values.TryGetValue("ResourceName", out tmp);
+            if (tmp != null)
+            {
+                resourceName = tmp.ToString();
+            }
+
+            values.TryGetValue("ResourceType", out tmp);
+            if (tmp != null)
+            {
+                type = tmp.ToString();
+            }
+
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var result = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceName, type, roles);
+            var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceName, type);
+
+            var result = new ExecuteMessage {HasError = false};
+            result.SetMessage(msg.Message);
 
             // Delete resource from server workspace
-            if (theWorkspace.ID != GlobalConstants.ServerWorkspaceID && result.Status == ExecStatus.Success)
+            if (theWorkspace.ID != GlobalConstants.ServerWorkspaceID && msg.Status == ExecStatus.Success)
             {
-                var serverResult = ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resourceName, type, roles);
+                var serverResult = ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID,
+                                                                           resourceName, type);
 
                 if (serverResult.Status != ExecStatus.Success)
                 {
@@ -36,11 +52,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var serverworkspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
                     ResourceCatalog.Instance.SyncTo(serverworkspacePath, workspacePath, false, false);
 
-                    result = serverResult;
+                    result.SetMessage(serverResult.Message);
                 }
             }
+            else
+            {
+                result.HasError = true;
+            }
 
-            return result.Message;
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(result);
         }
 
         public string HandlesType()

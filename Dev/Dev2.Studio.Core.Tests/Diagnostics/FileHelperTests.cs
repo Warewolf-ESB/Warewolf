@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Providers.Logs;
-using Dev2.Studio;
 using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Moq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
@@ -80,28 +76,7 @@ namespace Dev2.Core.Tests.Diagnostics
             Assert.IsTrue(Directory.Exists(Context.TestDir + "\\Sub Directory"));
         }
 
-        #endregion
-
-        #region Get ServerLog TempPath
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("FileHelper_GetServerLogTempPath")]
-        public void FileHelper_GetServerLogTempPath_ServerLogFileBlank_DoNotCreateTempFile()
-        {
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(conn => conn.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
-            var mockServer = new Mock<IEnvironmentModel>();
-            mockServer.Setup(svr => svr.Connection).Returns(mockConnection.Object);
-
-            //------------Execute Test---------------------------
-            var actual = FileHelper.GetServerLogTempPath(mockServer.Object);
-
-            // Assert DoNotCreateTempFile
-            Assert.IsNull(actual, "Path returned for blank log file");
-        }
-
-        #endregion
+        #endregion        
 
         [TestMethod]
         public void TEST()

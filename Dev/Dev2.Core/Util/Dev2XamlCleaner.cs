@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
 
 namespace Dev2.Util
 {
@@ -34,9 +34,11 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        public string CleanServiceDef(string def)
+        public StringBuilder CleanServiceDef(StringBuilder def)
         {
-            string result = StripNaughtyNamespaces(def);
+            //var result = StripNaughtyNamespaces(def);
+
+            var result = def;
 
             result = ReplaceChangedNamespaces(result);
 
@@ -49,9 +51,9 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        private string ReplaceChangedNamespaces(string def)
+        private StringBuilder ReplaceChangedNamespaces(StringBuilder def)
         {
-            string result = def;
+            var result = def;
             for(int i = 0; i < (replaceNamespaces.Length/2); i++)
             {
                 result = result.Replace((replacePrefix + replaceNamespaces[i,0]), (replacePrefix + replaceNamespaces[i,1]));
@@ -65,24 +67,23 @@ namespace Dev2.Util
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        private string StripNaughtyNamespaces(string def)
+        private StringBuilder StripNaughtyNamespaces(StringBuilder def)
         {
-            string result = def;
-            foreach (string ns in badNamespaces)
-            {
-
-                Match m = Regex.Match(def, ns);
-                if (m.Success)
-                {
-                    // we have a hit ;)
-                    // search backward for the start xmlns: ...
-                    for (int i = 0; i < m.Groups.Count; i++)
-                    {
-                        string val = m.Groups[i].Value;
-                        result = def.Replace(val, string.Empty);
-                    }
-                }
-            }
+            var result = def;
+            //foreach (string ns in badNamespaces)
+            //{
+            //    Match m = Regex.Match(def, ns);
+            //    if (m.Success)
+            //    {
+            //        // we have a hit ;)
+            //        // search backward for the start xmlns: ...
+            //        for (int i = 0; i < m.Groups.Count; i++)
+            //        {
+            //            string val = m.Groups[i].Value;
+            //            result = def.Replace(val, string.Empty);
+            //        }
+            //    }
+            //}
 
             return result;
         }

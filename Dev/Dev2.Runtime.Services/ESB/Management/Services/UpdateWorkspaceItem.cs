@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml.Linq;
+using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Unlimited.Framework;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -12,59 +15,67 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class UpdateWorkspaceItem : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            string itemXml;
-            string roles;
-            string isLocal;
+            StringBuilder itemXml;
+            string isLocal = string.Empty;
 
+            StringBuilder tmp;
             values.TryGetValue("ItemXml", out itemXml);
-            values.TryGetValue("Roles", out roles);
-            values.TryGetValue("IsLocalSave", out isLocal);
+            values.TryGetValue("IsLocalSave", out tmp);
+            if (tmp != null)
+            {
+                isLocal = tmp.ToString();
+            }
 
-            bool IsLocalSave = false;
+            bool IsLocalSave;
 
             bool.TryParse(isLocal, out IsLocalSave);
 
-            dynamic xmlResponse = new UnlimitedObject(Resources.DynamicService_ServiceResponseTag);
-            if (string.IsNullOrEmpty(itemXml))
+            var res = new ExecuteMessage { HasError = false};
+
+            if(itemXml == null || itemXml.Length == 0)
             {
-                xmlResponse.Error = "Invalid workspace item definition";
+                res.SetMessage("Invalid workspace item definition " + DateTime.Now);
+                res.HasError = true;
             }
             else
             {
                 try
                 {
-                    string cleanXML = itemXml.Replace("&gt;", ">").Replace("&lt;", "<");
+                    XElement xe = itemXml.ToXElement();
 
-                    var workspaceItem = new WorkspaceItem(XElement.Parse(cleanXML));
+                    var workspaceItem = new WorkspaceItem(xe);
                     if (workspaceItem.WorkspaceID != theWorkspace.ID)
                     {
-                        xmlResponse.Error = "Cannot update a workspace item from another workspace";
+                        res.SetMessage("Cannot update a workspace item from another workspace " + DateTime.Now);
+                        res.HasError = true;
                     }
                     else
                     {
-                        theWorkspace.Update(workspaceItem, IsLocalSave, roles);
-                        xmlResponse.Response = "Workspace item updated";
+                        theWorkspace.Update(workspaceItem, IsLocalSave);
+                        res.SetMessage("Workspace item updated " + DateTime.Now);
                     }
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    xmlResponse.Error = "Error updating workspace item";
-                    xmlResponse.ErrorDetail = ex.Message;
-                    xmlResponse.ErrorStackTrace = ex.StackTrace;
+                    res.SetMessage("Error updating workspace item " + DateTime.Now);
+                    res.SetMessage(ex.Message);
+                    res.SetMessage(ex.StackTrace);
+                    res.HasError = true;
                 }
             }
 
-            return xmlResponse.XmlString;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()
         {
             var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><IsLocalSave/><ItemXml/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            var workspaceItemAction = new ServiceAction {  Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            var workspaceItemAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             workspaceItemService.Actions.Add(workspaceItemAction);
 
             return workspaceItemService;

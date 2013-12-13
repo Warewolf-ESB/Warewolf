@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -13,29 +16,37 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindResourcesByID : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string guidCsv;
-            string type;
+            string guidCsv = string.Empty;
+            string type = null;
 
-            values.TryGetValue("GuidCsv", out guidCsv);
-            values.TryGetValue("Type", out type);
+            StringBuilder tmp;
+            values.TryGetValue("GuidCsv", out tmp);
+            if (tmp != null)
+            {
+                guidCsv = tmp.ToString();
+            }
+            values.TryGetValue("ResourceType", out tmp);
+            if(tmp != null)
+            {
+                type = tmp.ToString();
+            }
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
 
             IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
-            var result = JsonConvert.SerializeObject(resourceList);
-
-            return result;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(resourceList);
         }
 
         public DynamicService CreateServiceEntry()
         {
             var findResourcesByIDAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
-            var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv/><Type/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             findResourcesByIDService.Actions.Add(findResourcesByIDAction);
 
             return findResourcesByIDService;

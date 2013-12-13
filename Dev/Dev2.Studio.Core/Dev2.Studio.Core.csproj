@@ -242,6 +242,7 @@
     <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
+    <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\Actions\AutoMappingInputAction.cs" />
@@ -268,8 +269,6 @@
     <Compile Include="InterfaceImplementors\Dev2ConfigurationProvider.cs" />
     <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
     <Compile Include="Interfaces\IDirectoryPersistenceProvider.cs" />
-    <Compile Include="InterfaceImplementors\ResourceDependencyService.cs" />
-    <Compile Include="InterfaceImplementors\ServerDTO.cs" />
     <Compile Include="InterfaceImplementors\DirectoryPersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
     <Compile Include="Interfaces\IDeployService.cs" />
@@ -292,7 +291,6 @@
     <Compile Include="Interfaces\IIntellisenseProvider.cs" />
     <Compile Include="Interfaces\IObjectCloner.cs" />
     <Compile Include="Interfaces\IOperatorType.cs" />
-    <Compile Include="Interfaces\IResourceDependencyService.cs" />
     <Compile Include="AppResources\Repositories\EnvironmentRepository.cs" />
     <Compile Include="AppResources\Repositories\ResourceRepository.cs" />
     <Compile Include="AppResources\Browsers\WebPropertyEditorScriptableClass.cs" />
@@ -307,7 +305,6 @@
     <Compile Include="Interfaces\IResourceModel.cs" />
     <Compile Include="Interfaces\IResourceRepository.cs" />
     <Compile Include="Interfaces\IScriptableClassDataHandler.cs" />
-    <Compile Include="Interfaces\IServer.cs" />
     <Compile Include="Interfaces\IServerProvider.cs" />
     <Compile Include="Interfaces\IServiceDebugInfoModel.cs" />
     <Compile Include="Interfaces\IUserMessageProvider.cs" />
@@ -409,9 +406,11 @@
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Network\IServiceLocator.cs" />
+    <Compile Include="Network\ResourceServiceProxy.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServiceLocator.cs" />
     <Compile Include="Network\ServerProxy.cs" />
+    <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

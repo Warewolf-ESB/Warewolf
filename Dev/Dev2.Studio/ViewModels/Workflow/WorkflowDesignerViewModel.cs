@@ -13,10 +13,9 @@ using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -27,6 +26,7 @@ using System.Xaml;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Composition;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -45,7 +45,6 @@ using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -53,16 +52,12 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Studio.Views;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
-using Unlimited.Framework;
-
 
 #endregion
 
@@ -234,10 +229,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string DesignerText { get { return ServiceDefinition; } }
+        public StringBuilder DesignerText { get { return ServiceDefinition; } }
 
         // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
-        public string ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
+        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
 
         // PBI 9221 : TWR : 2013.04.22 - added OutlineView
         public UIElement OutlineView { get { return _wd.OutlineView; } }
@@ -541,8 +536,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     WorkflowDesignerUtils.EditResource(resource, EventPublisher);
                 }
+                }
             }
-        }
 
         ModelItem RecursiveForEachCheck(dynamic activity)
         {
@@ -695,7 +690,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                     }
                 }
-                catch(Exception e)
+                catch(Exception)
                 {
                     IList<IIntellisenseResult> parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue,
                         DataListSingleton
@@ -834,21 +829,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
             return activityFields;
-        }
-
-        public string GetValueFromUnlimitedObject(UnlimitedObject activityField, string valueToGet)
-        {
-            List<UnlimitedObject> enumerableResultSet = activityField.GetAllElements(valueToGet);
-            string result = string.Empty;
-            foreach(var item in enumerableResultSet)
-            {
-                if(!string.IsNullOrEmpty(item.GetValue(valueToGet)))
-                {
-                    result = item.GetValue(valueToGet);
-                }
-            }
-
-            return result;
         }
 
         string RemoveRecordSetBrace(string RecordSet)
@@ -1197,7 +1177,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var xaml = _resourceModel.WorkflowXaml;
 
             // if null, try fetching. It appears there is more than the two routes identified to populating xaml ;(
-            if(string.IsNullOrEmpty(xaml))
+            if(xaml == null || xaml.Length == 0)
             {
                 // we always want server at this point ;)
                 var workspace = GlobalConstants.ServerWorkspaceID;
@@ -1206,11 +1186,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Logger.TraceInfo(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
-                xaml = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
+                var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
+                xaml = msg.Message;
             }
 
             // if we still cannot find it, create a new one ;)
-            if(string.IsNullOrEmpty(xaml))
+            if(xaml == null || xaml.Length == 0)
             {
                 
                 if (_resourceModel.ResourceType == ResourceType.WorkflowService)
@@ -1231,9 +1212,28 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             else
             {
-                // we got the correct model ;)
-                _wd.Text = _workflowHelper.SanitizeXaml(xaml);
+                // we got the correct model and clean it ;)
+                var theText = _workflowHelper.SanitizeXaml(xaml);
+
+                var length = theText.Length;
+                var startIdx = 0;
+                var rounds = (int)Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
+
+                // now load the designer in chunks ;)
+                for (int i = 0; i < rounds; i++)
+                {
+                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                    if (len > (theText.Length-startIdx))
+                    {
+                        len = (theText.Length - startIdx);
+                    }
+
+                    _wd.Text += theText.Substring(startIdx, len);
+                    startIdx += len;
+                }
+
                 _wd.Load();
+ 
             }
 
         }
@@ -1403,7 +1403,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
 
-            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
+            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
                 var mvm = Application.Current.MainWindow.DataContext as MainViewModel;
                 if(mvm != null && mvm.ActiveItem != null)

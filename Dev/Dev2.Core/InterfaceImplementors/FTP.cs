@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2;
 using System.IO;
 using System.Net;
 using Dev2.Common;
+using Dev2.Common.Common;
 
 namespace Dev2 {
     public class FTP : IFrameworkFileIO {

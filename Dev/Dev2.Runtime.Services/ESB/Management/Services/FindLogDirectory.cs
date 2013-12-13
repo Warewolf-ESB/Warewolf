@@ -6,8 +6,10 @@ using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using System.Text;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Configuration;
 using Dev2.Workspaces;
 
@@ -18,26 +20,28 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindLogDirectory : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new StringBuilder();
+            var result = new ExecuteMessage() { HasError = false };
 
             try
             {
                 var logdir = ServerLogger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
                 var cleanedDir = CleanUp(logdir);
-                result.Append("<JSON>");
-                result.Append(@"{""PathToSerialize"":""");
-                result.Append(cleanedDir);
-                result.Append(@"""}");
-                result.Append("</JSON>");    
+                result.Message.Append("<JSON>");
+                result.Message.Append(@"{""PathToSerialize"":""");
+                result.Message.Append(cleanedDir);
+                result.Message.Append(@"""}");
+                result.Message.Append("</JSON>");    
             }
             catch (Exception ex)
             {
-                result.Append(ex.Message);
+                result.Message.Append(ex.Message);
+                result.HasError = true;
             }
 
-            return result.ToString();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(result);
         }
 
         public DynamicService CreateServiceEntry()

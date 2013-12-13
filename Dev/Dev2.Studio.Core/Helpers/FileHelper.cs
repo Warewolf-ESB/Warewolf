@@ -3,12 +3,8 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using Dev2.Common;
 using Dev2.Providers.Logs;
-using Dev2.Studio.Core.Interfaces;
 using Ionic.Zip;
-using Newtonsoft.Json;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -48,7 +44,21 @@ namespace Dev2.Studio.Core.Helpers
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
-            using (var writer = new StreamWriter(fs, System.Text.Encoding.UTF8))
+            using (var writer = new StreamWriter(fs, Encoding.UTF8))
+            {
+                Logger.TraceInfo("Writing a text file");
+                writer.Write(outputTxt);
+            }
+        }
+
+        public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
+        {
+            Logger.TraceInfo();
+            EnsurePathIsvalid(outputPath, ".txt");
+            var fs = File.Open(outputPath,
+                                      FileMode.OpenOrCreate,
+                                      FileAccess.Write);
+            using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
                 Logger.TraceInfo("Writing a text file");
                 writer.Write(outputTxt);
@@ -119,25 +129,6 @@ namespace Dev2.Studio.Core.Helpers
             return result;
         }
 
-        public static string GetServerLogTempPath(IEnvironmentModel environmentModel)
-        {
-            // PBI 9598 - 2013.06.10 - TWR : environmentModel may be null for disconnected scenario's
-            if (environmentModel == null)
-            {
-                return string.Empty;
-            }
-
-            dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "FetchCurrentServerLogService";
-            string serverLogData = environmentModel.Connection.ExecuteCommand(dataObj.XmlString, environmentModel.Connection.WorkspaceID, GlobalConstants.NullDataListID);
-            if (!string.IsNullOrEmpty(serverLogData))
-            {
-                string uniqueOutputPath = GetUniqueOutputPath(".txt");
-                return CreateATemporaryFile(serverLogData, uniqueOutputPath);
-            }
-            return null;
-        }
-
         public static string GetStudioLogTempPath()
         {
             var studioLog = CustomTextWriter.LoggingFileName;
@@ -158,7 +149,21 @@ namespace Dev2.Studio.Core.Helpers
             return null;
         }
 
-        private static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
+        public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
+        {
+            CreateTextFile(fileContent, uniqueOutputPath);
+            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+            using(var zip = new ZipFile())
+            {
+                zip.AddFile(uniqueOutputPath, ".");
+                zip.Save(destinationArchiveFileName);
+            }
+            return destinationArchiveFileName;
+        }
+
+        public static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);
             string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);

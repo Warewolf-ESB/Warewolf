@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Studio.Core.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Helpers
 {
@@ -10,14 +10,6 @@ namespace Dev2.Core.Tests.Helpers
     [TestClass][ExcludeFromCodeCoverage]
     public class LatestWebGetterTests
     {
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
         [TestMethod]
         public void LatestWebGetterExpectedRaisesInvoked()
         {

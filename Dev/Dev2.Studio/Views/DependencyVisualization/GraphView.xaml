@@ -1,6 +1,6 @@
 ﻿<!-- DATACONTEXT = Graph -->
 <UserControl 
-  x:Class="CircularDependencyTool.GraphView"
+  x:Class="Dev2.Views.DependencyVisualization.GraphView"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:CircularDependencyTool">

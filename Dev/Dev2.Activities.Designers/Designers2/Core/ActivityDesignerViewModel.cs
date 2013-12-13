@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
     {
         static Action<Type> CreateShowExampleWorkflowAction()
         {
-            return type => WorkflowDesignerUtils.ShowExampleWorkflow(type.Name, ServerUtil.GetLocalhostServer().Environment, null);
+            return type => WorkflowDesignerUtils.ShowExampleWorkflow(type.Name, ServerUtil.GetLocalhostServer(), null);
         }
 
         readonly ModelItem _modelItem;

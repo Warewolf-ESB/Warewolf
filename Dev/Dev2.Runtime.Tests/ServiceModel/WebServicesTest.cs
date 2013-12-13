@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
             Assert.AreEqual(1, result.Recordsets.Count);
-            Assert.AreEqual("", result.Recordsets[0].Name);
+            Assert.AreEqual("", result.Recordsets[0].Name);            
         }
 
         #region CTOR

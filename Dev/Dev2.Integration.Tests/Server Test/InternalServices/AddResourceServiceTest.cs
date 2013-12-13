@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             _webserverURI = _webserverURI + "SaveResourceService?" + service;
             string actual = TestHelper.PostDataToWebserver(_webserverURI);
             // Added DbService '5a94ea2a-2315-40f6-8c01-42d1c1174913'
-            var expected = string.Format("<Dev2System.ManagmentServicePayload>Added DbService '{0}'</Dev2System.ManagmentServicePayload>", guid);
+            var expected = string.Format("Added DbService '{0}'", guid);
             StringAssert.Contains(actual,expected, "Got [ " + actual + " ]");
 
         }

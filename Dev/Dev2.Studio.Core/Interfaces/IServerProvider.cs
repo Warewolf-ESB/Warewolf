@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace Dev2.Studio.Core.Interfaces
 {
     /// <summary>
-    /// Defines the requirements for an <see cref="IServer"/> provider.
+    /// Defines the requirements for an <see cref="IEnvironmentModel"/> provider.
     /// </summary>
-    public interface IServerProvider
+    public interface IEnvironmentModelProvider
     {
-        List<IServer> Load();
-        List<IServer> Load(IEnvironmentRepository environmentRepository);
+        List<IEnvironmentModel> Load();
+        List<IEnvironmentModel> Load(IEnvironmentRepository environmentRepository);
     }
 }

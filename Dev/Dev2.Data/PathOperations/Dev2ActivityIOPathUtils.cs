@@ -65,7 +65,7 @@ namespace Dev2.PathOperations {
                     result = Path.GetFileName(uri.LocalPath);
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 result = path;
             }

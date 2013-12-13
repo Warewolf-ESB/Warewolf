@@ -1,59 +1,31 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Composition;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Core.Tests.ViewModelTest {
+namespace Dev2.Core.Tests {
     /// <summary>
     /// Summary description for WebResourceViewModelTest
     /// </summary>
     [TestClass][ExcludeFromCodeCoverage]
     public class WebResourceViewModelTest {
-
-        private TestContext testContextInstance; 
-
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional result attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first result in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
         // Use TestInitialize to run code before running each result 
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize() 
         { 
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
-        //
-        // Use TestCleanup to run code after each result has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+
         #endregion
 
         #region Ctor Test
@@ -84,7 +56,9 @@ namespace Dev2.Core.Tests.ViewModelTest {
 
             tmp.AddChild(tmpChild.Object);
 
-            Assert.ReferenceEquals(tmpChild.Object, tmp.Children.First());
+            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+            ReferenceEquals(tmpChild.Object, tmp.Children.First());
+            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
 
         #endregion AddChild Tests
@@ -98,7 +72,9 @@ namespace Dev2.Core.Tests.ViewModelTest {
 
             tmp.SetParent(tmpParent.Object);
 
-            Assert.ReferenceEquals(tmpParent.Object, tmp.Parent);
+            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+            ReferenceEquals(tmpParent.Object, tmp.Parent);
+            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
         }
 
         #endregion SetParent Tests

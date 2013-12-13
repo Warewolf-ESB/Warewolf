@@ -10,7 +10,7 @@ namespace Dev2.Services
         readonly ISerializer _serializer;
 
         public PushService()
-            : this(new JsonSerializer())
+            : this(new Dev2JsonSerializer())
         {
         }
 

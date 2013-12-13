@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
@@ -52,10 +54,13 @@ namespace Dev2.Tests.Runtime.Services
             var expected = "Pong @ " + now.ToString("yyyy-MM-dd hh:mm:ss.fff");
 
             //------------Execute Test---------------------------
-            var result = ping.Execute(It.IsAny<IDictionary<string, string>>(), It.IsAny<IWorkspace>());
+            var result = ping.Execute(It.IsAny<Dictionary<string, StringBuilder>>(), It.IsAny<IWorkspace>());
+
+            var ser = new Dev2JsonSerializer();
+            var msg = ser.Deserialize<ExecuteMessage>(result);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, msg.Message.ToString());
         }
 
         [TestMethod]

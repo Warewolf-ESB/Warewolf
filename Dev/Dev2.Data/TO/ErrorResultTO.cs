@@ -181,7 +181,7 @@ namespace Dev2.DataList.Contract
                     }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 result.AddError(errorsString);
             }

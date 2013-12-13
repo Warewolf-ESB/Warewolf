@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -32,14 +33,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         private IDeployStatsCalculator _deployStatsCalculator;
 
         private IDeployService _deployService;
-        private IServerProvider _serverProvider;
+        private IEnvironmentModelProvider _serverProvider;
 
         private NavigationViewModel _source;
         private NavigationViewModel _target;
 
-        private ObservableCollection<IServer> _servers;
-        private IServer _selectedSourceServer;
-        private IServer _selectedDestinationServer;
+        private ObservableCollection<IEnvironmentModel> _servers;
+        private IEnvironmentModel _selectedSourceServer;
+        private IEnvironmentModel _selectedDestinationServer;
 
         private ObservableCollection<DeployStatsTO> _sourceStats;
         private ObservableCollection<DeployStatsTO> _targetStats;
@@ -71,7 +72,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
         }
 
-        public DeployViewModel(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
+        public DeployViewModel(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
             : base(eventAggregator)
         {
             _initialItemEnvironment = environment;
@@ -115,10 +116,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
-
-        [Import(typeof(IResourceDependencyService))]
-        public IResourceDependencyService ResourceDependencyService { get; set; }
-
+        
         public Guid? SourceContext
         {
             get
@@ -152,7 +150,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return (SelectedDestinationServer == null || SelectedSourceServer == null) || (SelectedDestinationServer.AppAddress != SelectedSourceServer.AppAddress);
+                return (SelectedDestinationServer == null || SelectedSourceServer == null) || (SelectedDestinationServer.Connection.AppServerUri != SelectedSourceServer.Connection.AppServerUri);
             }
         }
 
@@ -163,7 +161,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         bool SelectedDestinationServerIsValid()
         {
-            return SelectedDestinationServer != null && SelectedDestinationServer.Environment.IsConnected;
+            return SelectedDestinationServer != null && SelectedDestinationServer.IsConnected;
         }
 
         public bool SourceItemsSelected
@@ -233,7 +231,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        public ObservableCollection<IServer> Servers
+        public ObservableCollection<IEnvironmentModel> Servers
         {
             get
             {
@@ -286,7 +284,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        public IServer SelectedSourceServer
+        public IEnvironmentModel SelectedSourceServer
         {
             get
             {
@@ -303,7 +301,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        public IServer SelectedDestinationServer
+        public IEnvironmentModel SelectedDestinationServer
         {
             get
             {
@@ -327,14 +325,14 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Private Methods
 
-        private void Initialize(IServerProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
+        private void Initialize(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
         {
             EnvironmentRepository = environmentRepository;
 
             _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
             _deployService = new DeployService();
             _serverProvider = serverProvider;
-            _servers = new ObservableCollection<IServer>();
+            _servers = new ObservableCollection<IEnvironmentModel>();
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
@@ -423,12 +421,12 @@ namespace Dev2.Studio.ViewModels.Deploy
             SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies);
             SourceServerChangedCommand = new RelayCommand(s =>
             {
-                SelectedSourceServer = s as IServer;
+                SelectedSourceServer = s as IEnvironmentModel;
             });
 
             TargetServerChangedCommand = new RelayCommand(s =>
             {
-                SelectedDestinationServer = s as IServer;
+                SelectedDestinationServer = s as IEnvironmentModel;
             });
         }
 
@@ -446,7 +444,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 selectedResourceModels.Add(resourceTreeViewModel.DataContext);
             }
 
-            List<string> dependancyNames = ResourceDependencyService.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
+            List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
 
             foreach(var dependant in dependancyNames)
             {
@@ -463,7 +461,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void LoadServers()
         {
-            List<IServer> servers = _serverProvider.Load();
+            List<IEnvironmentModel> servers = _serverProvider.Load();
             Servers.Clear();
 
             foreach(var server in servers)
@@ -489,9 +487,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Adds a new server
         /// </summary>
-        private void AddServer(IServer server, bool connectSource, bool connectTarget)
+        private void AddServer(IEnvironmentModel server, bool connectSource, bool connectTarget)
         {
-            server.Environment.Connect();
+            server.Connect();
 
             Servers.Add(server);
 
@@ -503,7 +501,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 SelectedDestinationServer = server;
             }
-            EventPublisher.Publish(new UpdateSelectedServer(server.Environment,connectSource));
+            EventPublisher.Publish(new UpdateSelectedServer(server,connectSource));
         }
 
         /// <summary>
@@ -554,7 +552,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Loads an environment for the source navigation manager
         /// </summary>
-        private void LoadSourceEnvironment(IServer server)
+        private void LoadSourceEnvironment(IEnvironmentModel server)
         {
             // BUG 9276 : TWR : 2013.04.19
             SourceEnvironment = EnvironmentRepository.Fetch(server);
@@ -583,7 +581,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Loads an environment for the target navigation manager
         /// </summary>
-        private void LoadDestinationEnvironment(IServer server)
+        private void LoadDestinationEnvironment(IEnvironmentModel server)
         {
             // BUG 9276 : TWR : 2013.04.19
             TargetEnvironment = EnvironmentRepository.Fetch(server);
@@ -597,7 +595,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             CalculateStats();
         }
-
 
         /// <summary>
         /// Selects the server from initial value.
@@ -728,7 +725,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             if(resource != null)
             {
-                List<string> dependancyNames = ResourceDependencyService.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SourceEnvironment);
+                List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SourceEnvironment);
                 dependancyNames.Add(resource.ResourceName);
                 foreach(var dependant in dependancyNames)
                 {

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Storage;
@@ -180,10 +181,11 @@ namespace Dev2.DynamicServices
         /// Executes the request.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
+        /// <param name="request"></param>
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
+        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors)
         {
             ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
             Guid resultID = GlobalConstants.NullDataListID;
@@ -221,7 +223,7 @@ namespace Dev2.DynamicServices
             {
                 ErrorResultTO invokeErrors;
                 // Setup the invoker endpoint ;)
-                using(var invoker = new DynamicServicesInvoker(this, this, theWorkspace))
+                using(var invoker = new DynamicServicesInvoker(this, this, theWorkspace,request))
                 {
 
                     // Should return the top level DLID

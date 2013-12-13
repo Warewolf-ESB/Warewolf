@@ -31,7 +31,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         #region private fields
 
         private ReportType _reportType;
-        private IServer _selectedServer;
+        private IEnvironmentModel _selectedServer;
         private DirectoryPath _logDirectory;
         private BindableCollection<FilePath> _logFiles;
         private FilePath _selectedLogFile;
@@ -97,7 +97,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        public IServer SelectedServer
+        public IEnvironmentModel SelectedServer
         {
             get
             {
@@ -110,7 +110,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     return;
                 }
 
-                if(value != null && !value.Environment.IsConnected)
+                if(value != null && !value.IsConnected)
                 {
                     PopupController.ShowNotConnected();
                 }
@@ -276,7 +276,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         public void Delete(FilePath filePath)
         {
-            var address = String.Format(SelectedServer.WebUri + "{0}/{1}?Directory={2}&FilePath={3}",
+            var address = String.Format(SelectedServer.Connection.WebServerUri+ "{0}/{1}?Directory={2}&FilePath={3}",
                 "Services", "DeleteLogService", LogDirectory.PathToSerialize, filePath.Title);
             var response = WebClient.UploadString(address, string.Empty);
 
@@ -298,8 +298,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         public void DeleteAll()
         {
-            var address = String.Format(SelectedServer.WebUri + "{0}/{1}?Directory={2}",
-                "Services", "ClearLogService", LogDirectory.PathToSerialize);
+            var address = String.Format(SelectedServer.Connection.WebServerUri+ "{0}/{1}?Directory={2}", "Services", "ClearLogService", LogDirectory.PathToSerialize);
             var response = WebClient.UploadString(address, string.Empty);
 
             if(response.Contains("Success"))
@@ -338,7 +337,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             DebugOutput.Clear();
             try
             {
-                var debugStates = _debugProvider.GetDebugStates(SelectedServer.WebUri.AbsoluteUri, LogDirectory, selectedLogFile);
+                var debugStates = _debugProvider.GetDebugStates(SelectedServer.Connection.WebServerUri.AbsoluteUri, LogDirectory, selectedLogFile);
                 debugStates.ToList().ForEach(s => DebugOutput.Append(s));
             }
             catch(Exception exception)
@@ -354,9 +353,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        private DirectoryPath GetLogDirectory(IServer server)
+        private DirectoryPath GetLogDirectory(IEnvironmentModel server)
         {
-            var address = String.Format(server.WebUri + "{0}/{1}", "Services", "FindLogDirectoryService");
+            var address = String.Format(server.Connection.WebServerUri+ "{0}/{1}", "Services", "FindLogDirectoryService");
             var datalistJSON = WebClient.UploadString(address, string.Empty);
             var directory = JsonConvert.DeserializeObject<DirectoryPath>(datalistJSON);
             return directory;
@@ -370,7 +369,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        public IEnumerable<FilePath> GetLogFiles(IServer server, DirectoryPath directory)
+        public IEnumerable<FilePath> GetLogFiles(IEnvironmentModel server, DirectoryPath directory)
         {
             LogFiles.Clear();
 
@@ -379,7 +378,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return new List<FilePath>();
             }
 
-            var address = String.Format(server.WebUri + "{0}/{1}?DirectoryPath={2}",
+            var address = String.Format(server.Connection.WebServerUri+ "{0}/{1}?DirectoryPath={2}",
                 "Services", "FindDirectoryService", directory.PathToSerialize);
             var datalistJSON = WebClient.UploadString(address, string.Empty);
             if(datalistJSON.Contains("Error"))
@@ -449,8 +448,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         protected override void OnViewAttached(object view, object context)
         {
             var servers = ServerProvider.Instance.Load();
-            var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
-            if(localHost != null && localHost.Environment.IsConnected)
+            var localHost = servers.FirstOrDefault(s => s.IsLocalHost());
+            if(localHost != null && localHost.IsConnected)
                 SelectedServer = localHost;
             base.OnViewAttached(view, context);
         }

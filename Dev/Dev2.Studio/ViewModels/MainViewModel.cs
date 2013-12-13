@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
+using Dev2.Helpers;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Settings;
@@ -23,7 +24,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
@@ -127,7 +127,6 @@ namespace Dev2.Studio.ViewModels
         [Import(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
-        public IResourceDependencyService ResourceDependencyService { get; set; }
 
 
 
@@ -192,7 +191,7 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.EditCommand;
             }
         }
-
+ 
         public ICommand SaveCommand
         {
             get
@@ -391,8 +390,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IResourceDependencyService resourceDependencyService = null, IPopupController popupController = null
-            , IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -412,7 +410,7 @@ namespace Dev2.Studio.ViewModels
 
             _createDesigners = createDesigners;
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController(); // BUG 9798 - 2013.06.25 - TWR : added
-            ResourceDependencyService = resourceDependencyService ?? new ResourceDependencyService();
+            //ResourceDependencyService = resourceDependencyService ?? new ResourceDependencyService();
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController(PopupProvider);
@@ -980,8 +978,11 @@ namespace Dev2.Studio.ViewModels
 
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
-            if(!models.Any(model => ResourceDependencyService.HasDependencies(model)))
+            if(!models.Any(model => model.Environment.ResourceRepository.HasDependencies(model)))
+            {
                 return true;
+            }
+
 
             if(models.Count > 1)
             {
@@ -1046,7 +1047,7 @@ namespace Dev2.Studio.ViewModels
                 Logger.TraceInfo("Publish message of type - " + typeof(RemoveNavigationResourceMessage));
                 _eventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
 
-                if(!contextualModel.Environment.ResourceRepository.DeleteResource(contextualModel).IsSuccessResponse())
+                if(contextualModel.Environment.ResourceRepository.DeleteResource(contextualModel).HasError)
                 {
                     return;
                 }
@@ -1150,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
 
                             // We need to load the correct version of the service ;)
                             var resourceDef = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
-                            resource.WorkflowXaml = resourceDef;
+                            resource.WorkflowXaml = resourceDef.Message;
 
                             AddWorkSurfaceContext(resource);
                         }

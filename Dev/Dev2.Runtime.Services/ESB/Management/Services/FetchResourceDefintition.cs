@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
@@ -16,45 +20,71 @@ namespace Dev2.Runtime.ESB.Management.Services
         private static string altPayloadStart = "<Actions>";
         private static string altPayloadEnd = "</Actions>";
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string serviceID;
-            values.TryGetValue("ResourceID", out serviceID);
+
+            var res = new ExecuteMessage {HasError = false};
+
+            string serviceID = null;
+            StringBuilder tmp;
+            values.TryGetValue("ResourceID", out tmp);
+            
+            if (tmp != null)
+            {
+                serviceID = tmp.ToString();
+            }
+
             Guid resourceID;
             Guid.TryParse(serviceID, out resourceID);
 
             var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceID);
+            var startIdx = result.IndexOf(payloadStart, 0, false);
 
-
-            var startIdx = result.IndexOf(payloadStart, StringComparison.Ordinal);
-
-            if (startIdx >= 0)
+            if(startIdx >= 0)
             {
-                var endIdx = result.IndexOf(payloadEnd, StringComparison.Ordinal);
+                // remove begingin junk
+                startIdx += payloadStart.Length;
+                result = result.Remove(0, startIdx);
 
-                if (endIdx > startIdx)
+                startIdx = result.IndexOf(payloadEnd,0, false);
+
+                if(startIdx > 0)
                 {
-                    startIdx += payloadStart.Length;
-                    var len = endIdx - startIdx;
-                    return result.Substring(startIdx, len);
+                    var len = result.Length - startIdx;
+                    result = result.Remove(startIdx, len);
+                    
+                    res.Message.Append(result.Unescape());
                 }
             }
             else
             {
                 // handle services ;)
-                startIdx = result.IndexOf(altPayloadStart, StringComparison.Ordinal);
-
-                var endIdx = result.IndexOf(altPayloadEnd, StringComparison.Ordinal);
-
-                if(endIdx > startIdx)
+                startIdx = result.IndexOf(altPayloadStart, 0, false);
+                if (startIdx >= 0)
                 {
+                    // remove begingin junk
                     startIdx += altPayloadStart.Length;
-                    var len = endIdx - startIdx;
-                    return result.Substring(startIdx, len);
+                    result = result.Remove(0, startIdx);
+
+                    startIdx = result.IndexOf(altPayloadEnd, 0, false);
+
+                    if (startIdx > 0)
+                    {
+                        var len = result.Length - startIdx;
+                        result = result.Remove(startIdx, len);
+
+                        res.Message.Append(result.Unescape());
+                    }
+                }
+                else
+                {
+                    // send the entire thing ;)
+                    res.Message.Append(result);
                 }
             }
 
-            return string.Empty;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()

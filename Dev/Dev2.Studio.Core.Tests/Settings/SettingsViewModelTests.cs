@@ -4,12 +4,14 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
+using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -28,7 +30,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, null, null, null);
+            new SettingsViewModel(new Mock<IEventAggregator>().Object, null, null, null);
 
             //------------Assert Results-------------------------
         }
@@ -222,7 +224,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        [ExpectedException(typeof(NullReferenceException))]
+        [ExpectedException(typeof(NullReferenceException), "The Setting are null")]
         public void SettingsViewModel_SaveCommand_ResultIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
@@ -285,8 +287,7 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             Assert.IsNull(viewModel.CurrentEnvironment);
 
-            var server = new Mock<IServer>();
-            server.Setup(s => s.Environment).Returns((IEnvironmentModel)null);
+            var server = new Mock<IEnvironmentModel>();            
 
             //------------Execute Test---------------------------
             viewModel.ServerChangedCommand.Execute(server.Object);
@@ -306,22 +307,20 @@ namespace Dev2.Core.Tests.Settings
 
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
 
-            var environment = new Mock<IEnvironmentModel>();
-            environment.SetupProperty(e => e.CanStudioExecute, true);
-            environment.Setup(e => e.IsConnected).Returns(false);
-
-            var server = new Mock<IServer>();
-            server.Setup(s => s.Environment).Returns(environment.Object);
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var server = new EnvironmentModel(mockEventAgg.Object,Guid.NewGuid(),mockConnection.Object,mockResourceRepo.Object);
 
             Assert.IsNull(viewModel.CurrentEnvironment);
-            Assert.IsTrue(environment.Object.CanStudioExecute);
+            Assert.IsTrue(server.CanStudioExecute);
 
             //------------Execute Test---------------------------
-            viewModel.ServerChangedCommand.Execute(server.Object);
+            viewModel.ServerChangedCommand.Execute(server);
 
             //------------Assert Results-------------------------
             Assert.IsNull(viewModel.CurrentEnvironment);
-            Assert.IsFalse(environment.Object.CanStudioExecute);
+            Assert.IsFalse(server.CanStudioExecute);
             popupController.Verify(p => p.ShowNotConnected());
         }
 
@@ -414,16 +413,23 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, popupController, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             viewModel.TheSecurityViewModel = securityViewModel;
 
+            var mockResourceRepo = new Mock<IResourceRepository>();
+
+            var msg1 = new ExecuteMessage {HasError = false};
+            msg1.SetMessage(executeCommandReadResult);
+
+            var msg2 = new ExecuteMessage {HasError = false};
+            msg2.SetMessage(executeCommandWriteResult);
+
+            mockResourceRepo.Setup(c => c.ReadSettings(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnvironmentModel>())).Returns(msg1);
+            mockResourceRepo.Setup(c => c.WriteSettings(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnvironmentModel>())).Returns(msg2);
+
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            environment.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns((string xmlRequest, Guid workspaceID, Guid dataListID) => xmlRequest.Contains("Read") ? executeCommandReadResult : executeCommandWriteResult);
-
-            var server = new Mock<IServer>();
-            server.Setup(s => s.Environment).Returns(environment.Object);
+            environment.Setup(c => c.ResourceRepository).Returns(mockResourceRepo.Object);
 
             // simulate auto-loading of ConnectControl ComboBox
-            viewModel.ServerChangedCommand.Execute(server.Object);
+            viewModel.ServerChangedCommand.Execute(environment.Object);
 
             return viewModel;
         }

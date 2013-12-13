@@ -4,7 +4,6 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -15,7 +14,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Studio.Webs.Callbacks
@@ -72,16 +70,21 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 return;
             }
-            var getWorksurfaceItemRepo = ImportService.GetExportValue<IWorkspaceItemRepository>();
+
+            var getWorksurfaceItemRepo = WorkspaceItemRepository.Instance;
+            
             CheckForServerMessages(environmentModel, resourceID, getWorksurfaceItemRepo);
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current, true);
-            foreach(var resource in effectedResources)
+            if (effectedResources != null)
+            {
+                foreach (var resource in effectedResources)
             {
                 var resourceWithContext = new ResourceModel(environmentModel);
                 resourceWithContext.Update(resource);
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    Logger.TraceInfo("Publish message of type - " + typeof (UpdateResourceMessage));
                 _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
             }            
+        }
         }
 
         #endregion
@@ -117,7 +120,7 @@ namespace Dev2.Studio.Webs.Callbacks
             dynamic jsonObj = JObject.Parse(value);
             Save(environmentModel, jsonObj);
         }
-        
+
         public virtual void OpenPropertyEditor()
         {
         }
@@ -193,11 +196,12 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 var resource = new ResourceModel(environmentModel);
                 resource.Update(resourceModel);
-                var compileMessagesFromServer = StudioCompileMessageRepo.GetCompileMessagesFromServer(resource);
-                if (string.IsNullOrEmpty(compileMessagesFromServer)) return;
-                CompileMessageList compileMessageList =
-                    JsonConvert.DeserializeObject<CompileMessageList>(compileMessagesFromServer);
-                if (compileMessageList.Count == 0) return;
+                var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
+
+                if (compileMessageList.Count == 0){ 
+                    return;
+                }
+
                 var numberOfDependants = compileMessageList.Dependants.Count;
                 //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
                 if (numberOfDependants == 1)

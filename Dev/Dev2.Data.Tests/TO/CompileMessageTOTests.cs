@@ -4,7 +4,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.TO
 {

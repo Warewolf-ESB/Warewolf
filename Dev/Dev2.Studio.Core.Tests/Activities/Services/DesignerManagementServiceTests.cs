@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Activities.Services
 {

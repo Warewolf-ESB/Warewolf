@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests

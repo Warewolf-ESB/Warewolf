@@ -1,13 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Dev2.Studio.AppResources.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Dev2.Studio.AppResources.Converters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Converters
 {

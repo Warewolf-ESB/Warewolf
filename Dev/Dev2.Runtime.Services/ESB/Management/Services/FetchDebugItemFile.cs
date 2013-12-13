@@ -2,9 +2,10 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using Dev2.Common;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -12,29 +13,40 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FetchDebugItemFile : IEsbManagementEndpoint
     {
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string debugItemFilePath;
+            string debugItemFilePath = null;
+            var result = new ExecuteMessage() { HasError = false };
 
-            if (values == null)
+            if(values == null)
             {
                 ServerLogger.LogTrace("values are missing");
                 throw new InvalidDataContractException("values are missing");
             }
 
-            if (!values.TryGetValue("DebugItemFilePath", out debugItemFilePath))
+            StringBuilder tmp;
+            values.TryGetValue("DebugItemFilePath", out tmp);
+            if(tmp == null || tmp.Length == 0)
             {
                 ServerLogger.LogTrace("DebugItemFilePath is missing");
                 throw new InvalidDataContractException("DebugItemFilePath is missing");
             }
 
-            if (File.Exists(debugItemFilePath))
+            debugItemFilePath = tmp.ToString();
+
+            if(File.Exists(debugItemFilePath))
             {
                 ServerLogger.LogTrace("DebugItemFilePath found");
-                StringBuilder result = new StringBuilder();
-                var logData = File.ReadAllText(debugItemFilePath);
-                result.Append(logData);
-                return result.ToString();
+                //StringBuilder result = new StringBuilder();
+
+                var lines = File.ReadLines(debugItemFilePath);
+                foreach(var line in lines)
+                {
+                    result.Message.Append(line);
+                }
+
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(result);
             }
 
             ServerLogger.LogTrace("DebugItemFilePath not found, throwing an exception");

@@ -22,7 +22,7 @@ using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 
@@ -1389,7 +1389,8 @@ namespace Dev2.Core.Tests
             eventPublisher.Setup(p => p.GetEvent<DesignValidationMemo>()).Returns(designValidationEvents.Object);
 
             var mock = new Mock<IEnvironmentModel>();
-            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            // http://127.0.0.1/
+            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://localhost:3142/dsf"));
             mock.SetupGet(x => x.IsConnected).Returns(true);
             mock.Setup(x => x.Connection.ServerEvents).Returns(eventPublisher.Object);
             return mock;

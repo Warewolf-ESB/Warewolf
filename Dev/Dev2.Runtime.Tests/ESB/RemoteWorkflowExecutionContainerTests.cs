@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
-using Dev2.DynamicServices.Test.XML;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
@@ -39,7 +40,7 @@ namespace Dev2.Tests.Runtime.ESB
             var dataObj = new Mock<IDSFDataObject>();
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();
-            var container = new RemoteWorkflowExecutionContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object, null);
+            new RemoteWorkflowExecutionContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object, null);
         }
 
         #endregion
@@ -53,7 +54,7 @@ namespace Dev2.Tests.Runtime.ESB
         public void RemoteWorkflowExecutionContainer_UnitTest_ExecuteWithConnectionInResourceCatalog_ConnectionRetrieved()
         {
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
 
             var container = CreateExecutionContainer(resourceCatalog.Object);
 
@@ -71,7 +72,7 @@ namespace Dev2.Tests.Runtime.ESB
         public void RemoteWorkflowExecutionContainer_UnitTest_ExecuteWithoutConnectionInCatalog_ConnectionNotRetrieved()
         {
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns("");
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder());
 
             var container = CreateExecutionContainer(resourceCatalog.Object);
 
@@ -90,7 +91,8 @@ namespace Dev2.Tests.Runtime.ESB
             //------------Setup for test--------------------------
             const string LogUri = "http://localhost:3142/Services?Error=Error";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
+            // resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object);
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
@@ -108,7 +110,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string LogUri = "http://localhost:1234/Services?Error=[[Err]]";
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Err/></DataList>","<ADL><Err>Error Message</Err></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
@@ -126,7 +128,7 @@ namespace Dev2.Tests.Runtime.ESB
             const string LogUri = "http://localhost:1234/Services?Error=[[Errors().Err]]";
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
+            resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Errors><Err></Err></Errors></DataList>","<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);

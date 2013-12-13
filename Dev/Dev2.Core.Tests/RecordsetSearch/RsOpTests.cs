@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #endregion
 

@@ -4,6 +4,7 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -13,7 +14,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class CheckPermissions : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var result = new StringBuilder();
 
@@ -21,9 +22,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             string path;
             string password;
 
-            values.TryGetValue("Username", out username);
-            values.TryGetValue("Password", out password);
-            values.TryGetValue("FilePath", out path);
+            StringBuilder tmp;
+            values.TryGetValue("Username", out tmp);
+            username = tmp.ToString();
+            values.TryGetValue("Password", out tmp);
+            password = tmp.ToString();
+            values.TryGetValue("FilePath", out tmp);
+            path = tmp.ToString();
 
             if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
             {
@@ -51,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            return result.ToString();
+            return result;
         }
 
         public DynamicService CreateServiceEntry()

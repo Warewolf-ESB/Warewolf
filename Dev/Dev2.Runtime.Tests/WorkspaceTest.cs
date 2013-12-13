@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
+using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Moq;
 
 namespace Dev2.DynamicServices.Test
@@ -23,7 +23,6 @@ namespace Dev2.DynamicServices.Test
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
-
     public class WorkspaceTest
     {
         const string ServiceName = "Calculate_RecordSet_Subtract";
@@ -40,7 +39,6 @@ namespace Dev2.DynamicServices.Test
         public void MyTestInitialize()
         {
             Monitor.Enter(MonitorLock);
-            //EnvironmentVariables.ApplicationPath = Path.Combine(_testDir, Path.GetRandomFileName());
         }
 
         [TestCleanup]
@@ -123,10 +121,9 @@ namespace Dev2.DynamicServices.Test
                 var workspace = repositoryInstance.Get(workspaceID);
 
                 IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-                IDictionary<string, string> data = new Dictionary<string, string>();
-                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"");
-                data["Roles"] = string.Empty;
-                data["IsLocalSave"] = "true";
+                Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+                data["ItemXml"] = new StringBuilder(testWorkspaceItemXml.ToString().Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\""));
+                data["IsLocalSave"] = new StringBuilder("true");
 
                 // Now remove the 
                 ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
@@ -153,10 +150,9 @@ namespace Dev2.DynamicServices.Test
                 var workspace = repositoryInstance.Get(workspaceID);
 
                 IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-                IDictionary<string, string> data = new Dictionary<string, string>();
-                data["ItemXml"] = testWorkspaceItemXml.ToString().Replace("WorkspaceItem ID=\"3B876ED9-E4B4-42AF-9EF9-98127AE432C3\"", "WorkspaceItem ID=\"" + ServiceID + "\"").Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"").Replace("Action=\"None\"", "Action=\"Commit\"");
-                data["Roles"] = string.Empty;
-                data["IsLocalSave"] = "false";
+                Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+                data["ItemXml"] = new StringBuilder(testWorkspaceItemXml.ToString().Replace("WorkspaceItem ID=\"3B876ED9-E4B4-42AF-9EF9-98127AE432C3\"", "WorkspaceItem ID=\"" + ServiceID + "\"").Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"").Replace("Action=\"None\"", "Action=\"Commit\""));
+                data["IsLocalSave"] = new StringBuilder("false");
 
                 // Now remove the 
                 ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
@@ -229,7 +225,7 @@ namespace Dev2.DynamicServices.Test
       </Source>";
 
             DateTime theTime = DateTime.Now;
-            theHostProvider.VerifyXml(xmlToVerify);
+            theHostProvider.VerifyXml(new StringBuilder(xmlToVerify));
             TimeSpan duration = DateTime.Now - theTime;
             Assert.IsTrue(duration.TotalMilliseconds < 20, "Duration: " + duration.TotalMilliseconds + "ms");
         }

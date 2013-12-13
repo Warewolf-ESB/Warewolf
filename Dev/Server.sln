@@ -66,9 +66,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Test\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 28
+		SccNumberOfProjects = 29
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -153,6 +155,9 @@ Global
 		SccProjectUniqueName27 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
 		SccProjectName27 = Dev2.Services.Execution
 		SccLocalPath27 = Dev2.Services.Execution
+		SccProjectUniqueName28 = Dev2.Common.Test\\Dev2.Common.Tests.csproj
+		SccProjectName28 = Dev2.Common.Test
+		SccLocalPath28 = Dev2.Common.Test
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
@@ -511,6 +516,18 @@ Global
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x64.ActiveCfg = Release|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x64.ActiveCfg = Release|Any CPU
+		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

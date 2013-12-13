@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.MathOperations;
-using Infragistics.Calculations;
 using Infragistics.Calculations.Engine;
-using Dev2;
 using Infragistics.Calculations.CalcManager;
 
-namespace Unlimited.UnitTest.Framework.MathOperationTest {
+namespace Dev2.Tests.MathOperationTest {
     /// <summary>
     /// Summary description for FunctionTest
     /// </summary>

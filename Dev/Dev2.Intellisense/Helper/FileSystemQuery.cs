@@ -204,15 +204,15 @@ namespace Dev2.Intellisense.Helper
                 return false;
             }
 
-            int iServer;
+            int IEnvironmentModel;
             int iShare;
 
-            if((iServer = sInPath.IndexOf(CPathDel, 2)) == -1)
+            if((IEnvironmentModel = sInPath.IndexOf(CPathDel, 2)) == -1)
             {
                 return false;
             }
 
-            if((iShare = sInPath.IndexOf(CPathDel, iServer + 1)) == -1)
+            if((iShare = sInPath.IndexOf(CPathDel, IEnvironmentModel + 1)) == -1)
             {
                 if(Directory.Exists(sInPath))
                 {

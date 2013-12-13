@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
@@ -39,7 +40,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
-            var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
+            var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.IsTrue(windowsGroupPermissions.Count > 0);
             Assert.AreEqual("BuiltIn\\Administrators", windowsGroupPermissions[0].WindowsGroup);
@@ -58,19 +59,23 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityRead_Execute_WhenSecureConfigDoesExist_PermissionsSetFromSecureConfig()
         {
             //------------Setup for test--------------------------
+            if (File.Exists("secure.config"))
+            {
+                File.Delete("secure.config");
+            }
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
             var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
             var securityWrite = new SecurityWrite();
             var securityRead = new SecurityRead();
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder(serializeObject) } }, null);
             //------------Assert Preconditions-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
             File.Delete("secure.config");
-            windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
+            windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.AreEqual(2, windowsGroupPermissions.Count);
             Assert.AreEqual(Environment.UserName, windowsGroupPermissions[0].WindowsGroup);

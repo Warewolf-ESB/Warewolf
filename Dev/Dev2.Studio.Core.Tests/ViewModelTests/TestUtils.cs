@@ -2,6 +2,7 @@ using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Linq.Expressions;
+using System.Text;
 using Dev2.Collections;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -29,7 +30,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             modelProperties[startIndex++] = CreateModelProperty("UniqueID", uniqueID.ToString()).Object;
             modelProperties[startIndex++] = CreateModelProperty("ResourceID", serviceID).Object;
-            modelProperties[startIndex++] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
+            modelProperties[startIndex] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
 
             var properties = new Mock<ModelPropertyCollection>();
 
@@ -88,7 +89,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var model = new Mock<IContextualResourceModel>();
             model.Setup(r => r.ResourceName).Returns("TestResource");
             model.Setup(r => r.ServerID).Returns(Guid.NewGuid());
-            model.Setup(r => r.WorkflowXaml).Returns("<root/>");
+            model.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);

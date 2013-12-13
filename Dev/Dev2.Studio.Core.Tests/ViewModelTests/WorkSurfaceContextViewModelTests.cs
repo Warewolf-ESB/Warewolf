@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Messages;
 using Dev2.Providers.Events;
@@ -9,7 +11,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
@@ -306,7 +307,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.DataList).Returns(It.IsAny<string>);
             mockResourceModel.SetupGet(p => p.ResourceName).Returns(It.IsAny<string>);
-            mockResourceModel.SetupGet(p => p.WorkflowXaml).Returns(It.IsAny<string>);
+            mockResourceModel.SetupGet(p => p.WorkflowXaml).Returns(It.IsAny<StringBuilder>);
             mockResourceModel.SetupGet(p => p.ID).Returns(It.IsAny<Guid>);
             mockResourceModel.SetupGet(p => p.ServerID).Returns(It.IsAny<Guid>);
 
@@ -393,7 +394,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             mockEnvironmentModel.SetupGet(p => p.IsConnected).Returns(true);
             var mockRepository = new Mock<IResourceRepository>();
+            mockRepository.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
             mockRepository.Setup(m => m.Save(It.IsAny<IResourceModel>())).Verifiable();
+            mockRepository.Setup(c => c.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
             mockEnvironmentModel.SetupGet(p => p.ResourceRepository).Returns(mockRepository.Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);

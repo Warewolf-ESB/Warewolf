@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio;
 using Dev2.Studio.Views.Navigation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls
 {
@@ -14,7 +14,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
         [Owner("Massimo Guerrera")]
         [TestCategory("NavigationView")]
         [Ignore]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void NavigationViewInit_UnitTest_CreatingAView_AllowDropPropertyToBeFalse()
         {
             App _myApp = null;

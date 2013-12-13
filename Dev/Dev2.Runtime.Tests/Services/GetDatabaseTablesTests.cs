@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
@@ -14,20 +15,6 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class GetDatabaseTablesTests
     {
-        #region Static Class Init
-
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
-        #endregion
-
-        
-
         #region Execute
 
         [TestMethod]
@@ -47,13 +34,13 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseTables_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedInvalidHasErrors()
         {
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", null } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
-        
+
 
         [TestMethod]
         [Description("Service should never get null values")]
@@ -61,9 +48,9 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseTables_UnitTest_ExecuteWithBlankDatabase_ExpectHasErrors()
         {
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder() } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
@@ -74,23 +61,23 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseTables_UnitTest_ExecuteWithDatabaseNotValidJson_ExpectedHasErrors()
         {
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder("Test") } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("Invalid JSON data for Database parameter. Exception: Unexpected character encountered while parsing value: T. Path '', line 0, position 0.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
         public void GetDatabaseTables_UnitTest_ExecuteWithNotDbSourceJson_ExpectedHasErrors()
         {
-            var someJsonData = "{Val:1}";
+            const string someJsonData = "{Val:1}";
             var esb = new GetDatabaseTables();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", someJsonData } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var result = JsonConvert.DeserializeObject<DbTableList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("Invalid database sent {Val:1}.", result.Errors);
         }

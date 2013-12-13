@@ -21,7 +21,7 @@ namespace Dev2.Providers.Logs
         public CustomTextWriter(string fileName)
         {
            FileName = fileName;
-           _appSettingsReader = new AppSettingsReader();
+            _appSettingsReader = new AppSettingsReader();
            _traceWriter = new StreamWriter(LoggingFileName, true);
         }
 
@@ -72,7 +72,7 @@ namespace Dev2.Providers.Logs
                 _traceWriter.Write(value);
                 _traceWriter.Flush();
             }
-            catch(ObjectDisposedException e)
+            catch(ObjectDisposedException)
             {
                 //ignore this exception
             }
@@ -86,7 +86,7 @@ namespace Dev2.Providers.Logs
                 _traceWriter.WriteLine(value);
                 _traceWriter.Flush();
             }
-            catch(ObjectDisposedException e)
+            catch(ObjectDisposedException)
             {
                 //ignore this exception
             }
@@ -109,7 +109,7 @@ namespace Dev2.Providers.Logs
                        _streamClosed = false;
                    }
                }
-               catch(ObjectDisposedException e)
+               catch(ObjectDisposedException)
                {
                    //ignore this exception
                }
@@ -126,7 +126,7 @@ namespace Dev2.Providers.Logs
             catch(Exception)
             {
                 //Could not read setttings. Use default.
-            }
+           }
             return DefaultMaxFileSize;
         }
 

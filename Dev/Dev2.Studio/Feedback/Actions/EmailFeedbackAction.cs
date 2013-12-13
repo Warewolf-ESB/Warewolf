@@ -46,7 +46,7 @@ namespace Dev2.Studio.Feedback.Actions
             var feedbackVm = new FeedbackViewModel(_attachmentPath);
             if (string.IsNullOrEmpty(feedbackVm.ServerLogAttachmentPath) && _environmentModel != null)
             {
-                feedbackVm.ServerLogAttachmentPath = FileHelper.GetServerLogTempPath(_environmentModel);
+                feedbackVm.ServerLogAttachmentPath = _environmentModel.ResourceRepository.GetServerLogTempPath(_environmentModel);
             }
             WindowManager.ShowWindow(feedbackVm);
         }

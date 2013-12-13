@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using Dev2.Common;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.PathOperations;
 using Dev2.Workspaces;
 
@@ -17,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find all registered plugins
     /// </summary>
-    public class PluginRegistry : IEsbManagementEndpoint
+    public class PluginRegistry 
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {

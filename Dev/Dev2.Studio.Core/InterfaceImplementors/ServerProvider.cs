@@ -6,9 +6,9 @@ using Dev2.Studio.Core.Interfaces;
 namespace Dev2.Studio.Core.InterfaceImplementors
 {
     /// <summary>
-    /// A provider responsible for providing an aggregated list of <see cref="IServer"/>'s.
+    /// A provider responsible for providing an aggregated list of <see cref="IEnvironmentModel"/>'s.
     /// </summary>
-    public class ServerProvider : IServerProvider
+    public class ServerProvider : IEnvironmentModelProvider
     {
         #region Singleton Instance
 
@@ -49,12 +49,12 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         #region Load
 
-        public List<IServer> Load()
+        public List<IEnvironmentModel> Load()
         {
             return Load(EnvironmentRepository.Instance);
         }
 
-        public List<IServer> Load(IEnvironmentRepository environmentRepository)
+        public List<IEnvironmentModel> Load(IEnvironmentRepository environmentRepository)
         {
             // PBI 6597 : TWR
             // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
             var environments = environmentRepository.All();
 
-            return new List<IServer>(environments.Select(e => new ServerDTO(e)));
+            return environments.ToList();
         }
 
         #endregion Methods

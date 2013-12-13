@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -11,10 +15,15 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindSourcesByType : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string type;
-            values.TryGetValue("Type", out type);
+            string type = null;
+            StringBuilder tmp;
+            values.TryGetValue("Type", out tmp);
+            if (tmp != null)
+            {
+                type = tmp.ToString();
+            }
 
             if(string.IsNullOrEmpty(type))
             {
@@ -24,15 +33,21 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             enSourceType sourceType;
-            if(!Enum.TryParse(type, true, out sourceType))
+            if(Enum.TryParse(type, true, out sourceType))
             {
-                sourceType = enSourceType.Unknown;
+                // TODO : Based upon the enum type return correct JSON model ;)
+                // NOTE : Current types are : Email, SqlDatabase, Dev2Server
+
+                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+                var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
+                if(result != null)
+                {
+                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    return serializer.SerializeToBuilder(result);
+                }
             }
 
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var result = ResourceCatalog.Instance.GetPayload(theWorkspace.ID, sourceType);
-            return result;
-
+            return new StringBuilder();
         }
 
         public DynamicService CreateServiceEntry()

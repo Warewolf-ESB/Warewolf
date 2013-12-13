@@ -1,13 +1,15 @@
 ﻿using System;
-using Dev2.Common.ExtMethods;
-using Dev2.Data.ServiceModel.Messages;
-using Dev2.DynamicServices;
-using Dev2.Providers.Errors;
-using Dev2.Runtime.Hosting;
-using Dev2.Workspaces;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Communication;
+using Dev2.Data.ServiceModel.Messages;
+using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
+using Dev2.DynamicServices.Objects.Base;
+using Dev2.Providers.Errors;
+using Dev2.Runtime.Hosting;
+using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -16,32 +18,39 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SaveResource : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string roles;
-            string resourceDefinition;
-            string workspaceIDString;
+            StringBuilder resourceDefinition;
+            string workspaceIDString = string.Empty;
 
-            values.TryGetValue("Roles", out roles);
             values.TryGetValue("ResourceXml", out resourceDefinition);
-            values.TryGetValue("WorkspaceID", out workspaceIDString);
+            StringBuilder tmp;
+            values.TryGetValue("WorkspaceID", out tmp);
+            if (tmp != null)
+            {
+                workspaceIDString = tmp.ToString();
+            }
             Guid workspaceID;
             if(!Guid.TryParse(workspaceIDString, out workspaceID))
             {
                 workspaceID = theWorkspace.ID;
             }
-            resourceDefinition = resourceDefinition.Unescape();
-
-            if(string.IsNullOrEmpty(roles) || string.IsNullOrEmpty(resourceDefinition))
+            
+            if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
                 throw new InvalidDataContractException("Roles or ResourceXml is missing");
             }
-            List<DynamicServiceObjectBase> compiledResources;
-            var errorMessage = string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
+
+            var res = new ExecuteMessage { HasError = false };
+
+            List<DynamicServiceObjectBase> compiledResources = null;
+            //var errorMessage = string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
+            var errorMessage = Resources.CompilerMessage_BuildFailed + " " + DateTime.Now;
             try
             {
-                compiledResources = new DynamicObjectHelper().GenerateObjectGraphFromString(resourceDefinition);
-                if (compiledResources.Count == 0)
+                // Replace with proper object hydration and parsing ;)
+                compiledResources = new ServiceDefinitionLoader().GenerateServiceGraph(resourceDefinition);
+                if(compiledResources.Count == 0)
                 {
                     CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
                     {
@@ -52,34 +61,36 @@ namespace Dev2.Runtime.ESB.Management.Services
                             MessagePayload = errorMessage
                         }
                     });
-                    return errorMessage;
+
+                    res.SetMessage(Resources.CompilerMessage_BuildFailed + " " +DateTime.Now);
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
+                {
+                    new CompileMessageTO
                     {
-                        new CompileMessageTO
-                        {
-                            ErrorType = ErrorType.Warning,
-                            MessageID = Guid.NewGuid(),
-                            MessagePayload = errorMessage                            
-                        }
-                    });
-                return errorMessage;               
+                        ErrorType = ErrorType.Warning,
+                        MessageID = Guid.NewGuid(),
+                        MessagePayload = errorMessage                            
+                    }
+                });
+
+                res.SetMessage(errorMessage);
             }
-            
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            StringBuilder result = new StringBuilder();
-            foreach(var dynamicServiceObjectBase in compiledResources)
+            if(compiledResources != null)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID, dynamicServiceObjectBase.ResourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID,resourceDefinition);
                 // TMP FIX
-                ResourceCatalog.Instance.SaveResource(Guid.Empty, dynamicServiceObjectBase.ResourceDefinition);
-                result.Append(saveResult.Message);
+                ResourceCatalog.Instance.SaveResource(Guid.Empty, resourceDefinition);
+                res.SetMessage(saveResult.Message + " " + DateTime.Now);
             }
-            return result.ToString();
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()

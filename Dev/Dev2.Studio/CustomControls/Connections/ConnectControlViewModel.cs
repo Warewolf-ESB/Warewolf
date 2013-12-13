@@ -6,9 +6,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.UI
 {
@@ -24,7 +21,7 @@ namespace Dev2.UI
                 throw new ArgumentNullException("activeEnvironment");
             }
             _activeEnvironment = activeEnvironment;
-            Servers = new ObservableCollection<IServer>();
+            Servers = new ObservableCollection<IEnvironmentModel>();
         }
 
         public IEnvironmentModel ActiveEnvironment
@@ -43,7 +40,7 @@ namespace Dev2.UI
             IsSelectedFromDropDown = true;
         }
 
-        public IServer GetSelectedServer(ObservableCollection<IServer> servers, string labelText)
+        public IEnvironmentModel GetSelectedServer(ObservableCollection<IEnvironmentModel> servers, string labelText)
         {
             if(servers == null || servers.Count == 0)
             {
@@ -52,27 +49,35 @@ namespace Dev2.UI
 
             if(string.IsNullOrEmpty(labelText) || !labelText.Contains("Destination"))
             {
-                return servers.FirstOrDefault(s => s.Alias == _activeEnvironment.Name) ?? servers.First(s => s.IsLocalHost);
+                IEnvironmentModel firstOrDefault = servers.FirstOrDefault(s => s.Name == _activeEnvironment.Name);
+                if (firstOrDefault != null)
+                {
+                    return firstOrDefault;
+                }
+
+                IEnvironmentModel first = servers.First(s => s.IsLocalHost());
+
+                return first;
             }
 
-            if(_activeEnvironment.IsLocalHost() && servers.Count(itm => !itm.IsLocalHost && itm.Environment.IsConnected) == 1)
+            if(_activeEnvironment.IsLocalHost() && servers.Count(itm => !itm.IsLocalHost() && itm.IsConnected) == 1)
             {
                 //Select the only other connected server
-                var otherServer = servers.FirstOrDefault(itm => !itm.IsLocalHost && itm.Environment.IsConnected);
+                var otherServer = servers.FirstOrDefault(itm => !itm.IsLocalHost() && itm.IsConnected);
                 if(otherServer != null)
                 {
                     return otherServer;
                 }
             }
 
-            if(_activeEnvironment.IsLocalHost() && servers.Count(itm => !itm.IsLocalHost) == 1)
+            if(_activeEnvironment.IsLocalHost() && servers.Count(itm => !itm.IsLocalHost()) == 1)
             {
                 //Select and connect to the only other server
-                var otherServer = servers.FirstOrDefault(itm => !itm.IsLocalHost);
+                var otherServer = servers.FirstOrDefault(itm => !itm.IsLocalHost());
                 if(otherServer != null)
                 {
-                    otherServer.Environment.Connect();
-                    otherServer.Environment.ForceLoadResources();
+                    otherServer.Connect();
+                    otherServer.ForceLoadResources();
                     return otherServer;
                 }
             }
@@ -80,14 +85,14 @@ namespace Dev2.UI
             if(!_activeEnvironment.IsLocalHost())
             {
                 //Select localhost
-                return servers.FirstOrDefault(itm => itm.IsLocalHost);
+                return servers.FirstOrDefault(itm => itm.IsLocalHost());
             }
 
             return null;
         }
         #region Servers
 
-        public ObservableCollection<IServer> Servers { get; set; }
+        public ObservableCollection<IEnvironmentModel> Servers { get; set; }
 
         // Using a DependencyProperty as the backing store for Servers.  This enables animation, styling, binding, etc...
         #endregion
@@ -104,11 +109,11 @@ namespace Dev2.UI
 
         #region Selected Server
 
-        public IServer SelectedServer
+        public IEnvironmentModel SelectedServer
         {
             get
             {
-                return (IServer)GetValue(SelectedServerProperty);
+                return (IEnvironmentModel)GetValue(SelectedServerProperty);
             }
             set
             {
@@ -121,13 +126,13 @@ namespace Dev2.UI
 
         // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedServerProperty =
-            DependencyProperty.Register("SelectedServer", typeof(IServer), typeof(ConnectControlViewModel),
+            DependencyProperty.Register("SelectedServer", typeof(IEnvironmentModel), typeof(ConnectControlViewModel),
                 new PropertyMetadata(null, ServerChangedCallBack));
 
         static void ServerChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var control = (ConnectControlViewModel)dependencyObject;
-            var selectedServer = e.NewValue as IServer;
+            var selectedServer = e.NewValue as IEnvironmentModel;
             if(selectedServer != null)
             {
                 var server = control.Servers.FirstOrDefault(s => s.ID == selectedServer.ID);
@@ -145,13 +150,13 @@ namespace Dev2.UI
             foreach(var server in servers)
             {
                 Servers.Add(server);
-                if(envModel != null && server.Alias == envModel.Name)
+                if(envModel != null && server.Name == envModel.Name)
                 {
                     if(!IsSelectedFromDropDown)
                     {
                         SelectedServer = server;
                     }
-                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost);
+                    IsEditEnabled = (SelectedServer != null && !SelectedServer.IsLocalHost());
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Runtime.ServiceModel.Data;
@@ -15,10 +16,11 @@ namespace Dev2.Activities.Designers.Tests.Email
         {
         }
 
-        public override List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel)
+        public override List<EmailSource> GetSources(IEnvironmentModel environmentModel)
         {
-            var list = new List<UnlimitedObject>();
-            var unlimitedObject1 = new UnlimitedObject(@"<Source ID=""6f6fda2f-4060-4c06-bfbb-7a38a1088604"" Version=""1.0"" Name=""MoEmailTest1"" ResourceType=""EmailSource"" ConnectionString=""Host=smtp.mail.yahoo.com;UserName=dev2developer@yahoo.com;Password=Q38qrDmsi36ei1R;Port=25;EnableSsl=False;Timeout=100000"" Type=""EmailSource"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+
+            var list = new List<EmailSource>();
+            var emailSource1 = new EmailSource(XElement.Parse(@"<Source ID=""6f6fda2f-4060-4c06-bfbb-7a38a1088604"" Version=""1.0"" Name=""MoEmailTest1"" ResourceType=""EmailSource"" ConnectionString=""Host=smtp.mail.yahoo.com;UserName=dev2developer@yahoo.com;Password=Q38qrDmsi36ei1R;Port=25;EnableSsl=False;Timeout=100000"" Type=""EmailSource"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
   <DisplayName>MoEmailTest1</DisplayName>
   <Category>MoEmailTestSources</Category>
   <AuthorRoles></AuthorRoles>
@@ -37,8 +39,8 @@ namespace Dev2.Activities.Designers.Tests.Email
     </SignedInfo>
     <SignatureValue>pMuNyT8uHzb3C++wGl058QdOdRNSxKcTKm7MeqwtRkuiLM9we0EItMyzAEJ/8ZyxZCDUi3GoosCTsND8X+HJh1EmHj6AZJ59PIX+ypZK4d+IGlqSrS29oeVZ1tIKOxIrVxc1HaGfRRibh33mxW/OWFxl7JeQQnLVlQ17SGsTl2s=</SignatureValue>
   </Signature>
-</Source>");
-            UnlimitedObject unlimitedObject2 = new UnlimitedObject(@"<Source ID=""8f803242-a0cf-45d1-8449-d4dab2662718"" Version=""1.0"" Name=""MoEmailTest2"" ResourceType=""EmailSource"" ConnectionString=""Host=smtp.mail.yahoo.com;UserName=dev2developer@yahoo.com;Password=Q38qrDmsi36ei1R;Port=25;EnableSsl=False;Timeout=100000"" Type=""EmailSource"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+</Source>"));
+            var emailSource2 = new EmailSource(XElement.Parse(@"<Source ID=""8f803242-a0cf-45d1-8449-d4dab2662718"" Version=""1.0"" Name=""MoEmailTest2"" ResourceType=""EmailSource"" ConnectionString=""Host=smtp.mail.yahoo.com;UserName=dev2developer@yahoo.com;Password=Q38qrDmsi36ei1R;Port=25;EnableSsl=False;Timeout=100000"" Type=""EmailSource"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
   <DisplayName>MoEmailTest2</DisplayName>
   <Category>MoEmailTestSources</Category>
   <AuthorRoles></AuthorRoles>
@@ -57,9 +59,9 @@ namespace Dev2.Activities.Designers.Tests.Email
     </SignedInfo>
     <SignatureValue>Vn6taCw3fFFL/NyuERfgHw0X9+JgeRAkmVWbtDmrhB6LsLB07o/rQXtf/FUJrKa9jDiiyS6G6WVhVYJ/zo3cBXZq6sBzOdYxPQHVtjf322p22rvCRaY3zw2hhZArvyc26YxpX8vjdIYmxPCJ6tbn5Hpg4ftB+ciHTo+MYS7zHN0=</SignatureValue>
   </Signature>
-</Source>");
-            list.Add(unlimitedObject1);
-            list.Add(unlimitedObject2);
+</Source>"));
+            list.Add(emailSource1);
+            list.Add(emailSource2);
             return list;
         }
 

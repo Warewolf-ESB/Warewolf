@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.Webs
 {
 
     // SN : 23-01-2013 : Missing Tests 
@@ -103,29 +105,30 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             var targetEnv = new Mock<IEnvironmentModel>();
+            var resRepo = new Mock<IResourceRepository>();
 
-            var rand = new Random();
+            bool addCalled = false;
+
+            resRepo.Setup(r => r.AddEnvironment(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>()))
+                   .Callback(() =>
+                       {
+                           addCalled = true;
+                       });
+            
             var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(c => c.WorkspaceID).Returns(It.IsAny<Guid>());
-            connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { })));
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { }))));
             targetEnv.Setup(e => e.Connection).Returns(connection.Object);
-            //targetEnv.Setup(e=>e.Connect()).Verifiable();
 
-            //var repo = new TestEnvironmentRespository(targetEnv.Object);
-            var repo = new TestEnvironmentRespository();            
+            var repo = new TestEnvironmentRespository();
+            repo.ActiveEnvironment = targetEnv.Object;
+            targetEnv.Setup(e => e.ResourceRepository).Returns(resRepo.Object);
+
 
             var handler = new ConnectCallbackHandler(repo);
+            
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, targetEnv.Object);
 
-            connection.Verify(c => c.ExecuteCommand(
-                It.Is<string>(xml =>
-                              xml.IndexOf("<Service>SaveResourceService</Service>", StringComparison.InvariantCultureIgnoreCase) != -1
-                              && xml.IndexOf("<ResourceXml>&lt;Source ID=\"" + ConnectionID + "\"", StringComparison.InvariantCultureIgnoreCase) != -1
-                                       ),
-                It.IsAny<Guid>(), It.IsAny<Guid>()));
+            Assert.IsTrue(addCalled);
         }
 
         [TestMethod]
@@ -133,32 +136,46 @@ namespace Dev2.Core.Tests
         public void Save_WithValidConnection_Expected_InvokesSaveEnvironment()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
+            
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var Env = new EnvironmentModel(mockEventAgg.Object,Guid.NewGuid(),mockConnection.Object,mockResourceRepo.Object);
+
             var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(Env);
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
-            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(new Mock<IEnvironmentModel>().Object);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(new Mock<IEnvironmentModel>().Object);
 
             var handler = new ConnectCallbackHandler(currentRepository.Object);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
-            currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s == handler.Server.Environment)));
+            currentRepository.Verify(r => r.Save(It.IsAny<IEnvironmentModel>()));
             // ReSharper restore PossibleUnintendedReferenceComparison
         }
         
         [TestMethod]
         public void SaveWithValidConnectionExpectsAddServerToExplorerMessage()
         {
+
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+
             var aggregator = new Mock<IEventAggregator>();
 
             EventPublishers.Aggregator = aggregator.Object;
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
 
             var environmentId = Guid.NewGuid();
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ID).Returns(environmentId);
-            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(environment.Object);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
             
             var ctx = Guid.NewGuid();
             var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
@@ -167,8 +184,7 @@ namespace Dev2.Core.Tests
                             .Callback<Object>(m =>
                                 {
                                     var msg = (AddServerToExplorerMessage) m;
-                                    Assert.IsTrue(msg.Context.Equals(ctx));
-                                    Assert.IsTrue(msg.EnvironmentModel.ID.Equals(handler.Server.Environment.ID));
+                                    Assert.IsTrue(msg.Context.Equals(ctx));                                    
                                 })
                              .Verifiable();
 
@@ -180,15 +196,21 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SaveWithValidConnectionExpectsAddServerToDeployMessage()
         {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+
             var aggregator = new Mock<IEventAggregator>();
 
             EventPublishers.Aggregator = aggregator.Object;
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
 
             var environment = new Mock<IEnvironmentModel>();
-            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(environment.Object);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
 
             var ctx = Guid.NewGuid();
             var handler = new ConnectCallbackHandler(currentRepository.Object, ctx);
@@ -198,7 +220,7 @@ namespace Dev2.Core.Tests
                             {
                                 var msg = (AddServerToDeployMessage)m;
                                 Assert.IsTrue(msg.Context.Equals(ctx));
-                                Assert.IsTrue(msg.Server.ID.ToString(CultureInfo.InvariantCulture)
+                                Assert.IsTrue(msg.Server.ID.ToString()
                                                  .Equals(ConnectionID.ToString(CultureInfo.InvariantCulture),
                                                          StringComparison.InvariantCultureIgnoreCase));
                             })
@@ -215,19 +237,25 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming - Unit Tests
         {
             // BUG: 8786 - TWR - 2013.02.20
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
 
             var env = new Mock<IEnvironmentModel>();
             env.SetupProperty(e => e.Category); // start tracking sets/gets to this property
 
-            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(env.Object);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(env.Object);
 
             var handler = new ConnectCallbackHandler(new Mock<IEventAggregator>().Object, currentRepository.Object);
             handler.Save(ConnectionID, ConnectionCategory, ConnectionAddress, ConnectionName, ConnectionWebServerPort, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
-            currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s.Category == ConnectionCategory)));
+            currentRepository.Verify(r => r.Save(It.IsAny<IEnvironmentModel>()));
             // ReSharper restore PossibleUnintendedReferenceComparison
         }
 
@@ -251,15 +279,21 @@ namespace Dev2.Core.Tests
         public void Save_WithValidJson_Expected_InvokesSave()
         // ReSharper restore InconsistentNaming - Unit Tests
         {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
-            currentRepository.Setup(e => e.Fetch(It.IsAny<IServer>())).Returns(new Mock<IEnvironmentModel>().Object);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(new Mock<IEnvironmentModel>().Object);
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
 
             var handler = new ConnectCallbackHandler(new Mock<IEventAggregator>().Object, currentRepository.Object);
             handler.Save(ConnectionJson, null);
 
             // ReSharper disable PossibleUnintendedReferenceComparison - expected to be the same instance
-            currentRepository.Verify(r => r.Save(It.Is<IEnvironmentModel>(s => s == handler.Server.Environment)));
+            currentRepository.Verify(r => r.Save(It.IsAny<IEnvironmentModel>()));
             // ReSharper restore PossibleUnintendedReferenceComparison
         }
 

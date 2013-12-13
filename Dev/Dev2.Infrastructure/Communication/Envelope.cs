@@ -16,5 +16,13 @@ namespace Dev2.Communication
         /// Gets or sets the content - typically a JSON string.
         /// </summary>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Gets or sets the order unique identifier.
+        /// </summary>
+        /// <value>
+        /// The order unique identifier.
+        /// </value>
+        public int PartID { get; set; }
     }
 }

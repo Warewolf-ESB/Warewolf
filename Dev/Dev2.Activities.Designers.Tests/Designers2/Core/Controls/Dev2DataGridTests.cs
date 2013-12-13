@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Dev2.Activities.Designers2.Core.Controls;
 using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls

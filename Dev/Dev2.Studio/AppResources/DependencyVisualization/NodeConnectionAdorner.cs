@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using Dev2.AppResources.DependencyVisualization;
 
 namespace CircularDependencyTool
 {

@@ -6,10 +6,11 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -19,10 +20,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SecurityWrite : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = "Success";
-            string permissions;
+            ExecuteMessage msg = new ExecuteMessage {HasError = false};
+            const string result = "Success";
+            StringBuilder permissions;
 
             if(values == null)
             {
@@ -31,16 +33,18 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             values.TryGetValue("Permissions", out permissions);
 
-            if(string.IsNullOrEmpty(permissions))
+            if(permissions == null || permissions.Length == 0)
             {
                 throw new InvalidDataException("Empty permissions passed.");
             }
 
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
             try
             {
-                var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(permissions);
+                var windowsGroupPermissions = serializer.Deserialize<List<WindowsGroupPermission>>(permissions);
 
-                DoFileEncryption(permissions);
+                DoFileEncryption(permissions.ToString());
 
                 try
                 {
@@ -51,12 +55,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 catch(IdentityNotMappedException inmex)
                 {
                     ServerLogger.LogError(inmex);
-                    result = "Error writing security configuration: One or more Windows Groups are invalid.";
+                    msg.HasError = true;
+                    msg.SetMessage("Error writing security configuration: One or more Windows Groups are invalid.");
                 }
                 catch(Exception ex)
                 {
                     ServerLogger.LogError(ex);
-                    result = "Error writing security configuration: " + ex.Message;
+                    msg.HasError = true;
+                    msg.SetMessage("Error writing security configuration: " + ex.Message);
                 }
             }
             catch(Exception e)
@@ -64,7 +70,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
             }
 
-            return result;
+            msg.SetMessage(result);
+
+            return serializer.SerializeToBuilder(msg);
         }
 
         static void DoFileEncryption(string permissions)

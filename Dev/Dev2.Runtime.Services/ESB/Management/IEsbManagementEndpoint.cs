@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using System.Text;
+using Dev2.Common;
 using System.Collections.Generic;
 using Dev2.DynamicServices;
 using Dev2.Workspaces;
@@ -16,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
-        string Execute(IDictionary<string, string> values, IWorkspace theWorkspace);
+        StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);
 
         /// <summary>
         /// Creates the service entry.

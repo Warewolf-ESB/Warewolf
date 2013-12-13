@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using enActionType = Dev2.DynamicServices.enActionType;
@@ -12,28 +14,35 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindResourceForBinding : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string resourceName;
-            string type;
-            string roles;
+            return new StringBuilder();
+            //string resourceName = null;
+            //string type = null;
 
-            values.TryGetValue("ResourceName", out resourceName);
-            values.TryGetValue("Type", out type);
-            values.TryGetValue("Roles", out roles);
+            //StringBuilder tmp;
+            //values.TryGetValue("ResourceName", out tmp);
+            //if (tmp != null)
+            //{
+            //    resourceName = tmp.ToString();
+            //}
+            //values.TryGetValue("Type", out tmp);
+            //if(tmp != null)
+            //{
+            //    type = tmp.ToString();
+            //}
 
+            //// BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+            //var result = ResourceCatalog.Instance.GetPayload(theWorkspace.ID, resourceName, type);
 
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var result = ResourceCatalog.Instance.GetPayload(theWorkspace.ID, resourceName, type, roles);
+            //// now extract the attributed junk for the server to properly use
+            //var attributes = new[] { "Name" };
+            //var childTags = new[] { "Category" };
 
-            // now extract the attributed junk for the server to properly use
-            var attributes = new[] { "Name" };
-            var childTags = new[] { "Category" };
+            //var returnValue = DataListUtil.ExtractAttributeFromTagAndMakeRecordset(result, "Service", attributes, childTags);
+            //returnValue = returnValue.Replace("<Service>", "<Dev2Service>").Replace("</Service>", "</Dev2Service>");
 
-            var returnValue = DataListUtil.ExtractAttributeFromTagAndMakeRecordset(result, "Service", attributes, childTags);
-            returnValue = returnValue.Replace("<Service>", "<Dev2Service>").Replace("</Service>", "</Dev2Service>");
-
-            return returnValue;
+            //return returnValue;
         }
 
         public DynamicService CreateServiceEntry()

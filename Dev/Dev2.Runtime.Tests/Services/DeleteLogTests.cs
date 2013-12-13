@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using System.Threading;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Services
@@ -45,6 +47,13 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
+        ExecuteMessage ConvertToMsg(StringBuilder msg)
+        {
+            var serialier = new Dev2JsonSerializer();
+            var result = serialier.Deserialize<ExecuteMessage>(msg);
+            return result;
+        }
+
         #region Execute
 
         [TestMethod]
@@ -52,10 +61,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "" }, { "Directory", "xyz" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder() }, { "Directory", new StringBuilder("xyz") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
-            Assert.IsTrue(result.StartsWith("DeleteLog: Error"));
+            var msg = ConvertToMsg(result);
+            Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
         [TestMethod]
@@ -63,10 +73,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "abc" }, { "Directory", "" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("abc") }, { "Directory", new StringBuilder() } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
-            Assert.IsTrue(result.StartsWith("DeleteLog: Error"));
+            var msg = ConvertToMsg(result);
+            Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
         [TestMethod]
@@ -74,10 +85,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "abc" }, { "Directory", "xyz" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("abc") }, { "Directory", new StringBuilder("xyz") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
-            Assert.IsTrue(result.StartsWith("DeleteLog: Error"));
+            var msg = ConvertToMsg(result);
+            Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
         [TestMethod]
@@ -85,10 +97,11 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", Guid.NewGuid().ToString() }, { "Directory", "C:" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(Guid.NewGuid().ToString()) }, { "Directory", new StringBuilder("C:") } };
             var esb = new DeleteLog();
             var result = esb.Execute(values, workspace.Object);
-            Assert.IsTrue(result.StartsWith("DeleteLog: Error"));
+            var msg = ConvertToMsg(result);
+            Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
         }
 
 
@@ -106,10 +119,11 @@ namespace Dev2.Tests.Runtime.Services
 
                 var workspace = new Mock<IWorkspace>();
 
-                var values = new Dictionary<string, string> { { "FilePath", fileName }, { "Directory", _testDir } };
+                var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
                 var esb = new DeleteLog();
                 var result = esb.Execute(values, workspace.Object);
-                Assert.IsTrue(result.StartsWith("Success"));
+                var msg = ConvertToMsg(result);
+                Assert.IsTrue(msg.Message.ToString().StartsWith("Success"));
                 Assert.IsFalse(File.Exists(path));
             }
         }
@@ -132,10 +146,11 @@ namespace Dev2.Tests.Runtime.Services
                 {
                     var workspace = new Mock<IWorkspace>();
 
-                    var values = new Dictionary<string, string> { { "FilePath", fileName }, { "Directory", _testDir } };
+                    var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "Directory", new StringBuilder(_testDir) } };
                     var esb = new DeleteLog();
                     var result = esb.Execute(values, workspace.Object);
-                    Assert.IsTrue(result.StartsWith("DeleteLog: Error"));
+                    var msg = ConvertToMsg(result);
+                    Assert.IsTrue(msg.Message.ToString().StartsWith("DeleteLog: Error"));
                 }
                 finally
                 {

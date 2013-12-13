@@ -1779,7 +1779,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string BatchSize = "[[batchsize]]";
             const string TimeOut = "[[timeout]]";
             const string TableName = "TestTable";
-            const string Result = "[[res]]";
             var dataColumnMappings = DataColumnMappingsMixedMappings();
             var act = new DsfSqlBulkInsertActivity
             {

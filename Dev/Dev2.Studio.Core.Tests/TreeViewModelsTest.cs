@@ -20,11 +20,9 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

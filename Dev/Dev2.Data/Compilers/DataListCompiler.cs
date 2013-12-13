@@ -34,10 +34,10 @@ namespace Dev2.DataList.Contract
         // These are tags to strip from the ADL for ExtractShapeFromADLAndCleanWithDefs used with ShapeInput ;)
 
         private Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>();
-        private IServerDataListCompiler _svrCompiler;
+        private IEnvironmentModelDataListCompiler _svrCompiler;
         #endregion
 
-        internal DataListCompiler(IServerDataListCompiler svrC)
+        internal DataListCompiler(IEnvironmentModelDataListCompiler svrC)
         {
             // TODO : Allow IP to be sent when using the DataList compiler...
             _svrCompiler = svrC;

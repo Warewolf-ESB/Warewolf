@@ -30,7 +30,7 @@ namespace Dev2.Settings
         private readonly string _configurationEntrypointMethodName = "EntryPoint";
         private UserControl _runtimeConfigurationUserControl;
         private IEnvironmentModel _currentEnvironment;
-        private RelayCommand<IServer> _sourceServerChangedCommand;
+        private RelayCommand<IEnvironmentModel> _sourceServerChangedCommand;
         private bool _isWorking;
         private bool _saveSuccessfull;
         private Guid? _context;
@@ -56,12 +56,12 @@ namespace Dev2.Settings
         #region Commands
 
 
-        public RelayCommand<IServer> SourceServerChangedCommand
+        public RelayCommand<IEnvironmentModel> SourceServerChangedCommand
         {
             get
             {
                 return _sourceServerChangedCommand ?? (_sourceServerChangedCommand
-                                                       = new RelayCommand<IServer>(ServerChanged));
+                                                       = new RelayCommand<IEnvironmentModel>(ServerChanged));
             }
         }
 
@@ -175,9 +175,9 @@ namespace Dev2.Settings
             worker.DoWork += (sender, args) =>
             {
                 var servers = ServerProvider.Instance.Load();
-                var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
-                if(localHost != null && localHost.Environment.IsConnected)
-                    Load(localHost.Environment);
+                var localHost = servers.FirstOrDefault(s => s.IsLocalHost());
+                if(localHost != null && localHost.IsConnected)
+                    Load(localHost);
             };
             worker.RunWorkerAsync();
         }
@@ -259,9 +259,9 @@ namespace Dev2.Settings
 
         #region Private Methods
 
-        private void ServerChanged(IServer server)
+        private void ServerChanged(IEnvironmentModel server)
         {
-            Load(server.Environment);
+            Load(server);
         }
 
         private void LoadUserControl()

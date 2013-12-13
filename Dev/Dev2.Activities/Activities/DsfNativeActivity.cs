@@ -981,7 +981,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var fieldName = DataListUtil.ExtractFieldNameFromValue(expression);
                 enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
-                string error;
                 if(indexType == enRecordsetIndexType.Blank && string.IsNullOrEmpty(fieldName))
                 {
                     indexType = enRecordsetIndexType.Star;

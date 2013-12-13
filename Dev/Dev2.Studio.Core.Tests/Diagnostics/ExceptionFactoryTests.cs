@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
+using System.Text;
 using Dev2.Composition;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.Diagnostics
@@ -15,12 +14,21 @@ namespace Dev2.Core.Tests.Diagnostics
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;
+        private Mock<IEnvironmentConnection> con;
 
         [TestInitialize]
         public void MyTestInitialize()
         {
             _contextModel = new Mock<IEnvironmentModel>();
-            _contextModel.Setup(f => f.Connection.ExecuteCommand(It.IsAny<String>(),Guid.Empty,Guid.Empty));
+
+            con = new Mock<IEnvironmentConnection>();
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
+
+            _contextModel.Setup(c => c.Connection).Returns(con.Object);
+
+            //_contextModel.Setup(f => f.Connection.ExecuteCommand(It.IsAny<String>(),Guid.Empty,Guid.Empty));
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
 
@@ -67,6 +75,12 @@ namespace Dev2.Core.Tests.Diagnostics
             //Initialization
             var e = GetException();
 
+            var resRepo = new Mock<IResourceRepository>();
+
+            resRepo.Setup(r => r.GetServerLogTempPath(It.IsAny<IEnvironmentModel>())).Returns("");
+
+            _contextModel.Setup(c => c.ResourceRepository).Returns(resRepo.Object);
+
             //Execute
             var vm = ExceptionFactory.CreateViewModel(e, _contextModel.Object);
 
@@ -79,6 +93,12 @@ namespace Dev2.Core.Tests.Diagnostics
         {
             //Initialization
             var e = GetException();
+
+            var resRepo = new Mock<IResourceRepository>();
+
+            resRepo.Setup(r => r.GetServerLogTempPath(It.IsAny<IEnvironmentModel>())).Returns("");
+
+            _contextModel.Setup(c => c.ResourceRepository).Returns(resRepo.Object);
 
             //Execute
             var vm = ExceptionFactory.CreateViewModel(e, _contextModel.Object, ErrorSeverity.Critical);

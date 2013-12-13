@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Security.Principal;
+using System.Text;
 using System.Xml;
-using Caliburn.Micro;
-using Dev2.Integration.Tests;
+using Dev2.Common.Common;
 using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Unlimited.Framework;
 
-namespace Dev2.Studio.Core.Tests
+namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 {
     /// <summary>
     ///This is a result class for EnvironmentModelTest and is intended
     ///to contain all EnvironmentModelTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class EnvironmentModelTest
     {
         #region Test Variables
@@ -76,14 +73,14 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_FindResources_Expected()
         {
-            string xmlString = CreateDataObject("FindResourceService", "*");
+            var xmlString = CreateDataObject("FindResourceService", "*");
 
             IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
             if(conn.IsConnected)
             {
-                string returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                var returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -99,13 +96,13 @@ namespace Dev2.Studio.Core.Tests
         [TestMethod]
         public void EnvironmentConnection_AddResource_NewResource_Expected_NewResourceAddedToServer()
         {
-            string xmlString = CreateDataObject("FindResourceService", "*");
+            var xmlString = CreateDataObject("FindResourceService", "*");
             IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
             if(conn.IsConnected)
             {
-                string returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                var returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -121,7 +118,7 @@ namespace Dev2.Studio.Core.Tests
 
         #region Private Test Methods
 
-        private string CreateDataObject(string serviceName, string resourceName = null, string xmlFileLocation = null)
+        private StringBuilder CreateDataObject(string serviceName, string resourceName = null, string xmlFileLocation = null)
         {
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = serviceName;
@@ -136,7 +133,7 @@ namespace Dev2.Studio.Core.Tests
             }
             dataObj.Roles = string.Join(",", "tester");
 
-            return dataObj.XmlString;
+            return new StringBuilder(dataObj.XmlString);
         }
         #endregion Private Test Methods
 

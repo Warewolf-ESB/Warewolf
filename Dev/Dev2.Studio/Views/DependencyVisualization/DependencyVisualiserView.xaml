@@ -4,7 +4,8 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:local="clr-namespace:CircularDependencyTool"
   xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-  xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls">
+  xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+  xmlns:dependencyVisualization="clr-namespace:Dev2.Views.DependencyVisualization">
     <i:Interaction.Behaviors>
         <behavior:ActualSizeBindingBehavior 
                 ActualWidth="{Binding AvailableWidth, Mode=OneWayToSource}" 
@@ -37,7 +38,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>                
               <DataTemplate>
-                <local:GraphView   />
+                <dependencyVisualization:GraphView   />
                     </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

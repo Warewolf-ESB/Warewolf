@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -24,15 +26,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(File.Exists(ServerSecurityService.FileName))
             {
                 var encryptedData = File.ReadAllText(ServerSecurityService.FileName);
                 var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                return decryptData;
+                return new StringBuilder(decryptData);
             }
-            return JsonConvert.SerializeObject(DefaultPermissions);
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(DefaultPermissions);
         }
 
         public DynamicService CreateServiceEntry()

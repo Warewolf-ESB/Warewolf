@@ -7,6 +7,7 @@
 //                  This type is responsible for validating all input data
 #endregion
 
+using Dev2.DynamicServices.Objects.Base;
 
 namespace Dev2.DynamicServices {
     #region Using Directives

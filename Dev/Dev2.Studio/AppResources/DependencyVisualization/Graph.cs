@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
-namespace CircularDependencyTool
+namespace Dev2.AppResources.DependencyVisualization
 {
     /// <summary>
     /// Represents a set of nodes that can be dependent upon each other, 
@@ -12,11 +13,10 @@ namespace CircularDependencyTool
         #region Constructor
 
         public Graph(string title)
-
         {
-            this.CircularDependencies = new List<CircularDependency>();
-            this.Nodes = new List<Node>();
-            this.Title = title;
+            CircularDependencies = new List<CircularDependency>();
+            Nodes = new List<Node>();
+            Title = title;
         }
 
         #endregion Constructor
@@ -30,7 +30,7 @@ namespace CircularDependencyTool
 
         public bool HasCircularDependency
         {
-            get { return this.CircularDependencies.Any(); }
+            get { return CircularDependencies.Any(); }
         }
 
         public List<Node> Nodes { get; private set; }
@@ -41,19 +41,33 @@ namespace CircularDependencyTool
 
         #region Methods
 
+        public new string ToString()
+        {
+            StringBuilder result = new StringBuilder(string.Format("<graph title=\"{0}\">",Title));
+
+            foreach (var node in Nodes)
+            {
+                result.Append(node.ToString());
+            }
+
+            result.Append("</graph>");
+
+            return result.ToString();
+        } 
+
         /// <summary>
         /// Inspects the graph's nodes for circular dependencies.
         /// </summary>
         public void CheckForCircularDependencies()
         {
-            foreach (Node node in this.Nodes)
+            foreach (Node node in Nodes)
             {
                 var circularDependencies = node.FindCircularDependencies();
                 if (circularDependencies != null)
-                    this.ProcessCircularDependencies(circularDependencies);
+                    ProcessCircularDependencies(circularDependencies);
             }
 
-            this.CircularDependencies.Sort();
+            CircularDependencies.Sort();
         }
 
         public void ProcessCircularDependencies(List<CircularDependency> circularDependencies)
@@ -63,13 +77,13 @@ namespace CircularDependencyTool
                 if (circularDependency.Nodes.Count == 0)
                     continue;
 
-                if (this.CircularDependencies.Contains(circularDependency))
+                if (CircularDependencies.Contains(circularDependency))
                     continue;
 
                 // Arrange the nodes into the order in which they were discovered.
                 circularDependency.Nodes.Reverse();
 
-                this.CircularDependencies.Add(circularDependency);
+                CircularDependencies.Add(circularDependency);
 
                 // Inform each node that it is a member of the circular dependency.
                 foreach (Node dependency in circularDependency.Nodes)

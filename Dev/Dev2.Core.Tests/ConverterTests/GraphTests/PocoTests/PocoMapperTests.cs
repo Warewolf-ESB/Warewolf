@@ -5,8 +5,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Poco;
+using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
+namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]

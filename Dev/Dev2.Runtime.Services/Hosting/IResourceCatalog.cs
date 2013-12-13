@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Hosting
@@ -25,8 +27,10 @@ namespace Dev2.Runtime.Hosting
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="resourceID">The resource ID to be queried.</param>
         /// <param name="version">The version to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        string GetResourceContents(Guid workspaceID, Guid resourceID, Version version = null);
+        /// <returns>
+        /// The resource's contents or <code>string.Empty</code> if not found.
+        /// </returns>
+        StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID, Version version = null);
 
         /// <summary>
         /// Gets the resource's contents.
@@ -35,7 +39,7 @@ namespace Dev2.Runtime.Hosting
         /// <returns>
         /// The resource's contents or <code>string.Empty</code> if not found.
         /// </returns>
-        string GetResourceContents(IResource resource);
+        StringBuilder GetResourceContents(IResource resource);
 
         /// <summary>
         /// Gets the contents of the resource with the given guids.
@@ -45,7 +49,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="type">The type string: WorkflowService, Service, Source, ReservedService or *, to be queried.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         /// <exception cref="System.ArgumentNullException">type</exception>
-        string GetPayload(Guid workspaceID, string guidCsv, string type);
+        StringBuilder GetPayload(Guid workspaceID, string guidCsv, string type);
 
         /// <summary>
         /// Gets the contents of the resources with the given source type.
@@ -53,7 +57,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="sourceType">The type of the source to be queried.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
-        string GetPayload(Guid workspaceID, enSourceType sourceType);
+        StringBuilder GetPayload(Guid workspaceID, enSourceType sourceType);
 
         /// <summary>
         /// Gets the contents of the resource with the given name and type (WorkflowService, Service, Source, ReservedService or *).
@@ -66,8 +70,12 @@ namespace Dev2.Runtime.Hosting
         /// <code>false</code> if resource name's must exactly match the given <paramref name="resourceName"/>.</param>
         /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
         /// <exception cref="System.Runtime.Serialization.InvalidDataContractException">ResourceName or Type is missing from the request</exception>
-        string GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);
+        StringBuilder GetPayload(Guid workspaceID, string resourceName, string type, string userRoles, bool useContains = true);
 
+        /// <summary>
+        /// Loads the workspace.
+        /// </summary>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
         void LoadWorkspace(Guid workspaceID);
 
         /// <summary>
@@ -82,7 +90,7 @@ namespace Dev2.Runtime.Hosting
 
         bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null);
 
-        ResourceCatalogResult SaveResource(Guid workspaceID, string resourceXml, string userRoles = null);
+        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null);
 
         ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common.Common;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -14,7 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     class FindNetworkComputers : IEsbManagementEndpoint
     {
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             StringBuilder result = new StringBuilder();
             string json = "[";
@@ -29,12 +30,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.Append(json);
                 result.Append("</JSON>");
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 result.Append(ex.Message);
             }
 
-            return result.ToString();
+            return result;
         }
 
         public DynamicService CreateServiceEntry()

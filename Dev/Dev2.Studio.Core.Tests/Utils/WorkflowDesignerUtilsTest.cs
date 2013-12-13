@@ -1,18 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Services.Events;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.Utils
@@ -23,30 +21,11 @@ namespace Dev2.Core.Tests.Utils
     [TestClass][ExcludeFromCodeCoverage]
     public class WorkflowDesignerUtilsTest
     {
-        public WorkflowDesignerUtilsTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //

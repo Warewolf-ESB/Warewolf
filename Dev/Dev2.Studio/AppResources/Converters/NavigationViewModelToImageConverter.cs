@@ -3,7 +3,6 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Dev2.Studio.Core;
 using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.AppResources.Converters
@@ -57,7 +56,7 @@ namespace Dev2.Studio.AppResources.Converters
                 }                              
                 return new BitmapImage();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new BitmapImage();
             }

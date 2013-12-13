@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Web;
-using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Security
@@ -11,7 +10,8 @@ namespace Dev2.Runtime.WebServer.Security
         readonly ConcurrentDictionary<Tuple<string, string>, bool> _cachedRequests = new ConcurrentDictionary<Tuple<string, string>, bool>();
 
         // Singleton instance - lazy initialization is used to ensure that the creation is threadsafe
-        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(new ServerSecurityService()));
+        // new ServerSecurityService()
+        static readonly Lazy<AuthorizationService> TheInstance = new Lazy<AuthorizationService>(() => new AuthorizationService(null));
         public static AuthorizationService Instance { get { return TheInstance.Value; } }
 
         protected AuthorizationService(ISecurityService securityService)

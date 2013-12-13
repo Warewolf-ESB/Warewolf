@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml.Linq;
 
-namespace Dev2.DynamicServices.Test.XML
+namespace Dev2.Tests.Runtime.XML
 {
     /// <summary>
     /// Utility class for retrieving embedded XML resources.

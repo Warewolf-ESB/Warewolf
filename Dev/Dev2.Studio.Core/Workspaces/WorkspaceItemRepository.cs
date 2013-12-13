@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Runtime.Hosting;
+using Dev2.Controller;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Workspaces
@@ -203,7 +204,7 @@ namespace Dev2.Studio.Core.Workspaces
             workspaceItem.IsWorkflowSaved = resourceModel.IsWorkflowSaved;
         }
 
-        public string UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave)
+        public ExecuteMessage UpdateWorkspaceItem(IContextualResourceModel resource, bool isLocalSave)
         {
             // BUG 9492 - 2013.06.08 - TWR : added null check
             if(resource == null)
@@ -214,24 +215,26 @@ namespace Dev2.Studio.Core.Workspaces
 
             if(workspaceItem == null)
             {
-                return string.Empty;
+                var msg = new ExecuteMessage {HasError = false};
+                msg.SetMessage(string.Empty);
+                return msg;
             }
 
 
             workspaceItem.Action = WorkspaceItemAction.Commit;
-            dynamic publishRequest = new UnlimitedObject();
-            publishRequest.Service = "UpdateWorkspaceItemService";
-             string[] securityRoles = {"Administrators"};
-             publishRequest.Roles = String.Join(",", securityRoles);
-            publishRequest.ItemXml = workspaceItem.ToXml();
-            publishRequest.IsLocalSave = isLocalSave;
 
-            string result = resource.Environment.Connection
-                                    .ExecuteCommand(publishRequest.XmlString, workspaceItem.WorkspaceID,
-                                        GlobalConstants.NullDataListID) ??
-                            string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, publishRequest.Service);
+            var comsController = new CommunicationController() { ServiceName = "UpdateWorkspaceItemService" };
+            comsController.AddPayloadArgument("Roles", String.Join(",", "Test"));
+            var xml = workspaceItem.ToXml();
+           
+            comsController.AddPayloadArgument("ItemXml", xml.ToString(SaveOptions.DisableFormatting));
+            comsController.AddPayloadArgument("IsLocalSave", isLocalSave.ToString());
+
+            var con = resource.Environment.Connection;
+
+            var result = comsController.ExecuteCommand<ExecuteMessage>(con, con.WorkspaceID);
+
             return result;
-
         }
 
         #endregion

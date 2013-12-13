@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Dev2.Services.Security
 {
@@ -15,11 +14,10 @@ namespace Dev2.Services.Security
         public virtual void Read()
         {
             _permissions.Clear();
-
             var json = ReadPermissions();
-            if(!string.IsNullOrEmpty(json))
+            if(json != null)
             {
-                _permissions.AddRange(JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(json));
+                _permissions.AddRange(json);
             }
 
             RaisePermissionsChanged();
@@ -33,6 +31,6 @@ namespace Dev2.Services.Security
             }
         }
 
-        protected abstract string ReadPermissions();        
+        protected abstract List<WindowsGroupPermission> ReadPermissions();
     }
 }

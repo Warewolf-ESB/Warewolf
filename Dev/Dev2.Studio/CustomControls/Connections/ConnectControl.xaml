@@ -28,7 +28,7 @@
                         <Setter.Value>
                             <MultiBinding StringFormat="U_{0}_{1}">
                                 <Binding Path="ServerComboBoxAutomationID" RelativeSource="{RelativeSource AncestorType={x:Type UserControl}}"/>
-                                <Binding Path="Alias" />
+                                <Binding Path="Name" />
                             </MultiBinding>
                         </Setter.Value>
                     </Setter>
@@ -41,8 +41,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Alias}"/>
-                        <TextBlock Text="   (Connected)" Grid.Column="1" Visibility="{Binding Environment.IsConnected, Converter={StaticResource BoolToVisConverter}}"></TextBlock>
+                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="   (Connected)" Grid.Column="1" Visibility="{Binding IsConnected, Converter={StaticResource BoolToVisConverter}}"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

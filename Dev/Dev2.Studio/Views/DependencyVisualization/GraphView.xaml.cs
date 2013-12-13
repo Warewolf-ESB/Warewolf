@@ -1,11 +1,8 @@
 ﻿using System.Windows.Controls;
-using Unlimited.Applications.BusinessDesignStudio;
 using System.Windows.Input;
-using System.ComponentModel.Composition;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core;
+using Dev2.AppResources.DependencyVisualization;
 
-namespace CircularDependencyTool
+namespace Dev2.Views.DependencyVisualization
 {
     public partial class GraphView : UserControl
     {

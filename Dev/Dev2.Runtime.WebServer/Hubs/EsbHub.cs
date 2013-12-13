@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
@@ -20,9 +21,10 @@ namespace Dev2.Runtime.WebServer.Hubs
 {
     [AuthorizeHub]
     [HubName("esb")]
-    public class EsbHub : ServerHub, IDebugWriter
+    public class EsbHub : ServerHub,IDebugWriter
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
+        static readonly ConcurrentDictionary<string, string> ResultCache = new ConcurrentDictionary<string, string>();
 
         public EsbHub()
         {
@@ -58,12 +60,43 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        public async Task<string> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
+        /// <summary>
+        /// Fetches the execute payload fragment.
+        /// </summary>
+        /// <param name="receipt">The receipt.</param>
+        /// <returns></returns>
+        public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
+        {
+            string value;
+            if (ResultCache.TryGetValue(receipt.ToKey(), out value))
+            {
+                var task = new Task<string>(() =>
+                            {
+                                return value;
+                            });
+
+                task.Start();
+                return await task;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="envelope">The envelope.</param>
+        /// <param name="endOfStream">if set to <c>true</c> [end of stream].</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="dataListID">The data list unique identifier.</param>
+        /// <param name="messageID">The message unique identifier.</param>
+        /// <returns></returns>
+        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler();
             try
             {
-                var task = new Task<string>(() =>
+                var task = new Task<Receipt>(() =>
                 {
                     try
                     {
@@ -74,14 +107,47 @@ namespace Dev2.Runtime.WebServer.Hubs
                             MessageCache.TryAdd(messageID, sb);
                         }
                         sb.Append(envelope.Content);
+
                         if(endOfStream)
                         {
                             MessageCache.TryRemove(messageID, out sb);
-                            string payload = sb.ToString();
-                            string processRequest = internalServiceRequestHandler.ProcessRequest(payload, workspaceID, dataListID, Context.ConnectionId);
-                            return processRequest;
+                            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                            EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
+                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceID, dataListID, Context.ConnectionId);
+                            // Convert to chunked msg store for fetch ;)
+                            var length = processRequest.Length;
+                            var startIdx = 0;
+                            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+
+                            for(var q = 0; q < rounds; q++)
+                            {
+                                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                                if(len > (length - startIdx))
+                                {
+                                    len = (length - startIdx);
+                                }
+
+                                var future = new FutureReceipt
+                                            {
+                                                PartID = q,
+                                                RequestID = messageID
+                                            };
+
+                                var value = processRequest.Substring(startIdx, len);
+
+                                if (!ResultCache.TryAdd(future.ToKey(), value))
+                                {
+                                    ServerLogger.LogError("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]");
+                                }
+
+                                startIdx += len;
+                            }
+
+                            return new Receipt { PartID = envelope.PartID, ResultParts = rounds };
+                            //return new Receipt { Result = processRequest.ToString(), PartID = envelope.PartID, ResultParts = rounds };
                         }
-                        return "";
+
+                        return new Receipt {PartID = envelope.PartID, ResultParts = -1};
                     }
                     catch(Exception e)
                     {

@@ -1,21 +1,22 @@
-﻿using Dev2.Common;
+﻿using Dev2.Controller;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.Utils
 {
     public class StudioCompileMessageRepo
     {
-        public static string GetCompileMessagesFromServer(IContextualResourceModel resourceModel)
+        public CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel)
         {
-            dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = "FetchDependantCompileMessagesService";
-            dataObj.ServiceID = resourceModel.ID;
+            var comsController = new CommunicationController { ServiceName = "FetchDependantCompileMessagesService" };
+
             var workspaceID = resourceModel.Environment.Connection.WorkspaceID;
-            dataObj.WorkspaceID = workspaceID;
-            dataObj.FilterList = "";
-            string result = resourceModel.Environment.Connection.ExecuteCommand(dataObj.XmlString, workspaceID,
-                GlobalConstants.NullDataListID);
+
+            comsController.AddPayloadArgument("ServiceID", resourceModel.ID.ToString());
+            comsController.AddPayloadArgument("WorkspaceID", workspaceID.ToString());
+            var con = resourceModel.Environment.Connection;
+            var result = comsController.ExecuteCommand<CompileMessageList>(con, con.WorkspaceID);
+
             return result;
         }
     }

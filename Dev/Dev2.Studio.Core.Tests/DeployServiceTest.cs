@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
-using Dev2.Composition;
+using System.Text;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -59,7 +58,7 @@ namespace Dev2.Core.Tests
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
-            connection.Setup(e => e.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            connection.Setup(e => e.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             var envMock = new Mock<IEnvironmentModel>();
             envMock.Setup(e => e.Connection).Returns(connection.Object);

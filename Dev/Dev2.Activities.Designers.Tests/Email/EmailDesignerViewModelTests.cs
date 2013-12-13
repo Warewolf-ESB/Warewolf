@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
+using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
@@ -87,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.SetupGet(p => p.WorkspaceID).Returns(Guid.NewGuid);
-            mockConnection.Setup(m => m.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            mockConnection.Setup(m => m.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
             mockEnvironmentModel.SetupGet(p => p.Connection).Returns(mockConnection.Object);
             viewModel.UpdateEnvironmentResourcesCallback(mockEnvironmentModel.Object);
             Assert.IsTrue(viewModel.SelectedEmailSource == viewModel.EmailSourceList[1]);
@@ -156,7 +159,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
             env.Setup(e => e.Connection.WorkspaceID).Returns(Guid.Empty);
-            env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
 
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<GetActiveEnvironmentCallbackMessage>()))
@@ -179,15 +182,18 @@ namespace Dev2.Activities.Designers.Tests.Email
         public void EmailDesignerViewModel_GetSources_ReturnsListOfObjects()
         {
             //------------Setup for test--------------------------
-            var resourceModel = new Mock<IResourceModel>();
+            var repo = new Mock<IResourceRepository>();
+
+            EmailSource es = new EmailSource();
+            List<EmailSource> src = new List<EmailSource> {es};
+
+            repo.Setup(r => r.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource)).Returns(src);
 
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             env.Setup(e => e.Connection.WorkspaceID).Returns(Guid.Empty);
-            env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
 
             var eventPublisher = new Mock<IEventAggregator>();
-
             var viewModel = new EmailDesignerViewModel(CreateModelItem(), eventPublisher.Object);
 
             //------------Execute Test---------------------------

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
-namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.XmlTests
+namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]

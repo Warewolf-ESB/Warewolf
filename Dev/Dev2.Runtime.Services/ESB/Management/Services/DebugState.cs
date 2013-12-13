@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using System.Text;
-using Dev2.Runtime.Configuration;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
 
@@ -21,60 +16,71 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class GetDebugState : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string filePath;
-            string dir;
 
-            values.TryGetValue("FilePath", out filePath);
-            values.TryGetValue("DirectoryPath", out dir);
+            return new StringBuilder();
+            //string filePath = null;
+            //string dir = null;
 
-            var result = new StringBuilder();
+            //StringBuilder tmp;
+            //values.TryGetValue("FilePath", out tmp);
+            //if (tmp != null)
+            //{
+            //    filePath = tmp.ToString();
+            //}
+            //values.TryGetValue("DirectoryPath", out tmp);
+            //if(tmp != null)
+            //{
+            //    dir = tmp.ToString();
+            //}
 
-            if (string.IsNullOrWhiteSpace(filePath))
-            {
-                AppendError(result, "FilePath is required");
-            }
-            else if (string.IsNullOrWhiteSpace(dir))
-            {
-                AppendError(result, "DirectoryPath is required");
-            }
-            else
-            {
-                try
-                {
-                    Workflow workflow;
+            //var result = new StringBuilder();
 
-                    var fullPath = Path.Combine(dir, filePath);
-                    using (var filestream = new FileStream(fullPath, FileMode.Open))
-                    {
-                        var serializer = new XmlSerializer(typeof (Workflow));
-                        using (var reader = new StreamReader(filestream))
-                        {
-                            workflow = serializer.Deserialize(reader) as Workflow;
-                        }
-                    }
+            //if (string.IsNullOrWhiteSpace(filePath))
+            //{
+            //    AppendError(result, "FilePath is required");
+            //}
+            //else if (string.IsNullOrWhiteSpace(dir))
+            //{
+            //    AppendError(result, "DirectoryPath is required");
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        Workflow workflow;
 
-                    if (workflow == null)
-                    {
-                        AppendError(result, "This log is an empty file");
-                    }
-                    else
-                    {
-                        result.Append("<JSON>");
-                        var json = JsonConvert.SerializeObject(workflow.DebugStates);
-                        result.Append(json);
-                        result.Append("</JSON>");
-                    }
-                }
+            //        var fullPath = Path.Combine(dir, filePath);
+            //        using (var filestream = new FileStream(fullPath, FileMode.Open))
+            //        {
+            //            var serializer = new XmlSerializer(typeof (Workflow));
+            //            using (var reader = new StreamReader(filestream))
+            //            {
+            //                workflow = serializer.Deserialize(reader) as Workflow;
+            //            }
+            //        }
 
-                catch (Exception ex)
-                {
-                    AppendError(result, ex.Message);
-                }
-            }
+            //        if (workflow == null)
+            //        {
+            //            AppendError(result, "This log is an empty file");
+            //        }
+            //        else
+            //        {
+            //            result.Append("<JSON>");
+            //            var json = JsonConvert.SerializeObject(workflow.DebugStates);
+            //            result.Append(json);
+            //            result.Append("</JSON>");
+            //        }
+            //    }
 
-            return result.ToString();
+            //    catch (Exception ex)
+            //    {
+            //        AppendError(result, ex.Message);
+            //    }
+            //}
+
+            //return result.ToString();
         }
 
         private static void AppendError(StringBuilder result, string msg)

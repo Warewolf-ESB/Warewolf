@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace Dev2.Studio.Core.Helpers
+namespace Dev2.Helpers
 {
     public static class PropertyHelper
     {

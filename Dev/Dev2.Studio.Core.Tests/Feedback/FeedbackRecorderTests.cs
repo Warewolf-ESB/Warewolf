@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Studio.AppResources.Exceptions;
-using Dev2.Studio.Feedback;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
+﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
+using Dev2.Studio.AppResources.Exceptions;
+using Dev2.Studio.Feedback;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Feedback
 {

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Windows;
 using System.Xml.Linq;

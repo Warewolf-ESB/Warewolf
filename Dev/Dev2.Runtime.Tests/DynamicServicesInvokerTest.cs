@@ -1,27 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Globalization;
+using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ESB;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
+using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using Unlimited.Framework;
 
-namespace Dev2.DynamicServices.Test
+namespace Dev2.Tests.Runtime
 {
     /// <summary>
     /// Summary description for DynamicServicesInvokerTest
@@ -70,7 +72,7 @@ namespace Dev2.DynamicServices.Test
             _workspaceID = Guid.NewGuid();
 
             List<IResource> resources;
-            ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(), true, false,
+            ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(CultureInfo.InvariantCulture), true, false,
                 new[] { SourceName, ServerConnection1Name, ServerConnection2Name },
                 new[] { ServiceName, ServiceNameUnsigned },
                 out resources,
@@ -91,14 +93,16 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ItemXml"] = string.Empty;
-            data["Roles"] = string.Empty;
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ItemXml"] = new StringBuilder();
+            data["Roles"] = new StringBuilder();
 
             var result = endpoint.Execute(data, workspace.Object);
 
-            Assert.IsTrue(result.Contains("<Error>Invalid workspace item definition</Error>"));
+            var obj = ConvertToMsg(result.ToString());
 
+            Assert.IsTrue(obj.Message.Contains("Invalid workspace item definition"));
+            Assert.IsTrue(obj.HasError);
         }
 
         [TestMethod]
@@ -108,13 +112,16 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ItemXml"] = "<xxxx/>";
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ItemXml"] = new StringBuilder("<xxxx/>");
             data["Roles"] = null;
 
             var result = endpoint.Execute(data, workspace.Object);
 
-            Assert.IsTrue(result.Contains("<Error>Error updating workspace item</Error>"));
+            var obj = ConvertToMsg(result.ToString());
+
+            Assert.IsTrue(obj.Message.Contains("Error updating workspace item"));
+            Assert.IsTrue(obj.HasError);
         }
 
         [TestMethod]
@@ -127,13 +134,16 @@ namespace Dev2.DynamicServices.Test
             var itemXml = workspaceItem.ToXml().ToString();
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ItemXml"] = itemXml;
-            data["Roles"] = string.Empty;
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ItemXml"] = new StringBuilder(itemXml);
+            data["Roles"] = new StringBuilder();
 
             var result = endpoint.Execute(data, workspace.Object);
 
-            Assert.IsTrue(result.Contains("<Error>Cannot update a workspace item from another workspace</Error>"));
+            var obj = ConvertToMsg(result.ToString());
+
+            Assert.IsTrue(obj.Message.Contains("Cannot update a workspace item from another workspace"));
+            Assert.IsTrue(obj.HasError);
 
         }
 
@@ -147,11 +157,10 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<bool>(), It.IsAny<string>())).Verifiable();
 
             IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ItemXml"] = TestWorkspaceItemXml.ToString();
-            data["Roles"] = string.Empty;
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ItemXml"] = new StringBuilder(TestWorkspaceItemXml.ToString());
 
-            var result = endpoint.Execute(data, workspace.Object);
+            endpoint.Execute(data, workspace.Object);
 
             workspace.Verify(m => m.Update(It.Is<IWorkspaceItem>(i => i.Equals(workspaceItem)), It.IsAny<bool>(), It.IsAny<string>()), Times.Exactly(1));
 
@@ -169,7 +178,7 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
             IEsbManagementEndpoint endpoint = new FindResourcesByID();
-            IDictionary<string, string> data = new Dictionary<string, string>();
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
             data["GuidCsv"] = null;
             data["Type"] = null;
 
@@ -206,18 +215,18 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(_workspaceID);
 
             IEsbManagementEndpoint findResourcesEndPoint = new FindResourcesByID();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["GuidCsv"] = string.Join(",", guids);
-            data["Type"] = "Source";
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["GuidCsv"] = new StringBuilder(string.Join(",", guids));
+            data["ResourceType"] = new StringBuilder("Source");
 
             var resources = findResourcesEndPoint.Execute(data, workspace.Object);
 
-            var resourcesObj = JsonConvert.DeserializeObject<List<Resource>>(resources);
+            var resourcesObj = JsonConvert.DeserializeObject<List<Resource>>(resources.ToString());
 
             var actualCount = 0;
-            foreach (var res in resourcesObj)
+            foreach(var res in resourcesObj)
             {
-                if (res.ResourceType == ResourceType.DbSource || res.ResourceType == ResourceType.PluginSource ||
+                if(res.ResourceType == ResourceType.DbSource || res.ResourceType == ResourceType.PluginSource ||
                     res.ResourceType == ResourceType.WebSource || res.ResourceType == ResourceType.EmailSource || res.ResourceType == ResourceType.Server)
                 {
                     actualCount++;
@@ -240,157 +249,26 @@ namespace Dev2.DynamicServices.Test
             //------------Setup for test--------------------------
 
             #region Expected
-            var expected = @"&lt;Activity mc:Ignorable=""sap sads"" x:Class=""Calculate_RecordSet_Subtract""
- xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities""
- xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
- xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common""
- xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data""
- xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data""
- xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data""
- xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data""
- xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data""
- xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
- xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities""
- xmlns:s=""clr-namespace:System;assembly=mscorlib""
- xmlns:sads=""http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger""
- xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation""
- xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib""
- xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities""
- xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core""
- xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml""&gt;
-  &lt;x:Members&gt;
-    &lt;x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" /&gt;
-    &lt;x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" /&gt;
-    &lt;x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" /&gt;
-  &lt;/x:Members&gt;
-  &lt;sap:VirtualizedContainerService.HintSize&gt;870,839&lt;/sap:VirtualizedContainerService.HintSize&gt;
-  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
-  &lt;Flowchart DisplayName=""Calculate_RecordSet_Subtract"" sap:VirtualizedContainerService.HintSize=""830,799"" mva:VisualBasic.Settings=""Assembly references and imported namespaces serialized as XML namespaces""&gt;
-    &lt;Flowchart.Variables&gt;
-      &lt;Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" /&gt;
-      &lt;Variable x:TypeArguments=""x:String"" Name=""LastResult"" /&gt;
-      &lt;Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" /&gt;
-      &lt;Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" /&gt;
-      &lt;Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" /&gt;
-      &lt;Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" /&gt;
-      &lt;Variable x:TypeArguments=""uaba:Util"" Name=""t"" /&gt;
-      &lt;Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" /&gt;
-    &lt;/Flowchart.Variables&gt;
-    &lt;sap:WorkflowViewStateService.ViewState&gt;
-      &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-        &lt;x:Boolean x:Key=""IsExpanded""&gt;False&lt;/x:Boolean&gt;
-        &lt;av:Point x:Key=""ShapeLocation""&gt;270,2.5&lt;/av:Point&gt;
-        &lt;av:Size x:Key=""ShapeSize""&gt;60,75&lt;/av:Size&gt;
-        &lt;av:PointCollection x:Key=""ConnectorLocation""&gt;270,40 162.5,40 162.5,152&lt;/av:PointCollection&gt;
-        &lt;x:Double x:Key=""Width""&gt;816&lt;/x:Double&gt;
-        &lt;x:Double x:Key=""Height""&gt;763&lt;/x:Double&gt;
-      &lt;/scg:Dictionary&gt;
-    &lt;/sap:WorkflowViewStateService.ViewState&gt;
-    &lt;Flowchart.StartNode&gt;
-      &lt;FlowStep x:Name=""__ReferenceID0""&gt;
-        &lt;sap:WorkflowViewStateService.ViewState&gt;
-          &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-            &lt;av:Point x:Key=""ShapeLocation""&gt;23.5,152&lt;/av:Point&gt;
-            &lt;av:Size x:Key=""ShapeSize""&gt;278,88&lt;/av:Size&gt;
-            &lt;av:PointCollection x:Key=""ConnectorLocation""&gt;301.5,196 342,196 342,407&lt;/av:PointCollection&gt;
-          &lt;/scg:Dictionary&gt;
-        &lt;/sap:WorkflowViewStateService.ViewState&gt;
-        &lt;uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign (4)"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""278,88"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""a6079387-2e23-4ad5-b00d-559ef4b81f68"" UpdateAllOccurrences=""False""&gt;
-          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
-            &lt;scg:List x:TypeArguments=""uaba:ActivityDTO"" Capacity=""8""&gt;
-              &lt;uaba:ActivityDTO FieldName=""[[Employees(1).Name]]"" FieldValue=""Sashen"" IndexNumber=""1"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]""&gt;
-                &lt;uaba:ActivityDTO.OutList&gt;
-                  &lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;
-                &lt;/uaba:ActivityDTO.OutList&gt;
-              &lt;/uaba:ActivityDTO&gt;
-              &lt;uaba:ActivityDTO FieldName=""[[Employees(1).Funds]]"" FieldValue=""1234"" IndexNumber=""2"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]""&gt;
-                &lt;uaba:ActivityDTO.OutList&gt;
-                  &lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;
-                &lt;/uaba:ActivityDTO.OutList&gt;
-              &lt;/uaba:ActivityDTO&gt;
-              &lt;uaba:ActivityDTO FieldName=""[[Employees(2).Name]]"" FieldValue=""Ninja"" IndexNumber=""3"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;
-                &lt;uaba:ActivityDTO.OutList&gt;
-                  &lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;
-                &lt;/uaba:ActivityDTO.OutList&gt;
-              &lt;/uaba:ActivityDTO&gt;
-              &lt;uaba:ActivityDTO FieldName=""[[Employees(2).Funds]]"" FieldValue=""2000000"" IndexNumber=""4"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;
-                &lt;uaba:ActivityDTO.OutList&gt;
-                  &lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;
-                &lt;/uaba:ActivityDTO.OutList&gt;
-              &lt;/uaba:ActivityDTO&gt;
-              &lt;uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""5"" WatermarkTextValue="""" WatermarkTextVariable=""""&gt;
-                &lt;uaba:ActivityDTO.OutList&gt;
-                  &lt;scg:List x:TypeArguments=""x:String"" Capacity=""0"" /&gt;
-                &lt;/uaba:ActivityDTO.OutList&gt;
-              &lt;/uaba:ActivityDTO&gt;
-            &lt;/scg:List&gt;
-          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
-          &lt;uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
-            &lt;InOutArgument x:TypeArguments=""x:String"" /&gt;
-          &lt;/uaba:DsfMultiAssignActivity.ParentInstanceID&gt;
-        &lt;/uaba:DsfMultiAssignActivity&gt;
-        &lt;FlowStep.Next&gt;
-          &lt;FlowStep x:Name=""__ReferenceID1""&gt;
-            &lt;sap:WorkflowViewStateService.ViewState&gt;
-              &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-                &lt;av:Point x:Key=""ShapeLocation""&gt;227,407&lt;/av:Point&gt;
-                &lt;av:Size x:Key=""ShapeSize""&gt;230,106&lt;/av:Size&gt;
-              &lt;/scg:Dictionary&gt;
-            &lt;/sap:WorkflowViewStateService.ViewState&gt;
-            &lt;uaba:DsfCalculateActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" DatabindRecursive=""False"" DisplayName=""DsfCalculateActivity"" Expression=""mod([[Employees(2).Funds]],[[Employees(1).Funds]])"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""230,106"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" Result=""[[result]]"" SimulationMode=""OnDemand"" UniqueID=""4b5ab147-ceaf-4686-b353-6e82e6c0a651""&gt;
-              &lt;uaba:DsfCalculateActivity.ParentInstanceID&gt;
-                &lt;InOutArgument x:TypeArguments=""x:String"" /&gt;
-              &lt;/uaba:DsfCalculateActivity.ParentInstanceID&gt;
-            &lt;/uaba:DsfCalculateActivity&gt;
-          &lt;/FlowStep&gt;
-        &lt;/FlowStep.Next&gt;
-      &lt;/FlowStep&gt;
-    &lt;/Flowchart.StartNode&gt;
-    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
-    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
-    &lt;FlowStep&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-          &lt;av:Point x:Key=""ShapeLocation""&gt;519,243&lt;/av:Point&gt;
-          &lt;av:Size x:Key=""ShapeSize""&gt;256,80&lt;/av:Size&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName=""Input"" sap:VirtualizedContainerService.HintSize=""256,80"" Text=""Employees(2).Funds finding the remainder&amp;#xA;when divided by Employees(1).Funds"" /&gt;
-    &lt;/FlowStep&gt;
-    &lt;FlowStep&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-          &lt;av:Point x:Key=""ShapeLocation""&gt;500,3&lt;/av:Point&gt;
-          &lt;av:Size x:Key=""ShapeSize""&gt;278,80&lt;/av:Size&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName=""Description"" sap:VirtualizedContainerService.HintSize=""278,80"" Text=""This will find the modulus of a record set value&amp;#xA;when divided by another recordset value"" /&gt;
-    &lt;/FlowStep&gt;
-    &lt;FlowStep&gt;
-      &lt;sap:WorkflowViewStateService.ViewState&gt;
-        &lt;scg:Dictionary x:TypeArguments=""x:String, x:Object""&gt;
-          &lt;av:Point x:Key=""ShapeLocation""&gt;580,503&lt;/av:Point&gt;
-          &lt;av:Size x:Key=""ShapeSize""&gt;202,260&lt;/av:Size&gt;
-        &lt;/scg:Dictionary&gt;
-      &lt;/sap:WorkflowViewStateService.ViewState&gt;
-      &lt;uaba:DsfCommentActivity DisplayName=""Expected"" sap:VirtualizedContainerService.HintSize=""202,260"" Text=""&amp;lt;Dev2XMLResult&amp;gt;&amp;#xA;&amp;lt;ADL&amp;gt;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xA;&amp;lt;Funds&amp;gt;1234&amp;lt;/Funds&amp;gt;&amp;#xA;&amp;lt;Name&amp;gt;Sashen&amp;lt;/Name&amp;gt;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xA;&amp;lt;Employees&amp;gt;&amp;#xA;&amp;lt;Funds&amp;gt;2000000&amp;lt;/Funds&amp;gt;&amp;#xA;&amp;lt;Name&amp;gt;Ninja&amp;lt;/Name&amp;gt;&amp;#xA;&amp;lt;/Employees&amp;gt;&amp;#xA;&amp;lt;result&amp;gt;920&amp;lt;/result&amp;gt;&amp;#xA;&amp;lt;/ADL&amp;gt;&amp;#xA;&amp;lt;JSON/&amp;gt;&amp;#xA;&amp;lt;/Dev2XMLResult&amp;gt;"" /&gt;
-    &lt;/FlowStep&gt;
-  &lt;/Flowchart&gt;
-&lt;/Activity&gt;";
+            var expected = @"<Activity mc:Ignorable=""sap sads"" x:Class=""Calculate_RecordSet_Subtract"" xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities"" xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:dc=""clr-namespace:Dev2.Common;assembly=Dev2.Common"" xmlns:ddc=""clr-namespace:Dev2.DataList.Contract;assembly=Dev2.Data"" xmlns:ddcb=""clr-namespace:Dev2.DataList.Contract.Binary_Objects;assembly=Dev2.Data"" xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"" xmlns:dddo=""clr-namespace:Dev2.Data.Decisions.Operations;assembly=Dev2.Data"" xmlns:ddsm=""clr-namespace:Dev2.Data.SystemTemplates.Models;assembly=Dev2.Data"" xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006"" xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"" xmlns:s=""clr-namespace:System;assembly=mscorlib"" xmlns:sads=""http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"" xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"" xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"" xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">  <x:Members>    <x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />    <x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />    <x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" />  </x:Members>  <sap:VirtualizedContainerService.HintSize>870,839</sap:VirtualizedContainerService.HintSize>  <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>  <Flowchart DisplayName=""Calculate_RecordSet_Subtract"" sap:VirtualizedContainerService.HintSize=""830,799"" mva:VisualBasic.Settings=""Assembly references and imported namespaces serialized as XML namespaces"">    <Flowchart.Variables>      <Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" />      <Variable x:TypeArguments=""x:String"" Name=""LastResult"" />      <Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" />      <Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" />      <Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" />      <Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />      <Variable x:TypeArguments=""uaba:Util"" Name=""t"" />      <Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" />    </Flowchart.Variables>    <sap:WorkflowViewStateService.ViewState>      <scg:Dictionary x:TypeArguments=""x:String, x:Object"">        <x:Boolean x:Key=""IsExpanded"">False</x:Boolean>        <av:Point x:Key=""ShapeLocation"">270,2.5</av:Point>        <av:Size x:Key=""ShapeSize"">60,75</av:Size>        <av:PointCollection x:Key=""ConnectorLocation"">270,40 162.5,40 162.5,152</av:PointCollection>        <x:Double x:Key=""Width"">816</x:Double>        <x:Double x:Key=""Height"">763</x:Double>      </scg:Dictionary>    </sap:WorkflowViewStateService.ViewState>    <Flowchart.StartNode>      <FlowStep x:Name=""__ReferenceID0"">        <sap:WorkflowViewStateService.ViewState>          <scg:Dictionary x:TypeArguments=""x:String, x:Object"">            <av:Point x:Key=""ShapeLocation"">23.5,152</av:Point>            <av:Size x:Key=""ShapeSize"">278,88</av:Size>            <av:PointCollection x:Key=""ConnectorLocation"">301.5,196 342,196 342,407</av:PointCollection>          </scg:Dictionary>        </sap:WorkflowViewStateService.ViewState>        <uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign (4)"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""278,88"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""a6079387-2e23-4ad5-b00d-559ef4b81f68"" UpdateAllOccurrences=""False"">          <uaba:DsfMultiAssignActivity.FieldsCollection>            <scg:List x:TypeArguments=""uaba:ActivityDTO"" Capacity=""8"">              <uaba:ActivityDTO FieldName=""[[Employees(1).Name]]"" FieldValue=""Sashen"" IndexNumber=""1"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]"">                <uaba:ActivityDTO.OutList>                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />                </uaba:ActivityDTO.OutList>              </uaba:ActivityDTO>              <uaba:ActivityDTO FieldName=""[[Employees(1).Funds]]"" FieldValue=""1234"" IndexNumber=""2"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]"">                <uaba:ActivityDTO.OutList>                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />                </uaba:ActivityDTO.OutList>              </uaba:ActivityDTO>              <uaba:ActivityDTO FieldName=""[[Employees(2).Name]]"" FieldValue=""Ninja"" IndexNumber=""3"" WatermarkTextValue="""" WatermarkTextVariable="""">                <uaba:ActivityDTO.OutList>                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />                </uaba:ActivityDTO.OutList>              </uaba:ActivityDTO>              <uaba:ActivityDTO FieldName=""[[Employees(2).Funds]]"" FieldValue=""2000000"" IndexNumber=""4"" WatermarkTextValue="""" WatermarkTextVariable="""">                <uaba:ActivityDTO.OutList>                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />                </uaba:ActivityDTO.OutList>              </uaba:ActivityDTO>              <uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""5"" WatermarkTextValue="""" WatermarkTextVariable="""">                <uaba:ActivityDTO.OutList>                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />                </uaba:ActivityDTO.OutList>              </uaba:ActivityDTO>            </scg:List>          </uaba:DsfMultiAssignActivity.FieldsCollection>          <uaba:DsfMultiAssignActivity.ParentInstanceID>            <InOutArgument x:TypeArguments=""x:String"" />          </uaba:DsfMultiAssignActivity.ParentInstanceID>        </uaba:DsfMultiAssignActivity>        <FlowStep.Next>          <FlowStep x:Name=""__ReferenceID1"">            <sap:WorkflowViewStateService.ViewState>              <scg:Dictionary x:TypeArguments=""x:String, x:Object"">                <av:Point x:Key=""ShapeLocation"">227,407</av:Point>                <av:Size x:Key=""ShapeSize"">230,106</av:Size>              </scg:Dictionary>            </sap:WorkflowViewStateService.ViewState>            <uaba:DsfCalculateActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceID=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" AmbientDataList=""[AmbientDataList]"" DatabindRecursive=""False"" DisplayName=""DsfCalculateActivity"" Expression=""mod([[Employees(2).Funds]],[[Employees(1).Funds]])"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""230,106"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" Result=""[[result]]"" SimulationMode=""OnDemand"" UniqueID=""4b5ab147-ceaf-4686-b353-6e82e6c0a651"">              <uaba:DsfCalculateActivity.ParentInstanceID>                <InOutArgument x:TypeArguments=""x:String"" />              </uaba:DsfCalculateActivity.ParentInstanceID>            </uaba:DsfCalculateActivity>          </FlowStep>        </FlowStep.Next>      </FlowStep>    </Flowchart.StartNode>    <x:Reference>__ReferenceID0</x:Reference>    <x:Reference>__ReferenceID1</x:Reference>    <FlowStep>      <sap:WorkflowViewStateService.ViewState>        <scg:Dictionary x:TypeArguments=""x:String, x:Object"">          <av:Point x:Key=""ShapeLocation"">519,243</av:Point>          <av:Size x:Key=""ShapeSize"">256,80</av:Size>        </scg:Dictionary>      </sap:WorkflowViewStateService.ViewState>      <uaba:DsfCommentActivity DisplayName=""Input"" sap:VirtualizedContainerService.HintSize=""256,80"" Text=""Employees(2).Funds finding the remainder&#xA;when divided by Employees(1).Funds"" />    </FlowStep>    <FlowStep>      <sap:WorkflowViewStateService.ViewState>        <scg:Dictionary x:TypeArguments=""x:String, x:Object"">          <av:Point x:Key=""ShapeLocation"">500,3</av:Point>          <av:Size x:Key=""ShapeSize"">278,80</av:Size>        </scg:Dictionary>      </sap:WorkflowViewStateService.ViewState>      <uaba:DsfCommentActivity DisplayName=""Description"" sap:VirtualizedContainerService.HintSize=""278,80"" Text=""This will find the modulus of a record set value&#xA;when divided by another recordset value"" />    </FlowStep>    <FlowStep>      <sap:WorkflowViewStateService.ViewState>        <scg:Dictionary x:TypeArguments=""x:String, x:Object"">          <av:Point x:Key=""ShapeLocation"">580,503</av:Point>          <av:Size x:Key=""ShapeSize"">202,260</av:Size>        </scg:Dictionary>      </sap:WorkflowViewStateService.ViewState>      <uaba:DsfCommentActivity DisplayName=""Expected"" sap:VirtualizedContainerService.HintSize=""202,260"" Text=""&lt;Dev2XMLResult&gt;&#xA;&lt;ADL&gt;&#xA;&lt;Employees&gt;&#xA;&lt;Funds&gt;1234&lt;/Funds&gt;&#xA;&lt;Name&gt;Sashen&lt;/Name&gt;&#xA;&lt;/Employees&gt;&#xA;&lt;Employees&gt;&#xA;&lt;Funds&gt;2000000&lt;/Funds&gt;&#xA;&lt;Name&gt;Ninja&lt;/Name&gt;&#xA;&lt;/Employees&gt;&#xA;&lt;result&gt;920&lt;/result&gt;&#xA;&lt;/ADL&gt;&#xA;&lt;JSON/&gt;&#xA;&lt;/Dev2XMLResult&gt;"" />    </FlowStep>  </Flowchart></Activity>";
             #endregion
 
             var workspace = new Mock<IWorkspace>();
             workspace.Setup(m => m.ID).Returns(_workspaceID);
 
             IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ResourceID"] = "b2b0cc87-32ba-4504-8046-79edfb18d5fd";
+            
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ResourceID"] = new StringBuilder("b2b0cc87-32ba-4504-8046-79edfb18d5fd");
+            //data["ResourceType"] = new StringBuilder();
 
             //------------Execute Test---------------------------
             var xaml = endPoint.Execute(data, workspace.Object);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expected, xaml);
+
+            var obj = ConvertToMsg(xaml.ToString());
+
+            Assert.AreEqual(expected, obj.Message.ToString());
         }
 
 
@@ -404,16 +282,17 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(_workspaceID);
 
             IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["ResourceID"] = Guid.NewGuid().ToString();
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ResourceID"] = new StringBuilder(Guid.NewGuid().ToString());
 
             //------------Execute Test---------------------------
             var xaml = endPoint.Execute(data, workspace.Object);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, xaml);
+            var obj = ConvertToMsg(xaml.ToString());
+            Assert.AreEqual(string.Empty, obj.Message.ToString());
         }
-        
+
         #endregion
 
         #region FindSourcesByType
@@ -426,43 +305,12 @@ namespace Dev2.DynamicServices.Test
             workspace.Setup(m => m.ID).Returns(TestWorkspaceID);
 
             IEsbManagementEndpoint endpoint = new FindSourcesByType();
-            IDictionary<string, string> data = new Dictionary<string, string>();
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
             data["Type"] = null;
 
             endpoint.Execute(data, workspace.Object);
         }
 
-        [TestMethod]
-        public void FindSourcesByType_With_SourceTypeParameter_Expected_ReturnsLoadedCount()
-        {
-            FindSourcesByType(enSourceType.Dev2Server);
-        }
-
-        void FindSourcesByType(enSourceType sourceType)
-        {
-            var expectedCount = 2;
-
-            var workspace = new Mock<IWorkspace>();
-            workspace.Setup(m => m.ID).Returns(_workspaceID);
-
-            IEsbManagementEndpoint endpoint = new FindSourcesByType();
-            IDictionary<string, string> data = new Dictionary<string, string>();
-            data["Type"] = sourceType.ToString();
-
-            var resources = endpoint.Execute(data, workspace.Object);
-
-            var resourcesObj = new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(resources);
-            var actualCount = 0;
-            if(resourcesObj.Source != null)
-            {
-                foreach(var source in resourcesObj.Source)
-                {
-                    actualCount++;
-                }
-            }
-
-            Assert.AreEqual(expectedCount, actualCount);
-        }
 
         #endregion
 
@@ -530,6 +378,11 @@ namespace Dev2.DynamicServices.Test
         }
 
         #endregion
+
+        private ExecuteMessage ConvertToMsg(string payload)
+        {
+            return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
+        }
 
     }
 }

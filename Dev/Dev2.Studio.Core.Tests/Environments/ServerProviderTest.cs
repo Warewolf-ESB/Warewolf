@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
@@ -87,11 +86,10 @@ namespace Dev2.Core.Tests
 
             Assert.AreEqual(1, servers.Count);
 
-            Assert.AreSame(servers[0].Environment, targetEnv.Object);
-            Assert.AreEqual(servers[0].ID, targetEnv.Object.ID.ToString());
-            Assert.AreEqual(servers[0].Alias, targetEnv.Object.Name);
-            Assert.AreEqual(servers[0].AppAddress, targetEnv.Object.Connection.AppServerUri.AbsoluteUri);
-            Assert.AreEqual(servers[0].WebAddress, targetEnv.Object.Connection.WebServerUri.AbsoluteUri);
+            Assert.AreSame(servers[0], targetEnv.Object);
+            Assert.AreEqual(servers[0].ID, targetEnv.Object.ID);
+            Assert.AreEqual(servers[0].Name, targetEnv.Object.Name);
+            // remove the last two properties from mock ;)
         }
 
         #endregion

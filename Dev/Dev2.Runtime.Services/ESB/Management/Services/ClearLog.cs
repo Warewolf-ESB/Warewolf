@@ -1,33 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.Runtime.Hosting;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class ClearLog : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            StringBuilder result = new StringBuilder();
+            ExecuteMessage result = new ExecuteMessage {HasError = false};
+            StringBuilder msg = new StringBuilder();
+            string directory = null;
 
-            string directory;
-
-            values.TryGetValue("Directory", out directory);
-            
-            if (String.IsNullOrWhiteSpace(directory))
+            StringBuilder tmp;
+            values.TryGetValue("Directory", out tmp);
+            if (tmp != null)
             {
-                AppendError(result, directory,"Cant delete a file if no directory is passed.");
+                directory = tmp.ToString();
             }
-            else if (!Directory.Exists(directory))
+
+            if(String.IsNullOrWhiteSpace(directory))
             {
-                AppendError(result, directory, "No such directory exists on the server.");
+                AppendError(msg, directory, "Cant delete a file if no directory is passed.");
+            }
+            else if(!Directory.Exists(directory))
+            {
+                AppendError(msg, directory, "No such directory exists on the server.");
             }
             else
             {
@@ -35,21 +39,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var files = Directory.GetFiles(directory);
 
-                    foreach (var file in files)
+                    foreach(var file in files)
                     {
                         File.Delete(file);
                     }
 
-                    result.Append("Success");
+                    msg.Append("Success");
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    AppendError(result, directory, ex.Message);
+                    AppendError(msg, directory, ex.Message);
                     ServerLogger.LogMessage(ex.StackTrace);
                 }
             }
 
-            return result.ToString();
+            result.Message.Append(msg);
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+            return serializer.SerializeToBuilder(result);
+
         }
 
         private static void AppendError(StringBuilder result, string directory, string msg)

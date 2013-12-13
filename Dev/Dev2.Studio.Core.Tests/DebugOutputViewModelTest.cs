@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Principal;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
@@ -37,7 +37,6 @@ namespace Dev2.Core.Tests
         private static Mock<IContextualResourceModel> _firstResource;
         private Mock<IContextualResourceModel> _secondResource;
         private static Mock<IEventAggregator> _eventAggregator;
-        private static Mock<IResourceDependencyService> _resourceDependencyService;
         private static MainViewModel _mainViewModel;
         private static string _resourceName = "TestResource";
         private static string _displayName = "test2";
@@ -388,7 +387,6 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
-            _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
 
@@ -399,7 +397,6 @@ namespace Dev2.Core.Tests
                                                                          workspaceItemRepository: mockWorkspaceItemRepository.Object,
                 //aggregator: _eventAggregator,
                                                                      popupController: _popupController,
-                                                                     resourceDepService: _resourceDependencyService,
                                                                      feedbackInvoker: _feedbackInvoker,
                                                                      webController: _webController,
                                                                      windowManager: _windowManager);
@@ -414,7 +411,7 @@ namespace Dev2.Core.Tests
             result.Setup(c => c.ResourceName).Returns(_resourceName);
             result.Setup(c => c.ResourceType).Returns(resourceType);
             result.Setup(c => c.DisplayName).Returns(_displayName);
-            result.Setup(c => c.WorkflowXaml).Returns(_serviceDefinition);
+            result.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(_serviceDefinition));
             result.Setup(c => c.Category).Returns("Testing");
             result.Setup(c => c.Environment).Returns(_environmentModel.Object);
             result.Setup(c => c.ServerID).Returns(_serverID);
@@ -444,7 +441,7 @@ namespace Dev2.Core.Tests
             var coll = new Collection<IResourceModel> { _firstResource.Object };
             _resourceRepo.Setup(c => c.All()).Returns(coll);
 
-           
+
             _environmentModel.Setup(m => m.ResourceRepository).Returns(_resourceRepo.Object);
         }
 
@@ -471,7 +468,7 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources))));
 
             return connection;
         }
@@ -496,7 +493,7 @@ namespace Dev2.Core.Tests
 
             _secondResource.Setup(c => c.ResourceName).Returns("WhoCares");
             _secondResource.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
-            _secondResource.Setup(c => c.WorkflowXaml).Returns("");
+            _secondResource.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(""));
             _secondResource.Setup(c => c.Category).Returns("Testing2");
             _secondResource.Setup(c => c.Environment).Returns(_environmentModel.Object);
             _secondResource.Setup(c => c.ServerID).Returns(_serverID);

@@ -178,7 +178,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         DirectoryHelper.CleanUp(workspacePath);
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                 }
             }

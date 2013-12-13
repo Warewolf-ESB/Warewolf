@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Composition;
@@ -15,7 +16,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -128,9 +129,9 @@ namespace Dev2.Core.Tests.Webs
             compileMessageList.Dependants = deps;
             string serializeObject = JsonConvert.SerializeObject(compileMessageList);
             var envConnection = new Mock<IEnvironmentConnection>();
+            envConnection.Setup(e => e.IsConnected).Returns(true);
             envConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            envConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(serializeObject);
+            envConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(serializeObject));
             return envConnection;
         }
 

@@ -8,7 +8,6 @@ using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Deploy;
@@ -50,7 +49,7 @@ namespace Dev2.Core.Tests.Deploy
             var mockedServerRepo = new Mock<IEnvironmentRepository>();
             var server = new Mock<IEnvironmentModel>();
             var secondServer = new Mock<IEnvironmentModel>();
-            var provider = new Mock<IServerProvider>();
+            var provider = new Mock<IEnvironmentModelProvider>();
             var resourceNode = new Mock<IContextualResourceModel>();
             var resRepo = new Mock<IResourceRepository>();
             var resRepo2 = new Mock<IResourceRepository>();
@@ -72,9 +71,9 @@ namespace Dev2.Core.Tests.Deploy
             secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
             secondServer.Setup(svr => svr.ResourceRepository).Returns(resRepo2.Object);
 
-            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
 
-            provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel>() { server.Object, secondServer.Object });
 
             const string expectedResourceName = "Test Resource";
             var initialResource = new Mock<IContextualResourceModel>();

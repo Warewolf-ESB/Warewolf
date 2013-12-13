@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Network;
+using System.Text;
 using System.Windows;
+using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.DataList.Contract.Network;
@@ -112,7 +114,7 @@ namespace Dev2.Studio.Core.Models
             }
 
             Logger.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
-            Connection.Connect();            
+            Connection.Connect();
         }
 
         public void Connect(IEnvironmentModel other)
@@ -182,7 +184,7 @@ namespace Dev2.Studio.Core.Models
 
         #region ToSourceDefinition
 
-        public string ToSourceDefinition()
+        public StringBuilder ToSourceDefinition()
         {
             var xml = new XElement("Source",
                 new XAttribute("ID", ID),
@@ -197,7 +199,17 @@ namespace Dev2.Studio.Core.Models
                 new XElement("Category", Category ?? "") // BUG: 8786 - TWR - 2013.02.20 - Changed to use category
                 );
 
-            return xml.ToString();
+
+            var result = new StringBuilder();
+            XmlWriterSettings xws = new XmlWriterSettings();
+            xws.OmitXmlDeclaration = true;
+            using (XmlWriter xw = XmlWriter.Create(result, xws))
+            {
+                xml.Save(xw);
+            }
+
+
+            return result;
         }
 
         #endregion

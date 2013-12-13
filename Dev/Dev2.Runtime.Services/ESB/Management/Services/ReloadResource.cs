@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -14,15 +17,26 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class ReloadResource : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new StringBuilder();
 
-            string resourceID;
-            string resourceType;
+            ExecuteMessage result = new ExecuteMessage() {HasError = false};
 
-            values.TryGetValue("ResourceID", out resourceID);
-            values.TryGetValue("ResourceType", out resourceType);
+            string resourceID = null;
+            string resourceType = null;
+
+            StringBuilder tmp;
+            values.TryGetValue("ResourceID", out tmp);
+            if (tmp != null)
+            {
+                resourceID = tmp.ToString();
+            }
+
+            values.TryGetValue("ResourceType", out tmp);
+            if(tmp != null)
+            {
+                resourceType = tmp.ToString();
+            }
 
             try
             {
@@ -61,13 +75,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                         //
                         theWorkspace.Update(
                             new WorkspaceItem(theWorkspace.ID, HostSecurityProvider.Instance.ServerID, Guid.Empty, getID)
-                                {
-                                    Action = WorkspaceItemAction.Edit,
-                                    IsWorkflowSaved = true,
-                                    ServiceType = serviceType.ToString()
-                                }, false);
-                            
-                    }                      
+                            {
+                                Action = WorkspaceItemAction.Edit,
+                                IsWorkflowSaved = true,
+                                ServiceType = serviceType.ToString()
+                            }, false);
+
+                    }
                     else
                     {
                         theWorkspace.Update(
@@ -83,23 +97,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                     // Reload resources
                     //
                     ResourceCatalog.Instance.LoadWorkspace(theWorkspace.ID);
-                    result.Append(string.Concat("'", resourceID, "' Reloaded..."));
+                    result.SetMessage(string.Concat("'", resourceID, "' Reloaded..."));
                 }
             }
             catch(Exception ex)
             {
-                result.Append(string.Concat("Error reloading '", resourceID, "'..."));
+                result.SetMessage(string.Concat("Error reloading '", resourceID, "'..."));
                 ServerLogger.LogError(ex);
             }
 
-            return result.ToString();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(result);
         }
 
         public string HandlesType()
         {
             return "ReloadResourceService";
         }
-        
+
         public DynamicService CreateServiceEntry()
         {
             DynamicService reloadResourceServicesBinder = new DynamicService();

@@ -603,7 +603,7 @@ namespace Dev2.Activities.Designers2.Service
 
         string CreateFixedData()
         {
-            var serializer = new JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var result = serializer.Serialize(DataMappingListFactory.CreateListInputMapping(DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs)));
             return string.Concat("<Input>", result, "</Input>");
         }
@@ -694,7 +694,7 @@ namespace Dev2.Activities.Designers2.Service
 
         static IEnumerable<IInputOutputViewModel> DeserializeMappings(bool isInput, XElement input)
         {
-            var serializer = new JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var defs = serializer.Deserialize<List<Dev2Definition>>(input.Value);
             IList<IDev2Definition> idefs = new List<IDev2Definition>(defs);
             var newMappings = isInput

@@ -126,7 +126,7 @@ namespace Dev2.Data.Operations
 
                 default:
                     throw new Exception("Error In Dev2IndexFinder");
-                break;
+                
             }
             return result;
         }
@@ -179,7 +179,7 @@ namespace Dev2.Data.Operations
 
                 default:
                     throw new Exception("Error In Dev2IndexFinder");
-                break;
+                
             }
             return result;
         }

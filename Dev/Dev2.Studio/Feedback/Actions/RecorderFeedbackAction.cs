@@ -129,7 +129,7 @@ namespace Dev2.Studio.Feedback.Actions
                 MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
                 if (result == MessageBoxResult.Yes)
                 {
-                    new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction(new Dictionary<string, string>(), ServerUtil.GetLocalhostServer().Environment));
+                    new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction(new Dictionary<string, string>(), ServerUtil.GetLocalhostServer()));
                     TryCancelFeedback();
                 }
                 else completedResult = feedbackRecordingProcessFailedToStartException;
@@ -182,7 +182,10 @@ namespace Dev2.Studio.Feedback.Actions
            
             var attachedFiles = new Dictionary<string, string>();
             attachedFiles.Add("RecordingLog", _outputPath);
-            attachedFiles.Add("ServerLog", FileHelper.GetServerLogTempPath(environmentModel));
+            if(environmentModel != null)
+            {
+                attachedFiles.Add("ServerLog", environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel));    
+            }            
             attachedFiles.Add("StudioLog", FileHelper.GetStudioLogTempPath());
             IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachedFiles, environmentModel);
             //ImportService.SatisfyImports(emailFeedbackAction);

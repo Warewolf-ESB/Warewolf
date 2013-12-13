@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-//using MvvmFoundation.Wpf;
 using System.ComponentModel;
-namespace CircularDependencyTool
+using System.Linq;
+using System.Text;
+using CircularDependencyTool;
+
+namespace Dev2.AppResources.DependencyVisualization
 {
     /// <summary>
     /// Represents an item in a graph.
@@ -14,6 +16,13 @@ namespace CircularDependencyTool
         private const string _errorImagePath = "/Images/Close_Box_Red.png";
 
         #endregion Class Members
+
+        #region Fields
+
+        double _locationX, _locationY;
+        private readonly bool _isBroken;
+
+        #endregion // Fields
 
         #region INotifyPropertyChanged
 
@@ -33,12 +42,12 @@ namespace CircularDependencyTool
 
         public Node(string id, double locationX, double locationY, bool isTarget, bool isBroken)
         {
-            this.NodeDependencies = new List<Node>();
-            this.CircularDependencies = new List<CircularDependency>();
-            this.LocationX = locationX;
-            this.LocationY = locationY;
-            this.ID = id;
-            this.IsTargetNode = isTarget;
+            NodeDependencies = new List<Node>();
+            CircularDependencies = new List<CircularDependency>();
+            LocationX = locationX;
+            LocationY = locationY;
+            ID = id;
+            IsTargetNode = isTarget;
             _isBroken = isBroken;
         }
 
@@ -50,7 +59,7 @@ namespace CircularDependencyTool
 
         public bool HasCircularDependency
         {
-            get { return this.CircularDependencies.Any(); }
+            get { return CircularDependencies.Any(); }
         }
 
         public string ID { get; private set; }
@@ -69,7 +78,6 @@ namespace CircularDependencyTool
                 _locationX = value;
 
                 OnPropertyChanged("LocationX");
-                //base.RaisePropertyChanged("LocationX");
             }
         }
 
@@ -84,7 +92,6 @@ namespace CircularDependencyTool
                 _locationY = value;
 
                 OnPropertyChanged("LocationY");
-                //base.RaisePropertyChanged("LocationY");
             }
         }
 
@@ -106,9 +113,29 @@ namespace CircularDependencyTool
 
         #region Methods
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public new string ToString()
+        {
+            StringBuilder result = new StringBuilder(string.Format("<node id=\"{0}\" x=\"{1}\" y=\"{2}\" broken=\"{3}\">", ID, LocationX, LocationY, IsBroken));
+
+            foreach (var nodeDependency in NodeDependencies)
+            {
+                result.Append(string.Format("<dependency id=\"{0}\" />", nodeDependency.ID));
+            }
+
+            result.Append("</node>");
+
+            return result.ToString();
+        }
+
         public List<CircularDependency> FindCircularDependencies()
         {
-            if (this.NodeDependencies.Count == 0)
+            if (NodeDependencies.Count == 0)
                 return null;
 
             var circularDependencies = new List<CircularDependency>();
@@ -154,9 +181,9 @@ namespace CircularDependencyTool
 
             public NodeInfo GetNextDependency()
             {
-                if (_index < this.Node.NodeDependencies.Count)
+                if (_index < Node.NodeDependencies.Count)
                 {
-                    var nextNode = this.Node.NodeDependencies[_index++];
+                    var nextNode = Node.NodeDependencies[_index++];
                     return new NodeInfo(nextNode);
                 }
 
@@ -168,11 +195,5 @@ namespace CircularDependencyTool
 
         #endregion // Methods
 
-        #region Fields
-
-        double _locationX, _locationY;
-        private bool _isBroken;
-
-        #endregion // Fields
     }
 }

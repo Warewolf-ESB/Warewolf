@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using Dev2.Integration.Tests.Helpers;
+using System.Text;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,32 +10,13 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
     [TestClass]
     public class ApplicationServerBuildTests
     {
-        public ApplicationServerBuildTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-
-        private TestContext testContextInstance;
         static IEnvironmentConnection _connection;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Server Listening Tests
 
@@ -125,30 +106,30 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         ///Validate that resources are loaded from a valid environment
         ///</summary>
         ///
-        [TestMethod()]
+        [TestMethod]
         public void AppServer_Update_Resource_Correctly()
         {
             string expected = @"Updated Workflow Service 'ServiceToBindFrom'";
-            string Command = TestResource.Service_Update_Request_String;
+            var Command = new StringBuilder(TestResource.Service_Update_Request_String);
 
             //Execute twice to ensure that the resource is actually there
-            string actual = _connection.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
+            var actual = _connection.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
             actual = _connection.ExecuteCommand(Command, Guid.Empty, Guid.Empty);
 
-            actual = TestHelper.CleanUp(actual);
-            expected = TestHelper.CleanUp(expected);
-            StringAssert.Contains(actual, expected, "Got [ " + actual + " ]");
+            //actual = TestHelper.CleanUp(actual);
+            //expected = TestHelper.CleanUp(expected);
+            StringAssert.Contains(actual.ToString(), expected, "Got [ " + actual + " ]");
         }
 
         [TestMethod]
         public void DsfRequest_MalformedXml_Expected_ErrorInDsfREsponse()
         {
-            string expected = @"<Error><InnerError>Unexpected end of file has occurred. The following elements are not closed: x, x. Line 1, position 62.</InnerError></Error>";
-            string xmlRequest = string.Format("<x><Service>{0}</Service><x>", Guid.NewGuid().ToString());
-            string actual = _connection.ExecuteCommand(xmlRequest, Guid.Empty, Guid.NewGuid());
+            var expected = @"<Error><InnerError>Unexpected end of file has occurred. The following elements are not closed: x, x. Line 1, position 62.</InnerError></Error>";
+            var xmlRequest = new StringBuilder(string.Format("<x><Service>{0}</Service><x>", Guid.NewGuid().ToString()));
+            var actual = _connection.ExecuteCommand(xmlRequest, Guid.Empty, Guid.NewGuid());
 
-            actual = TestHelper.CleanUp(actual);
-            expected = TestHelper.CleanUp(expected);
+            //actual = TestHelper.CleanUp(actual);
+            //expected = TestHelper.CleanUp(expected);
 
             Assert.AreEqual(expected, actual);
         }

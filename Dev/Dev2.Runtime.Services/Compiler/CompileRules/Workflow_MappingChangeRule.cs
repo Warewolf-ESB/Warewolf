@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Text;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
-using enActionType = Dev2.DynamicServices.enActionType;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.Compiler.CompileRules
@@ -20,7 +20,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
             return ServerCompileMessageType.WorkflowMappingChangeRule;
         }
 
-        public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)
+        public CompileMessageTO ApplyRule(Guid serviceID, StringBuilder beforeAction, StringBuilder afterAction)
         {
             var preDlStr = beforeAction;
 

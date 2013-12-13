@@ -120,23 +120,25 @@ namespace Dev2.Activities.Designers2.Email
 
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
-            if (environmentModel != null)
+            if(environmentModel != null)
             {
                 List<EmailSource> tmpSourceList = EmailSourceList.ToList();
                 var sourceList = GetSources(environmentModel);
                 EmailSourceList.Clear();
                 _baseEmailSource.ResourceName = "New Email Source...";
                 EmailSourceList.Add(_baseEmailSource);
-                foreach (var unlimitedObject in sourceList)
+
+                foreach(var emailSrc in sourceList)
                 {
-                    var emailSource = new EmailSource(unlimitedObject.xmlData);
-                    EmailSourceList.Add(emailSource);
+                    EmailSourceList.Add(emailSrc);
                 }
-                if (EmailSourceList.Count > tmpSourceList.Count)
+
+                // TODO : Refactor to avoid the use of Foreach with break
+                if(EmailSourceList.Count > tmpSourceList.Count)
                 {
-                    foreach (EmailSource source in EmailSourceList)
+                    foreach(EmailSource source in EmailSourceList)
                     {
-                        if (tmpSourceList.FirstOrDefault(c => c.ResourceName == source.ResourceName) == null)
+                        if(tmpSourceList.FirstOrDefault(c => c.ResourceName == source.ResourceName) == null)
                         {
                             SelectedSelectedEmailSource = source;
                             break;
@@ -150,9 +152,9 @@ namespace Dev2.Activities.Designers2.Email
             }
         }
 
-        public virtual List<UnlimitedObject> GetSources(IEnvironmentModel environmentModel)
+        public virtual List<EmailSource> GetSources(IEnvironmentModel environmentModel)
         {
-            return ResourceRepository.FindSourcesByType(environmentModel, enSourceType.EmailSource);
+            return environmentModel.ResourceRepository.FindSourcesByType<EmailSource>(environmentModel, enSourceType.EmailSource);
         }
 
         public void CreateNewEmailSource()

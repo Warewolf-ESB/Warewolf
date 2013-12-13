@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -10,9 +12,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindServerUsername : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return Environment.UserDomainName + "\\" + Environment.UserName;
+            return new StringBuilder(Environment.UserDomainName + "\\" + Environment.UserName);
         }
 
         public DynamicService CreateServiceEntry()

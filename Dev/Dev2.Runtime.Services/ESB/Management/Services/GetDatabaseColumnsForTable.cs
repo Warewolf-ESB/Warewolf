@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -30,24 +33,37 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)
             {
                 throw new InvalidDataContractException("No parameter values provided.");
             }
-            string database;
-            string tableName;
-            values.TryGetValue("Database", out database);
-            values.TryGetValue("TableName", out tableName);
+            string database = null;
+            string tableName = null;
+            StringBuilder tmp;
+            values.TryGetValue("Database", out tmp);
+            if (tmp != null)
+            {
+                database = tmp.ToString();
+            }
+            values.TryGetValue("TableName", out tmp);
+            if(tmp != null)
+            {
+                tableName = tmp.ToString();
+            }
 
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            
             if(string.IsNullOrEmpty(database))
             {
-                return new DbColumnList("No database set.").ToString();
+                var res = new DbColumnList("No database set.");
+                return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(tableName))
             {
-                return new DbColumnList("No table name set.").ToString();
+                var res = new DbColumnList("No table name set.");
+                return serializer.SerializeToBuilder(res);
             }
 
             try
@@ -87,11 +103,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                         dbColumns.Items.Add(dbColumn);
                     }
                 }
-                return dbColumns.ToString();
+                return serializer.SerializeToBuilder(dbColumns);
             }
             catch(Exception ex)
             {
-                return new DbColumnList(ex).ToString();
+                var res = new DbColumnList(ex);
+                return serializer.SerializeToBuilder(res);
             }
         }
 

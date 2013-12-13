@@ -1,5 +1,7 @@
 ﻿using System;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices.Objects;
 using Dev2.Services.Execution;
 using Dev2.Workspaces;
 using Dev2.DynamicServices;
@@ -16,15 +18,21 @@ namespace Dev2.Runtime.ESB.Execution
         protected IDSFDataObject DataObject { get; private set; }
         protected IWorkspace TheWorkspace { get; private set; }
         protected IEsbChannel EsbChannel { get; private set; }
+        protected EsbExecuteRequest Request { get; private set; }
 
         public String InstanceOutputDefinition { get; set; }
 
-        public EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
+        public EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel) : this(sa, dataObject, theWorkspace, esbChannel, null)
+        {
+        }
+
+        public EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
         {
             ServiceAction = sa;
             DataObject = dataObject;
             TheWorkspace = theWorkspace;
             EsbChannel = esbChannel;
+            Request = request;
         }
 
         protected EsbExecutionContainer(IServiceExecution serviceExecution)

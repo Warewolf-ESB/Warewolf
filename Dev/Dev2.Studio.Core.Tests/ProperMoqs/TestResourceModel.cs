@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
@@ -50,7 +51,7 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public string ServiceDefinition { get; set; }
 
-        public string WorkflowXaml { get; set; }
+        public StringBuilder WorkflowXaml { get; set; }
 
         public List<string> TagList { get; private set; }
 
@@ -89,7 +90,6 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public void UpdateIconPath(string iconPath)
         {
-            return;
         }
 
         public bool IsNewWorkflow { get; set; }
@@ -100,14 +100,13 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public void Update(IResourceModel resourceModel)
         {
-            return;
         }
 
         public string ConnectionString { get; set; }
 
-        public string ToServiceDefinition()
+        public StringBuilder ToServiceDefinition()
         {
-            return "TestDefinition";
+            return new StringBuilder("TestDefinition");
         }
 
         #endregion Methods

@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Studio.Wizards;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Studio.Core.Wizards.CallBackHandlers;
 using System.Activities.Presentation.Model;
-using Dev2.DataList.Contract;
-using Dev2.Core.Tests.Utils;
-using Dev2.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.Core.Tests.Utils;
+using Dev2.DataList.Contract;
+using Dev2.Studio.Wizards;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.WizardTests.WizardCallbackHandlerTests
 {
@@ -21,23 +17,11 @@ namespace Dev2.Core.Tests.WizardTests.WizardCallbackHandlerTests
     [TestClass][ExcludeFromCodeCoverage]
     public class DsfActivityWizCallbackTests
     {
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //

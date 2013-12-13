@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -16,61 +17,63 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindDrive : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            string username;
-            string domain;
-            string password;
+            return new StringBuilder();
 
-            values.TryGetValue("Username", out username);
-            values.TryGetValue("Password", out password);
-            values.TryGetValue("Domain", out domain);
+            //string username;
+            //string domain;
+            //string password;
 
-            IntPtr accessToken = IntPtr.Zero;
-            const int LOGON32_PROVIDER_DEFAULT = 0;
-            const int LOGON32_LOGON_INTERACTIVE = 2;
+            //values.TryGetValue("Username", out username);
+            //values.TryGetValue("Password", out password);
+            //values.TryGetValue("Domain", out domain);
+
+            //IntPtr accessToken = IntPtr.Zero;
+            //const int LOGON32_PROVIDER_DEFAULT = 0;
+            //const int LOGON32_LOGON_INTERACTIVE = 2;
             
-            StringBuilder result = new StringBuilder();
+            //StringBuilder result = new StringBuilder();
 
-            try
-            {
-                if (username.Length > 0)
-                {
-                    domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
-                    bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
-                                             LOGON32_PROVIDER_DEFAULT, ref accessToken);
-                    if (success)
-                    {
-                        var identity = new WindowsIdentity(accessToken);
-                        WindowsImpersonationContext context = identity.Impersonate();
-                        DriveInfo[] drives = DriveInfo.GetDrives();
+            //try
+            //{
+            //    if (username.Length > 0)
+            //    {
+            //        domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
+            //        bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
+            //                                 LOGON32_PROVIDER_DEFAULT, ref accessToken);
+            //        if (success)
+            //        {
+            //            var identity = new WindowsIdentity(accessToken);
+            //            WindowsImpersonationContext context = identity.Impersonate();
+            //            DriveInfo[] drives = DriveInfo.GetDrives();
 
-                        result.Append("<JSON>");
-                        result.Append(GetDriveInfoAsJSON(drives));
-                        result.Append("</JSON>");
+            //            result.Append("<JSON>");
+            //            result.Append(GetDriveInfoAsJSON(drives));
+            //            result.Append("</JSON>");
 
-                        context.Undo();
-                    }
-                    else
-                    {
-                        result.Append("<result>Logon failure: unknown user name or bad password</result>");
-                    }
-                }
-                else
-                {
-                    DriveInfo[] drives = DriveInfo.GetDrives();
-                    result.Append("<JSON>");
-                    result.Append(GetDriveInfoAsJSON(drives));
-                    result.Append("</JSON>");
-                }
-            }
-            catch (Exception ex)
-            {
-                result.Append(ex.Message);
-            }
+            //            context.Undo();
+            //        }
+            //        else
+            //        {
+            //            result.Append("<result>Logon failure: unknown user name or bad password</result>");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        DriveInfo[] drives = DriveInfo.GetDrives();
+            //        result.Append("<JSON>");
+            //        result.Append(GetDriveInfoAsJSON(drives));
+            //        result.Append("</JSON>");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.Append(ex.Message);
+            //}
 
-            return result.ToString();
+            //return result.ToString();
         }
 
         public DynamicService CreateServiceEntry()

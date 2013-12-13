@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -13,7 +12,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Moq;
 using Unlimited.Framework;
 
@@ -44,7 +42,7 @@ namespace Dev2.Core.Tests
             {
                 ResourceName = "test",
                 ResourceType = ResourceType.Service,
-                WorkflowXaml = @"
+                WorkflowXaml = new StringBuilder(@"
 <Service Name=""abc"">
     <Inputs/>
     <Outputs/>
@@ -57,7 +55,7 @@ namespace Dev2.Core.Tests
         </City>
     </DataList>
 </Service>
-"
+")
             };
         }
 
@@ -88,13 +86,13 @@ namespace Dev2.Core.Tests
             resourceModel.ID = id;
             resourceModel.ResourceName = resourceName;
             resourceModel.Tags = tags;
-            resourceModel.WorkflowXaml = "new xaml";
+            resourceModel.WorkflowXaml = new StringBuilder("new xaml");
             //------------Execute Test---------------------------
             var updateResourceModel = new ResourceModel(environmentModel.Object);
-            updateResourceModel.WorkflowXaml = "old xaml";
+            updateResourceModel.WorkflowXaml = new StringBuilder("old xaml");
             updateResourceModel.Update(resourceModel);
             //------------Assert Results-------------------------
-            Assert.AreEqual("new xaml", updateResourceModel.WorkflowXaml);
+            Assert.AreEqual("new xaml", updateResourceModel.WorkflowXaml.ToString());
         }
 
         [TestMethod]
@@ -194,7 +192,7 @@ namespace Dev2.Core.Tests
             _resourceModel.DataList = newDataList;
 
             string result = _resourceModel.DataList;
-            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml).GetValue("DataList"), result);
+            Assert.AreEqual(new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml.ToString()).GetValue("DataList"), result);
 
         }
 
@@ -391,7 +389,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage("resource xaml"));
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -402,9 +400,9 @@ namespace Dev2.Core.Tests
             };
             
             //------------Execute Test---------------------------
-            var serviceDefinition = model.ToServiceDefinition();
+            var serviceDefinition = model.ToServiceDefinition().ToString();
             //------------Assert Results-------------------------
-            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            var serviceElement = XElement.Parse(serviceDefinition);
             Assert.IsNotNull(serviceElement);
 
             var actionElement = serviceElement.Element("Action");
@@ -425,7 +423,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage("resource xaml"));
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -433,13 +431,13 @@ namespace Dev2.Core.Tests
             var model = new ResourceModel(environmentModel.Object)
             {
                 ID = instanceID,
-                WorkflowXaml = "current xaml"
+                WorkflowXaml = new StringBuilder("current xaml")
             };
 
             //------------Execute Test---------------------------
             var serviceDefinition = model.ToServiceDefinition();
             //------------Assert Results-------------------------
-            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            var serviceElement = XElement.Parse(serviceDefinition.ToString());
             Assert.IsNotNull(serviceElement);
 
             var actionElement = serviceElement.Element("Action");
@@ -460,7 +458,7 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(eventPublisher);
 
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage("resource xaml"));
 
             environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -474,7 +472,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             var serviceDefinition = model.ToServiceDefinition();
             //------------Assert Results-------------------------
-            var serviceElement = XElement.Load(new StringReader(serviceDefinition));
+            var serviceElement = XElement.Parse(serviceDefinition.ToString());
             Assert.IsNotNull(serviceElement);
             var errorMessagesElement = serviceElement.Element("ErrorMessages");
             Assert.IsNotNull(errorMessagesElement);
@@ -492,12 +490,20 @@ namespace Dev2.Core.Tests
         public static Mock<IEnvironmentModel> CreateMockEnvironment(IEventPublisher eventPublisher)
         {
             var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(model => model.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("");
+            connection.Setup(model => model.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
 
             var environmentModel = new Mock<IEnvironmentModel>();
             environmentModel.Setup(e => e.Connection).Returns(connection.Object);
             return environmentModel;
+        }
+
+        public static ExecuteMessage MakeMessage(string msg)
+        {
+            var result = new ExecuteMessage() {HasError = false};
+            result.SetMessage(msg);
+
+            return result;
         }
 
 

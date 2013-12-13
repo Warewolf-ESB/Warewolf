@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
@@ -45,7 +48,7 @@ namespace Dev2.Studio.Core.Models
         private ResourceType _resourceType;
         private string _tags;
         private string _unitTestTargetWorkflowService;
-        private string _workflowXaml;
+        private StringBuilder _workflowXaml;
         private Version _version;
         private bool _isNewWorkflow;
         bool _isPluginService;
@@ -321,7 +324,7 @@ namespace Dev2.Studio.Core.Models
         }
 
         // Problems ;)
-        public string WorkflowXaml
+        public StringBuilder WorkflowXaml
         {
             get
             {
@@ -539,10 +542,10 @@ namespace Dev2.Studio.Core.Models
             IconPath = string.IsNullOrEmpty(iconPath) ? ResourceType.GetIconLocation() : iconPath;
         }
 
-        public string ToServiceDefinition()
+        public StringBuilder ToServiceDefinition()
         {
             //TODO this method replicates functionality that is available in the server. There is a serious need to create a common library for resource contracts and resource serialization.
-            string result = string.Empty;
+            StringBuilder result = new StringBuilder();
 
             if(ResourceType == ResourceType.WorkflowService)
             {
@@ -550,9 +553,10 @@ namespace Dev2.Studio.Core.Models
 
                 var xaml = WorkflowXaml;
 
-                if (string.IsNullOrEmpty(xaml))
+                if (xaml == null || xaml.Length == 0)
                 {
-                    xaml = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    xaml = msg.Message;
                 }
 
                 XElement service = new XElement("Service",
@@ -579,7 +583,14 @@ namespace Dev2.Studio.Core.Models
                         new XElement("ErrorMessages", WriteErrors() ?? null)
                     );
 
-                result = service.ToString();
+                // save to the string builder ;)
+
+                XmlWriterSettings xws = new XmlWriterSettings();
+                xws.OmitXmlDeclaration = true;
+                using (XmlWriter xwriter = XmlWriter.Create(result, xws))
+                {
+                    service.Save(xwriter);
+                }
             }
             else if(ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
             {
@@ -588,15 +599,17 @@ namespace Dev2.Studio.Core.Models
                 // when null fetch the XAML ;)
                 if (result == null)
                 {
-                    result = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
+                    result = msg.Message;
                 }
 
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
-                var startNode = result.IndexOf("<Category>", StringComparison.Ordinal) + "<Category>".Length;
-                var endNode = result.IndexOf("</Category>", StringComparison.Ordinal);
+                var startNode = result.IndexOf("<Category>", 0,true) + "<Category>".Length;
+                var endNode = result.IndexOf("</Category>", 0,true);
                 if(endNode > startNode)
                 {
-                    var oldCategory = result.Substring(startNode, endNode - startNode);
+                    var len = (endNode - startNode) + 11;
+                    var oldCategory = result.Substring(startNode, len);
                     if(oldCategory != Category)
                     {
                         result = result.Replace(oldCategory, Category);
@@ -642,9 +655,8 @@ namespace Dev2.Studio.Core.Models
             get
             {
                 PropertyInfo prop = GetType().GetProperty(columnName);
-                IEnumerable<ValidationAttribute> validationMap =
-                    prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
-                string errMsg = null;
+                IEnumerable<ValidationAttribute> validationMap = prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
+                string errMsg;
 
 
                 foreach(ValidationAttribute v in validationMap)

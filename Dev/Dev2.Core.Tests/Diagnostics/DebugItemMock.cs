@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Dev2.Diagnostics;
 
 namespace Dev2.Tests.Diagnostics
@@ -11,11 +8,6 @@ namespace Dev2.Tests.Diagnostics
 
         public int SaveFileHitCount { get; set; }
         public string SaveFileContents { get; private set; }
-
-        public DebugItemMock()
-        {
-            
-        }
 
         #region Implementation of IDebugItem
 

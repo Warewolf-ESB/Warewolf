@@ -1,15 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
-using System.IO;
-using System.Resources;
-using System.Windows;
-using Dev2.Studio.Core;
 using Dev2.Studio.StartupResources;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests {
     /// <summary>

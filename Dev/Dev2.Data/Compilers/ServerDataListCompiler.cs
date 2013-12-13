@@ -28,7 +28,7 @@ namespace Dev2.Server.Datalist
     /// <summary>
     /// Server DataList compiler
     /// </summary>
-    internal class ServerDataListCompiler : IServerDataListCompiler
+    internal class ServerDataListCompiler : IEnvironmentModelDataListCompiler
     {
 
         private readonly IDev2DataLanguageParser _parser = DataListFactory.CreateLanguageParser();

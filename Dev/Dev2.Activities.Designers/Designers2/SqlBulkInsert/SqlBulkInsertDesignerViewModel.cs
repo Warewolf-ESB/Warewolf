@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
@@ -17,13 +16,10 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using Newtonsoft.Json;
-using Unlimited.Framework;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -416,36 +412,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         IEnumerable<DbSource> GetDatabases()
         {
-            return ResourceRepository.FindSourcesByType(_environmentModel, enSourceType.SqlDatabase)
-                .Select(o => new DbSource(o.xmlData));
+            return _environmentModel.ResourceRepository.FindSourcesByType<DbSource>(_environmentModel,enSourceType.SqlDatabase);
         }
 
         DbTableList GetDatabaseTables(DbSource dbSource)
         {
-            dynamic request = new UnlimitedObject();
-            request.Service = "GetDatabaseTablesService";
-            request.Database = JsonConvert.SerializeObject(dbSource);
-
-            var workspaceID = _environmentModel.Connection.WorkspaceID;
-
-            var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
-
-            DbTableList tables = JsonConvert.DeserializeObject<DbTableList>(result);
+            var tables = _environmentModel.ResourceRepository.GetDatabaseTables(dbSource);
             return tables ?? EmptyDbTables;
         }
 
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
-            dynamic request = new UnlimitedObject();
-            request.Service = "GetDatabaseColumnsForTableService";
-            request.Database = JsonConvert.SerializeObject(dbSource);
-            request.TableName = JsonConvert.SerializeObject(dbTable.TableName);
-
-            var workspaceID = _environmentModel.Connection.WorkspaceID;
-
-            var result = _environmentModel.Connection.ExecuteCommand(request.XmlString, workspaceID, GlobalConstants.NullDataListID);
-
-            var columns = JsonConvert.DeserializeObject<DbColumnList>(result);
+            var columns = _environmentModel.ResourceRepository.GetDatabaseTableColumns(dbSource, dbTable);
             return columns ?? EmptyDbColumns;
         }
 

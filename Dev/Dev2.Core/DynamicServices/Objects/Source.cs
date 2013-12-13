@@ -7,6 +7,7 @@
 //                  Data consumers are applications that leverage the Dynamic Service Engine
 #endregion
 
+using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Unlimited.Framework;

@@ -1,32 +1,27 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.Navigation;
-
-#region
-
-using Dev2.Core.Tests.Utils;
-using Moq.Protected;
-using Action = System.Action;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Security.Principal;
+using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract.Network;
 using Dev2.Providers.Events;
+using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
@@ -34,6 +29,7 @@ using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
@@ -42,9 +38,9 @@ using Dev2.Utilities;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework;
-
-#endregion
+using Moq.Protected;
+using Newtonsoft.Json;
+using Action = System.Action;
 
 //using System.Windows.Media.Imaging;
 // ReSharper disable InconsistentNaming
@@ -75,7 +71,6 @@ namespace Dev2.Core.Tests
         MainViewModel _mainViewModel;
         Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
         public Mock<IPopupController> PopupController;
-        Mock<IResourceDependencyService> _resourceDependencyService;
         const string ResourceName = "TestResource";
         Mock<IResourceRepository> _resourceRepo;
         Mock<IContextualResourceModel> _secondResource;
@@ -84,22 +79,6 @@ namespace Dev2.Core.Tests
         Mock<IWindowManager> _windowManager;
 
         #endregion Variables
-
-        #region init
-
-        //Use TestInitialize to run code before running each result
-        [TestInitialize]
-        public void MyTestInitialize()
-        {
-        }
-
-        //Use TestInitialize to run code before running each result
-        [TestCleanup]
-        public void MyTestCleanup()
-        {
-        }
-
-        #endregion init
 
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
@@ -144,7 +123,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, null);
+            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null);
             mvm.Setup(c => c.ShowStartPage()).Verifiable();
 
             //construct
@@ -217,6 +196,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
+            resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
 
 
@@ -224,7 +204,7 @@ namespace Dev2.Core.Tests
             envConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
             envConn.Setup(conn => conn.ServerID).Returns(serverID);
-            envConn.Setup(conn => conn.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(string.Empty);
+            envConn.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(envConn.Object);
@@ -758,7 +738,6 @@ namespace Dev2.Core.Tests
             _eventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
-            _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
             SetupDefaultMef(_feedbackInvoker);
@@ -766,7 +745,7 @@ namespace Dev2.Core.Tests
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, _resourceDependencyService.Object, PopupController.Object,
+                new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
                 _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
         }
 
@@ -778,7 +757,6 @@ namespace Dev2.Core.Tests
             EventPublishers.Aggregator = _eventAggregator.Object;
             PopupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
-            _resourceDependencyService = new Mock<IResourceDependencyService>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
             SetupDefaultMef(_feedbackInvoker);
@@ -786,7 +764,7 @@ namespace Dev2.Core.Tests
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, _resourceDependencyService.Object, PopupController.Object
+                new Mock<IVersionChecker>().Object, false, null, PopupController.Object
                 , _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
             _mainViewModel.ActiveEnvironment = new Mock<IEnvironmentModel>().Object;
         }
@@ -797,7 +775,7 @@ namespace Dev2.Core.Tests
             result.Setup(c => c.ResourceName).Returns(ResourceName);
             result.Setup(c => c.ResourceType).Returns(resourceType);
             result.Setup(c => c.DisplayName).Returns(DisplayName);
-            result.Setup(c => c.WorkflowXaml).Returns(ServiceDefinition);
+            result.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(ServiceDefinition));
             result.Setup(c => c.Category).Returns("Testing");
             result.Setup(c => c.Environment).Returns(_environmentModel.Object);
             result.Setup(c => c.ServerID).Returns(_serverID);
@@ -818,8 +796,12 @@ namespace Dev2.Core.Tests
 
         void CreateResourceRepo()
         {
+            var msg = new ExecuteMessage {HasError = false};
+            msg.SetMessage("");
             _environmentModel = CreateMockEnvironment();
             _resourceRepo = new Mock<IResourceRepository>();
+            _resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            _resourceRepo.Setup(r => r.GetDependenciesXml(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(msg);
             _firstResource = CreateResource(ResourceType.WorkflowService);
             var coll = new Collection<IResourceModel> { _firstResource.Object };
             _resourceRepo.Setup(c => c.All()).Returns(coll);
@@ -837,8 +819,20 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.WebServerUri)
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
-                .Returns(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+            int cnt = 0;
+            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(
+                    () =>
+                        {
+                            if (cnt == 0)
+                            {
+                                cnt++;
+                                return new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
+                            }
+
+                            return new StringBuilder(JsonConvert.SerializeObject(new ExecuteMessage()));
+                        }
+                );
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             return connection;
         }
@@ -865,6 +859,7 @@ namespace Dev2.Core.Tests
             item.SetupGet(i => i.ServiceName).Returns(ResourceName);
             list.Add(item.Object);
             _mockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
+            _mockWorkspaceRepo.Setup(c => c.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             _mockWorkspaceRepo.Setup(c => c.Remove(_firstResource.Object)).Verifiable();
             return _mockWorkspaceRepo;
         }
@@ -874,7 +869,7 @@ namespace Dev2.Core.Tests
             _secondResource = new Mock<IContextualResourceModel>();
             _secondResource.Setup(c => c.ResourceName).Returns("WhoCares");
             _secondResource.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
-            _secondResource.Setup(c => c.WorkflowXaml).Returns("");
+            _secondResource.Setup(c => c.WorkflowXaml).Returns(new StringBuilder());
             _secondResource.Setup(c => c.Category).Returns("Testing2");
             _secondResource.Setup(c => c.Environment).Returns(_environmentModel.Object);
             _secondResource.Setup(c => c.ServerID).Returns(_serverID);
@@ -887,8 +882,10 @@ namespace Dev2.Core.Tests
         {
             PopupController.Setup(c => c.Show()).Verifiable();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-            _resourceDependencyService.Setup(s => s.HasDependencies(_firstResource.Object)).Returns(false).Verifiable();
-            var succesResponse = new UnlimitedObject(@"<DataList>Success</DataList>");
+            _resourceRepo.Setup(c=>c.HasDependencies(_firstResource.Object)).Returns(false).Verifiable();            
+            var succesResponse = new ExecuteMessage();
+            
+            succesResponse.SetMessage(@"<DataList>Success</DataList>");         
             _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(succesResponse);
         }
 
@@ -906,7 +903,6 @@ namespace Dev2.Core.Tests
                     Assert.AreEqual(_environmentModel.Object, s))
                 .Verifiable();
             PopupController = new Mock<IPopupController>();
-            _resourceDependencyService = new Mock<IResourceDependencyService>();
             _eventAggregator = new Mock<IEventAggregator>();
             _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()))
                 .Callback<object>(m =>
@@ -1071,6 +1067,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVmWithEmptyRepo();
             var environmentRepo = CreateMockEnvironment();
             var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             environmentRepo.Setup(e => e.ResourceRepository).Returns(resourceRepo.Object);
             environmentRepo.Setup(e => e.IsConnected).Returns(true);
@@ -1090,7 +1087,6 @@ namespace Dev2.Core.Tests
             //---------Setup------
             var mock = SetupForDeleteServer();
             _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
-
             //---------Execute------
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
             _mainViewModel.Handle(msg);
@@ -1125,7 +1121,8 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             SetupForDelete();
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => new UnlimitedObject("<Result>Failure</Result>"));
+
+            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => MakeMsg("<Result>Failure</Result>"));
 
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
             _mainViewModel.Handle(msg);
@@ -1139,7 +1136,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             SetupForDelete();
-            var response = new UnlimitedObject(@"<DataList>Invalid</DataList>");
+            var response = MakeMsg("<DataList>Invalid</DataList>");
             _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
 
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
@@ -1170,9 +1167,9 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             SetupForDelete();
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object });
             _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+            _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
 
         [TestMethod]
@@ -1181,9 +1178,9 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             SetupForDelete();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object });
             _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+            _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
 
         [TestMethod]
@@ -1194,7 +1191,7 @@ namespace Dev2.Core.Tests
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
             _mainViewModel.Handle(msg);
-            _resourceDependencyService.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
+            _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
         }
 
         [TestMethod]
@@ -1224,7 +1221,7 @@ namespace Dev2.Core.Tests
 
             unassignedResource.Setup(res => res.Category).Returns(string.Empty);
             unassignedResource.Setup(resource => resource.Environment).Returns(env.Object);
-            repo.Setup(repository => repository.DeleteResource(unassignedResource.Object)).Returns(new UnlimitedObject("<DataList>Success</DataList>")).Verifiable();
+            repo.Setup(repository => repository.DeleteResource(unassignedResource.Object)).Returns(MakeMsg("<DataList>Success</DataList>")).Verifiable();
             env.Setup(environment => environment.ResourceRepository).Returns(repo.Object);
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { unassignedResource.Object }, false);
 
@@ -1267,7 +1264,7 @@ namespace Dev2.Core.Tests
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
             mockedEnvironmentRepo.Setup(env => env.Source).Returns(mockedEnvironment.Object);
             mockedResourceRepo.Setup(repo => repo.DeleteResource(It.IsAny<IResourceModel>()))
-                .Returns(new UnlimitedObject("<DataList>Success</DataList>"));
+                .Returns(MakeMsg("<DataList>Success</DataList>"));
             RemoveNavigationResourceMessage msg = null;
             mockedEventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
                 .Callback<Object>(m =>
@@ -1279,7 +1276,7 @@ namespace Dev2.Core.Tests
             resourceToDelete.Setup(res => res.Environment).Returns(mockedEnvironment.Object);
 
             //------------Execute Test---------------------------
-            mainViewModel.Handle(new DeleteResourcesMessage(new Collection<IContextualResourceModel>() { resourceToDelete.Object }, false));
+            mainViewModel.Handle(new DeleteResourcesMessage(new Collection<IContextualResourceModel> { resourceToDelete.Object }, false));
 
             // Assert Result
             Assert.IsNotNull(msg, "Remove naviagtion node message not published");
@@ -1560,8 +1557,7 @@ namespace Dev2.Core.Tests
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
-            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Verifiable();
-
+            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Returns(new ExecuteMessage()).Verifiable();             
             SetupImportServiceForPersistenceTests(wsiRepo);
 
             var resourceID = Guid.NewGuid();
@@ -1571,6 +1567,7 @@ namespace Dev2.Core.Tests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+            resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
             var envConn = new Mock<IEnvironmentConnection>();
             var env = new Mock<IEnvironmentModel>();
@@ -1798,6 +1795,14 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(actual, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
             Assert.AreSame(expected.Object.DisplayName, actual.DisplayName, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected display name.");
             Assert.AreSame(expected.Object.EnvironmentModel, actual.Environment, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected environment.");
+        }
+
+
+        public static ExecuteMessage MakeMsg(string msg)
+        {
+            var result = new ExecuteMessage {HasError = false};
+            result.SetMessage(msg);
+            return result;
         }
     }
 }

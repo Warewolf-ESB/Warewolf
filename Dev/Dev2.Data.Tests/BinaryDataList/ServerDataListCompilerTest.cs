@@ -18,7 +18,7 @@ namespace Dev2.Data.Tests.BinaryDataList
     [ExcludeFromCodeCoverage]
     public class ServerDataListCompilerTest
     {
-        private readonly IServerDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();
+        private readonly IEnvironmentModelDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();
         
         private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
         private static readonly string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";

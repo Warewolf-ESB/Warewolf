@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -15,9 +18,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             Now = () => DateTime.Now;
         }
 
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return "Pong @ " + Now().ToString("yyyy-MM-dd hh:mm:ss.fff");
+            ExecuteMessage msg = new ExecuteMessage {HasError = false};
+
+            msg.SetMessage("Pong @ " + Now.Invoke().ToString("yyyy-MM-dd hh:mm:ss.fff"));
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+            return serializer.SerializeToBuilder(msg);
         }
 
         public Func<DateTime> Now { get; set; }
@@ -27,17 +36,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             return "Ping";
         }
 
-
         public DynamicService CreateServiceEntry()
         {
-            DynamicService ds = new DynamicService();
+            DynamicService ds = new DynamicService {Name = HandlesType()};
 
-            ds.Name = HandlesType();
-            ServiceAction action = new ServiceAction();
-            action.Name = HandlesType();
-            action.SourceMethod = HandlesType();
-            action.ActionType = enActionType.InvokeManagementDynamicService;
-            action.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            ServiceAction action = new ServiceAction
+                {
+                    Name = HandlesType(),
+                    SourceMethod = HandlesType(),
+                    ActionType = enActionType.InvokeManagementDynamicService,
+                    DataListSpecification =
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                };
 
             ds.Actions.Add(action);
 

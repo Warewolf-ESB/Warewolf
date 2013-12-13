@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
@@ -19,7 +20,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
             return ServerCompileMessageType.WebServiceIsRequiredChangeRule;
         }
 
-        public CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction)
+        public CompileMessageTO ApplyRule(Guid serviceID, StringBuilder beforeAction, StringBuilder afterAction)
         {
             // Inputs, Outputs ;)
             var inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);

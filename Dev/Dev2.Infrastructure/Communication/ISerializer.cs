@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Dev2.Communication
 {
@@ -30,5 +31,13 @@ namespace Dev2.Communication
         /// <param name="type">The type.</param>
         /// <returns></returns>
         object Deserialize(string obj, Type type);
+
+        /// <summary>
+        /// Deserializes the specified message via a stream.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        T Deserialize<T>(StringBuilder message);
     }
 }

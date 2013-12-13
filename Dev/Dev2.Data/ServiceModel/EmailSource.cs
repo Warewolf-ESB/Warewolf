@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Xml.Linq;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data

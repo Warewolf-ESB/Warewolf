@@ -1,11 +1,12 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Net;
 using System.Network;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.ExtMethods;
@@ -26,7 +27,6 @@ namespace Dev2.Network
     public class ServerProxy : IDisposable, IEnvironmentConnection
     {
         Timer _reconnectHeartbeat;
-        const int MAX_SIZE_FOR_STRING = 1 << 12; // = 4K      
 
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString())
@@ -130,7 +130,7 @@ namespace Dev2.Network
         public bool IsConnected { get; set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
-        public void Connect(bool isAuxiliary = false)
+        public void Connect()
         {
             try
             {
@@ -153,15 +153,15 @@ namespace Dev2.Network
         {
             if(IsLocalHost)
             {
-                if(_reconnectHeartbeat == null)
-                {
-                    _reconnectHeartbeat = new Timer();
-                    _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                    _reconnectHeartbeat.Interval = 10000;
-                    _reconnectHeartbeat.AutoReset = true;
-                    _reconnectHeartbeat.Start();
-                }
+            if(_reconnectHeartbeat == null)
+            {
+                _reconnectHeartbeat = new Timer();
+                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                _reconnectHeartbeat.Interval = 10000;
+                _reconnectHeartbeat.AutoReset = true;
+                _reconnectHeartbeat.Start();
             }
+        }
         }
 
         public virtual void StopReconnectHeartbeat()
@@ -279,52 +279,78 @@ namespace Dev2.Network
         }
 
 
-        public string ExecuteCommand(string payload, Guid workspaceID, Guid dataListID)
+        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceID, Guid dataListID)
         {
-            if(String.IsNullOrEmpty(payload))
+            if(payload == null || payload.Length == 0)
             {
                 throw new ArgumentNullException("payload");
             }
-            var memoryStream = new MemoryStream();
-            var bytes = Encoding.UTF8.GetBytes(payload);
-            memoryStream.Write(bytes, 0, bytes.Length);
-            memoryStream.Flush();
-            memoryStream.Position = 0;
-            var result = "";
-            var envelope = new Envelope();
-            envelope.Type = typeof(Envelope);
-            using(var reader = new StreamReader(memoryStream, Encoding.UTF8, false, MAX_SIZE_FOR_STRING))
+
+            // build up payload 
+            var length = payload.Length;
+            var startIdx = 0;
+            var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
+
+            var messageID = Guid.NewGuid();
+            List<Envelope> mailToSend = new List<Envelope>();
+            for(int i = 0; i < rounds; i++)
             {
-                var messageID = Guid.NewGuid();
-                while(!reader.EndOfStream)
+                var envelope = new Envelope {PartID = i};
+            envelope.Type = typeof(Envelope);
+
+                var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                if(len > (payload.Length - startIdx))
                 {
-                    var b = new char[memoryStream.Length];
-                    if(memoryStream.Length > MAX_SIZE_FOR_STRING)
+                    len = (payload.Length - startIdx);
+                }
+
+                envelope.Content = payload.Substring(startIdx, len);
+                startIdx += len;
+                
+                mailToSend.Add(envelope);
+            }
+
+            // Send and receive chunks from the server ;)
+            var result = new StringBuilder();
+            for(int i = 0; i < mailToSend.Count; i++)
+            {
+                bool isEnd = (i + 1 == mailToSend.Count);
+                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceID, dataListID, messageID);
+                Wait(invoke);
+                
+                // now build up the result in fragements ;)
+                if (isEnd)
+                {
+                    var totalToFetch = invoke.Result.ResultParts;
+                    for (int q = 0; q < totalToFetch; q++)
                     {
-                        b = new char[MAX_SIZE_FOR_STRING];
+                        Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
+                        Wait(fragmentInvoke);
+                        if (fragmentInvoke.Result != null)
+                        {
+                            result.Append(fragmentInvoke.Result);
+                        }
                     }
-                    int read = reader.Read(b, 0, b.Length);
-                    var readToEndAsync = new string(b, 0, read);
-                    envelope.Content = readToEndAsync;
-                    Task<string> invoke = EsbProxy.Invoke<string>("ExecuteCommand", envelope, reader.EndOfStream, workspaceID, dataListID, messageID);
-                    result = Wait(invoke);
                 }
             }
-            if(!string.IsNullOrEmpty(result))
+
+            // prune any result for old datalist junk ;)
+            if(result.Length > 0)
             {
                 // Only return Dev2System.ManagmentServicePayload if present ;)
-                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
                 if(start > 0)
                 {
-                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
+                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
                     if(start < end && (end - start) > 1)
                     {
                         // we can return the trimed payload instead
                         start += (GlobalConstants.ManagementServicePayload.Length + 2);
-                        return result.Substring(start, (end - start));
+                        return new StringBuilder(result.Substring(start, (end - start)));
                     }
                 }
             }
+
             return result;
 
         }
@@ -345,7 +371,6 @@ namespace Dev2.Network
 
         protected virtual void Wait(Task task)
         {
-            // task.WaitWithPumping(GlobalConstants.NetworkTimeOut);
             task.Wait(100);
         }
 

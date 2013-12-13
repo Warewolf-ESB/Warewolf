@@ -13,7 +13,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         void Clear();
 
-        IEnvironmentModel Fetch(IServer server);
+        IEnvironmentModel Fetch(IEnvironmentModel server);
 
         IList<Guid> ReadSession();
 

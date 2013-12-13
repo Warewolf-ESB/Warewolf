@@ -4,13 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common.Common;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -96,13 +96,13 @@ namespace Dev2.Core.Tests.Environments
         {
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
-            connection.Setup(c => c.Connect(It.IsAny<bool>())).Verifiable();
+            connection.Setup(c => c.Connect()).Verifiable();
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
             env.Connect();
 
-            connection.Verify(c => c.Connect(It.IsAny<bool>()), Times.Once());
+            connection.Verify(c => c.Connect(), Times.Once());
         }
 
         [TestMethod]
@@ -121,11 +121,11 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect(It.IsAny<bool>())).Verifiable();
+            c1.Setup(c => c.Connect()).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");
-            c2.Setup(c => c.Connect(It.IsAny<bool>())).Verifiable();
+            c2.Setup(c => c.Connect()).Verifiable();
             c2.Setup(c => c.IsConnected).Returns(true);
 
             var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Environments
 
             e1.Connect(e2);
 
-            c2.Verify(c => c.Connect(It.IsAny<bool>()), Times.Never());
+            c2.Verify(c => c.Connect(), Times.Never());
         }
 
         [TestMethod]
@@ -141,11 +141,11 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect(It.IsAny<bool>())).Verifiable();
+            c1.Setup(c => c.Connect()).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");
-            c2.Setup(c => c.Connect(It.IsAny<bool>())).Verifiable();
+            c2.Setup(c => c.Connect()).Verifiable();
             c2.Setup(c => c.IsConnected).Returns(true);
 
             var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests.Environments
 
             e1.Connect(e2);
 
-            c1.Verify(c => c.Connect(It.IsAny<bool>()), Times.Once());
+            c1.Verify(c => c.Connect(), Times.Once());
         }
 
         #endregion
@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests.Environments
             environmentConnection.Setup(c => c.AppServerUri).Returns(() => new Uri("http://localhost:77/dsf"));
 
             var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
-            var sourceDef = envModel.ToSourceDefinition();
+            var sourceDef = envModel.ToSourceDefinition().ToString();
             var sourceXml = XElement.Parse(sourceDef);
             var category = sourceXml.ElementSafe("Category").ToUpper();
             Assert.AreNotEqual("SERVERS", category);

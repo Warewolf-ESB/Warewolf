@@ -2,6 +2,7 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
@@ -50,7 +51,7 @@ namespace Dev2.Core.Tests
             var crmDecision = new Mock<IContextualResourceModel>();
             crmDecision.Setup(r => r.Environment).Returns(env.Object);
             crmDecision.Setup(r => r.ResourceName).Returns("Test");
-            crmDecision.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
             var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
             var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
@@ -102,7 +103,7 @@ namespace Dev2.Core.Tests
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
             crm.Setup(r => r.ResourceName).Returns("Test");
-            crm.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
@@ -187,7 +188,7 @@ namespace Dev2.Core.Tests
             var crmDecision = new Mock<IContextualResourceModel>();
             crmDecision.Setup(r => r.Environment).Returns(env.Object);
             crmDecision.Setup(r => r.ResourceName).Returns("Test");
-            crmDecision.Setup(res => res.WorkflowXaml).Returns(StringResourcesTest.xmlServiceDefinition);
+            crmDecision.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
 
             var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
             var decisionPropertyCollection = new Mock<ModelPropertyCollection>();

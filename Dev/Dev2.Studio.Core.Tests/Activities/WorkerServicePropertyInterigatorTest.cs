@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.Interfaces;
@@ -45,7 +46,7 @@ namespace Dev2.Core.Tests.Activities
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>" };
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>") };
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests.Activities
             IEventAggregator evtAg = new EventAggregator();
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
-            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = "<Action></Action>" };
+            var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action></Action>") };
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 

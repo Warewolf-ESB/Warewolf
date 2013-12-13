@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Dev2.Composition;
 using Dev2.DataList.Contract;
 using Dev2.MathOperations;
@@ -10,11 +12,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace Dev2.Core.Tests
 {

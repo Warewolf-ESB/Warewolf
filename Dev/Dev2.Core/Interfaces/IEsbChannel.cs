@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using System;
 
@@ -13,7 +14,7 @@ namespace Dev2
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ExecuteRequest(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
+        Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors);
 
         /// <summary>
         /// Fetches the server model.

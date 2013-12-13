@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Tamir.SharpSsh;
 using Tamir.SharpSsh.jsch;
 
@@ -286,7 +287,7 @@ namespace Dev2.PathOperations {
                             result = payload.Length;
                             sftp.Close();
                         }
-                        catch(Exception exception)
+                        catch(Exception)
                         {
                             sftp.Close();
                             throw new Exception("File was not created");
@@ -432,7 +433,7 @@ namespace Dev2.PathOperations {
                 }
 
             }
-            catch(SftpException webEx)
+            catch(SftpException)
             {
                 throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
             }
@@ -948,7 +949,7 @@ namespace Dev2.PathOperations {
                 }
                 result = true;
             }
-            catch(Exception exception)
+            catch(Exception)
             {
                 result = false;
                 throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));

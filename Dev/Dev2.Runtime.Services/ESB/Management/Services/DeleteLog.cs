@@ -1,38 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteLog : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string result;
+            //string result;
 
             string filePath;
             string directory;
 
-            values.TryGetValue("FilePath", out filePath);
-            values.TryGetValue("Directory", out directory);
+            ExecuteMessage msg = new ExecuteMessage() {HasError = false};
+
+            StringBuilder tmp;
+            values.TryGetValue("FilePath", out tmp);
+            filePath = tmp.ToString();
+            values.TryGetValue("Directory", out tmp);
+            directory = tmp.ToString();
 
             if(String.IsNullOrWhiteSpace(filePath))
             {
-                result = FormatMessage("Can't delete a file if no filename is passed.", filePath, directory);
-                ServerLogger.LogMessage(result);
+                msg.HasError = true;
+                msg.SetMessage(FormatMessage("Can't delete a file if no filename is passed.", filePath, directory));
+                ServerLogger.LogMessage(msg.Message.ToString());
             }
             else if(String.IsNullOrWhiteSpace(directory))
             {
-                result = FormatMessage("Can't delete a file if no directory is passed.", filePath, directory);
-                ServerLogger.LogMessage(result);
+                msg.HasError = true;
+                msg.SetMessage(FormatMessage("Can't delete a file if no directory is passed.", filePath, directory));
+                ServerLogger.LogMessage(msg.Message.ToString());
             }
             else if(!Directory.Exists(directory))
             {
-                result = FormatMessage("No such directory exists on the server.", filePath, directory);
-                ServerLogger.LogMessage(result);
+                msg.HasError = true;
+                msg.SetMessage(FormatMessage("No such directory exists on the server.", filePath, directory));
+                ServerLogger.LogMessage(msg.Message.ToString());
             }
             else
             {
@@ -40,24 +51,28 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 if(!File.Exists(path))
                 {
-                    result = FormatMessage("No such file exists on the server.", filePath, directory);
-                    ServerLogger.LogMessage(result);
+                    msg.HasError = true;
+                    msg.SetMessage(FormatMessage("No such file exists on the server.", filePath, directory));
+                    ServerLogger.LogMessage(msg.Message.ToString());
                 }
                 else
                 {
                     try
                     {
                         File.Delete(path);
-                        result = "Success";
+                        msg.SetMessage("Success");
                     }
                     catch(Exception ex)
                     {
-                        result = FormatMessage(ex.Message, filePath, directory);
-                        ServerLogger.LogMessage(result + "\n" + ex.StackTrace);
+                        msg.HasError = true;
+                        msg.SetMessage(FormatMessage(ex.Message, filePath, directory));
+                        ServerLogger.LogMessage(msg.Message + "\n" + ex.StackTrace);
                     }
                 }
             }
-            return result;
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(msg);
         }
 
         public DynamicService CreateServiceEntry()

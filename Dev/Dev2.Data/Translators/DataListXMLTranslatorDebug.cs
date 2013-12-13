@@ -52,12 +52,11 @@ namespace Dev2.Server.DataList.Translators
 
             IList<string> itemKeys = payload.FetchAllKeys();
 
-            ErrorResultTO invokeErrors;
             TranslatorUtils tu = new TranslatorUtils();
 
             foreach (string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry entry;
                 if (payload.TryGetEntry(key, out entry, out error))
                 {
 

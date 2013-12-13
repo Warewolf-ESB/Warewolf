@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -14,14 +17,14 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SettingsRead : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var settings = new Settings();
             try
             {
                 var securityRead = new SecurityRead();
                 var jsonPermissions = securityRead.Execute(values, theWorkspace);
-                settings.Security = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions);
+                settings.Security = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
 
             }
             catch(Exception ex)
@@ -31,7 +34,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 settings.Error = "Error reading settings configuration : " + ex.Message;
             }
 
-            return settings.ToString();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(settings);
         }
 
         public DynamicService CreateServiceEntry()

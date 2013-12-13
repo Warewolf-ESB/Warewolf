@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Dev2.Data.ServiceModel.Messages;
 using System.Collections.Generic;
 using Dev2.DynamicServices;
@@ -21,7 +22,7 @@ namespace Dev2.Runtime.Compiler
         /// <param name="beforeAction">The before action.</param>
         /// <param name="afterAction">The after action.</param>
         /// <returns></returns>
-        public IList<CompileMessageTO> Compile(Guid serviceId, ServerCompileMessageType typeOf, string beforeAction, string afterAction)
+        public IList<CompileMessageTO> Compile(Guid serviceId, ServerCompileMessageType typeOf, StringBuilder beforeAction, StringBuilder afterAction)
         {
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 

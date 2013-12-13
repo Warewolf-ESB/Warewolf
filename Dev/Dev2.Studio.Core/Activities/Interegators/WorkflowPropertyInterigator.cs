@@ -1,4 +1,4 @@
-﻿using System.Xml;
+﻿using Dev2.Common.Common;
 using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -9,21 +9,23 @@ namespace Dev2.Studio.Core.Activities.Interegators
         // string xml
         public static void SetActivityProperties(IContextualResourceModel resource, ref DsfActivity activity)
         {
-
-            XmlDocument document = new XmlDocument();
-
-            if (resource.WorkflowXaml != null)
+            if (resource.WorkflowXaml != null && resource.WorkflowXaml.Length > 0)
             {
-                document.LoadXml(resource.WorkflowXaml);
+                var startIdx = resource.WorkflowXaml.IndexOf("<HelpLink>", 0, true);
 
-            if(document.DocumentElement != null)
-            {
-                XmlNode node = document.SelectSingleNode("//HelpLink");
-                if(node != null)
+                if (startIdx >= 0)
                 {
-                    activity.HelpLink = node.InnerText;
+                    var endIdx = resource.WorkflowXaml.IndexOf("</HelpLink>", startIdx, true);
+
+                    if (endIdx > 0)
+                    {
+                        startIdx += 10;
+                        var len = (endIdx - startIdx);
+                        
+                        activity.HelpLink = resource.WorkflowXaml.Substring(startIdx, len);
+                    }
                 }
-            }
+
             }
 
             if(resource.Environment != null) activity.FriendlySourceName = resource.Environment.Name;

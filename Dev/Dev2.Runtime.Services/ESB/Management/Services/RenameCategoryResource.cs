@@ -1,6 +1,8 @@
 ﻿using System;
 using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System.Collections.Generic;
@@ -14,20 +16,33 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class RenameResourceCategory : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string oldCategory;
-            string newCategory;
-            string resourceType;
+            string oldCategory = null;
+            string newCategory = null;
+            string resourceType = null;
             if(values == null)
             {
                 throw new InvalidDataContractException("No parameter values provided.");
             }
-            values.TryGetValue("OldCategory", out oldCategory);
-            values.TryGetValue("NewCategory", out newCategory);
-            values.TryGetValue("ResourceType", out resourceType);
+            StringBuilder tmp;
+            values.TryGetValue("OldCategory", out tmp);
+            if (tmp != null)
+            {
+                oldCategory = tmp.ToString();
+            }
+            values.TryGetValue("NewCategory", out tmp);
+            if(tmp != null)
+            {
+                newCategory = tmp.ToString();
+            }
+            values.TryGetValue("ResourceType", out tmp);
+            if(tmp != null)
+            {
+                resourceType = tmp.ToString();
+            }
 
-            if(oldCategory==null)
+            if(oldCategory == null)
             {
                 throw new InvalidDataContractException("No value provided for OldCategory parameter.");
             }
@@ -39,8 +54,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for ResourceType parameter.");
             }
-            var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory,newCategory,resourceType);
-            return saveResult.Message;
+            
+            var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory, resourceType);
+
+            ExecuteMessage msg = new ExecuteMessage() {HasError = false};
+            msg.SetMessage(saveResult.Message);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(msg);
         }
 
         public DynamicService CreateServiceEntry()

@@ -2,8 +2,8 @@
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Test.XML;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Tests.Runtime.XML;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.DurableInstancing;
 using System.Collections.Generic;

@@ -1,12 +1,13 @@
 ﻿using System.Activities;
 using System.Activities.Presentation.Services;
+using System.Text;
 
 namespace Dev2.Utilities
 {
     // BUG 9304 - 2013.05.08 - TWR - Added this
     public interface IWorkflowHelper
     {
-        string SerializeWorkflow(ModelService modelService);
+        StringBuilder SerializeWorkflow(ModelService modelService);
 
         ActivityBuilder CreateWorkflow(string displayName);
 
@@ -16,6 +17,6 @@ namespace Dev2.Utilities
 
         void CompileExpressions<TResult>(DynamicActivity<TResult> dynamicActivity);
 
-        string SanitizeXaml(string workflowXaml);
+        StringBuilder SanitizeXaml(StringBuilder workflowXaml);
     }
 }

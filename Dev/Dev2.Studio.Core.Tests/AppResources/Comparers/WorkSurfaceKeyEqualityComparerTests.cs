@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Text;
-using System.Collections.Generic;
 using Dev2.Core.Tests.Environments;
 using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers

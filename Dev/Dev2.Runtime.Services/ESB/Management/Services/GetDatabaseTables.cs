@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -30,18 +33,26 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
             if(values == null)
             {
                 throw new InvalidDataContractException("No parameter values provided.");
             }
-            string database;
-            values.TryGetValue("Database", out database);
+            string database = null;
+            StringBuilder tmp;
+            values.TryGetValue("Database", out tmp);
+            if (tmp != null)
+            {
+                database = tmp.ToString();
+            }
 
             if(string.IsNullOrEmpty(database))
             {
-                return new DbTableList("No database set.").ToString();
+                var res =  new DbTableList("No database set.");
+                return serializer.SerializeToBuilder(res);
             }
 
             DbSource dbSource;
@@ -51,16 +62,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
-                return new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message).ToString();
+                var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
+                return serializer.SerializeToBuilder(res);
             }
 
             if(string.IsNullOrEmpty(dbSource.DatabaseName) || string.IsNullOrEmpty(dbSource.Server))
             {
-                return new DbTableList("Invalid database sent {0}.", database).ToString();
+                var res = new DbTableList("Invalid database sent {0}.", database);
+                return serializer.SerializeToBuilder(res);
             }
 
-                try
-                {
+            try
+            {
                 var tables = new DbTableList();
                 DataTable columnInfo;
                 using(var connection = new SqlConnection(dbSource.ConnectionString))
@@ -68,15 +81,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                     connection.Open();
                     columnInfo = connection.GetSchema("Tables");
                 }
-            if(columnInfo != null)
-            {
-                foreach(DataRow row in columnInfo.Rows)
+                if(columnInfo != null)
                 {
-                    var tableName = row["TABLE_NAME"] as string;
-                        var dbTable = tables.Items.Find(table => table.TableName == tableName);
-                    if(dbTable == null)
+                    foreach(DataRow row in columnInfo.Rows)
                     {
-                        dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
+                        var tableName = row["TABLE_NAME"] as string;
+                        var dbTable = tables.Items.Find(table => table.TableName == tableName);
+                        if(dbTable == null)
+                        {
+                            dbTable = new DbTable { TableName = tableName, Columns = new List<DbColumn>() };
                             tables.Items.Add(dbTable);
                         }
                     }
@@ -98,13 +111,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
                     }
-                    }
-                return tables.ToString();
                 }
+                return serializer.SerializeToBuilder(tables);
+            }
             catch(Exception ex)
             {
                 var tables = new DbTableList(ex);
-                return tables.ToString();
+                return serializer.SerializeToBuilder(tables);
             }
         }
 

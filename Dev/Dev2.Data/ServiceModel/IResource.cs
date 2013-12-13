@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
@@ -68,6 +69,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>
         /// <returns>The XML representation of this resource.</returns>
         XElement ToXml();
+
+        /// <summary>
+        /// Gets the string builder for this resource.
+        /// </summary>
+        /// <returns></returns>
+        StringBuilder ToStringBuilder();
 
         /// <summary>
         /// Determines whether the given user roles are in the <see cref="AuthorRoles"/>.

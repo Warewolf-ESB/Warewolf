@@ -4,9 +4,9 @@ using System.Net;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices.Test.XML;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Data

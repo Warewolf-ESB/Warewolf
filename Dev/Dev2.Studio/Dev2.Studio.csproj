@@ -340,6 +340,7 @@
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
+    <Compile Include="ViewModels\DependencyVisualization\DependencyGraphGenerator.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
@@ -541,9 +542,6 @@
     </Compile>
     <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
       <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ResourceManagement\ResourceDesignerWindow.xaml.cs">
-      <DependentUpon>ResourceDesignerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
       <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
@@ -973,10 +971,6 @@
     <Page Include="Views\ResourceManagement\DeleteResourceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ResourceManagement\ResourceDesignerWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Wizards\DataListChangeNotificationView.xaml">
       <SubType>Designer</SubType>

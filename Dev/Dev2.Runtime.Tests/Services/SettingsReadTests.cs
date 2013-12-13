@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
@@ -40,14 +41,14 @@ namespace Dev2.Tests.Runtime.Services
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
             var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
             var securityWrite = new SecurityWrite();
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder(serializeObject) } }, null);
             var settingsRead = new SettingsRead();
             //------------Assert Preconditions-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
             File.Delete("secure.config");
-            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions);
+            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
             Assert.IsNotNull(settings.Security);
@@ -84,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
             File.Delete("secure.config");
-            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions);
+            var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
             Assert.IsNull(settings.Security);

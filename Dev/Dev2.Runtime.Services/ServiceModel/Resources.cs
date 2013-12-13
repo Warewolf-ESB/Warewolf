@@ -393,7 +393,8 @@ namespace Dev2.Runtime.ServiceModel
                     var dataListInputVariables = JsonConvert.SerializeObject(validElements);
                     return dataListInputVariables;
                 }
-                return "";
+
+                return string.Empty;
             }
         }
 

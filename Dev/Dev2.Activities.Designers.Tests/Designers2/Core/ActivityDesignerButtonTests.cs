@@ -5,7 +5,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Studio.Core.ViewModels.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core

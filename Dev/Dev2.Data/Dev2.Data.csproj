@@ -114,7 +114,6 @@
     <Compile Include="Decisions\Operations\NotEndsWith.cs" />
     <Compile Include="Decisions\Operations\NotRegex.cs" />
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
-    <Compile Include="Enums\CompileMessageType.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
     <Compile Include="Globals.cs" />
@@ -126,19 +125,16 @@
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDestinationUserNamePassword.cs" />
     <Compile Include="ServiceModel\AuthenticationType.cs" />
+    <Compile Include="ServiceModel\Connection.cs" />
     <Compile Include="ServiceModel\Helper\ServiceUtils.cs" />
-    <Compile Include="ServiceModel\Messages\CompileMessageList.cs" />
-    <Compile Include="ServiceModel\Messages\CompileMessageTO.cs" />
     <Compile Include="ServiceModel\PluginSource.cs" />
     <Compile Include="ServiceModel\ResourceTypeConverter.cs" />
-    <Compile Include="ServiceModel\SerializableResource.cs" />
     <Compile Include="ServiceModel\WebRequestMethod.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />
     <Compile Include="ServiceModel\EmailSource.cs" />
     <Compile Include="ServiceModel\IResource.cs" />
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
-    <Compile Include="ServiceModel\ResourceType.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Storage\Binary Objects\FederatedStorageKey.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryKeyAlias.cs" />
@@ -147,7 +143,6 @@
     <Compile Include="Storage\Dev2BinaryStorage.cs" />
     <Compile Include="Storage\Dev2DistributedCache.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
-    <Compile Include="Storage\Binary Objects\SBinaryDataListIndex.cs" />
     <Compile Include="Storage\ProtocolBuffers\BinaryDataListAlias.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -363,6 +358,7 @@
     <Compile Include="TO\RecordSetDefinition.cs" />
     <Compile Include="TO\RecordSetSearchPayload.cs" />
     <Compile Include="TO\SearchTO.cs" />
+    <Compile Include="TO\StringSegments.cs" />
     <Compile Include="TO\SystemTag.cs" />
     <Compile Include="TO\SystemTagsTO.cs" />
     <Compile Include="TO\UpsertTO.cs" />
@@ -414,7 +410,10 @@
       <Name>Dev2.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ServiceModel\Messages\" />
+    <Folder Include="Settings\Security\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

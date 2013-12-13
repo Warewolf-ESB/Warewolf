@@ -166,7 +166,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
 
                 var resourceCatalog = new Mock<IResourceCatalog>();
                 resourceCatalog.Setup(c => c.GetResourceContents(workspaceID, svc.ResourceID, It.IsAny<Version>()))
-                    .Returns((Guid wsID, Guid resourceID, Version version) => svc.ToXml().ToString())
+                    .Returns((Guid wsID, Guid resourceID, Version version) => svc.ToXml().ToStringBuilder())
                     .Verifiable();
 
                 var services = new TestDbServices(resourceCatalog.Object);

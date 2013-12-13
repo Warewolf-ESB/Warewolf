@@ -2,7 +2,7 @@
 using System.IO;
 using Dev2.Common;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace Dev2.Tests.Diagnostics

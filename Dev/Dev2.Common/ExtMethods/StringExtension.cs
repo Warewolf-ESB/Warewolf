@@ -18,6 +18,14 @@ namespace Dev2.Common.ExtMethods
         static Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
+        public static string Escape(this string unescaped)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlNode node = doc.CreateElement("root");
+            node.InnerText = unescaped;
+            return node.InnerXml;
+        }
+
         public static string Unescape(this string payload)
         {
             XmlDocument doc = new XmlDocument();
@@ -173,7 +181,7 @@ namespace Dev2.Common.ExtMethods
                 Convert.FromBase64String(payload);
                 result = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // if error is thrown we know it is not a valid base64 string
             }

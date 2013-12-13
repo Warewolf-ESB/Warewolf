@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Test.XML;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
+using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using DummyNamespaceForTest;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
@@ -283,11 +285,11 @@ namespace Dev2.Tests.Runtime.ESB
             }
 
             serviceXml = service.ToXml();
-            var graph = new DynamicObjectHelper().GenerateObjectGraphFromString(serviceXml.ToString());
+            var graph = new ServiceDefinitionLoader().GenerateServiceGraph(new StringBuilder(serviceXml.ToString()));
 
             var ds = (DynamicService)graph[0];
             var sa = ds.Actions[0];
-            sa.Source = new Source { ResourceDefinition = service.Source.ToXml().ToString() };
+            sa.Source = new Source { ResourceDefinition = new StringBuilder(service.Source.ToXml().ToString()) };
             return sa;
         }
 

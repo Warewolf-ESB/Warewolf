@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Core.Tests.Utils;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System.Activities.Presentation.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests

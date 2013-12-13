@@ -7,13 +7,11 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
-using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
@@ -40,7 +38,7 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            
+
            // IMainViewModel mainViewModel = new MainViewModel();
             IMainViewModel mainViewModel = new Mock<IMainViewModel>().Object;
             ImportService.AddExportedValueToContainer(mainViewModel);
@@ -139,7 +137,6 @@ namespace Dev2.Core.Tests
             Mock<IFeedbackInvoker> feedbackInvoker = null,
             Mock<IFeedBackRecorder> feedbackRecorder = null,
             Mock<IFrameworkRepository<UserInterfaceLayoutModel>> layoutRepo = null,
-            Mock<IResourceDependencyService> resourceDepService = null,
             IWorkspaceItemRepository workspaceItemRepository = null)
         {
             var importServiceContext = new ImportServiceContext();
@@ -162,7 +159,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer((feedbackInvoker == null) ? new FeedbackInvoker() : feedbackInvoker.Object);
             ImportService.AddExportedValueToContainer((feedbackRecorder == null) ? new FeedbackRecorder() : feedbackRecorder.Object);
             ImportService.AddExportedValueToContainer((layoutRepo == null) ? new UserInterfaceLayoutRepository() : layoutRepo.Object);
-            ImportService.AddExportedValueToContainer((resourceDepService == null) ? new ResourceDependencyService() : resourceDepService.Object);
+            //ImportService.AddExportedValueToContainer((resourceDepService == null) ? new ResourceDependencyService() : resourceDepService.Object);
             //ImportService.AddExportedValueToContainer((workspaceItemRepository == null) ? new WorkspaceItemRepository() : workspaceItemRepository.Object);
 
             return importServiceContext;

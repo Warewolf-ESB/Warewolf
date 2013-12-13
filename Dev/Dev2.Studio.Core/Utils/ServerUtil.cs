@@ -6,11 +6,11 @@ namespace Dev2.Studio.Core.Utils
 {
     public static class ServerUtil
     {
-        public static IServer GetLocalhostServer()
+        public static IEnvironmentModel GetLocalhostServer()
         {
             var servers = ServerProvider.Instance.Load();
-            var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
-            if(localHost != null && localHost.Environment.IsConnected)
+            var localHost = servers.FirstOrDefault(s => s.IsLocalHost());
+            if(localHost != null && localHost.IsConnected)
                 return localHost;
             return null;
         }

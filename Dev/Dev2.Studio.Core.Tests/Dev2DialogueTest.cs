@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Studio.ViewModels.Administration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Dev2.Studio.Core.Interfaces;
-using System.IO;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels.Administration;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests
 {

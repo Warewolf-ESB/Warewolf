@@ -1,29 +1,29 @@
-﻿#region
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-#endregion
+using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TerminateExecutionTest
     {
         private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
         private static readonly Guid _resourceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
-        private static object _syncRoot = new object();
-        private string _handleType = "TerminateExecutionService";
+        private static readonly object _syncRoot = new object();
+        private const string _handleType = "TerminateExecutionService";
 
         [TestInitialize]
         public void TerminateExecutionInit()
@@ -43,8 +43,8 @@ namespace Dev2.Tests.Runtime.Services
             var terminateExecution = new TerminateExecution();
             var ds = terminateExecution.CreateServiceEntry();
             Assert.AreEqual(_handleType, terminateExecution.HandlesType());
-            Assert.AreEqual(enActionType.InvokeManagementDynamicService ,ds.Actions.First().ActionType);
-            Assert.AreEqual("<DataList><Roles/><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>",ds.DataListSpecification);
+            Assert.AreEqual(enActionType.InvokeManagementDynamicService, ds.Actions.First().ActionType);
+            Assert.AreEqual("<DataList><Roles/><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", ds.DataListSpecification);
         }
 
         [TestMethod]
@@ -66,17 +66,25 @@ namespace Dev2.Tests.Runtime.Services
             ExecutableServiceRepository.Instance.Add(service.Object);
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
-            Assert.IsTrue(result == "<Result>Message: Workflow succesfully terminated</Result>");
+
+            const string expected = "Message: Workflow succesfully terminated";
+            var obj = ConvertToMsg(result.ToString());
+
+            Assert.AreEqual(expected, obj.Message.ToString());
+
         }
 
         [TestMethod]
         public void ExecuteExpectFailResultIfNoServiceExist()
         {
             ExecutableServiceRepository.Instance.Clear();
-            const string expected = "<Result>Message: Termination of workflow failed</Result>";
+            const string expected = "Message: Termination of workflow failed";
             var terminateExecution = new TerminateExecution();
             var result = terminateExecution.Execute(GetDictionary(), GetWorkspace().Object);
-            Assert.IsTrue(result == expected);
+
+            var obj = ConvertToMsg(result.ToString());
+
+            Assert.AreEqual(expected, obj.Message.ToString());
         }
 
         [TestMethod]
@@ -112,11 +120,10 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsTrue(service != null && service.AssociatedServices.Count == 0);
         }
 
-        private IDictionary<string, string> GetDictionary()
+        private Dictionary<string, StringBuilder> GetDictionary()
         {
-            var dict = new Dictionary<string, string>();
-            dict["Roles"] = TestResources.TestRoles;
-            dict["ResourceID"] = _resourceID.ToString();
+            var dict = new Dictionary<string, StringBuilder>();
+            dict["ResourceID"] = new StringBuilder(_resourceID.ToString());
             return dict;
         }
 
@@ -135,6 +142,11 @@ namespace Dev2.Tests.Runtime.Services
             service.SetupGet(s => s.AssociatedServices).Returns(new List<IExecutableService>());
             //service.Setup(s => s.Terminate()).Returns(async () => await TaskEx.FromResult("mock string")).Verifiable();
             return service;
+        }
+
+        private ExecuteMessage ConvertToMsg(string payload)
+        {
+            return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
         }
     }
 }

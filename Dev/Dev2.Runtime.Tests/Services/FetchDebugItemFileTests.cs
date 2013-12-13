@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization;
-using Dev2.Common;
+using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FetchDebugItemFileTests
     {
         #region Static Class Init
@@ -25,7 +27,13 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        
+        ExecuteMessage ConvertToMsg(StringBuilder msg)
+        {
+            var serialier = new Dev2JsonSerializer();
+            var result = serialier.Deserialize<ExecuteMessage>(msg);
+            return result;
+        }
+
 
         #region Execute
 
@@ -36,7 +44,8 @@ namespace Dev2.Tests.Runtime.Services
 
             var esb = new FetchDebugItemFile();
             var actual = esb.Execute(null, null);
-            Assert.AreEqual(string.Empty, actual);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
         [TestMethod]
@@ -45,18 +54,20 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new FetchDebugItemFile();
-            var actual = esb.Execute(new Dictionary<string, string>{{"DebugFilePath",null}}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugFilePath", null } }, null);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
-        
+
         [TestMethod]
         [ExpectedException(typeof(InvalidDataContractException))]
         public void FetchDebugItemFileExecuteWithNullDebugItemFileExpectedException()
         {
 
             var esb = new FetchDebugItemFile();
-            var actual = esb.Execute(new Dictionary<string, string>{{"DebugItemFilePath",null}}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugItemFilePath", null } }, null);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
         [TestMethod]
@@ -65,8 +76,9 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new FetchDebugItemFile();
-            var actual = esb.Execute(new Dictionary<string, string>{{"DebugItemFilePath",""}}, null);
-            Assert.AreEqual(string.Empty, actual);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugItemFilePath", new StringBuilder() } }, null);
+            var msg = ConvertToMsg(actual);
+            Assert.AreEqual(string.Empty, msg.Message.ToString());
         }
 
 
@@ -78,8 +90,9 @@ namespace Dev2.Tests.Runtime.Services
             File.WriteAllText(serverLogPath, Expected);
 
             var esb = new FetchDebugItemFile();
-            var actual = esb.Execute(new Dictionary<string, string> { { "DebugItemFilePath", serverLogPath } }, null);
-            StringAssert.Contains(actual,Expected );
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugItemFilePath", new StringBuilder(serverLogPath) } }, null);
+            var msg = ConvertToMsg(actual);
+            StringAssert.Contains(msg.Message.ToString(), Expected);
         }
 
         #endregion

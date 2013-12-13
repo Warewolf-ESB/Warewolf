@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.WebServer.Responses;
+using Newtonsoft.Json;
 using Unlimited.Framework;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -43,20 +46,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             ctx.Send(responseWriter);
         }
 
-        public string ProcessRequest(string payload, Guid workspaceID, Guid dataListID, string connectionId)
+        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceID, Guid dataListID, string connectionId)
         {
             var channel = new EsbServicesEndpoint();
-            IDSFDataObject dataObject = new DsfDataObject(payload, dataListID);
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, dataListID);
+            dataObject.ServiceName = request.ServiceName;
             dataObject.ClientID = Guid.Parse(connectionId);
             // we need to assign new ThreadID to request coming from here, becasue it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Errors.HasErrors())
             {
-
                 Guid dlID = Guid.Empty;
                 ErrorResultTO errors;
                 var t = new Thread(() =>
                 {
-                    dlID = channel.ExecuteRequest(dataObject, workspaceID, out errors);
+                    dlID = channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
                 });
 
                 t.Start();
@@ -64,15 +67,24 @@ namespace Dev2.Runtime.WebServer.Handlers
                 t.Join();
 
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                string result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML),
-                                                     enTranslationDepth.Data, out errors);
 
-                // we really need to clean up chaps ;)
+
+                if (request.ExecuteResult.Length > 0)
+                {
+                    return request.ExecuteResult;
+                }
+                
+                // return the datalist ;)
+                var result = new StringBuilder(compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors));
                 compiler.ForceDeleteDataListByID(dlID);
-
                 return result;
             }
-            return dataObject.Errors.MakeUserReady();
+
+            ExecuteMessage msg = new ExecuteMessage {HasError = true};
+            msg.SetMessage(dataObject.Errors.MakeDisplayReady());
+
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(msg);
         }
     }
 }

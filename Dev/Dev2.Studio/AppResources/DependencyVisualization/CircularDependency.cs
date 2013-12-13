@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CircularDependencyTool
+namespace Dev2.AppResources.DependencyVisualization
 {
     /// <summary>
     /// Represents a set of nodes in a graph that form a circular dependency.
@@ -13,7 +13,7 @@ namespace CircularDependencyTool
 
         public CircularDependency(IEnumerable<Node> nodes)
         {
-            this.Nodes = new List<Node>(nodes);
+            Nodes = new List<Node>(nodes);
         }
 
         #endregion // Constructor
@@ -31,13 +31,13 @@ namespace CircularDependencyTool
             var other = obj as CircularDependency;
             return 
                 other != null &&
-                other.Nodes.Count == this.Nodes.Count &&
-                other.Nodes.Intersect(this.Nodes).Count() == this.Nodes.Count;
+                other.Nodes.Count == Nodes.Count &&
+                other.Nodes.Intersect(Nodes).Count() == Nodes.Count;
         }
 
         public override int GetHashCode()
         {
-            return this.Nodes.GetHashCode();
+            return Nodes.GetHashCode();
         }
 
         #endregion // Base Class Overrides
@@ -46,7 +46,7 @@ namespace CircularDependencyTool
 
         public int CompareTo(CircularDependency other)
         {
-            return this.Nodes.Count.CompareTo(other.Nodes.Count);
+            return Nodes.Count.CompareTo(other.Nodes.Count);
         }
 
         #endregion // IComparable<CircularDependency> Members

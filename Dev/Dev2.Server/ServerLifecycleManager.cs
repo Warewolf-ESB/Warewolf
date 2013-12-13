@@ -12,7 +12,6 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using CommandLine;
-using Dev2;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Reflection;
@@ -28,8 +27,8 @@ using Dev2.Workspaces;
 using Unlimited.Framework;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
-namespace Unlimited.Applications.DynamicServicesHost
-{ 
+namespace Dev2
+{
     /// <summary>
     /// PBI 5278
     /// Application Server Lifecycle Manager
@@ -199,13 +198,11 @@ namespace Unlimited.Applications.DynamicServicesHost
         EsbServicesEndpoint _esbEndpoint;
 
 
-        string _uriAddress;
         string _configFile;
 
         // START OF GC MANAGEMENT
         bool _enableGCManager;
         long _minimumWorkingSet;
-        long _maximumWorkingSet;
         long _lastKnownWorkingSet;
         volatile bool _gcmRunning;
         DateTime _nextForcedCollection;
@@ -213,8 +210,6 @@ namespace Unlimited.Applications.DynamicServicesHost
         ThreadStart _gcmThreadStart;
         Timer _timer;
         IDisposable _owinServer;
-        static string _webServerPort;
-        static string _webServerSslPort;
 
         // END OF GC MANAGEMENT
 
@@ -698,7 +693,6 @@ namespace Unlimited.Applications.DynamicServicesHost
 
                             if(Int64.TryParse(current.InnerText, out tempWorkingSet))
                             {
-                                _maximumWorkingSet = tempWorkingSet;
                             }
                             else
                             {
@@ -1362,7 +1356,6 @@ namespace Unlimited.Applications.DynamicServicesHost
                     }
 
                     _endpoints = endpoints.ToArray();
-                    _uriAddress = uriAddress;
                 }
 
             }
@@ -1470,7 +1463,7 @@ namespace Unlimited.Applications.DynamicServicesHost
                     {
                         ErrorResultTO errors;
                         IDSFDataObject dataObj = new DsfDataObject(requestXML, GlobalConstants.NullDataListID);
-                        result = _esbEndpoint.ExecuteRequest(dataObj, GlobalConstants.ServerWorkspaceID, out errors);
+                        result = _esbEndpoint.ExecuteRequest(dataObj, null, GlobalConstants.ServerWorkspaceID, out errors);
                     }
                     catch(Exception e)
                     {
@@ -1487,45 +1480,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Checks if any of the xml nodes in result are named "Error"
-        /// </summary>
-        /// <returns>true if result contained an xml node named error, otherwise false.</returns>
-        bool ResultContainsError(string result)
-        {
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(result);
-
-            if(doc.Name == "Error")
-            {
-                return true;
-            }
-
-            if(doc.HasChildNodes)
-            {
-                Queue<XmlNodeList> pendingLists = new Queue<XmlNodeList>();
-                pendingLists.Enqueue(doc.ChildNodes);
-
-                while(pendingLists.Count > 0)
-                {
-                    XmlNodeList list = pendingLists.Dequeue();
-
-                    foreach(XmlNode node in list)
-                    {
-                        if(node.Name == "Error")
-                        {
-                            return true;
-                        }
-
-                        if(node.HasChildNodes)
-                            pendingLists.Enqueue(node.ChildNodes);
-                    }
-                }
-            }
-
-            return false;
         }
 
         #endregion
@@ -1774,49 +1728,12 @@ namespace Unlimited.Applications.DynamicServicesHost
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
-            Write("done.");
-            WriteLine("");
-            return true;
-        }
-
-        bool OpenNetworkExecutionChannel()
-        {
-            Write("Opening Execution Channel...  ");
-
-            try
-            {
-                // _executionChannel = new ExecutionServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, ExecutionStatusCallbackDispatcher.Instance);
                 Write("done.");
                 WriteLine("");
                 return true;
             }
-            catch(Exception e)
-            {
-                Write("fail.");
-                WriteLine(e.Message);
-                return false;
-            }
-        }
 
-        bool OpenNetworkDataListChannel()
-        {
-            Write("Opening DataList Channel...  ");
 
-            try
-            {
-                IDataListServer datalListServer = DataListFactory.CreateDataListServer();
-                //_dataListChannel = new DataListServerChannel(StudioMessaging.MessageBroker, StudioMessaging.MessageAggregator, datalListServer);
-                Write("done.");
-                WriteLine("");
-                return true;
-            }
-            catch(Exception e)
-            {
-                Write("fail.");
-                WriteLine(e.Message);
-                return false;
-            }
-        }
 
         bool StartWebServer()
         {
@@ -1826,16 +1743,6 @@ namespace Unlimited.Applications.DynamicServicesHost
             {
                 try
                 {
-                    //                    // TODO: Rip this out!
-                    //                    var endpoints = new List<string>
-                    //                    {
-                    //                        WebServerResources.LocalServerAddress,
-                    //                        string.Format(WebServerResources.PublicServerAddressFormat, Environment.MachineName),
-                    //                        _uriAddress,
-                    //                    };
-                    //                    StartNetworkServer(endpoints);
-                    //                    // END TODO
-
                     try
                     {
                         _owinServer = WebServerStartup.Start(_endpoints);

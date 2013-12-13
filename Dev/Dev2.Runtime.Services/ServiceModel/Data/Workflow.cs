@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Xml.Linq;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -29,13 +31,14 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return;
             }
-            XamlDefinition = action.ElementSafe("XamlDefinition");
+
+            XamlDefinition = action.ElementSafeStringBuilder("XamlDefinition");
         }
 
         #endregion
 
-        public string XamlDefinition { get; set; }
-        public XElement DataList { get; set; }
+        public StringBuilder XamlDefinition { get; set; }
+        public new XElement DataList { get; set; }
 
         public string Comment { get; set; }
         public string IconPath { get; set; }
@@ -47,10 +50,12 @@ namespace Dev2.Runtime.ServiceModel.Data
         public override XElement ToXml()
         {
             var result = base.ToXml();
+            var serviceDefinition = XamlDefinition.ToXElement();
+            
             result.AddFirst(new XElement("Action",
                 new XAttribute("Name", "InvokeWorkflow"),
                 new XAttribute("Type", "Workflow"),
-                new XElement("XamlDefinition", XamlDefinition ?? string.Empty)
+                serviceDefinition
                 ));
             result.Add(new XElement("Comment", Comment ?? string.Empty));
             result.Add(new XElement("IconPath", IconPath ?? string.Empty));

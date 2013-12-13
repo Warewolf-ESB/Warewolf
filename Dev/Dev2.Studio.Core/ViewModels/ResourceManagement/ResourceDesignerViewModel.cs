@@ -35,11 +35,11 @@ namespace Dev2.Studio.Core.ViewModels
             }
         }
 
-        public string ServiceDefinition
+        public StringBuilder ServiceDefinition
         {
             get
             {
-                if(string.IsNullOrEmpty(_contexttualResourceModel.WorkflowXaml))
+                if (_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
                 {
                     _contexttualResourceModel.WorkflowXaml = DefaultDefinition();
                 }
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         #region Methods
 
-        private string DefaultDefinition()
+        private StringBuilder DefaultDefinition()
         {
 
             var sb = new StringBuilder();
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.ViewModels
 
             }
 
-            return sb.ToString();
+            return sb;
         }
 
         void IDisposable.Dispose()

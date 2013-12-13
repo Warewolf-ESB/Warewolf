@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
-using Dev2.Composition;
+using Dev2.Common.Common;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Network;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
+using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 namespace Dev2.Studio.Core
 {
@@ -73,7 +72,7 @@ namespace Dev2.Studio.Core
 
         // Singleton instance only
         protected EnvironmentRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(StringResources.Uri_Live_Environment), StringResources.DefaultEnvironmentName, DefaultWebServerPort))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(StringResources.Uri_Live_Environment), StringResources.DefaultEnvironmentName))
         {
         }
 
@@ -154,7 +153,7 @@ namespace Dev2.Studio.Core
         }
 
         public IEnvironmentModel Get(Guid id)
-        {            
+        {
             return All().FirstOrDefault(e => e.ID == id);
         }
 
@@ -265,22 +264,16 @@ namespace Dev2.Studio.Core
 
         #region Fetch
 
-        public IEnvironmentModel Fetch(IServer server)
+        public IEnvironmentModel Fetch(IEnvironmentModel server)
         {
             LoadInternal();
 
             IEnvironmentModel environment = null;
             if(server != null)
             {
-                Guid id;
-                if(!Guid.TryParse(server.ID, out id))
-                {
-                    id = Guid.NewGuid();
-                }
-                environment = _environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.AppUri, server.Alias, server.WebUri.Port);
-                server.Environment = environment;
+                Guid id = server.ID;
+                environment = _environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Name);
             }
-
             return environment;
         }
 
@@ -388,7 +381,7 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 //Swallow exception for localhost connection
             }
@@ -398,54 +391,68 @@ namespace Dev2.Studio.Core
             }
 
             var hasEnvironmentGuids = environmentGuids != null;
-            var servers = hasEnvironmentGuids
-                              ? ResourceRepository.FindResourcesByID(defaultEnvironment, environmentGuids, ResourceType.Source)
-                              : ResourceRepository.FindSourcesByType(defaultEnvironment, enSourceType.Dev2Server);
 
-            foreach(dynamic server in servers)
+            if(hasEnvironmentGuids)
             {
-                Guid id;
-                string serverID = server.ID;
-                if(Guid.TryParse(serverID, out id) && (!hasEnvironmentGuids || environmentGuids.Contains(serverID)))
+                var servers = defaultEnvironment.ResourceRepository.FindResourcesByID(defaultEnvironment, environmentGuids, ResourceType.Source);
+                foreach(var env in servers)
                 {
-                    string displayName = server.DisplayName;
+                    var payload = env.WorkflowXaml;
                     Uri appServerUri;
                     int webServerPort;
 
+                    if (payload != null)
+                    {
                     #region Parse connection string values
 
-                    Dictionary<string, string> connectionParams = ParseConnectionString(server.ConnectionString);
-                    string value;
-                    if(!connectionParams.TryGetValue("AppServerUri", out value))
+                        // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
+                        XElement xe = XElement.Parse(payload.ToString());
+                        var conStr = xe.AttributeSafe("ConnectionString", false);
+                        Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
+
+                        string tmp;
+                        if (!connectionParams.TryGetValue("AppServerUri", out tmp))
                     {
                         continue;
                     }
+
                     try
                     {
-                        appServerUri = new Uri(value);
+                            appServerUri = new Uri(tmp);
                     }
                     catch
                     {
                         continue;
                     }
 
-                    if(!connectionParams.TryGetValue("WebServerPort", out value))
+                        if (!connectionParams.TryGetValue("WebServerPort", out tmp))
                     {
                         continue;
                     }
-                    if(!int.TryParse(value, out webServerPort))
+                        if (!int.TryParse(tmp, out webServerPort))
                     {
                         continue;
                     }
 
                     #endregion
 
-                    var environment = CreateEnvironmentModel(
-                        id, appServerUri, displayName, webServerPort
-                        );
-
+                        var environment = CreateEnvironmentModel(env.ID, appServerUri, env.DisplayName);
+                        result.Add(environment);
+                    }
+                }
+            }
+            else
+            {
+                var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
+                if(servers != null)
+                {
+                    foreach(var env in servers)
+                    {
+                        var uri = new Uri(env.Address);
+                        var environment = CreateEnvironmentModel(env.ResourceID, uri, env.ResourceName);
                     result.Add(environment);
                 }
+            }
             }
 
             return result;
@@ -503,7 +510,7 @@ namespace Dev2.Studio.Core
 //            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort);
 //        }
 
-        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
+        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
             //var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
             var environmentConnection = new ServerProxy(applicationServerUri);

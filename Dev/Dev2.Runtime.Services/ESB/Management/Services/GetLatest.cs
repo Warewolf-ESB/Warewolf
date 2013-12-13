@@ -5,8 +5,11 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -15,12 +18,18 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class GetLatest : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            StringBuilder result = new StringBuilder();
-            string editedItemsXml;
+            ExecuteMessage res = new ExecuteMessage {HasError = false};
+            
+            string editedItemsXml = null;
 
-            values.TryGetValue("EditedItemsXml", out editedItemsXml);
+            StringBuilder tmp;
+            values.TryGetValue("EditedItemsXml", out tmp);
+            if (tmp != null)
+            {
+                editedItemsXml = tmp.ToString();
+            }
 
             try
             {
@@ -28,22 +37,22 @@ namespace Dev2.Runtime.ESB.Management.Services
                 
                 if (!string.IsNullOrWhiteSpace(editedItemsXml))
                 {
-                    editedItemsXml = editedItemsXml.Unescape();
                     editedItems.AddRange(XElement.Parse(editedItemsXml)
                         .Elements()
                         .Select(x => x.Attribute("ServiceName").Value));
                 }
 
                 WorkspaceRepository.Instance.GetLatest(theWorkspace, editedItems);
-                return "<Result>Workspace updated</Result>";
+                res.SetMessage("Workspace updated " + DateTime.Now);
             }
             catch (Exception ex)
             {
-                result.Append("<Error>Error updating workspace</Error>");
+                res.SetMessage("Error updating workspace " + DateTime.Now);
                 ServerLogger.LogError(ex);
             }
 
-            return result.ToString();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()

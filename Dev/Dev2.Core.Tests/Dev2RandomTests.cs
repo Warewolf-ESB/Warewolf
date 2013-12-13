@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Documents;
 using Dev2.Common;
 using Dev2.Common.Enums;
-using Dev2.Data.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests
 {
@@ -17,13 +15,6 @@ namespace Dev2.Tests
         Dev2Random _dev2Random = new Dev2Random();
         readonly Regex lettersRegex = new Regex(@"[a-z]*");
         readonly Regex mixedRegex = new Regex(@"[a-z\d]*");
-
-        public Dev2RandomTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
 
         /// <summary>
         ///Gets or sets the test context which provides

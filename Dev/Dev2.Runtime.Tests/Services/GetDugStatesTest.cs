@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass][ExcludeFromCodeCoverage]
+    [Ignore] // Not sure this is still used?! ;)
     public class GetDugStatesTest
     {
         static string _testDir;
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "" }, { "DirectoryPath", "xyz" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder() }, { "DirectoryPath", new StringBuilder("xyz") } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("FilePath is required"));
@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "xyz" }, { "DirectoryPath", "" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("xyz") }, { "DirectoryPath", new StringBuilder() } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("DirectoryPath is required"));
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "xyz" }, { "DirectoryPath", "xyz" } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("xyz") }, { "DirectoryPath", new StringBuilder("xyz") } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("Could not find a part of the path "));
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var workspace = new Mock<IWorkspace>();
 
-            var values = new Dictionary<string, string> { { "FilePath", "xyz" }, { "DirectoryPath", _testDir } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder("xyz") }, { "DirectoryPath", new StringBuilder(_testDir) } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("Could not find file "));
@@ -82,9 +82,9 @@ namespace Dev2.Tests.Runtime.Services
 
             var fileName = Guid.NewGuid().ToString() + "_Test.log";
             var path = Path.Combine(_testDir, fileName);
-            File.WriteAllText(path, "<Tag></Tag>");
+            File.WriteAllText(path, @"<Tag></Tag>");
 
-            var values = new Dictionary<string, string> { { "FilePath", fileName }, { "DirectoryPath", _testDir } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "DirectoryPath", new StringBuilder(_testDir) } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("There is an error in XML document "));
@@ -105,9 +105,9 @@ namespace Dev2.Tests.Runtime.Services
             string result;
             try
             {
-                var values = new Dictionary<string, string> { { "FilePath", fileName }, { "DirectoryPath", _testDir } };
+                var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "DirectoryPath", new StringBuilder(_testDir) } };
                 var esb = new GetDebugState();
-                result = esb.Execute(values, workspace.Object);
+                result = esb.Execute(values, workspace.Object).ToString();
             }
             finally
             {
@@ -125,9 +125,9 @@ namespace Dev2.Tests.Runtime.Services
 
             var fileName = Guid.NewGuid().ToString() + "_Test.log";
             var path = Path.Combine(_testDir, fileName);
-            File.WriteAllText(path, "<?xml version=\"1.0\" encoding=\"utf-8\"?><Workflow></Workflow>");
+            File.WriteAllText(path, @"<?xml version=""1.0"" encoding=""utf-8""?><Workflow></Workflow>");
 
-            var values = new Dictionary<string, string> { { "FilePath", fileName }, { "DirectoryPath", _testDir } };
+            var values = new Dictionary<string, StringBuilder> { { "FilePath", new StringBuilder(fileName) }, { "DirectoryPath", new StringBuilder(_testDir) } };
             var esb = new GetDebugState();
             var result = esb.Execute(values, workspace.Object);
             Assert.IsTrue(result.Contains("<JSON>[]</JSON>"));

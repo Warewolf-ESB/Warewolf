@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -8,6 +9,7 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 
 namespace Dev2.Studio.Webs.Callbacks
 {
@@ -30,14 +32,12 @@ namespace Dev2.Studio.Webs.Callbacks
         public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
             : base(eventPublisher, currentEnvironmentRepository, context)
         {
-            Server = new ServerDTO();
+            //Server = new ServerDTO();
             Uri defaultWebServerUri;
             _webServerPort = Uri.TryCreate(StringResources.Uri_WebServer, UriKind.Absolute, out defaultWebServerUri) ? defaultWebServerUri.Port : 80;
         }
 
-        #endregion
-
-        public IServer Server { get; private set; }
+        #endregion        
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Webs.Callbacks
         /// <param name="connectionUri">The connection URI.</param>
         /// <param name="connectionName">The name of the connection.</param>
         /// <param name="webServerPort">The web server port.</param>
-        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be <see cref="EnvironmentRepository.Instance.Source" />.</param>
+        /// <param name="defaultEnvironment">The environment where the connection will be saved - must ALWAYS be .</param>
         /// <exception cref="System.ArgumentNullException">connectionID</exception>
         public void Save(string connectionID, string category, string connectionUri, string connectionName, int webServerPort, IEnvironmentModel defaultEnvironment)
         {
@@ -71,44 +71,30 @@ namespace Dev2.Studio.Webs.Callbacks
                 throw new ArgumentNullException("connectionName");
             }
 
-            Server.ID = Guid.Parse(connectionID).ToString();
-            Server.AppAddress = new Uri(connectionUri).ToString(); // validate uri format before assigning
-            Server.Alias = connectionName;
-
-            #region Server.WebAddress
-
-            Uri tmp;
-            if(Server.AppUri.Host.ToUpper() == "LOCALHOST")
-            {
-                Server.AppAddress = string.Format("{0}://{1}{2}", Server.AppUri.Scheme, Server.AppUri.Authority.Replace(Server.AppUri.Host, "127.0.0.1"), Server.AppUri.AbsolutePath);
-            }
-            if(!Uri.TryCreate(string.Format("{0}://{1}:{2}", Server.AppUri.Scheme, Server.AppUri.Host, _webServerPort), UriKind.Absolute, out tmp))
-            {
-                Uri.TryCreate(StringResources.Uri_WebServer, UriKind.Absolute, out tmp);
-            }
-            Server.WebAddress = tmp.AbsoluteUri;
-
-            #endregion
+            Guid resourceID = Guid.Parse(connectionID);
+            IEnvironmentModel activeEnvironment = CurrentEnvironmentRepository.ActiveEnvironment;
+            var connection = new ServerProxy(new Uri(connectionUri));
+            var newEnvironment = new EnvironmentModel(resourceID, connection, activeEnvironment.ResourceRepository);
+            newEnvironment.Name = connectionName;
 
             // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
-            Server.Environment = CurrentEnvironmentRepository.Fetch(Server);
-            Server.Environment.Category = category;
+            newEnvironment.Category = category;
 
             if(defaultEnvironment != null)
             {
                 //
                 // NOTE: This must ALWAYS save the environment to the server
                 //
-                ResourceRepository.AddEnvironment(defaultEnvironment, Server.Environment);
+                defaultEnvironment.ResourceRepository.AddEnvironment(defaultEnvironment, newEnvironment);
 
-                ReloadResource(defaultEnvironment, Guid.Parse(connectionID), ResourceType.Source);
+                ReloadResource(defaultEnvironment, resourceID, ResourceType.Source);
             }
 
-            CurrentEnvironmentRepository.Save(Server.Environment);
+            CurrentEnvironmentRepository.Save(newEnvironment);
             Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
-            _eventPublisher.Publish(new AddServerToExplorerMessage(Server.Environment, Context,true));
+            _eventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, Context,true));
             Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
-            _eventPublisher.Publish(new AddServerToDeployMessage(Server, Context));
+            _eventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, Context));
         }
 
         #endregion

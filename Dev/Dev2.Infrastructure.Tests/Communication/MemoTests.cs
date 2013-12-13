@@ -113,7 +113,7 @@ namespace Dev2.Infrastructure.Tests.Communication
         {
             var memo = new Memo { InstanceID = Guid.NewGuid() };
 
-            var serializer = new JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             var actual = memo.ToString(serializer);
             Assert.IsNotNull(actual);
@@ -138,7 +138,7 @@ namespace Dev2.Infrastructure.Tests.Communication
         {
             var memo = new Memo { InstanceID = Guid.NewGuid() };
 
-            var serializer = new JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             var envelopeStr = memo.ToString(serializer);
             var actual = Memo.Parse(serializer, envelopeStr) as IMemo;

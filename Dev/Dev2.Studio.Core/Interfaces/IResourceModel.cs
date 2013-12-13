@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Collections;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -26,15 +27,13 @@ namespace Dev2.Studio.Core.Interfaces
         bool RequiresSignOff { get; set; }
         string ResourceName { get; set; }
         ResourceType ResourceType { get; set; }
-        //string ServiceDefinition { get; set; }
-        string WorkflowXaml { get; set; }
+        StringBuilder WorkflowXaml { get; set; }
         List<string> TagList { get; }
         string Tags { get; set; }
         string this[string columnName] { get; }
-        string ToServiceDefinition();
+        StringBuilder ToServiceDefinition();
         string UnitTestTargetWorkflowService { get; set; }
         string DataList { get; set; }
-        //Activity WorkflowActivity { get; }
         bool IsDatabaseService { get; set; }
         bool IsPluginService { get; set; }
         bool IsResourceService { get; set; }

@@ -1,44 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Threading.Tasks;
-using Dev2.Common.ExtMethods;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Execution;
-using Dev2.Runtime.Hosting;
 
 namespace Dev2.Runtime.ESB.Management
 {
     public class TerminateExecution : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, Workspaces.IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, Workspaces.IWorkspace theWorkspace)
         {
-            string roles;
-            string resourceIDString;
+            string resourceIDString = null;
 
-            values.TryGetValue("Roles", out roles);
-            values.TryGetValue("ResourceID", out resourceIDString);
-            if (string.IsNullOrEmpty(roles) || string.IsNullOrEmpty(resourceIDString))
+            StringBuilder tmp;
+            values.TryGetValue("ResourceID", out tmp);
+            
+            if (tmp != null)
             {
-                throw new InvalidDataContractException("Roles or ResourceID is missing");
+                resourceIDString = tmp.ToString();
             }
+
+            if(resourceIDString == null)
+            {
+                throw new InvalidDataContractException("ResourceID is missing");
+            }
+
+            var res = new ExecuteMessage { HasError = false };
+
             Guid resourceID;
             var hasResourceID = Guid.TryParse(resourceIDString, out resourceID);
-            if (!hasResourceID)
+            if(!hasResourceID)
             {
-                return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
+                res.SetMessage(Resources.CompilerError_TerminationFailed);
+                res.HasError = true;
             }
             var service = ExecutableServiceRepository.Instance.Get(theWorkspace.ID, resourceID);
-            if (service == null)
+            if(service == null)
             {
-                return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerError_TerminationFailed);
+                res.SetMessage(Resources.CompilerError_TerminationFailed);
+                res.HasError = true;
             }
 
-            service.Terminate();
+            if(service != null)
+            {
+                service.Terminate();
+                res.SetMessage(Resources.CompilerMessage_TerminationSuccess);
+            }
 
-            return string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_TerminationSuccess);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()

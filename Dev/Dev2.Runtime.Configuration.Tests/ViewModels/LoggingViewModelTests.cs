@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Tests.XML;
 using Dev2.Runtime.Configuration.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels

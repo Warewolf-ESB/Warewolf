@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 

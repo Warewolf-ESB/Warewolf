@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Studio.AppResources.Converters;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Data;
+using Dev2.Studio.AppResources.Converters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.AppResources.Converters
 {

@@ -10,7 +10,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
-using Connection = Dev2.Runtime.ServiceModel.Data.Connection;
+using Connection = Dev2.Data.ServiceModel.Connection;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ServiceModel
         // default constructor to be used in prod.
         public Connections()
             : this(() => GetComputerNames.ComputerNames)
-        {
+        {   
         }
 
         // here for testing
@@ -47,10 +47,11 @@ namespace Dev2.Runtime.ServiceModel
             var result = new Connection { ResourceID = Guid.Empty, ResourceType = ResourceType.Server, WebServerPort = Connection.DefaultWebServerPort };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.Server, resourceID);
-                if(!string.IsNullOrEmpty(xmlStr))
+
+                var contents = ResourceCatalog.Instance.GetResourceContents(workspaceID, Guid.Parse(resourceID));
+                if(contents != null || contents.Length > 0)
                 {
-                    var xml = XElement.Parse(xmlStr);
+                    var xml = contents.ToXElement();
                     result = new Connection(xml);
                 }
             }
@@ -70,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);
+                var connection = JsonConvert.DeserializeObject<Connection>(args);               
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
                 return connection.ToString();
             }
@@ -147,20 +148,20 @@ namespace Dev2.Runtime.ServiceModel
 
                 var connectResult = ConnectToServer(connection);
                 if(!string.IsNullOrEmpty(connectResult))
-                {
-                    if(connectResult.Contains("FatalError"))
                     {
+                    if(connectResult.Contains("FatalError"))
+                        {
                         var error = XElement.Parse(connectResult);
-                        result.IsValid = false;
+                            result.IsValid = false;
                         result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
                     }
                 }
-            }
+                }
             catch(WebException wex)
-            {
-                result.IsValid = false;
+                {
+                                result.IsValid = false;
                 result.ErrorMessage = string.Format("{0} - {1}", wex.Status, wex.Message);
-            }
+                }
             catch(Exception ex)
             {
                 result.IsValid = false;
@@ -177,9 +178,9 @@ namespace Dev2.Runtime.ServiceModel
                 if(connection.AuthenticationType == AuthenticationType.Windows)
                 {
                     client.UseDefaultCredentials = true;
-                }
+            }
                 else
-                {
+            {
                     client.UseDefaultCredentials = false;
                     client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
                 }

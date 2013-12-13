@@ -6,8 +6,10 @@ using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using System.Text;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -17,104 +19,107 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindDirectory : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string username;
-            string domain;
-            string password;
-            string dir;
 
-            values.TryGetValue("Username", out username);
-            values.TryGetValue("Password", out password);
-            values.TryGetValue("Domain", out domain);
-            values.TryGetValue("DirectoryPath", out dir);
+            return new StringBuilder();
 
-            if (string.IsNullOrEmpty(dir))
-            {
-                throw new InvalidDataContractException("Directory is required and not provided");
-            }
+            //string username;
+            //string domain;
+            //string password;
+            //string dir;
 
-            IntPtr accessToken = IntPtr.Zero;
-            const int LOGON32_PROVIDER_DEFAULT = 0;
-            const int LOGON32_LOGON_INTERACTIVE = 2;
-            
-            StringBuilder result = new StringBuilder();
+            //values.TryGetValue("Username", out username);
+            //values.TryGetValue("Password", out password);
+            //values.TryGetValue("Domain", out domain);
+            //values.TryGetValue("DirectoryPath", out dir);
 
-            bool isDir = false;
-            try
-            {
-                if (username.Length > 0)
-                {
-                    domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
-                    bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
-                                             LOGON32_PROVIDER_DEFAULT, ref accessToken);
-                    if (success)
-                    {
-                        var identity = new WindowsIdentity(accessToken);
-                        WindowsImpersonationContext context = identity.Impersonate();
-                        // get the file attributes for file or directory
-                        FileAttributes attr = File.GetAttributes(dir);
+            //if (string.IsNullOrEmpty(dir))
+            //{
+            //    throw new InvalidDataContractException("Directory is required and not provided");
+            //}
 
-                        //detect whether its a directory or file
-                        if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                        {
-                            isDir = true;
-                        }
+            //IntPtr accessToken = IntPtr.Zero;
+            //const int LOGON32_PROVIDER_DEFAULT = 0;
+            //const int LOGON32_LOGON_INTERACTIVE = 2;
 
-                        if (isDir)
-                        {
-                            var directory = new DirectoryInfo(dir);
+            //var result = new ExecuteMessage { HasError = false };
 
-                            result.Append("<JSON>");
-                            result.Append(GetDirectoryInfoAsJSON(directory));
-                            result.Append("</JSON>");
-                        }
-                        else
-                        {
-                            result.Append("<JSON>");
-                            result.Append("[]");
-                            result.Append("</JSON>");
-                        }
-                        context.Undo();
-                    }
-                    else
-                    {
-                        result.Append("<Result>Login Failure : Unknown username or password</Result>");
-                    }
-                }
-                else
-                {
-                    // get the file attributes for file or directory
-                    FileAttributes attr = File.GetAttributes(dir);
+            //bool isDir = false;
+            //try
+            //{
+            //    if (username.Length > 0)
+            //    {
+            //        domain = (domain.Length > 0 && domain != ".") ? domain : Environment.UserDomainName;
+            //        bool success = LogonUser(username, domain, password, LOGON32_LOGON_INTERACTIVE,
+            //                                 LOGON32_PROVIDER_DEFAULT, ref accessToken);
+            //        if (success)
+            //        {
+            //            var identity = new WindowsIdentity(accessToken);
+            //            WindowsImpersonationContext context = identity.Impersonate();
+            //            // get the file attributes for file or directory
+            //            FileAttributes attr = File.GetAttributes(dir);
 
-                    //detect whether its a directory or file
-                    if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
-                    {
-                        isDir = true;
-                    }
+            //            //detect whether its a directory or file
+            //            if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            //            {
+            //                isDir = true;
+            //            }
+
+            //            if (isDir)
+            //            {
+            //                var directory = new DirectoryInfo(dir);
+
+            //                result.Append("<JSON>");
+            //                result.Append(GetDirectoryInfoAsJSON(directory));
+            //                result.Append("</JSON>");
+            //            }
+            //            else
+            //            {
+            //                result.Append("<JSON>");
+            //                result.Append("[]");
+            //                result.Append("</JSON>");
+            //            }
+            //            context.Undo();
+            //        }
+            //        else
+            //        {
+            //            result.Append("<Result>Login Failure : Unknown username or password</Result>");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        // get the file attributes for file or directory
+            //        FileAttributes attr = File.GetAttributes(dir);
+
+            //        //detect whether its a directory or file
+            //        if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+            //        {
+            //            isDir = true;
+            //        }
 
 
-                    if (isDir)
-                    {
-                        var directory = new DirectoryInfo(dir);
-                        result.Append("<JSON>");
-                        result.Append(GetDirectoryInfoAsJSON(directory));
-                        result.Append("</JSON>");
-                    }
-                    else
-                    {
-                        result.Append("<JSON>");
-                        result.Append("[]");
-                        result.Append("</JSON>");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                result.AppendFormat("Error: {0}", ex.Message);
-            }
+            //        if (isDir)
+            //        {
+            //            var directory = new DirectoryInfo(dir);
+            //            result.Append("<JSON>");
+            //            result.Append(GetDirectoryInfoAsJSON(directory));
+            //            result.Append("</JSON>");
+            //        }
+            //        else
+            //        {
+            //            result.Append("<JSON>");
+            //            result.Append("[]");
+            //            result.Append("</JSON>");
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    result.AppendFormat("Error: {0}", ex.Message);
+            //}
 
-            return result.ToString();
+            //return result.ToString();
         }
 
         public DynamicService CreateServiceEntry()

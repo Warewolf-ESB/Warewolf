@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.Compiler.CompileRules
 {
@@ -10,6 +10,6 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// </summary>
     public interface IServiceCompileRule : ISpookyLoadable<ServerCompileMessageType>
     {
-        CompileMessageTO ApplyRule(Guid serviceID, string beforeAction, string afterAction);
+        CompileMessageTO ApplyRule(Guid serviceID, StringBuilder beforeAction, StringBuilder afterAction);
     }
 }

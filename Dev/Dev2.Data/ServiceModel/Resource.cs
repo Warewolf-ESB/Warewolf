@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -338,6 +339,12 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
                 new XElement("ErrorMessages", WriteErrors() ?? null)
                 );
+        }
+
+        public StringBuilder ToStringBuilder()
+        {
+            var xe = ToXml();
+            return xe.ToStringBuilder();
         }
 
         XElement WriteErrors()

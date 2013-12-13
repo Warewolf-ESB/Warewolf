@@ -1,18 +1,16 @@
-﻿using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DynamicServices.Objects;
-using Dev2.Util;
-using System;
+﻿using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Dev2.DataList.Contract;
+using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Dev2.DynamicServices {
+namespace Dev2.DynamicServices.Objects {
 
 
     #region Service Action Class - Represents a single action within a service
@@ -28,13 +26,13 @@ namespace Dev2.DynamicServices {
         private bool _terminateServiceOnFault = true;
         private int _commandTimeout = 30;
         private Activity _workflowActivity;
-        private string _xamlDefinition;
+        private StringBuilder _xamlDefinition;
 
         private object _poolGuard = new object();
         private int _generation;
         private Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
 
-        private MemoryStream _xamlStream;
+        private Stream _xamlStream;
         bool _disposing;
         #endregion
 
@@ -51,7 +49,7 @@ namespace Dev2.DynamicServices {
 
         }
 
-        public MemoryStream XamlStream { get { return _xamlStream; } }
+        public Stream XamlStream { get { return _xamlStream; } }
 
         /// <summary>
         /// The type of action that this action will invoke
@@ -73,7 +71,7 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// The xaml definition of the workflow that will be hosted
         /// </summary>
-        public string XamlDefinition
+        public StringBuilder XamlDefinition
         {
             get
             {
@@ -90,7 +88,6 @@ namespace Dev2.DynamicServices {
                     // extracted to avoid memory leak in MS utilities and root references 
                     var xamlLoader = new Dev2XamlLoader();
                     xamlLoader.Load(value, ref _xamlStream, ref _workflowPool, ref _workflowActivity);
-                    xamlLoader = null;
                 }
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -11,7 +12,6 @@ using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
@@ -65,15 +65,15 @@ namespace Dev2.Core.Tests
             var e1 = EnviromentRepositoryTest.CreateMockEnvironment();
             var c1 = Mock.Get(e1.Object.Connection);
             c1.Setup(c => c.Disconnect()).Verifiable();
-            var s1 = new ServerDTO(e1.Object);
+            var s1 = e1.Object;
 
             var e2 = EnviromentRepositoryTest.CreateMockEnvironment();
             var c2 = Mock.Get(e2.Object.Connection);
             c2.Setup(c => c.Disconnect()).Verifiable();
-            var s2 = new ServerDTO(e2.Object);
+            var s2 = e2.Object;
 
-            var serverProvider = new Mock<IServerProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { s1, s2 });
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
 
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
@@ -85,8 +85,8 @@ namespace Dev2.Core.Tests
 
 
             Assert.IsTrue(source.Object.IsConnected);
-            Assert.IsTrue(s1.Environment.IsConnected);
-            Assert.IsTrue(s2.Environment.IsConnected);
+            Assert.IsTrue(s1.IsConnected);
+            Assert.IsTrue(s2.IsConnected);
 
             deployViewModel.SelectedSourceServer = s1;
             sourceConn.Verify(c => c.Disconnect(), Times.Never());
@@ -99,8 +99,8 @@ namespace Dev2.Core.Tests
             c2.Verify(c => c.Disconnect(), Times.Never());
 
             Assert.IsTrue(source.Object.IsConnected);
-            Assert.IsTrue(s1.Environment.IsConnected);
-            Assert.IsTrue(s2.Environment.IsConnected);
+            Assert.IsTrue(s1.IsConnected);
+            Assert.IsTrue(s2.IsConnected);
         }
 
         #endregion
@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests
             sourceConn.Setup(c => c.Disconnect()).Verifiable();
 
             var e1 = EnviromentRepositoryTest.CreateMockEnvironment();
-            var s1 = new ServerDTO(e1.Object);
+            var s1 = e1.Object;
             var c1 = Mock.Get(e1.Object.Connection);
             c1.Setup(c => c.Disconnect()).Verifiable();
 
@@ -131,15 +131,15 @@ namespace Dev2.Core.Tests
             resourceRepo1.Add(r1.Object);
 
             var e2 = EnviromentRepositoryTest.CreateMockEnvironment();
-            var s2 = new ServerDTO(e2.Object);
+            var s2 = e2.Object;
             var c2 = Mock.Get(e2.Object.Connection);
             c2.Setup(c => c.Disconnect()).Verifiable();
 
             var resourceRepo2 = new ResourceRepository(e2.Object);
             e2.Setup(e => e.ResourceRepository).Returns(resourceRepo2);
 
-            var serverProvider = new Mock<IServerProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { s1, s2 });
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
 
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
@@ -152,8 +152,8 @@ namespace Dev2.Core.Tests
             deployViewModel.SelectedDestinationServer = s2;
 
             Assert.IsTrue(source.Object.IsConnected);
-            Assert.IsTrue(s1.Environment.IsConnected);
-            Assert.IsTrue(s2.Environment.IsConnected);
+            Assert.IsTrue(s1.IsConnected);
+            Assert.IsTrue(s2.IsConnected);
 
             deployViewModel.DeployCommand.Execute(null);
 
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void HandleAddServerToDeployMessageWithSourceContextExpectSelectedAsSource()
         {
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             IEnvironmentModel publishedEnvironmentModel = null;
             bool publishedIsSource = false;
@@ -185,16 +185,16 @@ namespace Dev2.Core.Tests
 
             var msg = new AddServerToDeployMessage(server, sourceCtx);
             vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
+            Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
             Assert.IsTrue(publishedIsSource);
-            Assert.AreEqual(server.Environment, publishedEnvironmentModel);
+            Assert.AreEqual(server, publishedEnvironmentModel);
         }
 
 
         [TestMethod]
         public void HandleAddServerToDeployMessageWithDestinationContextExpectSelectedAsDestination()
         {
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             IEnvironmentModel publishedEnvironmentModel = null;
             bool publishedIsSource = true;
@@ -210,39 +210,39 @@ namespace Dev2.Core.Tests
 
             var msg = new AddServerToDeployMessage(server, destCtx);
             vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
+            Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
             Assert.IsFalse(publishedIsSource);
-            Assert.AreEqual(server.Environment, publishedEnvironmentModel);
+            Assert.AreEqual(server, publishedEnvironmentModel);
         }
 
         [TestMethod]
         public void HandleAddServerToDeployMessageWithIsSourceTrueExpectSelectedAsSource()
         {
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             var envID = SetupVMForMessages(out server, out vm);
 
             var msg = new AddServerToDeployMessage(server, true, false);
             vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedSourceServer.ID.Equals(envID.ToString()));
+            Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
         }
 
         [TestMethod]
         public void HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
         {
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             var envID = SetupVMForMessages(out server, out vm);
 
             var msg = new AddServerToDeployMessage(server, false, true);
             vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedDestinationServer.ID.Equals(envID.ToString()));
+            Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
         }
 
         [TestMethod]
         public void IsInstanceOfIHandleEnvironmentDeleted()
         {
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             SetupVMForMessages(out server, out vm);
             Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
@@ -252,7 +252,7 @@ namespace Dev2.Core.Tests
         public void EnvironmentDeletedCallsREmoveEnvironmentFromBothSourceAndDestinationNavigationViewModels()
         {
             //Setup
-            ServerDTO server;
+            IEnvironmentModel server;
             DeployViewModel vm;
             SetupVMForMessages(out server, out vm);
             var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -273,15 +273,15 @@ namespace Dev2.Core.Tests
 
         #region CreateEnvironmentRepositoryMock
 
-        private static Guid SetupVMForMessages(out ServerDTO server, out DeployViewModel vm, Mock<IEventAggregator> mockEventAggregator = null)
+        private static Guid SetupVMForMessages(out IEnvironmentModel server, out DeployViewModel vm, Mock<IEventAggregator> mockEventAggregator = null)
         {
             ImportService.CurrentContext = _okayContext;
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             var envID = env.Object.ID;
-            server = new ServerDTO(env.Object);
+            server = env.Object;
 
-            var serverProvider = new Mock<IServerProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IServer> { server });
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { server });
             var repo = CreateEnvironmentRepositoryMock();
             if(mockEventAggregator == null)
             {
@@ -324,7 +324,7 @@ namespace Dev2.Core.Tests
             var mockedServerRepo = new Mock<IEnvironmentRepository>();
             var server = new Mock<IEnvironmentModel>();
             var secondServer = new Mock<IEnvironmentModel>();
-            var provider = new Mock<IServerProvider>();
+            var provider = new Mock<IEnvironmentModelProvider>();
             var resourceNode = new Mock<IContextualResourceModel>();
 
             //Setup Servers
@@ -332,8 +332,8 @@ namespace Dev2.Core.Tests
             server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
             secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
-            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IServer>())).Returns(server.Object);
-            provider.Setup(prov => prov.Load()).Returns(new List<IServer>() { new ServerDTO(server.Object), new ServerDTO(secondServer.Object) });
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel>() { server.Object, secondServer.Object });
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
@@ -379,7 +379,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
@@ -397,9 +397,9 @@ namespace Dev2.Core.Tests
         public void DeployViewModel_CanDeployWithSameSourceAndDestinationServer_ReturnsFalse()
         {
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            destServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            destServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedDestinationServer = destServer.Object;
             deployViewModel.SelectedSourceServer = destServer.Object;
 
@@ -407,20 +407,18 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(deployViewModel.CanDeploy);
         }
 
-        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IServer> destServer)
+        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer)
         {
             ImportService.CurrentContext = _okayContext;
 
             destEnv = new Mock<IEnvironmentModel>();
-
-            destServer = new Mock<IServer>();
-            destServer.Setup(s => s.Environment).Returns(destEnv.Object);
+            destServer = destEnv;
 
             var envRepo = new Mock<IEnvironmentRepository>();
-            envRepo.Setup(r => r.Fetch(It.IsAny<IServer>())).Returns(destEnv.Object);
+            envRepo.Setup(r => r.Fetch(It.IsAny<IEnvironmentModel>())).Returns(destEnv.Object);
 
-            var servers = new List<IServer> { destServer.Object };
-            var serverProvider = new Mock<IServerProvider>();
+            var servers = new List<IEnvironmentModel> { destEnv.Object };
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
 
             var deployItemCount = 1;
@@ -438,10 +436,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             deployViewModel.SelectedSourceServer = null;
-            deployViewModel.SelectedDestinationServer = new Mock<IServer>().Object;
+            deployViewModel.SelectedDestinationServer = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
@@ -455,9 +453,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            deployViewModel.SelectedSourceServer = new Mock<IServer>().Object;
+            deployViewModel.SelectedSourceServer = new Mock<IEnvironmentModel>().Object;
             deployViewModel.SelectedDestinationServer = null;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -472,12 +470,15 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            var mockSourceServer = new Mock<IServer>();
-            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            deployViewModel.SelectedDestinationServer = new Mock<IServer>().Object;
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://different"));
+
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
@@ -491,12 +492,13 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            var mockSourceServer = new Mock<IServer>();
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            var mockDestinationServer = new Mock<IServer>();
-            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://remote");
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -511,13 +513,13 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            var mockSourceServer = new Mock<IServer>();
-            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            var mockDestinationServer = new Mock<IServer>();
-            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://remote");
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -532,13 +534,13 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Mock<IEnvironmentModel> destEnv;
-            Mock<IServer> destServer;
+            Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            var mockSourceServer = new Mock<IServer>();
-            mockSourceServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            var mockDestinationServer = new Mock<IServer>();
-            mockDestinationServer.Setup(server => server.AppAddress).Returns("http://localhost");
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;

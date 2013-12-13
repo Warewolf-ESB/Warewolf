@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
@@ -13,19 +14,6 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class GetDatabaseColumnsForTableTests
     {
-        #region Static Class Init
-
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
-        #endregion
-
-        
 
         #region Execute
 
@@ -46,13 +34,13 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithNoDatabaseInValues_ExpectedHasErrors()
         {
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", null } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
@@ -60,9 +48,9 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", null } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
@@ -73,9 +61,9 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankDatabase_ExpectedHasErrors()
         {
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder() } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No database set.", result.Errors);
         }
@@ -87,13 +75,13 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "Something", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder("Test") }, { "Something", null } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No table name set.", result.Errors);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
@@ -101,9 +89,9 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "TableName", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder("Test") }, { "TableName", null } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No table name set.", result.Errors);
         }
@@ -114,9 +102,9 @@ namespace Dev2.Tests.Runtime.Services
         public void GetDatabaseColumnsForTable_UnitTest_ExecuteWithBlankTableName_ExpectedHasErrors()
         {
             var esb = new GetDatabaseColumnsForTable();
-            var actual = esb.Execute(new Dictionary<string, string> { { "Database", "Test" }, { "TableName", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder("Test") }, { "TableName", new StringBuilder() } }, null);
             Assert.IsNotNull(actual);
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
             Assert.IsTrue(result.HasErrors);
             Assert.AreEqual("No table name set.", result.Errors);
         }

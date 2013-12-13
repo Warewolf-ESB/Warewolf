@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
+using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
@@ -26,6 +28,12 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
+        ExecuteMessage ToMsg(StringBuilder sb)
+        {
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.Deserialize<ExecuteMessage>(sb);
+        }
+
         #region Execute
 
         [TestMethod]
@@ -37,7 +45,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            settingsWrite.Execute(new Dictionary<string, string> { { "NoSettings", "Something" } }, null);
+            settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "NoSettings", new StringBuilder("Something") } }, null);
             //------------Assert Results-------------------------
         }
 
@@ -62,9 +70,9 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            var execute = settingsWrite.Execute(new Dictionary<string, string> { { "Settings", "Something" } }, null);
+            var execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder("Something") } }, null);
             //------------Assert Results-------------------------
-            StringAssert.Contains(execute, "Error writing settings configuration.");
+            StringAssert.Contains(execute.ToString(), "Error writing settings configuration.");
 
         }
 
@@ -81,11 +89,14 @@ namespace Dev2.Tests.Runtime.Services
             var serializeObject = JsonConvert.SerializeObject(settings);
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            var execute = settingsWrite.Execute(new Dictionary<string, string> { { "Settings", serializeObject } }, null);
+            StringBuilder execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             File.Delete("secure.config");
-            Assert.AreEqual("Success", execute);
+
+            var msg = ToMsg(execute);
+
+            Assert.AreEqual("Success", msg.Message.ToString());
         }
 
         #endregion Exeute

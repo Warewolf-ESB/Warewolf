@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Dev2.Data.Decisions.Operations;
+﻿using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.DecisionsTests

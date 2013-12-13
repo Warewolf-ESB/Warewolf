@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.Help;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.Feedback.Actions
@@ -42,14 +40,17 @@ namespace Dev2.Core.Tests.Feedback.Actions
             var mockWindowManager = new Mock<IWindowManager>();
             mockWindowManager.Setup(w => w.ShowWindow(It.IsAny<BaseViewModel>(), null, null)).Verifiable();
 
-            ImportService.CurrentContext =
-                CompositionInitializer.InitializeWithWindowManagerTest(mockSysInfo, mockWindowManager);
+            ImportService.CurrentContext = CompositionInitializer.InitializeWithWindowManagerTest(mockSysInfo, mockWindowManager);
 
             var connection = new Mock<IEnvironmentConnection>();
             var environment = new Mock<IEnvironmentModel>();
+            var repo = new Mock<IResourceRepository>();
+
+            repo.Setup(r => r.GetServerLogTempPath(It.IsAny<IEnvironmentModel>())).Returns("");
             environment.Setup(env => env.Connection).Returns(connection.Object);
+            environment.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
             var emailAction = new EmailFeedbackAction(new Dictionary<string, string>(), environment.Object);
-            //ImportService.SatisfyImports(emailAction);
 
             emailAction.StartFeedback();
             mockWindowManager.Verify(c => c.ShowWindow(It.IsAny<SimpleBaseViewModel>(), null, null), Times.Once());

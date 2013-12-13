@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -13,24 +15,30 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindResource : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string resourceName;
-            string type;
-            string roles;
+            string resourceName = null;
+            string type = null;
 
-            values.TryGetValue("ResourceName", out resourceName);
-            values.TryGetValue("ResourceType", out type);
-            values.TryGetValue("Roles", out roles);
+            StringBuilder tmp;
+            values.TryGetValue("ResourceName", out tmp);
+            if (tmp != null)
+            {
+                resourceName = tmp.ToString();
+            }
+            values.TryGetValue("ResourceType", out tmp);
+            if (tmp != null)
+            {
+                type = tmp.ToString();
+            }
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, roles);
+            var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
 
             IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
-            var result = JsonConvert.SerializeObject(resourceList);
-
-            return result;
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            return serializer.SerializeToBuilder(resourceList);
         }
 
         public DynamicService CreateServiceEntry()

@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Communication;
 using Dev2.Providers.Events;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Infrastructure.Tests.Providers.Events
 {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,18 +14,7 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class RenameResourceTests
     {
-        #region Static Class Init
 
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
-        #endregion
-        
         #region Execute
 
         [TestMethod]
@@ -46,7 +36,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { "DebugFilePath", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugFilePath", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -58,7 +48,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { Guid.Empty.ToString(), null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { Guid.Empty.ToString(), null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -70,7 +60,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { Guid.Empty.ToString(), "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { Guid.Empty.ToString(), new StringBuilder() } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -82,7 +72,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { Guid.Empty.ToString(), "Test" }, { "Something", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { Guid.Empty.ToString(), new StringBuilder("Test") }, { "Something", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -94,7 +84,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { Guid.Empty.ToString(), "Test" }, { "NewName", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { Guid.Empty.ToString(), new StringBuilder("Test") }, { "NewName", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -106,7 +96,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResource();
-            var actual = esb.Execute(new Dictionary<string, string> { { Guid.Empty.ToString(), "Test" }, { "NewName", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { Guid.Empty.ToString(), new StringBuilder("Test") }, { "NewName", new StringBuilder() } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
         #endregion

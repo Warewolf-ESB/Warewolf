@@ -177,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }

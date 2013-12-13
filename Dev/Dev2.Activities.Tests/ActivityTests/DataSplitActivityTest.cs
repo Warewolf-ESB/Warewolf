@@ -4,7 +4,7 @@ using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,11 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             _resultsCollection.Clear();
         }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
+
         #endregion
 
 
@@ -514,47 +510,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void NewLineTypeSplitUnix_Expected_Split_On_Unix_NewLine()
-        {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "New Line", "", 1));
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            //string expected = @"Title|Fname|LName|TelNo|";
-            string actual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.IsTrue(true, "Need to be fixed need to get some text from unix");
-        }
-
-        [TestMethod]
-        [Ignore]
-        public void NewLineTypeSplitMac_Expected_Split_On_Mac_NewLine()
-        {
-            _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "New Line", "", 1));
-
-            SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-
-            IDSFDataObject result = ExecuteProcess();
-            //string expected = @"Title|Fname|LName|TelNo|";
-            string actual;
-            string error;
-
-            GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            //Assert.AreEqual(expected, result.XmlString);
-            //Ammend for MAC charset
-            Assert.IsTrue(true, "Need to be fixed by getting some text from mac");
         }
 
         [TestMethod]

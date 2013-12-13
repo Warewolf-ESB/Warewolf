@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Dev2.Studio.Core.ViewModels;
-using Moq;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Composition;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests
 {

@@ -2,21 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
-using System.Net.Mime;
-using System.Reflection;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ClearLogsTest
     {
         private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
@@ -45,7 +43,7 @@ namespace Dev2.Tests.Runtime.Services
 
             //execute
             var clearLog = new ClearLog();
-            var dict = new Dictionary<string, string> {{"Directory", dir}};
+            var dict = new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder(dir) } };
             var result = clearLog.Execute(dict, GetWorkspace().Object);
 
             //assert
@@ -57,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //execute
             var clearLog = new ClearLog();
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, StringBuilder>();
             var result = clearLog.Execute(dict, GetWorkspace().Object);
 
             //assert
@@ -67,22 +65,22 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ClearLogDirectoryExpectsFilesDeleted()
         {
-            lock (SyncRoot)
+            lock(SyncRoot)
             {
                 //setup
                 var fileName1 = Guid.NewGuid().ToString() + "_Test.log";
                 var fileName2 = Guid.NewGuid().ToString() + "_Test.log";
 
                 var path1 = Path.Combine(_testDir, fileName1);
-                File.WriteAllText(path1, "hello test");
+                File.WriteAllText(path1, @"hello test");
                 Assert.IsTrue(File.Exists(path1));
 
                 var path2 = Path.Combine(_testDir, fileName2);
-                File.WriteAllText(path2, "hello test");
+                File.WriteAllText(path2, @"hello test");
                 Assert.IsTrue(File.Exists(path2));
 
                 //execute
-                var values = new Dictionary<string, string> {{"Directory", _testDir}};
+                var values = new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder(_testDir) } };
                 var esb = new ClearLog();
                 var result = esb.Execute(values, GetWorkspace().Object);
 
@@ -96,27 +94,28 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ClearLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
-            lock (SyncRoot)
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            lock(SyncRoot)
             {
                 //setup
                 var fileName1 = Guid.NewGuid().ToString() + "_Test.log";
                 var fileName2 = Guid.NewGuid().ToString() + "_Test.log";
 
                 var path1 = Path.Combine(_testDir, fileName1);
-                File.WriteAllText(path1, "hello test");
+                File.WriteAllText(path1, @"hello test");
                 Assert.IsTrue(File.Exists(path1));
 
                 var path2 = Path.Combine(_testDir, fileName2);
-                File.WriteAllText(path2, "hello test");
+                File.WriteAllText(path2, @"hello test");
                 Assert.IsTrue(File.Exists(path2));
 
                 var fs = File.OpenRead(path2);
 
                 //execute
-                string result;
+                StringBuilder result;
                 try
                 {
-                    var values = new Dictionary<string, string> {{"Directory", _testDir}};
+                    var values = new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder(_testDir) } };
                     var esb = new ClearLog();
                     result = esb.Execute(values, GetWorkspace().Object);
                 }
@@ -125,8 +124,10 @@ namespace Dev2.Tests.Runtime.Services
                     fs.Close();
                 }
 
+                var msg = serializer.Deserialize<ExecuteMessage>(result.ToString());
+
                 //assert
-                Assert.IsTrue(result.StartsWith("Error clearing "));
+                Assert.IsTrue(msg.Message.ToString().StartsWith("Error clearing "));
             }
         }
 

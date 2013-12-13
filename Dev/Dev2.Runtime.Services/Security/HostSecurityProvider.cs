@@ -3,8 +3,10 @@ using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
+using System.Text;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Common;
 
 namespace Dev2.Runtime.Security
 {
@@ -75,119 +77,146 @@ namespace Dev2.Runtime.Security
 
         #region VerifyXml
 
-        public bool VerifyXml(string xml)
+        public bool VerifyXml(StringBuilder xml)
         {
-            if (string.IsNullOrEmpty(xml))
+            if (xml == null || xml.Length == 0)
             {
                 throw new ArgumentNullException("xml");
             }
 
-            var doc = new XmlDocument();
-            doc.LoadXml(xml);
-
-            // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
-            var serverID = GetServerID(doc);
-
-            /*
-             * NOTE : 
-             * 
-             * This magical check is here for shipping resources
-             * It enables the serer on first start to resign the resource such that
-             * the end user's install can view and execute them ;)
-             * 
-             * To ship a resource you need to do the following : 
-             * 
-             * 1) Set the type to Unknown
-             * 2) Give the resource a server ID of our InternalServerID
-             * 3) Remove any existing signing data 
-             * 
-             */
-            if (serverID != ServerID && serverID != InternalServerID)
+            using(Stream s = xml.EncodeForXmlDocument())
             {
-                return false;
+                var doc = new XmlDocument();
+                doc.Load(s);
+
+                // Validate server ID, this is a check which can be done quickly in order to skip loading the whole file for verification        
+                var serverID = GetServerID(doc);
+
+                /*
+                 * NOTE : 
+                 * 
+                 * This magical check is here for shipping resources
+                 * It enables the server on first start to resign the resource such that
+                 * the end user's install can view and execute them ;)
+                 * 
+                 * To ship a resource you need to do the following : 
+                 * 
+                 * 1) Set the type to Unknown
+                 * 2) Give the resource a server ID of our InternalServerID
+                 * 3) Remove any existing signing data 
+                 * 
+                 */
+                if (serverID != ServerID && serverID != InternalServerID)
+                {
+                    return false;
+                }
+
+                // Find the "Signature" node and add it to the SignedXml object
+                var signedXml = new SignedXml(doc);
+                var nodeList = doc.GetElementsByTagName("Signature");
+
+                // allow unsigned resources with our internal server ID
+                if (nodeList.Count == 0 && serverID == InternalServerID)
+                {
+                    return true;
+                }
+
+                signedXml.LoadXml((XmlElement) nodeList[0]);
+
+
+                var result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
+                             (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
+
+
+                // Check if signed by the server or the system
+                return result;
             }
-
-            // Find the "Signature" node and add it to the SignedXml object
-            var signedXml = new SignedXml(doc);
-            var nodeList = doc.GetElementsByTagName("Signature");
-
-            // allow unsigned resources with our internal server ID
-            if (nodeList.Count == 0 && serverID == InternalServerID)
-            {
-                return true;
-            }
-
-            signedXml.LoadXml((XmlElement)nodeList[0]);
-
-            
-            var result = (serverID == ServerID && signedXml.CheckSignature(_serverKey)) ||
-                (serverID != InternalServerID == signedXml.CheckSignature(_systemKey));
-
-            // avoid leak ;)
-            signedXml = null;
-
-            // Check if signed by the server or the system
-            return result;
         }
 
         #endregion
 
         #region SignXml
 
-        public string SignXml(string xml)
+        public StringBuilder SignXml(StringBuilder xml)
         {
-            if (string.IsNullOrEmpty(xml))
+           
+            if (xml == null || xml.Length == 0)
             {
                 throw new ArgumentNullException("xml");
             }
 
-            var doc = new XmlDocument();
-            doc.LoadXml(xml);
+            // remove the signature element here as it does not pick up correctly futher down ;(
+            xml = RemoveSignature(xml);
 
-            SetServerID(doc);
-
-            var nodeList = doc.GetElementsByTagName("Signature");
-            if (nodeList.Count > 0)
+            using(Stream s = xml.EncodeForXmlDocument())
             {
-                var child = nodeList[0];
-                if (child.ParentNode != null)
+                var doc = new XmlDocument();
+               
+                doc.Load(s);
+
+                SetServerID(doc);
+
+                // Create a reference to be signed and add
+                // an enveloped transformation to the reference.
+                var reference = new Reference
                 {
-                    child.ParentNode.RemoveChild(child);
+                    Uri = ""
+                };
+
+                reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
+
+                var signedXml = new SignedXml(doc)
+                {
+                    SigningKey = _serverKey
+                };
+                signedXml.AddReference(reference);
+                signedXml.ComputeSignature();
+
+                // Get the XML representation of the signature and save
+                // it to an XmlElement object.
+                var xmlDigitalSignature = signedXml.GetXml();
+
+                // Append the element to the XML document.
+                if (doc.DocumentElement != null)
+                {
+                    doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
+                }
+
+                StringBuilder result = new StringBuilder();
+                using (StringWriter sw = new StringWriter(result))
+                {
+                    doc.Save(sw);
+                }
+
+                // remove the crapy encoding header
+                result = result.CleanEncodingHeaderForXmlSave();
+
+                return result;
+            }
+        }
+
+        #endregion
+
+        #region Remove Signature
+        StringBuilder RemoveSignature(StringBuilder sb)
+        {
+            const string signatureStart = "<Signature xmlns";
+            const string signatureEnd = "</Signature>";
+
+            var startIdx = sb.IndexOf(signatureStart, 0,false);
+            if (startIdx >= 0)
+            {
+                var endIdx = sb.IndexOf(signatureEnd, startIdx,false);
+
+                if (endIdx >= 0)
+                {
+                    var len = (endIdx - startIdx) + signatureEnd.Length;
+                    return sb.Remove(startIdx, len);
                 }
             }
 
-            // Create a reference to be signed and add
-            // an enveloped transformation to the reference.
-            var reference = new Reference
-            {
-                Uri = ""
-            };
-            reference.AddTransform(new XmlDsigEnvelopedSignatureTransform());
-
-            var signedXml = new SignedXml(doc)
-            {
-                SigningKey = _serverKey
-            };
-            signedXml.AddReference(reference);
-            signedXml.ComputeSignature();
-
-            // Get the XML representation of the signature and save
-            // it to an XmlElement object.
-            var xmlDigitalSignature = signedXml.GetXml();
-
-            // Append the element to the XML document.
-            if (doc.DocumentElement != null)
-            {
-                doc.DocumentElement.AppendChild(doc.ImportNode(xmlDigitalSignature, true));
-            }
-
-            if (doc.FirstChild is XmlDeclaration)
-            {
-                doc.RemoveChild(doc.FirstChild);
-            }
-            return doc.OuterXml.Trim();
+            return sb;
         }
-
         #endregion
 
         #region Get/Set ServerID

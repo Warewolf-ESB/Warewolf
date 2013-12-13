@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Reflection;
 using System.Text;
 using Dev2.Workspaces;
@@ -12,7 +13,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find registred assemblies
     /// </summary>
-    public class RegisteredAssembly : IEsbManagementEndpoint
+    public class RegisteredAssembly
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {

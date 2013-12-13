@@ -11,7 +11,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
@@ -24,7 +23,7 @@ namespace Dev2.UI
     /// <summary>
     /// Interaction logic for ConnectControl.xaml
     /// </summary>
-    public partial class ConnectControl : IConnectControl,INotifyPropertyChanged,IHandle<UpdateSelectedServer>
+    public partial class ConnectControl : IConnectControl, INotifyPropertyChanged, IHandle<UpdateSelectedServer>
     {
         readonly IEventAggregator _eventPublisher;
         readonly IAsyncWorker _asyncWorker;
@@ -206,50 +205,50 @@ namespace Dev2.UI
         {
             if(e.AddedItems != null && e.AddedItems.Count > 0)
             {
-                var server = e.AddedItems[0] as IServer;
+                var server = e.AddedItems[0] as IEnvironmentModel;
                 SelectionHasChanged(server);
             }
         }
 
-        void SelectionHasChanged(IServer server)
+        public void SelectionHasChanged(IEnvironmentModel server)
         {
             //
             if(server != null && (ViewModel != null && ViewModel.IsSelectedFromDropDown))
             {
                 InvokeCommands(server);
                 Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
-                _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Environment.Name));
+                _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Name));
                 Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                _eventPublisher.Publish(new SetActiveEnvironmentMessage(server.Environment));
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(server));
             }
             else
             {
                 if(ViewModel != null)
                 {
-                    ViewModel.IsEditEnabled = (ViewModel.SelectedServer != null && !ViewModel.SelectedServer.IsLocalHost);
+                    ViewModel.IsEditEnabled = (ViewModel.SelectedServer != null && !ViewModel.SelectedServer.IsLocalHost());
                 }
             }
         }
 
-        void InvokeCommands(IServer server)
+        void InvokeCommands(IEnvironmentModel server)
         {
-            var environment = server.Environment ?? EnvironmentRepository.Instance.Fetch(server);
+            var environment = server;
             environment.CanStudioExecute = true;
 
-            //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect            
+            //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
             _asyncWorker.Start(environment.Connect,() =>
             {
-                //Used by deployviewmodel and settings - to do, please use only one.
-                if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
-                {
+            //Used by deployviewmodel and settings - to do, please use only one.
+            if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+            {
                    ServerChangedCommand.Execute(server);
-                }
+            }
 
-                //Used by rest.
-                if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
-                {
+            //Used by rest.
+            if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
+            {
                     EnvironmentChangedCommand.Execute(environment);
-                }    
+            }
             });                                    
         }
 
@@ -259,7 +258,7 @@ namespace Dev2.UI
 
         void OnEditClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, ViewModel.SelectedServer.ID, Context);
+            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, ViewModel.SelectedServer.ID.ToString(), Context);
         }
 
         void OnNewClick(object sender, RoutedEventArgs e)
@@ -297,7 +296,7 @@ namespace Dev2.UI
             }
             else
             {
-                ViewModel.ChangeSelected(ViewModel.SelectedServer.Environment);
+                ViewModel.ChangeSelected(ViewModel.SelectedServer);
                 SelectionHasChanged(ViewModel.SelectedServer);
             }
         }
@@ -322,7 +321,7 @@ namespace Dev2.UI
             ViewModel.SelectedServer = ViewModel.GetSelectedServer(ViewModel.Servers, LabelText);
             if(ViewModel.SelectedServer != null)
             {
-                ViewModel.ChangeSelected(ViewModel.SelectedServer.Environment);
+                ViewModel.ChangeSelected(ViewModel.SelectedServer);
                 SelectionHasChanged(ViewModel.SelectedServer);
             }
             Loaded -= OnLoaded;

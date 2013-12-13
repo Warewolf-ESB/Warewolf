@@ -1,31 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Runtime.Serialization;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Services
 {
     // ReSharper disable InconsistentNaming
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RenameCategoryResourceTests
     {
-        #region Static Class Init
-
-        static string _testDir;
-
-        [ClassInitialize]
-        public static void MyClassInit(TestContext context)
-        {
-            _testDir = context.DeploymentDirectory;
-        }
-
-        #endregion
-
-        
 
         #region Execute
 
@@ -48,10 +35,10 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string>{{"DebugFilePath",null}}, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "DebugFilePath", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
@@ -60,7 +47,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string> { { "OldCategory", null } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "OldCategory", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -72,7 +59,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string> { { "OldCategory", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "OldCategory", new StringBuilder() } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -84,10 +71,10 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string> { { "OldCategory", "Test" } , {"Something",null}},null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "OldCategory", new StringBuilder("Test") }, { "Something", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
-        
+
         [TestMethod]
         [Description("Service should never get null values")]
         [Owner("Huggs")]
@@ -96,7 +83,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string> { { "OldCategory", "Test" },{"NewCategory",null} }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "OldCategory", new StringBuilder("Test") }, { "NewCategory", null } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
 
@@ -108,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
         {
 
             var esb = new RenameResourceCategory();
-            var actual = esb.Execute(new Dictionary<string, string> { { "OldCategory", "Test" }, { "NewCategory", "" } }, null);
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "OldCategory", new StringBuilder("Test") }, { "NewCategory", new StringBuilder() } }, null);
             Assert.AreEqual(string.Empty, actual);
         }
         #endregion

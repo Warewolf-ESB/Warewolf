@@ -15,7 +15,7 @@ namespace Dev2.DataList.Contract
         #region Class Members
 
         private static object _cacheGuard = new object();
-        private static volatile IServerDataListCompiler _serverCompilerCache;
+        private static volatile IEnvironmentModelDataListCompiler _serverCompilerCache;
         private static volatile IDataListServer _serverCache;
 
         #endregion Class Members
@@ -117,7 +117,7 @@ namespace Dev2.DataList.Contract
             return CreateDataListCompiler(CreateServerDataListCompiler());
         }
 
-        public static IDataListCompiler CreateDataListCompiler(IServerDataListCompiler serverDataListCompiler)
+        public static IDataListCompiler CreateDataListCompiler(IEnvironmentModelDataListCompiler serverDataListCompiler)
         {
             return new DataListCompiler(CreateServerDataListCompiler());
         }
@@ -126,11 +126,11 @@ namespace Dev2.DataList.Contract
         {
             IDataListPersistenceProvider persistenceProvider = DataListPersistenceProviderFactory.CreateServerProvider(channel);
             IDataListServer datalistServer = CreateDataListServer(persistenceProvider);
-            IServerDataListCompiler serverDataListCompiler = CreateServerDataListCompiler(datalistServer);
+            IEnvironmentModelDataListCompiler serverDataListCompiler = CreateServerDataListCompiler(datalistServer);
             return new DataListCompiler(serverDataListCompiler);
         }
 
-        public static IServerDataListCompiler CreateServerDataListCompiler()
+        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
         {
             if (_serverCompilerCache == null)
             {
@@ -145,7 +145,7 @@ namespace Dev2.DataList.Contract
             return _serverCompilerCache;
         }
 
-        public static IServerDataListCompiler CreateServerDataListCompiler(IDataListServer dataListServer)
+        public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler(IDataListServer dataListServer)
         {
             return new ServerDataListCompiler(dataListServer);
         }

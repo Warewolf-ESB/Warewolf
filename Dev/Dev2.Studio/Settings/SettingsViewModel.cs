@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -17,7 +18,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
-using Unlimited.Framework;
 
 namespace Dev2.Settings
 {
@@ -48,6 +48,7 @@ namespace Dev2.Settings
         public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher)
         {
+            Settings = new Data.Settings.Settings();
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -224,20 +225,20 @@ namespace Dev2.Settings
 
         void OnServerChanged(object obj)
         {
-            var server = obj as IServer;
-            if(server == null || server.Environment == null)
+            var server = obj as IEnvironmentModel;
+            if(server == null)
             {
                 return;
             }
 
-            if(!server.Environment.IsConnected)
+            if(!server.IsConnected)
             {
-                server.Environment.CanStudioExecute = false;
+                server.CanStudioExecute = false;
                 _popupController.ShowNotConnected();
                 return;
             }
 
-            CurrentEnvironment = server.Environment;
+            CurrentEnvironment = server;
             LoadSettings();
         }
 
@@ -250,7 +251,7 @@ namespace Dev2.Settings
 
             _asyncWorker.Start(() =>
             {
-                var settingsJson = ExecuteCommand(SettingsServiceAction.Read);
+                var settingsJson = ReadSettings();
                 if(!string.IsNullOrEmpty(settingsJson))
                 {
                     Settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(settingsJson);
@@ -295,7 +296,7 @@ namespace Dev2.Settings
                 ShowError("Save Error", string.Join(Environment.NewLine, errors));
             }
 
-            var result = ExecuteCommand(SettingsServiceAction.Write);
+            var result = WriteSettings();
             if(result == null)
             {
                 return;
@@ -311,24 +312,29 @@ namespace Dev2.Settings
             IsSaved = true;
         }
 
-        string ExecuteCommand(SettingsServiceAction action)
+        string WriteSettings()
         {
-            var serviceName = string.Format("Settings{0}Service", action);
-
-            dynamic dataObj = new UnlimitedObject();
-            dataObj.Service = serviceName;
-            if(action == SettingsServiceAction.Write)
+            var payload = CurrentEnvironment.ResourceRepository.WriteSettings("Settings", Settings.ToString(), CurrentEnvironment);
+            if(payload == null || payload.Message.Length == 0)
             {
-                dataObj.Settings = Settings.ToString();
+                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsWriteService"));
+                throw new NullReferenceException("The Setting are null");               
             }
 
-            var result = CurrentEnvironment.Connection.ExecuteCommand(dataObj.XmlString, CurrentEnvironment.Connection.WorkspaceID, GlobalConstants.NullDataListID);
-            if(result == null)
-            {
-                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, serviceName));
-            }
-            return result;
+            return payload.Message.ToString();
         }
+
+        string ReadSettings()
+        {
+            var payload = CurrentEnvironment.ResourceRepository.ReadSettings("Settings", Settings.ToString(),CurrentEnvironment);
+            if(payload == null || payload.Message.Length == 0)
+            {
+                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsReadService"));
+            }
+
+            return payload.Message.ToString();
+        }
+
 
         void ClearErrors()
         {
@@ -341,12 +347,6 @@ namespace Dev2.Settings
             HasErrors = true;
             Errors = description;
             //throw new Exception(string.Format("{0} : {1}", header, description));
-        }
-
-        enum SettingsServiceAction
-        {
-            Read,
-            Write
         }
     }
 }

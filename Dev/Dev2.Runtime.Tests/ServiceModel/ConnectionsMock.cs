@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {

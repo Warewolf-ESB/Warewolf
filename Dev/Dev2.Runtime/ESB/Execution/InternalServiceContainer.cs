@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using System;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Dev2.Runtime.ESB.Management;
 
@@ -15,8 +18,8 @@ namespace Dev2.Runtime.ESB.Execution
     public class InternalServiceContainer : EsbExecutionContainer
     {
 
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, theWorkspace, esbChannel)
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
             
         }
@@ -26,35 +29,16 @@ namespace Dev2.Runtime.ESB.Execution
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
             Guid result = GlobalConstants.NullDataListID;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             try
             {
                 EsbManagementServiceLocator emsl = new EsbManagementServiceLocator();
-
-                IDictionary<string, string> data = new Dictionary<string, string>();
-
-                IBinaryDataList bdl = compiler.FetchBinaryDataList(DataObject.DataListID, out invokeErrors);
-                errors.MergeErrors(invokeErrors);
-
-                if (!invokeErrors.HasErrors())
-                {
-                    foreach (IBinaryDataListEntry entry in bdl.FetchScalarEntries())
-                    {
-                        IBinaryDataListItem itm = entry.FetchScalar();
-                        if (itm != null)
-                        {
-                            data[itm.FieldName] = itm.TheValue;
-                        }
-                    }
-                }
-
                 IEsbManagementEndpoint eme = emsl.LocateManagementService(ServiceAction.Name);
 
                 if(eme != null)
                 {
-                    string res = eme.Execute(data, TheWorkspace);
-                    compiler.UpsertSystemTag(DataObject.DataListID, enSystemTag.ManagmentServicePayload, res, out invokeErrors);
+                    var res = eme.Execute(Request.Args, TheWorkspace);
+                    Request.ExecuteResult = res; 
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
                 }

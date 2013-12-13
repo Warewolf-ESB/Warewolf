@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.DynamicServices.Test.XML;
+using System.Text;
 using Dev2.Runtime.Security;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Dev2.Tests.Runtime.XML;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
@@ -76,7 +77,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
-            provider.SignXml("xxx");
+            provider.SignXml(new StringBuilder("xxx"));
         }
 
         [TestMethod]
@@ -84,9 +85,9 @@ namespace Dev2.Tests.Runtime.Services
         {
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
-            var signedXml = provider.SignXml(TestXmlServerSigned.ToString());
+            var signedXml = provider.SignXml(new StringBuilder(TestXmlServerSigned.ToString()));
 
-            var xml = XElement.Parse(signedXml);
+            var xml = XElement.Parse(signedXml.ToString());
 
             XNamespace xmlns = "http://www.w3.org/2000/09/xmldsig#";
             var signatures = xml.Elements(xmlns + "Signature");
@@ -100,14 +101,16 @@ namespace Dev2.Tests.Runtime.Services
         {
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
-            var signedXml = provider.SignXml(TestXml.ToString());
+            var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
-            var xml = XElement.Parse(signedXml);
+            var xml = XElement.Parse(signedXml.ToString());
 
             XNamespace xmlns = "http://www.w3.org/2000/09/xmldsig#";
             var signature = xml.Element(xmlns + "Signature");
             Assert.IsNotNull(signature);
-            Assert.AreEqual(TestXmlServerSigned.ToString(SaveOptions.DisableFormatting), signedXml);
+            var resultXml = signedXml.ToString().Replace("\r\n", "");
+            var expected = TestXmlServerSigned.ToString().Replace("\r\n", "");
+            Assert.AreEqual(expected, resultXml);
         }
 
         [TestMethod]
@@ -115,14 +118,19 @@ namespace Dev2.Tests.Runtime.Services
         {
             var config = CreateConfig(true);
             var provider = new HostSecurityProviderImpl(config.Object);
-            var signedXml = provider.SignXml(TestXml.ToString());
+            var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
-            var xml = XElement.Parse(signedXml);
+            var xml = XElement.Parse(signedXml.ToString());
 
             XNamespace xmlns = "http://www.w3.org/2000/09/xmldsig#";
             var signature = xml.Element(xmlns + "Signature");
             Assert.IsNotNull(signature);
-            Assert.AreEqual(TestXmlSystemSigned.ToString(SaveOptions.DisableFormatting), signedXml);
+
+            var expected = TestXmlSystemSigned.ToString().Replace("\r\n", "");
+            var resultXml = signedXml.ToString().Replace("\r\n", "");
+
+
+            Assert.AreEqual(expected, resultXml);
         }
 
         [TestMethod]
@@ -132,9 +140,9 @@ namespace Dev2.Tests.Runtime.Services
             var provider = new HostSecurityProviderImpl(config.Object);
             var testXml = XElement.Parse(TestXml.ToString());
             testXml.RemoveAttributes();
-            var signedXml = provider.SignXml(testXml.ToString());
+            var signedXml = provider.SignXml(new StringBuilder(testXml.ToString()));
 
-            var xml = XElement.Parse(signedXml);
+            var xml = XElement.Parse(signedXml.ToString());
             var serverID = xml.Attribute("ServerID");
             Assert.IsNotNull(serverID);
             Assert.AreEqual(config.Object.ServerID.ToString(), serverID.Value);
@@ -150,9 +158,9 @@ namespace Dev2.Tests.Runtime.Services
             var provider = new HostSecurityProviderImpl(config.Object);
 
             var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
-            var signedXml = provider.SignXml(TestXml.ToString());
+            var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 
-            var xml = XElement.Parse(signedXml);
+            var xml = XElement.Parse(signedXml.ToString());
             var serverID = xml.Attribute("ServerID");
             Assert.IsNotNull(serverID);
             Assert.AreNotEqual(originalID, serverID.Value);
@@ -177,7 +185,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
-            provider.VerifyXml("xxx");
+            provider.VerifyXml(new StringBuilder("xxx"));
         }
 
         [TestMethod]
@@ -187,7 +195,7 @@ namespace Dev2.Tests.Runtime.Services
             var provider = new HostSecurityProviderImpl(config.Object);
             var testXml = XElement.Parse(TestXmlServerSigned.ToString());
             testXml.SetAttributeValue("ServerID", Guid.NewGuid());
-            var verified = provider.VerifyXml(testXml.ToString());
+            var verified = provider.VerifyXml(new StringBuilder(testXml.ToString()));
             Assert.IsFalse(verified);
         }
 
@@ -197,7 +205,7 @@ namespace Dev2.Tests.Runtime.Services
             var config = CreateConfig(new RSACryptoServiceProvider(), new RSACryptoServiceProvider());
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            var verified = provider.VerifyXml(TestXmlServerSigned.ToString());
+            var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
             Assert.IsFalse(verified);
         }
 
@@ -207,10 +215,10 @@ namespace Dev2.Tests.Runtime.Services
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            var verified = provider.VerifyXml(TestXmlServerSigned.ToString());
+            var verified = provider.VerifyXml(new StringBuilder(TestXmlServerSigned.ToString()));
             Assert.IsTrue(verified);
 
-            verified = provider.VerifyXml(TestXmlSystemSigned.ToString());
+            verified = provider.VerifyXml(new StringBuilder(TestXmlSystemSigned.ToString()));
             Assert.IsTrue(verified);
         }
 
@@ -220,7 +228,7 @@ namespace Dev2.Tests.Runtime.Services
             var config = CreateConfig();
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            var verified = provider.VerifyXml(TestXmlInternallySigned.ToString());
+            var verified = provider.VerifyXml(new StringBuilder(TestXmlInternallySigned.ToString()));
             Assert.IsTrue(verified);
         }
 
@@ -228,7 +236,7 @@ namespace Dev2.Tests.Runtime.Services
         public void HostSecurityProvider_VerifyXmlWithService_Expected_ReturnsTrue()
         {
             var xml = XmlResource.Fetch("Calculate_RecordSet_Subtract").ToString();
-            var verified = HostSecurityProvider.Instance.VerifyXml(xml);
+            var verified = HostSecurityProvider.Instance.VerifyXml(new StringBuilder(xml));
             Assert.IsTrue(verified);
         }
 

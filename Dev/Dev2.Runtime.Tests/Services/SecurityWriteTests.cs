@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Text;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
@@ -16,16 +17,6 @@ namespace Dev2.Tests.Runtime.Services
     [ExcludeFromCodeCoverage]
     public class SecurityWriteTests
     {
-        static string _testDir;
-
-        #region ClassInitialize
-
-        [ClassInitialize]
-        public static void MyClassInitialize(TestContext context)
-        {
-        }
-
-        #endregion
 
         #region Execute
 
@@ -38,7 +29,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var securityWrite = new SecurityWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "NoPermisisons", "Something" } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "NoPermisisons", new StringBuilder("Something") } }, null);
             //------------Assert Results-------------------------
         }
 
@@ -64,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var securityWrite = new SecurityWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", "Something" } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder("Something") } }, null);
             //------------Assert Results-------------------------
         }
 
@@ -80,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
             var securityWrite = new SecurityWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, string> { { "Permissions", serializeObject } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder(serializeObject) } }, null);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             var fileData = File.ReadAllText("secure.config");

@@ -1,15 +1,7 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Specialized;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
-using System.Windows;
 using Dev2.Activities.Designers2.Core.Controls;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.UI;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Custom_Dev2_Controls
@@ -20,30 +12,11 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
     [TestClass][ExcludeFromCodeCoverage]
     public class Dev2DataGridTests
     {
-        public Dev2DataGridTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //

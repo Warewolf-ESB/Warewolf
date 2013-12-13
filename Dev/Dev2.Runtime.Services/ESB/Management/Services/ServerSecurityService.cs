@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Dev2.Communication;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -15,10 +17,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             InitializeConfigWatcher();
         }
 
-        protected override string ReadPermissions()
+        protected override List<WindowsGroupPermission> ReadPermissions()
         {
             var reader = new SecurityRead();
-            return reader.Execute(null, null);
+            var result =  reader.Execute(null, null);
+            var serializer = new Dev2JsonSerializer();
+
+            return serializer.Deserialize<List<WindowsGroupPermission>>(result);
         }
 
         void InitializeConfigWatcher()

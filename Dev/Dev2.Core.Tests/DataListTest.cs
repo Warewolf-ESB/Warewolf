@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DataListTset
 {
@@ -12,23 +12,11 @@ namespace DataListTset
     [TestClass][ExcludeFromCodeCoverage]
     public class DataListTest
     {
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Output Mapping Test
 

@@ -99,6 +99,7 @@
     <Compile Include="ESB\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelperTests.cs" />
+	<Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBrokerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />

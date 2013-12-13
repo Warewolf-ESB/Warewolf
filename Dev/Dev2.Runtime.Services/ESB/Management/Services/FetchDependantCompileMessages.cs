@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -16,21 +18,35 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchDependantCompileMessages : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string serviceID;
-            string workspaceID;
-            string filterList;
+            string serviceID = null;
+            string workspaceID = null;
+            string filterList = null;
 
-            StringBuilder result = new StringBuilder();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var result = new ExecuteMessage() { HasError = false };
 
-            values.TryGetValue("ServiceID", out serviceID);
-            values.TryGetValue("WorkspaceID", out workspaceID);
-            values.TryGetValue("FilterList", out filterList);
-
-            if (string.IsNullOrEmpty(serviceID) || string.IsNullOrEmpty(workspaceID))
+            StringBuilder tmp;
+            values.TryGetValue("ServiceID", out tmp);
+            if (tmp != null)
             {
-                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");  
+                serviceID = tmp.ToString();
+            }
+            values.TryGetValue("WorkspaceID", out tmp);
+            if(tmp != null)
+            {
+                workspaceID = tmp.ToString();
+            }
+            values.TryGetValue("FilterList", out tmp);
+            if(tmp != null)
+            {
+                filterList = tmp.ToString();
+            }
+
+            if(string.IsNullOrEmpty(serviceID) || string.IsNullOrEmpty(workspaceID))
+            {
+                throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
 
             Guid wGuid;
@@ -42,24 +58,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
 
-            if (thisService != null)
+            if(thisService != null)
             {
                 var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceName);
 
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
                 if(deps.Count > 0)
                 {
-                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid,deps, filters);
+                    CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
 
-                    result.Append(JsonConvert.SerializeObject(msgs));
+                    result.Message.Append(serializer.SerializeToBuilder(msgs));
                 }
             }
             else
             {
-                result.Append("<Error> Could not locate service with ID [ " + sGuid + " ]</Error>");
+                result.Message.Append("Could not locate service with ID [ " + sGuid + " ]");
             }
 
-            return result.ToString();
+            return serializer.SerializeToBuilder(result);
         }
 
         public DynamicService CreateServiceEntry()

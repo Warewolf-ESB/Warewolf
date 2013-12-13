@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -13,22 +15,42 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     class CheckCredentials : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string domain;
-            string username;
-            string password;
+            string domain = null;
+            string username = null;
+            string password = null;
 
-            values.TryGetValue("Domain", out domain);
-            values.TryGetValue("Username", out username);
-            values.TryGetValue("Password", out password);
+            StringBuilder tmp;
+            values.TryGetValue("Domain", out tmp);
+            if (tmp != null)
+            {
+                domain = tmp.ToString();
+            }
+
+            values.TryGetValue("Username", out tmp);
+
+            if (tmp != null)
+            {
+                username = tmp.ToString();
+            }
+
+            values.TryGetValue("Password", out tmp);
+
+            if (tmp != null)
+            {
+                password = tmp.ToString();
+            }
+
 
             if(string.IsNullOrEmpty(domain) || string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 throw new InvalidDataContractException("Domain or Username or Password is missing");
             }
 
-            var result = new StringBuilder();
+            var result = new ExecuteMessage {HasError = false};
+
+            //var result = new StringBuilder();
 
             try
             {
@@ -43,14 +65,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     context.Dispose();
                 }
-                result.Append(isValid ? "<result>Connection successful!</result>" : "<result>Connection failed. Ensure your username and password are valid</result>");
+                result.SetMessage(isValid ? "<result>Connection successful!</result>" : "<result>Connection failed. Ensure your username and password are valid</result>");
             }
             catch
             {
-                result.Append("<result>Connection failed. Ensure your username and password are valid</result>");
+                result.SetMessage("<result>Connection failed. Ensure your username and password are valid</result>");
             }
 
-            return result.ToString();
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+
+            return serializer.SerializeToBuilder(result);
         }
 
         public DynamicService CreateServiceEntry()

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
-using Unlimited.Applications.DynamicServicesHost;
 
 namespace Dev2
 {

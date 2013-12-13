@@ -10,11 +10,12 @@
 
 using System;
 using System.Linq;
-using System.Transactions;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
@@ -34,6 +35,8 @@ namespace Dev2.Runtime.ESB
         private readonly IFrameworkDuplexDataChannel _managementChannel;
         private readonly IWorkspace _workspace;
 
+        private readonly EsbExecuteRequest _request;
+
         #endregion
 
         // 2012.10.17 - 5782: TWR - Changed to work off the workspace host and made read only
@@ -51,7 +54,7 @@ namespace Dev2.Runtime.ESB
 
         public DynamicServicesInvoker(IEsbChannel esbChannel,
                                       IFrameworkDuplexDataChannel managementChannel,
-                                      IWorkspace workspace)
+                                      IWorkspace workspace, EsbExecuteRequest request)
         {
             _esbChannel = esbChannel;
             if(managementChannel != null)
@@ -61,6 +64,15 @@ namespace Dev2.Runtime.ESB
 
             // 2012.10.17 - 5782: TWR - Added workspace parameter
             _workspace = workspace;
+
+            _request = request;
+        }
+
+        public DynamicServicesInvoker(IEsbChannel esbChannel,
+                                      IFrameworkDuplexDataChannel managementChannel,
+                                      IWorkspace workspace) : this(esbChannel, managementChannel, workspace, null)
+        {
+           
         }
 
         #endregion
@@ -249,7 +261,7 @@ namespace Dev2.Runtime.ESB
             switch(serviceAction.ActionType)
             {
                 case enActionType.InvokeManagementDynamicService:
-                    result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
+                    result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;
 
                 case enActionType.InvokeStoredProc:

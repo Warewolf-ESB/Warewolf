@@ -1,4 +1,6 @@
-﻿namespace Dev2.DynamicServices {
+﻿using Dev2.DynamicServices.Objects.Base;
+
+namespace Dev2.DynamicServices {
     public class UnitTest : DynamicServiceObjectBase {
         public UnitTest() : base(enDynamicServiceObjectType.UnitTest) {
 

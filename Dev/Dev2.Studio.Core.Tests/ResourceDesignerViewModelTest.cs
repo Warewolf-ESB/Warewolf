@@ -1,4 +1,5 @@
-﻿using Dev2.Composition;
+﻿using System.Text;
+using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
@@ -32,7 +33,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var m = new Mock<IContextualResourceModel>();
-            m.Setup(c => c.WorkflowXaml).Returns("result");
+            m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder("result"));
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
 
             IContextualResourceModel model = m.Object;
@@ -78,12 +79,12 @@ namespace Dev2.Core.Tests
         public void DefaultDefinition_ServiceType_Expected_ServiceDefinitionBuiltForService()
         {
             Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
-            m.Setup(c => c.WorkflowXaml).Returns(string.Empty).Verifiable();
+            m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
             IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
             target = new ResourceDesignerViewModel(m.Object, environment);
-            string actual = target.ServiceDefinition;
-            m.Verify(c => c.WorkflowXaml, Times.Exactly(2));
+            var actual = target.ServiceDefinition;
+            m.Verify(c => c.WorkflowXaml, Times.Exactly(3));
         }
 
         /// <summary>
@@ -93,12 +94,12 @@ namespace Dev2.Core.Tests
         public void DefaultDefinition_SourceType_Expected_ServiceDefinitionBuiltForService()
         {
             Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
-            m.Setup(c => c.WorkflowXaml).Returns(string.Empty).Verifiable();
+            m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Source);
             IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
             target = new ResourceDesignerViewModel(m.Object, environment);
-            string actual = target.ServiceDefinition;
-            m.Verify(c => c.WorkflowXaml, Times.Exactly(2));
+            var actual = target.ServiceDefinition;
+            m.Verify(c => c.WorkflowXaml, Times.Exactly(3));
         }
 
         #endregion DefaultDefinition Tests
@@ -112,9 +113,9 @@ namespace Dev2.Core.Tests
         public void UpdateServiceDefinition()
         {
 
-            target.ServiceDefinition = "result";
+            target.ServiceDefinition = new StringBuilder("result");
 
-            Assert.IsTrue(target.ServiceDefinition == "result");
+            Assert.IsTrue(target.ServiceDefinition.ToString() == "result");
         }
 
         #endregion UpdateServiceDefinition Tests

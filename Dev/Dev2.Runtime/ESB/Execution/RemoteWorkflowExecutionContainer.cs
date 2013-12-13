@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             try
             {
-                // Invoke Remote WF Here ;)                
+                // Invoke Remote WF Here ;)
                 result = ExecuteGetRequest(connection, serviceName, dataListFragment);
                 IList<DebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
@@ -195,7 +195,7 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
                 return req;
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return null;
             }
@@ -204,7 +204,14 @@ namespace Dev2.Runtime.ESB.Execution
         Connection GetConnection(Guid environmentID)
         {
             var xml = _resourceCatalog.GetResourceContents(DataObject.WorkspaceID, environmentID);
-            return string.IsNullOrEmpty(xml) ? null : new Connection(XElement.Parse(xml));
+
+            if (xml == null || xml.Length == 0)
+            {
+                return null;
+            }
+
+            var xe = xml.ToXElement();
+            return new Connection(xe);
         }
     }
 }
