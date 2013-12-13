@@ -21,7 +21,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 {
     [AuthorizeHub]
     [HubName("esb")]
-    public class EsbHub : ServerHub,IDebugWriter
+    public class EsbHub : ServerHub, IDebugWriter
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         static readonly ConcurrentDictionary<string, string> ResultCache = new ConcurrentDictionary<string, string>();
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
             string value;
-            if (ResultCache.TryGetValue(receipt.ToKey(), out value))
+            if(ResultCache.TryGetValue(receipt.ToKey(), out value))
             {
                 var task = new Task<string>(() =>
                             {
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                                 var value = processRequest.Substring(startIdx, len);
 
-                                if (!ResultCache.TryAdd(future.ToKey(), value))
+                                if(!ResultCache.TryAdd(future.ToKey(), value))
                                 {
                                     ServerLogger.LogError("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]");
                                 }
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             //return new Receipt { Result = processRequest.ToString(), PartID = envelope.PartID, ResultParts = rounds };
                         }
 
-                        return new Receipt {PartID = envelope.PartID, ResultParts = -1};
+                        return new Receipt { PartID = envelope.PartID, ResultParts = -1 };
                     }
                     catch(Exception e)
                     {
@@ -196,6 +196,8 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var serializedMemo = JsonConvert.SerializeObject(memo);
             Server.SendMemo(serializedMemo, Context.ConnectionId);
+            CompileMessageRepo.Instance.ClearObservable();
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public void SendDebugState(DebugState debugState)

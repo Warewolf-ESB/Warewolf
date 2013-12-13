@@ -21,6 +21,7 @@
         EsbAddDebugWriter,
         EsbExecuteCommand,
         EsbSendDebugState,
+        EsbFetchExecutePayloadFragment,
         EsbWrite,
         EsbOnConnected,
 

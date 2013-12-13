@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Security
             VerifyArgument.IsNotNull("request", request);
             bool authorized;
             if(!_cachedRequests.TryGetValue(request.Key, out authorized))
-            {                
+            {
                 authorized = IsAuthorized(request.User, GetContext(request), GetResource(request));
                 _cachedRequests.TryAdd(request.Key, authorized);
             }
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.WebServer.Security
             _cachedRequests.Clear();
             base.RaisePermissionsChanged();
         }
-   
+
         static string GetWebExecuteName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
