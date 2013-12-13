@@ -217,15 +217,15 @@ namespace Dev2.Runtime.Hosting
             }
 
             // Travis - Fetch from cache ;)
-            lock(_cacheLock)
-            {
-                var key = resource.FilePath;
-                StringBuilder val;
-                if(_cachedResources.TryGetValue(key, out val))
-                {
-                    return val;
-                }
-            }
+            //            lock(_cacheLock)
+            //            {
+            //                var key = resource.FilePath;
+            //                StringBuilder val;
+            //                if(_cachedResources.TryGetValue(key, out val))
+            //                {
+            //                    return val;
+            //                }
+            //            }
 
             // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
             // is happening the wite will fail.
@@ -233,7 +233,7 @@ namespace Dev2.Runtime.Hosting
             {
                 using(StreamReader sr = new StreamReader(fs))
                 {
-                    while (!sr.EndOfStream)
+                    while(!sr.EndOfStream)
                     {
                         contents.Append(sr.ReadLine());
                 }
@@ -527,7 +527,7 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null)
         {
-            if(resourceXml== null || resourceXml.Length == 0)
+            if(resourceXml == null || resourceXml.Length == 0)
             {
                 throw new ArgumentNullException("resourceXml");
             }
@@ -607,7 +607,7 @@ namespace Dev2.Runtime.Hosting
                         };
 
                     case 1:
-                        return DeleteImpl(workspaceID, type, userRoles, resources, workspaceResources);
+                        return DeleteImpl(workspaceID, resources, workspaceResources);
 
                     default:
                         return new ResourceCatalogResult
@@ -646,7 +646,7 @@ namespace Dev2.Runtime.Hosting
                         };
 
                     case 1:
-                        return DeleteImpl(workspaceID, type, userRoles, resources, workspaceResources);
+                        return DeleteImpl(workspaceID, resources, workspaceResources);
 
                     default:
                         return new ResourceCatalogResult
@@ -658,8 +658,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private ResourceCatalogResult DeleteImpl(Guid workspaceID, string type, string userRoles, List<IResource> resources,
-                                                 List<IResource> workspaceResources)
+        private ResourceCatalogResult DeleteImpl(Guid workspaceID, List<IResource> resources, List<IResource> workspaceResources)
         {
             var resource = resources[0];
 
@@ -709,7 +708,7 @@ namespace Dev2.Runtime.Hosting
                         {
                             using(StreamReader sr = new StreamReader(fs))
                             {
-                                while (!sr.EndOfStream)
+                                while(!sr.EndOfStream)
                                 {
                                     fileContent.Append(sr.ReadLine());
                                 }
@@ -942,7 +941,7 @@ namespace Dev2.Runtime.Hosting
         {
             var result = new List<PluginSource>();
 
-            foreach (var resource in resources)
+            foreach(var resource in resources)
             {
                 var payload = ToPayload(resource);
                 XElement xe = payload.ToXElement();
@@ -993,14 +992,14 @@ namespace Dev2.Runtime.Hosting
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
         {
             var resourceContents = ResourceContents<T>(workspaceID, serviceID);
-            if(resourceContents ==null || resourceContents.Length == 0) return null;
+            if(resourceContents == null || resourceContents.Length == 0) return null;
             return GetResource<T>(resourceContents);
         }
 
         static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
             var elm = resourceContents.ToXElement();
-            object[] args = {elm};
+            object[] args = { elm };
                 return (T)Activator.CreateInstance(typeof(T), args);    
             }
 
@@ -1114,9 +1113,11 @@ namespace Dev2.Runtime.Hosting
             DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
                         
             ServiceAction beforeAction = null;
+            StringBuilder thePreviousResourceDef = null;
             if(beforeService != null)
             {
                 beforeAction = beforeService.Actions.FirstOrDefault();
+               
             }
 
             var result = SaveImpl(workspaceID, resource, contents, userRoles);
@@ -1261,7 +1262,7 @@ namespace Dev2.Runtime.Hosting
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.DbIsRequireChangeRule, beforeAction.ResourceDefinition, contents));
                     break;
                 case enActionType.InvokeWebService:
-                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceMappingChangeRule,beforeAction.ResourceDefinition, contents));
+                    messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceMappingChangeRule, beforeAction.ResourceDefinition, contents));
                     messages.AddRange(smc.Compile(resource.ResourceID, ServerCompileMessageType.WebServiceIsRequiredChangeRule, beforeAction.ResourceDefinition, contents));
                     break;
                 case enActionType.Plugin:
@@ -1446,7 +1447,7 @@ namespace Dev2.Runtime.Hosting
                 else
                 {
                     var contents = GetResourceContents(resource);
-                    if(contents!=null)
+                    if(contents != null)
                     {
                         contents = contents.Replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "");
                         result.Append(contents);
@@ -1492,7 +1493,7 @@ namespace Dev2.Runtime.Hosting
         List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
         {
             var xml = GetResourceContents(resource);
-            if (xml == null || xml.Length > 0)
+            if(xml == null || xml.Length > 0)
             {
                 return new ServiceDefinitionLoader().GenerateServiceGraph(xml);
             }

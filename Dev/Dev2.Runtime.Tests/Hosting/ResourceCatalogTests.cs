@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         #endregion
-        
+
         #region LoadWorkspaceAsync
 
         [TestMethod]
@@ -147,7 +147,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             rc.LoadWorkspaceViaBuilder(null, new string[0]);
         }
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithEmptyFoldersArgumentExpectedReturnsEmptyCatalog()
         {
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(0, rc.LoadWorkspaceViaBuilder("xx", new string[0]).Count);
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithExistingSourcesPathAndNonExistingServicesPathExpectedReturnsCatalogForSources()
         {
@@ -179,7 +179,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithWithOneSignedAndOneUnsignedServiceExpectedLoadsSignedService()
         {
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithSourceWithoutIDExpectedInjectsID()
         {
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
-        
+
         [TestMethod]
         public void LoadWorkspaceAsyncWithUpgradableXmlExpectedUpgradesXmlWithoutLocking()
         {
@@ -569,8 +569,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsNotNull(webService);
             Assert.IsInstanceOfType(webService, typeof(WebService));
-        }      
-        
+        }
+
         [TestMethod]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebSource()
         {
@@ -593,8 +593,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsNotNull(webSource);
             Assert.IsInstanceOfType(webSource, typeof(WebSource));
-        }      
-        
+        }
+
         #endregion
 
         #region GetResourceContents
@@ -894,7 +894,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), ResourceTypeConverter.TypeWorkflowService);
 
-            VerifyPayload(expectedResources, "<x>"+payloadXml+"</x>");
+            VerifyPayload(expectedResources, "<x>" + payloadXml + "</x>");
         }
 
         [TestMethod]
@@ -909,7 +909,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             var payloadXml = catalog.GetPayload(workspaceID, string.Join(",", guids), ResourceTypeConverter.TypeWorkflowService);
 
-            VerifyPayload(new List<IResource>(), "<x>"+payloadXml +"</x>");
+            VerifyPayload(new List<IResource>(), "<x>" + payloadXml + "</x>");
         }
 
         [TestMethod]
@@ -923,7 +923,7 @@ namespace Dev2.Tests.Runtime.Hosting
             foreach(var expected in resources)
             {
                 var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null);
-                VerifyPayload(new List<IResource> { expected }, "<x>"+payloadXml+"</x>");
+                VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
             }
         }
 
@@ -938,7 +938,7 @@ namespace Dev2.Tests.Runtime.Hosting
             foreach(var expected in resources)
             {
                 var payloadXml = catalog.GetPayload(workspaceID, expected.ResourceName, ResourceTypeConverter.ToTypeString(expected.ResourceType), null, false);
-                VerifyPayload(new List<IResource> { expected }, "<x>"+payloadXml+"</x>");
+                VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
             }
         }
 
@@ -951,7 +951,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var catalog = new ResourceCatalog();
             var payloadXml = catalog.GetPayload(workspaceID, "xxx", ResourceTypeConverter.TypeService, null);
-            VerifyPayload(new List<IResource>(), "<x>"+payloadXml+"</x>");
+            VerifyPayload(new List<IResource>(), "<x>" + payloadXml + "</x>");
         }
 
         [TestMethod]
@@ -966,7 +966,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             var payloadXml = catalog.GetPayload(workspaceID, enSourceType.Plugin);
 
-            VerifyPayload(new List<IResource> { expected }, "<x>"+payloadXml+"</x>");
+            VerifyPayload(new List<IResource> { expected }, "<x>" + payloadXml + "</x>");
         }
 
         [TestMethod]
@@ -979,7 +979,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog();
             var payloadXml = catalog.GetPayload(workspaceID, enSourceType.Unknown);
 
-            VerifyPayload(new List<IResource>(), "<x>"+payloadXml+"</x>");
+            VerifyPayload(new List<IResource>(), "<x>" + payloadXml + "</x>");
         }
         #endregion
 
@@ -1726,7 +1726,7 @@ namespace Dev2.Tests.Runtime.Hosting
             ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("Renamed Resource '"+resourceID+"' to 'TestName'", resourceCatalogResult.Message);
+            Assert.AreEqual("Renamed Resource '" + resourceID + "' to 'TestName'", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
             XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             var element = xElement.Attribute("Name");
@@ -1947,7 +1947,7 @@ namespace Dev2.Tests.Runtime.Hosting
             XElement element = xElement.Element("Category");
             Assert.IsNotNull(element);
             Assert.AreEqual("TestCategory", element.Value);
-        }      
+        }
 
         #endregion
 
@@ -1994,7 +1994,7 @@ namespace Dev2.Tests.Runtime.Hosting
             return SaveResources(workspaceID, null, false, false,
                 new[] { "CatalogSourceAnytingToXmlPlugin", "CatalogSourceCitiesDatabase", "CatalogSourceTestServer" },
                 new[] { "CatalogServiceAllTools", "CatalogServiceCitiesDatabase", "CatalogServiceCalculateRecordSetSubtract" },
-                out resources, 
+                out resources,
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() },
                 new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() });
         }
@@ -2049,7 +2049,7 @@ namespace Dev2.Tests.Runtime.Hosting
         #endregion
 
         #region GetDependants
-        
+
         [TestMethod]
         public void GetDependantsWhereResourceIsDependedOnExpectNonEmptyList()
         {
@@ -2070,8 +2070,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
             Assert.AreEqual("Bug6619", dependants[0]);
-        }      
-        
+        }
+
         [TestMethod]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
@@ -2100,7 +2100,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             rc.CompileTheResourceAfterSave(workspaceID, resource, new StringBuilder(s), beforeAction);
             //------------Assert Results-------------------------
- 
+
             xElement = rc.GetResourceContents(depresource).ToXElement();
             var errorElement = xElement.Element("ErrorMessages").Element("ErrorMessage");
             var isValid = xElement.AttributeSafe("IsValid");
@@ -2190,9 +2190,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, "WeatherFranceParis");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, dependants.Count);
-        }      
-        
-        
+        }
+
+
         [TestMethod]
         public void GetDependantsWhereNoResourcesExpectEmptyList()
         {
@@ -2207,9 +2207,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependants(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
-        }   
-        
-        
+        }
+
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameEmptyStringExpectException()
@@ -2232,7 +2232,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-        
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetDependantsWhereResourceNameNullStringExpectException()
@@ -2256,7 +2256,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //Exception thrown see attribute
         }
 
-        
+
         [TestMethod]
         public void GetDependantsWhereResourceHasNoDependedOnExpectNonEmptyList()
         {
@@ -2416,9 +2416,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var dependants = ResourceCatalog.Instance.GetDependentsAsResourceForTrees(workspaceID, resourceName);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dependants.Count);
-        }      
+        }
         #endregion
-         
+
         #region VerifyPayload
 
         static void VerifyPayload(ICollection<IResource> expectedResources, string payloadXml)

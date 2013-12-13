@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XPathActivityTests : BaseActivityUnitTest
     {
         IList<XPathDTO> _resultsCollection = new List<XPathDTO>();
@@ -43,7 +44,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            if (_resultsCollection == null)
+            if(_resultsCollection == null)
             {
                 _resultsCollection = new List<XPathDTO>();
             }
@@ -77,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(string.Empty, actual);
-            
+
         }
 
         [TestMethod] // - OK
@@ -133,15 +134,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
             else
             {
-// ReSharper disable RedundantStringFormatCall
+                // ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-// ReSharper restore RedundantStringFormatCall
+                // ReSharper restore RedundantStringFormatCall
             }
         }
 
@@ -160,15 +161,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
             else
             {
-// ReSharper disable RedundantStringFormatCall
+                // ReSharper disable RedundantStringFormatCall
                 Assert.Fail(string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}", error));
-// ReSharper restore RedundantStringFormatCall
+                // ReSharper restore RedundantStringFormatCall
             }
         }
 
@@ -187,12 +188,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                        "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
-            for (int i = 1; i <= 2; i++)
+            for(int i = 1; i <= 2; i++)
             {
                 string returnVal;
                 string error;
                 GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
-               
+
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
@@ -217,21 +218,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> expected = new List<string> { "void(object),void(object),void(Dev2.DynamicServices.IDynamicServiceObject, object),void(CommandLine.Text.HelpText),string(),Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
             List<string> actual = new List<string>();
 
-            for (int i = 1; i <= 1; i++)
+            for(int i = 1; i <= 1; i++)
             {
                 string returnVal;
                 string error;
                 GetScalarValueFromDataList(result.DataListID, "OutVar" + i, out returnVal, out error);
                 actual.Add(returnVal.Trim());
             }
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
-        }  
-        
+        }
+
         [TestMethod]
         public void RecsetWithXPathInRecsetExpectedXPathExecuteAndInsertMutipleScalars()
         {
@@ -275,13 +276,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("ExtractInMergeDataFromRequest,ExtractOutMergeDataFromRequest,SetID,<GetUsage>b__0,GetUsage,CreateForm", actualScalar);
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actualRecordSet, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             List<string> actual = actualRecordSet.Select(entry => entry.TheValue).ToList();
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            
+
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -401,14 +402,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> sourceResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(2, sourceResultsList.Count);
-            Assert.AreEqual("XML Source",sourceResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,sourceResultsList[0].Type);
+            Assert.AreEqual("XML Source", sourceResultsList[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, sourceResultsList[0].Type);
             Assert.AreEqual("<excludelist><namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" /><namespace n", sourceResultsList[1].Value);
-            Assert.AreEqual(DebugItemResultType.Value,sourceResultsList[1].Type);
-            StringAssert.Contains(sourceResultsList[1].MoreLink,"/Services/FetchDebugItemFileService?DebugItemFilePath=");
+            Assert.AreEqual(DebugItemResultType.Value, sourceResultsList[1].Type);
+            StringAssert.Contains(sourceResultsList[1].MoreLink, "/Services/FetchDebugItemFileService?DebugItemFilePath=");
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> outputDebugItemResults = outRes[0].FetchResultsList();
-            Assert.AreEqual(19, outputDebugItemResults.Count);          
+            Assert.AreEqual(19, outputDebugItemResults.Count);
         }
 
         [TestMethod]
@@ -432,14 +433,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(2, fetchResultsList.Count);
-            Assert.AreEqual("XML Source",fetchResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchResultsList[0].Type);
+            Assert.AreEqual("XML Source", fetchResultsList[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
             Assert.AreEqual("<excludelist><namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" /><namespace n", fetchResultsList[1].Value);
-            Assert.AreEqual(DebugItemResultType.Value,fetchResultsList[1].Type);
-            StringAssert.Contains(fetchResultsList[1].MoreLink,"/Services/FetchDebugItemFileService?DebugItemFilePath=");
+            Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[1].Type);
+            StringAssert.Contains(fetchResultsList[1].MoreLink, "/Services/FetchDebugItemFileService?DebugItemFilePath=");
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> outputDebugItemResults = outRes[0].FetchResultsList();
-            Assert.AreEqual(22, outputDebugItemResults.Count);          
+            Assert.AreEqual(22, outputDebugItemResults.Count);
         }
 
         [TestMethod]
@@ -474,14 +475,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
-            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection,SourceString = "xml"};
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("[[recset1(*).field1]]", act.ResultsCollection[0].OutputVariable);
             Assert.AreEqual("//x/a/text()", act.ResultsCollection[0].XPath);
-            Assert.AreEqual("xml",act.SourceString);
+            Assert.AreEqual("xml", act.SourceString);
         }
 
         [TestMethod]
@@ -491,7 +492,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
-            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection,SourceString = "xml"};
+            var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             var tuple1 = new Tuple<string, string>("//x/a/text()", "Test");
             var tuple2 = new Tuple<string, string>("xml", "Test2");

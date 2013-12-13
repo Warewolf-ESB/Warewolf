@@ -1,13 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Tests.Diagnostics
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DebugItemTests
     {
         const string LongText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -113,7 +114,7 @@ namespace Dev2.Tests.Diagnostics
 
             var expectedContents = item.Value;
 
-            var debugItem= new DebugItemMock();
+            var debugItem = new DebugItemMock();
             debugItem.TryCache(item);
 
             Assert.AreEqual(1, debugItem.SaveFileHitCount);
@@ -158,7 +159,7 @@ namespace Dev2.Tests.Diagnostics
             item.Value = item.Value.Substring(0, ExpectedLength);
 
             var debugState = new DebugItemMock();
-            debugState.TryCache(item );
+            debugState.TryCache(item);
 
             Assert.AreEqual(ExpectedLength, item.Value.Length);
         }
@@ -189,7 +190,7 @@ namespace Dev2.Tests.Diagnostics
         {
             var debugState = new DebugItem();
            
-            debugState.SaveFile(null,null);
+            debugState.SaveFile(null, null);
         }
 
         [TestMethod]
@@ -197,12 +198,11 @@ namespace Dev2.Tests.Diagnostics
         public void SaveFile_With_Contents_Expected_SavesFileToDisk()
         // ReSharper restore InconsistentNaming
         {
-
             var debugState = new DebugItem();
 
             debugState.ClearFile("TestFile.txt");
-            EnvironmentVariables.WebServerUri = "http://localhost:1234";
-            var uri = debugState.SaveFile(LongText,"TestFile.txt");
+            EnvironmentVariables.WebServerUri = "http://localhost:3142";
+            var uri = debugState.SaveFile(LongText, "TestFile.txt");
             var path = new Uri(uri).OriginalString.Replace("?DebugItemFilePath=", "").Replace(EnvironmentVariables.WebServerUri + "/Services/FetchDebugItemFileService", "");
             var exists = File.Exists(path);
             Assert.IsTrue(exists);
