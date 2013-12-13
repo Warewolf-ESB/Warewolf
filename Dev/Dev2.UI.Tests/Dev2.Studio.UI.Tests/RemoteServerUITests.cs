@@ -366,8 +366,9 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{TAB}{ENTER}");
             SaveDialogUIMap.ClickSave();
 
-            //Change it back
-            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            //Change it back                        
+            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            Playback.Wait(4500);            
             path = PluginSourceMap.GetAssemblyPathText();
             Playback.Wait(100);
             Keyboard.SendKeys("{LEFT}");
