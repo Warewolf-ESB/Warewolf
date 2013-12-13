@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DynamicServices;
-using System;
 using Dev2.DynamicServices.Objects;
-using Dev2.Workspaces;
 using Dev2.Runtime.ESB.Management;
+using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -37,10 +35,18 @@ namespace Dev2.Runtime.ESB.Execution
 
                 if(eme != null)
                 {
+                    // Web request for internal service ;)
+                    if (Request.Args == null)
+                    {
+                        GenerateRequestDictionaryFromDataObject(out invokeErrors);
+                        errors.MergeErrors(invokeErrors);
+                    }
+
                     var res = eme.Execute(Request.Args, TheWorkspace);
                     Request.ExecuteResult = res; 
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
+                    Request.WasInternalService = true;
                 }
                 else
                 {
@@ -54,5 +60,28 @@ namespace Dev2.Runtime.ESB.Execution
 
             return result;
         }
+
+        private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
+        {
+            var compiler = DataListFactory.CreateDataListCompiler();
+            errors = new ErrorResultTO();
+
+            ErrorResultTO invokeErrors;
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(DataObject.DataListID, out invokeErrors);
+            errors.MergeErrors(invokeErrors);
+
+            if(!invokeErrors.HasErrors())
+            {
+                foreach(IBinaryDataListEntry entry in bdl.FetchScalarEntries())
+                {
+                    IBinaryDataListItem itm = entry.FetchScalar();
+
+                    if (!DataListUtil.IsSystemTag(itm.FieldName))
+                    {
+                        Request.AddArgument(itm.FieldName, new StringBuilder(itm.TheValue));
+                    }
+                }
+            }
+        } 
     }
 }

@@ -4,6 +4,9 @@ using System.Text;
 namespace Dev2.Communication
 {
 
+    /// <summary>
+    /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is internal
+    /// </summary>
     public class EsbExecuteRequest
     {
         public string ServiceName { get; set; }
@@ -11,6 +14,8 @@ namespace Dev2.Communication
         public Dictionary<string, StringBuilder> Args { get; set; }
 
         public StringBuilder ExecuteResult { get; set; }
+ 
+        public bool WasInternalService { get; set; }
  
         public EsbExecuteRequest()
         {

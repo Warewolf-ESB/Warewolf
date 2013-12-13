@@ -17,6 +17,36 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsSystemTag")]
+        public void DataListUtil_IsSystemTag_WhenNoPrefix_ExpectSystemTagDetected()
+        {
+            //------------Setup for test--------------------------
+            var tag = "ManagmentServicePayload";
+
+            //------------Execute Test---------------------------
+            var result = DataListUtil.IsSystemTag(tag);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListUtil_IsSystemTag")]
+        public void DataListUtil_IsSystemTag_WhenDev2SystemPrefix_ExpectSystemTagDetected()
+        {
+            //------------Setup for test--------------------------
+            var tag = GlobalConstants.SystemTagNamespaceSearch+"ManagmentServicePayload";
+
+            //------------Execute Test---------------------------
+            var result = DataListUtil.IsSystemTag(tag);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
         [TestCategory("DataListUtil_IsXML")]
         public void DataListUtil_IsXML_CheckIsXML_ExpectTrue()
         {

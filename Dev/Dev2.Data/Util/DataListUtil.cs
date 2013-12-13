@@ -718,6 +718,12 @@ namespace Dev2.DataList.Contract
             // Transfer System Tags
             bool result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
 
+            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
+            {
+                tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
+                result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
+            }
+
             return result;
         }
 

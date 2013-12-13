@@ -8,9 +8,11 @@ using System.Reflection;
 using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Server.DataList.Translators;
 using Dev2.Web;
@@ -122,7 +124,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             var esbEndpoint = new EsbServicesEndpoint();
 
-            var executionDlid = esbEndpoint.ExecuteRequest(dataObject, null, workspaceGuid, out errors);
+            // Build EsbExecutionRequest - Internal Services Require This ;)
+            EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest{ServiceName = serviceName};
+
+            var executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
             allErrors.MergeErrors(errors);
 
             // Fetch return type ;)
@@ -134,33 +139,47 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Fetch and convert DL ;)
             if(executionDlid != GlobalConstants.NullDataListID)
             {
-                dataObject.DataListID = executionDlid;
-                dataObject.WorkspaceID = workspaceGuid;
-                dataObject.ServiceName = serviceName;
+                // a normal service request
+                if (!esbExecuteRequest.WasInternalService)
+                {
+                    dataObject.DataListID = executionDlid;
+                    dataObject.WorkspaceID = workspaceGuid;
+                    dataObject.ServiceName = serviceName;
 
+                    executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
 
-                executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
-
-                allErrors.MergeErrors(errors);
-                compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    allErrors.MergeErrors(errors);
+                    compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
+                                             out errors);
+                }
+                else
+                {
+                    // internal service request we need to return data for it from the request object ;)
+                    var serializer = new Dev2JsonSerializer();
+                    var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
+                    executePayload = msg.Message.ToString();
+                }
             }
-            else
+            else 
             {
-                if(dataObject.ReturnType == EmitionTypes.XML)
+                if (dataObject.ReturnType == EmitionTypes.XML)
                 {
 
-                    executePayload = "<FatalError> <Message> An internal error occured while executing the service request </Message>";
+                    executePayload =
+                        "<FatalError> <Message> An internal error occured while executing the service request </Message>";
                     executePayload += allErrors.MakeDataListReady();
                     executePayload += "</FatalError>";
                 }
                 else
                 {
                     // convert output to JSON ;)
-                    executePayload = "{ \"FatalError\": \"An internal error occured while executing the service request\",";
+                    executePayload =
+                        "{ \"FatalError\": \"An internal error occured while executing the service request\",";
                     executePayload += allErrors.MakeDataListReady(false);
                     executePayload += "}";
                 }
             }
+            
 
             // Clean up the datalist from the server
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)

@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             const string ResourceType = "WorkflowService";
             //----------Execute-----------------------------
 
-            var coms = new CommunicationController {ServiceName = "DeleteWorkflow"};
+            var coms = new CommunicationController { ServiceName = "DeleteResourceService" };
 
             coms.AddPayloadArgument("ResourceName", ServiceName);
             coms.AddPayloadArgument("ResourceType", ResourceType);
