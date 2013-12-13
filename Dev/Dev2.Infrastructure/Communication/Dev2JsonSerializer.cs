@@ -80,12 +80,19 @@ namespace Dev2.Communication
                     ms.Flush();
                     ms.Position = 0;
 
-                    // finally do the conversion ;)
-                    using(StreamReader sr = new StreamReader(ms))
+                    try
                     {
-                        JsonReader jr = new JsonTextReader(sr);
-                        var result = serializer.Deserialize<T>(jr);
-                        return result;
+                        // finally do the conversion ;)
+                        using (StreamReader sr = new StreamReader(ms))
+                        {
+                            JsonReader jr = new JsonTextReader(sr);
+                            var result = serializer.Deserialize<T>(jr);
+                            return result;
+                        }
+                    }
+                    catch
+                    {
+                        // Do nothing default(T) returned below ;)
                     }
                 }
 

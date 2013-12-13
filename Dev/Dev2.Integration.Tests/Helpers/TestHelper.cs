@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Diagnostics;
 using Dev2.Integration.Tests.MEF.WebTester;
-using System.Text.RegularExpressions;
-using Dev2.Runtime.ESB.Execution;
+using Newtonsoft.Json;
 
 namespace Dev2.Integration.Tests.Helpers
 {
@@ -83,7 +83,7 @@ namespace Dev2.Integration.Tests.Helpers
                         var data = reader.ReadToEnd();
                         if (data != null)
                         {
-                            return RemoteDebugItemParser.ParseItems(data);
+                            return JsonConvert.DeserializeObject<List<DebugState>>(data);
                         }
                     }
                 }

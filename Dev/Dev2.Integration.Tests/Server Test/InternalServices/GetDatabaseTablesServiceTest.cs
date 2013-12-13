@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Runtime.ServiceModel.Data;
@@ -63,10 +62,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
             var response = TestHelper.PostDataToWebserver(postData);
-            var xml = XElement.Parse(response);
-            var actual = xml.Element("Dev2System.ManagmentServicePayload").Value;
-
-            var tables = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var tables = JsonConvert.DeserializeObject<DbTableList>(response);
 
             Assert.IsFalse(tables.HasErrors);
 
@@ -89,10 +85,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
             var response = TestHelper.PostDataToWebserver(postData);
-            var xml = XElement.Parse(response);
-            var actual = xml.Element("Dev2System.ManagmentServicePayload").Value;
-
-            var tables = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var tables = JsonConvert.DeserializeObject<DbTableList>(response);
 
             Assert.IsTrue(tables.HasErrors);
             Assert.AreEqual("Login failed for user 'testUser'.\r\n", tables.Errors);
@@ -121,10 +114,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             var response = TestHelper.PostDataToWebserver(postData);
 
             //------------Assert Results-------------------------
-            var xml = XElement.Parse(response);
-            var actual = xml.Element("Dev2System.ManagmentServicePayload").Value;
-
-            var tables = JsonConvert.DeserializeObject<DbTableList>(actual);
+            var tables = JsonConvert.DeserializeObject<DbTableList>(response);
             Assert.AreEqual(0, tables.Items.Count);
 
             const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "

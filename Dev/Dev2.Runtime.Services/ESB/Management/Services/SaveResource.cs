@@ -44,7 +44,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             var res = new ExecuteMessage { HasError = false };
 
             List<DynamicServiceObjectBase> compiledResources = null;
-            //var errorMessage = string.Format("<{0}>{1}</{0}>", "Result", Resources.CompilerMessage_BuildFailed);
             var errorMessage = Resources.CompilerMessage_BuildFailed + " " + DateTime.Now;
             try
             {

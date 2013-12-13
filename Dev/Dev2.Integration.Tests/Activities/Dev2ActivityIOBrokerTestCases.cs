@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Dev2.PathOperations;
-using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Activities

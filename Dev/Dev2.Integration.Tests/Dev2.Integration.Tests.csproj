@@ -247,10 +247,9 @@
     <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\RemoteInvokeTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\WebServiceTest.cs" />
-    <Compile Include="Server Test\Build.Test\BuidTest.cs" />
+    <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
     <Compile Include="Server Test\DeleteResourceTest.cs" />
     <Compile Include="Server Test\DynamicServicesHostTest.cs" />
-    <Compile Include="Server Test\InternalServices\AddResourceServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />

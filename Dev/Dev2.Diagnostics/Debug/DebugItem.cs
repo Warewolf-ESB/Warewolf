@@ -18,8 +18,8 @@ namespace Dev2.Diagnostics
 
         private List<IDebugItemResult> _resultsList = new List<IDebugItemResult>();
 
-        static readonly string InvalidFileNameChars = 
-            new string(Path.GetInvalidFileNameChars()) 
+        static readonly string InvalidFileNameChars =
+            new string(Path.GetInvalidFileNameChars())
             + new string(Path.GetInvalidPathChars());
 
         readonly string _tempPath;
@@ -43,7 +43,8 @@ namespace Dev2.Diagnostics
 
         #region CTOR
 
-        public DebugItem() : this (null)
+        public DebugItem()
+            : this(null)
         {
         }
 
@@ -55,7 +56,7 @@ namespace Dev2.Diagnostics
             _isMoreLinkCreated = false;
             _stringBuilder = new StringBuilder();
             _fileName = string.Empty;
-            if (results != null)
+            if(results != null)
             {
                 AddRange(results.ToList());
             }
@@ -74,15 +75,15 @@ namespace Dev2.Diagnostics
 
         #region Public Methods
 
-        public void Add(DebugItemResult itemToAdd,bool isDeserialize = false)
+        public void Add(DebugItemResult itemToAdd, bool isDeserialize = false)
         {
-            if (!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount)
+            if(!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount)
             {
-                
-                if (!isDeserialize)
-                {       
+
+                if(!isDeserialize)
+                {
                     _fileName = string.Format("{0}.txt", _itemId);
-                    if (itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
+                    if(itemToAdd.GroupIndex == (MaxItemDispatchCount + 1) && !_isMoreLinkCreated)
                     {
                         ClearFile(_fileName);
                         ResultsList.Add(new DebugItemResult { MoreLink = SaveFile(itemToAdd.Value, _fileName), GroupName = itemToAdd.GroupName, GroupIndex = itemToAdd.GroupIndex });
@@ -91,8 +92,8 @@ namespace Dev2.Diagnostics
                     }
                     else
                     {
-                        _stringBuilder.Append(itemToAdd.Value);                            
-                        if (itemToAdd.Type == DebugItemResultType.Value)
+                        _stringBuilder.Append(itemToAdd.Value);
+                        if(itemToAdd.Type == DebugItemResultType.Value)
                         {
                             _stringBuilder.Append(Environment.NewLine);
                         }
@@ -101,27 +102,27 @@ namespace Dev2.Diagnostics
                             SaveFile(_stringBuilder.ToString(), _fileName);
                             _stringBuilder.Clear();
                         }
-                        
+
                         return;
-                    }        
+                    }
                 }
-                                        
+
             }
 
             if(itemToAdd.Type == DebugItemResultType.Value)
             {
-                TryCache(itemToAdd);                
+                TryCache(itemToAdd);
             }
 
             ResultsList.Add(itemToAdd);
-        }        
+        }
 
         public void AddRange(IList<DebugItemResult> itemsToAdd)
         {
             foreach(var debugItemResult in itemsToAdd)
             {
-                Add(debugItemResult);    
-            }            
+                Add(debugItemResult);
+            }
         }
 
         public IList<DebugItemResult> FetchResultsList()
@@ -133,34 +134,34 @@ namespace Dev2.Diagnostics
 
         public void TryCache(DebugItemResult item)
         {
-            if (item == null)
+            if(item == null)
             {
                 throw new ArgumentNullException("item");
             }
 
-            if (!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
+            if(!string.IsNullOrEmpty(item.Value) && item.Value.Length > MaxCharDispatchCount)
             {
                 item.MoreLink = SaveFile(item.Value, string.Format("{0}-{1}.txt", DateTime.Now.ToString("s"), Guid.NewGuid()));
-                item.Value = item.Value.Substring(0, ActCharDispatchCount);            
-            }                
+                item.Value = item.Value.Substring(0, ActCharDispatchCount);
+            }
         }
 
         #endregion
 
         #region SaveFile
 
-        public virtual string SaveFile(string contents,string fileName)
+        public virtual string SaveFile(string contents, string fileName)
         {
-            if (string.IsNullOrEmpty(contents))
+            if(string.IsNullOrEmpty(contents))
             {
                 throw new ArgumentNullException("contents");
             }
-            
+
             fileName = InvalidFileNameChars.Aggregate(fileName, (current, c) => current.Replace(c.ToString(CultureInfo.InvariantCulture), ""));
 
             var path = Path.Combine(_tempPath, fileName);
             File.AppendAllText(path, contents);
-            string linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
+            string linkUri = string.Format(EnvironmentVariables.WebServerUri + "Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
             return linkUri;
         }
@@ -171,12 +172,12 @@ namespace Dev2.Diagnostics
 
         public void ClearFile(string fileName)
         {
-            
+
             var path = Path.Combine(_tempPath, fileName);
             if(File.Exists(path))
-            {                
-                File.Delete(path);    
-            }            
+            {
+                File.Delete(path);
+            }
         }
 
         #endregion
@@ -188,8 +189,8 @@ namespace Dev2.Diagnostics
             if(_stringBuilder.Length > 0 && !string.IsNullOrEmpty(_fileName))
             {
                 SaveFile(_stringBuilder.ToString(), _fileName);
-                _stringBuilder.Clear();    
-            }            
+                _stringBuilder.Clear();
+            }
         }
 
         #endregion
@@ -207,18 +208,18 @@ namespace Dev2.Diagnostics
         {
             reader.MoveToContent();
 
-            if (reader.ReadToDescendant("DebugItemResults"))
+            if(reader.ReadToDescendant("DebugItemResults"))
             {
                 ResultsList = new List<DebugItemResult>();
                 reader.ReadStartElement();
-                while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItemResult")
+                while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItemResult")
                 {
                     var item = new DebugItemResult();
                     item.ReadXml(reader);
                     ResultsList.Add(item);
                 }
 
-                if (reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResults")
+                if(reader.NodeType == XmlNodeType.EndElement && reader.Name == "DebugItemResults")
                 {
                     reader.ReadEndElement();
                 }
@@ -233,7 +234,7 @@ namespace Dev2.Diagnostics
             writer.WriteAttributeString("Count", ResultsList.Count.ToString(CultureInfo.InvariantCulture));
 
             var resultSer = new XmlSerializer(typeof(DebugItemResult));
-            foreach (var other in ResultsList)
+            foreach(var other in ResultsList)
             {
                 resultSer.Serialize(writer, other);
             }

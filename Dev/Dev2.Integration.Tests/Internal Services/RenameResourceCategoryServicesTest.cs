@@ -66,7 +66,7 @@ namespace Dev2.Integration.Tests.Internal_Services
             string postData = string.Format("{0}{1}?{2}", _webServerURI, "RenameResourceCategoryService", "OldCategory=Bugs&NewCategory=TestCategory&ResourceType=WorkflowService");
             string actual = TestHelper.PostDataToWebserver(postData);
             Assert.IsFalse(string.IsNullOrEmpty(actual));
-            Assert.AreEqual("<DataList><Dev2System.ManagmentServicePayload><CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage></Dev2System.ManagmentServicePayload></DataList>", actual);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", actual);
         }
         
     }

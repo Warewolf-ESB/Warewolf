@@ -9,7 +9,6 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -29,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("ServiceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 serviceID = tmp.ToString();
             }
@@ -66,8 +65,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(deps.Count > 0)
                 {
                     CompileMessageList msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
+                    return serializer.SerializeToBuilder(msgs);
 
-                    result.Message.Append(serializer.SerializeToBuilder(msgs));
                 }
             }
             else

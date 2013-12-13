@@ -33,7 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             var result = coms.ExecuteCommand<ExecuteMessage>(connection, Guid.Empty);
 
-            Assert.IsTrue(result.Message.Contains("Success"), "Got [ " + result + " ]");
+            Assert.IsTrue(result.Message.Contains("Success"), "Got [ " + result.Message.ToString() + " ]");
         }
 //          
 //        [TestMethod]

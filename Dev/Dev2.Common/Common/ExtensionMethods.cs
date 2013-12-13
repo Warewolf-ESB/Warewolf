@@ -303,13 +303,18 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
-            StringBuilder result = new StringBuilder();
-            using(StringWriter sw = new StringWriter(result))
+            if (elm != null)
             {
-                elm.Save(sw, SaveOptions.DisableFormatting);
+                StringBuilder result = new StringBuilder();
+                using (StringWriter sw = new StringWriter(result))
+                {
+                    elm.Save(sw, SaveOptions.DisableFormatting);
+                }
+
+                return result.CleanEncodingHeaderForXmlSave();
             }
 
-            return result.CleanEncodingHeaderForXmlSave();
+            return new StringBuilder();
         }
 
         public static string AttributeSafe(this XElement elem, string name, bool returnsNull = false)

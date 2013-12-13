@@ -219,12 +219,15 @@ namespace Dev2.Runtime.Hosting
 
                             foreach (var inputItem in inputCollection)
                             {
+                                bool emptyToNull;
+                                bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out emptyToNull);
+
                                 ServiceActionInput sai = new ServiceActionInput
                                 {
                                     Name = inputItem.AttributeSafe("Name"),
                                     Source = inputItem.AttributeSafe("Source"),
                                     DefaultValue = inputItem.AttributeSafe("DefaultValue"),
-                                    EmptyToNull = bool.Parse(inputItem.AttributeSafe("EmptyToNull")),
+                                    EmptyToNull = emptyToNull,
                                     NativeType = inputItem.AttributeSafe("NativeType")
                                 };
 

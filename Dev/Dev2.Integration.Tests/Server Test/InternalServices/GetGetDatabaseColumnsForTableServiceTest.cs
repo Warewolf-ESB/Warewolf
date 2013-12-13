@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Xml.Linq;
 using Dev2.DynamicServices;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Runtime.ServiceModel.Data;
@@ -62,10 +61,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseColumnsForTableService?Database={0}&TableName={1}", dbSource, "Country"));
             var response = TestHelper.PostDataToWebserver(postData);
 
-            var xml = XElement.Parse(response);
-            var actual = xml.Element("Dev2System.ManagmentServicePayload").Value;
-
-            var columns = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var columns = JsonConvert.DeserializeObject<DbColumnList>(response);
 
             Assert.IsFalse(columns.HasErrors);
             Assert.AreEqual(2, columns.Items.Count);
@@ -101,10 +97,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseColumnsForTableService?Database={0}&TableName={1}", dbSource, "Country"));
             var response = TestHelper.PostDataToWebserver(postData);
-            var xml = XElement.Parse(response);
-            var actual = xml.Element("Dev2System.ManagmentServicePayload").Value;
 
-            var tables = JsonConvert.DeserializeObject<DbColumnList>(actual);
+            var tables = JsonConvert.DeserializeObject<DbColumnList>(response);
 
             Assert.IsTrue(tables.HasErrors);
             Assert.AreEqual("Login failed for user 'testUser'.\r\n", tables.Errors);

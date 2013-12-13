@@ -2,6 +2,7 @@
 using System.Text;
 using System.Xml;
 using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -73,14 +74,15 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         [TestMethod]
         public void EnvironmentConnection_FindResources_Expected()
         {
-            var xmlString = CreateDataObject("FindResourceService", "*");
+            var request = CreateDataObject("FindResourceService", "*");
 
             IEnvironmentConnection conn = CreateConnection();
 
             conn.Connect();
             if(conn.IsConnected)
             {
-                var returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
+                
+                var returnData = conn.ExecuteCommand(request, Guid.Empty, Guid.Empty);
                 Assert.IsTrue(returnData.Contains("Workflow"));
             }
             else
@@ -111,7 +113,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             }
             conn.Connect();
 
-            //Assert.Fail();
         }
 
         #endregion Studio Request Tests
@@ -120,20 +121,24 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
         private StringBuilder CreateDataObject(string serviceName, string resourceName = null, string xmlFileLocation = null)
         {
+
+            var request = new EsbExecuteRequest {ServiceName = serviceName};
+
             dynamic dataObj = new UnlimitedObject();
             dataObj.Service = serviceName;
             if(serviceName == "FindResourceService" || serviceName == "GetResourceService")
             {
-                dataObj.ResourceName = resourceName;
-                dataObj.ResourceType = ResourceType.WorkflowService;
+                request.AddArgument("ResourceName", new StringBuilder(resourceName));
+                request.AddArgument("ResourceType", new StringBuilder(ResourceType.WorkflowService.ToString()));
             }
             else if(serviceName == "AddResourceService")
             {
-                dataObj.ResourceXml = XmlTextReader.Create(xmlFileLocation).ReadContentAsString();
+                request.AddArgument("ResourceXml", new StringBuilder(XmlTextReader.Create(xmlFileLocation).ReadContentAsString()));
             }
-            dataObj.Roles = string.Join(",", "tester");
 
-            return new StringBuilder(dataObj.XmlString);
+            var serializer = new Dev2JsonSerializer();
+
+            return serializer.SerializeToBuilder(request);
         }
         #endregion Private Test Methods
 

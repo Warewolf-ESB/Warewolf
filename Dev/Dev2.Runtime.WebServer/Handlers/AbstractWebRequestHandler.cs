@@ -156,8 +156,19 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     // internal service request we need to return data for it from the request object ;)
                     var serializer = new Dev2JsonSerializer();
+                    executePayload = string.Empty;
                     var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-                    executePayload = msg.Message.ToString();
+
+                    if (msg != null)
+                    {
+                        executePayload = msg.Message.ToString();    
+                    }
+                    
+                    // out fail safe to return differnt types of data from services ;)
+                    if (string.IsNullOrEmpty(executePayload))
+                    {
+                        executePayload =  esbExecuteRequest.ExecuteResult.ToString();
+                    }
                 }
             }
             else 

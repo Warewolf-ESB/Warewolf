@@ -160,7 +160,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch(Exception e)
             {
-                Console.WriteLine(e);
+                ServerLogger.LogError(e);
             }
             return null;
         }
