@@ -5,7 +5,7 @@ namespace Dev2.Communication
 {
 
     /// <summary>
-    /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is internal
+    /// Internal Service Request Object - Used mainly by the studio, but server can send request if service is web based
     /// </summary>
     public class EsbExecuteRequest
     {
@@ -14,7 +14,7 @@ namespace Dev2.Communication
         public Dictionary<string, StringBuilder> Args { get; set; }
 
         public StringBuilder ExecuteResult { get; set; }
- 
+
         public bool WasInternalService { get; set; }
  
         public EsbExecuteRequest()

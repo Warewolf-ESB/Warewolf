@@ -32,7 +32,7 @@ namespace Dev2.Infrastructure.Tests.Communication
             var result = js.SerializeToBuilder(request);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(371, result.Length);
+            Assert.AreEqual(348, result.Length);
             var resultObj = js.Deserialize<EsbExecuteRequest>(result);
             
             // check service name hydration
