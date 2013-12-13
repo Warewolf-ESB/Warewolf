@@ -83,16 +83,16 @@ this.ScenarioSetup(scenarioInfo);
                         "val"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "1"});
+                        "10"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "20"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "20"});
             table1.AddRow(new string[] {
                         "rs().row",
-                        "3"});
+                        "30"});
 #line 7
  testRunner.Given("I have the following duplicated recordset", ((string)(null)), table1, "Given ");
 #line 13
@@ -104,17 +104,17 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "result",
+                        "unique"});
             table2.AddRow(new string[] {
-                        "rs().row",
-                        "1"});
+                        "result().unique",
+                        "10"});
             table2.AddRow(new string[] {
-                        "rs().row",
-                        "2"});
+                        "result().unique",
+                        "20"});
             table2.AddRow(new string[] {
-                        "rs().row",
-                        "3"});
+                        "result().unique",
+                        "30"});
 #line 16
  testRunner.Then("the unique result will be", ((string)(null)), table2, "Then ");
 #line 21
@@ -137,28 +137,28 @@ this.ScenarioSetup(scenarioInfo);
                         "val"});
             table3.AddRow(new string[] {
                         "rs().row",
-                        "1"});
+                        "10"});
             table3.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "20"});
             table3.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "20"});
             table3.AddRow(new string[] {
                         "rs().row",
-                        "3"});
+                        "30"});
             table3.AddRow(new string[] {
                         "rs().data",
-                        "1"});
+                        "10"});
             table3.AddRow(new string[] {
                         "rs().data",
-                        "2"});
+                        "20"});
             table3.AddRow(new string[] {
                         "rs().data",
-                        "2"});
+                        "20"});
             table3.AddRow(new string[] {
                         "rs().data",
-                        "3"});
+                        "30"});
 #line 24
  testRunner.Given("I have the following duplicated recordset", ((string)(null)), table3, "Given ");
 #line 34
@@ -174,13 +174,13 @@ this.ScenarioSetup(scenarioInfo);
                         "val"});
             table4.AddRow(new string[] {
                         "rs().row",
-                        "1"});
+                        "10"});
             table4.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "20"});
             table4.AddRow(new string[] {
                         "rs().row",
-                        "3"});
+                        "30"});
 #line 37
  testRunner.Then("the unique result will be", ((string)(null)), table4, "Then ");
 #line 42

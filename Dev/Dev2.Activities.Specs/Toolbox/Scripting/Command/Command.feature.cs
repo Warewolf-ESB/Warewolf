@@ -85,9 +85,9 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "@echo off"});
             table1.AddRow(new string[] {
-                        "REM"});
+                        "REM Testing multiple commands"});
             table1.AddRow(new string[] {
-                        "dir [[drive]]Program Files"});
+                        "dir [[drive]]"});
 #line 8
  testRunner.Given("I have these command scripts to execute in a single execution run", ((string)(null)), table1, "Given ");
 #line 13

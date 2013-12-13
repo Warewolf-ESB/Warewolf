@@ -104,7 +104,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.And("I selected rounding \"Down\" to 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected rounding \"Up\" to 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.And("I want to show 3 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -176,7 +176,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
- testRunner.And("I selected rounding \"Down\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected rounding \"Down\" to -2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
  testRunner.And("I want to show 0 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 42
@@ -254,7 +254,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 66
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 67
- testRunner.Then("the result 35.00 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 68
  testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -316,13 +316,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.Given("I have a number 34.2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 86
- testRunner.And("I selected rounding \"Up\" to \"jklf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected rounding \"Up\" to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
- testRunner.And("I want to show 0 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I want to show \"asdf\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 89
- testRunner.Then("the result 35 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 90
    testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

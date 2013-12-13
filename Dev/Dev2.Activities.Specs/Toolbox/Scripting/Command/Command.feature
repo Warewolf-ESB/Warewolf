@@ -6,10 +6,10 @@
 Scenario: Execute commands 
 	Given I have a command variable "[[drive]]" equal to "C:\"
 	Given I have these command scripts to execute in a single execution run
-	| script                     |
-	| @echo off                  |
-	| REM                        |
-	| dir [[drive]]Program Files |
+	| script                        |
+	| @echo off                     |
+	| REM Testing multiple commands |
+	| dir [[drive]]                   |
 	When the command tool is executed
 	Then the result of the command tool will be "Volume in drive C has no label"
 	And command execution has "NO" error

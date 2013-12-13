@@ -175,7 +175,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 38
  testRunner.Given("I have a calculate variable \"[[var]]\" equal to \"sum(1,2,3)-5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 39
- testRunner.And("I have the formula \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have the formula \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.When("the calculate tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41

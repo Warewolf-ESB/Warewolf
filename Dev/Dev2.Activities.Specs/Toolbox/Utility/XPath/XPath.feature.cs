@@ -248,7 +248,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
  testRunner.Then("the variable \"\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
- testRunner.And("the xpath execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

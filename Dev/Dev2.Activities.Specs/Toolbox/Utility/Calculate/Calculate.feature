@@ -36,7 +36,7 @@ Scenario: Calculate using incorrect formula
 
 Scenario: Calculate using variable as full calculation
 	Given I have a calculate variable "[[var]]" equal to "sum(1,2,3)-5"
-	And I have the formula ""
+	And I have the formula "[[var]]"
 	When the calculate tool is executed
 	Then the calculate result should be "1"
 	And the calculate execution has "NO" error

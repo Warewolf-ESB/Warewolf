@@ -78,12 +78,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I have the url \"http://companyweb/Shared%20Documents/Integration%20Test%20Files/I" +
-                    "ntegrationTestFileDoNotTouch.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/IntegrationTestDoNotDe" +
+                    "lete.html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("the result should contain the string \"Got it\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Hello\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -121,15 +121,15 @@ this.ScenarioSetup(scenarioInfo);
 #line 20
     testRunner.Given("I have the url \"http://[[site]][[file]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.And("I have a web request variable \"[[site]]\" equal to \"companyweb/Shared%20Documents/" +
-                    "Integration%20Test%20Files/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[site]]\" equal to \"rsaklfsvrtfsbld/IntegrationTes" +
+                    "tSite/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.And("I have a web request variable \"[[file]]\" equal to \"IntegrationTestFileDoNotTouch." +
-                    "html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[file]]\" equal to \"IntegrationTestDoNotDelete.htm" +
+                    "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.Then("the result should contain the string \"Here\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Hello\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -145,8 +145,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
 this.ScenarioSetup(scenarioInfo);
 #line 28
- testRunner.Given("I have the url \"http://companyweb/Shared%20Documents/Integration%20Test%20Files/I" +
-                    "ntegrationTestFileDoNotTouch.txt\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/IntegrationTestDoNotDe" +
+                    "lete.html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
@@ -252,13 +252,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 60
 this.ScenarioSetup(scenarioInfo);
 #line 61
- testRunner.Given("I have the url \"[[rec(-1).set\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"[[rec(-1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 62
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 63
  testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 64
- testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the web request execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

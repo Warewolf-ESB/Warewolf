@@ -54,8 +54,8 @@ Scenario: Date and Time with badly formed output format
 	And I selected Add time as "Seconds" with a value of 61
 	And the output format as "asdf"
 	When the datetime tool is executed
-	Then the datetime result should be ""
-	And datetime execution has "AN" error
+	Then the datetime result should be "as1f"
+	And datetime execution has "NO" error
 
 Scenario: Date and Time with characters for time to add
 	Given I have a date "12:30"
@@ -116,3 +116,11 @@ Scenario: Calculate for a negative recordset index for Output Format
 	When the datetime tool is executed
 	Then datetime execution has "AN" error
 
+Scenario: Default outputs for dateparts not present
+	Given I have a date "0" 
+	And the input format as "sp"
+	And I selected Add time as "None" with a value of 0
+	And the output format as "yyyy-mm-dd 24hr:min:ss am/pm Era"
+	When the datetime tool is executed
+	Then the datetime result should be "0001-01-01 00r:00:00 AM A.D."
+	And datetime execution has "NO" error

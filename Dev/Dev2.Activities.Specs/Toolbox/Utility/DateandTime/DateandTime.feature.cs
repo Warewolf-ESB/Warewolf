@@ -218,9 +218,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 57
- testRunner.Then("the datetime result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the datetime result should be \"as1f\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 58
- testRunner.And("datetime execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("datetime execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -405,6 +405,32 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 117
  testRunner.Then("datetime execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Default outputs for dateparts not present")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTime")]
+        public virtual void DefaultOutputsForDatepartsNotPresent()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Default outputs for dateparts not present", ((string[])(null)));
+#line 119
+this.ScenarioSetup(scenarioInfo);
+#line 120
+ testRunner.Given("I have a date \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 121
+ testRunner.And("the input format as \"sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+ testRunner.And("I selected Add time as \"None\" with a value of 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 123
+ testRunner.And("the output format as \"yyyy-mm-dd 24hr:min:ss am/pm Era\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+ testRunner.When("the datetime tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 125
+ testRunner.Then("the datetime result should be \"0001-01-01 00r:00:00 AM A.D.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 126
+ testRunner.And("datetime execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

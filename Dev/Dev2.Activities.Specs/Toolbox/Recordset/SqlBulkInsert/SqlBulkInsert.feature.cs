@@ -118,11 +118,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check contraint enabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Import data into Table with check constraint enabled")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SqlBulkInsert")]
-        public virtual void ImportDataIntoTableWithCheckContraintEnabled()
+        public virtual void ImportDataIntoTableWithCheckConstraintEnabled()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check contraint enabled", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Import data into Table with check constraint enabled", ((string[])(null)));
 #line 20
 this.ScenarioSetup(scenarioInfo);
 #line hidden
@@ -133,12 +133,8 @@ this.ScenarioSetup(scenarioInfo);
             table3.AddRow(new string[] {
                         "1",
                         "TestData",
-                        "279c690e-3304-47a0-8bde-5d3ca2520a34"});
-            table3.AddRow(new string[] {
-                        "1",
-                        "TestData",
                         "b89416b9-5b24-4f95-bd11-25d9db8160a2"});
-#line 21
+#line 22
  testRunner.Given("I have this data", ((string)(null)), table3, "Given ");
 #line 25
  testRunner.And("Check constraints is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -147,7 +143,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -302,7 +298,7 @@ testRunner.Given("I have this data", ((string)(null)), table8, "Given ");
 #line 72
  testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 73
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -652,7 +648,7 @@ testRunner.Given("I have this data", ((string)(null)), table18, "Given ");
 #line 174
  testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 175
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -17,15 +17,15 @@ Scenario: Import data into table with check contraint disabled
 	And the sqlbulkinsert execution has "NO" error
     
 
-Scenario: Import data into Table with check contraint enabled
+Scenario: Import data into Table with check constraint enabled
+#Col3 is a foreign key that does not exist in the primary key table.
 	Given I have this data
 		| Col1 | Col2     | Col3                                 |
-		| 1    | TestData | 279c690e-3304-47a0-8bde-5d3ca2520a34 |
 		| 1    | TestData | b89416b9-5b24-4f95-bd11-25d9db8160a2 |
 	And Check constraints is enabled
 	When the tool is executed
 	Then the new table will will have 0 of rows
-	And the sqlbulkinsert execution has "NO" error
+	And the sqlbulkinsert execution has "AN" error
 	
 
 Scenario: Import data into Table with keep identity disabled
@@ -70,7 +70,7 @@ Given I have this data
 	And Skip rows is disabled
 	When the tool is executed
 	Then the new table will will have 0 of rows
-	And the sqlbulkinsert execution has "NO" error
+	And the sqlbulkinsert execution has "AN" error
 
 Scenario: Import data into Table with skip blank rows enabled
 #Note the second row is blank from the source data
@@ -172,7 +172,7 @@ Given I have this data
 	And Timeout in 1 seconds
 	When the tool is executed
 	Then  number of inserts is 0
-	And the sqlbulkinsert execution has "NO" error
+	And the sqlbulkinsert execution has "AN" error
 	
 Scenario: Import data into table with blank data
 	Given I have this data

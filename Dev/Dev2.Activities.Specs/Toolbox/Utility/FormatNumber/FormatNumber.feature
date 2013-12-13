@@ -13,7 +13,7 @@ Scenario: Format number rounding down
 
 Scenario: Format number rounding up
 	Given I have a number 788.894564545645
-	And I selected rounding "Down" to 3 
+	And I selected rounding "Up" to 3 
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.895 will be returned
@@ -37,7 +37,7 @@ Scenario: Format number rounding none
 
 Scenario: Format number rounding down to negative number
 	Given I have a number 788.894564545645
-	And I selected rounding "Down" to 0
+	And I selected rounding "Down" to -2
 	And I want to show 0 decimals 
 	When the format number is executed
 	Then the result 700 will be returned
@@ -64,7 +64,7 @@ Scenario: Format number rounding up to a character
 	And I selected rounding "Up" to "c"
 	And I want to show 2 decimals 
 	When the format number is executed
-	Then the result 35.00 will be returned
+	Then the result "" will be returned
 	And formart number execution has "AN" error
 
 Scenario: Format number that is blank
@@ -83,10 +83,10 @@ Scenario: Format non numeric
 
 Scenario: Format number to charater decimals
 	Given I have a number 34.2
-	And I selected rounding "Up" to "jklf"
-	And I want to show 0 decimals 
+	And I selected rounding "Up" to "1"
+	And I want to show "asdf" decimals 
 	When the format number is executed
-	Then the result 35 will be returned
+	Then the result "" will be returned
    And formart number execution has "AN" error
 
 Scenario: Format number with multipart variables and numbers for number rounding and decimals to show

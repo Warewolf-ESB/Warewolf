@@ -6,39 +6,39 @@
 Scenario: Find unique records in a  dataset
 	Given I have the following duplicated recordset
 	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 2   |
-	| rs().row | 3   |
+	| rs().row | 10   |
+	| rs().row | 20   |
+	| rs().row | 20   |
+	| rs().row | 30   |
 	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
 	And The result variable is "[[result().unique]]"
 	When the unique tool is executed	
 	Then the unique result will be
-	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
+	| result       | unique |
+	| result().unique | 10   |
+	| result().unique | 20   |
+	| result().unique | 30   |
 	And the unique execution has "NO" error
 		
 Scenario: Find unique records in a  dataset comma separated
 	Given I have the following duplicated recordset
 	| rs        | val |
-	| rs().row  | 1   |
-	| rs().row  | 2   |
-	| rs().row  | 2   |
-	| rs().row  | 3   |
-	| rs().data | 1   |
-	| rs().data | 2   |
-	| rs().data | 2   |
-	| rs().data | 3   |
+	| rs().row  | 10   |
+	| rs().row  | 20   |
+	| rs().row  | 20   |
+	| rs().row  | 30   |
+	| rs().data | 10   |
+	| rs().data | 20   |
+	| rs().data | 20   |
+	| rs().data | 30   |
 	And I want to find unique in field "[[rs().row]],[[rs().data]]" with the return field "[[rs().row]]"
 	And The result variable is "[[result().unique]]"
 	When the unique tool is executed	
 	Then the unique result will be
 	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
-	| rs().row | 3   |
+	| rs().row | 10   |
+	| rs().row | 20   |
+	| rs().row | 30   |
 	And the unique execution has "NO" error
 
 Scenario: Find unique records in an empty dataset
