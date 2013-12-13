@@ -14,7 +14,7 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Execution hostProcessPlatform="MSIL">
+  <Execution>
     <Hosts skipUnhostableTests="false" />
     <Timeouts testTimeout="120000" />
     <TestTypeSpecific>
