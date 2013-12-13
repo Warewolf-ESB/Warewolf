@@ -406,7 +406,6 @@
     <Compile Include="Network\Enums.cs" />
     <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
     <Compile Include="Network\IServiceLocator.cs" />
-    <Compile Include="Network\ResourceServiceProxy.cs" />
     <Compile Include="Network\ServerState.cs" />
     <Compile Include="Network\ServiceLocator.cs" />
     <Compile Include="Network\ServerProxy.cs" />
