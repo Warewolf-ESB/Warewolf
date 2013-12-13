@@ -45,9 +45,30 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
                                                           "\",", GlobalConstants.InjectedDecisionDataListVariable, ")");
 
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if (variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+
+            
+            var multiAssign = new DsfMultiAssignActivity();
+            int row = 1;
+            foreach (var variable in variableList)
+            {
+                multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
+                row++;
+            }
+            
             TestStartNode = new FlowStep
                 {
-                    Action = decisionActivity
+                    Action = multiAssign , Next = new FlowStep
+                        {
+                            Action = decisionActivity
+                        }
                 };
         }
         
@@ -90,16 +111,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                     ));
         }
 
-        [Given(@"""(.*)"" error occurred")]
-        public void GivenErrorOccurred(string anError)
-        {
-            bool errorOccurred = anError.Equals("An");
-            //Simulate an error condition
-            if (errorOccurred)
-            {
-               throw new Exception("How to create an error before execution ???");
-            }
-        }
+        //[Given(@"""(.*)"" error occurred")]
+        //public void GivenErrorOccurred(string anError)
+        //{
+        //    bool errorOccurred = anError.Equals("An");
+        //    //Simulate an error condition
+        //    if (errorOccurred)
+        //    {
+        //       throw new Exception("How to create an error before execution ???");
+        //    }
+        //}
 
         [Given(@"I want to check ""(.*)""")]
         public void GivenIWantToCheck(string decision)

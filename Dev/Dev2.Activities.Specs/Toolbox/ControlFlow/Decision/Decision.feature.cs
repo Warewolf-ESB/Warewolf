@@ -1700,7 +1700,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 536
 this.ScenarioSetup(scenarioInfo);
 #line 537
- testRunner.Given("\"An\" error occurred", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[rec(-1).row]]\" value \"South Africa is a fantastic country\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 538
  testRunner.And("I want to check \"IsError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 539
@@ -1720,7 +1721,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 542
 this.ScenarioSetup(scenarioInfo);
 #line 543
- testRunner.Given("\"No\" error occurred", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[rec().row]]\" value \"South Africa is a fantastic country\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 544
  testRunner.And("I want to check \"IsError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 545
@@ -1740,7 +1741,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 548
 this.ScenarioSetup(scenarioInfo);
 #line 549
- testRunner.Given("\"No\" error occurred", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[rec().row]]\" value \"South Africa is a fantastic country\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 550
  testRunner.And("I want to check \"IsNotError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 551
@@ -1760,12 +1761,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 554
 this.ScenarioSetup(scenarioInfo);
 #line 555
- testRunner.Given("\"An\" error occurred", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 556
- testRunner.And("I want to check \"IsNotError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("a decision variable \"[[rec(-1).row]]\" value \"South Africa is a fantastic country\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 557
- testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I want to check \"IsNotError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 558
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 559
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1777,15 +1779,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DecideUsingANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Decide using a negative recordset index", ((string[])(null)));
-#line 560
-this.ScenarioSetup(scenarioInfo);
 #line 561
- testRunner.Given("is \"[[my(-1).var]]\" \"IsContains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 562
- testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("is \"[[my(-1).var]]\" \"IsContains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 563
- testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 564
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 565
  testRunner.And("the decision execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

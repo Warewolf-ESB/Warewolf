@@ -533,26 +533,27 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
 	Then the decision result should be "False"
 	And the decision execution has "NO" error
 		
-Scenario: decide if There Is An Error (True)
-	Given "An" error occurred
+Scenario: decide if There Is An Error (True)	
+	Given a decision variable "[[rec(-1).row]]" value "South Africa is a fantastic country"
 	And I want to check "IsError"
 	When the decision tool is executed
 	Then the decision result should be "True"
 
 Scenario: decide if There Is An Error (False)
-	Given "No" error occurred
+	Given a decision variable "[[rec().row]]" value "South Africa is a fantastic country"
 	And I want to check "IsError"
 	When the decision tool is executed
 	Then the decision result should be "False"
 
 Scenario: decide if There Is No Error (True)
-	Given "No" error occurred
+	Given a decision variable "[[rec().row]]" value "South Africa is a fantastic country"	
 	And I want to check "IsNotError"
 	When the decision tool is executed
 	Then the decision result should be "True"
 
 Scenario: decide if There Is No Error (False)
-	Given "An" error occurred
+	Given a decision variable "[[rec(-1).row]]" value "South Africa is a fantastic country"
+	#Given "An" error occurred
 	And I want to check "IsNotError"
 	When the decision tool is executed
 	Then the decision result should be "False"
