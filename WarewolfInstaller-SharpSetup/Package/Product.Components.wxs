@@ -183,9 +183,6 @@
             <Component Id="cmpDDA768B61BB9E4AF2E0F89EAF7346ECF" Directory="dirServerRoot" Guid="{3364DC5C-0CCF-4F45-8318-76BB859EBA30}">
                 <File Id="fil1EFAA5CFA7EA98C4E894ADCBB43CAFD6" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Util.dll" />
             </Component>
-            <Component Id="cmp5C99F64CD9DAB96983DA0EB7616053CA" Directory="dirServerRoot" Guid="{25CE9C11-E0E5-4AAB-A74E-C1BB1D948466}">
-                <File Id="filCB8059CCB70A12C575484C91644AD979" KeyPath="yes" Source="..\ProductBuild\Server\HttpFramework.dll" />
-            </Component>
             <Component Id="cmpC14744C15648BD9EAD4EBFB4D495B482" Directory="dirServerRoot" Guid="{708228B3-5187-4BD1-B9EA-57E87438E167}">
                 <File Id="fil7432EA53D3A5BDA62679FAC6EEC794A2" KeyPath="yes" Source="..\ProductBuild\Server\InfragisticsWPF4.Calculations.XamCalculationManager.v12.1.dll" />
             </Component>
@@ -334,22 +331,22 @@
                 <File Id="filE95EDC6AF7B1DB198340497BD4EB47E5" KeyPath="yes" Source="..\ProductBuild\Server\Services\Roll Dice for Players.xml" />
             </Component>
             <Component Id="cmp7184FA19575FF852F0F42695920A316A" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{FCEC96D6-5A99-4D26-BD49-8BDF8EACFEF4}">
-                <File Id="filE056323C35F023AF0FBA95FDAAE55EF9" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Assign.xml" />
+                <File Id="filE056323C35F023AF0FBA95FDAAE55EF9" KeyPath="yes" Source="..\ProductBuild\Server\Services\Data - Assign.xml" />
             </Component>
             <Component Id="cmp2E9ACA937527FFEDAA7D29014CAF95F9" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{03B59E96-ADC7-4FCE-96A2-0555E83C0FDD}">
-                <File Id="filAEB75F5215CE4BFB0CB181B664D589CB" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Base Conversion.xml" />
+                <File Id="filAEB75F5215CE4BFB0CB181B664D589CB" KeyPath="yes" Source="..\ProductBuild\Server\Services\Data - Base Conversion.xml" />
             </Component>
             <Component Id="cmp363F94F2B46076162665E9EE31DB5856" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{E6D19B7C-051B-424E-8B61-5FD61D0E2D1D}">
                 <File Id="filBE2A6274A78A1D6BC6FDD9A40EA9D290" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Calculate.xml" />
             </Component>
             <Component Id="cmp7B6734EB702F8D1EA7C1489C40171ED1" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{EA422466-9C7A-4ABC-BF9D-6C0E07A85804}">
-                <File Id="filCED571C1590E01E9B7D0D7AD5957E987" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Case Conversion.xml" />
+                <File Id="filCED571C1590E01E9B7D0D7AD5957E987" KeyPath="yes" Source="..\ProductBuild\Server\Services\Data - Case Conversion.xml" />
             </Component>
             <Component Id="cmpE5CBFA607D70B3F0B1064EC3B4F62040" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{4C05882A-D71E-4E76-9E8D-FABA2666E586}">
-                <File Id="filF3F7142F4941A75424AE1FC04241637D" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Data Merge.xml" />
+                <File Id="filF3F7142F4941A75424AE1FC04241637D" KeyPath="yes" Source="..\ProductBuild\Server\Services\Data - Data Merge.xml" />
             </Component>
             <Component Id="cmp781102FB00790C44679C4BA0DBF047EE" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{41CFB660-65BE-48A1-86C7-BBF4296E66C4}">
-                <File Id="filDB03AB3BD4057F3A7D5B621E246A0CC8" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Data Split.xml" />
+                <File Id="filDB03AB3BD4057F3A7D5B621E246A0CC8" KeyPath="yes" Source="..\ProductBuild\Server\Services\Data - Data Split.xml" />
             </Component>
             <Component Id="cmpE21C0EFF690328D7859DE5E2144DD165" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{9DA17A18-65E8-4C7F-946F-76DE26D36979}">
                 <File Id="fil851174F8BB6035C07F6335DD72FED35A" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Date and Time Difference.xml" />
