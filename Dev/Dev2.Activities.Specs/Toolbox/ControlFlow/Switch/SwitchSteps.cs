@@ -57,8 +57,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);
         }
-
-        [Then(@"the variable ""(.*)"""" will evaluate to ""(.*)""")]
+        
+        [Then(@"the variable ""(.*)"" will evaluate to ""(.*)""")]
         public void ThenTheVariableWillEvaluateTo(string variable, string expectedResult)
         {
             string error;

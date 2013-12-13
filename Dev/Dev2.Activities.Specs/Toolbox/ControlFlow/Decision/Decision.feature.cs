@@ -386,9 +386,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 104
 this.ScenarioSetup(scenarioInfo);
 #line 105
- testRunner.Given("a decision variable \"[[A]]\" value \"?:[^?+*{}()[\\]\\\\|]+\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[A]]\" value \"tshepo.ntlhokoa@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 106
- testRunner.And("decide if \"[[A]]\" \"IsRegEx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"IsRegEx\" \"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 107
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 108
@@ -410,7 +410,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 112
  testRunner.Given("a decision variable \"[[A]]\" value \"787877787\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 113
- testRunner.And("decide if \"[[A]]\" \"IsRegEx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"IsRegEx\" \"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 115
@@ -828,7 +828,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 245
  testRunner.Given("a decision variable \"[[A]]\" value \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 246
- testRunner.And("decide if \"[[A]]\" \"NotRegEx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotRegEx\" \"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 247
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 248
@@ -848,9 +848,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 251
 this.ScenarioSetup(scenarioInfo);
 #line 252
- testRunner.Given("a decision variable \"[[A]]\" value \"?:[^?+*{}()[\\]\\\\|]+\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("a decision variable \"[[A]]\" value \"tshepo.ntlhokoa@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 253
- testRunner.And("decide if \"[[A]]\" \"NotRegEx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotRegEx\" \"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 254
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 255
@@ -1763,11 +1763,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 555
  testRunner.Given("a decision variable \"[[rec(-1).row]]\" value \"South Africa is a fantastic country\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 557
+#line 556
  testRunner.And("I want to check \"IsNotError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 558
+#line 557
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 559
+#line 558
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -1779,16 +1779,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DecideUsingANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Decide using a negative recordset index", ((string[])(null)));
-#line 561
+#line 560
 this.ScenarioSetup(scenarioInfo);
+#line 561
+ testRunner.Given("a decision variable \"[[rec(-1).row]]\" value \"South Africa is a fantastic country\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 562
- testRunner.Given("is \"[[my(-1).var]]\" \"IsContains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("is \"[[rec(-1).row]]\" \"IsContains\" \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 563
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 564
- testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 565
- testRunner.And("the decision execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("the decision execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

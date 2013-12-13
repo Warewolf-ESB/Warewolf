@@ -102,15 +102,15 @@ Scenario: decide if variable [[A]] is Numeric (False)
 	And the decision execution has "NO" error
 
 Scenario: decide if variable [[A]] is Regex (True)
-	Given a decision variable "[[A]]" value "?:[^?+*{}()[\]\\|]+"	
-	And decide if "[[A]]" "IsRegEx" 
+	Given a decision variable "[[A]]" value "tshepo.ntlhokoa@dev2.co.za"		
+	And is "[[A]]" "IsRegEx" "^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"	
 	When the decision tool is executed
 	Then the decision result should be "True"
 	And the decision execution has "NO" error
 
 Scenario: decide if variable [[A]] is Regex (False)
-	Given a decision variable "[[A]]" value "787877787"	
-	And decide if "[[A]]" "IsRegEx"
+	Given a decision variable "[[A]]" value "787877787"		
+	And is "[[A]]" "IsRegEx" "^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"	
 	When the decision tool is executed
 	Then the decision result should be "False"
 	And the decision execution has "NO" error
@@ -242,15 +242,15 @@ Scenario: decide if variable [[A]] Not Numeric (False)
 	And the decision execution has "NO" error
 
 Scenario: decide if variable [[A]] Not Regex (True)
-	Given a decision variable "[[A]]" value "6"	
-	And decide if "[[A]]" "NotRegEx" 
+	Given a decision variable "[[A]]" value "6"		
+	And is "[[A]]" "NotRegEx" "^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"	
 	When the decision tool is executed
 	Then the decision result should be "True"
 	And the decision execution has "NO" error
 
 Scenario: decide if variable [[A]] Not Regex (False)
-	Given a decision variable "[[A]]" value "?:[^?+*{}()[\]\\|]+"	
-	And decide if "[[A]]" "NotRegEx"
+	Given a decision variable "[[A]]" value "tshepo.ntlhokoa@dev2.co.za"		
+	And is "[[A]]" "NotRegEx" "^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"
 	When the decision tool is executed
 	Then the decision result should be "False"
 	And the decision execution has "NO" error
@@ -552,14 +552,13 @@ Scenario: decide if There Is No Error (True)
 	Then the decision result should be "True"
 
 Scenario: decide if There Is No Error (False)
-	Given a decision variable "[[rec(-1).row]]" value "South Africa is a fantastic country"
-	#Given "An" error occurred
+	Given a decision variable "[[rec(-1).row]]" value "South Africa is a fantastic country"	
 	And I want to check "IsNotError"
 	When the decision tool is executed
 	Then the decision result should be "False"
 
 Scenario: Decide using a negative recordset index
-	Given is "[[my(-1).var]]" "IsContains" ""
+	Given a decision variable "[[rec(-1).row]]" value "South Africa is a fantastic country"	
+	And is "[[rec(-1).row]]" "IsContains" ""
 	When the decision tool is executed
-	Then the decision result should be "False"
-	And the decision execution has "AN" error
+	Then the decision execution has "AN" error
