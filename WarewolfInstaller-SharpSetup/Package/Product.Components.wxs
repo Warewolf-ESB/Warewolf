@@ -708,7 +708,13 @@
             <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
             <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
         </DirectoryRef>
-        <ComponentGroup Id="Studio"> 
+        <ComponentGroup Id="Studio">
+            <Component Id="cmp0E096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-1132-92AB-7B4349240DAC}">
+                <File Id="fil7BBC05375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Interop.ActiveDs.dll" />
+            </Component>
+            <Component Id="cmp0E096C78207607B31C951A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-1132-92AB-7A4341240DAC}">
+                <File Id="fil7BBC05375326109CAE2251F526A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Microsoft.AspNet.SignalR.Client.dll" />
+            </Component>
             <Component Id="cmp0E096C78207607B31C951A0EFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-4981-92AB-7A4341240DAC}">
                 <File Id="fil7BBC05375326109FFE2251F526A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\AdornedControl.dll" />
             </Component>
