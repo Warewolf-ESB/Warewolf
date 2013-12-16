@@ -102,6 +102,8 @@ namespace Tfs.Squish
 
             VersionSpec version = VersionSpec.Latest;
 
+            Console.WriteLine("FILE-> "+ file);
+
             using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
             {
                 annotatedVersionedFile.AnnotateAll();
@@ -117,7 +119,6 @@ namespace Tfs.Squish
         /// <param name="outputStream">The output stream.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         private void DumpToStream(AnnotatedVersionedFile annFile, TextWriter outputStream, bool dumpCode)
-
         {
 
             AnnotatedFile.FileVersion versionFile = annFile.TipVersionFile;
