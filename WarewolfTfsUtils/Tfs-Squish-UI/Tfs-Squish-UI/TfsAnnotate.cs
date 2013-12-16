@@ -9,7 +9,6 @@ namespace Tfs.Squish
 {
     public class TfsAnnotate
     {
-        
         private string _serverURI;
 
         public TfsAnnotate(string serverURI)
