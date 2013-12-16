@@ -24,10 +24,6 @@ namespace Tfs.Squish
             TeamFoundationServer tfs = new TeamFoundationServer(serverName);
             VersionControlServer version = (VersionControlServer) tfs.GetService(typeof (VersionControlServer));
             return version;
-            //var result = version.GetWorkspace(_workspace, version.AuthenticatedUser);
-
-            //return result;
-
         }
 
         /// <summary>
