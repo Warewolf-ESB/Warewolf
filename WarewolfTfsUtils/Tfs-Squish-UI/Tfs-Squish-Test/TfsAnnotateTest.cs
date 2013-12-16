@@ -16,7 +16,7 @@ namespace Tfs_Squish_Test
 
             TfsAnnotate tfsAnn = new TfsAnnotate("http://rsaklfsvrgendev:8080/tfs");
 
-            tfsAnn.MyInvoke(@"C:\Development\Dev\Dev2.Server\WebServer.cs", tw, false);
+            tfsAnn.FetchAnnotateInfo(@"C:\Development\Dev\Dev2.Server\WebServer.cs", tw, false);
 
             var tmp = (tw as TestingTextWriter);
 

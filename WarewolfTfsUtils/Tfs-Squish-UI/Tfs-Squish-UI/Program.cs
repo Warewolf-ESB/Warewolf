@@ -22,7 +22,7 @@ namespace Tfs.Squish
 
                 TfsAnnotate tfsAnn = new TfsAnnotate(serverURI);
 
-                tfsAnn.MyInvoke(fileName, false);    
+                tfsAnn.FetchAnnotateInfo(fileName, false);    
             }
         }
     }

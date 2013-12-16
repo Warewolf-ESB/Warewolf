@@ -35,9 +35,9 @@ namespace Tfs.Squish
         /// </summary>
         /// <param name="file">The file.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
-        public void MyInvoke(string file, bool dumpCode)
+        public void FetchAnnotateInfo(string file, bool dumpCode)
         {
-            MyInvoke(file, Console.Out, string.Empty, string.Empty, dumpCode);
+            FetchAnnotateInfo(file, Console.Out, string.Empty, string.Empty, dumpCode);
         }
         
         /// <summary>
@@ -46,9 +46,9 @@ namespace Tfs.Squish
         /// <param name="file">The file.</param>
         /// <param name="outputStream">The output stream.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
-        public void MyInvoke(string file, TextWriter outputStream, bool dumpCode)
+        public void FetchAnnotateInfo(string file, TextWriter outputStream, bool dumpCode)
         {
-            MyInvoke(file, outputStream, string.Empty, string.Empty, dumpCode);
+            FetchAnnotateInfo(file, outputStream, string.Empty, string.Empty, dumpCode);
         }
 
 
@@ -60,7 +60,7 @@ namespace Tfs.Squish
         /// <param name="pass">The pass.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
-        public void MyInvoke(string file, string user, string pass, bool dumpCode)
+        public void FetchAnnotateInfo(string file, string user, string pass, bool dumpCode)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace Tfs.Squish
         /// <param name="pass">The pass.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
-        public void MyInvoke(string file, TextWriter outputStream, string user, string pass, bool dumpCode)
+        public void FetchAnnotateInfo(string file, TextWriter outputStream, string user, string pass, bool dumpCode)
         {
             var ws = FetchVersionControlServer();
 
