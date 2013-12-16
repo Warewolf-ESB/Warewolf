@@ -10,10 +10,10 @@ Global
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccProjectUniqueName0 = Tfs-Squish-Test\\Tfs-Squish-Test.csproj
-		SccProjectName0 = Tfs-Squish-Test
-		SccLocalPath0 = Tfs-Squish-Test
-		SccLocalPath1 = .
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Tfs-Squish-Test\\Tfs-Squish-Test.csproj
+		SccProjectName1 = Tfs-Squish-Test
+		SccLocalPath1 = Tfs-Squish-Test
 		SccProjectUniqueName2 = Tfs-Squish-UI\\Tfs-Squish.csproj
 		SccProjectName2 = Tfs-Squish-UI
 		SccLocalPath2 = Tfs-Squish-UI
@@ -34,5 +34,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
