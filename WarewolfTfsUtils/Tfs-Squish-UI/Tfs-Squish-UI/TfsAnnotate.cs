@@ -9,24 +9,24 @@ namespace Tfs.Squish
 {
     public class TfsAnnotate
     {
-        private string _workspace;
+        
         private string _serverURI;
 
-        public TfsAnnotate(string serverURI, string workspace)
+        public TfsAnnotate(string serverURI)
         {
-            _workspace = workspace;
             _serverURI = serverURI;
         }
 
-        private Workspace FetchWorkspace()
+        private VersionControlServer FetchVersionControlServer()
         {
 
             string serverName = _serverURI;
             TeamFoundationServer tfs = new TeamFoundationServer(serverName);
             VersionControlServer version = (VersionControlServer) tfs.GetService(typeof (VersionControlServer));
-            var result = version.GetWorkspace(_workspace, version.AuthenticatedUser);
+            return version;
+            //var result = version.GetWorkspace(_workspace, version.AuthenticatedUser);
 
-            return result;
+            //return result;
 
         }
 
@@ -63,7 +63,7 @@ namespace Tfs.Squish
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
         public void MyInvoke(string file, string user, string pass, bool dumpCode)
         {
-            var ws = FetchWorkspace();
+            var ws = FetchVersionControlServer();
 
             if(string.IsNullOrEmpty(file))
             {
@@ -72,7 +72,7 @@ namespace Tfs.Squish
 
             VersionSpec version = VersionSpec.Latest;
 
-            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
+            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
             {
                 annotatedVersionedFile.AnnotateAll();
                 DumpToStream(annotatedVersionedFile, Console.Out, dumpCode);
@@ -91,7 +91,7 @@ namespace Tfs.Squish
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
         public void MyInvoke(string file, TextWriter outputStream, string user, string pass, bool dumpCode)
         {
-            var ws = FetchWorkspace();
+            var ws = FetchVersionControlServer();
 
             if(string.IsNullOrEmpty(file))
             {
@@ -100,7 +100,7 @@ namespace Tfs.Squish
 
             VersionSpec version = VersionSpec.Latest;
 
-            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws.VersionControlServer, file, version))
+            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
             {
                 annotatedVersionedFile.AnnotateAll();
                 DumpToStream(annotatedVersionedFile, outputStream, dumpCode);

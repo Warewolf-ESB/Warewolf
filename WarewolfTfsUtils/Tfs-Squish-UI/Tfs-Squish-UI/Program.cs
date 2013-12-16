@@ -1,24 +1,26 @@
 ﻿using System;
-using Tfs.Squish;
 
-namespace Tfs_Squish_UI
+namespace Tfs.Squish
 {
     class Program
     {
         static void Main(string[] args)
         {
 
-            if (args.Length != 3)
+            if (args.Length != 2)
             {
-                Console.WriteLine("Usage : tfs-squish [serverURI] [worksapceNamePerTFS] [filePath]");
+                Console.WriteLine("Usage : tfs-squish [serverURI] [filePath]");
+                foreach (var s in args)
+                {
+                    Console.WriteLine("Arg-> " + s);
+                }
 
-            }else if (args.Length == 3)
+            }else if (args.Length == 2)
             {
                 var serverURI = args[0];
-                var workspace = args[1];
                 var fileName = args[2];
 
-                TfsAnnotate tfsAnn = new TfsAnnotate(serverURI, workspace);
+                TfsAnnotate tfsAnn = new TfsAnnotate(serverURI);
 
                 tfsAnn.MyInvoke(fileName, false);    
             }
