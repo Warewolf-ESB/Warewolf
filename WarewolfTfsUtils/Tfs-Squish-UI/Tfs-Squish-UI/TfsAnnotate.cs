@@ -25,7 +25,7 @@ namespace Tfs.Squish
             TeamFoundationServer tfs = new TeamFoundationServer(serverName, creds);
             tfs.Authenticate();
 
-            Console.WriteLine("TFS USER-> " + tfs.AuthenticatedUserName);
+            //Console.WriteLine("TFS USER-> " + tfs.AuthenticatedUserName);
 
             VersionControlServer version = (VersionControlServer) tfs.GetService(typeof (VersionControlServer));
             return version;
@@ -108,7 +108,7 @@ namespace Tfs.Squish
 
             VersionSpec version = VersionSpec.Latest;
 
-            Console.WriteLine("FILE-> "+ file);
+            //Console.WriteLine("FILE-> "+ file);
 
             using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
             {
