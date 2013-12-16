@@ -18,7 +18,7 @@ namespace Tfs.Squish
             }else if (args.Length == 2)
             {
                 var serverURI = args[0];
-                var fileName = args[2];
+                var fileName = args[1];
 
                 TfsAnnotate tfsAnn = new TfsAnnotate(serverURI);
 
