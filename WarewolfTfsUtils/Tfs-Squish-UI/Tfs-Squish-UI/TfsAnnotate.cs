@@ -56,26 +56,33 @@ namespace Tfs.Squish
         /// Invoke the annotatation fetch for the file ;)
         /// </summary>
         /// <param name="file">The file.</param>
-        /// <param name="outputStream">The output stream.</param>
         /// <param name="user">The user.</param>
         /// <param name="pass">The pass.</param>
         /// <param name="dumpCode">if set to <c>true</c> [dump code].</param>
         /// <exception cref="Microsoft.TeamFoundation.Client.CommandLine.Command.ArgumentListException">AnnotateFileRequired</exception>
         public void MyInvoke(string file, string user, string pass, bool dumpCode)
         {
-            var ws = FetchVersionControlServer();
-
-            if(string.IsNullOrEmpty(file))
+            try
             {
-                throw new Command.ArgumentListException("AnnotateFileRequired");
+                var ws = FetchVersionControlServer();
+
+                if (string.IsNullOrEmpty(file))
+                {
+                    throw new Command.ArgumentListException("AnnotateFileRequired");
+                }
+
+                VersionSpec version = VersionSpec.Latest;
+
+                using (AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
+                {
+                    annotatedVersionedFile.AnnotateAll();
+                    DumpToStream(annotatedVersionedFile, Console.Out, dumpCode);
+                }
             }
-
-            VersionSpec version = VersionSpec.Latest;
-
-            using(AnnotatedVersionedFile annotatedVersionedFile = new AnnotatedVersionedFile(ws, file, version))
+            catch (Exception e)
             {
-                annotatedVersionedFile.AnnotateAll();
-                DumpToStream(annotatedVersionedFile, Console.Out, dumpCode);
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
             }
 
         }
