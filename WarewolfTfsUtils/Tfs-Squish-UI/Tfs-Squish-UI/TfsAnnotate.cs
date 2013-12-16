@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.Client.CommandLine;
@@ -20,7 +21,12 @@ namespace Tfs.Squish
         {
 
             string serverName = _serverURI;
-            TeamFoundationServer tfs = new TeamFoundationServer(serverName);
+            ICredentials creds = new NetworkCredential("IntegrationTester", "I73573r0","Dev2");
+            TeamFoundationServer tfs = new TeamFoundationServer(serverName, creds);
+            tfs.Authenticate();
+
+            Console.WriteLine("TFS USER-> " + tfs.AuthenticatedUserName);
+
             VersionControlServer version = (VersionControlServer) tfs.GetService(typeof (VersionControlServer));
             return version;
         }
