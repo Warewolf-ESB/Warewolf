@@ -95,7 +95,6 @@
     <Compile Include="ESB\Management\Services\RenameCategoryResource.cs" />
     <Compile Include="ESB\Management\Services\FetchDebugItemFile.cs" />
     <Compile Include="ESB\Management\Services\FetchRemoteDebugMessages.cs" />
-    <Compile Include="ESB\Management\Services\DebugState.cs" />
     <Compile Include="ESB\Management\Services\DeleteLog.cs" />
     <Compile Include="ESB\Management\Services\FetchCurrentServerLog.cs" />
     <Compile Include="ESB\Management\Services\FindLogDirectory.cs" />
@@ -130,11 +129,8 @@
     <Compile Include="ESB\Management\Services\CheckPermissions.cs" />
     <Compile Include="ESB\Management\Services\DeployResource.cs" />
     <Compile Include="ESB\Management\Services\FindDependencies.cs" />
-    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
-    <Compile Include="ESB\Management\Services\FindDrive.cs" />
     <Compile Include="ESB\Management\Services\FindNetworkComputers.cs" />
     <Compile Include="ESB\Management\Services\FindResource.cs" />
-    <Compile Include="ESB\Management\Services\FindResourceForBinding.cs" />
     <Compile Include="ESB\Management\Services\FindResourcesByID.cs" />
     <Compile Include="ESB\Management\Services\FindServerUsername.cs" />
     <Compile Include="ESB\Management\Services\FindSourcesByType.cs" />

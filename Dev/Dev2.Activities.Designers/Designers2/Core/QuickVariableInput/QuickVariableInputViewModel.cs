@@ -7,7 +7,7 @@ using System.Xml;
 using Dev2.Activities.Preview;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.DataList.Contract;
+using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Studio.Core.ViewModels.Base;

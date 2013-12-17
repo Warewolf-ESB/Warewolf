@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Enums;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;

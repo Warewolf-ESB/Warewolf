@@ -14,18 +14,22 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            //string result;
-
-            string filePath;
-            string directory;
+            string filePath = null;
+            string directory = null;
 
             ExecuteMessage msg = new ExecuteMessage() {HasError = false};
 
             StringBuilder tmp;
             values.TryGetValue("FilePath", out tmp);
-            filePath = tmp.ToString();
+            if (tmp != null)
+            {
+                filePath = tmp.ToString();
+            }
             values.TryGetValue("Directory", out tmp);
-            directory = tmp.ToString();
+            if(tmp != null)
+            {
+                directory = tmp.ToString();
+            }
 
             if(String.IsNullOrWhiteSpace(filePath))
             {

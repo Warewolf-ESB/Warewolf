@@ -1,20 +1,15 @@
 ﻿using Dev2.Composition;
-using Dev2.Studio.Core.ViewModels;
+using Dev2.Core.Tests.Utils;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
-using Dev2.Studio.Core.Interfaces;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Factories;
-using System.Collections.ObjectModel;
-
-using Dev2.Core.Tests.Utils;
-using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Interfaces.DataList;
 
 namespace Dev2.Core.Tests {
 

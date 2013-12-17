@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Dev2.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces
 {

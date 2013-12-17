@@ -61,31 +61,5 @@ namespace Dev2.Util
 
             return result;
         }
-
-        /// <summary>
-        /// Strips the naughty namespaces.
-        /// </summary>
-        /// <param name="def">The def.</param>
-        /// <returns></returns>
-        private StringBuilder StripNaughtyNamespaces(StringBuilder def)
-        {
-            var result = def;
-            //foreach (string ns in badNamespaces)
-            //{
-            //    Match m = Regex.Match(def, ns);
-            //    if (m.Success)
-            //    {
-            //        // we have a hit ;)
-            //        // search backward for the start xmlns: ...
-            //        for (int i = 0; i < m.Groups.Count; i++)
-            //        {
-            //            string val = m.Groups[i].Value;
-            //            result = def.Replace(val, string.Empty);
-            //        }
-            //    }
-            //}
-
-            return result;
-        }
     }
 }

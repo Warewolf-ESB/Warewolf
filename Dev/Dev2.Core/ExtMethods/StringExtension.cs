@@ -1,9 +1,7 @@
-﻿using Dev2.Common;
+﻿using System.Collections.Generic;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
-using Dev2.DataList.Contract;
-using System;
-using System.Collections.Generic;
+using Dev2.Data.Util;
 
 namespace Dev2
 {

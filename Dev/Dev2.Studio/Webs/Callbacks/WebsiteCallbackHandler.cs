@@ -4,6 +4,7 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
+using Dev2.Interfaces;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;

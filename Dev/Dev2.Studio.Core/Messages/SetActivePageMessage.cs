@@ -1,4 +1,4 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using Dev2.Interfaces;
 
 namespace Dev2.Studio.Core.Messages
 {

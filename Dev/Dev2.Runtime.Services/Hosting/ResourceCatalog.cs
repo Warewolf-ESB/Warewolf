@@ -38,9 +38,6 @@ namespace Dev2.Runtime.Hosting
         readonly ConcurrentDictionary<Guid, ManagementServiceResource> _managementServices = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         readonly ConcurrentDictionary<string, List<DynamicServiceObjectBase>> _frequentlyUsedServices = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
 
-        readonly object _cacheLock = new object();
-        readonly IDictionary<string, StringBuilder> _cachedResources = new Dictionary<string, StringBuilder>(); 
-
         #region Singleton Instance
 
         //
@@ -216,35 +213,18 @@ namespace Dev2.Runtime.Hosting
                 return contents;
             }
 
-            // Travis - Fetch from cache ;)
-            //            lock(_cacheLock)
-            //            {
-            //                var key = resource.FilePath;
-            //                StringBuilder val;
-            //                if(_cachedResources.TryGetValue(key, out val))
-            //                {
-            //                    return val;
-            //                }
-            //            }
-
             // Open the file with the file share option of read. This will ensure that if the file is opened for write while this read operation
             // is happening the wite will fail.
             using(FileStream fs = new FileStream(resource.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 using(StreamReader sr = new StreamReader(fs))
                 {
-                    while(!sr.EndOfStream)
+                    while (!sr.EndOfStream)
                     {
                         contents.Append(sr.ReadLine());
+                    }
                 }
-            }
-            }
-
-            // Travis - Add to cache ;)
-            lock(_cacheLock)
-            {
-                var key = resource.FilePath;
-                _cachedResources[key] = contents.CleanEncodingHeaderForXmlSave();
+            
             }
 
             return contents;
@@ -515,7 +495,7 @@ namespace Dev2.Runtime.Hosting
             {
                 var copy = new Resource(resource);
                 var contents = GetResourceContents(resource);
-                var saveResult = SaveImpl(targetWorkspaceID, copy, contents, userRoles);
+                var saveResult = SaveImpl(targetWorkspaceID, copy, contents);
                 return saveResult.Status == ExecStatus.Success;
             }
             return false;
@@ -542,7 +522,7 @@ namespace Dev2.Runtime.Hosting
 
                 StringBuilder result = xml.ToStringBuilder();
 
-                return CompileAndSave(workspaceID, resource, result, userRoles);    
+                return CompileAndSave(workspaceID, resource, result);    
             }
         }
 
@@ -563,7 +543,7 @@ namespace Dev2.Runtime.Hosting
 
                 var result = resource.ToStringBuilder();
 
-                return CompileAndSave(workspaceID, resource, result, userRoles);
+                return CompileAndSave(workspaceID, resource, result);
             }
         }
 
@@ -720,13 +700,6 @@ namespace Dev2.Runtime.Hosting
                         {
                             lock(GetFileLock(resource.FilePath))
                             {
-
-                                lock(_cacheLock)
-                                {
-                                    var key = resource.FilePath;
-                                    _cachedResources[key] = fileContent.CleanEncodingHeaderForXmlSave();
-                                }
-
                                 fileContent.WriteToFile(resource.FilePath, Encoding.UTF8);
                             }
                             return true;
@@ -1107,20 +1080,18 @@ namespace Dev2.Runtime.Hosting
 
         #region CompileAndSave
 
-        ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string userRoles = null)
+        ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents)
         {
             // Find the service before edits ;)
             DynamicService beforeService = Instance.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceName).FirstOrDefault();                                     
                         
             ServiceAction beforeAction = null;
-            StringBuilder thePreviousResourceDef = null;
             if(beforeService != null)
             {
                 beforeAction = beforeService.Actions.FirstOrDefault();
-               
             }
 
-            var result = SaveImpl(workspaceID, resource, contents, userRoles);
+            var result = SaveImpl(workspaceID, resource, contents);
 
             if(result.Status == ExecStatus.Success)
             {
@@ -1135,7 +1106,7 @@ namespace Dev2.Runtime.Hosting
 
         #region SaveImpl
 
-        ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string userRoles = null)
+        ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents)
         {
             var resources = GetResources(workspaceID);
             var conflicting = resources.FirstOrDefault(r => r.ResourceType != resource.ResourceType && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase));
@@ -1181,13 +1152,6 @@ namespace Dev2.Runtime.Hosting
             lock(GetFileLock(resource.FilePath))
             {
                 signedXml.WriteToFile(resource.FilePath, Encoding.UTF8);
-
-                // Travis - Add to cache ;)
-                lock(_cacheLock)
-                {
-                    var key = resource.FilePath;
-                    _cachedResources[key] = signedXml.CleanEncodingHeaderForXmlSave();
-                }
             }
 
             #endregion
@@ -1315,24 +1279,18 @@ namespace Dev2.Runtime.Hosting
         {
 
             var resourceElement = resourceContents.ToXElement();
-                if(compileMessagesTO.Count > 0)
-                {
-                    SetErrors(resourceElement, compileMessagesTO);
-                    UpdateIsValid(resourceElement);
-                }
-                else
-                {
-                    UpdateIsValid(resourceElement);
-                }
+            if(compileMessagesTO.Count > 0)
+            {
+                SetErrors(resourceElement, compileMessagesTO);
+                UpdateIsValid(resourceElement);
+            }
+            else
+            {
+                UpdateIsValid(resourceElement);
+            }
 
             StringBuilder contents = resourceElement.ToStringBuilder();
             contents.WriteToFile(resource.FilePath, Encoding.UTF8);
-
-                lock(_cacheLock)
-                {
-                    var key = resource.FilePath;
-                _cachedResources[key] = contents.CleanEncodingHeaderForXmlSave();
-            }
             
         }
 
@@ -1555,11 +1513,11 @@ namespace Dev2.Runtime.Hosting
         {
             if(resourceID == null)
             {
-                throw new ArgumentNullException("resourceID", "No value provided for resourceID");
+                throw new ArgumentNullException("resourceID", @"No value provided for resourceID");
             }
             if(string.IsNullOrEmpty(newName))
             {
-                throw new ArgumentNullException("newName", "No value provided for newName");
+                throw new ArgumentNullException("newName", @"No value provided for newName");
             }
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourceID == resourceID).ToArray();
             try
@@ -1569,9 +1527,7 @@ namespace Dev2.Runtime.Hosting
                     return new ResourceCatalogResult
                     {
                         Status = ExecStatus.Fail,
-                        Message =
-                            string.Format("{0} '{1}' to '{2}'",
-                                            "Failed to Find Resource", resourceID, newName)
+                        Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
                     };
                 }
 
@@ -1612,54 +1568,60 @@ namespace Dev2.Runtime.Hosting
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
 
             var resourceElement = resourceContents.ToXElement();
-                //xml name attibute
-                var nameAttrib = resourceElement.Attribute("Name");
-                string oldName = null;
-                if(nameAttrib == null)
+            //xml name attibute
+            var nameAttrib = resourceElement.Attribute("Name");
+            string oldName = null;
+            if(nameAttrib == null)
+            {
+                resourceElement.Add(new XAttribute("Name", newName));
+            }
+            else
+            {
+                oldName = nameAttrib.Value;
+                nameAttrib.SetValue(newName);
+            }
+            //xaml
+            var actionElement = resourceElement.Element("Action");
+            if(actionElement != null)
+            {
+                var xaml = actionElement.Element("XamlDefinition");
+                if(xaml != null)
                 {
-                    resourceElement.Add(new XAttribute("Name", newName));
+                    xaml.SetValue(xaml.Value
+                        .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
+                        .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
+                        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
                 }
-                else
-                {
-                    oldName = nameAttrib.Value;
-                    nameAttrib.SetValue(newName);
-                }
-                //xaml
-                var actionElement = resourceElement.Element("Action");
-                if(actionElement != null)
-                {
-                    var xaml = actionElement.Element("XamlDefinition");
-                    if(xaml != null)
-                    {
-                        xaml.SetValue(xaml.Value
-                            .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
-                            .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
-                            .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
-                    }
-                }
-                //xml display name element
-                var displayNameElement = resourceElement.Element("DisplayName");
+            }
+            //xml display name element
+            var displayNameElement = resourceElement.Element("DisplayName");
+            if (displayNameElement != null)
+            {
                 displayNameElement.SetValue(newName);
-                //object name
-                resource.ResourceName = newName;
-                //delete old resource in local workspace without updating dependants with compile messages
-                if(File.Exists(resource.FilePath))
+            }
+
+            resource.ResourceName = newName;
+            //delete old resource in local workspace without updating dependants with compile messages
+            if(File.Exists(resource.FilePath))
+            {
+                lock(GetFileLock(resource.FilePath))
                 {
-                    lock(GetFileLock(resource.FilePath))
-                    {
-                        File.Delete(resource.FilePath);
-                    }
+                    File.Delete(resource.FilePath);
                 }
-                //update file path
+            }
+            //update file path
+            if (oldName != null)
+            {
                 resource.FilePath = resource.FilePath.Replace(oldName, newName);
-                //re-create, resign and save to file system the new resource
+            }
+            //re-create, resign and save to file system the new resource
             StringBuilder contents = resourceElement.ToStringBuilder();
 
             return SaveImpl(workspaceID, resource, contents);
             
         }
 
-        private void RenameWhereUsed(List<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
+        private void RenameWhereUsed(IEnumerable<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
         {
             foreach(var dependant in dependants)
             {
@@ -1758,22 +1720,14 @@ namespace Dev2.Runtime.Hosting
                     // Big problems with properties like this. Cat rename needs to update cache
                     // AND we need to update the resource model ;)
 
-                StringBuilder contents = resourceElement.ToStringBuilder();
+                    StringBuilder contents = resourceElement.ToStringBuilder();
 
-                //var contents = resourceElement.ToString(SaveOptions.DisableFormatting);
-                    lock(_cacheLock)
-                    {
-                        var key = resource.FilePath;
-                    _cachedResources[key] = contents.CleanEncodingHeaderForXmlSave();
-                    }
-
-                contents.WriteToFile(resource.FilePath, Encoding.UTF8);    
+                    contents.WriteToFile(resource.FilePath, Encoding.UTF8);    
                 
                 }
 
                 resource.ResourcePath = newCategory;
             
-
         }
 
         IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources)

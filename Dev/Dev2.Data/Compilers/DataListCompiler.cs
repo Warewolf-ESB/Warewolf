@@ -1,9 +1,15 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.EqualityComparers;
@@ -11,11 +17,6 @@ using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
 using Dev2.Server.Datalist;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
 
 namespace Dev2.DataList.Contract
 {

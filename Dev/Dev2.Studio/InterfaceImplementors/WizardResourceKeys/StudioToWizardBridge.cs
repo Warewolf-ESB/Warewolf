@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
 {
@@ -19,19 +19,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
         public static string SelectWizard(IResourceModel theModel)
         {
             string result = "Dev2ServiceDetails"; // defaults to the service wizard
-
-            // else figure out which source wizard to open
-            //if(theModel.ResourceType == ResourceType.Source)
-            //{
-            //    if((theModel.ServiceDefinition != null && (theModel.ServiceDefinition.IndexOf("Type=\"Plugin\"") > 0) || theModel.DisplayName == "Plugin"))
-            //    {
-            //        result = "PluginSourceManagement";
-            //    }
-            //    else if(theModel.ServiceDefinition.IndexOf("Type=\"SqlDatabase\"") > 0)
-            //    {
-            //        result = "DatabaseSourceManagement";
-            //    }
-            //}
 
             return result;
         }
@@ -97,7 +84,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
         public static string BuildStudioEditPayload(string resourceType, IResourceModel rm)
         {
             StringBuilder result = new StringBuilder();
-            string resType = string.Empty; //ConvertStudioToWizardType(resourceType, rm.ServiceDefinition, rm.Category);
+            string resType = string.Empty; 
 
             // add service type
             result.Append(ResourceKeys.Dev2ServiceType);
@@ -140,15 +127,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
             result.Append("=");
             result.Append(rm.Tags);
 
-            // add tooltip text -- ??
-            //result.Append("&");
-            //result.Append(ResourceKeys.Dev2TooltipText);
-            //result.Append("=");
-            //result.Append(rm.T);
-
-            // ServiceDefinition
-            // <Action Name="EmailService" Type="Plugin" SourceName="Email Plugin" SourceMethod="Send">
-
             string serviceDef = string.Empty; //rm.ServiceDefinition;
 
             if(serviceDef.IndexOf(" SourceName=") > 0)
@@ -182,20 +160,20 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
                     result.Append("&");
                     result.Append(ResourceKeys.Dev2SourceManagementSource);
                     result.Append("=");
-                    result.Append(rm.ResourceName.ToString());
+                    result.Append(rm.ResourceName);
                 }
                 else if(resType == "Database")
                 {
                     result.Append("&");
                     result.Append(ResourceKeys.Dev2SourceManagementDatabaseSource);
                     result.Append("=");
-                    result.Append(rm.ResourceName.ToString());
+                    result.Append(rm.ResourceName);
                 }
 
                 result.Append("&");
                 result.Append(ResourceKeys.Dev2SourceName);
                 result.Append("=");
-                result.Append(rm.ResourceName.ToString());
+                result.Append(rm.ResourceName);
 
                 result.Append("&");
                 result.Append(ResourceKeys.Dev2StudioExe);
@@ -220,10 +198,6 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
 
         public static string GetUriString(IContextualResourceModel resourceModel, bool includeArgs)
         {
-            //string resName = ConvertStudioToWizardType(resourceModel.ResourceType.ToString(),
-            //                                                                resourceModel.ServiceDefinition,
-            //                                                                resourceModel.Category);
-
             string resName = string.Empty;
 
             var requestUri = new Uri(resourceModel.Environment.Connection.WebServerUri,

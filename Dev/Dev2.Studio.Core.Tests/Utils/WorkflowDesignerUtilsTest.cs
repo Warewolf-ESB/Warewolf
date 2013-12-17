@@ -9,7 +9,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Utils;
+using Dev2.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests.Utils
             CompositionInitializer.DefaultInitialize();
             var aggregator = new Mock<EventAggregator>();
             IResourceModel actualResourceInvoked = null;
-            aggregator.Setup(a => a.Publish(It.IsAny <AddWorkSurfaceMessage>())).Callback<object>((msg) =>
+            aggregator.Setup(a => a.Publish(It.IsAny <AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is AddWorkSurfaceMessage)?(msg as AddWorkSurfaceMessage).WorkSurfaceObject:null;
                 actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;
@@ -203,7 +203,7 @@ namespace Dev2.Core.Tests.Utils
             CompositionInitializer.DefaultInitialize();
             var aggregator = new Mock<EventAggregator>();
             IResourceModel actualResourceInvoked = null;
-            aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>((msg) =>
+            aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
             {
                 var workSurfaceObject = (msg is AddWorkSurfaceMessage) ? (msg as AddWorkSurfaceMessage).WorkSurfaceObject : null;
                 actualResourceInvoked = (workSurfaceObject is IResourceModel) ? (workSurfaceObject as IResourceModel) : null;

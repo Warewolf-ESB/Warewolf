@@ -5,7 +5,7 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.DataList.Contract;
+using Dev2.Data.Util;
 using Wmhelp.XPath2;
 
 namespace Dev2.Data.Parsers

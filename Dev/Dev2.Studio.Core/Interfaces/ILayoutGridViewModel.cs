@@ -1,7 +1,6 @@
-using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Dev2.Studio.Core.Models;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 

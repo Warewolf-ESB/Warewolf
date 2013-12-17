@@ -58,7 +58,7 @@ namespace Dev2.Services.Security
                 return permission.ResourceID == resourceID;
             }
 
-            // ResourceName is in the format: {categoryName}\{resourceName}
+            // NOTE : ResourceName is in the format: {categoryName}\{resourceName}
             return permission.ResourceName.EndsWith("\\" + resource);
         }
     }

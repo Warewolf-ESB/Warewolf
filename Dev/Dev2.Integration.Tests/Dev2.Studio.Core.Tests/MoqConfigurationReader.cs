@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces;
 
-namespace Dev2.Core.Tests.ProperMoqs
+namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 {
     [Export(typeof(IDev2ConfigurationProvider))]
     public class MoqConfigurationReader : IDev2ConfigurationProvider

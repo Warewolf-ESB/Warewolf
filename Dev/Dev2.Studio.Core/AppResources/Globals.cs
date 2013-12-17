@@ -5,7 +5,6 @@ namespace Dev2.Studio.Core.AppResources {
     public delegate void OperatorTypeEventHandler(string Expression);
     public delegate void ResourceEventHandler(IResourceModel IResourceModel);
     
-    //public delegate void RequestCreateResourceEventHandler(string ResourceType);
     public delegate void CancelOperationEventHandler(object cancelledobject, object[] arguments);
     public delegate void ClosedOperationEventHandler(object closedobject, object[] arguments);
     public delegate void EnvironmentCreatedEventHandler(IEnvironmentModel environment);

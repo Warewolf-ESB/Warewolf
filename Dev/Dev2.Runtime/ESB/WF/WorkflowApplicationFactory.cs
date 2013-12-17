@@ -7,6 +7,7 @@ using System.Threading;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Network.Execution;
@@ -15,7 +16,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
 
-namespace Dev2.DynamicServices
+namespace Dev2.Runtime.ESB.WF
 {
     /// <summary>
     /// The class responsible for creating a workflow entry point

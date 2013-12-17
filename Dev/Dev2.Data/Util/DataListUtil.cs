@@ -7,10 +7,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Dev2.Common;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Util
 {
     /// <summary>
     /// General DataList utilite methods
@@ -1613,12 +1614,6 @@ namespace Dev2.DataList.Contract
                 if(tmp.Columns.Count > 0)
                 {
                     string setName = tmp.SetName;
-
-                    //if (!isInput && tmp.Columns.Count > 0)
-                    //{
-                    //    setName = tmp.Columns[0].RecordSetName;
-                    //}
-
                     result.Append(string.Concat("<", setName, ">"));
                     result.Append(Environment.NewLine);
 

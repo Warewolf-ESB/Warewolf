@@ -1,6 +1,7 @@
-﻿using Dev2.Common;
+﻿using System;
+using Dev2.Common;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
-using System;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {

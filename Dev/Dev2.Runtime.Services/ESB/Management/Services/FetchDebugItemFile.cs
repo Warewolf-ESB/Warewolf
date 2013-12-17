@@ -2,11 +2,11 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Dev2.Common;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -37,7 +37,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(File.Exists(debugItemFilePath))
             {
                 ServerLogger.LogTrace("DebugItemFilePath found");
-                //StringBuilder result = new StringBuilder();
 
                 var lines = File.ReadLines(debugItemFilePath);
                 foreach(var line in lines)

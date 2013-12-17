@@ -1,15 +1,15 @@
-﻿using Dev2.Common;
-using Dev2.Common.ExtMethods;
-using Dev2.DataList.Contract;
-using Dev2.Providers.Errors;
-using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.Core.ViewModels.Base;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using System.Xml;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
+using Dev2.Data.Util;
+using Dev2.Providers.Errors;
+using Dev2.Studio.Core.Models.QuickVariableInput;
+using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.ViewModels.QuickVariableInput
 {

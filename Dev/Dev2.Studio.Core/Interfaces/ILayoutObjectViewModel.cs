@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Unlimited.Framework;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Dev2.Studio.Core.Interfaces;
 
-namespace Dev2.Studio.Core.Interfaces {
+namespace Dev2.Interfaces {
     public interface ILayoutObjectViewModel : IPropertyEditorWizard {
         /// <summary>
         /// The Grid that this cell is bound to

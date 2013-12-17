@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.DataList.Contract;
+using Dev2.Data.Util;
 
 namespace Dev2.Data.Decisions.Operations
 {

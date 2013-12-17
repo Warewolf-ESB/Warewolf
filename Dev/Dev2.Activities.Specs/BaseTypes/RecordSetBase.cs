@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using TechTalk.SpecFlow;
 

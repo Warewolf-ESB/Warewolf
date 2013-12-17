@@ -1,11 +1,12 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Dev2.Data.Operations
 {

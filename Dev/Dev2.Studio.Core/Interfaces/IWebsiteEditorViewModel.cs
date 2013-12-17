@@ -1,9 +1,6 @@
-using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
 using System.Windows.Input;
-using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
+using Dev2.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces {
     public interface IWebsiteEditorViewModel : IPropertyEditorWizard 

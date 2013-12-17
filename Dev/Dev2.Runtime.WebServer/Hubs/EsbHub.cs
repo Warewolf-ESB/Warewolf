@@ -144,7 +144,6 @@ namespace Dev2.Runtime.WebServer.Hubs
                             }
 
                             return new Receipt { PartID = envelope.PartID, ResultParts = rounds };
-                            //return new Receipt { Result = processRequest.ToString(), PartID = envelope.PartID, ResultParts = rounds };
                         }
 
                         return new Receipt { PartID = envelope.PartID, ResultParts = -1 };
@@ -196,7 +195,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var serializedMemo = JsonConvert.SerializeObject(memo);
             var hubCallerConnectionContext = Clients;
-            //var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
@@ -208,8 +206,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
             var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
             user.SendDebugState(debugSerializated);
-
-            // Server.SendDebugState(debugSerializated, Context.User.Identity.Name);
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<CompileMessageTO> messages, Action<TMemo, CompileMessageTO> coalesceErrors)

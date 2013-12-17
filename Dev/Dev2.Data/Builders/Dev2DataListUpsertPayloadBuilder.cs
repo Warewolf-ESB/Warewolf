@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Data.TO;
-using Dev2.DataList.Contract;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Interfaces;
 using Dev2.DataList.Contract.TO;
-using Dev2.Server.Datalist;
 
 namespace Dev2.Data.Builders
 {

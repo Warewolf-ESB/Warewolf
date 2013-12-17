@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.Core

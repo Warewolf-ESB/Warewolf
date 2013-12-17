@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Interfaces;
 
 namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers {
     public class WebsiteLayoutObjectViewModelEqualityComparer  : IEqualityComparer<ILayoutObjectViewModel>{

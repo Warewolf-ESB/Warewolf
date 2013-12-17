@@ -5,8 +5,8 @@ using Caliburn.Micro;
 using Dev2.AppResources.DependencyVisualization;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.DependencyVisualization;
+using Dev2.Utils;
 
 namespace Dev2.Studio.Views.DependencyVisualization
 {   
@@ -65,8 +65,6 @@ namespace Dev2.Studio.Views.DependencyVisualization
                                                                      c => c.ResourceName == resourceName);
                         if (resource != null)
                         {
-                            //Mediator.SendMessage(MediatorMessages.AddWorkflowDesigner, resource);
-                            //EventAggregator.Publish(new AddWorkSurfaceMessage(resource));
                             WorkflowDesignerUtils.EditResource(resource,_eventPublisher);
                         }
                     }
@@ -78,16 +76,16 @@ namespace Dev2.Studio.Views.DependencyVisualization
             scrollStartOffset.Y = myScrollViewer.VerticalOffset;
 
             // Update the cursor if scrolling is possible 
-            this.Cursor = (myScrollViewer.ExtentWidth > myScrollViewer.ViewportWidth) ||
+            Cursor = (myScrollViewer.ExtentWidth > myScrollViewer.ViewportWidth) ||
                 (myScrollViewer.ExtentHeight > myScrollViewer.ViewportHeight) ?
                 Cursors.ScrollAll : Cursors.Arrow;
 
-            this.CaptureMouse();
+            CaptureMouse();
             base.OnPreviewMouseDown(e);
         }
 
         protected override void OnPreviewMouseMove(MouseEventArgs e) {
-            if (this.IsMouseCaptured) {
+            if (IsMouseCaptured) {
                 // Get the new mouse position. 
                 Point mouseDragCurrentPoint = e.GetPosition(this);
 

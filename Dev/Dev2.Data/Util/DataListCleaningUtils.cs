@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using Dev2.Data.Util;
 
 namespace Dev2.DataList.Contract
 {

@@ -2,6 +2,7 @@
 using System.Text;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
 using Dev2.PathOperations;
 

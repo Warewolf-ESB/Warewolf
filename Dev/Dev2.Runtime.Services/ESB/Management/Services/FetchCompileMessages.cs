@@ -4,10 +4,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Communication;
 using Dev2.Data.Enums;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -25,8 +25,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
-
-            //StringBuilder msg = new StringBuilder();
 
             StringBuilder tmp;
             values.TryGetValue("ServiceID", out tmp);

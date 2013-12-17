@@ -50,8 +50,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var result = new ExecuteMessage {HasError = false};
 
-            //var result = new StringBuilder();
-
             try
             {
                 if(domain.Equals("."))
