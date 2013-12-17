@@ -2,20 +2,16 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
-using System.Security.Principal;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
-using Dev2.Network;
-using Dev2.Network.Execution;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
-using Dev2.Studio.Core.Wizards;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
@@ -39,7 +35,7 @@ namespace Dev2.Core.Tests
             });
 
 
-           // IMainViewModel mainViewModel = new MainViewModel();
+            // IMainViewModel mainViewModel = new MainViewModel();
             IMainViewModel mainViewModel = new Mock<IMainViewModel>().Object;
             ImportService.AddExportedValueToContainer(mainViewModel);
 
@@ -153,7 +149,7 @@ namespace Dev2.Core.Tests
             ImportService.AddExportedValueToContainer(popupController.Object);
             ImportService.AddExportedValueToContainer((windowManager == null) ? new WindowManager() : windowManager.Object);
             ImportService.AddExportedValueToContainer((webController == null) ?
-                new WebController(popupController.Object) : webController.Object);
+                new WebController() : webController.Object);
 
             ImportService.AddExportedValueToContainer(environmentRepo);
             ImportService.AddExportedValueToContainer((feedbackInvoker == null) ? new FeedbackInvoker() : feedbackInvoker.Object);
@@ -171,7 +167,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
-            
+
             var mainViewModel = new Mock<IMainViewModel>();
 
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
@@ -278,7 +274,7 @@ namespace Dev2.Core.Tests
                 new FullTestAggregateCatalog()
             });
 
-            var mainViewModel = new Mock<IMainViewModel>();          
+            var mainViewModel = new Mock<IMainViewModel>();
 
             ImportService.AddExportedValueToContainer(mainViewModel.Object);
 
@@ -497,11 +493,11 @@ namespace Dev2.Core.Tests
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
-//
-//            ImportService.Initialize(new List<ComposablePartCatalog>()
-//            {
-//                new FullTestAggregateCatalog()
-//            });
+            //
+            //            ImportService.Initialize(new List<ComposablePartCatalog>()
+            //            {
+            //                new FullTestAggregateCatalog()
+            //            });
             ImportService.Initialize(new List<ComposablePartCatalog>());
             ImportService.AddExportedValueToContainer(repo.Object);
 

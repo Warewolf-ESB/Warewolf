@@ -153,15 +153,15 @@ namespace Dev2.Network
         {
             if(IsLocalHost)
             {
-            if(_reconnectHeartbeat == null)
-            {
-                _reconnectHeartbeat = new Timer();
-                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                _reconnectHeartbeat.Interval = 10000;
-                _reconnectHeartbeat.AutoReset = true;
-                _reconnectHeartbeat.Start();
+                if(_reconnectHeartbeat == null)
+                {
+                    _reconnectHeartbeat = new Timer();
+                    _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                    _reconnectHeartbeat.Interval = 10000;
+                    _reconnectHeartbeat.AutoReset = true;
+                    _reconnectHeartbeat.Start();
+                }
             }
-        }
         }
 
         public virtual void StopReconnectHeartbeat()
@@ -232,9 +232,6 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
-
-            // DO NOT use publish as memo is of type object 
-            // and hence won't find the correct subscriptions
             var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
             this.TraceInfo("Publish message of type - " + typeof(Memo));
             ServerEvents.PublishObject(obj);
@@ -295,8 +292,8 @@ namespace Dev2.Network
             List<Envelope> mailToSend = new List<Envelope>();
             for(int i = 0; i < rounds; i++)
             {
-                var envelope = new Envelope {PartID = i};
-            envelope.Type = typeof(Envelope);
+                var envelope = new Envelope { PartID = i };
+                envelope.Type = typeof(Envelope);
 
                 var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
                 if(len > (payload.Length - startIdx))
@@ -306,7 +303,7 @@ namespace Dev2.Network
 
                 envelope.Content = payload.Substring(startIdx, len);
                 startIdx += len;
-                
+
                 mailToSend.Add(envelope);
             }
 
@@ -317,16 +314,16 @@ namespace Dev2.Network
                 bool isEnd = (i + 1 == mailToSend.Count);
                 Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceID, dataListID, messageID);
                 Wait(invoke);
-                
+
                 // now build up the result in fragements ;)
-                if (isEnd)
+                if(isEnd)
                 {
                     var totalToFetch = invoke.Result.ResultParts;
-                    for (int q = 0; q < totalToFetch; q++)
+                    for(int q = 0; q < totalToFetch; q++)
                     {
                         Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
                         Wait(fragmentInvoke);
-                        if (fragmentInvoke.Result != null)
+                        if(fragmentInvoke.Result != null)
                         {
                             result.Append(fragmentInvoke.Result);
                         }

@@ -7,8 +7,8 @@
     <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Execution parallelTestCount="2">
-    <Timeouts testTimeout="120000" />
+  <Execution>
+    <Timeouts runTimeout="1800000" testTimeout="300000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>

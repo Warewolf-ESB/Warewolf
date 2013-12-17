@@ -1,12 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Threading;
-using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using System.Drawing;
-using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 
@@ -135,22 +133,28 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public void CloseAllTabs()
         {
-
-            // first try closing wizards ;)
-            Playback.Wait(150);
-            SendKeys.SendWait("{ESC}");
-
-            // fetch the darn thing once ;)
-            var tabManager = GetManager();
-
-            if(tabManager != null)
+            try
             {
-                var tabs = tabManager.GetChildren();
+                // first try closing wizards ;)
+                Playback.Wait(150);
+                SendKeys.SendWait("{ESC}");
 
-                foreach (var tab in tabs)
+                // fetch the darn thing once ;)
+                var tabManager = GetManager();
+
+                if (tabManager != null)
                 {
-                    CloseTab_Click_No(tab);
+                    var tabs = tabManager.GetChildren();
+
+                    foreach (var tab in tabs)
+                    {
+                        CloseTab_Click_No(tab);
+                    }
                 }
+            }
+            catch
+            {
+                // just do it ;)
             }
         }
 

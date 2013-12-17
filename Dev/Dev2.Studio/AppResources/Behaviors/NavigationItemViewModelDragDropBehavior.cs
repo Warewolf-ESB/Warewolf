@@ -1,15 +1,16 @@
-﻿using Dev2.Studio.ViewModels.Navigation;
-using System;
+﻿using System;
 using System.Activities.Presentation;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Dev2.Providers.Logs;
+using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelDragDropBehavior : Behavior<FrameworkElement>
     {
-      
+
 
         #region Dependency Properties
 
@@ -59,21 +60,21 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void SubscribeToEvents()
         {
-            if (AssociatedObject == null)
+            if(AssociatedObject == null)
             {
                 return;
             }
 
             var navigationItemViewModel = AssociatedObject.DataContext as ResourceTreeViewModel;
 
-            if (navigationItemViewModel == null)
+            if(navigationItemViewModel == null)
             {
                 return;
             }
 
             var resource = navigationItemViewModel.DataContext;
 
-            if (resource == null)
+            if(resource == null)
             {
                 return;
             }
@@ -94,7 +95,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void UnsubscribeToEvents()
         {
-            if (AssociatedObject != null)
+            if(AssociatedObject != null)
             {
                 AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
                 AssociatedObject.DragOver -= AssociatedObject_DragOver;
@@ -114,22 +115,23 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!DontAllowDraging)
+            if(!DontAllowDraging)
             {
+                Logger.TraceInfo("Drag Is Allowed");
                 var inputElement = sender as IInputElement;
                 var dependencyObject = sender as DependencyObject;
 
-                if (e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
+                if(e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
                 {
+                    Logger.TraceInfo("Starting Drag");
                     Point currentPosition = e.GetPosition(inputElement);
 
-                    if ((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) ||
-                        (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
+                    if((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) || (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                     {
                         var dragData = new DataObject();
                         var dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
-                        
-                        if (dragSourceDataContext != null)
+                        Logger.TraceInfo("Got DataContext");
+                        if(dragSourceDataContext != null)
                         {
                             if(dragSourceDataContext.IsRenaming)
                             {
@@ -137,7 +139,8 @@ namespace Dev2.Studio.AppResources.Behaviors
                             }
 
                             dragSourceDataContext.IsNew = true;
-                            if (!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
+                            Logger.TraceInfo("Set IsNew");
+                            if(!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
                             {
                                 dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);
                                 dragData.SetData(dragSourceDataContext);
@@ -145,7 +148,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                             dragData.SetData(dragSourceDataContext);
                         }
-                        DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);                      
+                        DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);
                     }
                 }
             }
@@ -160,7 +163,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             var inputElement = sender as IInputElement;
 
-            if (e.ChangedButton == MouseButton.Left && inputElement != null)
+            if(e.ChangedButton == MouseButton.Left && inputElement != null)
             {
                 _lastMouseDown = e.GetPosition(inputElement);
                 _dragSource = sender as FrameworkElement;

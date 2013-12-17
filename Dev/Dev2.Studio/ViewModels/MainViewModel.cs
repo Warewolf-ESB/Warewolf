@@ -191,7 +191,7 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.EditCommand;
             }
         }
- 
+
         public ICommand SaveCommand
         {
             get
@@ -413,7 +413,7 @@ namespace Dev2.Studio.ViewModels
             //ResourceDependencyService = resourceDependencyService ?? new ResourceDependencyService();
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
-            WebController = webController ?? new WebController(PopupProvider);
+            WebController = webController ?? new WebController();
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
 

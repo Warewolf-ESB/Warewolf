@@ -1,7 +1,7 @@
 ﻿using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Data.Tests.Persistence
+namespace Dev2.Integration.Tests.CommonTest
 {
     /// <summary>
     /// Summary description for AvlTreeTest

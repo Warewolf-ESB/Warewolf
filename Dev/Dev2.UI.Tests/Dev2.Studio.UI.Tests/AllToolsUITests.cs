@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -126,7 +126,6 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanOpenLargeView_NoExceptionsThrown()
         // ReSharper restore InconsistentNaming
         {
-
             var toolsWithLargeView = new List<string>
                 {
                     "DsfPathCopy",
@@ -259,7 +258,6 @@ namespace Dev2.Studio.UI.Tests
                 //Assert
                 Assert.IsTrue(VerifySelectedItems(tool.FriendlyName, theTab, selectedItems));
             }
-
         }
 
         private List<WpfListItem> SelectItemOnComboBox(string autoId, UITestControl theTab)
