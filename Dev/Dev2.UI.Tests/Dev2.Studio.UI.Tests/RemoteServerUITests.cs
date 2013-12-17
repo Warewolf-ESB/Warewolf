@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 
 namespace Dev2.Studio.UI.Tests
@@ -232,6 +231,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore] // FLIPPING FAULTY EXTERNAL RESOURCE
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
         {
             const string TextToSearchWith = "WebSource";
@@ -304,6 +304,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
+        [Ignore] // DO NOT REMOVE UNTIL CONFIGURED TO USE LOCAL SERVER!!!
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
             const string TextToSearchWith = "EmailSource";

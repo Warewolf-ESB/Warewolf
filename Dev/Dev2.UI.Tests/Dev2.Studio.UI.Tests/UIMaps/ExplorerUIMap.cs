@@ -3,15 +3,14 @@ using System.Linq;
 using System.Threading;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.Drawing;
     using System.Windows.Forms;
     using System.Windows.Input;
+    using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
@@ -488,6 +487,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName,overrideDblClickBehavior);
             Mouse.StartDragging(theControl);
+            Playback.Wait(20);
             Mouse.StopDragging(p);
             Playback.Wait(100);
         }

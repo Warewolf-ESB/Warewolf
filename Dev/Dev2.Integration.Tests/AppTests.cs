@@ -24,11 +24,17 @@ namespace Dev2.Integration.Tests
             try
             {
                 string executingAssemblyLocation = Assembly.GetExecutingAssembly().Location;
-                string tmpPath = executingAssemblyLocation.Remove(executingAssemblyLocation.IndexOf(@"\TestResults", StringComparison.Ordinal));
-                string studioPath = tmpPath + @"\Dev2.Studio\bin\Debug\Warewolf Studio.exe";
-                //string directoryOfExecutingAssembly = Path.GetDirectoryName(executingAssemblyLocation);
-                //string studioPath = Path.Combine(directoryOfExecutingAssembly, "Warewolf Studio.exe");
 
+                var idx = executingAssemblyLocation.IndexOf(@"\TestResults", StringComparison.Ordinal);
+
+                string studioPath = string.Empty;
+
+                if (idx >= 0)
+                {
+                    string tmpPath = executingAssemblyLocation.Remove(idx);
+                    studioPath = tmpPath + @"\Dev2.Studio\bin\Debug\Warewolf Studio.exe";    
+                }
+                
                 if (!File.Exists(studioPath))
                 {
                     // If this test is running in an environment this is where the Studio exe will be (otherwise this path could be resolved by getting the running server process location path)

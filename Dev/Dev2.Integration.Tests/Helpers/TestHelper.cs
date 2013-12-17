@@ -21,9 +21,9 @@ namespace Dev2.Integration.Tests.Helpers
         static string _responseData;
         public static string ReturnFragment(string reponseData)
         {
-            string FragmentName = "Dev2System.Fragment";
-            int datastart = reponseData.IndexOf("<" + FragmentName + ">", 0) + ("<" + FragmentName + ">").Length;
-            string DecodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">") - datastart);
+            const string FragmentName = "Dev2System.Fragment";
+            int datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
+            string DecodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
             string Fragment = DecodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
             return Fragment;
         }
@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests.Helpers
         public static IList<DebugState> FetchRemoteDebugItems(string baseURL, Guid id)
         {
             var myURI = baseURL + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
-            WebRequest req = HttpWebRequest.Create(myURI);
+            WebRequest req = WebRequest.Create(myURI);
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 

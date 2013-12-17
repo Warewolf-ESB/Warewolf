@@ -251,7 +251,6 @@
     <Compile Include="Server Test\DeleteResourceTest.cs" />
     <Compile Include="Server Test\DynamicServicesHostTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
-    <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindNetworkComputerServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
@@ -359,7 +358,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="locale\" />
     <Folder Include="Server Test\Channel Tests\" />
   </ItemGroup>
   <ItemGroup>
