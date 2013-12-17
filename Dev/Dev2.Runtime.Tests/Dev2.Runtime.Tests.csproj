@@ -99,7 +99,7 @@
     <Compile Include="ESB\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelperTests.cs" />
-    <Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
+	<Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBrokerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
@@ -182,6 +182,7 @@
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />
+    <Compile Include="Util\RemoteDebugItemParserTest.cs" />
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
     <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />

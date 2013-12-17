@@ -497,6 +497,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, con.WorkspaceID);
 
+            if (resourceList == null)
+            {
+                throw new Exception("Failed to fetch resoure list as JSON model");
+            }
+
             HydrateResourceModels(resourceList, _environmentModel.Connection.ServerID);
         }
 

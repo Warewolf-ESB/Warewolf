@@ -343,7 +343,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
             int callCnt = 0;

@@ -1,7 +1,7 @@
-﻿using Dev2.Integration.Tests.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
+using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -11,31 +11,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfFindRecordsActivityWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public DsfFindRecordsActivityWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //

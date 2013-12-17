@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ActivityUnitTests;
-using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Runtime.ESB.Management.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Runtime.ESB.Execution;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -124,14 +122,5 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, tmp2.Count);
         }
 
-        [TestMethod]
-        public void CanParseRemoteItemsBackIntoSaneObjects()
-        {
-            const string data = @"<DataList><InvokerID>de952cfe-44af-4030-b6cb-42044c7ea43f</InvokerID><Dev2System.ManagmentServicePayload>[{""ID"":""7d99684d-eea1-4f53-a41b-721c5404d8a6"",""ParentID"":""00000000-0000-0000-0000-000000000000"",""ServerID"":""51a58300-7e9d-4927-a57b-e5d700b11b55"",""StateType"":128,""DisplayName"":""Assign (1)"",""HasError"":false,""ErrorMessage"":"""",""Version"":"""",""Name"":""Assign"",""ActivityType"":1,""Duration"":""00:00:04.3020000"",""StartTime"":""2013-06-07T18:36:29.4806803+02:00"",""EndTime"":""2013-06-07T18:36:33.7826803+02:00"",""Inputs"":[],""Outputs"":[],""Server"":"""",""WorkspaceID"":""00000000-0000-0000-0000-000000000000"",""OriginalInstanceID"":""14cfb456-eb67-44cf-82e7-de56546aae26"",""OriginatingResourceID"":""66ed47bb-6c19-4ac6-b397-1e272b755b9c"",""IsSimulation"":false,""Message"":null}]</Dev2System.ManagmentServicePayload></DataList>";
-
-            var items = RemoteDebugItemParser.ParseItems(data);
-
-            Assert.AreEqual(1, items.Count);
-        }
     }
 }

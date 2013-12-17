@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string debugItemFilePath = null;
-            var result = new ExecuteMessage() { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
 
             if(values == null)
             {

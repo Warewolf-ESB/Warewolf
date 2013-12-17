@@ -18,35 +18,13 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
     [TestClass]
     public class EnvironmentModelTest
     {
-        #region Test Variables
-
-        private TestContext testContextInstance;
-        private IEnvironmentModel _environmentModel;
-
-        #endregion Test Variables
-
-        #region Test Initialize and Clean Up
-
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get { return testContextInstance; }
-            set { testContextInstance = value; }
-        }
+        public TestContext TestContext { get; set; }
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            if(_environmentModel != null)
-            {
-                _environmentModel = null;
-            }
-        }
 
-        #endregion Test Initialize and Clean Up
 
         #region Connect Tests
 

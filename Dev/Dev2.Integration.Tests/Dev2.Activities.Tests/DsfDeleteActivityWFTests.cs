@@ -1,6 +1,6 @@
-﻿using Dev2.Integration.Tests.Helpers;
+﻿using System;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -10,13 +10,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfDeleteActivityWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public DsfDeleteActivityWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides

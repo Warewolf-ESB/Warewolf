@@ -130,7 +130,6 @@ namespace Dev2.Runtime.ESB.Execution
         protected virtual IList<DebugState> FetchRemoteDebugItems(Connection connection)
         {
             var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
-            // Dev2System.ManagmentServicePayload
 
             if(data != null)
             {
@@ -144,13 +143,10 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             var requestUri = connection.WebAddress + "Services/" + serviceName + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password);
-
-            // TODO : Start background worker to fetch messages ;)
-            // FetchRemoteDebugMessagesService
 
             using(var response = req.GetResponse() as HttpWebResponse)
             {

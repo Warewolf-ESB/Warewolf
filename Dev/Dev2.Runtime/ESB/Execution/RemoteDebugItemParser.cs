@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Communication;
 using Dev2.Diagnostics;
-using Newtonsoft.Json;
-using System.Xml;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -19,24 +16,11 @@ namespace Dev2.Runtime.ESB.Execution
         {
             try
             {
-                int start = data.IndexOf("<" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
-
-                if (start >= 0)
-                {
-                    start += GlobalConstants.ManagementServicePayload.Length + 2;
-
-                    int end = data.IndexOf("</" + GlobalConstants.ManagementServicePayload + ">", StringComparison.Ordinal);
-
-                    if (end > start)
-                    {
-                        var tmp = data.Substring(start, (end - start));
-                        tmp = HttpUtility.HtmlDecode(tmp);
-                        IList<DebugState> debugItems = JsonConvert.DeserializeObject<List<DebugState>>(tmp);
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                IList<DebugState> debugItems = serializer.Deserialize<List<DebugState>>(data);
 
                         return debugItems;
                     }
-                }
-            }
             catch (Exception e)
             {
                 ServerLogger.LogError(e);
