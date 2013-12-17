@@ -8,7 +8,7 @@ namespace Dev2.Integration.Tests.Activities
     ///This is a test class for UtilTest and is intended
     ///to contain all UtilTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class UtilTest
     {
         /// <summary>
@@ -20,7 +20,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsBetween
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsBetweenIsFalseIfStartIsNullAndEndIsNull()
         {
             string value = "2010-01-01";
@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsEqualTo
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsEqualToTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsGreaterThan
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsGreaterThanTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -63,7 +63,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsGreaterThanOrEqualTo
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsGreaterThanOrEqualToTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -78,7 +78,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsLessThan
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsLessThanTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -93,7 +93,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsLessThanOrEqualTo
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsLessThanOrEqualToTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -108,7 +108,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for IsNotEqualTo
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void IsNotEqualToTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -123,7 +123,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for ValueIsDate
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void ValueIsDateTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -137,7 +137,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for ValueIsNumber
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void ValueIsNumberTest()
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
@@ -151,7 +151,7 @@ namespace Dev2.Integration.Tests.Activities
         /// <summary>
         ///A test for LsThEq
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void LsThEqTest()
         {
             string value = "6"; // TODO: Initialize to an appropriate value
