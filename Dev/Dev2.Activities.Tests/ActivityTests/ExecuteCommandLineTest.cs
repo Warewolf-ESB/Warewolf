@@ -456,9 +456,6 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
 
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
             Assert.AreEqual(1, inRes.Count);
             IList<DebugItemResult> debugInputResults = inRes[0].FetchResultsList();
             Assert.AreEqual(2, debugInputResults.Count);

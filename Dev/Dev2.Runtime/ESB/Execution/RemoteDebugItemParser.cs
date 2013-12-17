@@ -19,8 +19,8 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 IList<DebugState> debugItems = serializer.Deserialize<List<DebugState>>(data);
 
-                        return debugItems;
-                    }
+                return debugItems;
+            }
             catch (Exception e)
             {
                 ServerLogger.LogError(e);

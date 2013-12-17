@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using System.Management;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Reflection;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests
 {
@@ -18,6 +18,8 @@ namespace Dev2.Integration.Tests
         public void PrepareApplication_With_ExistingApplication_Expect_OnlyOneApplication()
         {
             bool actual = false;
+
+            var msg = string.Empty;
 
             try
             {
@@ -70,11 +72,14 @@ namespace Dev2.Integration.Tests
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
+                msg = e.Message;
+                msg += Environment.NewLine;
+                msg += e.StackTrace;
             }
 
-            Assert.AreEqual(true, actual, "Failed to kill second studio!");
+            Assert.IsTrue(actual, "Failed to kill second studio! [ " + msg + " ]");
         }
     }
 }
