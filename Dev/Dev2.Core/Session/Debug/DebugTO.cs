@@ -1,10 +1,12 @@
 ﻿using System;
 using Dev2.DataList.Contract.Binary_Objects;
 
-namespace Dev2.Session {
+namespace Dev2.Session
+{
 
     [Serializable]
-    public class DebugTO {
+    public class DebugTO
+    {
         #region Fields
 
         private string _xmlData;
@@ -29,14 +31,18 @@ namespace Dev2.Session {
 
         public int DataListHash { get; set; }
 
-        public string XmlData {
-            get {
-                if (_xmlData == null) {
+        public string XmlData
+        {
+            get
+            {
+                if(_xmlData == null)
+                {
                     _xmlData = DataList;
                 }
                 return _xmlData;
             }
-            set {
+            set
+            {
                 _xmlData = value;
             }
         }
@@ -54,7 +60,8 @@ namespace Dev2.Session {
 
         #region Methods
 
-        public SaveDebugTO CopyToSaveDebugTO() {
+        public SaveDebugTO CopyToSaveDebugTO()
+        {
             SaveDebugTO that = new SaveDebugTO();
 
             that.DataList = this.DataList;
@@ -69,7 +76,8 @@ namespace Dev2.Session {
             return that;
         }
 
-        public void CopyFromSaveDebugTO(SaveDebugTO that) {
+        public void CopyFromSaveDebugTO(SaveDebugTO that)
+        {
 
             this.DataList = that.DataList;
             this.ServiceName = that.ServiceName;

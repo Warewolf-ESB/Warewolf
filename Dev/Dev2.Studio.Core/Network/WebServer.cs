@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -94,6 +95,26 @@ namespace Dev2.Studio.Core.Network
             {
                 return false;
             }
+        }
+
+        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData, bool isXML)
+        {
+            if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
+            {
+                return;
+            }
+            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.ResourceName);
+            if(isXML)
+            {
+                relativeUrl += "DataList=" + xmlData;
+            }
+            else
+            {
+                relativeUrl += xmlData;
+            }
+            Uri url;
+            Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url);
+            Process.Start(url.ToString());
         }
     }
 }

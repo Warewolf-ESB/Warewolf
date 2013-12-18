@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities.Presentation.View;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
@@ -22,7 +21,6 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
-using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -59,6 +57,8 @@ namespace Dev2.ViewModels.WorkSurface
         ICommand _editResourceCommand;
         bool _hasMappingChange;
         IEnvironmentModel _environmentModel;
+        ICommand _quickDebugCommand;
+        ICommand _quickViewInBrowserCommand;
 
         #endregion private fields
 
@@ -329,6 +329,26 @@ namespace Dev2.ViewModels.WorkSurface
             }
         }
 
+        public ICommand QuickDebugCommand
+        {
+            get
+            {
+                return _quickDebugCommand ??
+                       (_quickDebugCommand =
+                        new RelayCommand(param => QuickDebug(), param => CanDebug()));
+            }
+        }
+
+        public ICommand QuickViewInBrowserCommand
+        {
+            get
+            {
+                return _quickViewInBrowserCommand ??
+                       (_quickViewInBrowserCommand =
+                        new RelayCommand(param => QuickViewInBrowser(), param => CanDebug()));
+            }
+        }
+
         public IContextualResourceModel ContextualResourceModel
         {
             get
@@ -374,10 +394,10 @@ namespace Dev2.ViewModels.WorkSurface
             DebugOutputViewModel.DebugStatus = debugStatus;
         }
 
-        public void GetServiceInputDataFromUser(IServiceDebugInfoModel input)
+        public WorkflowInputDataViewModel GetServiceInputDataFromUser(IServiceDebugInfoModel input)
         {
             var inputDataViewModel = new WorkflowInputDataViewModel(input, DebugOutputViewModel) { Parent = this };
-            _windowManager.ShowDialog(inputDataViewModel);
+            return inputDataViewModel;
         }
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
@@ -390,10 +410,17 @@ namespace Dev2.ViewModels.WorkSurface
             SetDebugStatus(DebugStatus.Configure);
 
             Save(resourceModel, true);
+            var inputDataViewModel = GetWorkflowInputDataViewModel(resourceModel, isDebug);
+            _windowManager.ShowDialog(inputDataViewModel);
+        }
+
+        WorkflowInputDataViewModel GetWorkflowInputDataViewModel(IContextualResourceModel resourceModel, bool isDebug)
+        {
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
-            GetServiceInputDataFromUser(debugInfoModel);
+            var inputDataViewModel = GetServiceInputDataFromUser(debugInfoModel);
+            return inputDataViewModel;
         }
 
         public void StopExecution()
@@ -402,21 +429,7 @@ namespace Dev2.ViewModels.WorkSurface
 
             CommandManager.InvalidateRequerySuggested();
 
-            var result  = ContextualResourceModel.Environment.ResourceRepository.StopExecution(ContextualResourceModel);
-
-            //dynamic buildRequest = new UnlimitedObject();
-
-            //buildRequest.Service = "TerminateExecutionService";
-            //buildRequest.Roles = String.Join(",", _securityContext.Roles);
-
-            //buildRequest.ResourceID = ContextualResourceModel.ID;
-
-            //Guid workspaceID = ((IStudioClientContext)ContextualResourceModel.Environment.DsfChannel).WorkspaceID;
-
-            //string result =
-            //    ContextualResourceModel.Environment.DsfChannel.
-            //          ExecuteCommand(buildRequest.XmlString, workspaceID, GlobalConstants.NullDataListID) ??
-            //    string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, buildRequest.Service);
+            var result = ContextualResourceModel.Environment.ResourceRepository.StopExecution(ContextualResourceModel);
 
             DispatchServerDebugMessage(result, ContextualResourceModel);
 
@@ -434,8 +447,22 @@ namespace Dev2.ViewModels.WorkSurface
             {
                 return;
             }
+            Debug();
+        }
 
-            Process.Start(StudioToWizardBridge.GetWorkflowUrl(ContextualResourceModel).AbsoluteUri);
+        public void QuickViewInBrowser()
+        {
+            var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, false);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            workflowInputDataViewModel.ViewInBrowser();
+        }
+
+        public void QuickDebug()
+        {
+            SetDebugStatus(DebugStatus.Configure);
+            var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, true);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            workflowInputDataViewModel.Save();
         }
 
         public void BindToModel()

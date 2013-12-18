@@ -214,6 +214,30 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.DebugCommand;
             }
         }
+
+        public ICommand QuickDebugCommand
+        {
+            get
+            {
+                if(ActiveItem == null)
+                {
+                    return new RelayCommand((p) => { }, param => false);
+                }
+                return ActiveItem.QuickDebugCommand;
+            }
+        }
+
+        public ICommand QuickViewInBrowserCommand
+        {
+            get
+            {
+                if(ActiveItem == null)
+                {
+                    return new RelayCommand((p) => { }, param => false);
+                }
+                return ActiveItem.QuickViewInBrowserCommand;
+            }
+        }
         public ICommand ViewInBrowserCommand
         {
             get
@@ -947,6 +971,8 @@ namespace Dev2.Studio.ViewModels
                 NotifyOfPropertyChange(() => EditCommand);
                 NotifyOfPropertyChange(() => SaveCommand);
                 NotifyOfPropertyChange(() => DebugCommand);
+                NotifyOfPropertyChange(() => QuickDebugCommand);
+                NotifyOfPropertyChange(() => QuickViewInBrowserCommand);
                 NotifyOfPropertyChange(() => ViewInBrowserCommand);
             }
             base.OnActivationProcessed(item, success);

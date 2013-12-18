@@ -10,7 +10,7 @@
         xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
         xmlns:interfaceImplementors="clr-namespace:Dev2.Studio.InterfaceImplementors;assembly=Dev2.Intellisense"
         Title="Debug"         
-        Width="450"        
+        Width="470"        
         Height="400"       
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
@@ -22,6 +22,7 @@
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=OKCommand}"/>
         <!--<KeyBinding Key="F10" Command="{Binding Path=StepThrough}"/>-->
+        <KeyBinding Command="{Binding Path=ViewInBrowserCommand}" Key="F7" />
         <KeyBinding Key="Escape" Command="{Binding Path=CancelCommand}"/>
     </Window.InputBindings>
 
@@ -108,10 +109,12 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="110"/>
                 <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="110" />
             </Grid.ColumnDefinitions>
-            <Button Content="Cancel" AutomationProperties.AutomationId="UI_Cancelbtn_AutoID" Command="{Binding Path=CancelCommand}" Grid.Row="0" Grid.Column="0" MaxHeight="25" MinWidth="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,5,0" />
+            <Button Content="Cancel" AutomationProperties.AutomationId="UI_Cancelbtn_AutoID" Click="CancelClicked" Command="{Binding Path=CancelCommand}" Grid.Row="0" Grid.Column="0" MaxHeight="25" MinWidth="100" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5,0,5,0" />
             <Button Content="Step Through" AutomationProperties.AutomationId="UI_StepThroughbtn_AutoID" IsEnabled="False" Grid.Column="1" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0" />
-            <Button Content="Execute" AutomationProperties.AutomationId="UI_Executebtn_AutoID" Click="Button_Click" Command="{Binding Path=OKCommand}" Grid.Row="0" Grid.Column="2" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0"/>
+            <Button Content="Debug" AutomationProperties.AutomationId="UI_Executebtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=OKCommand}" Grid.Row="0" Grid.Column="2" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0"/>
+            <Button Content="View In Browser" AutomationProperties.AutomationId="UI_Browserbtn_AutoID" Click="ExecuteClicked" Command="{Binding Path=ViewInBrowserCommand}" Grid.Row="0" Grid.Column="3" MaxHeight="25" MinWidth="100" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="5,0,5,0"/>
         </Grid>
     </Grid>
 </Window>

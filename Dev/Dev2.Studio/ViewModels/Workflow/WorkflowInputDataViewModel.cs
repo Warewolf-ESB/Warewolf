@@ -11,6 +11,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.ViewModels.Workflow;
 using Dev2.ViewModels.WorkSurface;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private IBinaryDataList _dataList;
         private bool _rememberInputs;
         readonly DebugOutputViewModel _debugOutputViewModel;
+        RelayCommand _viewInBrowserCommmand;
+        readonly DataListConversionUtils _dataListConversionUtils;
 
         #endregion Fields
 
@@ -68,6 +71,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             _resourceModel = input.ResourceModel;
             DisplayName = "Debug input data";
+            _dataListConversionUtils = new DataListConversionUtils();
         }
         #endregion Ctor
 
@@ -175,6 +179,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public ICommand ViewInBrowserCommand
+        {
+            get
+            {
+                if(_viewInBrowserCommmand == null)
+                {
+                    _viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => true);
+                }
+                return _viewInBrowserCommmand;
+            }
+        }
+
         public ICommand CancelCommand
         {
             get
@@ -196,12 +212,20 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Save()
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
+            DoSaveActions();
+            ExecuteWorkflow();
+            RequestClose();
+        }
+
+        void DoSaveActions()
+        {
             SetXMLData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
-            if(DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO);
-            ExecuteWorkflow();
-            RequestClose();
+            if(DebugTO.DataList != null)
+            {
+                Broker.PersistDebugSession(DebugTO);
+            }
         }
 
         public void ExecuteWorkflow()
@@ -228,11 +252,36 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 SendExecuteRequest(dataList);
             }
-        }
+            }
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
             WebServer.SendAsync(WebServerMethod.POST, _resourceModel, payload.ToString(), ExecutionCallback);
+        }
+
+        public void ViewInBrowser()
+        {
+            DoSaveActions();
+            var isXML = false;
+            var payload = DebugTO.XmlData;
+            var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
+            if(allScalars && WorkflowInputs.Count > 0)
+            {
+                payload = WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=" + workflowInput.Value + "&")).TrimEnd('&');
+            }
+            else
+            {
+                payload = XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+                isXML = true;
+            }
+            SendViewInBrowserRequest(payload, isXML);
+            SendFinishedMessage();
+            RequestClose();
+        }
+
+        protected virtual void SendViewInBrowserRequest(string payload, bool isXML)
+        {
+            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload, isXML);
         }
 
         private void ExecutionCallback(UploadStringCompletedEventArgs args)
@@ -273,7 +322,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataList = DebugTO.BinaryDataList;
 
             // Flipping Jurie....
-            var myList = CreateListToBindTo(DebugTO.BinaryDataList);
+            var myList = _dataListConversionUtils.CreateListToBindTo(DebugTO.BinaryDataList);
 
             WorkflowInputs.AddRange(myList);
         }
@@ -401,7 +450,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors = new ErrorResultTO();
             Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
-            string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
             if(string.IsNullOrEmpty(error))
             {
                 try
@@ -425,7 +474,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(string.IsNullOrEmpty(error))
             {
                 WorkflowInputs.Clear();
-                CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
+                _dataListConversionUtils.CreateListToBindTo(DataList).ToList().ForEach(i => WorkflowInputs.Add(i));
             }
         }
 
@@ -474,7 +523,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             string error;
             DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
-
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
 
@@ -489,93 +537,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                     DataList.TryCreateScalarValue(item.Value, item.Field, out error);
                 }
             }
-        }
-
-        private OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IBinaryDataList dataList)
-        {
-            var result = new OptomizedObservableCollection<IDataListItem>();
-
-            if(dataList != null)
-            {
-                var listOfEntries = dataList.FetchAllEntries();
-
-                foreach(IBinaryDataListEntry entry in listOfEntries
-                    .Where(e => (e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
-                                 e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
-                {
-                    result.AddRange(ConvertIBinaryDataListEntryToIDataListItem(entry));
-                }
-            }
-
-            return result;
-        }
-
-        private IList<IDataListItem> ConvertIBinaryDataListEntryToIDataListItem(IBinaryDataListEntry dataListEntry)
-        {
-            IList<IDataListItem> result = new List<IDataListItem>();
-            if(dataListEntry.IsRecordset)
-            {
-                int sizeOfCollection = dataListEntry.ItemCollectionSize();
-                if(sizeOfCollection == 0) { sizeOfCollection++; }
-                int count = 0;
-                string error = string.Empty;
-
-                while(count < sizeOfCollection)
-                {
-
-                    IList<IBinaryDataListItem> items = dataListEntry.FetchRecordAt(count + 1, out error);
-                    foreach(IBinaryDataListItem item in items)
-                    {
-                        IDataListItem singleRes = new DataListItem();
-                        singleRes.IsRecordset = true;
-                        singleRes.Recordset = item.Namespace;
-                        singleRes.Field = item.FieldName;
-                        singleRes.RecordsetIndex = (count + 1).ToString();
-                        singleRes.Value = item.TheValue;
-
-                        if(string.IsNullOrEmpty(item.DisplayValue))
-                        {
-
-                        }
-
-                        singleRes.DisplayValue = item.DisplayValue;
-                        var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);
-                        if(desc == null)
-                        {
-                            singleRes.Description = null;
-                        }
-                        else
-                        {
-                            singleRes.Description = desc.ColumnDescription;
-                        }
-                        result.Add(singleRes);
-                    }
-                    count++;
-                }
-            }
-            else
-            {
-                IBinaryDataListItem item = dataListEntry.FetchScalar();
-                if(item != null)
-                {
-                    IDataListItem singleRes = new DataListItem();
-                    singleRes.IsRecordset = false;
-                    singleRes.Field = item.FieldName;
-                    singleRes.DisplayValue = item.FieldName;
-                    singleRes.Value = item.TheValue;
-                    string desc = dataListEntry.Description;
-                    if(string.IsNullOrWhiteSpace(desc))
-                    {
-                        singleRes.Description = null;
-                    }
-                    else
-                    {
-                        singleRes.Description = desc;
-                    }
-                    result.Add(singleRes);
-                }
-            }
-            return result;
         }
 
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<Dev2Column> columns, int indexToInsertAt, int indexNum, bool setFocus)

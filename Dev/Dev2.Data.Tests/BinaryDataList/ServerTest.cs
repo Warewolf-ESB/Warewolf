@@ -25,6 +25,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         private static readonly IDataListServer Dls = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
         private static readonly DataListFormat XmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
         private static readonly DataListFormat XmlFormatWithoutSystemTags = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
+        private static readonly DataListFormat XmlFormatInputsOnly = DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only);
 
 
         private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
@@ -56,6 +57,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML)));
             Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._JSON)));
             Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags)));
+            Dls.AddTranslator(dltf.FetchTranslator(DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only)));
 
         }
         #endregion
@@ -63,16 +65,17 @@ namespace Dev2.Data.Tests.BinaryDataList
         #region Positive Test
 
         [TestMethod]
-        public void Fetch_TranslationTypes_ExpectThreeTypes()
+        public void Fetch_TranslationTypes_ExpectAddTypes()
         {
 
             IList<DataListFormat> formats = Dls.FetchTranslatorTypes();
 
-            Assert.IsTrue(formats.Count == 4);
+            Assert.AreEqual(5, formats.Count);
             Assert.AreEqual(GlobalConstants._BINARY, formats[0].FormatName);
             Assert.AreEqual(GlobalConstants._XML, formats[1].FormatName);
             Assert.AreEqual(GlobalConstants._JSON, formats[2].FormatName);
             Assert.AreEqual(GlobalConstants._XML_Without_SystemTags, formats[3].FormatName);
+            Assert.AreEqual(GlobalConstants._XML_Inputs_Only, formats[4].FormatName);
         }
 
         #endregion
@@ -101,10 +104,10 @@ namespace Dev2.Data.Tests.BinaryDataList
                 var res3 = obj.FetchRecordsetEntries().Count;
                 var res4 = cols.Count;
 
-                Assert.AreEqual(3+ systemTagCount,res1);
-                Assert.AreEqual(2 + systemTagCount,res2);
-                Assert.AreEqual(1,res3);
-                Assert.AreEqual(2,res4);
+                Assert.AreEqual(3 + systemTagCount, res1);
+                Assert.AreEqual(2 + systemTagCount, res2);
+                Assert.AreEqual(1, res3);
+                Assert.AreEqual(2, res4);
             }
             else
             {
@@ -204,14 +207,14 @@ namespace Dev2.Data.Tests.BinaryDataList
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(""));
             IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
-           
+
             IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
             IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
             IBinaryDataListItem item = scalars[0].FetchScalar();
             IList<IBinaryDataListItem> items = recordsets[0].FetchRecordAt(1, out error);
 
             Assert.IsTrue(item != null && items != null);
-            
+
         }
 
         [TestMethod]
@@ -264,6 +267,44 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_XMLNoInputs")]
+        public void DeSerializeToXMLInputsOnlyFromBinary_ValidXML_Expect_Sucess()
+        {
+            IBinaryDataList dl = Dev2BinaryDataListFactory.CreateDataList();
+            List<Dev2Column> cols1 = new List<Dev2Column>
+                {
+                    DataListFactory.CreateDev2Column("f1", ""),
+                };
+            List<Dev2Column> cols2 = new List<Dev2Column>
+                {
+                    DataListFactory.CreateDev2Column("f2", ""),
+                };
+            string error;
+            ErrorResultTO errors;
+
+
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatInputsOnly);
+            dl.TryCreateRecordsetTemplate("rs1", "", cols1, true, out error);
+            dl.TryCreateRecordsetTemplate("rs2", "", cols2, true, true, enDev2ColumnArgumentDirection.Input, out error);
+            dl.TryCreateScalarTemplate("", "scalar1", "", true, true, enDev2ColumnArgumentDirection.Input, out error);
+            dl.TryCreateScalarTemplate("", "scalar2", "", true, true, enDev2ColumnArgumentDirection.Output, out error);
+            dl.TryCreateScalarValue("scalar1Value", "scalar1", out error);
+            dl.TryCreateScalarValue("scalar2Value", "scalar2", out error);
+            dl.TryCreateRecordsetValue("rec1.f1.value", "f1", "rs1", 1, out error);
+            dl.TryCreateRecordsetValue("rec1.f2.value", "f2", "rs2", 1, out error);
+            dl.TryCreateRecordsetValue("rec2.f1.value", "f1", "rs1", 2, out error);
+            dl.TryCreateRecordsetValue("rec2.f2.value", "f2", "rs2", 2, out error);
+
+            DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
+
+            string result = tmp.FetchAsString();
+
+            Assert.AreEqual("<DataList><rs2><f2>rec1.f2.value</f2></rs2><rs2><f2>rec2.f2.value</f2></rs2><scalar1>scalar1Value</scalar1></DataList>", result);
+
+        }
+
+        [TestMethod]
         public void DeSerializeToXMLFromBinary_InvertedIndexInsert_ValidXML_Expect_Sucess()
         {
             IBinaryDataList dl = Dev2BinaryDataListFactory.CreateDataList();
@@ -311,7 +352,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string expected = "Travis Is \"Cool\"&amp;>'nstuff'<";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
-            
+
         }
 
         [TestMethod]
@@ -353,7 +394,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Execute Test---------------------------
             ErrorResultTO errors;
-            var actual = xmlConverter.ConvertAndFilter(dl1,"<root><cake/></root>" ,out errors);
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><cake/></root>", out errors);
 
             //------------Assert Results-------------------------
             const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";

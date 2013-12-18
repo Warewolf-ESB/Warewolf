@@ -168,6 +168,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
+
         }
 
         #region CoalesceMappingChangedErrors
@@ -264,6 +265,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             SendDebugState(debugState as DebugState);
         }
+
 
         #endregion
     }

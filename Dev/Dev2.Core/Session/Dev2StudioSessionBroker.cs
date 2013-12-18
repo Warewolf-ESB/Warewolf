@@ -19,15 +19,15 @@ namespace Dev2.Session
         #region Static Conts
         private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
-        private string _debugPersistPath; 
+        private string _debugPersistPath;
         private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
         private readonly static object _settingsLock = new object();
         private readonly static object _initLock = new object();
         #endregion
 
-        private IActivityIOPath _debugPath; 
-        private IActivityIOOperationsEndPoint _debugOptsEndPoint; 
+        private IActivityIOPath _debugPath;
+        private IActivityIOOperationsEndPoint _debugOptsEndPoint;
         private readonly IDictionary<string, DebugTO> _debugPersistSettings = new ConcurrentDictionary<string, DebugTO>();
 
         /// <summary>
@@ -42,26 +42,26 @@ namespace Dev2.Session
             to.Error = string.Empty;
 
             // Bootstrap the operations
-            if (to.BaseSaveDirectory != null)
+            if(to.BaseSaveDirectory != null)
             {
                 BootstrapPersistence(to.BaseSaveDirectory);
                 InitPersistSettings();
 
             }
-            else if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+            else if(to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
             {
                 BootstrapPersistence(_rootPath);
                 InitPersistSettings();
             }
 
-            if (to.BaseSaveDirectory == null)
+            if(to.BaseSaveDirectory == null)
             {
                 // set the save location
                 to.BaseSaveDirectory = _rootPath;
             }
 
 
-            if (to.DataList != null)
+            if(to.DataList != null)
             {
                 to.DataListHash = to.DataList.GetHashCode(); // set incoming DL hash
             }
@@ -73,11 +73,11 @@ namespace Dev2.Session
             var svrCompiler = DataListFactory.CreateServerDataListCompiler();
             ErrorResultTO errors;
 
-            if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+            if(_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
             {
-                
+
                 var convertData = tmp.XmlData;
-                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList, out errors);
+                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList ?? "", out errors);
                 tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
                 to.XmlData = tmp.RememberInputs
                                  ? (tmp.XmlData ?? "<DataList></DataList>")
@@ -97,7 +97,7 @@ namespace Dev2.Session
                 to.BinaryDataList = to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, createGuid, out errors);
             }
 
-            
+
 
             return to;
         }
@@ -110,13 +110,13 @@ namespace Dev2.Session
         public DebugTO PersistDebugSession(DebugTO to)
         {
 
-            lock (_settingsLock)
+            lock(_settingsLock)
             {
 
-                if (to.DataList!=null) to.DataListHash = to.DataList.GetHashCode(); // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
+                if(to.DataList != null) to.DataListHash = to.DataList.GetHashCode(); // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
                 to.Error = string.Empty;
 
-                if (to.RememberInputs)
+                if(to.RememberInputs)
                 {
                     // update the current TO
                     _debugPersistSettings[to.WorkflowID] = to;
@@ -126,7 +126,7 @@ namespace Dev2.Session
                     // no longer relavent, remove it
                     DebugTO tmp = null;
 
-                    if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+                    if(_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                     {
                         _debugPersistSettings.Remove(to.WorkflowID);
                     }
@@ -135,11 +135,11 @@ namespace Dev2.Session
                 List<SaveDebugTO> settingList = new List<SaveDebugTO>();
 
                 // build the list
-                foreach (string key in _debugPersistSettings.Keys)
+                foreach(string key in _debugPersistSettings.Keys)
                 {
                     DebugTO tmp = null;
 
-                    if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out tmp))
+                    if(key.Length > 0 && _debugPersistSettings.TryGetValue(key, out tmp))
                     {
                         SaveDebugTO that;
                         that = tmp.CopyToSaveDebugTO();
@@ -148,9 +148,9 @@ namespace Dev2.Session
                 }
 
                 // push to disk
-                using (Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
+                using(Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
                 {
-                    XmlSerializer bf = new XmlSerializer(typeof (List<SaveDebugTO>));
+                    XmlSerializer bf = new XmlSerializer(typeof(List<SaveDebugTO>));
                     bf.Serialize(s, settingList);
                 }
             }
@@ -166,7 +166,7 @@ namespace Dev2.Session
 
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            if (typeOf == enTranslationTypes.XML)
+            if(typeOf == enTranslationTypes.XML)
             {
                 BinaryFormatter bf = new BinaryFormatter();
                 using(MemoryStream ms = new MemoryStream())
@@ -202,21 +202,21 @@ namespace Dev2.Session
 
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            if (typeOf == enTranslationTypes.XML)
+            if(typeOf == enTranslationTypes.XML)
             {
                 ErrorResultTO errors;
 
 
                 Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,
                                                     targetShape, out errors);
-                if (errors.HasErrors())
+                if(errors.HasErrors())
                 {
                     error = errors.FetchErrors()[0]; // take the first error ;)
                 }
                 else
                 {
                     result = compiler.FetchBinaryDataList(resultID, out errors);
-                    if (errors.HasErrors())
+                    if(errors.HasErrors())
                     {
                         error = errors.FetchErrors()[0]; // take the first error ;)
                     }
@@ -226,21 +226,28 @@ namespace Dev2.Session
             return result;
         }
 
+        public string GetXMLForInputs(IBinaryDataList binaryDataList)
+        {
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            return compiler.ConvertFrom(binaryDataList.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
+        }
+
         #region Private Method
 
         private void BootstrapPersistence(string baseDir)
         {
 
-            lock (_initLock)
+            lock(_initLock)
             {
-                if (_debugPath == null)
+                if(_debugPath == null)
                 {
-                    if (baseDir != null)
+                    if(baseDir != null)
                     {
                         _rootPath = baseDir;
                     }
 
-                    if (_rootPath.EndsWith("\\"))
+                    if(_rootPath.EndsWith("\\"))
                     {
                         _debugPersistPath = _rootPath + _savePath;
                     }
@@ -249,7 +256,7 @@ namespace Dev2.Session
                         _debugPersistPath = _rootPath + "\\" + _savePath;
                     }
 
-                    _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath,"","");
+                    _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
                 }
             }
@@ -262,10 +269,10 @@ namespace Dev2.Session
         private void InitPersistSettings()
         {
 
-            lock (_settingsLock)
+            lock(_settingsLock)
             {
 
-                if (!_debugOptsEndPoint.PathExist(_debugPath))
+                if(!_debugOptsEndPoint.PathExist(_debugPath))
                 {
                     Dev2PutRawOperationTO args = new Dev2PutRawOperationTO(WriteType.Overwrite, "");
                     ActivityIOFactory.CreateOperationsBroker().PutRaw(_debugOptsEndPoint, args);
@@ -273,9 +280,9 @@ namespace Dev2.Session
                 else
                 {
                     // fetch from disk
-                    using (Stream s = _debugOptsEndPoint.Get(_debugPath))
+                    using(Stream s = _debugOptsEndPoint.Get(_debugPath))
                     {
-                        if (s.Length > 0)
+                        if(s.Length > 0)
                         {
                             XmlSerializer bf = new XmlSerializer(typeof(List<SaveDebugTO>));
 
@@ -284,9 +291,9 @@ namespace Dev2.Session
                                 List<SaveDebugTO> settings = (List<SaveDebugTO>)bf.Deserialize(s);
 
                                 // now push back into the Dictonary
-                                foreach (SaveDebugTO dto in settings)
+                                foreach(SaveDebugTO dto in settings)
                                 {
-                                    if (dto.ServiceName.Length > 0)
+                                    if(dto.ServiceName.Length > 0)
                                     {
                                         DebugTO tmp = new DebugTO();
                                         tmp.CopyFromSaveDebugTO(dto);
@@ -298,7 +305,7 @@ namespace Dev2.Session
                                     }
                                 }
                             }
-                            catch (Exception e)
+                            catch(Exception e)
                             {
                                 ServerLogger.LogError(e);
                             }

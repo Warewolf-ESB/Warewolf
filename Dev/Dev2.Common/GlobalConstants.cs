@@ -149,6 +149,7 @@ namespace Dev2.Common
         public const string _FIXED_WIZARD = "FixedWizard";
         public const string _DECISION_STACK = "Dev2DecisionStack";
         public const string _DATATABLE = "DataTable";
+        public const string _XML_Inputs_Only = "XML only Inputs";
 
         //Resource directories
         public const string ServicesDirectory = "Services";
@@ -250,6 +251,8 @@ namespace Dev2.Common
                 "Not Text",
                 "Not XML"                
         };
+
+
 
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }

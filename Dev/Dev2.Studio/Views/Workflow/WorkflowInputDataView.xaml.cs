@@ -52,8 +52,11 @@ namespace Dev2.Studio.Views.Workflow
         {
             if(_foldingStrategy != null && _foldingManager != null)
             {
+                if(!String.IsNullOrEmpty(_editor.Document.Text))
+                {
                 _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
             }
+        }
         }
 
         private void ShowDataInOutputWindow(string input)
@@ -77,14 +80,14 @@ namespace Dev2.Studio.Views.Workflow
         {
 
 
-            if (e.Source is TabControl)
+            if(e.Source is TabControl)
             {
                 var tabCtrl = e.Source as TabControl;
                 var tabItem = tabCtrl.SelectedItem as TabItem;
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null)
+                if(vm != null)
                 {
-                    if (tabItem != null && tabItem.Header.ToString() == "XML")
+                    if(tabItem != null && tabItem.Header.ToString() == "XML")
                     {
                         vm.SetXMLData();
                         ShowDataInOutputWindow(vm.XmlData);
@@ -103,7 +106,7 @@ namespace Dev2.Studio.Views.Workflow
             int indexToSelect = 1;
             var vm = DataContext as WorkflowInputDataViewModel;
 
-            if (vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            if(vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
@@ -113,10 +116,10 @@ namespace Dev2.Studio.Views.Workflow
         private void FocusOnAddition()
         {
             var row = GetSelectedRow(DataListInputs);
-            if (row != null)
+            if(row != null)
             {
                 var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-                if (intelbox != null)
+                if(intelbox != null)
                 {
                     intelbox.Focus();
                 }
@@ -127,7 +130,7 @@ namespace Dev2.Studio.Views.Workflow
         {
             int indexToSelect = 1;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+            if(vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
             }
@@ -145,20 +148,20 @@ namespace Dev2.Studio.Views.Workflow
         private void IntellisenseTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             int indexToSelect = 1;
-            if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem,out indexToSelect)))
+                if(vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                     Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
                 }                                                
                 e.Handled = true;
             }
-            else if (e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+            else if(e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
-                if (vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
+                if(vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                 }
@@ -170,10 +173,10 @@ namespace Dev2.Studio.Views.Workflow
         private void DataListInputs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {                      
             var row = GetSelectedRow(DataListInputs);
-            if (row != null)
+            if(row != null)
             {
                 var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
-                if (intelbox != null)
+                if(intelbox != null)
                 {
                     intelbox.Focus();
                 }
@@ -182,21 +185,21 @@ namespace Dev2.Studio.Views.Workflow
 
         private FrameworkElement FindByName(string name, FrameworkElement root)
         {
-            if (root != null)
+            if(root != null)
             {
                 var tree = new Stack<FrameworkElement>();
                 tree.Push(root);
-                while (tree.Count > 0)
+                while(tree.Count > 0)
                 {
                     FrameworkElement current = tree.Pop();
-                    if (current.Name == name)
+                    if(current.Name == name)
                         return current;
 
                     int count = VisualTreeHelper.GetChildrenCount(current);
-                    for (int SupplierCounter = 0; SupplierCounter < count; ++SupplierCounter)
+                    for(int SupplierCounter = 0; SupplierCounter < count; ++SupplierCounter)
                     {
                         DependencyObject child = VisualTreeHelper.GetChild(current, SupplierCounter);
-                        if (child is FrameworkElement)
+                        if(child is FrameworkElement)
                             tree.Push((FrameworkElement)child);
                     }
                 }
@@ -210,21 +213,34 @@ namespace Dev2.Studio.Views.Workflow
             return row;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ExecuteClicked(object sender, RoutedEventArgs e)
         {
             var tabItem = TabItems.SelectedItem as TabItem;
             var vm = DataContext as WorkflowInputDataViewModel;
-            if (vm != null)
+            if(vm != null)
             {
-                if (tabItem != null && tabItem.Header.ToString() == "XML")
+                if(tabItem != null && tabItem.Header.ToString() == "XML")
                 {
                     vm.XmlData = _editor.Text;
                     vm.SetWorkflowInputData();
                 }             
             }
+            DestroyTimer();
+            }
+
+        void DestroyTimer()
+        {
+            if(_foldingUpdateTimer != null)
+            {
             _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Stop();
             _foldingUpdateTimer = null;
+        }
+    }
+
+        void CancelClicked(object sender, RoutedEventArgs e)
+        {
+            DestroyTimer();
         }
     }
 }

@@ -379,6 +379,7 @@
     <Compile Include="Translators\DataListXMLTranslator.cs" />
     <Compile Include="Translators\IDataListTranslator.cs" />
     <Compile Include="Translators\ITranslate.cs" />
+    <Compile Include="Translators\XmlInputsOnlyTranslator.cs" />
     <Compile Include="Translators\TranslationConstants.cs" />
     <Compile Include="Translators\TranslatorUtils.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />

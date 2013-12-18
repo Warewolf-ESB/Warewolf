@@ -14,7 +14,7 @@ using Dev2.DataList.Contract.TO;
 
 namespace Dev2.Server.DataList.Translators
 {
-    internal sealed class StudioDebugTranslator : IDataListTranslator
+    internal sealed class XmlInputsOnlyTranslator : IDataListTranslator
     {
         private const string _rootTag = "DataList";
         private readonly DataListFormat _format;
@@ -24,9 +24,9 @@ namespace Dev2.Server.DataList.Translators
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
 
-        public StudioDebugTranslator()
+        public XmlInputsOnlyTranslator()
         {
-            _format = DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML);
+            _format = DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only);
             _encoding = Encoding.UTF8;
         }
 
@@ -49,7 +49,7 @@ namespace Dev2.Server.DataList.Translators
                 if(payload.TryGetEntry(key, out entry, out error))
                 {
 
-                    if(entry.IsRecordset)
+                    if(entry.IsRecordset && (entry.ColumnIODirection == enDev2ColumnArgumentDirection.Input || entry.ColumnIODirection == enDev2ColumnArgumentDirection.Both))
                     {
                         int cnt = entry.FetchLastRecordsetIndex();
                         for(int i = 1; i <= cnt; i++)
@@ -83,7 +83,7 @@ namespace Dev2.Server.DataList.Translators
                     {
                         string fName = entry.Namespace;
                         IBinaryDataListItem val = entry.FetchScalar();
-                        if(val != null)
+                        if(val != null && (entry.ColumnIODirection == enDev2ColumnArgumentDirection.Input || entry.ColumnIODirection == enDev2ColumnArgumentDirection.Both))
                         {
                             result.Append("<");
                             result.Append(fName);
