@@ -18,25 +18,28 @@ namespace Warewolf.ReleaseWeb.Services
         public void ProcessRequest(HttpContext context)
         {
             var response = "<root>Not Found</root>";
-            var extension = context.Request.Headers["ext"];
-            //var extension = "xml";
-            //var parts = context.Request.RawUrl.Split('?');
-            //if(parts.Length > 1)
-            //{
-            //    extension = parts[1];
-            //}
-            try
-            {
-                var root = context.Request.MapPath("~/Files");
+            var parts = context.Request.RawUrl.Split('?');
+            var extension = parts.Length > 1 ? parts[1] : context.Request.Headers["extension"];
 
-                var path = Path.Combine(root, "test." + extension);
-                response = File.ReadAllText(path);
-            }
-            catch(Exception ex)
+            if(string.IsNullOrEmpty(extension))
             {
-                response = string.Format("<root>{0}</root>", ex.Message);
+                extension = "xml";
             }
-            
+            else
+            {
+                try
+                {
+                    var root = context.Request.MapPath("~/Files");
+
+                    var path = Path.Combine(root, "test." + extension);
+                    response = File.ReadAllText(path);
+                }
+                catch(Exception ex)
+                {
+                    response = string.Format("<root>{0}</root>", ex.Message);
+                }
+            }
+
             context.Response.ContentType = "text/" + extension;
             context.Response.Write(response);
         }
