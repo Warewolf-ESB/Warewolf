@@ -177,7 +177,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         private string GetDirectoryInfoAsJSON(DirectoryInfo directory)
         {
             int count = 0;
-            string name = string.Empty;
+            string name;
             string json = "[";
             try
             {
