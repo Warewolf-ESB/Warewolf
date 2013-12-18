@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestPackBuilder;
 
@@ -8,7 +10,7 @@ namespace TestPackBuilderTest
     [TestClass]
     public class TestPackBuilderTest
     {
-        private string FetchTestDir(bool isFaulty = false)
+        private string FetchTestDir(bool isFaulty = false, bool isRecursive = false)
         {
             if (isFaulty)
             {
@@ -20,8 +22,55 @@ namespace TestPackBuilderTest
 
             Directory.CreateDirectory(returnPath);
 
+            // now populate it ;)
+            PopulateDirectory(returnPath);
+
+            if (isRecursive)
+            {
+                /* now build up 2 dirs */
+
+                // 1 - with a test file
+                var subDir = Path.Combine(returnPath, Guid.NewGuid().ToString());
+                Directory.CreateDirectory(subDir);
+                PopulateDirectory(subDir, "Method0");
+
+                // 1 - with another directory with a test file ;)
+                var subSubDir = Path.Combine(subDir, Guid.NewGuid().ToString());
+                Directory.CreateDirectory(subSubDir);
+                PopulateDirectory(subSubDir, "Method00");
+                
+            }
+
             return returnPath;
         }
+
+        private void PopulateDirectory(string dir, string adjustNamesValue = "")
+        {
+            const string fileName = "SampleTestFile.cs";
+            var resourceName = string.Format("TestPackBuilderTest.Artifacts.{0}", fileName);
+            
+            var assembly = Assembly.GetExecutingAssembly();
+            using(var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    var len = (int)stream.Length;
+                    var bytes = new byte[len];
+                    stream.Read(bytes, 0, len);
+                    var loc = Path.Combine(dir, fileName);
+                    var str = Encoding.UTF8.GetString(bytes);
+
+                    if (!string.IsNullOrEmpty(adjustNamesValue))
+                    {
+                        str = str.Replace("MyTest", "MyTest_"+adjustNamesValue);
+                    }
+
+                    File.WriteAllText(loc, str);
+                }
+            }
+        }
+
+        #region ScanDirectory Test
 
         [TestMethod]
         public void CanLocateTestMethodNames()
@@ -32,7 +81,7 @@ namespace TestPackBuilderTest
             const string ext = ".cs";
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>TestMethod</TestMethod><TestMethod>TestMethod2</TestMethod><TestMethod>TestMethod3</TestMethod></Methods>";
+            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -125,7 +174,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>TestMethod</TestMethod><TestMethod>TestMethod2</TestMethod><TestMethod>TestMethod3</TestMethod></Methods>";
+            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -141,11 +190,32 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>TestMethod</TestMethod><TestMethod>TestMethod2</TestMethod><TestMethod>TestMethod3</TestMethod></Methods>";
+            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
             StringAssert.Contains(result, expected);
         }
+
+        #endregion
+
+        #region RecursivelyScanDirectory Test
+
+        [TestMethod]
+        public void CanScanDirectoryRecursively()
+        {
+            var obj = new TestScanner();
+
+            const string ext = "cs";
+            var dir = FetchTestDir(false, true);
+            const string annotation = "[TestMethod]";
+            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod><TestMethod>MyTest_Method0</TestMethod><TestMethod>MyTest_Method02</TestMethod><TestMethod>MyTest_Method03</TestMethod><TestMethod>MyTest_Method00</TestMethod><TestMethod>MyTest_Method002</TestMethod><TestMethod>MyTest_Method003</TestMethod></Methods>";
+
+            var result = obj.RecursivelyScanDirectory(dir, ext, annotation);
+
+            StringAssert.Contains(result, expected);
+        }
+
+        #endregion
     }
 }

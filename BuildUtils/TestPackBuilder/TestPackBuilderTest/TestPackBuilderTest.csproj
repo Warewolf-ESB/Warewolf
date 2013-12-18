@@ -54,9 +54,17 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <EmbeddedResource Include="Artifacts\SampleTestFile.cs" />
+    <Compile Include="TestPackBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestPackBuilder\TestPackBuilder.csproj">
+      <Project>{6ABFED9F-E857-4917-AABC-FEF82161A677}</Project>
+      <Name>TestPackBuilder</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

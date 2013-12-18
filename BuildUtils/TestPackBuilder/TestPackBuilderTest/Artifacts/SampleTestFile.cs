@@ -6,17 +6,17 @@ namespace TestPackBuilderTest.Artifacts
     public class SampleTestFile
     {
         [TestMethod]
-        public void TestMethod1()
+        public void MyTest()
         {
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void MyTest2()
         {
         }
 
         [TestMethod]
-        public void TestMethod3()
+        public void MyTest3()
         {
         }
     }

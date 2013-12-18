@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace TestPackBuilder
@@ -11,7 +13,18 @@ namespace TestPackBuilder
         private const string _signatureStart = "public void";
         private const string _signatureEnd = "(";
 
+
+        public string RecursivelyScanDirectory(string directoryToScan, string fileExtentionToScanFor, string testAnnotationSearchString)
+        {
+            return InternalDirectoryScan(directoryToScan, fileExtentionToScanFor, testAnnotationSearchString, true);
+        }
+
         public string ScanDirectory(string directoryToScan, string fileExtentionToScanFor, string testAnnotationSearchString)
+        {
+            return InternalDirectoryScan(directoryToScan, fileExtentionToScanFor, testAnnotationSearchString, false);
+        }
+
+        private string InternalDirectoryScan(string directoryToScan, string fileExtentionToScanFor, string testAnnotationSearchString, bool recusiveScan)
         {
 
             if(directoryToScan == null || !Directory.Exists(directoryToScan))
@@ -25,19 +38,56 @@ namespace TestPackBuilder
             }
 
             var toScanFor = BuildSearchExtention(fileExtentionToScanFor);
-            var files = Directory.GetFiles(directoryToScan, toScanFor);
             var result = new StringBuilder("<Methods>");
-
-            foreach(var file in files)
+            
+            if (!recusiveScan)
             {
+                result.Append(ScanDirectoryForFiles(directoryToScan, toScanFor, testAnnotationSearchString));
+            }
+            else
+            {
+                // Build up the root bits
+                result.Append(ScanDirectoryForFiles(directoryToScan, toScanFor, testAnnotationSearchString));
+                List<string> directories = Directory.GetDirectories(directoryToScan).ToList();
 
-                var contents = File.ReadAllText(file);
-                // we have a match folks ;)
-                result.Append(ProcessFile(contents, testAnnotationSearchString));
+                var dir = directories.FirstOrDefault();
+                if(dir != null)
+                {
+                    directories.RemoveAt(0);
+                }
+                
+                while (dir != null)
+                {
+                    result.Append(ScanDirectoryForFiles(dir, toScanFor, testAnnotationSearchString));
+                    // now scan this directory for more directories ;)
+                    var subDirectories = Directory.GetDirectories(dir).ToList();
 
+                    directories.AddRange(subDirectories);
+
+                    dir = directories.FirstOrDefault();
+                    if (dir != null)
+                    {
+                        directories.RemoveAt(0);
+                    }
+                }
             }
 
             result.Append("</Methods>");
+
+            return result.ToString();
+        }
+
+        private string ScanDirectoryForFiles(string directoryToScan, string toScanFor, string testAnnotationSearchString)
+        {
+            var files = Directory.GetFiles(directoryToScan, toScanFor);
+            var result = new StringBuilder();
+
+            foreach(var file in files)
+            {
+                var contents = File.ReadAllText(file);
+                // we have a match folks ;)
+                result.Append(ProcessFile(contents, testAnnotationSearchString));
+            }
 
             return result.ToString();
         }
