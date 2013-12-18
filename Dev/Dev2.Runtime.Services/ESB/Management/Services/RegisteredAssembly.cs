@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Common;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Reflection;
-using System.Text;
 using Dev2.Workspaces;
-using Dev2.Common;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
     /// Find registred assemblies
     /// </summary>
-    public class RegisteredAssembly
+    public class RegisteredAssembly : IEsbManagementEndpoint
     {
-        public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
+        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             SortedSet<string> gacList = new SortedSet<string>();
 
@@ -55,19 +54,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 result.Append(ex.Message);
             }
             
-            return result.ToString();
+            return result;
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService registeredAssemblyService = new DynamicService();
-            registeredAssemblyService.Name = HandlesType();
-            registeredAssemblyService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService registeredAssemblyService = new DynamicService
+                {
+                    Name = HandlesType(),
+                    DataListSpecification =
+                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                };
 
-            ServiceAction registeredAssemblyAction = new ServiceAction();
-            registeredAssemblyAction.Name = HandlesType();
-            registeredAssemblyAction.SourceMethod = HandlesType();
-            registeredAssemblyAction.ActionType = enActionType.InvokeManagementDynamicService;
+            ServiceAction registeredAssemblyAction = new ServiceAction
+                {
+                    Name = HandlesType(),
+                    SourceMethod = HandlesType(),
+                    ActionType = enActionType.InvokeManagementDynamicService
+                };
 
             registeredAssemblyService.Actions.Add(registeredAssemblyAction);
 

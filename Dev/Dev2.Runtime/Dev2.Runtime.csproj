@@ -198,7 +198,7 @@
       <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">

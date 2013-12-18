@@ -7,7 +7,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
     /// Summary description for FindDriveServiceTest
     /// </summary>
     [TestClass]
-    [Ignore] // StringBuilder refactor
     public class FindDriveServiceTest {
 
         private readonly string WebserverUrl = TestResource.WebserverURI_Local;
@@ -21,7 +20,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDriveService_NoParameters() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDriveService");
-            string expected = @"[{""driveLetter"":""C:/""";
+            const string expected = @"[{""driveLetter"":""C:/""";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             Assert.IsTrue(responseData.Contains(expected));
@@ -31,7 +30,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         public void FindDriveService_ValidCredentials()
         {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDriveService?Domain=DEV2&Username=" + TestResource.PathOperations_Correct_Username + "&Password=" + TestResource.PathOperations_Correct_Password);
-            string expected = @"[{""driveLetter"":""C:/""";
+            const string expected = @"[{""driveLetter"":""C:/""";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             Assert.IsTrue(responseData.Contains(expected));
@@ -40,7 +39,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
         [TestMethod]
         public void FindDriveService_InvalidCredentials() {
             string PostData = String.Format("{0}{1}", WebserverUrl, @"FindDriveService?Domain=DEV2&Username=john.doe&Password=P@ssword");
-            string expected = @"<result>Logon failure: unknown user name or bad password</result>";
+            const string expected = @"<result>Logon failure: unknown user name or bad password</result>";
 
             string responseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(responseData, expected);

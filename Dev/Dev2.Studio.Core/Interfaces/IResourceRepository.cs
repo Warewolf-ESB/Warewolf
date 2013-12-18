@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Dev2.Studio.Core.Interfaces
 {
@@ -42,11 +42,11 @@ namespace Dev2.Studio.Core.Interfaces
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
         DbTableList GetDatabaseTables(DbSource dbSource);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);
-        ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel,bool getDependsOnMe);
+        ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel, bool getDependsOnMe);
         List<string> GetDependanciesOnList(List<IContextualResourceModel> resourceModels, IEnvironmentModel environmentModel, bool getDependsOnMe = false);
         List<IResourceModel> GetUniqueDependencies(IContextualResourceModel resourceModel);
         bool HasDependencies(IContextualResourceModel resourceModel);
-        
+
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
         ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceID);
@@ -55,7 +55,7 @@ namespace Dev2.Studio.Core.Interfaces
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
-        ExecuteMessage Save(IResourceModel  instanceObj);
+        ExecuteMessage Save(IResourceModel instanceObj);
         void Save(ICollection<IResourceModel> instanceObjs);
         event EventHandler ItemAdded;
         void Load();

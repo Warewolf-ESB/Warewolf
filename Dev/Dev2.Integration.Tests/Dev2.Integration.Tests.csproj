@@ -37,7 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -101,9 +101,6 @@
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
     </Reference>
-    <Reference Include="HttpFramework">
-      <HintPath>..\Binaries\HttpFramework.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\Binaries\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -127,9 +124,6 @@
     </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
-    </Reference>
-    <Reference Include="IronPython">
-      <HintPath>..\Dev2.Activities\bin\Debug\IronPython.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -252,6 +246,7 @@
     <Compile Include="Server Test\DeleteResourceTest.cs" />
     <Compile Include="Server Test\DynamicServicesHostTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
+    <Compile Include="Server Test\InternalServices\FindDirectoryServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindDriveServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindNetworkComputerServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
@@ -444,7 +439,7 @@
       <Name>Dev2.OutputLibraries</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">

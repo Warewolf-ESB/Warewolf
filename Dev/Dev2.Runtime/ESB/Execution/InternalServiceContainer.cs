@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Execution
         public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
-            
+
         }
 
         public override Guid Execute(out ErrorResultTO errors)
@@ -37,14 +37,14 @@ namespace Dev2.Runtime.ESB.Execution
                 if(eme != null)
                 {
                     // Web request for internal service ;)
-                    if (Request.Args == null)
+                    if(Request.Args == null)
                     {
                         GenerateRequestDictionaryFromDataObject(out invokeErrors);
                         errors.MergeErrors(invokeErrors);
                     }
 
                     var res = eme.Execute(Request.Args, TheWorkspace);
-                    Request.ExecuteResult = res; 
+                    Request.ExecuteResult = res;
                     errors.MergeErrors(invokeErrors);
                     result = DataObject.DataListID;
                     Request.WasInternalService = true;
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Execution
                     errors.AddError("Could not locate management service [ " + ServiceAction.ServiceName + " ]");
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 errors.AddError(ex.Message);
             }
@@ -77,12 +77,12 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     IBinaryDataListItem itm = entry.FetchScalar();
 
-                    if (!DataListUtil.IsSystemTag(itm.FieldName))
+                    if(!DataListUtil.IsSystemTag(itm.FieldName))
                     {
                         Request.AddArgument(itm.FieldName, new StringBuilder(itm.TheValue));
                     }
                 }
             }
-        } 
+        }
     }
 }

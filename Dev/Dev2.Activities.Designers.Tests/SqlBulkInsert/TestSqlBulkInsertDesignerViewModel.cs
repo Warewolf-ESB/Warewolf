@@ -1,10 +1,10 @@
-﻿using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TO;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
@@ -19,14 +19,16 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
         public string TableName { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
-        public IList<DataColumnMapping> InputMappings { get { return GetProperty<IList<DataColumnMapping>>(); } 
+        public IList<DataColumnMapping> InputMappings
+        {
+            get { return GetProperty<IList<DataColumnMapping>>(); }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     SetProperty(value);
                 }
-            } 
+            }
         }
 
         public int OnSelectedDatabaseChangedHitCount { get; private set; }

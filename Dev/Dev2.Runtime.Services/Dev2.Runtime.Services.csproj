@@ -87,6 +87,8 @@
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
     <Compile Include="ESB\Management\Services\FetchResourceDefintition.cs" />
+    <Compile Include="ESB\Management\Services\FindDirectory.cs" />
+    <Compile Include="ESB\Management\Services\FindDrive.cs" />
     <Compile Include="ESB\Management\Services\FindResourceHelper.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseColumnsForTable.cs" />
     <Compile Include="ESB\Management\Services\GetDatabaseTables.cs" />

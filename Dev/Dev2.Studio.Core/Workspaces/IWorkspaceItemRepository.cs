@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Dev2.Communication;
-using Dev2.Data.ServiceModel.Messages;
+﻿using Dev2.Communication;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
+using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Workspaces
 {

@@ -1,10 +1,10 @@
-﻿using Dev2.Common;
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Dev2.Common;
 
 namespace Dev2.Runtime.Security
 {
@@ -14,6 +14,7 @@ namespace Dev2.Runtime.Security
     public class HostSecureConfig : ISecureConfig
     {
         const string SectionName = "secureSettings";
+
 
         public const string FileName = "Warewolf Server.exe.secureconfig";
 
@@ -214,7 +215,6 @@ namespace Dev2.Runtime.Security
         }
 
         #endregion
-
 
     }
 }
