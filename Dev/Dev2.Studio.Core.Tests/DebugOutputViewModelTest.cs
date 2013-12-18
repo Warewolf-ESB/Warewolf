@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
@@ -13,16 +6,21 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Feedback;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
 
 namespace Dev2.Core.Tests
 {
@@ -35,9 +33,6 @@ namespace Dev2.Core.Tests
         private static IEnvironmentRepository _environmentRepo;
         private static Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
         private static Mock<IContextualResourceModel> _firstResource;
-        private Mock<IContextualResourceModel> _secondResource;
-        private static Mock<IEventAggregator> _eventAggregator;
-        private static MainViewModel _mainViewModel;
         private static string _resourceName = "TestResource";
         private static string _displayName = "test2";
         private static string _serviceDefinition = "<x/>";
@@ -131,8 +126,8 @@ namespace Dev2.Core.Tests
             mock2.SetupGet(m => m.HasError).Returns(true);
             mock2.SetupGet(m => m.ErrorMessage).Returns("Error Test");
 
-            mock1.SetupSet(s => s.ErrorMessage).Callback(s => Assert.IsTrue(s.Equals("Error Test")));
-            mock1.SetupSet(s => s.HasError).Callback(s => Assert.IsTrue(s.Equals(true)));
+            mock1.SetupSet(s => s.ErrorMessage = It.IsAny<string>()).Callback<string>(s => Assert.IsTrue(s.Equals("Error Test")));
+            mock1.SetupSet(s => s.HasError = It.IsAny<bool>()).Callback<bool>(s => Assert.IsTrue(s.Equals(true)));
 
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
 
@@ -384,7 +379,6 @@ namespace Dev2.Core.Tests
         {
             CreateEnvironmentModel();
             _environmentRepo = GetEnvironmentRepository();
-            _eventAggregator = new Mock<IEventAggregator>();
             _popupController = new Mock<IPopupController>();
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
             _webController = new Mock<IWebController>();
@@ -485,22 +479,6 @@ namespace Dev2.Core.Tests
             _mockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
             _mockWorkspaceRepo.Setup(c => c.Remove(_firstResource.Object)).Verifiable();
             return _mockWorkspaceRepo;
-        }
-
-        void AddAdditionalContext()
-        {
-            _secondResource = new Mock<IContextualResourceModel>();
-
-            _secondResource.Setup(c => c.ResourceName).Returns("WhoCares");
-            _secondResource.Setup(c => c.ResourceType).Returns(ResourceType.WorkflowService);
-            _secondResource.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(""));
-            _secondResource.Setup(c => c.Category).Returns("Testing2");
-            _secondResource.Setup(c => c.Environment).Returns(_environmentModel.Object);
-            _secondResource.Setup(c => c.ServerID).Returns(_serverID);
-            _secondResource.Setup(c => c.ID).Returns(_secondResourceID);
-
-            var msg = new AddWorkSurfaceMessage(_secondResource.Object);
-            _mainViewModel.Handle(msg);
         }
 
         [TestMethod]

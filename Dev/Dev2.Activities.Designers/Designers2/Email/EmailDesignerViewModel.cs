@@ -1,3 +1,12 @@
+using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
+using Dev2.DynamicServices;
+using Dev2.Providers.Logs;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -5,26 +14,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.Activities.Designers2.Core;
-using Dev2.DynamicServices;
-using Dev2.Providers.Logs;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Unlimited.Framework;
 
 namespace Dev2.Activities.Designers2.Email
 {
     public class EmailDesignerViewModel : ActivityDesignerViewModel
     {
-         public EmailDesignerViewModel(ModelItem modelItem)
-             :this(modelItem, EventPublishers.Aggregator)
-         {
-         }
+        public EmailDesignerViewModel(ModelItem modelItem)
+            : this(modelItem, EventPublishers.Aggregator)
+        {
+        }
 
         public EmailDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher)
             : base(modelItem)
@@ -57,14 +55,14 @@ namespace Dev2.Activities.Designers2.Email
 
             if(value != null)
             {
-                if (value == viewModel._baseEmailSource)
+                if(value == viewModel._baseEmailSource)
                 {
                     viewModel.CreateNewEmailSource();
                 }
                 else
                 {
                     viewModel.SelectedEmailSource = value;
-                    if (string.IsNullOrEmpty(viewModel.FromAccount))
+                    if(string.IsNullOrEmpty(viewModel.FromAccount))
                     {
                         viewModel.FromAccount = value.UserName;
                     }
@@ -82,7 +80,6 @@ namespace Dev2.Activities.Designers2.Email
         ObservableCollection<EmailSource> _emailSourceList;
         private readonly IEventAggregator _eventPublisher;
         bool _canEditSource;
-        bool _hasClickedSave;
         #endregion
 
         #region Commands
@@ -159,7 +156,6 @@ namespace Dev2.Activities.Designers2.Email
 
         public void CreateNewEmailSource()
         {
-            _hasClickedSave = true;
             Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             UpdateEnvironmentResources();
@@ -183,10 +179,10 @@ namespace Dev2.Activities.Designers2.Email
 
         private void EditEmailSource(IEnvironmentModel env)
         {
-            if (SelectedEmailSource != null)
+            if(SelectedEmailSource != null)
             {
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
-                if (resourceModel != null)
+                if(resourceModel != null)
                 {
                     Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));

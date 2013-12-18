@@ -2,20 +2,9 @@
 
 using System;
 using System.Activities;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2;
-using Dev2.Network.Execution;
-using Unlimited.Framework;
-using Dev2.DynamicServices;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Unlimited.Applications.BusinessDesignStudio.Activities
+namespace Dev2.Activities
 {
     public sealed class DsfWebPageActivity : DsfActivity
     {
@@ -23,6 +12,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private string _websiteServiceName = "Default Master Page";
         private string _formEncodingType = "application/x-www-form-urlencoded";
         private string _metaTags = string.Empty;
+
+
+        // ReSharper disable RedundantOverridenMember
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            base.CacheMetadata(metadata);
+        }
+        // ReSharper restore RedundantOverridenMember
 
 
         /// <summary>
@@ -88,7 +85,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(!value.Equals("application/x-www-form-urlencoded") && !value.Equals("multipart/form-data") && !value.Equals("text/plain"))
                 {
+                    // ReSharper disable NotResolvedInText
                     throw new ArgumentException(string.Format("'{0}' is an invalid form encoding type", value), "FormEncodingType");
+                    // ReSharper restore NotResolvedInText
                 }
                 _formEncodingType = value;
 
@@ -117,36 +116,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Webpage";
         }
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-
         protected override void OnExecute(NativeActivityContext context)
         {
             throw new NotImplementedException("WebPage");
         }
 
-        // Travis.Frisinger - 13.08.2012 : Inject the wizard helper script server side now ;)
-        private string InjectWizardInjectionScript(string template)
-        {
-            
-            const string toInject = @"<script type=""text/javascript"">
-                    $(document).ready(function () {
-                        $('form').submit(function (event) {
-                                var formPostData = $(this).serialize();
-                                if(isValidForm) {
-                                   Dev2Awesomium.Dev2Set(formPostData, document.forms[0].action);
-                                }
-                                return false;                    
-                        });
-                    });
-                </script>";
-
-            int idx = template.IndexOf("</head>", StringComparison.Ordinal);
-            string result = template.Insert(idx, toInject);
-
-            return result;
-        }
     }
 }

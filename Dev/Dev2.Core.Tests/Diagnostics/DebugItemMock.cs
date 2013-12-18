@@ -16,11 +16,11 @@ namespace Dev2.Tests.Diagnostics
             return false;
         }
 
-        public new void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
+        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
         {
         }
 
-        public new void AddRange(IList<IDebugItemResult> itemsToAdd)
+        public void AddRange(IList<IDebugItemResult> itemsToAdd)
         {
         }
 

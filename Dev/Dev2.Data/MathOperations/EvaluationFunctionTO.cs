@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.MathOperations;
 
-namespace Dev2.MathOperations {
+namespace Dev2.Data.MathOperations {
     public class EvaluationFunctionTO : IEvaluationFunction {
 
-        private string _function;
+        private readonly string _function;
 
         internal EvaluationFunctionTO(string function) {
             _function = function;

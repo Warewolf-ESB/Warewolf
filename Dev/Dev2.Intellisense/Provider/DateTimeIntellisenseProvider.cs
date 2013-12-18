@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
-using Dev2.Studio.Core.Interfaces;
+using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Studio.InterfaceImplementors
 {

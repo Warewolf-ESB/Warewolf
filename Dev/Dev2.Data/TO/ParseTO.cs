@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Dev2.DataList.Contract
+﻿
+namespace Dev2.Data.TO
 {
     public class ParseTO {
 
@@ -31,11 +27,7 @@ namespace Dev2.DataList.Contract
         public bool IsRecordSet {
 
             get {
-                bool result = false;
-
-                if (Payload != null && Payload.Contains("(")) {
-                    result = true;
-                }
+                bool result = Payload != null && Payload.Contains("(");
 
                 return result;
             }

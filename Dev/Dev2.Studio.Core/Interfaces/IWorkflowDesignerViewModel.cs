@@ -1,12 +1,10 @@
-using System.Activities;
+using Dev2.Studio.Core.Interfaces;
 using System.Activities.Presentation;
 using System.Windows;
-using System.Windows.Input;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
 
-namespace Dev2.Studio.Core.ViewModels {
-    public interface IWorkflowDesignerViewModel : IDesignerViewModel 
+namespace Dev2.Studio.Core.ViewModels
+{
+    public interface IWorkflowDesignerViewModel : IDesignerViewModel
     {
         bool HasErrors { get; set; }
         object SelectedModelItem { get; }
@@ -22,10 +20,10 @@ namespace Dev2.Studio.Core.ViewModels {
         /// The environment model.
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
-        IEnvironmentModel EnvironmentModel { get; }
+        new IEnvironmentModel EnvironmentModel { get; }
 
         void Dispose();
-        bool NotifyItemSelected(object primarySelection);        
+        bool NotifyItemSelected(object primarySelection);
         void BindToModel();
         void AddMissingWithNoPopUpAndFindUnusedDataListItems();
     }

@@ -8,6 +8,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Providers.Logs;

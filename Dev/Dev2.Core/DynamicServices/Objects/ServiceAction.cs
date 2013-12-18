@@ -28,8 +28,8 @@ namespace Dev2.DynamicServices.Objects {
         private Activity _workflowActivity;
         private StringBuilder _xamlDefinition;
 
-        private object _poolGuard = new object();
-        private int _generation;
+        private readonly object _poolGuard = new object();
+        private const int _generation = 0;
         private Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
 
         private Stream _xamlStream;
@@ -155,7 +155,7 @@ namespace Dev2.DynamicServices.Objects {
         public ServiceAction() : base(enDynamicServiceObjectType.ServiceAction) {
             ServiceActionInputs = new List<ServiceActionInput>();
             ServiceActionOutputs = new List<IDev2Definition>(); // Travis.Frisinger
-            this.ActionType = enActionType.Unknown;
+            ActionType = enActionType.Unknown;
         }
         #endregion
 
@@ -166,7 +166,7 @@ namespace Dev2.DynamicServices.Objects {
         /// <returns></returns>
         public PooledServiceActivity PopActivity()
         {
-            PooledServiceActivity result = null;
+            PooledServiceActivity result;
 
             lock (_poolGuard)
             {
@@ -212,19 +212,19 @@ namespace Dev2.DynamicServices.Objects {
         public override bool Compile() {
             base.Compile();
 
-            foreach (ServiceActionInput sai in this.ServiceActionInputs) {
+            foreach (ServiceActionInput sai in ServiceActionInputs) {
                 sai.Compile();
-                sai.CompilerErrors.ToList().ForEach(c => this.CompilerErrors.Add(c));
+                sai.CompilerErrors.ToList().ForEach(c => CompilerErrors.Add(c));
             }
 
-            if (this.CompilerErrors.Count > 0) {
-                return this.IsCompiled;
+            if (CompilerErrors.Count > 0) {
+                return IsCompiled;
             }
 
-            switch (this.ActionType) {
+            switch (ActionType) {
                 
                 case enActionType.InvokeDynamicService:
-                    if (string.IsNullOrEmpty(this.ServiceName)) {
+                    if (string.IsNullOrEmpty(ServiceName)) {
                         WriteCompileError(Resources.CompilerError_MissingServiceName);
                     }
                 break;
@@ -234,10 +234,10 @@ namespace Dev2.DynamicServices.Objects {
 
                 default:
                     //A Source Name is required except in the case of Management Dynamic Services
-                    if(string.IsNullOrEmpty(this.SourceName) && ActionType != enActionType.InvokeManagementDynamicService){
+                    if(string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService){
                         WriteCompileError(Resources.CompilerError_MissingSourceName);
                     }
-                    if (string.IsNullOrEmpty(this.SourceMethod)) {
+                    if (string.IsNullOrEmpty(SourceMethod)) {
                         WriteCompileError(Resources.CompilerError_MissingSourceMethod);
                     }
                     //A source is required except in the case of Management Dynamic Services
@@ -249,7 +249,7 @@ namespace Dev2.DynamicServices.Objects {
 
             }
 
-            return this.IsCompiled;
+            return IsCompiled;
 
         }
 
@@ -287,8 +287,8 @@ namespace Dev2.DynamicServices.Objects {
 
     public sealed class PooledServiceActivity
     {
-        private int _generation;
-        private Activity _value;
+        private readonly int _generation;
+        private readonly Activity _value;
 
         public int Generation { get { return _generation; } }
         public Activity Value { get { return _value; } }

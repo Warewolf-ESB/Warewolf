@@ -1,4 +1,6 @@
-﻿namespace Dev2.PathOperations
+﻿using Dev2.Data.PathOperations.Interfaces;
+
+namespace Dev2.PathOperations
 {
 
     /// <summary>

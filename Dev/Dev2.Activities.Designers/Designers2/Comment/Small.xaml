@@ -18,7 +18,7 @@
                                d:DataContext="{d:DesignInstance local:CommentDesignerViewModel}">
 
     <core:ActivityDesignerTemplate.Resources>
-        <ResourceDictionary x:Name="Resources"
+        <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
     </core:ActivityDesignerTemplate.Resources>
     <ui:IntellisenseTextBox x:Name="InitialFocusElement"

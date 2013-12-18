@@ -1,20 +1,17 @@
-﻿using System;
-using System.Network;
-using System.Text;
-using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
-using Caliburn.Micro;
-using Dev2.DataList.Contract.Network;
-using Dev2.Network.Execution;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Wizards;
-using Dev2.Studio.Core.Workspaces;
+using Dev2.Workspaces;
+using System;
+using System.Network;
+using System.Text;
+using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
 using Action = System.Action;
 
 namespace Dev2.Studio.Core.Models
@@ -25,7 +22,6 @@ namespace Dev2.Studio.Core.Models
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
-        Guid _updateWorkFlowFromServerSubToken;
 
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
@@ -203,7 +199,7 @@ namespace Dev2.Studio.Core.Models
             var result = new StringBuilder();
             XmlWriterSettings xws = new XmlWriterSettings();
             xws.OmitXmlDeclaration = true;
-            using (XmlWriter xw = XmlWriter.Create(result, xws))
+            using(XmlWriter xw = XmlWriter.Create(result, xws))
             {
                 xml.Save(xw);
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Network;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common.Common;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -14,6 +9,11 @@ using Dev2.Studio.Core.Network;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Network;
+using System.Xml.Linq;
 
 namespace Dev2.Core.Tests.Environments
 {
@@ -23,7 +23,6 @@ namespace Dev2.Core.Tests.Environments
     [ExcludeFromCodeCoverage]
     public class EnvironmentModelTest
     {
-        bool _wasCalled;
 
         #region CTOR
 
@@ -228,7 +227,7 @@ namespace Dev2.Core.Tests.Environments
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
-            var envModel = CreateEnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object);
+            var envModel = CreateEnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object);
 
             environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
 
@@ -240,7 +239,7 @@ namespace Dev2.Core.Tests.Environments
 
             var repo = new Mock<IResourceRepository>();
 
-            return new EnvironmentModel(aggregator,id, environmentConnection, repo.Object, false);
+            return new EnvironmentModel(aggregator, id, environmentConnection, repo.Object, false);
         }
 
         #endregion
@@ -297,7 +296,7 @@ namespace Dev2.Core.Tests.Environments
             var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
+            var envModel = new EnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
 
             envModel.IsConnectedChanged += (sender, args) =>
             {
@@ -438,7 +437,7 @@ namespace Dev2.Core.Tests.Environments
             environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
 
             var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(EventPublishers.Aggregator,Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
+            var envModel = new EnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
 
             environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
 
@@ -477,8 +476,8 @@ namespace Dev2.Core.Tests.Environments
         public void IsLocalHost()
         {
             var conn = CreateConnection();
-            conn.SetupProperty(c => c.DisplayName,"localhost");
-            conn.Setup(connection => connection.IsLocalHost).Returns(conn.Object.DisplayName=="localhost");
+            conn.SetupProperty(c => c.DisplayName, "localhost");
+            conn.Setup(connection => connection.IsLocalHost).Returns(conn.Object.DisplayName == "localhost");
             var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
             var isLocalHost = env.IsLocalHost();
             Assert.IsTrue(isLocalHost);

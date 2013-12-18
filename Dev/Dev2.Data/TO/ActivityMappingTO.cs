@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.DataList.Contract {
     public class ActivityMappingTO {

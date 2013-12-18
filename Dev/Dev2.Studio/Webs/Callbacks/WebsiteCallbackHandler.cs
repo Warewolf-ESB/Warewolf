@@ -15,9 +15,11 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
+using Dev2.Studio.Webs.Callbacks;
+using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
 
-namespace Dev2.Studio.Webs.Callbacks
+namespace Dev2.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {

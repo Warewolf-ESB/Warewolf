@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;

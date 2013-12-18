@@ -148,16 +148,6 @@ namespace Dev2.Integration.Tests.Activities
             // Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
-        /// <summary>
-        ///A test for LsThEq
-        ///</summary>
-        [TestMethod]
-        public void LsThEqTest()
-        {
-            string value = "6"; // TODO: Initialize to an appropriate value
-            object comparisonValue = 5;  // TODO: Initialize to an appropriate value
-            // Assert.IsFalse(Util.LsThEq(value, comparisonValue));
-        }
     }
 }
 

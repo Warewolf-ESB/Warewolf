@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Enums;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {

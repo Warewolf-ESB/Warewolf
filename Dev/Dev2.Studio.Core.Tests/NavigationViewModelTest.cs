@@ -52,10 +52,7 @@ namespace Dev2.Core.Tests
         #region Refresh Test Variables
 
         Mock<IEnvironmentModel> reMockEnvironmentModel;
-        Mock<IEnvironmentModel> reMockEnvironmentModel1;
-        Mock<IContextualResourceModel> reMockResourceModel;
-        Mock<IContextualResourceModel> reMockResourceModel1;
-        Mock<IContextualResourceModel> reMockResourceModel2;
+        Mock<IEnvironmentModel> reMockEnvironmentModel1;                
         Mock<IResourceRepository> reMockResourceRepository;
 
         #endregion
@@ -250,12 +247,10 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenNewCategory_Expects_CategoryAdded()
         {
-            ITreeNode updatedCategory = null;
-            ITreeNode resourceVM = null;
+            ITreeNode updatedCategory = null;            
 
             Init(false, true);
-            ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
-            ITreeNode oldCategory = serviceTypeVM.FindChild("Testing");
+            ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);            
 
             mockResourceModel.Setup(r => r.Category).Returns("Testing5");
 

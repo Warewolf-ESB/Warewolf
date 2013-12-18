@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.ViewModels.WorkSurface;
 using Infragistics;
 using Infragistics.Windows.DockManager;
-using System.Diagnostics;
-using System.ComponentModel;
-using System.Collections;
 using Infragistics.Windows.DockManager.Events;
-using System.Windows.Data;
 
 namespace Dev2.Studio.Dock
 {

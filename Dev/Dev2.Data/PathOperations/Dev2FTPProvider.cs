@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data.PathOperations.Enums;
 using Tamir.SharpSsh;
 using Tamir.SharpSsh.jsch;
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Dev2.Data.Enums;
 
 namespace Dev2.DataList.Contract.Value_Objects
 {

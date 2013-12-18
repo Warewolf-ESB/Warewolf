@@ -1,20 +1,10 @@
 ﻿namespace Dev2.CodedUI.Tests.UIMaps.ExternalUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
-    using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
     using System.Diagnostics;
-    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
+    using System.Drawing;
     using System.Windows.Forms;
+    using Microsoft.VisualStudio.TestTools.UITesting;
+    using Microsoft.VisualStudio.TestTools.UITesting.WinControls;
 
 
     public partial class ExternalUIMap
@@ -47,7 +37,7 @@
 
         public void CloseAllInstancesOfIE()
         {
-            var browsers = new string[]{"iexplore", "chrome"};
+            var browsers = new[]{"iexplore", "chrome"};
 
             foreach (var browser in browsers)
             {
@@ -58,7 +48,9 @@
                     {
                         p.Kill();
                     }
-                    catch (Exception e)
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                     }
                 }    
@@ -69,7 +61,7 @@
         public bool Outlook_HasOpened()
         {
             WinWindow outlookWindow = GetOutlookAfterFeedbackWindow();
-            Point p = new Point();
+            Point p;
             return outlookWindow.TryGetClickablePoint(out p);
         }
 

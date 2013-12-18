@@ -1,25 +1,10 @@
 ﻿using System;
-using System.Activities.DurableInstancing;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.DurableInstancing;
-using System.Runtime.Serialization;
-using System.Xml;
-using System.Xml.Linq;
 using System.Threading;
-using System.Runtime.Remoting.Messaging;
 
-namespace Microsoft.Samples.WF.PurchaseProcess {
+namespace Dev2.Runtime.ESB.WF {
 
     public class DSFWorkflowInstanceStore : InstanceStore {
-
-
-        private Guid _ownerGuid = Guid.NewGuid();
-
-
-        public DSFWorkflowInstanceStore() {
-
-        }
 
         protected override IAsyncResult BeginTryCommand(InstancePersistenceContext context, InstancePersistenceCommand command, TimeSpan timeout, AsyncCallback callback, object state) {
 
@@ -27,10 +12,10 @@ namespace Microsoft.Samples.WF.PurchaseProcess {
 
                 case "LoadWorkflowCommand":
                     Func<Exception> loadFunc = () => {
-                        return Load(context, command as LoadWorkflowCommand);
+                        return Load();
                     };
 
-                    return loadFunc.BeginInvoke((ar) => {
+                    return loadFunc.BeginInvoke(ar => {
 
                         var ex = loadFunc.EndInvoke(ar);
 
@@ -39,12 +24,9 @@ namespace Microsoft.Samples.WF.PurchaseProcess {
                     }, state);
 
                 case "LoadWorkflowByInstanceKeyCommand":
-                    Func<Exception> loadByKeyFunc = () => {
+                    Func<Exception> loadByKeyFunc = () => LoadInstanceByKey();
 
-                        return LoadInstanceByKey(context, command as LoadWorkflowByInstanceKeyCommand);
-                    };
-
-                    return loadByKeyFunc.BeginInvoke((ar) => {
+                    return loadByKeyFunc.BeginInvoke(ar => {
 
                         var ex = loadByKeyFunc.EndInvoke(ar);
                         callback(new InstanceStoreAsyncResult(ar, ex));
@@ -52,22 +34,18 @@ namespace Microsoft.Samples.WF.PurchaseProcess {
                     }, state);
 
                 case "SaveWorkflowCommand":
-                    Func<Exception> saveFunc = () => {
-                        return Save(context, command as SaveWorkflowCommand);
-                    };
+                    Func<Exception> saveFunc = () => Save();
 
-                    return saveFunc.BeginInvoke((ar) => {
+                    return saveFunc.BeginInvoke(ar => {
                         var ex = saveFunc.EndInvoke(ar);
                         callback(new InstanceStoreAsyncResult(ar, ex));
 
                     }, state);
 
                 case "CreateWorkflowOwnerCommand":
-                    Func<Exception> createOwnerFunc = () => {
-                        return CreateOwner(context, command as CreateWorkflowOwnerCommand);
-                    };
+                    Func<Exception> createOwnerFunc = () => CreateOwner();
 
-                    return createOwnerFunc.BeginInvoke((ar) => {
+                    return createOwnerFunc.BeginInvoke(ar => {
                         var ex = createOwnerFunc.EndInvoke(ar);
                         callback(new InstanceStoreAsyncResult(ar, ex));
 
@@ -79,22 +57,22 @@ namespace Microsoft.Samples.WF.PurchaseProcess {
             }
         }
 
-        private Exception Save(InstancePersistenceContext context, SaveWorkflowCommand command) {
+        private Exception Save() {
 
             return null;
         }
 
-        private Exception LoadInstanceByKey(InstancePersistenceContext context, LoadWorkflowByInstanceKeyCommand command){
+        private Exception LoadInstanceByKey(){
         
             return null;
         }
 
-        private Exception Load(InstancePersistenceContext context, LoadWorkflowCommand command) {
+        private Exception Load() {
 
             return null;
         }
 
-        private Exception CreateOwner(InstancePersistenceContext context, CreateWorkflowOwnerCommand command) {
+        private Exception CreateOwner() {
 
             return null;
         }        

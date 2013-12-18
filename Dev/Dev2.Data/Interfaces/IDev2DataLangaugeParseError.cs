@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.Data.Enums;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Interfaces
 {
     public interface IDev2DataLangaugeParseError  {
 

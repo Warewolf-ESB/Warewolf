@@ -1,28 +1,23 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Threading;
-using System.Windows.Data;
-using System.Windows.Interactivity;
-using System.Windows.Threading;
-using Dev2.CustomControls.Trigger;
+﻿using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.InterfaceImplementors;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using Dev2.Studio.InterfaceImplementors;
-using TriggerBase = System.Windows.Interactivity.TriggerBase;
 
 namespace Dev2.UI
 {
@@ -34,7 +29,7 @@ namespace Dev2.UI
     {
         #region Static Constructor
         static IntellisenseTextBox()
-       {            
+        {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(IntellisenseTextBox),
                 new FrameworkPropertyMetadata(typeof(IntellisenseTextBox)));
         }
@@ -45,19 +40,19 @@ namespace Dev2.UI
         {
             FrameworkElement container = listBox.ItemContainerGenerator.ContainerFromItem(item) as FrameworkElement;
 
-            if (container != null)
+            if(container != null)
             {
-                if (ScrollViewer.GetCanContentScroll(listBox))
+                if(ScrollViewer.GetCanContentScroll(listBox))
                 {
                     IScrollInfo scrollInfo = VisualTreeHelper.GetParent(container) as IScrollInfo;
 
-                    if (null != scrollInfo)
+                    if(null != scrollInfo)
                     {
                         StackPanel stackPanel = scrollInfo as StackPanel;
                         VirtualizingStackPanel virtualizingStackPanel = scrollInfo as VirtualizingStackPanel;
                         int index = listBox.ItemContainerGenerator.IndexFromContainer(container);
 
-                        if ((stackPanel != null && Orientation.Horizontal == stackPanel.Orientation) || (virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation))
+                        if((stackPanel != null && Orientation.Horizontal == stackPanel.Orientation) || (virtualizingStackPanel != null && Orientation.Horizontal == virtualizingStackPanel.Orientation))
                         {
                             scrollInfo.SetHorizontalOffset(index - (int)(scrollInfo.ViewportWidth / 2));
                         }
@@ -76,9 +71,9 @@ namespace Dev2.UI
                     {
                         constrainingParent = VisualTreeHelper.GetParent(constrainingParent) as FrameworkElement;
                     }
-                    while (constrainingParent != null && listBox != constrainingParent && !(constrainingParent is ScrollContentPresenter));
+                    while(constrainingParent != null && listBox != constrainingParent && !(constrainingParent is ScrollContentPresenter));
 
-                    if (null != constrainingParent)
+                    if(null != constrainingParent)
                     {
                         rect.Inflate(Math.Max((constrainingParent.ActualWidth - rect.Width) / 2, 0), Math.Max((constrainingParent.ActualHeight - rect.Height) / 2, 0));
                     }
@@ -156,7 +151,7 @@ namespace Dev2.UI
             {
                 SetValue(IsOnlyRecordsetsProperty, value);
             }
-        }        
+        }
         #endregion
 
         #region HasError
@@ -212,7 +207,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = sender as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnAllowMultilinePasteChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -238,7 +233,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = sender as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnAllowUserInsertLineChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -246,8 +241,8 @@ namespace Dev2.UI
         #endregion AllowUserInsertLine
 
         #region AllowUserCalculateMode
-        public static readonly DependencyProperty AllowUserCalculateModeProperty = 
-            DependencyProperty.Register("AllowUserCalculateMode", typeof(bool), typeof(IntellisenseTextBox), 
+        public static readonly DependencyProperty AllowUserCalculateModeProperty =
+            DependencyProperty.Register("AllowUserCalculateMode", typeof(bool), typeof(IntellisenseTextBox),
             new PropertyMetadata(false, OnAllowUserCalculateModeChanged));
 
         public bool AllowUserCalculateMode
@@ -266,7 +261,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = sender as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnAllowUserCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -292,7 +287,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = sender as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnIsInCalculateModeChanged((bool)args.OldValue, (bool)args.NewValue);
             }
@@ -364,7 +359,7 @@ namespace Dev2.UI
             }
         }
 
-        public static readonly DependencyProperty ErrorToolTipTextProperty = DependencyProperty.Register("ErrorToolTip", typeof(string), typeof(IntellisenseTextBox), new UIPropertyMetadata(string.Empty,ErrorTextChanged));
+        public static readonly DependencyProperty ErrorToolTipTextProperty = DependencyProperty.Register("ErrorToolTip", typeof(string), typeof(IntellisenseTextBox), new UIPropertyMetadata(string.Empty, ErrorTextChanged));
 
         static void ErrorTextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
@@ -412,7 +407,7 @@ namespace Dev2.UI
         {
             IntellisenseTextBox box = sender as IntellisenseTextBox;
 
-            if (box != null)
+            if(box != null)
             {
                 box.OnIntellisenseProviderChanged((IIntellisenseProvider)args.OldValue, (IIntellisenseProvider)args.NewValue);
             }
@@ -582,7 +577,7 @@ namespace Dev2.UI
             }
             set
             {
-                SetValue(IsOpenProperty, value);                              
+                SetValue(IsOpenProperty, value);
             }
         }
 
@@ -600,7 +595,6 @@ namespace Dev2.UI
         #endregion Dependency Properties
 
         #region Instance Fields
-        private VirtualizingStackPanel _panel; 
         private ListBox _listBox;
         private KeyValuePair<int, int> _lastResultInputKey;
         private bool _lastResultHasError;
@@ -616,8 +610,6 @@ namespace Dev2.UI
 
         private bool _forcedOpen;
         private bool _fromPopup;
-        bool _isDisposed;
-        
 
         #endregion
 
@@ -625,7 +617,6 @@ namespace Dev2.UI
 
         //public ItemCollection Items { get { return _listBox.Items; } }
         ObservableCollection<IntellisenseProviderResult> _items;
-        SynchronizationContext _context;
 
         public ObservableCollection<IntellisenseProviderResult> Items
         {
@@ -651,7 +642,7 @@ namespace Dev2.UI
                 .Throttle(TimeSpan.FromMilliseconds(200), Scheduler.ThreadPool)
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(pattern => TheTextHasChanged());
-                
+
             Items = new ObservableCollection<IntellisenseProviderResult>();
             DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
@@ -661,16 +652,16 @@ namespace Dev2.UI
 
             //08.04.2013: Ashley Lewis - To test for Bug 9238 Moved this from OnInitialized() to allow for a more contextless initialization
             _toolTip = new ToolTip();
-            _listBox = new ListBox();            
+            _listBox = new ListBox();
         }
 
         #region Overrides of TextBoxBase
 
-        
+
         #endregion
 
         #endregion
-       
+
         #region Load Handling
         protected override void OnInitialized(EventArgs e)
         {
@@ -684,7 +675,7 @@ namespace Dev2.UI
 
         private void ToolTip_ToolTipOpening(object sender, ToolTipEventArgs e)
         {
-            if (!_fromPopup && IsOpen)
+            if(!_fromPopup && IsOpen)
             {
                 e.Handled = true;
             }
@@ -719,11 +710,11 @@ namespace Dev2.UI
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
         {
             var isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
-            if (!isText) return;
+            if(!isText) return;
 
             var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if (text != null && text.Contains("\t"))
+            if(text != null && text.Contains("\t"))
             {
                 RaiseRoutedEvent(TabInsertedEvent);
             }
@@ -734,7 +725,7 @@ namespace Dev2.UI
         #region Event Handling
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -744,7 +735,7 @@ namespace Dev2.UI
         {
             base.OnPreviewTextInput(e);
 
-            if (!_suppressChangeOpen)
+            if(!_suppressChangeOpen)
             {
                 _possibleCaretPositionOnPopup = CaretIndex;
             }
@@ -791,8 +782,8 @@ namespace Dev2.UI
                         if(!wasOpen && _listBox != null && _listBox.HasItems)
                         {
                             _expectOpen = true;
-                            _desiredResultSet = (IntellisenseDesiredResultSet)4;                           
-                            IsOpen = true;                            
+                            _desiredResultSet = (IntellisenseDesiredResultSet)4;
+                            IsOpen = true;
                         }
                     }
                 }
@@ -857,28 +848,28 @@ namespace Dev2.UI
 
         protected virtual void OnIsOpenChanged(bool oldValue, bool newValue)
         {
-            if (newValue)
+            if(newValue)
             {
-                if (DesignerProperties.GetIsInDesignMode(this))
+                if(DesignerProperties.GetIsInDesignMode(this))
                 {
                     IsOpen = false;
-                    if (_toolTip != null) _toolTip.IsOpen = false;
+                    if(_toolTip != null) _toolTip.IsOpen = false;
                 }
                 else
                 {
-                    if (_listBox != null)
+                    if(_listBox != null)
                     {
-                        if (_expectOpen)
+                        if(_expectOpen)
                         {
                             _expectOpen = false;
-                            if ((int)_desiredResultSet < 4) EnsureIntellisenseResults(Text, true, _desiredResultSet);
+                            if((int)_desiredResultSet < 4) EnsureIntellisenseResults(Text, true, _desiredResultSet);
                         }
                         else
                         {
                             EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
                         }
 
-                        if (_listBox.HasItems)
+                        if(_listBox.HasItems)
                         {
                             _caretPositionOnPopup = CaretIndex;
                             _textOnPopup = Text;
@@ -909,21 +900,21 @@ namespace Dev2.UI
         #region Provider Handling
         public virtual void OnIntellisenseProviderChanged(IIntellisenseProvider oldValue, IIntellisenseProvider newValue)
         {
-            if (oldValue != null)
+            if(oldValue != null)
             {
                 oldValue.Dispose();
                 _lastResultInputKey = new KeyValuePair<int, int>(0, 0);
                 _lastResultHasError = false;
             }
 
-            if (newValue == null)
+            if(newValue == null)
             {
                 EnsureIntellisenseProvider();
             }
             else
             {
                 // What we need to do is cache the results from each provider. Only on a change to DL, text do we re gather results? ;)
-                if (Text.Length > 0)
+                if(Text.Length > 0)
                 {
                     EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
                 }
@@ -951,7 +942,7 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if (IsInCalculateMode)
+                else if(IsInCalculateMode)
                 {
                     calculateMode = true;
                 }
@@ -998,9 +989,9 @@ namespace Dev2.UI
                     {
                         results = provider.GetIntellisenseResults(context);
                     }
-                        // ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -1155,7 +1146,7 @@ namespace Dev2.UI
                                     ttErrorBuilder.AppendLine("Full recordsets is not allowed");
                                     _toolTip.IsOpen = true;
                                 }
-                            }                            
+                            }
                         }
 
                         _lastResultHasError = hasError;
@@ -1185,18 +1176,18 @@ namespace Dev2.UI
                 }
             }
             if(_listBox != null)
-            {                
+            {
                 _listBox.ItemsSource = Items;
             }
         }
 
         private void EnsureIntellisenseProvider()
         {
-            if (IntellisenseProvider == null)
+            if(IntellisenseProvider == null)
             {
                 IIntellisenseProvider instance = CreateIntellisenseProviderInstance();
 
-                if (instance == null)
+                if(instance == null)
                 {
                     throw new InvalidOperationException("CreateIntellisenseProviderInstance cannot return null.");
                 }
@@ -1216,17 +1207,17 @@ namespace Dev2.UI
         #region Dropdown Handling
         protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
         {
-            if (IsOpen)
+            if(IsOpen)
             {
                 bool originIsListbox = false;
 
-                if (e.OriginalSource is DependencyObject)
+                if(e.OriginalSource is DependencyObject)
                 {
                     DependencyObject parent = e.OriginalSource as DependencyObject;
 
-                    if (parent != null)
+                    if(parent != null)
                     {
-                        if (parent is System.Windows.Documents.Run)
+                        if(parent is System.Windows.Documents.Run)
                         {
                             parent = ((System.Windows.Documents.Run)parent).Parent;
                         }
@@ -1235,14 +1226,14 @@ namespace Dev2.UI
                             parent = VisualTreeHelper.GetParent(parent);
                         }
 
-                        while (parent != null && !(parent is ListBox))
+                        while(parent != null && !(parent is ListBox))
                         {
                             parent = VisualTreeHelper.GetParent(parent);
                         }
 
-                        if (parent != null)
+                        if(parent != null)
                         {
-                            if (parent == _listBox)
+                            if(parent == _listBox)
                             {
                                 originIsListbox = true;
                             }
@@ -1250,11 +1241,11 @@ namespace Dev2.UI
                     }
                 }
 
-                if (!originIsListbox)
+                if(!originIsListbox)
                 {
                     IsOpen = false;
 
-                    if (_forcedOpen)
+                    if(_forcedOpen)
                     {
                         _toolTip.IsOpen = _forcedOpen = false;
                     }
@@ -1274,12 +1265,12 @@ namespace Dev2.UI
         /// </summary>
         private void CloseDropDown(bool closeToolTip)
         {
-            if (IsOpen)
+            if(IsOpen)
             {
                 IsOpen = false;
             }
 
-            if (closeToolTip && _toolTip != null)
+            if(closeToolTip && _toolTip != null)
             {
                 _toolTip.IsOpen = _forcedOpen = false;
             }
@@ -1297,7 +1288,7 @@ namespace Dev2.UI
             {
                 be.UpdateSource();
             }
-            if (SelectAllOnGotFocus)
+            if(SelectAllOnGotFocus)
             {
                 SelectAll();
             }
@@ -1307,7 +1298,7 @@ namespace Dev2.UI
         {
             base.OnLostKeyboardFocus(e);
 
-            if (_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused && !_listBox.IsKeyboardFocusWithin)
+            if(_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused && !_listBox.IsKeyboardFocusWithin)
             {
                 CloseDropDown(true);
             }
@@ -1333,9 +1324,9 @@ namespace Dev2.UI
 
         public string AddRecordsetNotationToExpresion(string expression)
         {
-            if (expression.EndsWith("]]"))
+            if(expression.EndsWith("]]"))
             {
-                if (!expression.Contains("()"))
+                if(!expression.Contains("()"))
                 {
                     expression = expression.Insert(expression.IndexOf("]", StringComparison.Ordinal), "()");
                 }
@@ -1351,9 +1342,9 @@ namespace Dev2.UI
         {
             string result = expression;
 
-            if (!result.StartsWith("[["))
+            if(!result.StartsWith("[["))
             {
-                if (!result.StartsWith("["))
+                if(!result.StartsWith("["))
                 {
                     result = string.Concat("[[", result);
                 }
@@ -1363,9 +1354,9 @@ namespace Dev2.UI
                 }
             }
 
-            if (!expression.EndsWith("]]"))
+            if(!expression.EndsWith("]]"))
             {
-                if (!expression.EndsWith("]"))
+                if(!expression.EndsWith("]"))
                 {
                     result = string.Concat(result, "]]");
                 }
@@ -1387,25 +1378,25 @@ namespace Dev2.UI
             int index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider();//Bug 8437
 
-            if (isOpen || force)
+            if(isOpen || force)
             {
                 IntellisenseProviderResult intellisenseProviderResult = item as IntellisenseProviderResult;
-                if (intellisenseProviderResult != null)
+                if(intellisenseProviderResult != null)
                 {
                     currentProvider = intellisenseProviderResult.Provider;//Bug 8437
                 }
 
                 object selectedItem = item;
 
-                if (_listBox != null)
+                if(_listBox != null)
                 {
-                    if (selectedItem is IDataListVerifyPart)
+                    if(selectedItem is IDataListVerifyPart)
                     {
                         appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
                     }
                     else
                     {
-                        if (selectedItem != null)
+                        if(selectedItem != null)
                         {
                             appendText = selectedItem.ToString();
                         }
@@ -1417,13 +1408,13 @@ namespace Dev2.UI
                 }
             }
 
-            if (appendText != null)
+            if(appendText != null)
             {
                 string currentText = Text;
 
-                if (isInsert)
+                if(isInsert)
                 {
-                    if (currentProvider.HandlesResultInsertion)//Bug 8437
+                    if(currentProvider.HandlesResultInsertion)//Bug 8437
                     {
                         _suppressChangeOpen = true;
                         IntellisenseProviderContext context = new IntellisenseProviderContext() { CaretPosition = index, InputText = currentText, State = _cachedState, TextBox = this };
@@ -1452,31 +1443,31 @@ namespace Dev2.UI
                         int foundMinimum = -1;
                         int foundLength = 0;
 
-                        for (int i = index - 1; i >= 0; i--)
+                        for(int i = index - 1; i >= 0; i--)
                         {
-                            if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                            if(appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
                             {
                                 foundMinimum = i;
                                 foundLength = index - i;
                             }
-                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(), StringComparison.OrdinalIgnoreCase) == -1)
+                            else if(foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(), StringComparison.OrdinalIgnoreCase) == -1)
                             {
                                 i = -1;
                             }
                         }
 
-                        if (foundMinimum != -1)
+                        if(foundMinimum != -1)
                         {
                             appendText = appendText.Remove(0, foundLength);
                         }
                     }
                 }
 
-                if (appendText != null)
+                if(appendText != null)
                 {
                     _suppressChangeOpen = true;
 
-                    if (currentText.Length == index)
+                    if(currentText.Length == index)
                     {
                         AppendText(appendText);
                         Select(Text.Length, 0);
@@ -1492,7 +1483,7 @@ namespace Dev2.UI
                 }
             }
 
-            if (expand)
+            if(expand)
             {
                 double lineHeight = FontSize * FontFamily.LineSpacing;
                 Height += lineHeight;
@@ -1504,32 +1495,32 @@ namespace Dev2.UI
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            
+
             base.OnPreviewKeyDown(e);
             bool isOpen = IsOpen;
 
-            if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
+            if(e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 string appendText = null;
                 bool isInsert = false;
                 bool expand = false;
 
-                if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+                if(AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                 {
-                    if (LineCount < MaxLines)
+                    if(LineCount < MaxLines)
                     {
                         appendText = Environment.NewLine;
                         expand = true;
                     }
                 }
 
-                if (isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+                if(isOpen && e.KeyboardDevice.Modifiers == ModifierKeys.None)
                 {
-                    object selectedItem = null;
+                    object selectedItem;
 
-                    if (_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
+                    if(_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
                     {
-                        if (selectedItem is IDataListVerifyPart)
+                        if(selectedItem is IDataListVerifyPart)
                             appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
                         else
                             appendText = selectedItem.ToString();
@@ -1542,15 +1533,15 @@ namespace Dev2.UI
 
                 InsertItem(appendText, isInsert);
 
-                if (expand)
+                if(expand)
                 {
                     double lineHeight = FontSize * FontFamily.LineSpacing;
                     Height += lineHeight;
                 }
 
-                if (e.Key != Key.Tab)
+                if(e.Key != Key.Tab)
                 {
-                    if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
+                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
                     {
                     }
                     else
@@ -1559,9 +1550,9 @@ namespace Dev2.UI
                     }
                 }
             }
-            else if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            else if(e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
-                if (!isOpen)
+                if(!isOpen)
                 {
                     _expectOpen = true;
                     _desiredResultSet = IntellisenseDesiredResultSet.EntireSet;
@@ -1570,21 +1561,21 @@ namespace Dev2.UI
 
                 e.Handled = true;
             }
-            else if (IsListBoxInputKey(e) && isOpen)
+            else if(IsListBoxInputKey(e) && isOpen)
             {
                 EmulateEventOnListBox(e);
             }
-            else if (e.Key == Key.Home || e.Key == Key.End)
+            else if(e.Key == Key.Home || e.Key == Key.End)
             {
                 CloseDropDown(true);
-            }                            
+            }
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
 
-            if (e.Key == Key.Escape)
+            if(e.Key == Key.Escape)
             {
                 CloseDropDown(true);
             }
@@ -1600,18 +1591,18 @@ namespace Dev2.UI
             bool isItemSelected = false;
             object context = null;
 
-            if (directlyOver is FrameworkElement)
+            if(directlyOver is FrameworkElement)
             {
                 FrameworkElement element = directlyOver as FrameworkElement;
                 context = element.DataContext;
             }
-            else if (directlyOver is FrameworkContentElement)
+            else if(directlyOver is FrameworkContentElement)
             {
                 FrameworkContentElement element = directlyOver as FrameworkContentElement;
                 context = element.DataContext;
             }
 
-            if (context is IntellisenseProviderResult)
+            if(context is IntellisenseProviderResult)
             {
                 InsertItem(context, false);
                 isItemSelected = true;
@@ -1619,7 +1610,7 @@ namespace Dev2.UI
 
             try
             {
-                if (!isItemSelected)
+                if(!isItemSelected)
                 {
                     base.OnPreviewMouseLeftButtonDown(e);
                 }
@@ -1630,7 +1621,7 @@ namespace Dev2.UI
 
                 Focus();
             }
-            catch (Exception)
+            catch(Exception)
             {
                 //bleh.
                 e.Handled = true;
@@ -1651,17 +1642,17 @@ namespace Dev2.UI
 
         private void EmulateEventOnListBox(KeyEventArgs e)
         {
-            if (_listBox != null)
+            if(_listBox != null)
             {
                 int count = Items.Count;
                 int index = _listBox.SelectedIndex;
                 bool scrolled = false;
 
-                if (e.Key == Key.Down || e.Key == Key.PageDown)
+                if(e.Key == Key.Down || e.Key == Key.PageDown)
                 {
-                    if (count != 0)
+                    if(count != 0)
                     {
-                        if (index == -1)
+                        if(index == -1)
                         {
                             _listBox.SelectedIndex = 0;
                         }
@@ -1670,7 +1661,7 @@ namespace Dev2.UI
                             int adjust = e.Key == Key.Down ? 1 : 4;
                             adjust = Math.Min(index + adjust, count - 1);
 
-                            if (adjust != index)
+                            if(adjust != index)
                             {
                                 _listBox.SelectedIndex = adjust;
                             }
@@ -1681,9 +1672,9 @@ namespace Dev2.UI
                 }
                 else
                 {
-                    if (count != 0)
+                    if(count != 0)
                     {
-                        if (index == -1)
+                        if(index == -1)
                         {
                             _listBox.SelectedIndex = 0;
                         }
@@ -1692,7 +1683,7 @@ namespace Dev2.UI
                             int adjust = e.Key == Key.Up ? -1 : -4;
                             adjust = Math.Max(index + adjust, 0);
 
-                            if (adjust != index)
+                            if(adjust != index)
                             {
                                 _listBox.SelectedIndex = adjust;
                             }
@@ -1702,7 +1693,7 @@ namespace Dev2.UI
                     }
                 }
 
-                if (scrolled)
+                if(scrolled)
                 {
                     ScrollIntoViewCentered(_listBox, _listBox.SelectedItem);
 

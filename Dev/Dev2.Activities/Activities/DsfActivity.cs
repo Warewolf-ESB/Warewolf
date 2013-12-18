@@ -5,6 +5,7 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data.Enums;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;

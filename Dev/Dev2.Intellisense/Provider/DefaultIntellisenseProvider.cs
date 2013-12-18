@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Data.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Logs;

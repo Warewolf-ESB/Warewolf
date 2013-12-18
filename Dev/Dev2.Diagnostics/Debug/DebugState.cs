@@ -23,7 +23,6 @@ namespace Dev2.Diagnostics
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
         /// </summary>
-        private bool _hasError;
         private readonly string _tempPath;
         private DateTime _startTime;
         private DateTime _endTime;

@@ -25,10 +25,12 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.InterfaceImplementors.WizardResourceKeys;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
 using Dev2.Utils;
+using Dev2.Workspaces;
 
-namespace Dev2.Studio.ViewModels.WorkSurface
+namespace Dev2.ViewModels.WorkSurface
 {
     /// <summary>
     ///     Class used as unified context across the studio - coordination across different regions

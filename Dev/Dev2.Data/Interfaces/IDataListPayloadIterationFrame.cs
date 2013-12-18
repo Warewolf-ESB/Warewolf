@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract.TO;
+﻿using Dev2.DataList.Contract.TO;
 
-namespace Dev2.DataList.Contract.Interfaces
+namespace Dev2.Data.Interfaces
 {
     public interface IDataListPayloadIterationFrame<T>
     {

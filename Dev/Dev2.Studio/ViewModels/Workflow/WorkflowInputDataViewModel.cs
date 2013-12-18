@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Windows.Input;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Enums;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Session;
@@ -16,7 +11,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.ViewModels.WorkSurface;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -29,10 +31,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private RelayCommand _cancelComand;
         private DebugTO _debugTO;
         private string _xmlData;
-        private bool _workflowInputCount_rememberInputs;
         private readonly IContextualResourceModel _resourceModel;
         private IBinaryDataList _dataList;
-        private int _workflowInputCount;
         private bool _rememberInputs;
         readonly DebugOutputViewModel _debugOutputViewModel;
 
@@ -40,7 +40,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Ctor
 
-        public WorkflowInputDataViewModel( IServiceDebugInfoModel input, DebugOutputViewModel debugOutputViewModel)
+        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, DebugOutputViewModel debugOutputViewModel)
         {
             VerifyArgument.IsNotNull("debugOutputViewModel", debugOutputViewModel);
             _debugOutputViewModel = debugOutputViewModel;
@@ -228,7 +228,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 SendExecuteRequest(dataList);
             }
-            }
+        }
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
@@ -460,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected override void OnDispose()
         {
-            if (DataList != null)
+            if(DataList != null)
             {
                 var compiler = DataListFactory.CreateDataListCompiler();
                 compiler.ForceDeleteDataListByID(DataList.UID);
@@ -474,7 +474,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             string error;
             DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
-            
+
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
 
@@ -495,11 +495,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var result = new OptomizedObservableCollection<IDataListItem>();
 
-            if (dataList != null)
+            if(dataList != null)
             {
                 var listOfEntries = dataList.FetchAllEntries();
 
-                foreach (IBinaryDataListEntry entry in listOfEntries
+                foreach(IBinaryDataListEntry entry in listOfEntries
                     .Where(e => (e.ColumnIODirection == enDev2ColumnArgumentDirection.Input ||
                                  e.ColumnIODirection == enDev2ColumnArgumentDirection.Both)))
                 {
@@ -533,9 +533,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                         singleRes.RecordsetIndex = (count + 1).ToString();
                         singleRes.Value = item.TheValue;
 
-                        if (string.IsNullOrEmpty(item.DisplayValue))
+                        if(string.IsNullOrEmpty(item.DisplayValue))
                         {
-                            
+
                         }
 
                         singleRes.DisplayValue = item.DisplayValue;

@@ -23,8 +23,8 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        List<DebugItem> _debugInputs;
-        List<DebugItem> _debugOutputs;
+        new List<DebugItem> _debugInputs;
+        new List<DebugItem> _debugOutputs;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace Dev2.Activities
 
         [FindMissing]
         [Outputs("Result")]
-        public string Result { get; set; }
+        public new string Result { get; set; }
 
         #endregion
 

@@ -1,12 +1,13 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract
 {

@@ -14,13 +14,12 @@ using Dev2.Studio.UI.Tests.Utils;
 
 namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 {
+    using System.CodeDom.Compiler;
+    using System.Drawing;
+    using System.Windows.Forms;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System.CodeDom.Compiler;
-    using System.Drawing;
-    using System.Threading;
-    using System.Windows.Forms;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
@@ -111,35 +110,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             serverDDL.SearchProperties["AutomationId"] = "UI_ExplorerNewBtn_AutoID";
             serverDDL.Find();
             return serverDDL;
-        }
-
-        public void GetMenuItem(string menuItemName)
-        {
-            UITestControl theStudio = this.UIBusinessDesignStudioWindow;
-            UITestControl theTabMenu = new UITestControl(theStudio);
-            //theTabMenu.SearchProperties["AutomationID"] = "UI_ExplorerContextMenu_AutoID";
-
-            foreach (UITestControl theControl in theStudio.GetChildren())
-            {
-                string theType = theControl.ClassName;
-                if (theType == "Uia.Popup")
-                {
-                    UITestControl contextMenu = theControl.GetChildren()[0];
-                    foreach (UITestControl subControl in contextMenu.GetChildren())
-                    {
-                        try
-                        {
-                            string friendlyName = subControl.FriendlyName;
-                            int j = 10;
-                        }
-                        catch
-                        {
-                            // Do Nothing - Invalid control
-                        }
-                    }
-                }
-            }
-
         }
 
         public WpfTree GetExplorerTree()

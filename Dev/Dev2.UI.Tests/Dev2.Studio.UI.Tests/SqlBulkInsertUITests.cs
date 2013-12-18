@@ -1,9 +1,6 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -18,10 +15,6 @@ namespace Dev2.Studio.UI.Tests
     public class SqlBulkInsertUiTests : UIMapBase
     {
         #region Fields
-        RibbonUIMap _ribbonUIMap;
-        TabManagerUIMap _tabManagerDesignerUIMap;
-        ToolboxUIMap _toolboxUIMap;
-        WorkflowDesignerUIMap _workflowDesignerUIMap;
         const string TestingDB = "GetCities";
         const int TableIndex = 1;
         #endregion
@@ -50,7 +43,6 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
-
 
         #region Test Methods
        

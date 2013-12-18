@@ -10,9 +10,6 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Fields
 
-        private string _settingName;
-        private string _displayName;
-        string _webServerUri;
         private string _error = string.Empty;
         private bool _hasChanges;
         private bool _isInitializing;

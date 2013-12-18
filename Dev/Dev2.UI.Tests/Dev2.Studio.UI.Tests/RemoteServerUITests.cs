@@ -102,9 +102,9 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(5000);
             //assert error dialog not showing
             var child = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
-            if (child != null)
+            if(child != null)
             {
-                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof (Window));
+                Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
             }
             else
             {
@@ -116,7 +116,7 @@ namespace Dev2.Studio.UI.Tests
 
         }
 
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
@@ -286,17 +286,17 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickScrollActionListUp();
             DatabaseServiceWizardUIMap.ClickFirstAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
-            Playback.Wait(100);
             DatabaseServiceWizardUIMap.ClickOK();
-            
+            Playback.Wait(200);
             //Change it back
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            Playback.Wait(2000);
             actionName = DatabaseServiceWizardUIMap.GetActionName();
             DatabaseServiceWizardUIMap.ClickSecondAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
             Playback.Wait(100);
             DatabaseServiceWizardUIMap.ClickOK();
-
+            Playback.Wait(200);
             //Assert remote db service changed its action
             Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
         }
@@ -369,7 +369,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Change it back                        
             ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(4500);            
+            Playback.Wait(4500);
             path = PluginSourceMap.GetAssemblyPathText();
             Playback.Wait(100);
             Keyboard.SendKeys("{LEFT}");
@@ -395,8 +395,8 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{BACK}");
             Playback.Wait(100);
             Keyboard.SendKeys("{TAB}{ENTER}");
-            SaveDialogUIMap.ClickSave();            
-            
+            SaveDialogUIMap.ClickSave();
+
             Assert.AreEqual(@"C:\DevelopmentDropOff\Integration Tests\Pugin1 - Copy.dll", path, "Cannot change remote plugin source");
         }
 

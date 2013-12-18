@@ -1,4 +1,5 @@
 ﻿// Copyright (C) Josh Smith - July 2008
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,8 +10,9 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using WPF.JoshSmith.Panels;
 
-namespace WPF.JoshSmith.Panels
+namespace Dev2.CustomControls.Panels
 {
     /// <summary>
     /// A Panel that displays its children in a Viewport3D.
@@ -99,23 +101,23 @@ namespace WPF.JoshSmith.Panels
 
             // Configure the timer that is used to clean up after the 3D models move.
             _moveItemsCompletionTimer = new DispatcherTimer(DispatcherPriority.Normal);
-            _moveItemsCompletionTimer.Tick += this.OnMoveItemsCompleted;
+            _moveItemsCompletionTimer.Tick += OnMoveItemsCompleted;
 
-            this.Loaded += this.OnLoaded;
+            Loaded += OnLoaded;
         }
 
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             // Setting the Camera property must be delayed until Loaded fires,
             // otherwise setting it from XAML has no effect.  Not sure why...
-            if (this.Camera == null)
-                this.Camera = _viewport.Camera;
+            if (Camera == null)
+                Camera = _viewport.Camera;
 
             // We raise this custom routed event because the Loaded event of an items host
             // is not raised on the control that contains it.  This event will make it
             // to the outside world, so that consumers can get a reference to the panel.
             if (ItemsControl.GetItemsOwner(this) != null)
-                base.RaiseEvent(new RoutedEventArgs(Panel3D.ItemsHostLoadedEvent));
+                RaiseEvent(new RoutedEventArgs(ItemsHostLoadedEvent));
         }
 
         static Viewport3DEx CreateViewport()
@@ -156,8 +158,8 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         public event RoutedEventHandler ItemsHostLoaded
         {
-            add { base.AddHandler(ItemsHostLoadedEvent, value); }
-            remove { base.RemoveHandler(ItemsHostLoadedEvent, value); }
+            add { AddHandler(ItemsHostLoadedEvent, value); }
+            remove { RemoveHandler(ItemsHostLoadedEvent, value); }
         }
 
         #endregion // Routed Events
@@ -194,11 +196,14 @@ namespace WPF.JoshSmith.Panels
         static void OnAllowTransparencyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             Panel3D panel3D = depObj as Panel3D;
-            var frontModel = panel3D._viewport.FrontModel;
-            panel3D._viewport.AllowTransparency = (bool)e.NewValue;
+            if (panel3D != null)
+            {
+                var frontModel = panel3D._viewport.FrontModel;
+                panel3D._viewport.AllowTransparency = (bool)e.NewValue;
 
-            if (frontModel != null)
-                panel3D.BuildScene(frontModel);
+                if (frontModel != null)
+                    panel3D.BuildScene(frontModel);
+            }
         }
 
         #endregion // AllowTransparency
@@ -226,7 +231,7 @@ namespace WPF.JoshSmith.Panels
             typeof(Panel3D),
             new UIPropertyMetadata(
                 true,
-                (depObj, e) => (depObj as Panel3D).BuildScene()
+                (depObj, e) => ((Panel3D) depObj).BuildScene()
                 ));
 
         #endregion // AutoAdjustOpacity
@@ -388,7 +393,7 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         public void MoveItems(int itemCount, bool forward)
         {
-            this.MoveItems(itemCount, forward, this.DefaultAnimationLength);
+            MoveItems(itemCount, forward, DefaultAnimationLength);
         }
 
         /// <summary>
@@ -396,7 +401,7 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         public void MoveItems(int itemCount, bool forward, TimeSpan animationLength)
         {
-            bool go = this.MoveItems_CanExecute(itemCount, forward, animationLength);
+            bool go = MoveItems_CanExecute(itemCount, forward, animationLength);
             if (!go)
                 return;
 
@@ -404,28 +409,28 @@ namespace WPF.JoshSmith.Panels
 
             // Prepare some flags that control this algorithm.
             _abortMoveItems = false;
-            this.IsMovingItems = true;
+            IsMovingItems = true;
 
             // Move the 3D models to their new position in 
             // the Viewport3D's Children collection.
-            this.MoveItems_RelocateModels(itemCount, forward);
+            MoveItems_RelocateModels(itemCount, forward);
 
             // If we are the items host of a Selector, select the first child element.
-            this.MoveItems_SelectFrontItem();
+            MoveItems_SelectFrontItem();
 
             // Start moving the models to their new locations 
             // and apply the new opacity values.
-            this.MoveItems_BeginAnimations(forward, animationLength);
+            MoveItems_BeginAnimations(forward, animationLength);
 
             // Start the timer that ticks when the animations are finished.
-            this.MoveItems_StartCleanupTimer(animationLength);
+            MoveItems_StartCleanupTimer(animationLength);
         }
 
         #region CanExecute
 
         bool MoveItems_CanExecute(int itemCount, bool forward, TimeSpan animationLength)
         {
-            if (this.IsMovingItems)
+            if (IsMovingItems)
             {
                 var req = new MoveItemsRequest(
                             itemCount,
@@ -454,7 +459,7 @@ namespace WPF.JoshSmith.Panels
         void MoveItems_VerifyItemCount(int itemCount)
         {
             // TODO: Make this smarter so that it does not throw an exception...
-            if (this.IsVirtualizing && _models.Count < itemCount)
+            if (IsVirtualizing && _models.Count < itemCount)
                 throw new InvalidOperationException("ARTIFICAL LIMITATION: Cannot move more items than the Panel3D contains when it is virtualizing.");
         }
 
@@ -467,7 +472,7 @@ namespace WPF.JoshSmith.Panels
             // Move the first or last models to the opposite end of the list.
             if (forward)
             {
-                if (this.IsVirtualizing)
+                if (IsVirtualizing)
                 {
                     // There are more models than can be shown at once, so
                     // add some to the scene by appending them to the 
@@ -477,15 +482,15 @@ namespace WPF.JoshSmith.Panels
                     for (int i = 0; i < itemCount; ++i)
                     {
                         // Find an element to add to the back of the list.
-                        var backModel = this.GetNextModel(_viewport.BackModel);
+                        var backModel = GetNextModel(_viewport.BackModel);
 
                         if (_viewport.Children.Contains(backModel))
                             break;
 
                         // Make sure the model is in the correct location, so that it 
                         // looks like it enters the 3D scene from far off in the distance.
-                        int logicalIndex = this.MaxVisibleModels + i;
-                        this.ConfigureModel(backModel, logicalIndex);
+                        int logicalIndex = MaxVisibleModels + i;
+                        ConfigureModel(backModel, logicalIndex);
 
                         // Add the model to the back of the scene.
                         _viewport.AddToBack(backModel);
@@ -553,7 +558,7 @@ namespace WPF.JoshSmith.Panels
             int index = 0;
             foreach (Viewport2DVisual3D model in _viewport.GetModels())
             {
-                var offsets = this.GetModelOffsets(index);
+                var offsets = GetModelOffsets(index);
 
                 var xAnimation = new DoubleAnimation
                 {
@@ -584,18 +589,18 @@ namespace WPF.JoshSmith.Panels
                 transform.BeginAnimation(TranslateTransform3D.OffsetYProperty, yAnimation);
                 transform.BeginAnimation(TranslateTransform3D.OffsetZProperty, zAnimation);
 
-                if (this.AutoAdjustOpacity)
+                if (AutoAdjustOpacity)
                 {
                     DoubleAnimation opacityAnimation = new DoubleAnimation
                     {
-                        To = this.GetElementOpacity(index),
+                        To = GetElementOpacity(index),
                         AccelerationRatio = 0.2,
                         DecelerationRatio = 0.8,
                         Duration = duration
                     };
 
                     var element = model.Visual as UIElement;
-                    element.BeginAnimation(FrameworkElement.OpacityProperty, opacityAnimation);
+                    element.BeginAnimation(OpacityProperty, opacityAnimation);
                 }
 
                 ++index;
@@ -627,15 +632,15 @@ namespace WPF.JoshSmith.Panels
                 return;
 
             // Remove any extra models from the scene.
-            while (this.MaxVisibleModels < _viewport.ModelCount)
+            while (MaxVisibleModels < _viewport.ModelCount)
                 _viewport.RemoveBackModel();
 
-            this.IsMovingItems = false;
+            IsMovingItems = false;
 
             if (0 < _moveItemsRequestQueue.Count)
             {
                 MoveItemsRequest req = _moveItemsRequestQueue.Dequeue();
-                this.MoveItems(req.ItemCount, req.Forward, req.AnimationLength);
+                MoveItems(req.ItemCount, req.Forward, req.AnimationLength);
             }
         }
 
@@ -657,10 +662,10 @@ namespace WPF.JoshSmith.Panels
         /// <param name="childIndex">A zero-based index of an element in the Children collection.</param>
         public int GetVisibleIndexFromChildIndex(int childIndex)
         {
-            if (childIndex < 0 || base.Children.Count <= childIndex)
+            if (childIndex < 0 || Children.Count <= childIndex)
                 throw new IndexOutOfRangeException("childIndex is invalid");
 
-            var elem = base.Children[childIndex];
+            var elem = Children[childIndex];
             if (elem == null)
                 throw new InvalidOperationException("Cannot get visible index of null/missing element.");
 
@@ -720,14 +725,14 @@ namespace WPF.JoshSmith.Panels
                 !_elementTo3DModelMap.ContainsKey(elementAdded);
 
             if (add)
-                this.AddModelForElement(elementAdded);
+                AddModelForElement(elementAdded);
 
             bool remove =
                 elementRemoved != null &&
                 _elementTo3DModelMap.ContainsKey(elementRemoved);
 
             if (remove)
-                this.RemoveModelForElement(elementRemoved);
+                RemoveModelForElement(elementRemoved);
         }
 
         void AddModelForElement(UIElement element)
@@ -735,7 +740,7 @@ namespace WPF.JoshSmith.Panels
             var model = BuildModel(element);
 
             // Add the new model at the correct location in our list of models.
-            int idx = base.Children.IndexOf(element);
+            int idx = Children.IndexOf(element);
             _models.Insert(idx, model);
 
             _elementTo3DModelMap.Add(element, model);
@@ -748,12 +753,12 @@ namespace WPF.JoshSmith.Panels
                 _viewport.FrontModel :
                 model;
 
-            this.BuildScene(frontModel);
+            BuildScene(frontModel);
         }
 
         void RemoveModelForElement(UIElement element)
         {
-            this.IsMovingItems = false;
+            IsMovingItems = false;
 
             var model = _elementTo3DModelMap[element];
             _models.Remove(model);
@@ -762,7 +767,7 @@ namespace WPF.JoshSmith.Panels
             if (_viewport.Children.Contains(model))
             {
                 _viewport.Children.Remove(model);
-                this.BuildScene();
+                BuildScene();
             }
         }
 
@@ -777,9 +782,9 @@ namespace WPF.JoshSmith.Panels
                 Geometry = new MeshGeometry3D
                 {
                     TriangleIndices = new Int32Collection(
-                        new int[] { 0, 1, 2, 2, 3, 0 }),
+                        new[] { 0, 1, 2, 2, 3, 0 }),
                     TextureCoordinates = new PointCollection(
-                        new Point[] 
+                        new[] 
                             { 
                                 new Point(0, 1), 
                                 new Point(1, 1), 
@@ -787,7 +792,7 @@ namespace WPF.JoshSmith.Panels
                                 new Point(0, 0) 
                             }),
                     Positions = new Point3DCollection(
-                        new Point3D[] 
+                        new[] 
                             { 
                                 new Point3D(-1, -1, 0), 
                                 new Point3D(+1, -1, 0), 
@@ -817,7 +822,7 @@ namespace WPF.JoshSmith.Panels
         void BuildScene()
         {
             if (0 < _viewport.ModelCount)
-                this.BuildScene(_viewport.FrontModel as Viewport2DVisual3D);
+                BuildScene(_viewport.FrontModel);
         }
 
         /// <summary>
@@ -832,11 +837,11 @@ namespace WPF.JoshSmith.Panels
             var current = frontModel;
             for (int i = 0; _viewport.ModelCount < this.MaxVisibleModels; ++i)
             {
-                this.ConfigureModel(current, i);
+                ConfigureModel(current, i);
 
                 _viewport.AddToBack(current);
 
-                current = this.GetNextModel(current);
+                current = GetNextModel(current);
                 if (_viewport.Children.Contains(current))
                     break;
             }
@@ -855,7 +860,7 @@ namespace WPF.JoshSmith.Panels
 
             if (oldIsItemsHost && _itemsOwner != null)
             {
-                _itemsOwner.SelectionChanged -= this.OnItemsOwnerSelectionChanged;
+                _itemsOwner.SelectionChanged -= OnItemsOwnerSelectionChanged;
                 _itemsOwner = null;
             }
 
@@ -863,7 +868,7 @@ namespace WPF.JoshSmith.Panels
             {
                 _itemsOwner = ItemsControl.GetItemsOwner(this) as Selector;
                 if (_itemsOwner != null)
-                    _itemsOwner.SelectionChanged += this.OnItemsOwnerSelectionChanged;
+                    _itemsOwner.SelectionChanged += OnItemsOwnerSelectionChanged;
             }
         }
 
@@ -887,9 +892,9 @@ namespace WPF.JoshSmith.Panels
 
             if (!isSelectedItemInFront)
             {
-                if (this.IsMovingItems)
+                if (IsMovingItems)
                 {
-                    this.IsMovingItems = false;
+                    IsMovingItems = false;
                     _abortMoveItems = true;
                     _moveItemsRequestQueue.Clear();
                 }
@@ -899,7 +904,7 @@ namespace WPF.JoshSmith.Panels
                 // the selected item could change many times
                 // in rapid succession.  Instead, we just rebuild
                 // the scene and place the selected item in front.
-                this.BuildScene(model);
+                BuildScene(model);
             }
         }
 
@@ -919,14 +924,14 @@ namespace WPF.JoshSmith.Panels
             trans.BeginAnimation(TranslateTransform3D.OffsetYProperty, null);
             trans.BeginAnimation(TranslateTransform3D.OffsetZProperty, null);
 
-            var offsets = this.GetModelOffsets(index);
+            var offsets = GetModelOffsets(index);
             trans.OffsetX = offsets.X;
             trans.OffsetY = offsets.Y;
             trans.OffsetZ = offsets.Z;
 
             var elem = model.Visual as UIElement;
-            elem.BeginAnimation(UIElement.OpacityProperty, null);
-            elem.Opacity = this.AutoAdjustOpacity ? this.GetElementOpacity(index) : 1.0;
+            elem.BeginAnimation(OpacityProperty, null);
+            elem.Opacity = AutoAdjustOpacity ? GetElementOpacity(index) : 1.0;
         }
 
         double GetElementOpacity(int index)
@@ -969,12 +974,12 @@ namespace WPF.JoshSmith.Panels
         Vector3D GetModelOffsets(int index)
         {
             int ordinalIndex = index + 1;
-            return Vector3D.Multiply(ordinalIndex, this.ItemLayoutDirection);
+            return Vector3D.Multiply(ordinalIndex, ItemLayoutDirection);
         }
 
         bool IsVirtualizing
         {
-            get { return this.MaxVisibleModels < _models.Count; }
+            get { return MaxVisibleModels < _models.Count; }
         }
 
         #endregion // Private Helpers

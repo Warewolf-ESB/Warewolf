@@ -1,12 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Collections;
+﻿using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Core.Tests.ProperMoqs
 {
@@ -97,6 +97,22 @@ namespace Dev2.Core.Tests.ProperMoqs
         public event Action<IContextualResourceModel> OnResourceSaved;
         public event Action OnDataListChanged;
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
+
+        public void RaiseEvents()
+        {
+            if(OnResourceSaved != null)
+            {
+                OnResourceSaved(this);
+            }
+            if(OnDataListChanged != null)
+            {
+                OnDataListChanged();
+            }
+            if(OnDesignValidationReceived != null)
+            {
+                OnDesignValidationReceived(this, new DesignValidationMemo());
+            }
+        }
 
         public void Update(IResourceModel resourceModel)
         {

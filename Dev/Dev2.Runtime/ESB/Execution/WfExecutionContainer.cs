@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Activities;
-using System.Activities.Statements;
-using System.Activities.XamlIntegration;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xaml;
-using System.Xml;
-using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
-using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.WF;
 using Dev2.Runtime.Security;
 using Dev2.Utilities;
 using Dev2.Workspaces;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -53,15 +42,14 @@ namespace Dev2.Runtime.ESB.Execution
 
             // PBI : 5376 Refactored 
             IBinaryDataListEntry tmp = compiler.Evaluate(DataObject.DataListID,
-                                                             DataList.Contract.enActionType.System,
+                                                             enActionType.System,
                                                              enSystemTag.Bookmark.ToString(), false, out errors);
             if (tmp != null)
             {
                 bookmark = tmp.FetchScalar().TheValue;
             }
 
-            tmp = compiler.Evaluate(DataObject.DataListID, DataList.Contract.enActionType.System,
-                                        enSystemTag.InstanceId.ToString(), false, out errors);
+            tmp = compiler.Evaluate(DataObject.DataListID, enActionType.System, enSystemTag.InstanceId.ToString(), false, out errors);
             if (tmp != null)
             {
                 Guid.TryParse(tmp.FetchScalar().TheValue, out instanceId);

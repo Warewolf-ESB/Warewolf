@@ -11191,7 +11191,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 FTPPro.Get(pathFromString);
             }
-            catch(Exception e)
+            catch(Exception)
             {
             var end = DateTime.Now;
             //------------Assert Results-------------------------
@@ -11268,7 +11268,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 source.EndPoint.Delete(source.EndPoint.IOPath);
             }
-            catch(Exception e)
+            catch(Exception)
             {
                  
             }
@@ -11280,7 +11280,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 destination.EndPoint.Delete(destination.EndPoint.IOPath);
             }
-            catch(Exception e)
+            catch(Exception)
             {
             }
         }

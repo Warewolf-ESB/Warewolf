@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
@@ -81,6 +80,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         [TestMethod]
+        [Ignore]
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -167,6 +167,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
         [Owner("Travis Frisinger")]
+        [Ignore]
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization

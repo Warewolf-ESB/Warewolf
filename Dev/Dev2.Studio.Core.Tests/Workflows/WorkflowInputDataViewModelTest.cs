@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Providers.Events;
@@ -14,8 +15,9 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+
 //ReSharper disable InconsistentNaming
-namespace Dev2.Core.Tests
+namespace Dev2.Core.Tests.Workflows
 {
     /// <summary>
     ///This is a result class for WorkflowInputDataViewModelTest and is intended
@@ -288,7 +290,7 @@ namespace Dev2.Core.Tests
             
 
             //------------Execute Test---------------------------
-            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem() { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex =  "2"});
+            workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex =  "2"});
             workflowInputDataViewModel.Save();
 
             //------------Assert Results-------------------------

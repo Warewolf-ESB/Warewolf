@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Network;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
@@ -20,6 +13,13 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Network;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -204,6 +204,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
+                Logger.Error(e);
                 callback(ConnectResult.ConnectFailed);
             }
         }

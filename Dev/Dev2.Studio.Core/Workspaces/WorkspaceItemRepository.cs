@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.Controller;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Workspaces;
-using Newtonsoft.Json;
-using Unlimited.Framework;
+using Dev2.Studio.Core.Workspaces;
 
-namespace Dev2.Studio.Core.Workspaces
+namespace Dev2.Workspaces
 {   
     public class WorkspaceItemRepository : IWorkspaceItemRepository
     {

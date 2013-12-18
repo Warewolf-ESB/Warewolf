@@ -7,6 +7,7 @@ using Dev2.DynamicServices;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
+using Dev2.Webs.Callbacks;
 
 namespace Dev2.Studio.Webs
 {

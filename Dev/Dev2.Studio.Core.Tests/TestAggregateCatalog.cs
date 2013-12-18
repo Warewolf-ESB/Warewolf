@@ -1,9 +1,7 @@
-﻿using Dev2.Network;
+﻿using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 using Dev2.Network.Execution;
 using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using Bootstrapper = Dev2.Studio.Bootstrapper;
 
 namespace Dev2.Core.Tests
 {

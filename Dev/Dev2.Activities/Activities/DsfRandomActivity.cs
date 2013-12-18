@@ -10,7 +10,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -38,7 +37,7 @@ namespace Dev2.Activities
 
         [FindMissing]
         [Outputs("Result")]
-        public string Result { get; set; }
+        public new string Result { get; set; }
 
         #endregion
 

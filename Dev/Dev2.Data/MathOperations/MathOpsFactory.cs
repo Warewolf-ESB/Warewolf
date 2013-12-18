@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
+using Dev2.Data.MathOperations;
 
 namespace Dev2.MathOperations {
     public static class MathOpsFactory {

@@ -191,7 +191,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                             return true;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         return true;
                         //This is empty because if the pop cant be found then the tab must just close;)

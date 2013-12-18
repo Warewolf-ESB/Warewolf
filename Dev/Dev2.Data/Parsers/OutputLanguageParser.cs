@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml;
+﻿using System.Collections.Generic;
+using Dev2.DataList.Contract;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Parsers
 {
     public class OutputLanguageParser : LanguageParser, IDev2LanguageParser {
 
@@ -24,7 +21,9 @@ namespace Dev2.DataList.Contract
         }
 
         public IList<IDev2Definition> ParseAndAllowBlanks(string OutputDefinition) {
+            // ReSharper disable RedundantBaseQualifier
             return base.Parse(OutputDefinition, false);
+            // ReSharper restore RedundantBaseQualifier
         }
         #endregion
     }

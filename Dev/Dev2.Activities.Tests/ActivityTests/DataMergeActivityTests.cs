@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -142,7 +142,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(@"Wallis,Buchan
+            const string expected = @"Wallis,Buchan
 Barney,Buchan
 Trevor,Williams-Ros
 Travis,Frisigner
@@ -152,7 +152,9 @@ Massimo,Guerrera
 Ashley,Lewis
 Sashen,Naidoo
 Wallis,Buchan
-", actual);
+";
+
+            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
         }
 
         #endregion New Line Merge Tests
@@ -194,7 +196,8 @@ Wallis,Buchan
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(@"WBuchan
+
+            const string expected = @"WBuchan
 BBuchan
 TWilliams-Ros
 TFrisigner
@@ -204,7 +207,9 @@ MGuerrera
 ALewis
 SNaidoo
 WBuchan
-", actual);
+";
+
+            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
         }
 
         [TestMethod]
@@ -221,7 +226,7 @@ WBuchan
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(@"Wallis0000Buchan
+            const string expected = @"Wallis0000Buchan
 Barney0000Buchan
 Trevor0000Williams-Ros
 Travis0000Frisigner
@@ -231,7 +236,9 @@ Massimo000Guerrera
 Ashley0000Lewis
 Sashen0000Naidoo
 Wallis0000Buchan
-", actual);
+";
+
+            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
         }
 
         [TestMethod]
@@ -248,7 +255,7 @@ Wallis0000Buchan
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(@"0000WallisBuchan
+            const string expected = @"0000WallisBuchan
 0000BarneyBuchan
 0000TrevorWilliams-Ros
 0000TravisFrisigner
@@ -258,7 +265,9 @@ Wallis0000Buchan
 0000AshleyLewis
 0000SashenNaidoo
 0000WallisBuchan
-", actual);
+";
+
+            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
         }
 
         //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
@@ -276,7 +285,7 @@ Wallis0000Buchan
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(@"WallisBuchan
+            const string expected = @"WallisBuchan
 BarneyBuchan
 TrevorWilliams-Ros
 TravisFrisigner
@@ -286,7 +295,9 @@ MassimGuerrera
 AshleyLewis
 SashenNaidoo
 WallisBuchan
-", actual);
+";
+
+            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
         }
 
         #endregion Index Tests

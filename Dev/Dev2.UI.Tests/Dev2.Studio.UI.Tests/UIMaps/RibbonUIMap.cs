@@ -1,13 +1,14 @@
 ﻿using System.Drawing;
 using System.Linq;
-using System.Threading;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
+// ReSharper restore CheckNamespace
 {
     public partial class RibbonUIMap : UIMapBase
     {
@@ -15,7 +16,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         private DebugUIMap _debugUIMap;
 
-        public DebugUIMap DebugUIMap
+        public new DebugUIMap DebugUIMap
         {
             get
             {
@@ -30,7 +31,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         #endregion
 
-        int loopCount = 0;
+        int loopCount;
         WpfTabList uIRibbonTabList;
 
         public void ClickRibbonMenu(string menuAutomationId)
@@ -45,17 +46,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
             if(uIRibbonTabList == null)
             {
-                uIRibbonTabList = this.UIBusinessDesignStudioWindow.UIRibbonTabList;
+                uIRibbonTabList = UIBusinessDesignStudioWindow.UIRibbonTabList;
             }
 
             UITestControlCollection tabList = uIRibbonTabList.Tabs;
-            UITestControl theControl = new UITestControl();
+            UITestControl theControl;
             foreach(WpfTabPage tabPage in tabList)
             {
                 if(tabPage.Name == menuAutomationId)
                 {
                     theControl = tabPage;
-                    Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
+                    Point p;
                     p = new Point(theControl.GetChildren()[0].BoundingRectangle.X + 20, theControl.GetChildren()[0].BoundingRectangle.Y + 10);
                     Mouse.Click(p);
                     return;

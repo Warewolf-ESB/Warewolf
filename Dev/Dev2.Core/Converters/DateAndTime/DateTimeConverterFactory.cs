@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Converters.DateAndTime.Interfaces;
-using Dev2.Converters.DateAndTime;
+﻿using Dev2.Converters.DateAndTime.Interfaces;
 
 namespace Dev2.Converters.DateAndTime
 {
@@ -38,9 +33,6 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         public static IDateTimeDiffTO CreateDateTimeDiffTO(string input1, string input2, string inputFormat, string outputType)
         {
-            /// <New>
-            ///Create an instance of the DateTimeDiffTO and return it
-            /// </New>
             return new DateTimeDiffTO(input1, input2, inputFormat, outputType);
         }
 
@@ -49,9 +41,6 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         public static IDateTimeOperationTO CreateDateTimeTO(string dateTime, string inputFormat, string outputFormat, string timeModifierType,int timeModifierAmount, string result)
         {
-            /// <New>
-            ///Create an instance of the DateTimeTO and return it.DONE
-            /// </New>
             return new DateTimeOperationTO(dateTime, inputFormat, outputFormat, timeModifierType,timeModifierAmount, result);
         }
     }

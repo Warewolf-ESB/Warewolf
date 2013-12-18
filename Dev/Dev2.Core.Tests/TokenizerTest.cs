@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common;
+using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
-using Dev2.Common;
 
 namespace Unlimited.UnitTest.Framework {
     /// <summary>

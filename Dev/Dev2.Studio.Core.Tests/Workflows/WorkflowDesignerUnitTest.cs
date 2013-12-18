@@ -1,26 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.ViewModelTests;
 using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -39,6 +25,21 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+using System;
+using System.Activities;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -59,7 +60,7 @@ namespace Dev2.Core.Tests.Workflows
         public void RemoveAllUnusedDataListObjectsWithItemsNotUsedExpectedItemsRemoved()
         {
             var eventAggregator = new EventAggregator();
-            
+
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
@@ -168,7 +169,7 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.ResourceModel;
             var eventAggregator = new EventAggregator();
 
-            
+
             var model = CreateWorkflowDesignerViewModel(eventAggregator, resourceModel.Object, null, false);
             var dataListViewModel = new DataListViewModel();
 
@@ -1128,33 +1129,33 @@ namespace Dev2.Core.Tests.Workflows
         {
             var thread = new Thread(() =>
             {
-            //------------Setup for test--------------------------
-            var repo = new Mock<IResourceRepository>();
-            repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage() { Message = null });
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+                //------------Setup for test--------------------------
+                var repo = new Mock<IResourceRepository>();
+                repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage() { Message = null });
+                var env = EnviromentRepositoryTest.CreateMockEnvironment();
+                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
+                var crm = new Mock<IContextualResourceModel>();
+                crm.Setup(r => r.Environment).Returns(env.Object);
+                crm.Setup(r => r.ResourceName).Returns("Test");
 
-            var wh = new Mock<IWorkflowHelper>();
-            wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
-            wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
-            wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
+                var wh = new Mock<IWorkflowHelper>();
+                wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() }).Verifiable();
+                wh.Setup(h => h.EnsureImplementation(It.IsAny<ModelService>())).Verifiable();
+                wh.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Verifiable();
 
-            //------------Execute Test---------------------------
-            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
+                //------------Execute Test---------------------------
+                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh.Object);
 
-            var attr = new Dictionary<Type, Type>();
+                var attr = new Dictionary<Type, Type>();
 
-            wfd.InitializeDesigner(attr);
+                wfd.InitializeDesigner(attr);
 
-            wfd.Dispose();
+                wfd.Dispose();
 
-            //------------Assert Results-------------------------
-            wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
-            wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
+                //------------Assert Results-------------------------
+                wh.Verify(h => h.CreateWorkflow(It.IsAny<string>()));
+                wh.Verify(h => h.EnsureImplementation(It.IsAny<ModelService>()));
             });
         }
 
@@ -1165,38 +1166,38 @@ namespace Dev2.Core.Tests.Workflows
         {
             var thread = new Thread(() =>
             {
-            //------------Setup for test--------------------------
-            var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            var con = new Mock<IEnvironmentConnection>();
+                //------------Setup for test--------------------------
+                var repo = new Mock<IResourceRepository>();
+                var env = EnviromentRepositoryTest.CreateMockEnvironment();
+                var con = new Mock<IEnvironmentConnection>();
 
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg("resource def"));
+                repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg("resource def"));
 
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder("resource def"));
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder("resource def"));
 
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-            env.Setup(e => e.Connection).Returns(con.Object);
+                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+                env.Setup(e => e.Connection).Returns(con.Object);
 
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
+                var crm = new Mock<IContextualResourceModel>();
+                crm.Setup(r => r.Environment).Returns(env.Object);
+                crm.Setup(r => r.ResourceName).Returns("Test");
 
                 var wh = new WorkflowHelper();
 
-            //------------Execute Test---------------------------
-            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, "resource def");
-            var attr = new Dictionary<Type, Type>();
+                //------------Execute Test---------------------------
+                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, "resource def");
+                var attr = new Dictionary<Type, Type>();
 
-            wfd.InitializeDesigner(attr);
+                wfd.InitializeDesigner(attr);
 
-            //------------Assert Results-------------------------
-            var result = wfd.Designer.Text;
-            var error = wfd.Designer.IsInErrorState();
-            wfd.Dispose();
+                //------------Assert Results-------------------------
+                var result = wfd.Designer.Text;
+                var error = wfd.Designer.IsInErrorState();
+                wfd.Dispose();
 
-            Assert.AreEqual("resource def", result);
-            // error state due to malformed designer text fetched ;)
-            Assert.IsTrue(error); 
+                Assert.AreEqual("resource def", result);
+                // error state due to malformed designer text fetched ;)
+                Assert.IsTrue(error);
             });
         }
 
@@ -1266,37 +1267,37 @@ namespace Dev2.Core.Tests.Workflows
         {
             var thread = new Thread(() =>
             {
-            //------------Setup for test--------------------------
-            var repo = new Mock<IResourceRepository>();
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            var con = new Mock<IEnvironmentConnection>();
+                //------------Setup for test--------------------------
+                var repo = new Mock<IResourceRepository>();
+                var env = EnviromentRepositoryTest.CreateMockEnvironment();
+                var con = new Mock<IEnvironmentConnection>();
 
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg(string.Empty));
+                repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMsg(string.Empty));
 
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
 
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-            env.Setup(e => e.Connection).Returns(con.Object);
+                env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+                env.Setup(e => e.Connection).Returns(con.Object);
 
-            var crm = new Mock<IContextualResourceModel>();
-            crm.Setup(r => r.Environment).Returns(env.Object);
-            crm.Setup(r => r.ResourceName).Returns("Test");
+                var crm = new Mock<IContextualResourceModel>();
+                crm.Setup(r => r.Environment).Returns(env.Object);
+                crm.Setup(r => r.ResourceName).Returns("Test");
 
-            var wh = new WorkflowHelper();
+                var wh = new WorkflowHelper();
 
-            //------------Execute Test---------------------------
-            var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
+                //------------Execute Test---------------------------
+                var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh);
 
 
-            //------------Assert Results-------------------------
-            var result = wfd.Designer.Text;
-            var error = wfd.Designer.IsInErrorState();
+                //------------Assert Results-------------------------
+                var result = wfd.Designer.Text;
+                var error = wfd.Designer.IsInErrorState();
 
-            wfd.Dispose();
+                wfd.Dispose();
 
-            Assert.IsNull(result);
-            // new valid workflow XAML ;)
-            Assert.IsFalse(error); 
+                Assert.IsNull(result);
+                // new valid workflow XAML ;)
+                Assert.IsFalse(error);
             });
         }
 
@@ -1497,7 +1498,7 @@ namespace Dev2.Core.Tests.Workflows
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
-            Assert.AreEqual("http://localhost:3142/",testAct.ServiceUri);
+            Assert.AreEqual("http://localhost:3142/", testAct.ServiceUri);
             Assert.IsTrue(testAct.ServiceServer == envId2);
 
             var activity = new DsfActivity();
@@ -1596,7 +1597,9 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -1656,16 +1659,20 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
             #region setup mock ModelChangedEventArgs
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
+#pragma warning restore 618
 
-	        #endregion
+            #endregion
 
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
@@ -1675,7 +1682,7 @@ namespace Dev2.Core.Tests.Workflows
             });
             var eventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-            
+
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
             var expectedMessage = new ConfigureDecisionExpressionMessage()
             {
@@ -1741,14 +1748,18 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
             #region setup mock ModelChangedEventArgs
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -1831,7 +1842,9 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -1959,7 +1972,9 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -2021,7 +2036,9 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -2086,7 +2103,9 @@ namespace Dev2.Core.Tests.Workflows
 
             //mock item adding - this is obsolote functionality but not refactored due to overhead
             var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
             args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
 
             #endregion
 
@@ -2309,7 +2328,7 @@ namespace Dev2.Core.Tests.Workflows
                 Implementation = new Flowchart
                 {
                     StartNode = CreateFlowNode(Guid.NewGuid(), "SelectionChangedTest1", true, typeof(TestActivity))
-        }
+                }
             };
 
             #region Setup viewModel
@@ -2453,7 +2472,7 @@ namespace Dev2.Core.Tests.Workflows
                 {
                     var flowStep = prevNode as FlowStep;
                     if(flowStep != null)
-            {
+                    {
                         flowStep.Next = node;
                     }
                 }
@@ -2542,8 +2561,8 @@ namespace Dev2.Core.Tests.Workflows
             foreach(var modelItem in selection.SelectedObjects)
             {
                 Assert.AreEqual(selectedActivityType, modelItem.ItemType);
-            if(selectsModelItem)
-            {
+                if(selectsModelItem)
+                {
                     var actualID = selectedActivityType == typeof(FlowDecision)
                         ? Guid.Parse(((TestDecisionActivity)modelItem.GetProperty("Condition")).UniqueID)
                         : ModelItemUtils.GetUniqueID(modelItem);
@@ -2571,8 +2590,8 @@ namespace Dev2.Core.Tests.Workflows
             {
                 Action = new TestActivity
             {
-                    DisplayName = displayName,
-                    UniqueID = selectsModelItem ? id.ToString() : Guid.NewGuid().ToString()
+                DisplayName = displayName,
+                UniqueID = selectsModelItem ? id.ToString() : Guid.NewGuid().ToString()
             }
             };
         }
@@ -2780,7 +2799,7 @@ namespace Dev2.Core.Tests.Workflows
             {
                 var wh = new Mock<IWorkflowHelper>();
                 wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() });
-                if (helperText != null)
+                if(helperText != null)
                 {
                     wh.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(new StringBuilder(helperText));
                 }
@@ -2795,7 +2814,7 @@ namespace Dev2.Core.Tests.Workflows
 
         static ExecuteMessage MakeMsg(string msg)
         {
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
             return result;
         }

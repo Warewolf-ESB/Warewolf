@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Data.Enums;
+using Dev2.Data.Interfaces;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
 
-namespace Dev2.DataList.Contract
+namespace Dev2.Data.Parsers
 {
     /// <summary>
     /// The core language parser ;)
@@ -14,8 +18,6 @@ namespace Dev2.DataList.Contract
     {
         private const string _cdataStart = "<![CDATA[";
         private const string _cdataEnd = "]]>";
-
-        public Dev2DataLanguageParser() { }
 
         #region Public Methods
 

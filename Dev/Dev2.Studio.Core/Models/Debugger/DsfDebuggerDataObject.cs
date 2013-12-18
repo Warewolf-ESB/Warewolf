@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 
-namespace Dev2.Studio.Core.Models
+namespace Dev2.Models.Debugger
 {
     public class DsfDebuggerDataObject : IDSFDataObject
     {

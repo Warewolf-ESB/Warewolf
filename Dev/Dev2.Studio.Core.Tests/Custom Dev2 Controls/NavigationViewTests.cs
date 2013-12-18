@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
                     // Mo : This line breaks everything....
                     //_myApp.InitializeComponent();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (_myApp != null)
                     {

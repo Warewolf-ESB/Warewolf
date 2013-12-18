@@ -26,15 +26,10 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
 using System.Windows;
-using System.Collections.Specialized;
+using WPF.JoshSmith.Panels;
 
-namespace WPF.JoshSmith.Panels
+namespace Dev2.CustomControls.Panels
 {
     /// <summary>
     /// This panel extends ConceptualPanel by ensuring that its conceptual children are also "logical" children.  

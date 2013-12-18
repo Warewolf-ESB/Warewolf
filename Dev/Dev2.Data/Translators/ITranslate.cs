@@ -1,4 +1,5 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
+﻿using Dev2.Data.Enums;
+using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract {
     public interface ITranslate {

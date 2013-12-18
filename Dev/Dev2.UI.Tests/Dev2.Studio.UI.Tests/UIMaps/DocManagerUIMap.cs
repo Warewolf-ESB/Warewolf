@@ -1,11 +1,13 @@
 ﻿using System.Drawing;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System.Windows.Forms;
+using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
+// ReSharper restore CheckNamespace
 {
     public partial class DocManagerUIMap
     {
@@ -38,8 +40,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 
         public void CloseStudio()
         {
-            Point p = new Point();
-            this.UIBusinessDesignStudioWindow.SetFocus();
+            new Point();
+            UIBusinessDesignStudioWindow.SetFocus();
             SendKeys.SendWait("%{F4}");
         }
 

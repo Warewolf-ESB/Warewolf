@@ -7,6 +7,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;

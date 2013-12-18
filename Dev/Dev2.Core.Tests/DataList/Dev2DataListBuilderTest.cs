@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Data.Factories;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Interfaces;
-using Dev2.DataList.Contract;
 using Dev2.Common;
+using Dev2.Data.Factories;
+using Dev2.Data.Interfaces;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.DataList
 {

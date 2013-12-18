@@ -317,13 +317,8 @@ namespace Dev2.Integration.Tests.Services.Sql
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
 
-            IDbCommand procedureCommand = null;
             List<IDbDataParameter> procedureCommandParameters = null;
             string procedureHelpText = null;
-
-            IDbCommand functionCommand = null;
-            List<IDbDataParameter> functionCommandParameters = null;
-            string functionHelpText = null;
 
             var sqlServer = new SqlServer();
             try
@@ -334,7 +329,6 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     if(dbCommand.CommandText == "Warewolf.RunWorkflowForSql")
                     {
-                        procedureCommand = dbCommand;
                         procedureCommandParameters = list;
                         procedureHelpText = helpText;
                     }

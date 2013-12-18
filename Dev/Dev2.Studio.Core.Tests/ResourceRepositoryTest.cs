@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests;
@@ -26,6 +19,13 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Xml.Linq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 namespace BusinessDesignStudio.Unit.Tests
@@ -57,7 +57,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-             Setup();
+            Setup();
         }
 
         void Setup()
@@ -172,7 +172,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.AreEqual(model.IconPath, "pack://application:,,,/Warewolf Studio;component/images/PluginService-32.png");
-            
+
         }
 
         [TestMethod]
@@ -316,13 +316,13 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
                     {
-                        if (callCnt == 0)
+                        if(callCnt == 0)
                         {
                             callCnt = 1;
                             return new StringBuilder(payload);
                         }
 
-                        return BuildResourceObjectFromGuids(new[] {new Guid()});
+                        return BuildResourceObjectFromGuids(new[] { new Guid() });
                     });
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
@@ -381,7 +381,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
 
-            var resultObj = BuildResourceObjectFromGuids(new Guid[] {guid1, guid2});
+            var resultObj = BuildResourceObjectFromGuids(new Guid[] { guid1, guid2 });
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -437,7 +437,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string Reserved1 = "TestName1";
             const string Reserved2 = "TestName2";
 
-            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2},Dev2.Data.ServiceModel.ResourceType.ReservedService );
+            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, Dev2.Data.ServiceModel.ResourceType.ReservedService);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -540,7 +540,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.Save(_resourceModel.Object);
             _repo.Load();
             //Assert
-            var resource = _repo.FindSingle(c=>c.ID == prevID);
+            var resource = _repo.FindSingle(c => c.ID == prevID);
             Assert.IsTrue(resource.WorkflowXaml.ToString().Equals("OriginalXaml"));
 
             var workspaceItemMock = new Mock<IWorkspaceItem>();
@@ -582,7 +582,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 });
 
 
-			
+
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //Act
@@ -631,7 +631,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //Assert
             Assert.IsTrue(_repo.All().Count.Equals(2));
         }
-        
+
         [TestMethod]
         [TestCategory("ResourceRepository_Load")]
         [Description("ResourceRepository Load must only do one server call to retrieve all resources")]
@@ -834,7 +834,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //Arrange
             Setup();
-            
+
             ExecuteMessage msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
 
@@ -906,8 +906,8 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void GetDependanciesOnListWithNullEnvModel()
         {
-           ResourceRepository resourceRepository = new ResourceRepository(new Mock<IEnvironmentModel>().Object);
-           var result = resourceRepository.GetDependanciesOnList(new List<IContextualResourceModel>(), null);
+            ResourceRepository resourceRepository = new ResourceRepository(new Mock<IEnvironmentModel>().Object);
+            var result = resourceRepository.GetDependanciesOnList(new List<IContextualResourceModel>(), null);
 
             Assert.AreEqual(0, result.Count);
         }
@@ -946,7 +946,7 @@ namespace BusinessDesignStudio.Unit.Tests
             }
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
-            
+
             var resources = new List<IContextualResourceModel> { new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" } };
 
             resRepo.GetDependanciesOnList(resources, testEnvironmentModel2.Object);
@@ -961,7 +961,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void GetDependenciesXmlWithNullModelReturnsEmptyString()
         {
             ResourceRepository resourceRepository = new ResourceRepository(new Mock<IEnvironmentModel>().Object);
-            var result = resourceRepository.GetDependenciesXml(null,false);
+            var result = resourceRepository.GetDependenciesXml(null, false);
             Assert.IsTrue(string.IsNullOrEmpty(result.Message.ToString()));
         }
 
@@ -970,7 +970,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -1054,7 +1054,7 @@ namespace BusinessDesignStudio.Unit.Tests
             }
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
-            
+
             resRepo.GetUniqueDependencies(new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" });
             mockConnection.Verify(e => e.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Exactly(1));
         }
@@ -1131,7 +1131,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid,newGuid});
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid });
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };
 
@@ -1173,27 +1173,27 @@ namespace BusinessDesignStudio.Unit.Tests
                         }
                 };
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid}, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors);
 
-            var msg = new ExecuteMessage {HasError = false};
+            var msg = new ExecuteMessage { HasError = false };
 
 
             int cnt = 0;
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
 
                 () =>
+                {
+                    if(cnt == 0)
                     {
-                        if (cnt == 0)
-                        {
-                            cnt = 1;
-                            return new StringBuilder(JsonConvert.SerializeObject(msg));
-                        }
-           
-                        return resourceObj;
+                        cnt = 1;
+                        return new StringBuilder(JsonConvert.SerializeObject(msg));
                     }
+
+                    return resourceObj;
+                }
             );
 
-           
+
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             //------------Execute Test---------------------------
@@ -1339,7 +1339,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
 
-            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(BuildResourceObjectFromGuids(new[]{newGuid}));
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(BuildResourceObjectFromGuids(new[] { newGuid }));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.ForceLoad();
             //------------Execute Test---------------------------
@@ -1377,7 +1377,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var newGuid = Guid.NewGuid();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {newGuid});
+            var resourceObj = BuildResourceObjectFromGuids(new[] { newGuid });
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
@@ -1497,7 +1497,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var newGuid = Guid.NewGuid();
 
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid, newGuid}, Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, Dev2.Data.ServiceModel.ResourceType.Server);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -1505,14 +1505,14 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(() =>
         {
-                    if(callCnt == 0)
-                    {
-                        callCnt = 1;
-                        return new StringBuilder(payload);
-                    }
+            if(callCnt == 0)
+            {
+                callCnt = 1;
+                return new StringBuilder(payload);
+            }
 
-                    return resourceObj;
-                });
+            return resourceObj;
+        });
 
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
@@ -1553,7 +1553,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     }
             };
 
-            var resourceData = BuildResourceObjectFromGuids(new[] {id}, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors, false);
+            var resourceData = BuildResourceObjectFromGuids(new[] { id }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors, false);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -1605,8 +1605,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid,guid2});
-            
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid2 });
+
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
@@ -1657,14 +1657,14 @@ namespace BusinessDesignStudio.Unit.Tests
             var conn = SetupConnection();
             var guid2 = Guid.NewGuid();
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid, guid2});
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid2 });
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
             _repo.ForceLoad();
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var guid = Guid.NewGuid();
 
-            resourceObj = BuildResourceObjectFromGuids(new[] {_resourceGuid, guid});
+            resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid });
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resourceObj);
             _repo.ForceLoad();
@@ -1931,7 +1931,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             mockEnvironmentConnection.Setup(c => c.IsConnected).Returns(true);
             mockEnvironmentConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
-            
+
             //mockEnvironment.Setup(c => c.Connection.SecurityContext);
             mockEnvironment.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
 
@@ -1939,7 +1939,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(res => res.ID).Returns(resID);
             string actualRenamedValue = null;
-            resourceModel.SetupSet(res => res.ResourceName).Callback(value =>
+            resourceModel.SetupSet(res => res.ResourceName = It.IsAny<string>()).Callback<string>(value =>
                 {
                     actualRenamedValue = value;
                 });
@@ -2066,7 +2066,7 @@ namespace BusinessDesignStudio.Unit.Tests
             List<SerializableResource> theResources = new List<SerializableResource>();
 
             int cnt = names.Length;
-            for (int i = 0; i < cnt; i++)
+            for(int i = 0; i < cnt; i++)
             {
                 SerializableResource sr = new SerializableResource()
                 {
@@ -2093,17 +2093,17 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="ids">The ids.</param>
         /// <param name="theType">The type.</param>
         /// <returns></returns>
-        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true )
+        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true)
         {
 
             List<SerializableResource> theResources = new List<SerializableResource>();
 
-            if (errors == null)
+            if(errors == null)
             {
                 errors = new List<ErrorInfo>();
             }
 
-            foreach (var id in ids)
+            foreach(var id in ids)
             {
                 SerializableResource sr = new SerializableResource
                 {
@@ -2142,10 +2142,10 @@ namespace BusinessDesignStudio.Unit.Tests
             return connection;
         }
 
-        
+
         public static ExecuteMessage MakeMsg(string msg)
         {
-            var result = new ExecuteMessage() {HasError = false};
+            var result = new ExecuteMessage() { HasError = false };
             result.SetMessage(msg);
             return result;
         }

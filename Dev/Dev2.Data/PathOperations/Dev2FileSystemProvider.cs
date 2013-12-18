@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
+using System.Security;
 using System.Security.Permissions;
+using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Data.PathOperations.Enums;
 using Microsoft.Win32.SafeHandles;
-using System.Runtime.ConstrainedExecution;
-using System.Security;
 
 namespace Dev2.PathOperations
 {

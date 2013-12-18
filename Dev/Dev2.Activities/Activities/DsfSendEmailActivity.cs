@@ -26,8 +26,8 @@ namespace Dev2.Activities
 
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
-        private List<DebugItem> _debugInputs = new List<DebugItem>();
-        private List<DebugItem> _debugOutputs = new List<DebugItem>();
+        private new List<DebugItem> _debugInputs = new List<DebugItem>();
+        private new List<DebugItem> _debugOutputs = new List<DebugItem>();
 
         #endregion
 

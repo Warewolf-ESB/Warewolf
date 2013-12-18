@@ -24,10 +24,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
 using Caliburn.Micro;
+using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Composition;
+using Dev2.Data.Interfaces;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -220,7 +222,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string AuthorRoles { get { return _resourceModel.AuthorRoles; } set { _resourceModel.AuthorRoles = value; } }
 
-        public WorkflowDesigner Designer { get { return _wd; }  }
+        public WorkflowDesigner Designer { get { return _wd; } }
 
         public UIElement DesignerView
         {
@@ -1195,7 +1197,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(xaml == null || xaml.Length == 0)
             {
                 
-                if (_resourceModel.ResourceType == ResourceType.WorkflowService)
+                if(_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
                     Logger.TraceInfo(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
@@ -1218,13 +1220,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 var length = theText.Length;
                 var startIdx = 0;
-                var rounds = (int)Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
+                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
                 // now load the designer in chunks ;)
-                for (int i = 0; i < rounds; i++)
+                for(int i = 0; i < rounds; i++)
                 {
                     var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if (len > (theText.Length-startIdx))
+                    if(len > (theText.Length - startIdx))
                     {
                         len = (theText.Length - startIdx);
                     }
@@ -1314,7 +1316,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             foreach(var modelItem in _modelService.Find(_modelService.Root, typeof(DsfActivity)))
             {
                 var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
-                if(currentName == message.OldName)
+                if((string)currentName == message.OldName)
                 {
                     ModelItemUtils.SetProperty("ServiceName", message.NewName, modelItem);
                 }
@@ -1499,6 +1501,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             //ItemsAdded is obsolete - see e.ModelChangeInfo for correct usage
             //Code below is obsolete
+#pragma warning disable 618
             if(e.ItemsAdded != null)
             {
                 PerformAddItems(e.ItemsAdded.ToList());
@@ -1532,6 +1535,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     else
                     {
                         ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
+#pragma warning restore 618
 
                         if(modelProperty != null)
                         {

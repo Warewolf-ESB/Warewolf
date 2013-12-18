@@ -13,8 +13,8 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels.Explorer
 {

@@ -1,7 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -109,8 +109,8 @@ namespace Dev2.Data.Tests.Operations
         {
             _mergeOperations.Clear();
             _mergeOperations.Merge(@"TestData!!", "New Line", "", "", "Left");
-            Assert.AreEqual(@"TestData!!
-", _mergeOperations.MergeData.ToString());
+            var expected = "TestData!!";
+            Assert.AreEqual(expected, _mergeOperations.MergeData.ToString().Trim());
         }
 
         #endregion

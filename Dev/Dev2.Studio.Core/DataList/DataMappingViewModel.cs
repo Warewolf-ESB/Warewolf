@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows.Input;
-using Dev2.Data.Interfaces;
+﻿using Dev2.Data.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 namespace Dev2.Studio.ViewModels.DataList
@@ -20,17 +19,14 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private IWebActivity _activity;
         public bool _isInitialLoad = false;
-        RelayCommand _autoMappingInput;
         RelayCommand _undo;
         RelayCommand _redo;
-        RelayCommand _autoMappingOutput;
         ActionManager _actionManager;
         private string _activityName;
         private string _xmlOutput;
 
         private IInputOutputViewModel _currentlySelectedOutput;
         private IInputOutputViewModel _currentlySelectedInput;
-        private IDataListViewModel _dataListViewModel;
 
         #endregion Locals
 

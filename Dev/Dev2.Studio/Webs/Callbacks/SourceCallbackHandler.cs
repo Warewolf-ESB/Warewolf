@@ -4,6 +4,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Webs.Callbacks;
 
 namespace Dev2.Studio.Webs.Callbacks
 {

@@ -1,7 +1,7 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using Dev2.Common.ExtMethods;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -11,31 +11,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfDataMergeActivityWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public DsfDataMergeActivityWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void DataMergeRecordsetsUsingStarAndCharMerge()
@@ -55,9 +37,8 @@ Michael's surname name is Cullen
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            StringAssert.Contains(ResponseData.Unescape(), expected);
+            StringAssert.Contains(ResponseData.Unescape(), expected.Replace("\r\n","\n"));
         }
-
 
         [TestMethod]
         public void DataMergeWithScalarsAndTabMerge()

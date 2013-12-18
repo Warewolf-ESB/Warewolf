@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
@@ -25,6 +18,13 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
+using System.Xml.Linq;
 
 
 namespace Dev2.Studio.Core.AppResources.Repositories
@@ -40,7 +40,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private IDeployService _deployService = new DeployService();
 
         private bool _isDisposed;
-        Guid _updateWorkflowServerMessageID;
         public event EventHandler ItemAdded;
 
         public bool IsLoaded
@@ -394,7 +393,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             
             if(res == null)
             {
-                var msg = new ExecuteMessage {HasError = true};
+                var msg = new ExecuteMessage { HasError = true };
                 msg.SetMessage("Failure");
                 return msg;
             }
@@ -497,7 +496,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, con.WorkspaceID);
 
-            if (resourceList == null)
+            if(resourceList == null)
             {
                 throw new Exception("Failed to fetch resoure list as JSON model");
             }
@@ -584,7 +583,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ID = id;
                 resource.ServerID = serverID;
                 resource.IsValid = data.IsValid;
-                if (data.DataList != null)
+                if(data.DataList != null)
                 {
                     resource.DataList =
                         data.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"")
@@ -606,10 +605,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
 
-                if (data.Errors != null)
+                if(data.Errors != null)
                 {
                 // set the errors ;)
-                    foreach (var error in data.Errors)
+                    foreach(var error in data.Errors)
                 {
                     resource.AddError(error);
                 }
@@ -696,9 +695,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         /// <returns></returns>
         public ExecuteMessage StopExecution(IContextualResourceModel resourceModel)
         {
-            if (resourceModel == null)
+            if(resourceModel == null)
             {
-                var msg = new ExecuteMessage {HasError = true};
+                var msg = new ExecuteMessage { HasError = true };
                 msg.SetMessage(string.Empty);
                 return msg;
             }
@@ -784,11 +783,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
 
-        public ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel,bool getDependsOnMe)
+        public ExecuteMessage GetDependenciesXml(IContextualResourceModel resourceModel, bool getDependsOnMe)
         {
             if(resourceModel == null)
             {
-                return new ExecuteMessage() {HasError = false};
+                return new ExecuteMessage() { HasError = false };
             }
 
             var comsController = new CommunicationController { ServiceName = "FindDependencyService" };
@@ -810,11 +809,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Read and Write Settings
 
-        public ExecuteMessage ReadSettings(string key,string value,IEnvironmentModel currentEnv)
+        public ExecuteMessage ReadSettings(string key, string value, IEnvironmentModel currentEnv)
             {
             var serviceName = "SettingsReadService";
             var comController = new CommunicationController { ServiceName = serviceName };
-            comController.AddPayloadArgument(key,value);
+            comController.AddPayloadArgument(key, value);
 
             return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, currentEnv.Connection.WorkspaceID);
             }
@@ -913,9 +912,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var result = new List<IResourceModel>();
 
-            if (models != null)
+            if(models != null)
             {
-                foreach (var model in models)
+                foreach(var model in models)
             {
                     IResourceModel resource = HydrateResourceModel(resourceType, model, serverID);
                     result.Add(resource);

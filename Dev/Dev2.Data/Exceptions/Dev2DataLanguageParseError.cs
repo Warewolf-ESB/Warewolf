@@ -1,4 +1,6 @@
 ﻿using System;
+using Dev2.Data.Enums;
+using Dev2.Data.Interfaces;
 
 namespace Dev2.DataList.Contract
 {

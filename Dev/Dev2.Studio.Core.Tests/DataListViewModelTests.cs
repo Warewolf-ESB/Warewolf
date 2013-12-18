@@ -6,7 +6,7 @@ using System.Linq;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
-using Dev2.DataList.Contract;
+using Dev2.Data.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;

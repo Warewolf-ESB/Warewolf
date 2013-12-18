@@ -1,7 +1,7 @@
 ﻿
+using System;
 using System.Text;
 using Dev2.Data.Enums;
-using System;
 
 namespace Dev2.Data.Operations
 {
@@ -185,7 +185,7 @@ namespace Dev2.Data.Operations
         /// <param name="value">The value that will be merged to the class string</param>
         private void NewLineMergeOp(string value)
         {
-            MergeData.Append(value).Append(Environment.NewLine);
+            MergeData.Append(value).Append("\n");
         }
 
         #endregion

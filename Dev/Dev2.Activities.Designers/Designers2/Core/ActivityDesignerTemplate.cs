@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Dev2.Activities.Designers2.Core.Controls;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Dev2.Activities.Designers2.Core.Controls;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core
                 var newItem = args.AddedItems != null && args.AddedItems.Count > 0 ? args.AddedItems[0] : null;
 
                 // basic null checks ppl - 3 days of crap for this  ;) 
-                if (newItem != null)
+                if(newItem != null)
                 {
                     viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
                 }

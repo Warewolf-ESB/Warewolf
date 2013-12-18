@@ -27,6 +27,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -87,7 +88,6 @@
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Interfaces\IDev2TOFn.cs" />
-    <Compile Include="Common\JScriptEval.cs" />
     <Compile Include="Interfaces\IFrameworkRepository.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
     <Compile Include="Patterns\ISpookyLoadable.cs" />

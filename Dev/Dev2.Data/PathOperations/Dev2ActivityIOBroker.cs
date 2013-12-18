@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Diagnostics;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace Dev2.PathOperations
 {

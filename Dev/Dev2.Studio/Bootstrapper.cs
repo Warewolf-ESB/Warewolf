@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Network;
+using Dev2.Studio;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.WindowManagers;
@@ -17,11 +17,11 @@ using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Diagnostics;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
-using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
+using Dev2.Workspaces;
 
-namespace Dev2.Studio
+namespace Dev2
 {
     public class Bootstrapper : Bootstrapper<IMainViewModel>
     {
@@ -40,7 +40,7 @@ namespace Dev2.Studio
             assemblies.AddRange(new[]
                 {
                     Assembly.GetAssembly(typeof (Bootstrapper)),
-                    Assembly.GetAssembly(typeof (DebugWriter)),
+                    Assembly.GetAssembly(typeof (DebugWriter))
                 });
             return assemblies.Distinct();
         }

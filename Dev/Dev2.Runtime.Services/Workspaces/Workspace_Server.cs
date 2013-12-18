@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Xml.Linq;
-using Dev2.Data.ServiceModel;
+﻿using System;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 
@@ -68,8 +65,6 @@ namespace Dev2.Workspaces
                 return;
             }
 
-            var resourceType = ResourceType.Unknown;
-
             enDynamicServiceObjectType serviceType;
             if(!Enum.TryParse(workspaceItem.ServiceType, out serviceType))
             {
@@ -98,7 +93,6 @@ namespace Dev2.Workspaces
                 case enDynamicServiceObjectType.Validator:
                     break;
                 case enDynamicServiceObjectType.WorkflowActivity:
-                    resourceType = ResourceType.WorkflowService;
                     break;
                 case enDynamicServiceObjectType.UnitTest:
                     break;

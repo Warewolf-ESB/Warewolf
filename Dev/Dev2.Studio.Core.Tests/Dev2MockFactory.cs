@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Activities;
 using Dev2.Common.Common;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Interfaces;
@@ -21,7 +22,6 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests
 {

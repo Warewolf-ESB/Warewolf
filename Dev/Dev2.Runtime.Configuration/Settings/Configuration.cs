@@ -1,11 +1,11 @@
-﻿using Caliburn.Micro;
-using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.ViewModels;
-using Dev2.Runtime.Configuration.Views;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Runtime.Configuration.ComponentModel;
+using Dev2.Runtime.Configuration.ViewModels;
+using Dev2.Runtime.Configuration.Views;
 using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.Settings
@@ -19,7 +19,6 @@ namespace Dev2.Runtime.Configuration.Settings
     {
         #region Fields
 
-        private bool _hasChanges;
         private LoggingSettings _logging;
         private SecuritySettings _security;
         private BackupSettings _backup;
