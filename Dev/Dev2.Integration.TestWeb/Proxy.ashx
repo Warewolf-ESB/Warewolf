@@ -1,27 +1,41 @@
 ﻿<%@ WebHandler Language="C#"  Class="Warewolf.ReleaseWeb.Services.Proxy" %>
 
 using System;
-using System.Configuration;
 using System.IO;
-using System.Net;
-using System.Reflection;
 using System.Web;
 
 namespace Warewolf.ReleaseWeb.Services
 {
     /// <summary>
-    /// Summary description for Proxy1
+    ///   Summary description for Proxy1
     /// </summary>
     public class Proxy : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
-            var response = "<root>Not Found</root>";
-            var parts = context.Request.RawUrl.Split('?');
-            var extension = parts.Length > 1 ? parts[1] : context.Request.Headers["extension"];
+            string response = "<root>Not Found</root>";
+            string[] parts = context.Request.RawUrl.Split('?');
+            string extension = parts.Length > 1 ? parts[1] : context.Request.Headers["extension"];
 
-            if(string.IsNullOrEmpty(extension))
+            string contentType = context.Request.Headers["Content-Type"];
+            if (!string.IsNullOrEmpty(contentType))
+            {
+                switch (contentType)
+                {
+                    case "application/json":
+                        {
+                            extension = "json";
+                            break;
+                        }
+                    case "application/xml":
+                        {
+                            extension = "xml";
+                            break;
+                        }
+                }
+            }
+
+            if (string.IsNullOrEmpty(extension))
             {
                 extension = "xml";
             }
@@ -29,12 +43,12 @@ namespace Warewolf.ReleaseWeb.Services
             {
                 try
                 {
-                    var root = context.Request.MapPath("~/Files");
+                    string root = context.Request.MapPath("~/Files");
 
-                    var path = Path.Combine(root, "test." + extension);
+                    string path = Path.Combine(root, "test." + extension);
                     response = File.ReadAllText(path);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     response = string.Format("<root>{0}</root>", ex.Message);
                 }
@@ -46,10 +60,7 @@ namespace Warewolf.ReleaseWeb.Services
 
         public bool IsReusable
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
     }
 }
