@@ -81,7 +81,7 @@ namespace TestPackBuilderTest
             const string ext = ".cs";
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
+            const string expected = @"MyTest,MyTest2,MyTest3,";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -158,7 +158,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods></Methods>";
+            const string expected = @"";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -174,7 +174,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
+            const string expected = @"MyTest,MyTest2,MyTest3,";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -190,7 +190,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod></Methods>";
+            const string expected = @"MyTest,MyTest2,MyTest3,";
 
             var result = obj.ScanDirectory(dir, ext, annotation);
 
@@ -209,7 +209,7 @@ namespace TestPackBuilderTest
             const string ext = "cs";
             var dir = FetchTestDir(false, true);
             const string annotation = "[TestMethod]";
-            const string expected = @"<Methods><TestMethod>MyTest</TestMethod><TestMethod>MyTest2</TestMethod><TestMethod>MyTest3</TestMethod><TestMethod>MyTest_Method0</TestMethod><TestMethod>MyTest_Method02</TestMethod><TestMethod>MyTest_Method03</TestMethod><TestMethod>MyTest_Method00</TestMethod><TestMethod>MyTest_Method002</TestMethod><TestMethod>MyTest_Method003</TestMethod></Methods>";
+            const string expected = @"MyTest,MyTest2,MyTest3,MyTest_Method0,MyTest_Method02,MyTest_Method03,MyTest_Method00,MyTest_Method002,MyTest_Method003";
 
             var result = obj.RecursivelyScanDirectory(dir, ext, annotation);
 
