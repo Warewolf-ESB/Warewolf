@@ -1,8 +1,0 @@
-﻿case '[[val]]'
-when '1'
-    return 'one'
-when '2'
-    return 'two'
-else
-    return 'not one or two'
-end
