@@ -118,14 +118,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
 this.ScenarioSetup(scenarioInfo);
 #line 19
- testRunner.Given("I need to switch on variable \"[[rec().val]]\" with the value \"Moses Mabida Stadium" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I need to switch on variable \"[[rec(-1).val]]\" with the value \"Moses Mabida Stadi" +
+                    "um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
- testRunner.And("I need to switch on variable \"[[rec(-1).val]]\" with the value \"Moses Mabida Stadi" +
-                    "um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
  testRunner.When("the switch tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
+#line 21
  testRunner.Then("the switch execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

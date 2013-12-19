@@ -18,6 +18,20 @@ namespace Dev2.Data.Tests.BinaryDataList
     {
 
         [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataListUtil_AdjustForEncodingIssues")]
+        public void DataListUtil_AdjustForEncodingIssues_WithStringLengthOf3_SameDataAsPassedIn()
+        {
+            //------------Setup for test--------------------------
+            var startingData = "A A";
+            //------------Execute Test---------------------------
+            string result = DataListUtil.AdjustForEncodingIssues(startingData);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(startingData, result, "The data has changed when there was no encoding issues.");
+        }
+
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DataListUtil_IsSystemTag")]
         public void DataListUtil_IsSystemTag_WhenNoPrefix_ExpectSystemTagDetected()
@@ -608,7 +622,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var target = new Collection<ObservablePair<string, string>>();
 
             //------------Execute Test---------------------------
-            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix:"rs(*).", tokenSuffix: "a", removeEmptyEntries: false );
+            DataListUtil.UpsertTokens(target, tokenizer.Object, tokenPrefix: "rs(*).", tokenSuffix: "a", removeEmptyEntries: false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(TokenCount, target.Count);

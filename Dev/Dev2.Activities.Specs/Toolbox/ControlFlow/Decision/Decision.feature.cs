@@ -1656,7 +1656,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 522
  testRunner.And("a decision variable \"[[B]]\" value \"Nile\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 523
- testRunner.And("is \"[[A]]\" \"NotContains\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotContain\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 524
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 525
@@ -1680,7 +1680,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 530
  testRunner.And("a decision variable \"[[B]]\" value \"Africa\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 531
- testRunner.And("is \"[[A]]\" \"NotContains\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotContain\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 532
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 533

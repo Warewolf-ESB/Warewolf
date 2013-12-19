@@ -150,7 +150,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
- testRunner.Then("the sentence will be \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the sentence will be \"WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 59
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
- testRunner.Then("the sentence will be \"1 Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the sentence will be \"1 WAREWOLF Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
  testRunner.And("the case convert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

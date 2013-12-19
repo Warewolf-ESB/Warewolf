@@ -17,6 +17,13 @@ Scenario: Assign a variable to a variable
 	Then the value of "[[var]]" equals 60
 	And the assign execution has "NO" error
 
+Scenario: Assign multiple variables with a calculate expression to a variable
+	Given I assign the value SUM(1,2,3)-5 to a variable "[[var]]"	
+	And I assign the value =[[var]] to a variable "[[test]]"	
+	When the assign tool is executed
+	Then the value of "[[test]]" equals 1
+	And the assign execution has "NO" error
+
 Scenario: Assign multiple variables to a variable
 	Given I assign the value Hello to a variable "[[var]]"	
 	And I assign the value World to a variable "[[test]]"
@@ -98,6 +105,16 @@ Scenario: Assign the value of a negative recordset index
 	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
 	When the assign tool is executed
 	Then the value of "[[var]]" equals ""
+	And the assign execution has "AN" error
+
+Scenario: Assign the value of a negative recordset index and another assign after
+	Given I assign the value 10 to a variable "[[rec().set]]"	
+	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
+	And I assign the value 30 to a variable "[[scalar]]"	
+	When the assign tool is executed
+	Then the value of "[[rec().set]]" equals "10"
+	Then the value of "[[var]]" equals ""
+	Then the value of "[[scalar]]" equals "30"
 	And the assign execution has "AN" error
 
 Scenario: Assign to a negative recordset index

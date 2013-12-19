@@ -12,7 +12,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 {
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
-        protected const string ResultVariable = "[[result]]";
+        protected const string ResultVariable = "[[resultVar]]";
 
 
         protected void BuildShapeAndTestData()

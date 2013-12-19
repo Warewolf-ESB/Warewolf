@@ -113,58 +113,60 @@ namespace Dev2.Activities
                             toUpsert.LiveFlushingLocation = dlID;
                         }
 
-                        if (!string.IsNullOrEmpty(c.TheValue))
+                        if (string.IsNullOrEmpty(c.TheValue))
                         {
-                            string val = c.TheValue;
-                            StreamReader errorReader;
-                            StringBuilder outputReader;
-                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
+                            throw new Exception("Empty script to execute");
+                        }
 
-                            allErrors.AddError(errorReader.ReadToEnd());
-                            var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
-                            string readValue = Encoding.ASCII.GetString(bytes).Replace("?"," ");
-                            
-                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
-                            {
-                                toUpsert.Add(region, readValue);
-                                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
-                                {
-                                    AddDebugOutputItem(region, readValue, dlID);
-                                }
-                            }
-                            
-                            errorReader.Close();
+                        string val = c.TheValue;
+                        StreamReader errorReader;
+                        StringBuilder outputReader;
+                        if (!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
 
-                            if (toUpsert.HasLiveFlushing)
+                        allErrors.AddError(errorReader.ReadToEnd());
+                        var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
+                        string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
+
+                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                        {
+                            toUpsert.Add(region, readValue);
+                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                             {
-                                try
-                                {
-                                    toUpsert.FlushIterationFrame(true);
-                                    toUpsert = null;
-                                }
-                                catch (Exception e)
-                                {
-                                    allErrors.AddError(e.Message);
-                                }
+                                AddDebugOutputItem(region, readValue, dlID);
                             }
-                            else
+                        }
+
+                        errorReader.Close();
+
+                        if (toUpsert.HasLiveFlushing)
+                        {
+                            try
                             {
-                                compiler.Upsert(dlID, toUpsert, out errors);                                
-                                allErrors.MergeErrors(errors);
+                                toUpsert.FlushIterationFrame(true);
+                                toUpsert = null;
                             }
+                            catch (Exception e)
+                            {
+                                allErrors.AddError(e.Message);
+                            }
+                        }
+                        else
+                        {
+                            compiler.Upsert(dlID, toUpsert, out errors);
+                            allErrors.MergeErrors(errors);
                         }
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 // Handle Errors
-                
+
                 if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
@@ -172,11 +174,10 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    DispatchDebugState(_nativeActivityContext,StateType.Before);
+                    DispatchDebugState(_nativeActivityContext, StateType.Before);
                     DispatchDebugState(_nativeActivityContext, StateType.After);
                 }
             }
-           
         }
 
         bool ExecuteProcess(string val, IExecutionToken executionToken, out StreamReader errorReader, out StringBuilder outputReader)

@@ -114,14 +114,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IBinaryDataListEntry binaryDataListEntrySearchCrit = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].SearchCriteria, false, out errorResultTO);
                     IDev2DataListEvaluateIterator searchCritItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntrySearchCrit);
                     itrCollection.AddIterator(searchCritItr);
+                    allErrors.MergeErrors(errorResultTO);
 
                     IBinaryDataListEntry binaryDataListEntryFrom = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].From, false, out errorResultTO);
                     IDev2DataListEvaluateIterator fromItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntryFrom);
                     itrCollection.AddIterator(fromItr);
+                    allErrors.MergeErrors(errorResultTO);
 
                     IBinaryDataListEntry binaryDataListEntryTo = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].To, false, out errorResultTO);
                     IDev2DataListEvaluateIterator toItr = Dev2ValueObjectFactory.CreateEvaluateIterator(binaryDataListEntryTo);
                     itrCollection.AddIterator(toItr);
+                    allErrors.MergeErrors(errorResultTO);
 
                     int idx;
                     if(!Int32.TryParse(StartIndex, out idx))
@@ -141,10 +144,48 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     while(itrCollection.HasMoreData())
                     {
                         var currentResults = results as IList<string> ?? results.ToList();
+                        var splitOn = new[] {","};
+                        var fieldsToSearch = FieldsToSearch.Split(splitOn, StringSplitOptions.RemoveEmptyEntries);
 
-                        var searchTO = ConvertToSearchTO(itrCollection.FetchNextRow(searchCritItr).TheValue, searchType, idx.ToString(CultureInfo.InvariantCulture), itrCollection.FetchNextRow(fromItr).TheValue, itrCollection.FetchNextRow(toItr).TheValue);
-                        var iterationResults = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errorResultTO);
+                        SearchTO searchTO;
+                        IList<string> iterationResults = new List<string>();
+
+                        if (fieldsToSearch.Length > 0)
+                        {
+
+                            foreach (var field in fieldsToSearch)
+                            {
+                                searchTO = DataListFactory.CreateSearchTO(field, searchType,
+                                                                          itrCollection.FetchNextRow(searchCritItr)
+                                                                                       .TheValue,
+                                                                          idx.ToString(CultureInfo.InvariantCulture),
+                                                                          Result, MatchCase,
+                                                                          RequireAllFieldsToMatch,
+                                                                          itrCollection.FetchNextRow(fromItr).TheValue,
+                                                                          itrCollection.FetchNextRow(toItr).TheValue);
+                                ValidateRequiredFields(searchTO, out errorResultTO);
+                                allErrors.MergeErrors(errorResultTO);
+                                (RecordsetInterrogator.FindRecords(toSearchList, searchTO,
+                                                                                     out errorResultTO)).ToList().ForEach(it => iterationResults.Add(it));
+                               
+                            }
+                        }
+                        else
+                        {
+                            searchTO = (SearchTO)ConvertToSearchTO(itrCollection.FetchNextRow(searchCritItr).TheValue,
+                                                             searchType, idx.ToString(CultureInfo.InvariantCulture),
+                                                             itrCollection.FetchNextRow(fromItr).TheValue,
+                                                             itrCollection.FetchNextRow(toItr).TheValue);
+
+                            ValidateRequiredFields(searchTO, out errorResultTO);
+                            allErrors.MergeErrors(errorResultTO);
+                            iterationResults = RecordsetInterrogator.FindRecords(toSearchList, searchTO,
+                                                                                     out errorResultTO);
+
+                        }
+
                         allErrors.MergeErrors(errorResultTO);
+
                         if(RequireAllTrue)
                         {
                             results = isFirstIteration ? iterationResults : currentResults.Intersect(iterationResults);
@@ -216,6 +257,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
+                }
+            }
+        }
+
+        private void ValidateRequiredFields(SearchTO searchTO, out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            if (string.IsNullOrEmpty(searchTO.FieldsToSearch))
+            {
+                errors.AddError("Fields to search is required");
+            }
+
+            if (string.IsNullOrEmpty(searchTO.SearchType))
+            {
+                errors.AddError("Search type is required");
+            }
+
+            if (searchTO.SearchType.Equals("Is Between"))
+            {
+                if (string.IsNullOrEmpty(searchTO.From))
+                {
+                    errors.AddError("From is required");
+                }
+
+                if (string.IsNullOrEmpty(searchTO.To))
+                {
+                    errors.AddError("To is required");
                 }
             }
         }

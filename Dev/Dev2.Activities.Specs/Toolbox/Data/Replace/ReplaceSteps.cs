@@ -92,7 +92,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
@@ -104,7 +104,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         {
             string error;
             string actualValue;
-            value = value.Replace("\"\"", "");
+            value = value.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);

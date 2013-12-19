@@ -520,7 +520,7 @@ Scenario: decide if variable [[A]] Doesn't Ends With variable [[B]] (False)
 Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Nile"
-	And is "[[A]]" "NotContains" "[[B]]"	
+	And is "[[A]]" "NotContain" "[[B]]"	
 	When the decision tool is executed
 	Then the decision result should be "True"
 	And the decision execution has "NO" error
@@ -528,7 +528,7 @@ Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (True)
 Scenario: decide if variable [[A]] Doesn't Contains variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "Africa"
-	And is "[[A]]" "NotContains" "[[B]]"
+	And is "[[A]]" "NotContain" "[[B]]"
 	When the decision tool is executed
 	Then the decision result should be "False"
 	And the decision execution has "NO" error

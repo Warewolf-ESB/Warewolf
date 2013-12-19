@@ -78,12 +78,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/IntegrationTestDoNotDe" +
-                    "lete.html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
- testRunner.Then("the result should contain the string \"Hello\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 11
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -99,7 +98,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
 this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I have the url \"www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"www.google.comx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 16
@@ -124,12 +123,11 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I have a web request variable \"[[site]]\" equal to \"rsaklfsvrtfsbld/IntegrationTes" +
                     "tSite/\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.And("I have a web request variable \"[[file]]\" equal to \"IntegrationTestDoNotDelete.htm" +
-                    "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[file]]\" equal to \"Proxy.ashx?html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.Then("the result should contain the string \"Hello\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"Welcome to ASP.NET Web API\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -137,27 +135,52 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL and 2 variables each with a header parameter")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL and 2 variables each with a header parameter (json)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
-        public virtual void EnterAURLAnd2VariablesEachWithAHeaderParameter()
+        public virtual void EnterAURLAnd2VariablesEachWithAHeaderParameterJson()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL and 2 variables each with a header parameter", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL and 2 variables each with a header parameter (json)", ((string[])(null)));
 #line 27
 this.ScenarioSetup(scenarioInfo);
 #line 28
- testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/IntegrationTestDoNotDe" +
-                    "lete.html\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
  testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.And("I have a web request variable \"[[Type]]\" equal to \"json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a web request variable \"[[Type]]\" equal to \"application/json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
  testRunner.And("I have the Header \"[[ContentType]]: [[Type]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 33
- testRunner.Then("the result should contain the string \"json data ???\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result should contain the string \"[\"value1\",\"value2\"]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 34
+ testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Enter a URL and 2 variables each with a header parameter (xml)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebRequest")]
+        public virtual void EnterAURLAnd2VariablesEachWithAHeaderParameterXml()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL and 2 variables each with a header parameter (xml)", ((string[])(null)));
+#line 36
+this.ScenarioSetup(scenarioInfo);
+#line 37
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 38
+ testRunner.And("I have a web request variable \"[[ContentType]]\" equal to \"Content-Type\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+ testRunner.And("I have a web request variable \"[[Type]]\" equal to \"application/xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+ testRunner.And("I have the Header \"[[ContentType]]: [[Type]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 42
+ testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 43
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -169,15 +192,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatReturnsJson()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that returns json", ((string[])(null)));
-#line 36
+#line 45
 this.ScenarioSetup(scenarioInfo);
-#line 37
- testRunner.Given("I have the url \"http://rsaklfsvrwrwbld:1234/services/Get Computer Name.json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 38
+#line 46
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?json\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 47
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
- testRunner.Then("the result should contain the string \"{\"ComputerName\":\"dev2.local\"}\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
+#line 48
+ testRunner.Then("the result should contain the string \"[\"value1\",\"value2\"]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 49
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -189,15 +212,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatReturnsXml()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that returns xml", ((string[])(null)));
-#line 42
+#line 51
 this.ScenarioSetup(scenarioInfo);
-#line 43
- testRunner.Given("I have the url \"http://rsaklfsvrwrwbld:1234/services/Get Computer Name.xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 44
+#line 52
+ testRunner.Given("I have the url \"http://rsaklfsvrtfsbld/IntegrationTestSite/Proxy.ashx?xml\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 53
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
- testRunner.Then("the result should contain the string \"<ComputerName>dev2.local</ComputerName>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 46
+#line 54
+ testRunner.Then("the result should contain the string \"<string>value1</string>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 55
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -209,15 +232,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterABlankURL()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a blank URL", ((string[])(null)));
-#line 48
+#line 57
 this.ScenarioSetup(scenarioInfo);
-#line 49
+#line 58
  testRunner.Given("I have the url \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
+#line 59
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
+#line 60
  testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
+#line 61
  testRunner.And("the web request execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -229,15 +252,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatReturnsComplexHtmlOverHttps()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that returns complex html over https", ((string[])(null)));
-#line 54
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 55
- testRunner.Given("I have the url \"https://www.google.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 64
+ testRunner.Given("I have the url \"https://www.google.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 65
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 57
- testRunner.Then("the result should contain the string \"http://schema.org/WebPage\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 58
+#line 66
+ testRunner.Then("the result should contain the string \"schema.org\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 67
  testRunner.And("the web request execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -249,15 +272,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EnterAURLThatIsANegativeIndexRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Enter a URL that is a negative index recordset", ((string[])(null)));
-#line 60
+#line 69
 this.ScenarioSetup(scenarioInfo);
-#line 61
+#line 70
  testRunner.Given("I have the url \"[[rec(-1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 62
+#line 71
  testRunner.When("the web request tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 63
+#line 72
  testRunner.Then("the result should contain the string \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 64
+#line 73
  testRunner.And("the web request execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

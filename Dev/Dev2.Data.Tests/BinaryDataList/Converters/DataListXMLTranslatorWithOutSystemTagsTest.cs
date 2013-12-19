@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             string error;
             IBinaryDataListEntry entry;
             bdl.TryGetEntry("person", out entry, out error);
-            entry.TryDeleteRows("1");
+            entry.TryDeleteRows("1", out error);
 
             //------------Execute Test---------------------------
 

@@ -70,24 +70,48 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format number rounding down")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format number rounding normal with zero rounding and zero decimals to show")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FormatNumber")]
-        public virtual void FormatNumberRoundingDown()
+        public virtual void FormatNumberRoundingNormalWithZeroRoundingAndZeroDecimalsToShow()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding down", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding normal with zero rounding and zero decimals to show", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
- testRunner.And("I selected rounding \"Down\" to 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected rounding \"Normal\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
- testRunner.And("I want to show 3 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I want to show 0 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("the result 788.894 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result 789 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
+ testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format number rounding down")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FormatNumber")]
+        public virtual void FormatNumberRoundingDown()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding down", ((string[])(null)));
+#line 14
+this.ScenarioSetup(scenarioInfo);
+#line 15
+ testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 16
+ testRunner.And("I selected rounding \"Down\" to 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+ testRunner.And("I want to show 3 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+ testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.Then("the result 788.894 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -99,19 +123,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberRoundingUp()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding up", ((string[])(null)));
-#line 14
+#line 22
 this.ScenarioSetup(scenarioInfo);
-#line 15
+#line 23
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
+#line 24
  testRunner.And("I selected rounding \"Up\" to 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
+#line 25
  testRunner.And("I want to show 3 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
+#line 26
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 19
+#line 27
  testRunner.Then("the result 788.895 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 20
+#line 28
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -123,19 +147,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberRoundingNormal()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding normal", ((string[])(null)));
-#line 22
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 23
+#line 31
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 24
+#line 32
  testRunner.And("I selected rounding \"Normal\" to 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 33
  testRunner.And("I want to show 3 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
+#line 34
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 27
+#line 35
  testRunner.Then("the result 788.890 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 28
+#line 36
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -147,19 +171,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberRoundingNone()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding none", ((string[])(null)));
-#line 30
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 31
+#line 39
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 32
+#line 40
  testRunner.And("I selected rounding \"None\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 41
  testRunner.And("I want to show 4 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 42
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 43
  testRunner.Then("the result 788.8945 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
+#line 44
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -171,19 +195,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberRoundingDownToNegativeNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding down to negative number", ((string[])(null)));
-#line 38
+#line 46
 this.ScenarioSetup(scenarioInfo);
-#line 39
+#line 47
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
+#line 48
  testRunner.And("I selected rounding \"Down\" to -2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 49
  testRunner.And("I want to show 0 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 50
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 51
  testRunner.Then("the result 700 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
+#line 52
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -195,19 +219,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberLargeNumberToNegativeDecimals()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number large number to negative decimals", ((string[])(null)));
-#line 46
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 47
+#line 55
  testRunner.Given("I have a number 788.894564545645", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 48
+#line 56
  testRunner.And("I selected rounding \"None\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 57
  testRunner.And("I want to show -2 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
+#line 58
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
+#line 59
  testRunner.Then("the result 7 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 52
+#line 60
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -219,19 +243,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberSingleDigitToNegativeDecimals()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number single digit to negative decimals", ((string[])(null)));
-#line 54
+#line 62
 this.ScenarioSetup(scenarioInfo);
-#line 55
+#line 63
  testRunner.Given("I have a number 7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
+#line 64
  testRunner.And("I selected rounding \"None\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 65
  testRunner.And("I want to show -2 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 66
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 59
+#line 67
  testRunner.Then("the result 0 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 60
+#line 68
  testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -243,19 +267,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberRoundingUpToACharacter()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number rounding up to a character", ((string[])(null)));
-#line 62
+#line 70
 this.ScenarioSetup(scenarioInfo);
-#line 63
+#line 71
  testRunner.Given("I have a number 34.2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 64
+#line 72
  testRunner.And("I selected rounding \"Up\" to \"c\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
+#line 73
  testRunner.And("I want to show 2 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 74
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 67
+#line 75
  testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 68
+#line 76
  testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -267,34 +291,10 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberThatIsBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number that is blank", ((string[])(null)));
-#line 70
-this.ScenarioSetup(scenarioInfo);
-#line 71
- testRunner.Given("I have a number \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 72
- testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 73
- testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 74
-   testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format non numeric")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FormatNumber")]
-        public virtual void FormatNonNumeric()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format non numeric", ((string[])(null)));
-#line 76
-this.ScenarioSetup(scenarioInfo);
-#line 77
- testRunner.Given("I have a number \"asdf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 78
- testRunner.And("I selected rounding \"None\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 79
- testRunner.And("I want to show -2 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a number \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 80
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 81
@@ -306,24 +306,48 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format number to charater decimals")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format non numeric")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FormatNumber")]
-        public virtual void FormatNumberToCharaterDecimals()
+        public virtual void FormatNonNumeric()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number to charater decimals", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format non numeric", ((string[])(null)));
 #line 84
 this.ScenarioSetup(scenarioInfo);
 #line 85
- testRunner.Given("I have a number 34.2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a number \"asdf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 86
- testRunner.And("I selected rounding \"Up\" to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected rounding \"None\" to 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
- testRunner.And("I want to show \"asdf\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I want to show -2 decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 88
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 89
  testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 90
+   testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Format number to charater decimals")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "FormatNumber")]
+        public virtual void FormatNumberToCharaterDecimals()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number to charater decimals", ((string[])(null)));
+#line 92
+this.ScenarioSetup(scenarioInfo);
+#line 93
+ testRunner.Given("I have a number 34.2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 94
+ testRunner.And("I selected rounding \"Up\" to \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 95
+ testRunner.And("I want to show \"asdf\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 96
+ testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 97
+ testRunner.Then("the result \"\" will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 98
    testRunner.And("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -337,25 +361,25 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number with multipart variables and numbers for number rounding and decima" +
                     "ls to show", ((string[])(null)));
-#line 92
-this.ScenarioSetup(scenarioInfo);
-#line 93
- testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to 788", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 94
- testRunner.And("I have a number \"[[int]].894564545645\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
- testRunner.And("I have a formatnumber variable \"[[rounding]]\" equal to 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
- testRunner.And("I selected rounding \"Up\" to \"-[[rounding]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
- testRunner.And("I have a formatnumber variable \"[[decimals]]\" equal to \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
- testRunner.And("I want to show \"[[decimals]]1\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
- testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 100
- testRunner.Then("the result 80 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+this.ScenarioSetup(scenarioInfo);
 #line 101
+ testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to 788", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 102
+ testRunner.And("I have a number \"[[int]].894564545645\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("I have a formatnumber variable \"[[rounding]]\" equal to 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("I selected rounding \"Up\" to \"-[[rounding]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("I have a formatnumber variable \"[[decimals]]\" equal to \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.And("I want to show \"[[decimals]]1\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+ testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 108
+ testRunner.Then("the result 80 will be returned", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 109
     testRunner.And("formart number execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -367,13 +391,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberWithNegativeRecordsetIndexForNumber()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number with negative recordset index for number", ((string[])(null)));
-#line 103
+#line 111
 this.ScenarioSetup(scenarioInfo);
-#line 104
+#line 112
  testRunner.Given("I have a number \"[[my(-1).int]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 113
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
+#line 114
  testRunner.Then("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -385,17 +409,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberWithNegativeRecordsetIndexForRounding()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number with negative recordset index for rounding", ((string[])(null)));
-#line 108
+#line 116
 this.ScenarioSetup(scenarioInfo);
-#line 109
+#line 117
  testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to 788", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 110
+#line 118
  testRunner.And("I have a number \"[[int]].894564545645\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 119
  testRunner.And("I selected rounding \"Up\" to \"[[my(-1).rounding]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 120
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 113
+#line 121
  testRunner.Then("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -407,17 +431,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FormatNumberWithNegativeRecordsetIndexForDecimalsToShow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Format number with negative recordset index for decimals to show", ((string[])(null)));
-#line 115
+#line 123
 this.ScenarioSetup(scenarioInfo);
-#line 116
+#line 124
  testRunner.Given("I have a formatnumber variable \"[[int]]\" equal to 788", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 117
+#line 125
  testRunner.And("I have a number \"[[int]].894564545645\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 118
+#line 126
  testRunner.And("I want to show \"[[my(-1).decimals]]\" decimals", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 127
  testRunner.When("the format number is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 128
  testRunner.Then("formart number execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

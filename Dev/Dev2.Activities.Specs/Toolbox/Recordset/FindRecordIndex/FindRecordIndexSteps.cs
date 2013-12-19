@@ -116,7 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);

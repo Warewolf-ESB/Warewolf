@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -54,16 +54,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         public void WhenTheSwitchToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the variable ""(.*)"" will evaluate to ""(.*)""")]
         public void ThenTheVariableWillEvaluateTo(string variable, string expectedResult)
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
@@ -79,7 +79,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             bool actual = string.IsNullOrEmpty(fetchErrors);
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
+            Assert.IsTrue(expected == actual, message);
         }
     }
 }

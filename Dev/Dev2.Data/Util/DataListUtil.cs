@@ -179,7 +179,7 @@ namespace Dev2.Data.Util
                 throw new ArgumentNullException("right");
             }
 
-            if (left == null)
+            if(left == null)
             {
                 throw new ArgumentException("left");
             }
@@ -642,7 +642,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string RemoveLanguageBrackets(string val)
         {
-            return val.Replace("[", string.Empty).Replace("]",string.Empty);
+            return val.Replace("[", string.Empty).Replace("]", string.Empty);
         }
 
         /// <summary>
@@ -715,7 +715,7 @@ namespace Dev2.Data.Util
         {
 
             // Nasty junk that has been carried!
-            string[] nastyJunk = {"WebServerUrl","Dev2WebServer","PostData","Service"};
+            string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
             // Transfer System Tags
             bool result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
@@ -885,7 +885,7 @@ namespace Dev2.Data.Util
             else
             {
 
-                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs,!(isInput));
+                IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, !(isInput));
                 IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, !(isInput));
 
                 // open datashape
@@ -1469,15 +1469,15 @@ namespace Dev2.Data.Util
             if(!isXML)
             {
                 // we need to adjust. there might be a silly encoding issue with first char!
-                if(trimedData[1] == '<' && trimedData[2] == '?')
+                if(trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
                 {
                     trimedData = trimedData.Substring(1);    
                 }
-                else if(trimedData[2] == '<' && trimedData[3] == '?')
+                else if(trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
                 {
                     trimedData = trimedData.Substring(2);
                 }
-                else if(trimedData[3] == '<' && trimedData[4] == '?')
+                else if(trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
                 {
                     trimedData = trimedData.Substring(3);
                 }
@@ -1500,15 +1500,15 @@ namespace Dev2.Data.Util
             {
                 IDev2Definition def = scalarList[i];
 
-                if (!isInput)
+                if(!isInput)
                 {
-                    if (IsEvaluated(def.RawValue))
+                    if(IsEvaluated(def.RawValue))
                     {
                         result.Append(string.Concat("<", def.Value, "></", def.Value, ">"));
                         result.Append(Environment.NewLine);
                     }
 
-                    if (!string.IsNullOrEmpty(def.Name))
+                    if(!string.IsNullOrEmpty(def.Name))
                     {
                         result.Append(string.Concat("<", def.Name, "></", def.Name, ">"));
                         result.Append(Environment.NewLine);
@@ -1524,7 +1524,7 @@ namespace Dev2.Data.Util
 
                     // we need to process the RawValue field incase it is not in the recordsets ;)
                     var rsName = ExtractRecordsetNameFromValue(def.Value);
-                    if (string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
+                    if(string.IsNullOrEmpty(rsName) && IsEvaluated(def.Value))
                     {
                         var tmpValue = RemoveLanguageBrackets(def.Value);
                         result.Append(string.Concat("<", tmpValue, "></", tmpValue, ">"));
@@ -1628,7 +1628,7 @@ namespace Dev2.Data.Util
                         {
                             var col = ExtractFieldNameFromValue(tmpDef.MapsTo);
 
-                            if (!string.IsNullOrEmpty(col))
+                            if(!string.IsNullOrEmpty(col))
                             {
                                 var toAppend = ("\t<" + col + "></" + col + ">");
                                 result.Append(toAppend);
@@ -1640,7 +1640,7 @@ namespace Dev2.Data.Util
                             //Name
                             string tag = ExtractFieldNameFromValue(tmpDef.Name);
 
-                            if (string.IsNullOrEmpty(tag))
+                            if(string.IsNullOrEmpty(tag))
                             {
                                 //Name
                                 tag = tmpDef.Name;
@@ -1655,7 +1655,7 @@ namespace Dev2.Data.Util
                     result.Append(Environment.NewLine);
 
                     //  Process post append data ;)
-                    foreach (var col in postProcessDefs)
+                    foreach(var col in postProcessDefs)
                     {
                         result.Append(col);
                         result.Append(Environment.NewLine);

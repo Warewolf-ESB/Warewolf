@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -130,7 +130,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public ComplexExpressionAuditor ComplexExpressionAuditor { get; set; } 
+        public ComplexExpressionAuditor ComplexExpressionAuditor { get; set; }
 
         #endregion Properties
 
@@ -199,7 +199,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void AdjustAliasOperationForExternalServicePopulate()
         {
-            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
+            if(!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
             {
                 _internalObj.IsEmtpy = true;
             }
@@ -254,12 +254,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 if(idx <= FetchLastRecordsetIndex(false) && _internalObj.ContainsRow(myIdx))
                 {
                     // entry already exist, so update the row ;)
-                    _internalObj[myIdx] = itms; 
+                    _internalObj[myIdx] = itms;
                     _internalObj.IsEmtpy = false;
                 }
                 else if(myIdx >= 1)
                 {
-                    _internalObj[myIdx] = itms; 
+                    _internalObj[myIdx] = itms;
                     _internalObj.IsEmtpy = false;
                 }
 
@@ -301,7 +301,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                         _internalObj[myIdx] = cols;
                         _internalObj.IsEmtpy = false;
-                        
+
                         error = string.Empty;
 
                     }
@@ -347,7 +347,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 if(binaryDataListItems != null && binaryDataListItems.Count > 0)
                 {
                     result = binaryDataListItems[0];
-                }   
+                }
             }
 
             if(result == null)
@@ -441,16 +441,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IIndexIterator ii = _internalObj.Keys;
                     bool isEmtpy = _internalObj.IsEmtpy;
                     result._internalObj.IsEmtpy = isEmtpy;
-                    while (ii.HasMore())
+                    while(ii.HasMore())
                     {
                         int next = ii.FetchNextIndex();
                         // clone the data
                         IList<IBinaryDataListItem> items = _internalObj[next];
                         IList<IBinaryDataListItem> clone = new List<IBinaryDataListItem>();
                         // Bug 8725
-                        if (items != null)
+                        if(items != null)
                         {
-                            foreach (IBinaryDataListItem itm in items)
+                            foreach(IBinaryDataListItem itm in items)
                             {
                                 clone.Add(itm.Clone());
                             }
@@ -466,7 +466,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     var max = keys.MaxIndex();
                     var gaps = _internalObj.FetchGaps();
                     result._internalObj.MoveIndexDataForClone(min, max, gaps, false);
-                    
+
                 }
                 else
                 {
@@ -489,7 +489,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
 
             result.ComplexExpressionAuditor = ComplexExpressionAuditor;
-            
+
             return result;
         }
 
@@ -539,7 +539,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     return index;
                 }
             }
-            
+
             var result = _internalObj.Keys;
             return result;
         }
@@ -557,15 +557,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 // We need to detect if there is an alias mapping and return its MaxValue ;)
 
-                if (!localOnly)
+                if(!localOnly)
                 {
                     var aliasDic = _internalObj.FetchAlias();
 
-                    if (aliasDic.Count > 0)
+                    if(aliasDic.Count > 0)
                     {
                         var aliasMapping = aliasDic.FirstOrDefault();
                         var aliasMasterEntry = aliasMapping.Value.MasterEntry;
-                        if (aliasMasterEntry != null)
+                        if(aliasMasterEntry != null)
                         {
                             result = aliasMasterEntry.FetchRecordsetIndexes().MaxIndex();
                             return result;
@@ -599,13 +599,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
                 var aliasDic = _internalObj.FetchAlias();
 
-                if (aliasDic.Count > 0)
+                if(aliasDic.Count > 0)
                 {
                     var aliasMapping = aliasDic.FirstOrDefault();
                     var aliasMasterEntry = aliasMapping.Value.MasterEntry;
-                    if (aliasMasterEntry != null)
+                    if(aliasMasterEntry != null)
                     {
-                        if (!aliasMasterEntry.IsEmpty())
+                        if(!aliasMasterEntry.IsEmpty())
                         {
                             result++;
                         }
@@ -615,14 +615,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 else
                 {
                     if(!_internalObj.IsEmtpy)
-                {
-                    result++;
-                }
+                    {
+                        result++;
+                    }
 
                     if(_internalObj.Keys.IsEmpty)
-                {
-                    result = 1;
-                }
+                    {
+                        result = 1;
+                    }
                 }
 
             }
@@ -825,8 +825,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return _internalObj.IsEmtpy;
         }
 
-        public bool TryDeleteRows(string index)
+        public bool TryDeleteRows(string index, out string error)
         {
+            error = string.Empty;
             bool result = false;
             if(IsRecordset && index != null)
             {
@@ -835,16 +836,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     if(string.IsNullOrEmpty(index))
                     {
-                        result = DeleteLastRow();
+                        result = DeleteLastRow(out error);
+
                     }
                     else if(index == "*")
                     {
-                        result = DeleteAllRows();
+                        result = DeleteAllRows(out error);
                     }
                 }
                 else
                 {
-                    result = DeleteRowAtIndex(numericIndex);
+                    result = DeleteRowAtIndex(numericIndex, out error);
                 }
             }
             return result;
@@ -865,7 +867,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             result = _internalObj[idx];
 
-            if (isEntireRow)
+            if(isEntireRow)
             {
                 return result;
             }
@@ -906,7 +908,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public List<int> GetDistinctRows(List<string> filterCols)
         {
             return _internalObj.GetDistinctRows(filterCols);
-        } 
+        }
 
         public IDictionary<string, BinaryDataListAlias> FetchAlias()
         {
@@ -936,8 +938,15 @@ namespace Dev2.DataList.Contract.Binary_Objects
         ///     Deletes all the rows.
         /// </summary>
         /// <returns></returns>
-        bool DeleteAllRows()
+        bool DeleteAllRows(out string error)
         {
+            error = string.Empty;
+            if(_internalObj.IsEmtpy)
+            {
+                error = "Recordset was empty.";
+                return false;
+            }
+
             var tmp = new SBinaryDataListEntry();
 
             tmp.IsRecordset = _internalObj.IsRecordset;
@@ -961,10 +970,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         ///     Deletes the last row.
         /// </summary>
         /// <returns></returns>
-        bool DeleteLastRow()
+        bool DeleteLastRow(out string error)
         {
             int lastRowIndex = FetchLastRecordsetIndex(false);
-
+            error = string.Empty;
             // Bug 8725
             if(!_internalObj.IsEmtpy)
             {
@@ -974,9 +983,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     _internalObj.IsEmtpy = true;
                 }
+                return true;
             }
-
-            return true;
+            error = "The specified record didnt exist.";
+            return false;
         }
 
         /// <summary>
@@ -984,14 +994,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns></returns>
-        bool DeleteRowAtIndex(int index)
+        bool DeleteRowAtIndex(int index, out string error)
         {
+            error = string.Empty;
             bool result = false;
             int lastIndex = FetchLastRecordsetIndex(false);
             if(index <= lastIndex && index > 0)
             {
                 _internalObj.Remove(index);
                 result = true;
+            }
+            else
+            {
+                error = "The specified record didnt exist.";
             }
 
             return result;

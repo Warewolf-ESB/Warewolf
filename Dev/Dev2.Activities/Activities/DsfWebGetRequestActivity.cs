@@ -52,6 +52,7 @@ namespace Dev2.Activities
             : base("Web Request")
         {
             Method = "GET";
+            Headers = string.Empty;
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -64,7 +65,7 @@ namespace Dev2.Activities
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
-            if(WebRequestInvoker == null)
+            if (WebRequestInvoker == null)
             {
                 return;
             }
@@ -75,48 +76,77 @@ namespace Dev2.Activities
             var executionId = DataListExecutionID.Get(context);
             try
             {
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false, out errors);
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false,
+                                                                          out errors);
+                allErrors.MergeErrors(errors);
+
+                IBinaryDataListEntry headersEntry = compiler.Evaluate(executionId, enActionType.User, Headers, false,
+                                                                      out errors);
+                allErrors.MergeErrors(errors);
+
                 if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddUrlDebugInputItem(Url, expressionsEntry, executionId);
                 }
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                IDev2DataListUpsertPayloadBuilder<string> toUpsert =
+                    Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+
+                var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+
+                IDev2DataListEvaluateIterator urlitr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                IDev2DataListEvaluateIterator headerItr = Dev2ValueObjectFactory.CreateEvaluateIterator(headersEntry);
+
+                colItr.AddIterator(urlitr);
+                colItr.AddIterator(headerItr);
                 int indexToUpsertTo = 1;
-                while(itr.HasMoreRecords())
+                while (colItr.HasMoreData())
                 {
-                    IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                    foreach(IBinaryDataListItem c in cols)
+                    IList<IBinaryDataListItem> cols = headerItr.FetchNextRowData();
+                    var c = colItr.FetchNextRow(urlitr);
+                    var headerValue = colItr.FetchNextRow(headerItr).TheValue;
+                    var headers = string.IsNullOrEmpty(headerValue)
+                                      ? new string[0]
+                                      : headerValue.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
+
+                    var headersEntries = new List<Tuple<string, string>>();
+
+                    foreach (var header in headers)
                     {
-                        string result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue);
+                        var headerSegments = header.Split(':');
+                        headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
+
+                    }
+
+                    string result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
                         allErrors.MergeErrors(errors);
                         string expression;
-                        if(DataListUtil.IsValueRecordset(Result) &&
+                    if (DataListUtil.IsValueRecordset(Result) &&
                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                        expression = Result.Replace(GlobalConstants.StarExpression,
+                                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                         }
                         else
                         {
                             expression = Result;
                         }
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
                         {
                             toUpsert.Add(region, result);
                             toUpsert.FlushIterationFrame();
-                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||
+                            dataObject.RemoteInvoke)
                             {
                                 AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
                             }
                             indexToUpsertTo++;
                         }
-                    }
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -124,12 +154,12 @@ namespace Dev2.Activities
             {
                 // Handle Errors
 
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

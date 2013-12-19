@@ -114,24 +114,46 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign multiple  hgj variables to a variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignMultipleHgjVariablesToAVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple  hgj variables to a variable", ((string[])(null)));
+#line 20
+ this.ScenarioSetup(scenarioInfo);
+#line 21
+ testRunner.Given("I assign the value SUM(1,2,3)-5 to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+ testRunner.And("I assign the value =[[var]] to a variable \"[[test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 23
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+ testRunner.Then("the value of \"[[test]]\" equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 25
+ testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign multiple variables to a variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
         public virtual void AssignMultipleVariablesToAVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple variables to a variable", ((string[])(null)));
-#line 20
+#line 27
 this.ScenarioSetup(scenarioInfo);
-#line 21
+#line 28
  testRunner.Given("I assign the value Hello to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 29
  testRunner.And("I assign the value World to a variable \"[[test]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 30
  testRunner.And("I assign the value [[var]][[test]] to a variable \"[[value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 31
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
+#line 32
  testRunner.Then("the value of \"[[value]]\" equals HelloWorld", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
+#line 33
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -143,19 +165,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableToMixedScalarCharAndRecordsetValues()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable to mixed scalar, char and recordset values", ((string[])(null)));
-#line 28
+#line 35
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 36
  testRunner.Given("I assign the value Hello to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 37
  testRunner.And("I assign the value World to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 38
  testRunner.And("I assign the value [[var]] [[rec(1).set]] ! to a variable \"[[value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 39
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 33
+#line 40
  testRunner.Then("the value of \"[[value]]\" equals \"Hello World !\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 34
+#line 41
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -167,21 +189,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignMultipleVariablesToTheEndOfARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple variables to the end of a recordset", ((string[])(null)));
-#line 36
-this.ScenarioSetup(scenarioInfo);
-#line 37
- testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 38
- testRunner.And("I assign the value 20 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
- testRunner.And("I assign the value 30 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
- testRunner.And("I assign the value [[rec(3).set]] to a variable \"[[value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
- testRunner.Then("the value of \"[[value]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
+this.ScenarioSetup(scenarioInfo);
+#line 44
+ testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 45
+ testRunner.And("I assign the value 20 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.And("I assign the value 30 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.And("I assign the value [[rec(3).set]] to a variable \"[[value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 49
+ testRunner.Then("the value of \"[[value]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -193,25 +215,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAllRecordsetValuesToASingleVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to a single variable", ((string[])(null)));
-#line 45
-this.ScenarioSetup(scenarioInfo);
-#line 46
- testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 47
- testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
- testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
- testRunner.And("I assign the value \"\" to a variable \"[[rec(*).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 51
- testRunner.Then("the value of \"[[rec(3).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 52
- testRunner.And("the value of \"[[rec(2).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 53
- testRunner.And("the value of \"[[rec(1).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
+ testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+ testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+ testRunner.And("I assign the value \"\" to a variable \"[[rec(*).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 58
+ testRunner.Then("the value of \"[[rec(3).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 59
+ testRunner.And("the value of \"[[rec(2).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+ testRunner.And("the value of \"[[rec(1).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -223,21 +245,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignARecordSetToAScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a record set to a scalar", ((string[])(null)));
-#line 56
-this.ScenarioSetup(scenarioInfo);
-#line 57
- testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 58
- testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
- testRunner.And("I assign the value \"[[rec(*)]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 62
- testRunner.Then("the value of \"[[var]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
+this.ScenarioSetup(scenarioInfo);
+#line 64
+ testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 65
+ testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.And("I assign the value \"[[rec(*)]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 68
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 69
+ testRunner.Then("the value of \"[[var]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 70
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -249,17 +271,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAScalarEqualToARecordSet()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a scalar equal to a record set", ((string[])(null)));
-#line 65
+#line 72
 this.ScenarioSetup(scenarioInfo);
-#line 66
+#line 73
  testRunner.Given("I assign the value 30 to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 67
+#line 74
  testRunner.And("I assign the value \"[[var]]\" to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 75
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 69
+#line 76
  testRunner.Then("the value of \"[[rec(1).set]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 70
+#line 77
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -271,17 +293,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAScalarEqualToACalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a scalar equal to a calculation", ((string[])(null)));
-#line 72
+#line 79
 this.ScenarioSetup(scenarioInfo);
-#line 73
+#line 80
  testRunner.Given("I assign the value 30 to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 74
+#line 81
  testRunner.And("I assign the value \"=30-[[var]]\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 82
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 76
+#line 83
  testRunner.Then("the value of \"[[Result]]\" equals \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 77
+#line 84
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -293,19 +315,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableEqualToAGroupCalculationSum()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable equal to a group calculation (sum)", ((string[])(null)));
-#line 79
+#line 86
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 87
  testRunner.Given("I assign the value 30 to a variable \"[[var1]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 88
  testRunner.And("I assign the value 30 to a variable \"[[var2]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 89
  testRunner.And("I assign the value \"=SUM([[var1]],[[var2]])\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 90
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 84
+#line 91
  testRunner.Then("the value of \"[[Result]]\" equals \"60\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 85
+#line 92
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -317,21 +339,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignMultipleRecordsetToTheEndOfARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple recordset to the end of a recordset", ((string[])(null)));
-#line 87
-this.ScenarioSetup(scenarioInfo);
-#line 88
- testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 89
- testRunner.And("I assign the value 20 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
- testRunner.And("I assign the value 30 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 91
- testRunner.And("I assign the value [[rec(3).set]] to a variable \"[[des().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 93
- testRunner.Then("the value of \"[[des().val]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 94
+this.ScenarioSetup(scenarioInfo);
+#line 95
+ testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 96
+ testRunner.And("I assign the value 20 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 97
+ testRunner.And("I assign the value 30 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+ testRunner.And("I assign the value [[rec(3).set]] to a variable \"[[des().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 100
+ testRunner.Then("the value of \"[[des().val]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 101
  testRunner.And("the assign execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -343,17 +365,45 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignTheValueOfANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index", ((string[])(null)));
-#line 96
+#line 103
 this.ScenarioSetup(scenarioInfo);
-#line 97
+#line 104
  testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 98
+#line 105
  testRunner.And("I assign the value [[rec(-1).set]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 106
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
+#line 107
  testRunner.Then("the value of \"[[var]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
+#line 108
+ testRunner.And("the assign execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign the value of a negative recordset index and another assign after")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignTheValueOfANegativeRecordsetIndexAndAnotherAssignAfter()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index and another assign after", ((string[])(null)));
+#line 110
+this.ScenarioSetup(scenarioInfo);
+#line 111
+ testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 112
+ testRunner.And("I assign the value [[rec(-1).set]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 113
+ testRunner.And("I assign the value 30 to a variable \"[[scalar]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 114
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 115
+ testRunner.Then("the value of \"[[rec().set]]\" equals \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 116
+ testRunner.Then("the value of \"[[var]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 117
+ testRunner.Then("the value of \"[[scalar]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 118
  testRunner.And("the assign execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -365,13 +415,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignToANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign to a negative recordset index", ((string[])(null)));
-#line 103
+#line 120
 this.ScenarioSetup(scenarioInfo);
-#line 104
+#line 121
  testRunner.Given("I assign the value 10 to a variable \"[[des(-1).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 122
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 106
+#line 123
  testRunner.Then("the assign execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

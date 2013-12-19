@@ -120,7 +120,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsFalse(Compiler.HasErrors(executeProcess.DataListID));
         }
 
@@ -132,7 +132,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "BodyValue";
@@ -144,7 +144,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
             string errorString = Compiler.FetchErrors(executeProcess.DataListID, false);
             StringAssert.Contains(errorString, message);
@@ -159,7 +159,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
             var activity = GetWebGetRequestActivity(mock);
             activity.OnErrorVariable = "[[Err]]";
             activity.Method = "GET";
@@ -172,7 +172,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
 
             string actual;
@@ -189,7 +189,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Setup for test--------------------------
             var mock = new Mock<IWebRequestInvoker>();
             const string message = "This is a forced exception";
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>())).Throws(new InvalidDataException(message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(message));
             var activity = GetWebGetRequestActivity(mock);
             activity.OnErrorVariable = "[[Errors().Error]]";
             activity.Method = "GET";
@@ -203,7 +203,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var executeProcess = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsTrue(Compiler.HasErrors(executeProcess.DataListID));
 
             IList<IBinaryDataListItem> actual;
@@ -220,7 +220,7 @@ namespace ActivityUnitTests.ActivityTest
             var mock = new Mock<IWebRequestInvoker>();
             string url = "http://localhost";
             string expectedResult = "Request Made";
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", url)).Returns(expectedResult);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", url, It.IsAny<List<Tuple<string, string>>>())).Returns(expectedResult);
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Url]]";
@@ -234,7 +234,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, url), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(activity.Method, url, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             Assert.IsFalse(Compiler.HasErrors(result.DataListID));
             string actual;
             string error;
@@ -252,9 +252,9 @@ namespace ActivityUnitTests.ActivityTest
             string expectedResult1 = "Request Made 1";
             string expectedResult2 = "Request Made 2";
             string expectedResult3 = "Request Made 3";
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", url1)).Returns(expectedResult1);
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", url2)).Returns(expectedResult2);
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", url3)).Returns(expectedResult3);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", url1, It.IsAny<List<Tuple<string, string>>>())).Returns(expectedResult1);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", url2, It.IsAny<List<Tuple<string, string>>>())).Returns(expectedResult2);
+            mock.Setup(invoker => invoker.ExecuteRequest("GET", url3, It.IsAny<List<Tuple<string, string>>>())).Returns(expectedResult3);
             var activity = GetWebGetRequestActivity(mock);
             activity.Method = "GET";
             activity.Url = "[[Urls(*).U1]]";
@@ -271,7 +271,7 @@ namespace ActivityUnitTests.ActivityTest
             IList<IBinaryDataListItem> actual;
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Res", "R1", out actual, out error);
-            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>()), Times.Exactly(3));
+            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>()), Times.Exactly(3));
             List<IBinaryDataListItem> resultData = actual.ToList();
             Assert.AreEqual(3,resultData.Count);
             Assert.AreEqual("Request Made 1", resultData[0].TheValue);
@@ -342,8 +342,8 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual("[[Res(1).R1]]", debugOutResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutResults[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugOutResults[2].Type);            
-            Assert.AreEqual(expectedResult1, debugOutResults[3].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugOutResults[2].Type);
+            Assert.AreEqual("", debugOutResults[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type);
 
             debugOutResults = outRes[1].ResultsList;
@@ -354,7 +354,7 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(DebugItemResultType.Variable, debugOutResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutResults[2].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutResults[2].Type);
-            Assert.AreEqual(expectedResult2, debugOutResults[3].Value);
+            Assert.AreEqual("", debugOutResults[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type); 
             
             debugOutResults = outRes[2].ResultsList;
@@ -365,7 +365,7 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(DebugItemResultType.Variable, debugOutResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutResults[2].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutResults[2].Type);
-            Assert.AreEqual(expectedResult3, debugOutResults[3].Value);
+            Assert.AreEqual("", debugOutResults[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type);
         }
 

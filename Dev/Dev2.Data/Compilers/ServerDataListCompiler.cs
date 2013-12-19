@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
@@ -24,6 +19,11 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
 
 namespace Dev2.Server.Datalist
 {
@@ -129,25 +129,26 @@ namespace Dev2.Server.Datalist
                             }
                         }
 
-                        res = tmpEntry.TryDeleteRows(recsetIndexStr);
+                        res = tmpEntry.TryDeleteRows(recsetIndexStr, out error);
+                        allErrors.AddError(error);
                     }
-
+                    allErrors.AddError(error);
                     TryPushDataList(theDL, out error);
-                    errors.AddError(error);
+                    allErrors.AddError(error);
 
                     IBinaryDataListEntry newDlEntry = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDL.UID);
 
-                    errors.AddError(error);
+                    allErrors.AddError(error);
                     if(res)
                     {
                         newDlEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem("Success", GlobalConstants.EvalautionScalar), out error);
-                        errors.AddError(error);
+                        allErrors.AddError(error);
 
                     }
                     else
                     {
                         newDlEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem("Failure", GlobalConstants.EvalautionScalar), out error);
-                        errors.AddError(error);
+                        allErrors.AddError(error);
                     }
                     result = newDlEntry;
                 }
@@ -386,13 +387,13 @@ namespace Dev2.Server.Datalist
             Guid result = Guid.Empty;
             errors = new ErrorResultTO();
 
-            if (definitions != null)
+            if(definitions != null)
             {
-                if (typeOf == enDev2ArgumentType.Input)
+                if(typeOf == enDev2ArgumentType.Input)
                 {
                     result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
                 }
-                else if (typeOf == enDev2ArgumentType.Output)
+                else if(typeOf == enDev2ArgumentType.Output)
                 {
                     result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
                 }
@@ -465,20 +466,20 @@ namespace Dev2.Server.Datalist
             // Then find a matching RS in oDefs
             int iPos = 0;
             int oPos = 0;
-            foreach (var def in iDefs)
+            foreach(var def in iDefs)
             {
-                if (def.IsRecordSet)
+                if(def.IsRecordSet)
                 {
                     var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.RawValue);
                     var rsCol = DataListUtil.ExtractFieldNameFromValue(def.RawValue);
 
                     oPos = 0;
-                    foreach (var def2 in oDefs)
+                    foreach(var def2 in oDefs)
                     {
-                        if (def2.RecordSetName == rsName)
+                        if(def2.RecordSetName == rsName)
                         {
                             // If same cool beans ;)
-                            if (def2.Name == rsCol)
+                            if(def2.Name == rsCol)
                             {
                                 IBinaryDataListEntry entry;
                                 string error;
@@ -503,7 +504,7 @@ namespace Dev2.Server.Datalist
                                 var rsName2 = DataListUtil.ExtractRecordsetNameFromValue(def2.RawValue);
                                 var rsCol2 = DataListUtil.ExtractFieldNameFromValue(def2.RawValue);
 
-                                if (def.Name == rsCol2 && def.RecordSetName == rsName2)
+                                if(def.Name == rsCol2 && def.RecordSetName == rsName2)
                                 {
                                     IBinaryDataListEntry entry;
                                     string error;
@@ -534,9 +535,9 @@ namespace Dev2.Server.Datalist
 
             oPos = 0;
             // *** Process new Output mappings ;)
-            foreach (var def in oDefs)
+            foreach(var def in oDefs)
             {
-                if (def.IsRecordSet)
+                if(def.IsRecordSet)
                 {
                     var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.RawValue);
                     var rsCol = DataListUtil.ExtractFieldNameFromValue(def.RawValue);
@@ -548,7 +549,7 @@ namespace Dev2.Server.Datalist
                     childDL.TryGetEntry(rsName, out entry, out error);
                     errors.AddError(error);
 
-                    if (entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
+                    if(entry != null && !string.IsNullOrEmpty(rsName) && !string.IsNullOrEmpty(rsCol))
                     {
                         entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
                         errors.MergeErrors(invokeErrors);
@@ -564,14 +565,14 @@ namespace Dev2.Server.Datalist
 
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> result = new List<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>>();
 
-            if (iDefs.Count > 0)
+            if(iDefs.Count > 0)
             {
                 // Do any remaining input shaping here ;)
                 // Will return the childDLID
                 InternalShape(ctx, parentDLID, iDefs, enDev2ArgumentType.Input, out invokeErrors, false, childDLID);
             }
 
-            if (oDefs.Count > 0)
+            if(oDefs.Count > 0)
             {
                 // Return output mappings for later use ;)
                 result.Add(new KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>(enDev2ArgumentType.Output, oDefs));
@@ -1054,7 +1055,7 @@ namespace Dev2.Server.Datalist
             try
             {
                 IDataListTranslator t = _dlServer.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE));
-                return t.ConvertToDataTable(input, recsetName, out errors,populateOptions);
+                return t.ConvertToDataTable(input, recsetName, out errors, populateOptions);
             }
             catch(Exception e)
             {
@@ -1499,7 +1500,7 @@ namespace Dev2.Server.Datalist
             {
                 var val = Evaluate(ctx, extractFromId, enActionType.User, recordSet.Key, out errors);
 
-                if (val != null)
+                if(val != null)
                 {
                     var rsDefinitions = recordSet.ToList();
 
@@ -1587,7 +1588,7 @@ namespace Dev2.Server.Datalist
                             {
                         string expression;
 
-                        if (string.IsNullOrEmpty(def.RecordSetName))
+                                if(string.IsNullOrEmpty(def.RecordSetName))
                         {
                             expression = def.Name;
                         }
@@ -2057,10 +2058,17 @@ namespace Dev2.Server.Datalist
                             if(typeof(T) == typeof(string))
                             {
                                 string itemVal = frameItem.Value.ToString();
-
                                 evaluatedValue = InternalEvaluate(itemVal, bdl, false, out errors);
-                                allErrors.MergeErrors(errors);
 
+                                if(errors.HasErrors())
+                                {
+                                    allErrors.MergeErrors(errors);
+                                    evaluatedValue = InternalEvaluate(string.Empty, bdl, false, out errors);
+                                }
+                                else
+                                {
+                                allErrors.MergeErrors(errors);
+                                }
                             }
                             else if(typeof(T) == typeof(IBinaryDataListEntry))
                             {

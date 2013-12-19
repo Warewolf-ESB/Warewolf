@@ -99,7 +99,7 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -107,13 +107,13 @@ this.ScenarioSetup(scenarioInfo);
                         "result",
                         "unique"});
             table2.AddRow(new string[] {
-                        "result().unique",
+                        "rec().unique",
                         "10"});
             table2.AddRow(new string[] {
-                        "result().unique",
+                        "rec().unique",
                         "20"});
             table2.AddRow(new string[] {
-                        "result().unique",
+                        "rec().unique",
                         "30"});
 #line 16
  testRunner.Then("the unique result will be", ((string)(null)), table2, "Then ");
@@ -165,21 +165,21 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs().row]],[[rs().data]]\" with the return field" +
                     " \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec(*).unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "10"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "20"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "30"});
 #line 37
  testRunner.Then("the unique result will be", ((string)(null)), table4, "Then ");
@@ -207,13 +207,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs().row]]" +
                     "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
 #line 50
  testRunner.Then("the unique result will be", ((string)(null)), table6, "Then ");
 #line 52
@@ -251,13 +251,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 61
  testRunner.And("I want to find unique in field \"\" with the return field \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 63
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
 #line 64
  testRunner.Then("the unique result will be", ((string)(null)), table8, "Then ");
 #line 66
@@ -295,13 +295,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 75
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 76
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
 #line 78
  testRunner.Then("the unique result will be", ((string)(null)), table10, "Then ");
 #line 80
@@ -340,13 +340,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs(-1).row]]\" with the return field \"[[rs().row" +
                     "]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
 #line 92
  testRunner.Then("the unique result will be", ((string)(null)), table12, "Then ");
 #line 94
@@ -385,21 +385,21 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs(*).row]]\" with the return field \"[[rs().row]" +
                     "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 105
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "1"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "2"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "3"});
 #line 106
  testRunner.Then("the unique result will be", ((string)(null)), table14, "Then ");
@@ -439,13 +439,13 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs(-1).row" +
                     "]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 121
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 122
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
 #line 123
  testRunner.Then("the unique result will be", ((string)(null)), table16, "Then ");
 #line 125
@@ -484,21 +484,21 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I want to find unique in field \"[[rs().row]]\" with the return field \"[[rs(*).row]" +
                     "]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
- testRunner.And("The result variable is \"[[result().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("The result variable is \"[[rec().unique]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
  testRunner.When("the unique tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
+                        "rec",
+                        "unique"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "1"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "2"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rec().unique",
                         "3"});
 #line 137
  testRunner.Then("the unique result will be", ((string)(null)), table18, "Then ");

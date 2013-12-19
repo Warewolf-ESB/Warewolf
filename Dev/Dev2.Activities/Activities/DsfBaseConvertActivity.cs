@@ -83,22 +83,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 CleanArgs();
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
 
-                foreach (BaseConvertTO item in ConvertCollection)
+                foreach(BaseConvertTO item in ConvertCollection)
                 {
                     _indexCounter++;
                     // Travis.Frisinger - This needs to be in the ViewModel not here ;)
-                    if (item.ToExpression == string.Empty)
+                    if(item.ToExpression == string.Empty)
                     {
                         item.ToExpression = item.FromExpression;
                     }
 
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
-                    if (dataObject.IsDebug)
+                    if(dataObject.IsDebug)
                     {
                         AddDebugInputItem(item.FromExpression, tmp, executionId, item.FromType, item.ToType);
                     }
                     allErrors.MergeErrors(errors);
-                    if (tmp != null)
+                    if(tmp != null)
                     {
 
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
@@ -109,15 +109,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         int indexToUpsertTo = 1;
                         // process result information
-                        while (itr.HasMoreRecords())
+                        while(itr.HasMoreRecords())
                         {
 
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                            foreach (IBinaryDataListItem c in cols)
+                            foreach(IBinaryDataListItem c in cols)
                             {
+                                if(string.IsNullOrEmpty(c.TheValue))
+                                {
+                                    continue;
+                                }
 
                                 // set up live flushing iterator details
-                                if (c.IsDeferredRead)
+                                if(c.IsDeferredRead)
                                 {
                                     toUpsert.HasLiveFlushing = true;
                                     toUpsert.LiveFlushingLocation = executionId;
@@ -127,17 +131,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 string val = broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
-                                if (DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
+                                if(DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
                                 {
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 }
 
 
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
-                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                     {
                                         AddDebugOutputItem(region, val, executionId);
                                     }
@@ -145,14 +149,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-                                if (toUpsert.HasLiveFlushing)
+                                if(toUpsert.HasLiveFlushing)
                                 {
                                     try
                                     {
                                         toUpsert.FlushIterationFrame();
                                         toUpsert = null;
                                     }
-                                    catch (Exception e)
+                                    catch(Exception e)
                                     {
                                         allErrors.AddError(e.Message);
                                     }
@@ -160,14 +164,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
 
-                            if (toUpsert.HasLiveFlushing)
+                            if(toUpsert.HasLiveFlushing)
                             {
                                 try
                                 {
                                     toUpsert.FlushIterationFrame(true);
                                     toUpsert = null;
                                 }
-                                catch (Exception e)
+                                catch(Exception e)
                                 {
                                     allErrors.AddError(e.Message);
                                 }
@@ -184,19 +188,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }                
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -216,9 +220,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void CleanArgs()
         {
             int count = 0;
-            while (count < ConvertCollection.Count)
+            while(count < ConvertCollection.Count)
             {
-                if (string.IsNullOrWhiteSpace(ConvertCollection[count].FromExpression))
+                if(string.IsNullOrWhiteSpace(ConvertCollection[count].FromExpression))
                 {
                     ConvertCollection.RemoveAt(count);
                 }
@@ -239,7 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
             const string RecordsetName = "ConvertCollection";
             result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FromExpression", string.Empty), DataListFactory.CreateDev2Column("FromType", string.Empty), DataListFactory.CreateDev2Column("ToType", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
-            foreach (BaseConvertTO item in ConvertCollection)
+            foreach(BaseConvertTO item in ConvertCollection)
             {
                 result.TryCreateRecordsetValue(item.FromExpression, "FromExpression", RecordsetName, item.IndexNumber, out error);
                 result.TryCreateRecordsetValue(item.FromType, "FromType", RecordsetName, item.IndexNumber, out error);
@@ -255,7 +259,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -264,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -281,7 +285,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Convert" });
 
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId,enDev2ArgumentType.Input));
+            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "From" });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = fromType });
@@ -295,8 +299,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugOutputItem(string expression, string value, Guid dlId)
         {
             var itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = _indexCounter.ToString(CultureInfo.InvariantCulture)});
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0,enDev2ArgumentType.Output));
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -304,13 +308,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
 
-            if (mic != null)
+            if(mic != null)
             {
                 List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                if (listOfValidRows.Count > 0)
+                if(listOfValidRows.Count > 0)
                 {
                     int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
-                    foreach (string s in listToAdd)
+                    foreach(string s in listToAdd)
                     {
                         mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
                         startIndex++;
@@ -328,13 +332,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
 
-            if (mic != null)
+            if(mic != null)
             {
                 int startIndex = 0;
                 string firstRowConvertFromType = ConvertCollection[0].FromType;
                 string firstRowConvertToType = ConvertCollection[0].ToType;
                 mic.Clear();
-                foreach (string s in listToAdd)
+                foreach(string s in listToAdd)
                 {
                     mic.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
                     startIndex++;
@@ -345,7 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if (startIndex < mic.Count)
+            if(startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
@@ -356,9 +360,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
             string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if (currentName.Contains("(") && currentName.Contains(")"))
+            if(currentName.Contains("(") && currentName.Contains(")"))
             {
-                if (currentName.Contains(" ("))
+                if(currentName.Contains(" ("))
                 {
                     currentName = currentName.Remove(currentName.IndexOf(" ("));
                 }
@@ -455,7 +459,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
-            if (!overwrite)
+            if(!overwrite)
             {
                 InsertToCollection(listToAdd, modelItem);
             }

@@ -158,6 +158,7 @@ namespace Dev2.Data.Operations
         private string FormatNumber(decimal number, bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
             string format = "0";
+           
             if (adjustDecimalPlaces)
             {
                 if (decimalPlacesToShow > 0)
@@ -166,6 +167,14 @@ namespace Dev2.Data.Operations
                     // Output a specific number of decimal places in thenumber
                     //
                     format += _decimalSeperator + format.PadRight(format.Length + decimalPlacesToShow - 1, '0');
+                }
+                else
+                {
+                    decimalPlacesToShow *= -1;
+                    string multiplier = "1";
+                    multiplier = multiplier.PadRight(decimalPlacesToShow + 1, char.Parse("0"));
+                    var numbers = number.ToString().Split('.');
+                    return  (Math.Truncate(decimal.Parse(numbers[0]) * int.Parse(multiplier)) / int.Parse(multiplier)).ToString();
                 }
             }
             else

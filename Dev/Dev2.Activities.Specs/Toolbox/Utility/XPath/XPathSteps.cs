@@ -16,7 +16,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     {
         private void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             BuildShapeAndTestData();
 
             string xmlData;
@@ -32,8 +31,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                     Action = xPath
                 };
 
+            List<Tuple<string, string>> xpathDtos;
+            ScenarioContext.Current.TryGetValue("xpathDtos", out xpathDtos);
+
             int row = 1;
-            foreach (var variable in variableList)
+            foreach (var variable in xpathDtos)
             {
                 xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
@@ -46,9 +48,26 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             ScenarioContext.Current.Add("xmlData", xmlData);
         }
 
+        [Given(@"I assign the variable ""(.*)"" as xml input")]
+        public void GivenIAssignTheVariableAsXmlInput(string variable)
+        {
+            ScenarioContext.Current.Add("xmlData", variable);
+        }
+
+
         [Given(@"I have a variable ""(.*)"" output with xpath ""(.*)""")]
         public void GivenIHaveAVariableOutputWithXpath(string variable, string xpath)
         {
+            List<Tuple<string, string>> xpathDtos;
+            ScenarioContext.Current.TryGetValue("xpathDtos", out xpathDtos);
+
+            if (xpathDtos == null)
+            {
+                xpathDtos = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("xpathDtos", xpathDtos);
+            }
+            xpathDtos.Add(new Tuple<string, string>(variable, xpath));
+
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
@@ -57,7 +76,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            variableList.Add(new Tuple<string, string>(variable, xpath));
+            variableList.Add(new Tuple<string, string>(variable, ""));
         }
 
         [Given(@"I have this xml '(.*)' in a variable ""(.*)""")]
@@ -109,7 +128,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for (int i = 0; i < tableRows.Count; i++)
             {
-                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+                Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
         }
 

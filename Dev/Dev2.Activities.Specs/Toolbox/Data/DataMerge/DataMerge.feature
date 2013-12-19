@@ -74,7 +74,7 @@ Scenario: Merge a variable using index that is a variable and is blank
 	And an Input "[[a]]" and merge type "Index" and string at as "[[b]]" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And the data merge execution has "NO" error
+	And the data merge execution has "AN" error
 
 Scenario: Merge multiple variables on Chars with blank lines
 	Given a merge variable "[[a]]" equal to "Warewolf " 
@@ -142,3 +142,23 @@ Scenario: Merge a negative recordset index for Padding
 	Given an Input "12" and merge type "Index" and string at as "10" and Padding "[[my(-1).a]]" and Alignment "Left"	
 	When the data merge tool is executed
 	Then the data merge execution has "AN" error
+
+Scenario: Merge a variable using index that is a variable and is not blank
+	Given a merge variable "[[a]]" equal to "aA "
+	And a merge variable "[[b]]" equal to "bB "
+	And a merge variable "[[c]]" equal to "1"	
+	And an Input "[[a]]" and merge type "Index" and string at as "[[c]]" and Padding "" and Alignment "Left"
+	And an Input "[[b]]" and merge type "Index" and string at as "[[c]]" and Padding "" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is "ab"
+	And the data merge execution has "NO" error
+
+Scenario: Merge a variable using index that is blank
+	Given a merge variable "[[a]]" equal to "aA "
+	And a merge variable "[[b]]" equal to "bB "
+	And a merge variable "[[c]]" equal to "1"	
+	And an Input "[[a]]" and merge type "Index" and string at as "" and Padding "" and Alignment "Left"
+	And an Input "[[b]]" and merge type "Index" and string at as "[[c]]" and Padding "" and Alignment "Left"
+	When the data merge tool is executed
+	Then the merged result is "b"
+	And the data merge execution has "AN" error

@@ -131,7 +131,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.And("I have a variable \"[[rec().id]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.And("I have a variable \"[[rec().text]]\" output with xpath \"//root/number/text()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"[[rec2().text]]\" output with xpath \"//root/number/text()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
@@ -149,13 +149,13 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "rec().text"});
             table2.AddRow(new string[] {
-                        "one"});
+                        "One"});
             table2.AddRow(new string[] {
-                        "two"});
+                        "Two"});
             table2.AddRow(new string[] {
-                        "three"});
+                        "Three"});
 #line 30
- testRunner.And("the xpath result for this varibale \"rec().text\" will be", ((string)(null)), table2, "And ");
+ testRunner.Then("the xpath result for this varibale \"[[rec2().text]]\" will be", ((string)(null)), table2, "Then ");
 #line 35
  testRunner.And("the xpath execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -197,12 +197,14 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                     "ber id=\"3\">Three</number></root>\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"@@#$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"@@#$\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 49
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 50
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -214,17 +216,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathWithInvalidXMLAsInputInsideAVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with invalid XML as input inside a variable", ((string[])(null)));
-#line 51
-this.ScenarioSetup(scenarioInfo);
 #line 52
- testRunner.Given("I have this xml \'<root></end>\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 53
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have this xml \'<root></end>\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 54
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 55
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 56
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 57
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 58
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -236,19 +240,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathWithNoVariableResultButValidXpath()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with no variable result but valid xpath", ((string[])(null)));
-#line 58
+#line 61
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 62
  testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                     "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
- testRunner.And("I have a variable \"\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 62
- testRunner.Then("the variable \"\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
- testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have a variable \"\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 65
+ testRunner.Then("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -259,18 +261,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathToGetMultipleResultsIntoAScalarInCSV()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath to get multiple results into a scalar in CSV", ((string[])(null)));
-#line 65
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 66
+#line 68
  testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                     "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 67
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 69
- testRunner.Then("the variable \"[[ids]]\" should have a value \"1,2,3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 71
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"1,2,3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
  testRunner.And("the xpath execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -282,17 +284,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseTheXPathToProcessBlankXML()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use the XPath to process blank XML", ((string[])(null)));
-#line 72
-this.ScenarioSetup(scenarioInfo);
-#line 73
- testRunner.Given("I have this xml \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 74
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 75
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have this xml \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 76
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/number/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 77
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 78
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 79
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -304,18 +306,18 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseTheXPathWithoutAnyXpathQuery()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use the XPath without any xpath query", ((string[])(null)));
-#line 79
+#line 81
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 82
  testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                     "ber id=\"3\">Three</number></root>\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 83
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 85
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 86
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -327,17 +329,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathWithBlankVariableAsXMLInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with blank variable as XML input", ((string[])(null)));
-#line 86
-this.ScenarioSetup(scenarioInfo);
-#line 87
- testRunner.Given("I have this xml \'\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 88
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/num/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioSetup(scenarioInfo);
 #line 89
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("I have this xml \'\' in a variable \"[[myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 90
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I assign the variable \"[[myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//root/num/@id\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 92
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 93
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 94
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -349,17 +353,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathWithNegativeRecordsetIndexAsXMLInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with negative recordset index as XML input", ((string[])(null)));
-#line 93
-this.ScenarioSetup(scenarioInfo);
-#line 94
- testRunner.Given("I have this xml \'<x></b></x>\' in a variable \"[[rec(-1).myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 95
- testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 96
- testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+this.ScenarioSetup(scenarioInfo);
 #line 97
- testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I have this xml \'<x></b></x>\' in a variable \"[[rec(-1).myxml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 98
+ testRunner.And("I assign the variable \"[[rec(-1).myxml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+ testRunner.And("I have a variable \"[[ids]]\" output with xpath \"//b\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
+ testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 101
+ testRunner.Then("the variable \"[[ids]]\" should have a value \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 102
  testRunner.And("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -371,17 +377,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UseXPathWithNegativeRecordsetIndexAsOutputVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use XPath with negative recordset index as output variable", ((string[])(null)));
-#line 100
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 101
+#line 105
  testRunner.Given("I have this xml \'<root><number id=\"1\">One</number><number id=\"2\">Two</number><num" +
                     "ber id=\"3\">Three</number></root>\' in a variable \"[[xml]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
+#line 106
+ testRunner.And("I assign the variable \"[[xml]]\" as xml input", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
  testRunner.And("I have a variable \"[[rec(-1).ids]]\" output with xpath \"//root/number[@id=\'2\']/tex" +
                     "t()\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 108
  testRunner.When("the xpath tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 104
+#line 109
  testRunner.Then("the xpath execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

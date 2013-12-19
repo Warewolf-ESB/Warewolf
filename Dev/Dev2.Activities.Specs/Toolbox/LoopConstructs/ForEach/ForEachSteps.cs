@@ -154,6 +154,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         [When(@"the foreach tool is executed")]
         public void WhenTheForeachToolIsExecuted()
         {
+             ScenarioContext.Current.Pending();
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(throwException:false);
             ScenarioContext.Current.Add("result", result);

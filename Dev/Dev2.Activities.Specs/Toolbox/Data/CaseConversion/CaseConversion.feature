@@ -29,7 +29,7 @@ Scenario: Convert a sentence to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "WAREWOLF Rocks"	
 	And I convert a variable "[[var]]" to "Title Case"
 	When the case conversion tool is executed
-	Then the sentence will be "Warewolf Rocks"
+	Then the sentence will be "WAREWOLF Rocks"
 	And the case convert execution has "NO" error
 
 Scenario: Convert a sentence starting with a number to UPPER CASE
@@ -57,7 +57,7 @@ Scenario: Convert a sentence starting with a number to Title Case
 	Given I have a case convert variable "[[var]]" with a value of "1 WAREWOLF Rocks"	
 	And I convert a variable "[[var]]" to "Title Case"
 	When the case conversion tool is executed
-	Then the sentence will be "1 Warewolf Rocks"
+	Then the sentence will be "1 WAREWOLF Rocks"
 	And the case convert execution has "NO" error
 
 Scenario: Convert a blank to Title Case

@@ -2,9 +2,12 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.DataList.Contract;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using netDumbster.smtp;
 
 namespace Dev2.Activities.Specs.Toolbox.Utility.Email
 {
@@ -39,6 +42,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             string to;
             ScenarioContext.Current.TryGetValue("to", out to);
 
+            var server = SimpleSmtpServer.Start(25);
+            ScenarioContext.Current.Add("server", server);
 
             var sendEmail = new DsfSendEmailActivity
                 {
@@ -46,10 +51,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                     Body = body,
                     Subject = subject,
                     FromAccount = fromAccount,
-                    Password = password,
-                    IsSimulationEnabled = true,
-                    SimulationOutput = simulationOutput,
-                    To = to
+                    To = to,
+                    SelectedEmailSource = new EmailSource
+                        {
+                            Host = "localhost",
+                            Port = 25,
+                            UserName = "",
+                            Password = ""
+                        }
                 };
 
             TestStartNode = new FlowStep
@@ -130,9 +139,11 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         [Then(@"the email result will be ""(.*)""")]
         public void ThenTheEmailResultWillBe(string expectedResult)
         {
+            var server = ScenarioContext.Current.Get<SimpleSmtpServer>("server");
+
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);

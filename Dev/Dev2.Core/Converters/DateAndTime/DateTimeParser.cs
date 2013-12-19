@@ -366,7 +366,7 @@ namespace Dev2.Converters.DateAndTime
                         while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                         {
                             IDateTimeFormatPartTO formatPart = formatParts[count];
-
+                            
                             int resultLength;
                             if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
                             {
@@ -544,6 +544,7 @@ namespace Dev2.Converters.DateAndTime
                         else
                         {
                             forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                            
                             predicateRun =partOption.Predicate(forwardLookupResult, passAsTime);
                         }
 
@@ -997,15 +998,27 @@ namespace Dev2.Converters.DateAndTime
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
-            
+
             _dateTimeFormatParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
-            _dateTimeFormatPartOptions.Add("Era",
-            new List<IDateTimeFormatPartOptionTO>
+
+            _dateTimeFormatPartOptions.Add("era",
+           new List<IDateTimeFormatPartOptionTO>
             { 
-                new DateTimeFormatPartOptionTO(2, IsTextEra, false, "A.D.", AssignEra),
-                new DateTimeFormatPartOptionTO(3, IsTextEra, false, "A.D.", AssignEra),
-                new DateTimeFormatPartOptionTO(4, IsTextEra, false, "A.D.", AssignEra),
+                new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD", AssignEra)
             });
+
+            _dateTimeFormatPartOptions.Add("Era",
+           new List<IDateTimeFormatPartOptionTO>
+            { 
+                new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D", AssignEra)
+            });
+
+            _dateTimeFormatPartOptions.Add("ERA",
+          new List<IDateTimeFormatPartOptionTO>
+            { 
+                new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.", AssignEra)
+            });
+
         }
 
         /// <summary>
@@ -1158,12 +1171,22 @@ namespace Dev2.Converters.DateAndTime
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _timeFormatPartOptions.Add("Era",
+            _timeFormatPartOptions.Add("era",
             new List<IDateTimeFormatPartOptionTO>
             { 
-                new DateTimeFormatPartOptionTO(2, IsTextEra, false, "A.D.", AssignEra),
-                new DateTimeFormatPartOptionTO(3, IsTextEra, false, "A.D.", AssignEra),
-                new DateTimeFormatPartOptionTO(4, IsTextEra, false, "A.D.", AssignEra),
+                new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD", AssignEra)
+            });
+
+            _timeFormatPartOptions.Add("Era",
+           new List<IDateTimeFormatPartOptionTO>
+            { 
+                new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D", AssignEra)
+            });
+
+            _timeFormatPartOptions.Add("ERA",
+          new List<IDateTimeFormatPartOptionTO>
+            { 
+                new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.", AssignEra)
             });
         }
 
@@ -1386,6 +1409,7 @@ namespace Dev2.Converters.DateAndTime
             // Lookups for Era
             //
             _dateTimeFormatForwardLookups.Add('E', new List<int> { 3 });
+            _dateTimeFormatForwardLookups.Add('e', new List<int> { 3 });
         }
 
         #region DateTime Assign Actions
@@ -1729,7 +1753,7 @@ namespace Dev2.Converters.DateAndTime
         private static bool IsTextEra(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            return lowerData == "ad" || lowerData == "a.d" || lowerData == "a.d.";
+            return lowerData == "ad" || lowerData == "a.d.";
         }
 
         /// <summary>

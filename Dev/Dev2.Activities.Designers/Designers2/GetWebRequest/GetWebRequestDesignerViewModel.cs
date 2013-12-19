@@ -21,9 +21,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             AddTitleBarHelpToggle();
 
             PreviewViewModel = new PreviewViewModel
-            {
-                InputsVisibility = Visibility.Collapsed,
-            };
+                {
+                    InputsVisibility = Visibility.Collapsed,
+                };
             PreviewViewModel.PreviewRequested += DoPreview;
         }
 
@@ -31,26 +31,34 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
         public bool IsUrlFocused
         {
-            get { return (bool)GetValue(IsUrlFocusedProperty); }
+            get { return (bool) GetValue(IsUrlFocusedProperty); }
             set { SetValue(IsUrlFocusedProperty, value); }
         }
 
         public static readonly DependencyProperty IsUrlFocusedProperty =
-            DependencyProperty.Register("IsUrlFocused", typeof(bool), typeof(GetWebRequestDesignerViewModel), new PropertyMetadata(false));
+            DependencyProperty.Register("IsUrlFocused", typeof (bool), typeof (GetWebRequestDesignerViewModel),
+                                        new PropertyMetadata(false));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string Url { get { return GetProperty<string>(); } }
-        string Headers { get { return GetProperty<string>(); } }
+        private string Url
+        {
+            get { return GetProperty<string>(); }
+        }
+
+        private string Headers
+        {
+            get { return GetProperty<string>(); }
+        }
 
         public override void Validate()
         {
             Errors = null;
-            if(string.IsNullOrWhiteSpace(Url))
+            if (string.IsNullOrWhiteSpace(Url))
             {
                 return;
             }
             var url = GetUrl();
-            if(IsValid)
+            if (IsValid)
             {
                 ValidateUrl(url);
             }
@@ -60,7 +68,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "Url":
                 case "Headers":
@@ -71,7 +79,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
         #endregion
 
-        void ExtractVariables()
+        private void ExtractVariables()
         {
             PreviewViewModel.Output = string.Empty;
             var urlVariables = DataListCleaningUtils
@@ -84,7 +92,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
             PreviewViewModel.CanPreview = !string.IsNullOrWhiteSpace(Url);
 
-            if(variableList.Count > 0)
+            if (variableList.Count > 0)
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
@@ -100,7 +108,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
                 mustRemainKeys.ForEach(k => variableList.Remove(k.Key));
 
-                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> { Key = v }));
+                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> {Key = v}));
             }
             else
             {
@@ -109,39 +117,39 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             }
         }
 
-        void DoPreview(object sender, PreviewRequestedEventArgs args)
+        private void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
             Errors = null;
             PreviewViewModel.Output = string.Empty;
 
             var url = GetUrl(PreviewViewModel.Inputs);
-            if(IsValid)
+            if (IsValid)
             {
                 ValidateUrl(url);
-                if(IsValid)
+                if (IsValid)
                 {
                     PreviewViewModel.Output = GetPreviewOutput(url);
                 }
             }
         }
 
-        string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
+        private string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             var url = Url;
 
-            if(string.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(url))
             {
                 return string.Empty;
             }
 
             var isValid = true;
             var variableList = DataListCleaningUtils.SplitIntoRegions(url);
-            foreach(var v in variableList)
+            foreach (var v in variableList)
             {
-                if(v != null)
+                if (v != null)
                 {
                     string s;
-                    if(inputs != null)
+                    if (inputs != null)
                     {
                         var input = inputs.FirstOrDefault(p => p.Key == v);
                         s = input == null ? string.Empty : input.Value;
@@ -158,16 +166,20 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 }
             }
 
-            if(!isValid)
+            if (!isValid)
             {
                 Errors = new List<IActionableErrorInfo>
-                {
-                    new ActionableErrorInfo(() => IsUrlFocused = true) { ErrorType = ErrorType.Critical, Message = "Invalid expression: opening and closing brackets don't match." }
-                };
+                    {
+                        new ActionableErrorInfo(() => IsUrlFocused = true)
+                            {
+                                ErrorType = ErrorType.Critical,
+                                Message = "Invalid expression: opening and closing brackets don't match."
+                            }
+                    };
             }
             else
             {
-                if(!url.StartsWith("http://"))
+                if (!url.StartsWith("http://"))
                 {
                     url = "http://" + url;
                 }
@@ -176,34 +188,43 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             return url;
         }
 
-        void ValidateUrl(string urlValue)
+        private void ValidateUrl(string urlValue)
         {
-            if(string.IsNullOrWhiteSpace(urlValue))
+            if (string.IsNullOrWhiteSpace(urlValue))
             {
                 Errors = new List<IActionableErrorInfo>
-                {
-                    new ActionableErrorInfo(() => IsUrlFocused = true) { ErrorType = ErrorType.Critical, Message = "Url must have a value" }
-                };
+                    {
+                        new ActionableErrorInfo(() => IsUrlFocused = true)
+                            {
+                                ErrorType = ErrorType.Critical,
+                                Message = "Url must have a value"
+                            }
+                    };
             }
             else
             {
                 Uri uriResult;
-                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-                if(!isValid)
+                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out uriResult) &&
+                              (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                if (!isValid)
                 {
                     Errors = new List<IActionableErrorInfo>
-                    {
-                        new ActionableErrorInfo(() => IsUrlFocused = true) { ErrorType = ErrorType.Critical, Message = "Please supply a valid url" }
-                    };
+                        {
+                            new ActionableErrorInfo(() => IsUrlFocused = true)
+                                {
+                                    ErrorType = ErrorType.Critical,
+                                    Message = "Please supply a valid url"
+                                }
+                        };
                 }
             }
         }
 
-        public Func<string, string, string> WebInvoke = (method, url) =>
-        {
-            var webInvoker = new WebRequestInvoker();
-            return webInvoker.ExecuteRequest(method, url);
-        };
+        public Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
+            {
+                var webInvoker = new WebRequestInvoker();
+                return webInvoker.ExecuteRequest(method, url, headers);
+            };
 
         private string GetPreviewOutput(string url)
         {
@@ -211,13 +232,34 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             var result = string.Empty;
             try
             {
-                url = PreviewViewModel.Inputs.Aggregate(url, (current, previewInput) => current.Replace(previewInput.Key, previewInput.Value));
-                result = WebInvoke("GET", url);
+                var headers = string.IsNullOrEmpty(Headers)
+                                  ? new string[0]
+                                  : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
+
+                var headersEntries = new List<Tuple<string, string>>();
+
+                foreach (var header in headers)
+                {
+                    var headerSegments = header.Split(':');
+                    headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
+                }
+
+                url = PreviewViewModel.Inputs.Aggregate(url,
+                                                        (current, previewInput) =>
+                                                        current.Replace(previewInput.Key, previewInput.Value));
+                result = WebInvoke("GET", url, headersEntries);
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => PreviewViewModel.IsPreviewFocused = true) { ErrorType = ErrorType.Critical, Message = ex.Message } };
+                Errors = new List<IActionableErrorInfo>
+                    {
+                        new ActionableErrorInfo(() => PreviewViewModel.IsPreviewFocused = true)
+                            {
+                                ErrorType = ErrorType.Critical,
+                                Message = ex.Message
+                            }
+                    };
             }
 
             return result;

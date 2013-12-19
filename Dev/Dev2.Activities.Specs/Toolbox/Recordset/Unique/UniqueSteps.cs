@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
@@ -17,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -62,7 +63,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -70,20 +71,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -107,40 +108,57 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
         }
-        
+
         [When(@"the unique tool is executed")]
         public void WhenTheUniqueToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
         [Then(@"the unique result will be")]
         public void ThenTheUniqueResultWillBe(Table table)
         {
-            string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resultVariable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
 
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                           out error);
-            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+            string resultVariable = ScenarioContext.Current.Get<string>("resultVariable");
 
-            List<TableRow> tableRows = table.Rows.ToList();
-            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for (int i = 0; i < tableRows.Count; i++)
+            if(DataListUtil.IsValueRecordset(resultVariable))
             {
-                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+
+                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resultVariable);
+                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
+
+                //string error;
+
+                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
+                                                                               out error);
+
+                recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
+
+                List<TableRow> tableRows = table.Rows.ToList();
+                Assert.AreEqual(tableRows.Count, recordSetValues.Count);
+                for(int i = 0; i < tableRows.Count; i++)
+                {
+                    Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+                }
+            }
+            else
+            {
+                string actualValue;
+                GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(resultVariable),
+                                           out actualValue, out error);
+                actualValue = actualValue.Replace('"', ' ').Trim();
+                // Assert.AreEqual(value, actualValue);
             }
         }
 
@@ -153,7 +171,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             bool actual = string.IsNullOrEmpty(fetchErrors);
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
+            Assert.IsTrue(expected == actual, message);
         }
     }
 }

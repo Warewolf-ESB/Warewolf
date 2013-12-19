@@ -6,6 +6,7 @@ using Dev2.Activities;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -78,36 +79,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (dataObject.IsDebugMode())
+                if(DataListUtil.IsValueRecordset(RecordsetName))
                 {
-                    IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, RecordsetName.Replace("()","(*)"), false, out errors);
+
+                    var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
+
+                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionID, enActionType.User, tmpRecsetIndex, false, out errors);
+
+                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(indexEntry);
+                    IDev2IteratorCollection collection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                    collection.AddIterator(itr);
+
+                    while(collection.HasMoreData())
+                    {
+                        var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
+                        if(dataObject.IsDebugMode())
+                        {
+                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset.Replace("()", "(*)"), false, out errors);
                     AddDebugInputItem(RecordsetName, "Records", tmpentry, executionID);
                 }
 
-                IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, RecordsetName, false, out errors);                
+                        IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, evaluatedRecordset, false, out errors);
                
                 allErrors.MergeErrors(errors);
                 compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
 
-                if (dataObject.IsDebugMode())
+                        if(dataObject.IsDebugMode())
                 {
                     AddDebugOutputItem(Result, entry.FetchScalar().TheValue, executionID);
                 }
                 allErrors.MergeErrors(errors);
-
+                    }
+                }
+                else
+                {
+                    allErrors.AddError("Invalid Input : Input must be a recordset.");
+                    compiler.Upsert(executionID, Result, "Failure", out errors);
+                }
             }
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
@@ -119,12 +140,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
 
-            if (!string.IsNullOrWhiteSpace(labelText))
+            if(!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
             }
 
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
                 if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
                 {
@@ -145,7 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DebugItem itemToAdd = new DebugItem();
 
             //Changed for BUG 9473 - Massimo Guerrera
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId,0, enDev2ArgumentType.Output));
+            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -157,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -170,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -185,10 +206,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-                foreach (var t in updates)
+                foreach(var t in updates)
                 {
 
-                    if (t.Item1 == RecordsetName)
+                    if(t.Item1 == RecordsetName)
                     {
                         RecordsetName = t.Item2;
                     }
@@ -198,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

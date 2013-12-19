@@ -3,6 +3,14 @@
 	As a Warewolf user
 	I want a tool that will aid me to do so 
 
+Scenario: Format number rounding normal with zero rounding and zero decimals to show 
+	Given I have a number 788.894564545645
+	And I selected rounding "Normal" to 0 
+	And I want to show 0 decimals 
+	When the format number is executed
+	Then the result 789 will be returned
+	And formart number execution has "NO" error
+
 Scenario: Format number rounding down 
 	Given I have a number 788.894564545645
 	And I selected rounding "Down" to 3 

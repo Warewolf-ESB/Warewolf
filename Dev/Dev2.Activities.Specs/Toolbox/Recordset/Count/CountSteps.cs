@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             
             var count = new DsfCountRecordsetActivity
                 {
-                    RecordsetName = string.IsNullOrEmpty(recordSetName) ? "" : recordSetName + "()",
+                    RecordsetName = string.IsNullOrEmpty(recordSetName) ? "rs()" : recordSetName + "()",
                     CountNumber = ResultVariable
                 };
 
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);

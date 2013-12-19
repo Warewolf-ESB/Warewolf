@@ -93,6 +93,7 @@ namespace Dev2.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);
             XPathParser parser =new XPathParser();
+            int i = 0;
             try
             {
                 if(!errors.HasErrors())
@@ -111,7 +112,7 @@ namespace Dev2.Activities
                         IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                         foreach(IBinaryDataListItem c in cols)
                         {
-                            for(int i = 0; i < ResultsCollection.Count; i++)
+                            for(i = 0; i < ResultsCollection.Count; i++)
                             {
 
                                 if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
@@ -188,6 +189,7 @@ namespace Dev2.Activities
             
             catch (Exception ex)
             {
+                ResultsCollection[i].XPath = "";
                 allErrors.AddError(ex.Message);
             }
             finally

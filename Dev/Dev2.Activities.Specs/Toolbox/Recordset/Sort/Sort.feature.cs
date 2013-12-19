@@ -392,7 +392,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table10, "Then ");
 #line 110
- testRunner.And("the sort execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -424,7 +424,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 118
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table12, "Then ");
 #line 120
- testRunner.And("the sort execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

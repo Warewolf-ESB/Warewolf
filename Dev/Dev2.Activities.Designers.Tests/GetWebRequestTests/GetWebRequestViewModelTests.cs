@@ -187,7 +187,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.WebInvoke = (m, u) => { return "Was Called"; };
+            sut.WebInvoke = (m, u,h ) => { return "Was Called"; };
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -214,7 +214,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.WebInvoke = (m, u) => { return "Was Called"; };
+            sut.WebInvoke = (m, u, h) => { return "Was Called"; };
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             var sut = new GetWebRequestDesignerViewModel(modelItem.Object);
 
             var isInvoked = false;
-            sut.WebInvoke = (m, u) =>
+            sut.WebInvoke = (m, u, h) =>
             {
                 isInvoked = true;
                 return "Was Called";

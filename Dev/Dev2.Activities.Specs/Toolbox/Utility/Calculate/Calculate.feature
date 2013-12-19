@@ -35,7 +35,7 @@ Scenario: Calculate using incorrect formula
 	And the calculate execution has "AN" error
 
 Scenario: Calculate using variable as full calculation
-	Given I have a calculate variable "[[var]]" equal to "sum(1,2,3)-5"
+	Given I have a calculate variable "[[var]]" equal to "SUM(1,2,3)-5"
 	And I have the formula "[[var]]"
 	When the calculate tool is executed
 	Then the calculate result should be "1"

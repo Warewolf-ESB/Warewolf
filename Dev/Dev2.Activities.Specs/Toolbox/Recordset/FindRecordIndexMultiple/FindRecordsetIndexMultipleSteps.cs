@@ -207,12 +207,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"when all row true is ""(.*)""")]
         public void GivenWhenAllRowTrueIs(bool requireAllTrue)
         {
+            ScenarioContext.Current.Pending();
             ScenarioContext.Current.Add("requireAllTrue", requireAllTrue);
         }
 
         [Given(@"when requires all fields to match is ""(.*)""")]
         public void GivenWhenRequiresAllFieldsToMatchIs(bool requireAllFieldsToMatch)
         {
+            ScenarioContext.Current.Pending();
             ScenarioContext.Current.Add("requireAllFieldsToMatch", requireAllFieldsToMatch);
         }
 
@@ -243,7 +245,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             else
             {
                 string actualValue;
-                expectedResult = expectedResult.Replace("\"\"", "");
+                expectedResult = expectedResult.Replace('"', ' ').Trim();
                 GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                            out actualValue, out error);
                 Assert.AreEqual(expectedResult, actualValue);

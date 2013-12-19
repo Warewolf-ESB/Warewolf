@@ -32,7 +32,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	| rs().row | 34    |	
 	And  is between search the recordset with type "Is Between" and criteria is "" and "33"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be ""
+	Then the find records index multiple result should be "-1"
 	And  the find record index has "AN" error
 
 	Scenario: Find an index of data in a recordset with blank to
@@ -1293,8 +1293,10 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	| [[rs2().row3]] |
 	And search the recordset with type "Contains" and criteria is "1"	
 	And search the recordset with type "Contains" and criteria is "2"	
-	And when All Contains true is "true"
-	And when requires All Fields to match is "false"
+	#And when All Contains true is "true"
+	#And when requires All Fields to match is "false"
+	And when all row true is "true"
+	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,3
 	And  the find record index has "NO" error

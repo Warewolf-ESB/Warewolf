@@ -82,21 +82,18 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.And("I have an email variable \"[[secondMail]]\" equal to \"test2@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
- testRunner.And("I have an email address input \"[[firstMail]]; [[secondMail]]; test1@freemail.com\"" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I have an email address input \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 13
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
+#line 14
  testRunner.Then("the email result will be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 16
+#line 15
  testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -108,24 +105,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithMultipleFromAccounts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with multiple from accounts", ((string[])(null)));
-#line 18
+#line 17
 this.ScenarioSetup(scenarioInfo);
-#line 19
+#line 18
  testRunner.Given("I have an email address input \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
+#line 19
  testRunner.And("the from account is \"me@freemail.com;me2@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 20
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 22
+#line 21
  testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
+#line 22
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 23
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
+#line 24
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
- testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+ testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -136,24 +133,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithBadlyFormedMultipleToAccounts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with badly formed multiple To Accounts", ((string[])(null)));
-#line 28
+#line 27
 this.ScenarioSetup(scenarioInfo);
+#line 28
+ testRunner.Given("I have an email address input \"test1@freemail.com==test2@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
- testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 30
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 31
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 32
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 33
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 36
- testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -164,24 +159,22 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithNoToAccounts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with no To Accounts", ((string[])(null)));
-#line 38
+#line 36
 this.ScenarioSetup(scenarioInfo);
-#line 39
+#line 37
  testRunner.Given("I have an email address input \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
+#line 38
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 39
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 40
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 41
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
+#line 42
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 46
- testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -192,50 +185,48 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithSubjectAsBothTextAndVariableAsXml()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with Subject as both text and variable as xml", ((string[])(null)));
-#line 48
+#line 45
 this.ScenarioSetup(scenarioInfo);
-#line 49
+#line 46
  testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
+#line 47
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 48
  testRunner.And("I have an email variable \"[[subject]]\" equal to \"<Wow>400%</Wow>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 52
+#line 49
  testRunner.And("the subject is \"News: [[subject]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 53
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 50
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 51
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
+#line 52
  testRunner.Then("the email result will be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 57
+#line 53
  testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with no subject and no body")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with no body")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email")]
-        public virtual void SendEmailWithNoSubjectAndNoBody()
+        public virtual void SendEmailWithNoBody()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with no subject and no body", ((string[])(null)));
-#line 59
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with no body", ((string[])(null)));
+#line 55
 this.ScenarioSetup(scenarioInfo);
-#line 60
+#line 56
  testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 61
+#line 57
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 58
+ testRunner.And("the subject is \"Testing this cool framework\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 64
- testRunner.Then("the email result will be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 65
- testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+ testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 61
+ testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -246,26 +237,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithBodyAsBothTextAndVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with Body as both text and variable", ((string[])(null)));
-#line 67
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 68
+#line 64
  testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 65
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 66
  testRunner.And("I have an email variable \"[[body]]\" equal to \"<body><inner>inside</inner></body>\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 67
  testRunner.And("the subject is \"News\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 68
  testRunner.And("body is \"testing email from [[body]] the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 69
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 75
+#line 70
  testRunner.Then("the email result will be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 76
+#line 71
  testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -277,26 +266,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithVariableAsBodyThatIsXml()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with variable as Body that is xml", ((string[])(null)));
-#line 78
+#line 73
 this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 74
  testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
+#line 75
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 81
+#line 76
  testRunner.And("I have an email variable \"[[body]]\" equal to \"<body><inner>inside</inner></body>\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 77
  testRunner.And("the subject is \"News\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 78
  testRunner.And("body is \"[[body]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 85
+#line 79
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 86
+#line 80
  testRunner.Then("the email result will be \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 87
+#line 81
  testRunner.And("email execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -308,15 +295,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithEverythingBlank()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with everything blank", ((string[])(null)));
-#line 89
+#line 83
 this.ScenarioSetup(scenarioInfo);
-#line 90
+#line 84
  testRunner.Given("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
+#line 85
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 92
+#line 86
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 93
+#line 87
  testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -328,19 +315,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithABlankFromAccount()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a blank from account", ((string[])(null)));
-#line 95
+#line 89
 this.ScenarioSetup(scenarioInfo);
-#line 96
+#line 90
  testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 97
+#line 91
  testRunner.And("the from account is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 99
+#line 92
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 100
+#line 93
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 101
+#line 94
  testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -352,23 +337,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithANegativeIndexRecordsetForFromAccounts()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for From Accounts", ((string[])(null)));
-#line 103
+#line 96
 this.ScenarioSetup(scenarioInfo);
-#line 104
+#line 97
  testRunner.Given("I have an email address input \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 98
  testRunner.And("the from account is \"[[me(-1).from]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 99
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 108
+#line 100
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 109
+#line 101
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 110
+#line 102
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 111
+#line 103
  testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -380,16 +363,40 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SendEmailWithANegativeIndexRecordsetForRecipients()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for Recipients", ((string[])(null)));
-#line 113
+#line 105
 this.ScenarioSetup(scenarioInfo);
-#line 114
+#line 106
  testRunner.Given("I have an email address input \"[[me(-1).to]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 115
+#line 107
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 108
  testRunner.And("the subject is \"Just testing\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
+ testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 110
+ testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 111
+ testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 112
+ testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with a negative index recordset for Subject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email")]
+        public virtual void SendEmailWithANegativeIndexRecordsetForSubject()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for Subject", ((string[])(null)));
+#line 114
+this.ScenarioSetup(scenarioInfo);
+#line 115
+ testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 116
+ testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the subject is \"[[my(-1).subject]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
  testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
@@ -403,11 +410,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with a negative index recordset for Subject")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with a negative index recordset for Body")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email")]
-        public virtual void SendEmailWithANegativeIndexRecordsetForSubject()
+        public virtual void SendEmailWithANegativeIndexRecordsetForBody()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for Subject", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for Body", ((string[])(null)));
 #line 123
 this.ScenarioSetup(scenarioInfo);
 #line 124
@@ -415,42 +422,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 125
  testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 126
- testRunner.And("the subject is \"[[my(-1).subject]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
- testRunner.And("body is \"testing email from the cool specflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 129
- testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 130
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 131
- testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Send email with a negative index recordset for Body")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Email")]
-        public virtual void SendEmailWithANegativeIndexRecordsetForBody()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Send email with a negative index recordset for Body", ((string[])(null)));
-#line 133
-this.ScenarioSetup(scenarioInfo);
-#line 134
- testRunner.Given("I have an email address input \"test1@freemail\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 135
- testRunner.And("the from account is \"me@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
- testRunner.And("the sever name is \"pop3@freemail.com\" with password as \"3LittleP6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
  testRunner.And("body is \"[[my(-1).body]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 138
+#line 127
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 139
+#line 128
  testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 140
+#line 129
  testRunner.And("email execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

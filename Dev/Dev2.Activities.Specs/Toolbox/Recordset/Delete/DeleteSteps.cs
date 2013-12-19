@@ -21,7 +21,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             var recordset = ScenarioContext.Current.Get<string>("recordset");
             _delete = new DsfDeleteRecordActivity
                 {
-                    RecordsetName = DataListUtil.RemoveLanguageBrackets(recordset),
+                    RecordsetName = recordset,
                     Result = ResultVariable
                 };
 
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -56,7 +56,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                      ScenarioContext.Current.Add("rs", emptyRecordset);
@@ -64,12 +64,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -85,7 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             value = value.Replace('"', ' ').Trim();
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             value = value.Replace('"', ' ').Trim();
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public void WhenTheDeleteToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -139,10 +139,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordsetName,
                                                                            column, out error);
-
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }

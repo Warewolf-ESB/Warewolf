@@ -56,7 +56,8 @@ namespace Dev2.Data.Operations
 
         public IEnumerable<int> FindIndex(string stringToSearchIn, enIndexFinderOccurrence occurrence, string charsToSearchFor, enIndexFinderDirection direction, bool matchCase, int startIndex)
         {
-            IEnumerable<int> result = new int[0];
+            IEnumerable<int> result = new []{-1};
+            
 
             if (!string.IsNullOrEmpty(stringToSearchIn) && !string.IsNullOrEmpty(charsToSearchFor))
             {

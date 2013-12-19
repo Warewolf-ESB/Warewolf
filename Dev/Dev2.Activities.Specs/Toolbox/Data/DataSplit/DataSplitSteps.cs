@@ -128,7 +128,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset,
-                                                                           field, out error);
+                                                                           field, out error).Where(c => !string.IsNullOrEmpty(c)).ToList();
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

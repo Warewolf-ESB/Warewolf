@@ -238,7 +238,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1"});
             table7.AddRow(new string[] {
                         "rs().row",
-                        "2"});
+                        "3"});
 #line 57
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table7, "And ");
 #line 61

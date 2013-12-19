@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -29,24 +29,24 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _dataMerge = new DsfDataMergeActivity {Result = ResultVariable};
+            _dataMerge = new DsfDataMergeActivity { Result = ResultVariable };
 
             List<Tuple<string, string, string, string, string>> mergeCollection;
             ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
 
             int row = 1;
-            foreach (var variable in mergeCollection)
+            foreach(var variable in mergeCollection)
             {
                 _dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
                                                                 variable.Item4, variable.Item5));
                 row++;
             }
-            
+
             TestStartNode = new FlowStep
                 {
                     Action = _dataMerge
                 };
-          
+
         }
 
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
@@ -55,7 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             List<Tuple<string, string, string, string, string>> mergeCollection;
             ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
 
-            if (mergeCollection == null)
+            if(mergeCollection == null)
             {
                 mergeCollection = new List<Tuple<string, string, string, string, string>>();
                 ScenarioContext.Current.Add("mergeCollection", mergeCollection);
@@ -89,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         {
             List<TableRow> records = table.Rows.ToList();
 
-            if (records.Count == 0)
+            if(records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -97,20 +97,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow record in records)
+            foreach(TableRow record in records)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -123,7 +123,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void WhenTheDataMergeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -132,7 +132,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         {
             string error;
             string actualValue;
-            value = value.Replace("\"\"", "");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
@@ -148,7 +147,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             bool actual = string.IsNullOrEmpty(fetchErrors);
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
+            Assert.IsTrue(expected == actual, message);
         }
 
         [Then(@"the merged result is the same as file ""(.*)""")]
@@ -157,6 +156,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Data.DataMerge.{0}",
                                                 fileName);
             string value = ReadFile(resourceName);
+            value = value.Replace("\r\n", "\n");
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");

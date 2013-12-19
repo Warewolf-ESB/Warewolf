@@ -56,8 +56,8 @@ Scenario: Delete a record using an index from a variable
 	Then the delete result should be "Success"
 	And the recordset "[[rs().row]]" will be as follows
 	| rs       | val |
-	| rs().row | 1   |
-	| rs().row | 2   |
+	| rs().row | 1   |	
+	| rs().row | 3   |
 	And the delete execution has "NO" error
 
 Scenario: Delete a record using a star notation

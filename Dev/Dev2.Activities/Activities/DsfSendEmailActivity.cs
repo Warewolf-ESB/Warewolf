@@ -128,12 +128,15 @@ namespace Dev2.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
+            int indexToUpsertTo = 0;   
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+
             try
             {
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                 IBinaryDataListEntry fromAccountEntry = compiler.Evaluate(dlID, enActionType.User, FromAccount, false, out errors);
+
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator fromAccountItr = Dev2ValueObjectFactory.CreateEvaluateIterator(fromAccountEntry);
                 colItr.AddIterator(fromAccountItr);
@@ -168,54 +171,40 @@ namespace Dev2.Activities
                 IDev2DataListEvaluateIterator attachmentsItr = Dev2ValueObjectFactory.CreateEvaluateIterator(attachmentsEntry);
                 colItr.AddIterator(attachmentsItr);
 
-                int indexToUpsertTo = 0;
+                if (!allErrors.HasErrors())
+                {
                 while (colItr.HasMoreData())
                 {
                     if (IsDebug)
                     {
-                        AddDebugInputItem(FromAccount, "From Account", fromAccountEntry, executionId,indexToUpsertTo);
+                            AddDebugInputItem(FromAccount, "From Account", fromAccountEntry, executionId,
+                                              indexToUpsertTo);
                         AddDebugInputItem(To, "To", toEntry, executionId, indexToUpsertTo);
                         AddDebugInputItem(Subject, "Subject", subjectEntry, executionId, indexToUpsertTo);
                         AddDebugInputItem(Body, "Body", bodyEntry, executionId, indexToUpsertTo);
                     }
-                    string result = SendEmail(colItr, fromAccountItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        string result = SendEmail(colItr, fromAccountItr, toItr, ccItr, bccItr, subjectItr, bodyItr,
+                                                  attachmentsItr, out errors);
 
                     allErrors.MergeErrors(errors);
-                    string expression;
-                    if (DataListUtil.IsValueRecordset(Result) &&
-                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                    {
-                        expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                        indexToUpsertTo = UpsertResult(indexToUpsertTo, toUpsert, result, dataObject, executionId);
                     }
-                    else
-                    {
-                        expression = Result;
-                    }
-                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                    {
-                        toUpsert.Add(region, result);
-                        toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebugMode())
-                        {
-                            AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
-                        }
-                        indexToUpsertTo++;
-                    }
+                    compiler.Upsert(executionId, toUpsert, out errors);
                 }
-                compiler.Upsert(executionId, toUpsert, out errors);
-
             }
             catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
+                
             finally
             {
                 // Handle Errors
 
                 if (allErrors.HasErrors())
                 {
+                    UpsertResult(indexToUpsertTo, toUpsert, "Failure", dataObject, executionId);
+                    compiler.Upsert(executionId, toUpsert, out errors);
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
@@ -228,7 +217,39 @@ namespace Dev2.Activities
 
         }
 
-        string SendEmail(IDev2IteratorCollection colItr, IDev2DataListEvaluateIterator fromAccountItr, IDev2DataListEvaluateIterator toItr, IDev2DataListEvaluateIterator ccItr, IDev2DataListEvaluateIterator bccItr, IDev2DataListEvaluateIterator subjectItr, IDev2DataListEvaluateIterator bodyItr, IDev2DataListEvaluateIterator attachmentsItr, out ErrorResultTO errors)
+        private int UpsertResult(int indexToUpsertTo, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result,
+                                 IDSFDataObject dataObject, Guid executionId)
+        {
+            string expression;
+            if (DataListUtil.IsValueRecordset(Result) &&
+                DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            {
+                expression = Result.Replace(GlobalConstants.StarExpression,
+                                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                expression = Result;
+            }
+            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
+            {
+                toUpsert.Add(region, result);
+                toUpsert.FlushIterationFrame();
+                if (dataObject.IsDebugMode())
+                {
+                    AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
+                }
+                indexToUpsertTo++;
+            }
+            return indexToUpsertTo;
+        }
+
+        private string SendEmail(IDev2IteratorCollection colItr, IDev2DataListEvaluateIterator fromAccountItr,
+                                 IDev2DataListEvaluateIterator toItr, IDev2DataListEvaluateIterator ccItr,
+                                 IDev2DataListEvaluateIterator bccItr, IDev2DataListEvaluateIterator subjectItr,
+                                 IDev2DataListEvaluateIterator bodyItr, IDev2DataListEvaluateIterator attachmentsItr,
+                                 out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var binaryDataListItem = colItr.FetchNextRow(fromAccountItr);
@@ -251,9 +272,10 @@ namespace Dev2.Activities
             {
             mailMessage.From = new MailAddress(fromAccountValue);
             }
-              catch (Exception exception)
+            catch (Exception)
               {
-                  throw new Exception(string.Format("From address is not in the valid format: {0}", fromAccountValue), exception);
+                errors.AddError(string.Format("From address is not in the valid format: {0}", fromAccountValue));
+                return "Failure";
               }
             mailMessage.Body = bodyValue;
             if (!String.IsNullOrEmpty(ccValue))
@@ -268,7 +290,7 @@ namespace Dev2.Activities
             {
                 AddAttachmentsValue(attachmentsValue, mailMessage);
             }
-            var result = "Failure";
+            var result = "";
             try
             {
                 EmailSender.Send(SelectedEmailSource, mailMessage);
@@ -504,7 +526,6 @@ namespace Dev2.Activities
         }
 
         #endregion
-
 
     }
 }

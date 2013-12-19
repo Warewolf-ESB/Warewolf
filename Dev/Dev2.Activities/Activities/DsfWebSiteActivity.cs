@@ -2,9 +2,7 @@
 using Dev2;
 using System.Collections.Generic;
 using Dev2.Activities;
-using Dev2.DataList.Contract;
 using System;
-using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

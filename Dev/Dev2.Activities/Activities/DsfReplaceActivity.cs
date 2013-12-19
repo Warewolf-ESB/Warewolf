@@ -136,8 +136,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             allErrors.AddError("Please insert only variables into Fields To Search");
                             return;
                         }
-                        IBinaryDataListEntry entryToReplaceIn;
 
+                        if (!string.IsNullOrEmpty(findValue))
+                        {
+                        IBinaryDataListEntry entryToReplaceIn;
                         toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue,
                                                             CaseMatch, toUpsert,
                                                             out errors, out replacementCount, out entryToReplaceIn);
@@ -145,6 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.RemoteInvoke)
                         {
                             AddDebugInputItem(s.Trim(), string.Empty, entryToReplaceIn, executionId);
+                        }
                         }
 
                         replacementTotal += replacementCount;

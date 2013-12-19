@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Data.Audit;
+﻿using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -80,7 +80,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <value>
         /// The complex expression auditor.
         /// </value>
-        ComplexExpressionAuditor ComplexExpressionAuditor { get; set; } 
+        ComplexExpressionAuditor ComplexExpressionAuditor { get; set; }
 
         #endregion
 
@@ -290,8 +290,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// Deletes the rows.
         /// </summary>
         /// <param name="index">The index.</param>
+        /// <param name="error"></param>
         /// <returns></returns>
-        bool TryDeleteRows(string index);
+        bool TryDeleteRows(string index, out string error);
 
         /// <summary>
         /// Internals the index of the fetch column.

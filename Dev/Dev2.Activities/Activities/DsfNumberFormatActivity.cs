@@ -117,11 +117,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Loop data ;)
                 while(colItr.HasMoreData())
                 {
-                    int roundingDecimalPlacesValue;
-                    colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue.IsWholeNumber(out roundingDecimalPlacesValue);
-
                     int decimalPlacesToShowValue;
-                    bool adjustDecimalPlaces = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue.IsWholeNumber(out decimalPlacesToShowValue);
+                    string tmpDecimalPlacesToShow = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue;
+                    bool adjustDecimalPlaces = tmpDecimalPlacesToShow.IsWholeNumber(out decimalPlacesToShowValue);
+                    if(!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
+                    {
+                        throw new Exception("Decimals to show is not valid");
+                    }
+
+
+                    string tmpDecimalPlaces = colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue;
+                    int roundingDecimalPlacesValue = 0;
+                    if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsWholeNumber(out roundingDecimalPlacesValue))
+                    {
+                        throw new Exception("Rounding decimal places is not valid");
+                    }
 
                     var binaryDataListItem = colItr.FetchNextRow(expressionIterator);
                     var val = binaryDataListItem.TheValue;
@@ -202,7 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
 
-            if (labelText == "Rounding Decimal Places")
+            if(labelText == "Rounding Decimal Places")
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Type" });
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = RoundingType });                
@@ -210,7 +220,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
 
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
@@ -231,7 +241,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -240,7 +250,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -255,25 +265,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
 
-                    if (t.Item1 == Expression)
+                    if(t.Item1 == Expression)
                     {
                         Expression = t.Item2;
                     }
 
-                    if (t.Item1 == RoundingType)
+                    if(t.Item1 == RoundingType)
                     {
                         RoundingType = t.Item2;
                     }
 
-                    if (t.Item1 == RoundingDecimalPlaces)
+                    if(t.Item1 == RoundingDecimalPlaces)
                     {
                         RoundingDecimalPlaces = t.Item2;
                     }
 
-                    if (t.Item1 == DecimalPlacesToShow)
+                    if(t.Item1 == DecimalPlacesToShow)
                     {
                         DecimalPlacesToShow = t.Item2;
                     }
@@ -283,7 +293,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

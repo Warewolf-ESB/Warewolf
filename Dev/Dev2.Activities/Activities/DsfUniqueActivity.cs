@@ -165,7 +165,8 @@ namespace Dev2.Activities
 
             try
             {
-                IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
+                IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert =
+                    Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
                 toUpsert.IsDebug = false;
                 toUpsert.AttachDebugFromExpression = false;
                 toUpsert.RecordSetDataAsCSVToScalar = true;
@@ -173,13 +174,20 @@ namespace Dev2.Activities
                 IBinaryDataListEntry rsEntry;
 
                 // We need to break up by , for InFields ;)
-                List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, 0, true, out errors, out rsEntry);
+                List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, 0, true, out errors,
+                                                     out rsEntry);
                 allErrors.MergeErrors(errors);
 
                 // Use row data?!, nope use row indexes ;)
-                List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject, (cols.Count+1), false, out errors, out rsEntry);
+                List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject, (cols.Count + 1),
+                                                             false, out errors, out rsEntry);
                 allErrors.MergeErrors(errors);
 
+                compiler.Evaluate(dlID, enActionType.User, ResultFields, false, out errors);
+                allErrors.MergeErrors(errors);
+
+                compiler.Evaluate(dlID, enActionType.User, InFields, false, out errors);
+                allErrors.MergeErrors(errors);
 
                 // Fetch the unique data ;)
                 List<int> uniqueRowIndexes = rsEntry.GetDistinctRows(cols);
@@ -190,6 +198,8 @@ namespace Dev2.Activities
                 // And break and validate the target expressions ;)
                 targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
 
+                if (!allErrors.HasErrors())
+                {
                 // process each row ;)
                 foreach (var uidx in uniqueRowIndexes)
                 {
@@ -256,6 +266,7 @@ namespace Dev2.Activities
                     }
                 }
 
+            }
             }
             catch (Exception e)
             {

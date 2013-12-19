@@ -209,9 +209,9 @@ namespace Dev2.Data.Tests.BinaryDataList
                 // emulate the delete ;)
                 if (bdl.TryGetEntry("rs", out entry, out error))
                 {
-                    entry.TryDeleteRows("");
-                    entry.TryDeleteRows("");
-                    entry.TryDeleteRows("");
+                    entry.TryDeleteRows("", out error);
+                    entry.TryDeleteRows("", out error);
+                    entry.TryDeleteRows("", out error);
                 }
 
                 var res = entry.FetchAppendRecordsetIndex();
@@ -242,7 +242,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             // emulate the delete at index 1, aka a header delete ;)
             if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                entry.TryDeleteRows("1");
+                entry.TryDeleteRows("1", out error);
             }
 
             var res = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
@@ -273,9 +273,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             // emulate the delete ;)
             if (bdl.TryGetEntry("rs", out entry, out error))
             {
-                entry.TryDeleteRows("3");
-                entry.TryDeleteRows("2");
-                entry.TryDeleteRows("1");
+                entry.TryDeleteRows("3", out error);
+                entry.TryDeleteRows("2", out error);
+                entry.TryDeleteRows("1", out error);
             }
 
             var res = entry.FetchAppendRecordsetIndex();

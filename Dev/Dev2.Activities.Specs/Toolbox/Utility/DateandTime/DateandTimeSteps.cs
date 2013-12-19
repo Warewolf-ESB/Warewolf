@@ -107,7 +107,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             string error;
             string actualValue;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            expectedResult = expectedResult.Replace("\"\"", "");
+            expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);

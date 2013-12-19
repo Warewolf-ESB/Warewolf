@@ -107,7 +107,7 @@ Scenario: Sort a recordset forwards empty recordset
 	When the sort records tool is executed
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
-	And the sort execution has "AN" error
+	And the sort execution has "NO" error
 	
 Scenario: Sort a recordset backwards empty recordset
 	Given I have the following recordset to sort
@@ -117,7 +117,7 @@ Scenario: Sort a recordset backwards empty recordset
 	When the sort records tool is executed
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | row    |
-	And the sort execution has "AN" error
+	And the sort execution has "NO" error
 			
 Scenario: Sort a recordset forwards with one row
 	Given I have the following recordset to sort

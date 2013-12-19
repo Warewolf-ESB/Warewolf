@@ -75,8 +75,27 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	Then the datetime result should be "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
 	And datetime execution has "NO" error
 
-Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
+Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D.
 	Given I have a date "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
+	And the input format as "12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
+	And I selected Add time as "None" with a value of 0
+	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"
+	When the datetime tool is executed
+	Then the datetime result should be "2013/12/05 04:18:51 PM"
+	And datetime execution has "NO" error
+
+Scenario: Date and Time with input format - 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with AD
+	Given I have a date "04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
+	And the input format as "12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
+	And I selected Add time as "None" with a value of 0
+	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"
+	When the datetime tool is executed
+	Then the datetime result should be "2013/12/05 04:18:51 PM"
+	And datetime execution has "NO" error
+
+
+Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D
+	Given I have a date "04:05:Thursday:A.D:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
 	And the input format as "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
 	And I selected Add time as "None" with a value of 0
 	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"

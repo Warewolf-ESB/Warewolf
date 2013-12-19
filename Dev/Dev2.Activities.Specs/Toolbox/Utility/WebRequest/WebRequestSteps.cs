@@ -33,8 +33,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var webGet = new DsfWebGetRequestActivity
                 {
                     Result = ResultVariable,
-                    Url = url,
-                    Headers = header
+                    Url = url ?? "",
+                    Headers = header ?? ""
                 };
 
             TestStartNode = new FlowStep
@@ -83,7 +83,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         {
             string error;
             string actualValue;
-            expectedResult = expectedResult.Replace("\"\"", "");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
