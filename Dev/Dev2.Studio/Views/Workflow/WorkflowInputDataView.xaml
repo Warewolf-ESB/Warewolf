@@ -20,7 +20,7 @@
         <BitmapImage UriSource="pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStart-32.png" ></BitmapImage>
     </Window.Icon>
     <Window.InputBindings>
-        <KeyBinding Key="F5" Command="{Binding Path=OKCommand}"/>
+        <KeyBinding Key="F6" Command="{Binding Path=OKCommand}"/>
         <!--<KeyBinding Key="F10" Command="{Binding Path=StepThrough}"/>-->
         <KeyBinding Command="{Binding Path=ViewInBrowserCommand}" Key="F7" />
         <KeyBinding Key="Escape" Command="{Binding Path=CancelCommand}"/>

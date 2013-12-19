@@ -187,7 +187,7 @@ namespace Dev2.Studio.UI.Tests
             //------------Assert Results-------------------------
             OutputUIMap.WaitForExecution();
             UITestControlCollection uiTestControlCollection = OutputUIMap.GetOutputWindow();
-            Assert.AreEqual(4, uiTestControlCollection.Count);
+            Assert.IsTrue(uiTestControlCollection.Count > 1);
             UITestControl executionStep = uiTestControlCollection[uiTestControlCollection.Count - 1];
             string workflowStepName = OutputUIMap.GetStepName(executionStep);
             Assert.AreEqual("Bug9394", workflowStepName);

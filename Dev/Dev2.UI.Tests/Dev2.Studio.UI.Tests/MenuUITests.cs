@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(5000);
             SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{F5}");
+            SendKeys.SendWait("{F6}");
             Playback.Wait(5000);
 
             var uiControl = RibbonUIMap.GetControlByName("Save");

@@ -17,29 +17,29 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 {
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
-         VisualTreeWalker vstw = new VisualTreeWalker();
+        VisualTreeWalker vstw = new VisualTreeWalker();
 
 
-         public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
-         {
-             var scrollViewer = GetScrollViewer(theTab);
-             var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
-             foreach(var scrollViewerChild in scrollViewerChildren)
-             {
-                 if(scrollViewerChild.FriendlyName == "VerticalScrollBar")
-                 {
-                     var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
-                     foreach(var scrollChild in getVericalScrollBarChildren)
-                     {
-                         if(scrollChild.FriendlyName == "thumb")
-                         {
-                             return scrollChild;
-                         }
-                     }
-                 }
-             }
-             return null;
-         }
+        public UITestControl ScrollViewer_GetScrollBar(UITestControl theTab)
+        {
+            var scrollViewer = GetScrollViewer(theTab);
+            var scrollViewerChildren = GetScrollViewer(theTab).GetChildren();
+            foreach(var scrollViewerChild in scrollViewerChildren)
+            {
+                if(scrollViewerChild.FriendlyName == "VerticalScrollBar")
+                {
+                    var getVericalScrollBarChildren = scrollViewerChild.GetChildren();
+                    foreach(var scrollChild in getVericalScrollBarChildren)
+                    {
+                        if(scrollChild.FriendlyName == "thumb")
+                        {
+                            return scrollChild;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Finds a control on the Workflow Designer
@@ -267,17 +267,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 foreach(UITestControl theControl in testFlowChildCollection)
                 {
-                    if (theControl.GetProperty("AutomationID").ToString() == "SmallViewContent")
+                    if(theControl.GetProperty("AutomationID").ToString() == "SmallViewContent")
                     {
                         var smallViewControls = theControl.GetChildren();
-                        foreach (var smallViewControl in smallViewControls)
+                        foreach(var smallViewControl in smallViewControls)
                         {
                             if(smallViewControl.ControlType == ControlType.Button && smallViewControl.Height == 22)
                             {
                                 Point newPoint = new Point(smallViewControl.Left + 10, smallViewControl.Top + 10);
                                 Mouse.Click(newPoint);
                             }
-                            
+
                         }
                     }
                 }
@@ -342,18 +342,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                         if(potentialRow.ControlType.ToString() == "Row")
                         {
                             var theRow = (potentialRow as WpfRow);
-                            foreach (var cell in theRow.Cells)
+                            foreach(var cell in theRow.Cells)
                             {
-                                if (cell is WpfEdit)
+                                if(cell is WpfEdit)
                                 {
-                                    if ((cell as WpfEdit).Text == text)
+                                    if((cell as WpfEdit).Text == text)
                                     {
                                         return true;
                                     }
                                 }
-                                else if ((cell is WpfText))
+                                else if((cell is WpfText))
                                 {
-                                   if((cell as WpfText).DisplayText == text)
+                                    if((cell as WpfText).DisplayText == text)
                                     {
                                         return true;
                                     }
@@ -421,26 +421,26 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl findContent = null;
             foreach(var child in assignControl.GetChildren())
             {
-                if (child.FriendlyName == "SmallViewContent")
+                if(child.FriendlyName == "SmallViewContent")
                 {
                     findContent = child;
                     break;
                 }
             }
-            if (findContent != null)
+            if(findContent != null)
             {
                 UITestControl findTable = null;
-                foreach (var child in findContent.GetChildren())
+                foreach(var child in findContent.GetChildren())
                 {
-                    if (child.FriendlyName == "SmallDataGrid")
+                    if(child.FriendlyName == "SmallDataGrid")
                     {
                         findTable = child;
                         break;
                     }
                 }
-                if (findTable != null)
+                if(findTable != null)
                 {
-                    WpfTable foundTable = (WpfTable) findTable;
+                    WpfTable foundTable = (WpfTable)findTable;
                     return foundTable;
                 }
             }
@@ -478,7 +478,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 }
             }
             throw new UITestControlNotFoundException("Cannot find specified control large view content");
-        }        
+        }
 
         public void AssignControl_ClickLeftTextboxInRow(UITestControl theTab, string controlAutomationId, int row)
         {
@@ -503,7 +503,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public UITestControl AssignControl_GetLeftTextboxInRow(string controlAutomationId, int row)
         {
             var activeTab = TabManagerUIMap.GetActiveTab();
-            WpfTable middleBox = AssignControl_GetSmallViewTable(activeTab, controlAutomationId,  row);
+            WpfTable middleBox = AssignControl_GetSmallViewTable(activeTab, controlAutomationId, row);
             // Get the textbox
             var getRow = middleBox.Rows[row];
             var getCell = getRow.GetChildren()[2];
@@ -938,7 +938,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return flowchartDesigner;
         }
 
-      
+
 
 
         /// <summary>
@@ -1026,7 +1026,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("{F5}");
             if(DebugUIMap.WaitForDebugWindow(5000))
             {
-                SendKeys.SendWait("{F5}");
+                SendKeys.SendWait("{F6}");
             }
             else
             {
@@ -1394,12 +1394,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
                 }
             }
-            if (theControl.BoundingRectangle.X > workSurface.Width)
+            if(theControl.BoundingRectangle.X > workSurface.Width)
             {
                 //might already be scrolled
                 var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
                 WpfControl getLeft = scrollBar as WpfControl;
-                if (getLeft.Left < 2084)
+                if(getLeft.Left < 2084)
                 {
                     //Scoll bar is at the left, scroll right
                     Mouse.StartDragging(scrollBar);
@@ -1430,7 +1430,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public bool TryCloseMappings(string controlAutomationID)
         {
             var button = WorkflowDesignerUIMap.Adorner_GetButton(TabManagerUIMap.GetActiveTab(), controlAutomationID, "Close Mapping");
-            if (button != null)
+            if(button != null)
             {
                 WorkflowDesignerUIMap.MoveMouseForAdornersToAppear(button.BoundingRectangle);
                 Mouse.Click(button);
