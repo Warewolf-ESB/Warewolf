@@ -6,7 +6,7 @@ namespace Dev2.Data.Decisions.Operations
     {
         public Enum HandlesType()
         {
-            return enDecisionType.NotContains;
+            return enDecisionType.NotContain;
         }
 
         public bool Invoke(string[] cols)

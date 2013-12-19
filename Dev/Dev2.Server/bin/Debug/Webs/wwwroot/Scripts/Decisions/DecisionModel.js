@@ -38,7 +38,7 @@ function DecisionViewModel() {
             { displayValue: "Contains", optionValue: "IsContains", columnCount: 2 },
             { displayValue: "Doesn't Start With", optionValue: "NotStartsWith", columnCount: 2 },
             { displayValue: "Doesn't End With", optionValue: "NotEndsWith", columnCount: 2 },
-            { displayValue: "Doesn't Contains", optionValue: "NotContains", columnCount: 2 },
+            { displayValue: "Doesn't Contain", optionValue: "NotContain", columnCount: 2 },
             { displayValue: "Is Alphanumeric", optionValue: "IsAlphanumeric", columnCount: 1 },
             { displayValue: "Is Base64", optionValue: "IsBase64", columnCount: 1 },
             { displayValue: "Is Between", optionValue: "IsBetween", columnCount: 3 },

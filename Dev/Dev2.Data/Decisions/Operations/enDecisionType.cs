@@ -88,7 +88,7 @@ namespace Dev2.Data.Decisions.Operations
         [DecisionTypeDisplayValue("Contains")]
         IsContains,
         [DecisionTypeDisplayValue("Doesn't Contain")]
-        NotContains,
+        NotContain,
         [DecisionTypeDisplayValue("Ends With")]
         IsEndsWith,
         [DecisionTypeDisplayValue("Doesn't End With")]
