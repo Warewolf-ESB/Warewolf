@@ -374,10 +374,10 @@ namespace Dev2.ViewModels.WorkSurface
         }
 
         bool CanExecute()
-            {
-                var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
-                return enabled;
-            }
+        {
+            var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
+            return enabled;
+        }
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
@@ -452,6 +452,7 @@ namespace Dev2.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
+            Save(ContextualResourceModel, false);
             var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, false);
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.ViewInBrowser();
@@ -460,6 +461,7 @@ namespace Dev2.ViewModels.WorkSurface
         public void QuickDebug()
         {
             SetDebugStatus(DebugStatus.Configure);
+            Save(ContextualResourceModel, true);
             var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, true);
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.Save();
@@ -548,7 +550,7 @@ namespace Dev2.ViewModels.WorkSurface
             }
 
             var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
-            
+
             if(compileMessageList.Count == 0)
             {
                 return;
