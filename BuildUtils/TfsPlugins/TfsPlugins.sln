@@ -25,9 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - Gated", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueCIBuild", "QueueCIBuild\QueueCIBuild.csproj", "{17A2E25F-962B-475B-BF51-94EF37ED0ED3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueCIBuildForTestPack", "QueueCIBuildForTestPack\QueueCIBuildForTestPack.csproj", "{004AC2EA-4491-4469-B9F0-0812E1042405}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 14
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -67,6 +69,9 @@ Global
 		SccProjectUniqueName12 = QueueBuild\\QueueGatedBuild.csproj
 		SccProjectName12 = QueueBuild
 		SccLocalPath12 = QueueBuild
+		SccProjectUniqueName13 = QueueCIBuildForTestPack\\QueueCIBuildForTestPack.csproj
+		SccProjectName13 = QueueCIBuildForTestPack
+		SccLocalPath13 = QueueCIBuildForTestPack
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +126,10 @@ Global
 		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004AC2EA-4491-4469-B9F0-0812E1042405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004AC2EA-4491-4469-B9F0-0812E1042405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004AC2EA-4491-4469-B9F0-0812E1042405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004AC2EA-4491-4469-B9F0-0812E1042405}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
