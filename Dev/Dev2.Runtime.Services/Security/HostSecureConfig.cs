@@ -15,7 +15,6 @@ namespace Dev2.Runtime.Security
     {
         const string SectionName = "secureSettings";
 
-
         public const string FileName = "Warewolf Server.exe.secureconfig";
 
         #region Ctor
