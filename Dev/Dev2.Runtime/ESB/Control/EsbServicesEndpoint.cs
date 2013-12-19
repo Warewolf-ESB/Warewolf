@@ -482,16 +482,14 @@ namespace Dev2.Runtime.ESB.Control
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
                 theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                    dataObject.RawPayload, theShape, out invokeErrors);
+                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
             }
 
             // force all items to exist in the DL ;)
             theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
-            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML),
-                string.Empty, theShape, out invokeErrors);
+            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Add left to right
@@ -599,7 +597,6 @@ namespace Dev2.Runtime.ESB.Control
                     oDLXDoc.LoadXml(outputFragment);
 
                     outputFragment = oDLXDoc.DocumentElement.InnerXml;
-
                 }
                 catch(Exception e)
                 {

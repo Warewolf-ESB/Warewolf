@@ -58,6 +58,13 @@ namespace Dev2.Runtime.ServiceModel
                     return DeserializeService(xmlStr.ToXElement(), resourceType);
                 }
 
+
+                if (webRequestPoco.ResourceType == "DbService")
+                {
+                    return DbService.Create();
+                }
+
+
                 return null;
 
             }

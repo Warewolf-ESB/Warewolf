@@ -18,6 +18,10 @@ namespace Dev2.Activities
 
             ErrorResultTO invokeErrors;
             esbChannel.CorrectDataList(dataObject, dataObject.WorkspaceID, out invokeErrors, compiler);
+
+            dataObject.DataListID = compiler.Shape(dataObject.DataListID, enDev2ArgumentType.Input, inputs, out invokeErrors);
+            _errorsTo.MergeErrors(invokeErrors);
+
             _errorsTo.MergeErrors(invokeErrors);
             var pluginServiceExecution = GetNewPluginServiceExecution(dataObject);
             tmpErrors = new ErrorResultTO();

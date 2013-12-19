@@ -860,6 +860,7 @@ namespace Dev2.Data.Util
         /// <param name="arguments">The arguments.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
         public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
         {
@@ -1075,6 +1076,7 @@ namespace Dev2.Data.Util
         /// Adds () to the end of the value
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="starNotation">if set to <c>true</c> [star notation].</param>
         /// <returns></returns>
         public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false)
         {
@@ -1304,7 +1306,7 @@ namespace Dev2.Data.Util
         /// <summary>
         /// Check if a string is a base64 string
         /// </summary>
-        /// <param stringToEval="value"></param>
+        /// <param name="value">The value.</param>
         /// <returns></returns>
         public static bool IsBase64String(string value)
         {
