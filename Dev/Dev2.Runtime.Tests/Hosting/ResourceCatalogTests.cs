@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.Hosting
     [ExcludeFromCodeCoverage]
     public class ResourceCatalogTests
     {
-        // Change this if you change the number of resouces saved by SaveResources()
+        // Change this if you change the number of resources saved by SaveResources()
         const int SaveResourceCount = 6;
         static object syncRoot = new object();
 
@@ -2468,14 +2468,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceID = Guid.NewGuid();
             const string newResourceName = "New-Name-With-Dashes";
             const string oldResourceName = "Old Resource Name";
-            var resourceFilePath = string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\", oldResourceName);
 
             var getCatalog = ResourceCatalog.Instance;
             var resource = new Resource
             {
                 ResourceName = oldResourceName,
                 ResourceID = resourceID,
-                FilePath = resourceFilePath
             };
             getCatalog.SaveResource(workspace, resource);
             var renameResourceService = new RenameResource();
@@ -2484,16 +2482,17 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\"));
             Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace));
             Directory.CreateDirectory(string.Concat(_testDir, "\\Workspaces\\", workspace, "\\Services\\"));
-            File.WriteAllText(resourceFilePath, @"<TestResource Name=""" + oldResourceName + @""" />", Encoding.UTF8);
 
             //------------Execute Test---------------------------
             var result = renameResourceService.Execute(new Dictionary<string, StringBuilder> { { "ResourceID", new StringBuilder(resourceID.ToString()) }, { "NewName", new StringBuilder(newResourceName) } }, mockedWorkspace.Object);
 
             var obj = ConvertToMsg(result.ToString());
-
+            var renamedResource = getCatalog.GetResource(workspace, resourceID);
+            Assert.IsNotNull(renamedResource);
             // Assert Resource FileName Changed
             Assert.IsTrue(obj.Message.Contains("Renamed Resource"));
-            Assert.IsTrue(File.Exists(_testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml"), "Resource does not exist: " + _testDir + "\\Workspaces\\" + workspace + "\\Services\\New-Name-With-Dashes.xml");
+            Assert.IsTrue(File.Exists(renamedResource.FilePath), "Resource does not exist");
+            StringAssert.Contains(renamedResource.FilePath, newResourceName + ".xml");
         }
 
         #endregion
