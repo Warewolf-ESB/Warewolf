@@ -38,7 +38,7 @@ namespace TestPackBuilder
             }
 
             var toScanFor = BuildSearchExtention(fileExtentionToScanFor);
-            var result = new StringBuilder();
+            var result = new StringBuilder("<Methods>");
             
             if (!recusiveScan)
             {
@@ -71,6 +71,8 @@ namespace TestPackBuilder
                     }
                 }
             }
+
+            result.Append("</Methods>");
 
             return result.ToString();
         }
@@ -116,13 +118,13 @@ namespace TestPackBuilder
             var result = new StringBuilder();
             var nameEnd = 0;
 
-            while((idx = contents.IndexOf(testAnnotationSearchString, nameEnd, System.StringComparison.Ordinal)) >= 0)
+            while((idx = contents.IndexOf(testAnnotationSearchString, nameEnd)) >= 0)
             {
-                var nameStart = contents.IndexOf(_signatureStart, idx, System.StringComparison.Ordinal);
+                var nameStart = contents.IndexOf(_signatureStart, idx);
                 if(nameStart > 0)
                 {
                     nameStart += _signatureStart.Length;
-                    nameEnd = contents.IndexOf(_signatureEnd, nameStart, System.StringComparison.Ordinal);
+                    nameEnd = contents.IndexOf(_signatureEnd, nameStart);
 
                     // we got one ;)
                     if(nameEnd > nameStart)
@@ -147,8 +149,9 @@ namespace TestPackBuilder
         {
             StringBuilder result = new StringBuilder();
 
+            result.Append("<TestMethod>");
             result.Append(val);
-            result.Append(",");
+            result.Append("</TestMethod>");
 
             return result.ToString();
         }
