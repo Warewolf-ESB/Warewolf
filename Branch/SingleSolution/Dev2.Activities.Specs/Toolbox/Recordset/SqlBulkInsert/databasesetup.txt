@@ -1,0 +1,79 @@
+﻿Run the following scripts to setup the tables, relationships and triggers required to have a successful test run
+
+USE [Dev2TestingDB]
+GO
+
+/****** Object:  Table [dbo].[SqlBulkInsertSpecFlowTestTable]    Script Date: 11/27/2013 16:08:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTableForeign](
+	[Col1] [uniqueidentifier] NOT NULL,
+	[Col2] [varchar](50) NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTableForeign] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+CREATE TABLE [dbo].[SqlBulkInsertSpecFlowTestTable](
+	[Col1] [int] IDENTITY(1,1) NOT NULL,
+	[Col2] [varchar](10) NULL,
+	[Col3] [uniqueidentifier] NULL,
+ CONSTRAINT [PK_SqlBulkInsertSpecFlowTestTable] PRIMARY KEY CLUSTERED 
+(
+	[Col1] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable]  WITH NOCHECK ADD  CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign] FOREIGN KEY([Col3])
+REFERENCES [dbo].[SqlBulkInsertSpecFlowTestTableForeign] ([Col1])
+GO
+
+ALTER TABLE [dbo].[SqlBulkInsertSpecFlowTestTable] CHECK CONSTRAINT [FK_SqlBulkInsertSpecFlowTestTable_SqlBulkInsertSpecFlowTestTableForeign]
+GO
+
+
+CREATE TRIGGER InsertCol2OnSqlBulkInsertSpecFlowTestTableWhenIsNull ON  [SqlBulkInsertSpecFlowTestTable]
+   AFTER UPDATE, INSERT
+AS 
+BEGIN
+    
+    update SqlBulkInsertSpecFlowTestTable set col2 = 'XXXXXXXX'
+    where col1 in (    
+    select col1
+    AS IDS FROM SqlBulkInsertSpecFlowTestTable
+    WHERE Col2 = ''
+    )
+END
+
+CREATE TRIGGER InsertACountColumnOnSqlBulkInsertSpecFlowTestTableForeign ON  [SqlBulkInsertSpecFlowTestTable]
+   AFTER INSERT
+AS 
+BEGIN
+   update SqlBulkInsertSpecFlowTestTableForeign
+		set Col2 = (select col2 + 1 from SqlBulkInsertSpecFlowTestTableForeign
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67')
+		where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'
+END
+
+CREATE TRIGGER WaitForAWhileOnSqlBulkInsertSpecFlowTestTable ON  [SqlBulkInsertSpecFlowTestTable]
+    AFTER INSERT
+AS 
+BEGIN
+   WAITFOR DELAY '00:00:002';
+END
+GO

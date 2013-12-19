@@ -1,0 +1,27 @@
+﻿<Window x:Class="Dev2.CustomControls.Progress.ProgressDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Height="140"
+        Width="340"
+        MinHeight="140"
+        MinWidth="340"
+        Title="Downloading..."
+        ResizeMode="CanResize"
+        WindowStyle="SingleBorderWindow"
+        WindowStartupLocation="CenterOwner"
+        >
+    <Grid>
+        <DockPanel Margin="10">
+		<Grid DockPanel.Dock="Bottom">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<ProgressBar x:Name="ProgressBar" Grid.Column="0" IsIndeterminate="False" Height="22" />
+			<Button x:Name="CancelButton" Grid.Column="1" Margin="3,0,0,0" Width="70" Height="22" Content="Cancel" Visibility="Visible" HorizontalAlignment="Right" Click="OnCancelButtonClick" />
+		</Grid>
+		<TextBlock x:Name="TextLabel" Text="Downloaded" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" />
+		<TextBlock x:Name="SubTextLabel" Text="" FontStyle="Italic" Visibility="Visible" Margin="0,5,0,5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />
+	</DockPanel>
+    </Grid>
+</Window>

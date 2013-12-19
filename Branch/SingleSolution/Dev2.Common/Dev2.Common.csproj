@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Common</RootNamespace>
+    <AssemblyName>Dev2.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>..\Binaries\Jurassic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\DirectoryHelper.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\GetComputerNames.cs" />
+    <Compile Include="DB Support\DBConnectionProperties.cs" />
+    <Compile Include="DB Support\DBConnectionString.cs" />
+    <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
+    <Compile Include="DB Support\DB_Helper\IDBHelper.cs" />
+    <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
+    <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
+    <Compile Include="DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
+    <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
+    <Compile Include="DB Support\enSupportedDBTypes.cs" />
+    <Compile Include="Dev2Tokenizer.cs" />
+    <Compile Include="Enums\Dev2EnumConverter.cs" />
+    <Compile Include="Enums\enRandomType.cs" />
+    <Compile Include="Enums\enScriptType.cs" />
+    <Compile Include="Enums\PopulateOptions.cs" />
+    <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
+    <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
+    <Compile Include="ExtMethods\DoubleMetaphone.cs" />
+    <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
+    <Compile Include="ExtMethods\StringExtension.cs" />
+    <Compile Include="ExtMethods\TypeExtensions.cs" />
+    <Compile Include="GlobalConstants.cs" />
+    <Compile Include="Interfaces\IDev2TOFn.cs" />
+    <Compile Include="Interfaces\IFrameworkRepository.cs" />
+    <Compile Include="Lookups\CompressionRatios.cs" />
+    <Compile Include="Patterns\ISpookyLoadable.cs" />
+    <Compile Include="Patterns\SpookyAction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\GAC.cs" />
+    <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
+    <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
+    <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
+    <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
+    <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
+    <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
+    <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
+    <Compile Include="Utils\JSONUtils.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

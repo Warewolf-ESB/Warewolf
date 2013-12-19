@@ -1,0 +1,456 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A03004BE-79B5-47AF-88EF-112197619A5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dev2.Activities.Specs</RootNamespace>
+    <AssemblyName>Dev2.Activities.Specs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="BaseTypes\RecordSetBase.cs" />
+    <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Decision.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\ControlFlow\Decision\DecisionSteps.cs" />
+    <Compile Include="Toolbox\ControlFlow\Switch\Switch.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Switch.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\ControlFlow\Switch\SwitchSteps.cs" />
+    <Compile Include="Toolbox\Data\Assign\Assign.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Assign.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\Assign\AssignSteps.cs" />
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BaseConversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\CaseConversion\CaseConversion.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CaseConversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\CaseConversion\CaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\DataMerge\DataMerge.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataMerge.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\DataMerge\DataMergeSteps.cs" />
+    <Compile Include="Toolbox\Data\DataSplit\DataSplit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSplit.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\DataSplit\DataSplitSteps.cs" />
+    <Compile Include="Toolbox\Data\FindIndex\FindIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindIndex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\FindIndex\FindIndexSteps.cs" />
+    <Compile Include="Toolbox\Data\Replace\Replace.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Replace.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
+    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ForEach.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\LoopConstructs\ForEach\ForEachSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Count\Count.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Count.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Count\CountSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Delete\Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Delete\DeleteSteps.cs" />
+    <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindRecordsetIndexMultiple.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultipleSteps.cs" />
+    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FindRecordIndex.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndexSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Sort\Sort.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sort.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Sort\SortSteps.cs" />
+    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlBulkInsert.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsertSteps.cs" />
+    <Compile Include="Toolbox\Recordset\Unique\Unique.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unique.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
+    <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Command.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\Command\CommandSteps.cs" />
+    <Compile Include="Toolbox\Scripting\Script\Script.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Script.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Scripting\Script\ScriptSteps.cs" />
+    <Compile Include="Toolbox\Utility\Calculate\Calculate.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Calculate.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Calculate\CalculateSteps.cs" />
+    <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DateandTimeDifference.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifferenceSteps.cs" />
+    <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DateandTime.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
+    <Compile Include="Toolbox\Utility\Email\Email.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Email.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Email\EmailSteps.cs" />
+    <Compile Include="Toolbox\Utility\FormatNumber\FormatNumber.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FormatNumber.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\FormatNumber\FormatNumberSteps.cs" />
+    <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GatherSystemInformation.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformationSteps.cs" />
+    <Compile Include="Toolbox\Utility\Random\Random.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Random.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\Random\RandomSteps.cs" />
+    <Compile Include="Toolbox\Utility\WebRequest\WebRequest.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebRequest.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\WebRequest\WebRequestSteps.cs" />
+    <Compile Include="Toolbox\Utility\XPath\XPath.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XPath.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Utility\XPath\XPathSteps.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="Toolbox\ControlFlow\Decision\Decision.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Decision.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\ControlFlow\Switch\Switch.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Switch.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\Assign\Assign.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Assign.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\CaseConversion\CaseConversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CaseConversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\DataMerge\DataMerge.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataMerge.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\DataSplit\DataSplit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\FindIndex\FindIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Data\Replace\Replace.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ForEach.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Count\Count.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Count.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Delete\Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\FindRecordIndexMultiple\FindRecordsetIndexMultiple.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindRecordsetIndexMultiple.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\FindRecordIndex\FindRecordIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FindRecordIndex.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Sort\Sort.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Sort.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\SqlBulkInsert\SqlBulkInsert.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>SqlBulkInsert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Recordset\Unique\Unique.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Unique.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\Command\Command.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Command.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Scripting\Script\Script.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Script.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Calculate\Calculate.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Calculate.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTimeDifference.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Email\Email.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Email.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\FormatNumber\FormatNumber.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FormatNumber.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\GatherSystemInformation\GatherSystemInformation.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>GatherSystemInformation.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\Random\Random.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Random.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\WebRequest\WebRequest.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebRequest.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Utility\XPath\XPath.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>XPath.feature.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
+      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
+      <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
+      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Name>Dev2.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
+      <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
+      <Name>Dev2.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Integration.Tests\Dev2.Integration.Tests.csproj">
+      <Project>{2C7F0E32-C4C4-422D-A767-92F3B3510392}</Project>
+      <Name>Dev2.Integration.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
+      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
+      <Name>Dev2.Runtime.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Toolbox\Data\DataMerge\NewLineExample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Data\DataSplit\CSVExample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\python_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_badly_formatted.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_two_variables.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\ruby_one_variable.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Toolbox\FileAndFolder\" />
+    <Folder Include="Toolbox\Resources\" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

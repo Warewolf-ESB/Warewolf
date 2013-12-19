@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="Dev2.Activities.Designers2.Core.Errors.OnError"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
+             xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <ResourceDictionary x:Name="TheResources"
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+    </UserControl.Resources>
+
+    <GroupBox x:Name="OnErrorGroupBox"             
+              Style="{StaticResource ActivityGroupBoxStyle}"
+              VerticalContentAlignment="Stretch"
+              Width="Auto">
+        <GroupBox.Header>
+            <TextBlock Text="On Error"
+                       Margin="1"
+                       Padding="1"></TextBlock>
+        </GroupBox.Header>
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="Put error in this variable"
+                   Style="{StaticResource ActivityMapppingLabelStyle}" />
+            <ui:IntellisenseTextBox Grid.Row="0"
+                                    Grid.Column="1"
+                                    DefaultText="[[Errors().Message]]"
+                                    WrapInBrackets="True"
+                                    Text="{Binding ModelItem.OnErrorVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipVariable}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Variable_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpVariable}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="OnErrorVariable"
+                                         SourcePropertyValue="{Binding ModelItem.OnErrorVariable, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+
+            <Label Grid.Row="1"
+                   Grid.Column="0"
+                   Content="Call this web service"
+                   Style="{StaticResource ActivityMapppingLabelStyle}" />
+            <ui:IntellisenseTextBox Grid.Row="1"
+                                    Grid.Column="1"
+                                    DefaultText="http://ServerName:77/Services/LogErrors?Error=[[ErrorMsg]]"
+                                    WrapInBrackets="False"
+                                    Text="{Binding ModelItem.OnErrorWorkflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
+                                    ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipWorkflow}"
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Workflow_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpWorkflow}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="OnErrorWorkflow"
+                                         SourcePropertyValue="{Binding ModelItem.OnErrorWorkflow, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </ui:IntellisenseTextBox>
+
+            <CheckBox Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      Margin="-3,0,0,0"
+                      Content="End this workflow"
+                      IsChecked="{Binding ModelItem.IsEndedOnError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipIsEnded}"
+                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IsEnded_AutoID}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpIsEnded}"
+                                     DataContext="{Binding}" />
+                    <errors:ErrorsSetter Source="{Binding}"
+                                         SourcePropertyName="IsEndedOnError"
+                                         SourcePropertyValue="{Binding ModelItem.IsEndedOnError, UpdateSourceTrigger=PropertyChanged}"
+                                         Target="{Binding}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
+            
+        </Grid>       
+        
+    </GroupBox>
+
+</UserControl>

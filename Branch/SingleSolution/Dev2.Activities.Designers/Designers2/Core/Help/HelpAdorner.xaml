@@ -1,0 +1,43 @@
+﻿<adorners:AdornerControl x:Class="Dev2.Activities.Designers2.Core.Help.HelpAdorner"
+                         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                         xmlns:adorners="clr-namespace:Dev2.Activities.Designers2.Core.Adorners"
+                         xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
+                         mc:Ignorable="d"
+                         d:DesignHeight="300"
+                         d:DesignWidth="300"
+                         d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
+ 
+    <Border Style="{StaticResource HelpAdornerBorderStyle}">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Text="Help"
+                       FontWeight="Bold"></TextBlock>
+            <Button Grid.Row="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Command="{Binding ShowHelpToggleCommand}"
+                    ToolTip="Close Help"
+                    Style="{StaticResource CloseButtonStyle}">
+            </Button>
+            <TextBlock Grid.Row="1"
+                       Margin="0,5,0,0"
+                       Text="{Binding HelpText}"
+                       VerticalAlignment="Top"
+                       TextWrapping="WrapWithOverflow"></TextBlock>
+            <TextBlock Grid.Row="2">
+                <Hyperlink Command="{Binding ShowItemHelpCommand}">View Sample Workflow</Hyperlink>
+            </TextBlock>
+        </Grid>
+    </Border>
+</adorners:AdornerControl>

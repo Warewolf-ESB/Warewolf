@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebApi.OwinSelfHost</id>
+    <version>5.0.0</version>
+    <title>Microsoft ASP.NET Web API 2 OWIN Self Host</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/aspnetcomponent_rtw_ENU.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>This package allows you to host ASP.NET Web API within your own process using the OWIN HttpListener server. ASP.NET Web API is a framework that makes it easy to build HTTP services that reach a broad range of clients, including browsers and mobile devices. ASP.NET Web API is an ideal platform for building RESTful applications on the .NET Framework.</description>
+    <summary>This package allows you to host ASP.NET Web API within your own process using the OWIN HttpListener server.</summary>
+    <releaseNotes>Please go here to view the release notes: http://go.microsoft.com/fwlink/?LinkID=320753&amp;clcid=0x409</releaseNotes>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <language>en-US</language>
+    <tags>Microsoft AspNet WebApi AspNetWebApi OWIN</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.WebApi.Owin" version="5.0.0" />
+      <dependency id="Microsoft.Owin.Hosting" version="2.0.0" />
+      <dependency id="Microsoft.Owin.Host.HttpListener" version="2.0.0" />
+    </dependencies>
+  </metadata>
+</package>
