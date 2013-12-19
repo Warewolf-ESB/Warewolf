@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuild", "QueueBuild\QueueBuild.csproj", "{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueGatedBuild", "QueueBuild\QueueGatedBuild.csproj", "{7D4F3B7A-CF2B-41D5-A144-862EBCCDA9A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TfsUtilsTests", "QueueBuildTest\TfsUtilsTests.csproj", "{56D75D3B-DFC8-4E1C-9889-7443F0E5850F}"
 EndProject
@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - CI", "Qu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueBuildPlugin - Gated", "QueueBuildPlugin - Gated\QueueBuildPlugin - Gated.csproj", "{645BB595-B82F-4622-A94D-07D7372E556B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueWait", "QueueWait\QueueWait.csproj", "{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueCIBuild", "QueueCIBuild\QueueCIBuild.csproj", "{17A2E25F-962B-475B-BF51-94EF37ED0ED3}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -31,42 +31,42 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = QueueBuild\\QueueBuild.csproj
-		SccProjectName1 = QueueBuild
-		SccLocalPath1 = QueueBuild
-		SccProjectUniqueName2 = Kill\\Kill.csproj
-		SccProjectName2 = Kill
-		SccLocalPath2 = Kill
-		SccProjectUniqueName3 = WaitForBuild\\WaitForBuild.csproj
-		SccProjectName3 = WaitForBuild
-		SccLocalPath3 = WaitForBuild
-		SccProjectUniqueName4 = SampleRDC\\SessionGhost.csproj
-		SccProjectName4 = SampleRDC
-		SccLocalPath4 = SampleRDC
-		SccProjectUniqueName5 = GhostView\\SessionGhostLanucher.csproj
-		SccProjectName5 = GhostView
-		SccLocalPath5 = GhostView
-		SccProjectUniqueName6 = DirectoryCopy\\DirectoryUtils.csproj
-		SccProjectName6 = DirectoryCopy
-		SccLocalPath6 = DirectoryCopy
-		SccProjectUniqueName7 = QueueBuildTest\\TfsUtilsTests.csproj
-		SccProjectName7 = QueueBuildTest
-		SccLocalPath7 = QueueBuildTest
-		SccProjectUniqueName8 = Sonar\u0020Job\u0020Lanucher\\Sonar\u0020Job\u0020Lanucher.csproj
-		SccProjectName8 = Sonar\u0020Job\u0020Lanucher
-		SccLocalPath8 = Sonar\u0020Job\u0020Lanucher
-		SccProjectUniqueName9 = ResolveDomainEmailAddress\\ResolveDomainEmailAddress.csproj
-		SccProjectName9 = ResolveDomainEmailAddress
-		SccLocalPath9 = ResolveDomainEmailAddress
-		SccProjectUniqueName10 = QueueBuildPlugin\u0020-\u0020CI\\QueueBuildPlugin\u0020-\u0020CI.csproj
-		SccProjectName10 = QueueBuildPlugin\u0020-\u0020CI
-		SccLocalPath10 = QueueBuildPlugin\u0020-\u0020CI
-		SccProjectUniqueName11 = QueueBuildPlugin\u0020-\u0020Gated\\QueueBuildPlugin\u0020-\u0020Gated.csproj
-		SccProjectName11 = QueueBuildPlugin\u0020-\u0020Gated
-		SccLocalPath11 = QueueBuildPlugin\u0020-\u0020Gated
-		SccProjectUniqueName12 = QueueWait\\QueueWait.csproj
-		SccProjectName12 = QueueWait
-		SccLocalPath12 = QueueWait
+		SccProjectUniqueName1 = Kill\\Kill.csproj
+		SccProjectName1 = Kill
+		SccLocalPath1 = Kill
+		SccProjectUniqueName2 = WaitForBuild\\WaitForBuild.csproj
+		SccProjectName2 = WaitForBuild
+		SccLocalPath2 = WaitForBuild
+		SccProjectUniqueName3 = SampleRDC\\SessionGhost.csproj
+		SccProjectName3 = SampleRDC
+		SccLocalPath3 = SampleRDC
+		SccProjectUniqueName4 = GhostView\\SessionGhostLanucher.csproj
+		SccProjectName4 = GhostView
+		SccLocalPath4 = GhostView
+		SccProjectUniqueName5 = DirectoryCopy\\DirectoryUtils.csproj
+		SccProjectName5 = DirectoryCopy
+		SccLocalPath5 = DirectoryCopy
+		SccProjectUniqueName6 = QueueBuildTest\\TfsUtilsTests.csproj
+		SccProjectName6 = QueueBuildTest
+		SccLocalPath6 = QueueBuildTest
+		SccProjectUniqueName7 = Sonar\u0020Job\u0020Lanucher\\Sonar\u0020Job\u0020Lanucher.csproj
+		SccProjectName7 = Sonar\u0020Job\u0020Lanucher
+		SccLocalPath7 = Sonar\u0020Job\u0020Lanucher
+		SccProjectUniqueName8 = ResolveDomainEmailAddress\\ResolveDomainEmailAddress.csproj
+		SccProjectName8 = ResolveDomainEmailAddress
+		SccLocalPath8 = ResolveDomainEmailAddress
+		SccProjectUniqueName9 = QueueBuildPlugin\u0020-\u0020CI\\QueueBuildPlugin\u0020-\u0020CI.csproj
+		SccProjectName9 = QueueBuildPlugin\u0020-\u0020CI
+		SccLocalPath9 = QueueBuildPlugin\u0020-\u0020CI
+		SccProjectUniqueName10 = QueueBuildPlugin\u0020-\u0020Gated\\QueueBuildPlugin\u0020-\u0020Gated.csproj
+		SccProjectName10 = QueueBuildPlugin\u0020-\u0020Gated
+		SccLocalPath10 = QueueBuildPlugin\u0020-\u0020Gated
+		SccProjectUniqueName11 = QueueCIBuild\\QueueCIBuild.csproj
+		SccProjectName11 = QueueCIBuild
+		SccLocalPath11 = QueueCIBuild
+		SccProjectUniqueName12 = QueueBuild\\QueueGatedBuild.csproj
+		SccProjectName12 = QueueBuild
+		SccLocalPath12 = QueueBuild
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,10 +117,10 @@ Global
 		{645BB595-B82F-4622-A94D-07D7372E556B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{645BB595-B82F-4622-A94D-07D7372E556B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4024CDB6-BFBA-4FE4-9349-AE85B8E8614E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A2E25F-962B-475B-BF51-94EF37ED0ED3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

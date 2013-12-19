@@ -1,14 +1,16 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Xaml;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
 using System;
 using System.Reflection;
 
-namespace QueueGatedBuild
+namespace QueueCIBuild
 {
     class Program
     {
-        
+
         private static string LogfileName = @"BuildQueueLog.txt";
 
         public static string LogFile()
@@ -26,7 +28,7 @@ namespace QueueGatedBuild
             if(args == null || args.Length < 3)
             {
                 string argsPayload = string.Empty;
-                foreach (string str in args)
+                foreach(string str in args)
                 {
                     argsPayload += str + ", ";
                 }
@@ -37,18 +39,18 @@ namespace QueueGatedBuild
             string project = args[1].Trim();
             string def = args[2].Trim();
             string user = args[3].Trim();
-            string shelveSet = args.Length > 4 ? args[4].Trim() : string.Empty;
+            string changeSetID = args.Length > 4 ? args[4].Trim() : string.Empty;
 
             BuildQueuer qb = new BuildQueuer();
 
             File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                "', Definition : '" + def + "', for User : '" + user + "', with shelveset : '" + shelveSet + "'}");
+                                "', Definition : '" + def + "', for User : '" + user + "', for changeset : '" + changeSetID + "'}");
 
             try
             {
-                return qb.Run(server, project, def, shelveSet, user);
+                return qb.Run(server, project, def, user, changeSetID);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 File.WriteAllText(LogFile(), buildTS + " :: Execution Errors { " + e.Message + " }");
             }
@@ -60,18 +62,17 @@ namespace QueueGatedBuild
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def, string shelveSet, string user)
+        public int Run(string server, string project, string def, string user, string changeSetID)
         {
             var tfs = TeamFoundationServerFactory.GetServer(server);
             var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
             var buildDef = buildServer.GetBuildDefinition(project, def);
             var req = buildDef.CreateBuildRequest();
-            
-            // is there a shelveset?
-            if (!string.IsNullOrEmpty(shelveSet))
+
+            // is there a changeset?
+            if(!string.IsNullOrEmpty(changeSetID))
             {
-                req.ShelvesetName = shelveSet;
-                req.Reason = BuildReason.ValidateShelveset;
+                req.ProcessParameters = UpdateAgentTag(changeSetID);
             }
             req.RequestedFor = user;
 
@@ -79,6 +80,14 @@ namespace QueueGatedBuild
 
             return qReq.Id;
 
+        }
+
+        private static string UpdateAgentTag(string changeSetID)
+        {
+            IDictionary<String, Object> paramValues = new Dictionary<string, object>();
+            paramValues.Add("SpecifiedChangeSet", changeSetID);
+            paramValues.Add("UseStagedBuild", false);
+            return XamlServices.Save(paramValues);
         }
 
     }

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("QueueGatedBuild")]
+[assembly: AssemblyTitle("QueueCIBuild")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("QueueGatedBuild")]
+[assembly: AssemblyProduct("QueueCIBuild")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("790985ba-8276-4de7-8e5b-6b7f2718f030")]
+[assembly: Guid("9a771f1a-80c8-40cc-8aac-a2709f469997")]
 
 // Version information for an assembly consists of the following four values:
 //

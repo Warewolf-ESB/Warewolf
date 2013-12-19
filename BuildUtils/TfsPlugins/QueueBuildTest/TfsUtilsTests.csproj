@@ -67,9 +67,17 @@
       <Project>{5806e197-dd63-4da5-917a-d200acaf3d06}</Project>
       <Name>DirectoryUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\QueueBuild\QueueBuild.csproj">
+    <ProjectReference Include="..\QueueBuildPlugin - CI\QueueBuildPlugin - CI.csproj">
+      <Project>{20f2e46f-c30e-4aeb-8c70-fbe2a707d674}</Project>
+      <Name>QueueBuildPlugin - CI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QueueBuild\QueueGatedBuild.csproj">
       <Project>{7d4f3b7a-cf2b-41d5-a144-862ebccda9a3}</Project>
-      <Name>QueueBuild</Name>
+      <Name>QueueGatedBuild</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\QueueCIBuild\QueueCIBuild.csproj">
+      <Project>{17a2e25f-962b-475b-bf51-94ef37ed0ed3}</Project>
+      <Name>QueueCIBuild</Name>
     </ProjectReference>
     <ProjectReference Include="..\ResolveDomainEmailAddress\ResolveDomainEmailAddress.csproj">
       <Project>{cf4e03b0-90cc-4c9e-ace2-52afbc6f6c76}</Project>
