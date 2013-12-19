@@ -29,12 +29,12 @@ namespace TestPackBuilder
 
             if(directoryToScan == null || !Directory.Exists(directoryToScan))
             {
-                return "Error : Directory Does Not Exist";
+                return "<Methods><TestMethod>Error : Directory Does Not Exist</TestMethod></Methods>";
             }
 
             if(string.IsNullOrEmpty(fileExtentionToScanFor))
             {
-                return "Error : No File Extention To Scan For";
+                return "<Methods><TestMethod>Error : No File Extension To Scan For</Methods></TestMethod>";
             }
 
             var toScanFor = BuildSearchExtention(fileExtentionToScanFor);
@@ -118,13 +118,13 @@ namespace TestPackBuilder
             var result = new StringBuilder();
             var nameEnd = 0;
 
-            while((idx = contents.IndexOf(testAnnotationSearchString, nameEnd)) >= 0)
+            while((idx = contents.IndexOf(testAnnotationSearchString, nameEnd, System.StringComparison.Ordinal)) >= 0)
             {
-                var nameStart = contents.IndexOf(_signatureStart, idx);
+                var nameStart = contents.IndexOf(_signatureStart, idx, System.StringComparison.Ordinal);
                 if(nameStart > 0)
                 {
                     nameStart += _signatureStart.Length;
-                    nameEnd = contents.IndexOf(_signatureEnd, nameStart);
+                    nameEnd = contents.IndexOf(_signatureEnd, nameStart, System.StringComparison.Ordinal);
 
                     // we got one ;)
                     if(nameEnd > nameStart)

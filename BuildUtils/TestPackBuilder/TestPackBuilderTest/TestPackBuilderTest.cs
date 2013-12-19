@@ -127,7 +127,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"Error : No File Extention To Scan For";
+            const string expected = @"<Methods><TestMethod>Error : No File Extension To Scan For</Methods></TestMethod>";
 
             var result = obj.ScanDirectory(dir, null, annotation);
 
@@ -142,7 +142,7 @@ namespace TestPackBuilderTest
             var dir = FetchTestDir();
             const string annotation = "[TestMethod]";
 
-            const string expected = @"Error : No File Extention To Scan For";
+            const string expected = @"<Methods><TestMethod>Error : No File Extension To Scan For</Methods></TestMethod>";
 
             var result = obj.ScanDirectory(dir, string.Empty, annotation);
 
