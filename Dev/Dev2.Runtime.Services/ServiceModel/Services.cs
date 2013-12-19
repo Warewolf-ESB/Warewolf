@@ -53,9 +53,9 @@ namespace Dev2.Runtime.ServiceModel
                 var resourceID = webRequestPoco.ResourceID;
                 var xmlStr = _resourceCatalog.GetResourceContents(workspaceID, Guid.Parse(resourceID));
 
-                if (xmlStr != null)
+                if(xmlStr != null && xmlStr.Length != 0)
                 {
-                    return DeserializeService(xmlStr.ToXElement(), resourceType);    
+                    return DeserializeService(xmlStr.ToXElement(), resourceType);
                 }
 
                 return null;

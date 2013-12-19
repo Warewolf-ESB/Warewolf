@@ -18,39 +18,39 @@ namespace Unlimited.Framework.Converters.Graph.String
         {
             IMapper mapper;
 
-            if (IsXml(data.ToString()))
+            if(IsXml(data.ToString()))
             {
                 mapper = new XmlMapper();
             }
-            else if (IsJson(data.ToString()))
+            else if(IsJson(data.ToString()))
             {
                 mapper = new JsonMapper();
             }
             else
             {
                 mapper = data.GetType().IsPrimitive ? new PocoMapper() : null;
-            }            
+            }
             return mapper;
         }
 
         public INavigator CreateNavigator(object data, Type pathType)
         {
-            if (!pathType.GetInterfaces().Contains(typeof(IPath)))
+            if(!pathType.GetInterfaces().Contains(typeof(IPath)))
             {
                 throw new Exception("'" + pathType.ToString() + "' doesn't implement '" + typeof(IPath).ToString() + "'");
             }
 
             INavigator navigator;
 
-            if (pathType == typeof(XmlPath))
+            if(pathType == typeof(XmlPath))
             {
                 navigator = new XmlNavigator(data);
             }
-            else if (pathType == typeof(JsonPath))
+            else if(pathType == typeof(JsonPath))
             {
                 navigator = new JsonNavigator(data);
             }
-            else if (pathType == typeof(PocoPath))
+            else if(pathType == typeof(PocoPath))
             {
                 navigator = new PocoNavigator(data);
             }

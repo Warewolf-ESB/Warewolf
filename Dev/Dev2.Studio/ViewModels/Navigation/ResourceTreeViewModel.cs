@@ -264,7 +264,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         /// <summary>
-        /// Getsa value indicating whether thus instance can select dependencies
+        /// Gets value indicating whether thus instance can select dependencies
         /// </summary>
         public override bool CanSelectDependencies
         {

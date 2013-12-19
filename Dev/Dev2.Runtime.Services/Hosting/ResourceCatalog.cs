@@ -391,8 +391,8 @@ namespace Dev2.Runtime.Hosting
                     guids.Add(guid);
                 }
             }
-            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
 
+            var resourceTypes = ResourceTypeConverter.ToResourceTypes(type);
             var workspaceResources = GetResources(workspaceID);
             var resources = workspaceResources.FindAll(r => guids.Contains(r.ResourceID)
                                                             && resourceTypes.Contains(r.ResourceType));
