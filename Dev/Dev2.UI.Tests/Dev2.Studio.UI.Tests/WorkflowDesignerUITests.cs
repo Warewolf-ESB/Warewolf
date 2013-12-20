@@ -259,7 +259,7 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(step[1]);
             Playback.Wait(100);
             Mouse.Click(step[2]);
-            Playback.Wait(100);
+            Playback.Wait(1500);
 
             //Assert the design surface activity is highlighted
             var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);

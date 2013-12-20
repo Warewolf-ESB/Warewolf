@@ -373,7 +373,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 SendKeys.SendWait("{TAB}{TAB}{ENTER}");
                 Playback.Wait(100);
 
-                Assert.Fail("Got droped ;(");
+                Assert.Fail("Got dropped ;(");
             }
         }
 
@@ -404,7 +404,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
 
-            //Rubberband select them
+            //Rubber-band select them
             var startDragPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             startDragPoint.X = startDragPoint.X - 100;
             startDragPoint.Y = startDragPoint.Y - 100;

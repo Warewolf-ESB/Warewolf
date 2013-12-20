@@ -243,7 +243,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
             if (idx >= tabMgr.Tabs.Count)
             {
-                Playback.Wait(3000);
+                Playback.Wait(10000);
             }
 
             return _tabManager.Tabs[_tabManager.SelectedIndex];

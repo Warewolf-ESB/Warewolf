@@ -28,7 +28,6 @@ namespace Dev2.Activities
             tmpErrors.MergeErrors(_errorsTo);
             var result = ExecutePluginService(pluginServiceExecution);
             tmpErrors.MergeErrors(_errorsTo);
-
             return result;
         }
 

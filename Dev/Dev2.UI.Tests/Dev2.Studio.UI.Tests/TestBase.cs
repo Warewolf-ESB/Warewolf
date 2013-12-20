@@ -147,6 +147,7 @@ namespace Dev2.CodedUI.Tests
             for(int j = 0; j < 20; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
+                Playback.Wait(15);
                 SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
                 Playback.Wait(15);
                 SendKeys.SendWait("{TAB}");
