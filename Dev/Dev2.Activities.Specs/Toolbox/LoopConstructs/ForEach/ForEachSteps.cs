@@ -4,12 +4,17 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common;
 using Dev2.Common.Enums;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -32,12 +37,6 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             }
 
             variableList.Add(new Tuple<string, string>(ResultRecordsetVariable, ""));
-
-            string inMapTo;
-            if (ScenarioContext.Current.TryGetValue("inMapTo", out inMapTo))
-            {
-                variableList.Add(new Tuple<string, string>(inMapTo, ""));
-            }
 
             string outMapTo;
             if (ScenarioContext.Current.TryGetValue("outMapTo", out outMapTo))
@@ -66,13 +65,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                 activity = new DsfActivity
                     {
                         InputMapping = BuildInputMappings(),
-                        //InputMapping = "<Inputs><Input Name=\"data\" Source=\"[[rs().row]]\" Recordset=\"test\" /></Inputs>",
-                        //InputMapping = "<Inputs><Input Name=\"test\" Source=\"[[rs().row]]\" Recordset=\"data\" /></Inputs>",
-                        //InputMapping = "<Inputs><Input Name=\"data\" Source=\"[[rs().row]]\" Recordset=\"test\" /></Inputs>",
                         OutputMapping = BuildOutputMappings(),
-                        //OutputMapping = "<Outputs><Output Name=\"data\" MapsTo=\"[[res().data]]\" Value=\"[[res().data]]\" Recordset=\"test\" /></Outputs>"
-                        //OutputMapping = "<Outputs><Output Name=\"test\" MapsTo=\"[[res().data]]\" Value=\"[[res().data]]\" Recordset=\"data\" /></Outputs>"
-                        //OutputMapping = "<Outputs><Output Name=\"data\" MapsTo=\"[[test().data]]\" Value=\"[[test().data]]\" Recordset=\"res\" /></Outputs>",
+                        ServiceName = "SpecflowForeachActivityTest"
                     };
             }
 
@@ -155,8 +149,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             return outputMappings.ToString();
         }
 
-        [Given(@"I there is a recordset in the datalist with this shape")]
-        public void GivenIThereIsARecordsetInTheDatalistWithThisShape(Table table)
+        [Given(@"There is a recordset in the datalist with this shape")]
+        public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
             List<TableRow> rows = table.Rows.ToList();
 
@@ -171,7 +165,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -190,17 +184,18 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             }
         }
 
+
         [Given(@"I have selected the foreach type as ""(.*)"" and used ""(.*)""")]
         public void GivenIHaveSelectedTheForeachTypeAsAndUsed(string foreachType, string recordSet)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
+            ScenarioContext.Current.Add("foreachType", (enForEachType) Enum.Parse(typeof (enForEachType), foreachType));
             ScenarioContext.Current.Add("recordset", recordSet);
         }
 
         [Given(@"I have selected the foreach type as ""(.*)"" from (.*) to (.*)")]
         public void GivenIHaveSelectedTheForeachTypeAsFromTo(string foreachType, string from, string to)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
+            ScenarioContext.Current.Add("foreachType", (enForEachType) Enum.Parse(typeof (enForEachType), foreachType));
             ScenarioContext.Current.Add("from", from);
             ScenarioContext.Current.Add("to", to);
         }
@@ -208,7 +203,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         [Given(@"I have selected the foreach type as ""(.*)"" as ""(.*)""")]
         public void GivenIHaveSelectedTheForeachTypeAsAs(string foreachType, string numberAs)
         {
-            ScenarioContext.Current.Add("foreachType", (enForEachType)Enum.Parse(typeof(enForEachType), foreachType));
+            ScenarioContext.Current.Add("foreachType", (enForEachType) Enum.Parse(typeof (enForEachType), foreachType));
             ScenarioContext.Current.Add("numberAs", numberAs);
         }
 
@@ -222,7 +217,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void WhenTheForeachToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false, channel: new mockEsb());
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -240,29 +235,41 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             ScenarioContext.Current.Add("outMapTo", outMapTo);
         }
 
-        [Then(@"the recordset ""(.*)"" will have data as")]
-        public void ThenTheRecordsetWillHaveDataAs(string resRecordset, Table table)
+        [Then(@"The mapping uses the following indexes")]
+        public void ThenTheMappingUsesTheFollowingIndexes(Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, resRecordset);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resRecordset);
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            
-            ErrorResultTO errors;
-            var compiler  = DataListFactory.CreateDataListCompiler();
-            compiler.ConvertFrom(result.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML),
-                                        enTranslationDepth.Data, out errors);
+            var inputDefs = ScenarioContext.Current.Get<List<string>>("inputDefs");
+            var outputDefs = ScenarioContext.Current.Get<List<string>>("outputDefs");
 
+            var inMapFrom = ScenarioContext.Current.Get<string>("inMapFrom");
+            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, inMapFrom);
+            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapFrom);
+            var outMapTo = ScenarioContext.Current.Get<string>("outMapTo");
+            string outRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, outMapTo);
+            string outColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapTo);
 
-            string error;
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
-                                                                           out error);
-            recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-
-            List<TableRow> tableRows = table.Rows.ToList();
-            Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for (int i = 0; i < tableRows.Count; i++)
+            int inCount = 0;
+            foreach (string inputDef in inputDefs)
             {
-                Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
+                XElement inputEle = XElement.Parse(inputDef);
+                var child = inputEle.Descendants("Input").First();
+                string value = child.Attribute("Source").Value;
+                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", inRecordset, table.Rows[inCount][0], inColumn), value);
+                inCount++;
+            }
+
+            int outCount = 0;
+            foreach (string outputDef in outputDefs)
+            {
+                XElement inputEle = XElement.Parse(outputDef);
+                var child = inputEle.Descendants("Output").First();
+                string valueMapsTo = child.Attribute("MapsTo").Value;
+                string valueValue = child.Attribute("Value").Value;
+                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", outRecordset, table.Rows[outCount][0], outColumn),
+                                valueMapsTo);
+                Assert.AreEqual(string.Format("[[{0}({1}).{2}]]", outRecordset, table.Rows[outCount][0], outColumn),
+                                valueValue);
+                outCount++;
             }
         }
 
@@ -288,6 +295,73 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
             Assert.IsTrue(expected == actual, message);
+        }
+    }
+
+    public class mockEsb : IEsbChannel
+    {
+        #region Not Implemented
+
+        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID,
+                                   out ErrorResultTO errors)
+        {
+            errors = new ErrorResultTO();
+            return Guid.NewGuid();
+        }
+
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string FindServiceShape(Guid workspaceID, string serviceName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(
+            IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors,
+                                    IDataListCompiler compiler)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri,
+                                           out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
+                                      out ErrorResultTO errors)
+        {
+            List<string> inputList;
+            List<string> outputList;
+
+            if (!ScenarioContext.Current.TryGetValue("inputDefs", out inputList))
+            {
+                inputList = new List<string>();
+                ScenarioContext.Current.Add("inputDefs", inputList);
+            }
+
+            if (!ScenarioContext.Current.TryGetValue("outputDefs", out outputList))
+            {
+                outputList = new List<string>();
+                ScenarioContext.Current.Add("outputDefs", outputList);
+            }
+
+            inputList.Add(inputDefs);
+            outputList.Add(outputDefs);
+
+            errors = new ErrorResultTO();
+            return Guid.NewGuid();
         }
     }
 }

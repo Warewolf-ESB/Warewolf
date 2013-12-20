@@ -60,12 +60,6 @@ Scenario: Enter a blank URL
 	Then the result should contain the string ""
 	And the web request execution has "AN" error
 
-Scenario: Enter a URL that returns complex html over https
-	Given I have the url "https://www.google.com"	
-	When the web request tool is executed 
-	Then the result should contain the string "schema.org"
-	And the web request execution has "NO" error
-
 Scenario: Enter a URL that is a negative index recordset
 	Given I have the url "[[rec(-1).set]]"
 	When the web request tool is executed	
