@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
-using Dev2.Integration.Tests.Helpers;
+﻿using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Net;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -31,7 +31,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             }
             catch(WebException e)
             {
-                if (e.Message.Contains("timed out"))
+                if(e.Message.Contains("timed out"))
                 {
                     Assert.Inconclusive("Tools test workflow took to long to run");
                 }
@@ -53,9 +53,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             {
                 responseData = TestHelper.PostDataToWebserver(postData);
             }
-            catch (WebException e)
+            catch(WebException e)
             {
-                if (e.Message.Contains("timed out"))
+                if(e.Message.Contains("timed out"))
                 {
                     Assert.Inconclusive("Service execution test workflow took to long to run");
                 }
