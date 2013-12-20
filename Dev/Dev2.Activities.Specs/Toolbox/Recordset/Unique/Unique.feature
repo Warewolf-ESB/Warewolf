@@ -3,7 +3,7 @@
 	As a Warewolf user
 	I want tool that will allow me 
 
-Scenario: Find unique records in a  dataset
+Scenario: Find unique records in a recordset
 	Given I have the following duplicated recordset
 	| rs       | val |
 	| rs().row | 10  |
@@ -20,7 +20,7 @@ Scenario: Find unique records in a  dataset
 	| rec().unique | 30     |
 	And the unique execution has "NO" error
 		
-Scenario: Find unique records in a  dataset comma separated
+Scenario: Find unique records in a recordset comma separated
 	Given I have the following duplicated recordset
 	| rs        | val |
 	| rs().row  | 10  |
@@ -41,7 +41,7 @@ Scenario: Find unique records in a  dataset comma separated
 	| rec().unique | 30     |
 	And the unique execution has "NO" error
 
-Scenario: Find unique records in an empty dataset
+Scenario: Find unique records in an empty recordset
 	Given I have the following empty recordset
 	| rs       | val |	
 	And I want to find unique in field "[[rs().row]]" with the return field "[[rs().row]]"
@@ -51,7 +51,7 @@ Scenario: Find unique records in an empty dataset
 	| rec       | unique |
 	And the unique execution has "AN" error
 
-Scenario: Find unique records in a  dataset and the in field is blank
+Scenario: Find unique records in a recordset and the in field is blank
 	Given I have the following duplicated recordset
 	| rs       | val |
 	| rs().row | 1   |
@@ -65,7 +65,7 @@ Scenario: Find unique records in a  dataset and the in field is blank
 	| rec       | unique |
 	And the unique execution has "AN" error
 		
-Scenario: Find unique records in a  dataset the return field is blank
+Scenario: Find unique records in a recordset the return field is blank
 	Given I have the following duplicated recordset
 	| rs       | val |
 	| rs().row | 1   |
