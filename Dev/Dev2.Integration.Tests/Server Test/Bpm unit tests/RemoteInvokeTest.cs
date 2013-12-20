@@ -49,16 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            Assert.AreEqual(6, debugItems.Count);
-
-            // TODO : Flesh out the remainer
-
-            // Number of decision
-            // Number of Plugin, DB, WF and Webservice items
-            // Nesting of inner WF call
-            // Ordering
-            // CodedUI for rendering?
-
+            Assert.AreEqual(5, debugItems.Count);
         }
     }
 }   
