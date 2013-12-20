@@ -305,6 +305,30 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListTranslator_XMLNoInputs")]
+        public void ConvertTo_XMLInputsOnlyFromBinary_ValidXML_Expect_Sucess()
+        {
+
+            ErrorResultTO errors;
+            IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormatInputsOnly);
+            var payload = "<DataList><rs2><f2>rec1.f2.value</f2></rs2><rs2><f2>rec2.f2.value</f2></rs2><scalar1>scalar1Value</scalar1></DataList>";
+            var shape = "<ADL><rs2><f2/></rs2><scalar1/></ADL>";
+            var data = TestHelper.ConvertStringToByteArray(payload);
+
+            var tmp = xmlConverter.ConvertTo(data, shape, out errors);
+            var recordsets = tmp.FetchRecordsetEntries();
+            var scalars = tmp.FetchScalarEntries();
+
+            string error;
+            Assert.AreEqual(1, recordsets.Count);
+            var rowItems = recordsets[0].FetchRowAt(1, out error);
+            Assert.AreEqual("rec1.f2.value", rowItems[0].TheValue);
+            Assert.AreEqual(1, scalars.Count);
+            Assert.AreEqual("scalar1Value", scalars[0].FetchScalar().TheValue);
+        }
+
+        [TestMethod]
         public void DeSerializeToXMLFromBinary_InvertedIndexInsert_ValidXML_Expect_Sucess()
         {
             IBinaryDataList dl = Dev2BinaryDataListFactory.CreateDataList();
