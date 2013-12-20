@@ -598,10 +598,14 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel)
         {
+            return Create(resourceModel, Guid.Empty, DebugMode.Run);
+        }
+
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionID, DebugMode debugMode)
+        {
             VerifyArgument.IsNotNull("resourceModel", resourceModel);
-            IServiceDebugInfoModel debugInfoModel =
-                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, DebugMode.Run);
-            return new WorkflowInputDataViewModel(debugInfoModel, Guid.Empty);
+            var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
+            return new WorkflowInputDataViewModel(debugInfoModel, sessionID);
         }
     }
 }

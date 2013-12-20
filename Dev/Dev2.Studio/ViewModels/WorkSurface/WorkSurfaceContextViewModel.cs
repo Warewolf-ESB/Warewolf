@@ -419,9 +419,8 @@ namespace Dev2.ViewModels.WorkSurface
         WorkflowInputDataViewModel GetWorkflowInputDataViewModel(IContextualResourceModel resourceModel, bool isDebug)
         {
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
-            IServiceDebugInfoModel debugInfoModel =
-                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
-            var inputDataViewModel = new WorkflowInputDataViewModel(debugInfoModel, DebugOutputViewModel.SessionID) { Parent = this };
+            var inputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel, DebugOutputViewModel.SessionID, mode);
+            inputDataViewModel.Parent = this;
             return inputDataViewModel;
         }
 
