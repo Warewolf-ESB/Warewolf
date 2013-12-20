@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
     {
         private const string ResultRecordsetVariable = "[[r().v]]";
 
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -283,18 +283,6 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column, out error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
             Assert.AreEqual(numOfIterations, recordSetValues.Count);
-        }
-
-        [Then(@"the foreach execution has ""(.*)"" error")]
-        public void ThenTheForeachExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.IsTrue(expected == actual, message);
         }
     }
 

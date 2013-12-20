@@ -15,7 +15,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     {
         private DsfFlowSwitchActivity _flowSwitch;
 
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
@@ -68,18 +68,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
             Assert.AreEqual(expectedResult, actualValue);
-        }
-
-        [Then(@"the switch execution has ""(.*)"" error")]
-        public void ThenTheSwitchExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.IsTrue(expected == actual, message);
         }
     }
 }

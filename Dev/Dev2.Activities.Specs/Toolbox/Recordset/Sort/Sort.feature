@@ -25,7 +25,7 @@ Scenario: Sort a recordset forwards using star notation
 	| rs().row | user     |
 	| rs().row | Warewolf |
 	| rs().row | You      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Sort a recordset backwards using star notation
 	Given I have the following recordset to sort
@@ -49,7 +49,7 @@ Scenario: Sort a recordset backwards using star notation
 	| rs().row | so far   |
 	| rs().row | best     |
 	| rs().row | are      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Sort a recordset forwards 
 	Given I have the following recordset to sort
@@ -73,7 +73,7 @@ Scenario: Sort a recordset forwards
 	| rs().row | user     |
 	| rs().row | Warewolf |
 	| rs().row | You      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Sort a recordset backwards 
 	Given I have the following recordset to sort
@@ -97,7 +97,7 @@ Scenario: Sort a recordset backwards
 	| rs().row | so far   |
 	| rs().row | best     |
 	| rs().row | are      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Sort a recordset forwards empty recordset
 	Given I have the following recordset to sort
@@ -107,7 +107,7 @@ Scenario: Sort a recordset forwards empty recordset
 	When the sort records tool is executed
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Sort a recordset backwards empty recordset
 	Given I have the following recordset to sort
@@ -117,7 +117,7 @@ Scenario: Sort a recordset backwards empty recordset
 	When the sort records tool is executed
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | row    |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 			
 Scenario: Sort a recordset forwards with one row
 	Given I have the following recordset to sort
@@ -129,7 +129,7 @@ Scenario: Sort a recordset forwards with one row
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
 	| rs().row | Warewolf |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Sort a recordset backwards recordset  with one row
 	Given I have the following recordset to sort
@@ -141,7 +141,7 @@ Scenario: Sort a recordset backwards recordset  with one row
 	Then the sorted recordset "[[rs().row]]"  will be 
 	| rs       | value    |
 	| rs().row | Warewolf |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Sort a recordset backwards using negative recordset index
 	Given I have the following recordset to sort
@@ -165,7 +165,7 @@ Scenario: Sort a recordset backwards using negative recordset index
 	| rs().row | so far   |
 	| rs().row | best     |
 	| rs().row | are      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Sort a recordset forwards using negative recordset index
 	Given I have the following recordset to sort
@@ -189,4 +189,4 @@ Scenario: Sort a recordset forwards using negative recordset index
 	| rs().row | user     |
 	| rs().row | Warewolf |
 	| rs().row | You      |
-	And the sort execution has "NO" error
+	And the execution has "NO" error

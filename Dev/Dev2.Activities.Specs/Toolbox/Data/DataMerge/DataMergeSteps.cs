@@ -15,7 +15,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     {
         private DsfDataMergeActivity _dataMerge;
 
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -137,19 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
-
-        [Then(@"the data merge execution has ""(.*)"" error")]
-        public void ThenTheDataMergeExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-            Assert.IsTrue(expected == actual, message);
-        }
-
+        
         [Then(@"the merged result is the same as file ""(.*)""")]
         public void ThenTheMergedResultIsTheSameAsFile(string fileName)
         {

@@ -15,7 +15,7 @@ Scenario: Find an index of data in a recordset
 	And search type is "Starts With" and criteria is "Warewolf"
 	When the find records index tool is executed
 	Then the index result should be 5
-	And  the findindex record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in an empty recordset
 	Given I have the following recordset to search
@@ -23,4 +23,4 @@ Scenario: Find an index of data in an empty recordset
 	And search type is "Starts With" and criteria is "Warewolf"
 	When the find records index tool is executed
 	Then the index result should be ""
-	And  the findindex record index has "AN" error
+	And the execution has "AN" error

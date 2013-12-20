@@ -10,7 +10,7 @@ Scenario: Calculate the number of days between two given dates
 	And I selected output in "Weeks" 	
 	When the datetime difference tool is executed
 	Then the difference should be "52"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of years with mulitpart text and variable inputs to both input fields
 	Given I have a DateAndTimeDifference variable "[[years]]" equal to 13
@@ -21,7 +21,7 @@ Scenario: Calculate the number of years with mulitpart text and variable inputs 
 	And I selected output in "Years" 	
 	When the datetime difference tool is executed
 	Then the difference should be "0"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of Months between two given dates
 	Given I have a first date "2013-11-29" 
@@ -30,7 +30,7 @@ Scenario: Calculate the number of Months between two given dates
 	And I selected output in "Months" 	
 	When the datetime difference tool is executed
 	Then the difference should be "12"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of hours between two given dates
 	Given I have a first date "2013-11-29" 
@@ -39,7 +39,7 @@ Scenario: Calculate the number of hours between two given dates
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be "8088"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of minutes between two given dates
 	Given I have a first date "2013-11-29" 
@@ -48,7 +48,7 @@ Scenario: Calculate the number of minutes between two given dates
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
 	Then the difference should be "485280"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of seconds between two given dates
 	Given I have a first date "2013-11-29" 
@@ -57,7 +57,7 @@ Scenario: Calculate the number of seconds between two given dates
 	And I selected output in "Seconds" 	
 	When the datetime difference tool is executed
 	Then the difference should be "29116800"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of split seconds between two given dates
 	Given I have a first date "2013-11-29" 
@@ -66,7 +66,7 @@ Scenario: Calculate the number of split seconds between two given dates
 	And I selected output in "Split Secs" 	
 	When the datetime difference tool is executed
 	Then the difference should be "29116800000"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of weeks between two given dates
 	Given I have a first date "2013-11-29" 
@@ -75,7 +75,7 @@ Scenario: Calculate the number of weeks between two given dates
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be "8088"
-	And datetimediff execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate the number of minutes between two blank inputs
 	Given I have a first date "" 
@@ -84,7 +84,7 @@ Scenario: Calculate the number of minutes between two blank inputs
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Calculate the number of minutes first date is blank
 	Given I have a first date "" 
@@ -93,7 +93,7 @@ Scenario: Calculate the number of minutes first date is blank
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Calculate the number of minutes second date is blank
 	Given I have a first date "2014-11-01" 
@@ -102,7 +102,7 @@ Scenario: Calculate the number of minutes second date is blank
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Calculate the number of seconds with badly formed input format
 	Given I have a first date "2013-11-29" 
@@ -111,13 +111,13 @@ Scenario: Calculate the number of seconds with badly formed input format
 	And I selected output in "Seconds" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Leave input dates blank
 	Given I selected output in "Years"
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 	Scenario: Calculate the number of weeks dates do not match date format
 	Given I have a first date "20131212" 
@@ -126,7 +126,7 @@ Scenario: Leave input dates blank
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 	
 Scenario: Calculate the number of weeks using an invalid date
 	Given I have a first date "2" 
@@ -135,7 +135,7 @@ Scenario: Calculate the number of weeks using an invalid date
 	And I selected output in "Hours" 	
 	When the datetime difference tool is executed
 	Then the difference should be ""
-	And datetimediff execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Calculate with negative recordset index for Input 1
 	Given I have a first date "[[my(-1).date]]" 
@@ -143,7 +143,7 @@ Scenario: Calculate with negative recordset index for Input 1
 	And the date format as "yyyy-mm-dd"
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
-	Then datetimediff execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Calculate with negative recordset index for Input 2
 	Given I have a first date "2014-11-01" 
@@ -151,7 +151,7 @@ Scenario: Calculate with negative recordset index for Input 2
 	And the date format as "yyyy-mm-dd"
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
-	Then datetimediff execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Calculate with negative recordset index for Format
 	Given I have a first date "2014-11-01" 
@@ -159,4 +159,4 @@ Scenario: Calculate with negative recordset index for Format
 	And the date format as "[[my(-1).format]]"
 	And I selected output in "Minutes" 	
 	When the datetime difference tool is executed
-	Then datetimediff execution has "AN" error
+	Then the execution has "AN" error

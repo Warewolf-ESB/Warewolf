@@ -13,7 +13,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
     [Binding]
     public class SortSteps : RecordSetBases
     {
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -114,18 +114,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }
-        }
-
-        [Then(@"the sort execution has ""(.*)"" error")]
-        public void ThenTheSortExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
         }
     }
 }

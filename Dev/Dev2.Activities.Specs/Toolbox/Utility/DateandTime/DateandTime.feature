@@ -10,7 +10,7 @@ Scenario: Add weeks to a given date
 	And the output format as "yyyy-mm-dd"
 	When the datetime tool is executed
 	Then the datetime result should be "2014-11-28"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with Everything blank
 	Given I have a date ""
@@ -19,7 +19,7 @@ Scenario: Date and Time with Everything blank
 	And the output format as ""
 	When the datetime tool is executed
 	Then the datetime result should be a "System.DateTime"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with input blank and incorrect format
 	Given I have a date ""
@@ -28,7 +28,7 @@ Scenario: Date and Time with input blank and incorrect format
 	And the output format as ""
 	When the datetime tool is executed
 	Then the datetime result should be ""
-	And datetime execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Date and Time with no seconds and add 1 second
 	Given I have a date "12:30"
@@ -37,7 +37,7 @@ Scenario: Date and Time with no seconds and add 1 second
 	And the output format as ""
 	When the datetime tool is executed
 	Then the datetime result should be "12:31"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with badly formed inputs
 	Given I have a date "asdf"
@@ -46,7 +46,7 @@ Scenario: Date and Time with badly formed inputs
 	And the output format as ""
 	When the datetime tool is executed
 	Then the datetime result should be ""
-	And datetime execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Date and Time with badly formed output format
 	Given I have a date "12:30"
@@ -55,7 +55,7 @@ Scenario: Date and Time with badly formed output format
 	And the output format as "asdf"
 	When the datetime tool is executed
 	Then the datetime result should be "as1f"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with characters for time to add
 	Given I have a date "12:30"
@@ -64,7 +64,7 @@ Scenario: Date and Time with characters for time to add
 	And the output format as ""
 	When the datetime tool is executed
 	Then the datetime result should be ""
-   And datetime execution has "AN" error
+   And the execution has "AN" error
 
 Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ
 	Given I have a date "2013/12/05 04:18:51 PM"
@@ -73,7 +73,7 @@ Scenario: Date and Time with output format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:
 	And the output format as "12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ"
 	When the datetime tool is executed
 	Then the datetime result should be "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D.
 	Given I have a date "04:05:Thursday:A.D.:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
@@ -82,7 +82,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:ERA:mm:MM:min:ss:sp:yyyy:y
 	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"
 	When the datetime tool is executed
 	Then the datetime result should be "2013/12/05 04:18:51 PM"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Date and Time with input format - 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with AD
 	Given I have a date "04:05:Thursday:AD:12:December:18:51:0:2013:13:South Africa Standard Time:PM:16:5:4:Thursday:339:12:Dec:49:South Africa Standard Time:49:(UTC+02:00) Harare, Pretoria"
@@ -91,7 +91,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:era:mm:MM:min:ss:sp:yyyy:y
 	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"
 	When the datetime tool is executed
 	Then the datetime result should be "2013/12/05 04:18:51 PM"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 
 Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:yy:Z:am/pm:24h:d:dw:DW:dy:m:M:w:ZZ:w:ZZZ with A.D
@@ -101,7 +101,7 @@ Scenario: Date and Time with input format - 12h:dd:DW:Era:mm:MM:min:ss:sp:yyyy:y
 	And the output format as "yyyy/mm/dd 12h:min:ss am/pm"
 	When the datetime tool is executed
 	Then the datetime result should be "2013/12/05 04:18:51 PM"
-	And datetime execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Calculate for a negative recordset index for Date 1
 	Given I have a date "[[my(-1).date]]" 
@@ -109,7 +109,7 @@ Scenario: Calculate for a negative recordset index for Date 1
 	And I selected Add time as "Weeks" with a value of 52
 	And the output format as "yyyy-mm-dd"
 	When the datetime tool is executed
-	Then datetime execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Calculate for a negative recordset index for Format
 	Given I have a date "2013-11-29" 
@@ -117,7 +117,7 @@ Scenario: Calculate for a negative recordset index for Format
 	And I selected Add time as "Weeks" with a value of 52
 	And the output format as "yyyy-mm-dd"
 	When the datetime tool is executed
-	Then datetime execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Calculate for a negative recordset index for Time Value
 	Given I have a date "2013-11-29" 
@@ -125,7 +125,7 @@ Scenario: Calculate for a negative recordset index for Time Value
 	And I selected Add time as "Weeks" with a value of "[[my(-1).int]]"
 	And the output format as "yyyy-mm-dd"
 	When the datetime tool is executed
-	Then datetime execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Calculate for a negative recordset index for Output Format
 	Given I have a date "2013-11-29" 
@@ -133,7 +133,7 @@ Scenario: Calculate for a negative recordset index for Output Format
 	And I selected Add time as "Weeks" with a value of 52
 	And the output format as "[[my(-1).format]]"
 	When the datetime tool is executed
-	Then datetime execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Default outputs for dateparts not present
 	Given I have a date "0" 
@@ -142,4 +142,4 @@ Scenario: Default outputs for dateparts not present
 	And the output format as "yyyy-mm-dd 24hr:min:ss am/pm Era"
 	When the datetime tool is executed
 	Then the datetime result should be "0001-01-01 00r:00:00 AM A.D."
-	And datetime execution has "NO" error
+	And the execution has "NO" error

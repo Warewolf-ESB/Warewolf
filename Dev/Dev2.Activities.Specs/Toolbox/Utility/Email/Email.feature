@@ -12,7 +12,7 @@ Scenario: Send email to multiple receipients
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Success"
-	And email execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Send email with multiple from accounts
 	Given I have an email address input "test1@freemail.com"
@@ -22,7 +22,7 @@ Scenario: Send email with multiple from accounts
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with badly formed multiple To Accounts
 	Given I have an email address input "test1@freemail.com==test2@freemail.com"
@@ -31,7 +31,7 @@ Scenario: Send email with badly formed multiple To Accounts
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with no To Accounts
 	Given I have an email address input ""
@@ -40,7 +40,7 @@ Scenario: Send email with no To Accounts
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with Subject as both text and variable as xml 
 	Given I have an email address input "test1@freemail"
@@ -50,7 +50,7 @@ Scenario: Send email with Subject as both text and variable as xml
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Success"
-	And email execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Send email with no body
 	Given I have an email address input "test1@freemail"
@@ -58,7 +58,7 @@ Scenario: Send email with no body
 	And the subject is "Testing this cool framework"	
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with Body as both text and variable 
 	Given I have an email address input "test1@freemail"
@@ -68,7 +68,7 @@ Scenario: Send email with Body as both text and variable
 	And body is "testing email from [[body]] the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Success"
-	And email execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Send email with variable as Body that is xml
 	Given I have an email address input "test1@freemail"
@@ -78,20 +78,20 @@ Scenario: Send email with variable as Body that is xml
 	And body is "[[body]]"
 	When the email tool is executed
 	Then the email result will be "Success"
-	And email execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Send email with everything blank
 	Given the from account is "me@freemail.com" 
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with a blank from account
 	Given I have an email address input "test1@freemail"
 	And the from account is "" 	
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with a negative index recordset for From Accounts
 	Given I have an email address input "me@freemail.com"
@@ -100,7 +100,7 @@ Scenario: Send email with a negative index recordset for From Accounts
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with a negative index recordset for Recipients
 	Given I have an email address input "[[me(-1).to]]"
@@ -109,7 +109,7 @@ Scenario: Send email with a negative index recordset for Recipients
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with a negative index recordset for Subject
 	Given I have an email address input "test1@freemail"
@@ -118,7 +118,7 @@ Scenario: Send email with a negative index recordset for Subject
 	And body is "testing email from the cool specflow"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Send email with a negative index recordset for Body
 	Given I have an email address input "test1@freemail"
@@ -126,5 +126,5 @@ Scenario: Send email with a negative index recordset for Body
 	And body is "[[my(-1).body]]"
 	When the email tool is executed
 	Then the email result will be "Failure"
-	And email execution has "AN" error
+	And the execution has "AN" error
 

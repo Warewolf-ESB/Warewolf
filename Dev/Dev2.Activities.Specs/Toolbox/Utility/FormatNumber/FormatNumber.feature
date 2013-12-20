@@ -9,7 +9,7 @@ Scenario: Format number rounding normal with zero rounding and zero decimals to 
 	And I want to show 0 decimals 
 	When the format number is executed
 	Then the result 789 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding down 
 	Given I have a number 788.894564545645
@@ -17,7 +17,7 @@ Scenario: Format number rounding down
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.894 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding up
 	Given I have a number 788.894564545645
@@ -25,7 +25,7 @@ Scenario: Format number rounding up
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.895 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding normal
 	Given I have a number 788.894564545645
@@ -33,7 +33,7 @@ Scenario: Format number rounding normal
 	And I want to show 3 decimals 
 	When the format number is executed
 	Then the result 788.890 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding none
 	Given I have a number 788.894564545645
@@ -41,7 +41,7 @@ Scenario: Format number rounding none
 	And I want to show 4 decimals 
 	When the format number is executed
 	Then the result 788.8945 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding down to negative number
 	Given I have a number 788.894564545645
@@ -49,7 +49,7 @@ Scenario: Format number rounding down to negative number
 	And I want to show 0 decimals 
 	When the format number is executed
 	Then the result 700 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number large number to negative decimals
 	Given I have a number 788.894564545645
@@ -57,7 +57,7 @@ Scenario: Format number large number to negative decimals
 	And I want to show -2 decimals 
 	When the format number is executed
 	Then the result 7 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number single digit to negative decimals
 	Given I have a number 7
@@ -65,7 +65,7 @@ Scenario: Format number single digit to negative decimals
 	And I want to show -2 decimals 
 	When the format number is executed
 	Then the result 0 will be returned
-	And formart number execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Format number rounding up to a character
 	Given I have a number 34.2
@@ -73,13 +73,13 @@ Scenario: Format number rounding up to a character
 	And I want to show 2 decimals 
 	When the format number is executed
 	Then the result "" will be returned
-	And formart number execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Format number that is blank
 	Given I have a number ""
 	When the format number is executed
 	Then the result "" will be returned
-   And formart number execution has "AN" error
+   And the execution has "AN" error
 
 Scenario: Format non numeric
 	Given I have a number "asdf"
@@ -87,7 +87,7 @@ Scenario: Format non numeric
 	And I want to show -2 decimals 
 	When the format number is executed
 	Then the result "" will be returned
-   And formart number execution has "AN" error
+   And the execution has "AN" error
 
 Scenario: Format number to charater decimals
 	Given I have a number 34.2
@@ -95,7 +95,7 @@ Scenario: Format number to charater decimals
 	And I want to show "asdf" decimals 
 	When the format number is executed
 	Then the result "" will be returned
-   And formart number execution has "AN" error
+   And the execution has "AN" error
 
 Scenario: Format number with multipart variables and numbers for number rounding and decimals to show
 	Given I have a formatnumber variable "[[int]]" equal to 788
@@ -106,23 +106,23 @@ Scenario: Format number with multipart variables and numbers for number rounding
 	And I want to show "[[decimals]]1" decimals 
 	When the format number is executed
 	Then the result 80 will be returned
-    And formart number execution has "NO" error
+    And the execution has "NO" error
 
 Scenario: Format number with negative recordset index for number
 	Given I have a number "[[my(-1).int]]"
 	When the format number is executed
-	Then formart number execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Format number with negative recordset index for rounding
 	Given I have a formatnumber variable "[[int]]" equal to 788
 	And I have a number "[[int]].894564545645"
 	And I selected rounding "Up" to "[[my(-1).rounding]]"
 	When the format number is executed
-	Then formart number execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Format number with negative recordset index for decimals to show
 	Given I have a formatnumber variable "[[int]]" equal to 788
 	And I have a number "[[int]].894564545645"
 	And I want to show "[[my(-1).decimals]]" decimals 
 	When the format number is executed
-	Then formart number execution has "AN" error
+	Then the execution has "AN" error

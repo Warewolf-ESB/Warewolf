@@ -13,7 +13,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
     [Binding]
     public class FindIndexSteps : RecordSetBases
     {
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -128,18 +128,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             {
                 Assert.AreEqual(tableRows[i][0], records[i]);
             }
-        }
-
-        [Then(@"the find index execution has ""(.*)"" error")]
-        public void ThenTheFindIndexExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
         }
     }
 }

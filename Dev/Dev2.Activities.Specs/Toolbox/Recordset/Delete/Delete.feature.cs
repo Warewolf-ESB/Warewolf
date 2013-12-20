@@ -111,7 +111,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table2, "And ");
 #line 19
- testRunner.And("the delete execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
  testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 30
- testRunner.And("the delete execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -193,7 +193,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 41
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table5, "And ");
 #line 45
- testRunner.And("the delete execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -242,7 +242,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 57
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table7, "And ");
 #line 61
- testRunner.And("the delete execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -283,7 +283,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 72
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table9, "And ");
 #line 74
- testRunner.And("the delete execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -333,7 +333,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 85
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table11, "And ");
 #line 90
- testRunner.And("the delete execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -383,7 +383,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 101
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table13, "And ");
 #line 106
- testRunner.And("the delete execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -415,7 +415,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 114
  testRunner.And("the recordset \"[[rs().row]]\" will be as follows", ((string)(null)), table15, "And ");
 #line 116
- testRunner.And("the delete execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -437,7 +437,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
  testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 123
- testRunner.And("the delete execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -12,29 +12,29 @@ Scenario: Execute commands
 	| dir [[drive]]                   |
 	When the command tool is executed
 	Then the result of the command tool will be "Volume in drive C has no label"
-	And command execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Execute a command that requires user interaction like pause
 	Given I have this command script to execute "pause"
 	When the command tool is executed
 	Then the result of the command tool will be "Press any key to continue . . ."
-	And command execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Execute a blank cmd
 	Given I have this command script to execute ""
 	When the command tool is executed
 	Then the result of the command tool will be ""
-	And command execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Execute invalid cmd
 	Given I have this command script to execute "asdf"
 	When the command tool is executed
 	Then the result of the command tool will be ""
-	And command execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Execute cmd with negative recordset index
 	Given I have this command script to execute "dir [[my(-1).dir]]"
 	When the command tool is executed
-	Then command execution has "AN" error
+	Then the execution has "AN" error
 
 

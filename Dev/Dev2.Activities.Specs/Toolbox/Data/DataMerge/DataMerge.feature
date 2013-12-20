@@ -10,7 +10,7 @@ Scenario: Merge a scalar to a scalar using merge type none
 	And an Input "[[b]]" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf Rocks"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a recordset table and free text using None
 	Given a merge recordset
@@ -22,7 +22,7 @@ Scenario: Merge a recordset table and free text using None
 	And an Input "0" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "100200300"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Chars
 	Given a merge recordset
@@ -35,7 +35,7 @@ Scenario: Merge a recordset table and free text using Chars
 	And an Input "0" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "100002000030000"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a recordset table and free text using New Line
 	Given a merge recordset
@@ -47,7 +47,7 @@ Scenario: Merge a recordset table and free text using New Line
 	And an Input "0" and merge type "New Line" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is the same as file "NewLineExample.txt"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a recordset table and free text using Tab
 	Given a merge recordset
@@ -59,14 +59,14 @@ Scenario: Merge a recordset table and free text using Tab
 	And an Input "<-" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "1tab->	<-2tab->	<-3tab->	<-"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a variable using index that is a char
 	Given a merge variable "[[a]]" equal to "aA " 	
 	And an Input "[[a]]" and merge type "Index" and string at as "b" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a variable using index that is a variable and is blank
 	Given a merge variable "[[a]]" equal to "aA "
@@ -74,7 +74,7 @@ Scenario: Merge a variable using index that is a variable and is blank
 	And an Input "[[a]]" and merge type "Index" and string at as "[[b]]" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And the data merge execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Merge multiple variables on Chars with blank lines
 	Given a merge variable "[[a]]" equal to "Warewolf " 
@@ -85,7 +85,7 @@ Scenario: Merge multiple variables on Chars with blank lines
 	And an Input "" and merge type "Chars" and string at as "|" and Padding " " and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf |Rocks||"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a recordset that has xml data using Tabs
 	Given a merge recordset
@@ -98,7 +98,7 @@ Scenario: Merge a recordset that has xml data using Tabs
 	And an Input "</record>" and merge type "None" and string at as "" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "<record>	<x id="1">One</x>	</record><record>	<x id="2">two</x>	</record><record>	<x id="3">three</x>	</record>"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a short string using big index and padding and alignment
 	Given a merge variable "[[a]]" equal to "Warewolf" 
@@ -107,7 +107,7 @@ Scenario: Merge a short string using big index and padding and alignment
 	And an Input "[[b]]" and merge type "Index" and string at as "5" and Padding "0" and Alignment "Right"
 	When the data merge tool is executed
 	Then the merged result is "Warewolf  00123"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a long string using small index and padding and alignment
 	Given a merge variable "[[a]]" equal to "Warewolf" 
@@ -116,7 +116,7 @@ Scenario: Merge a long string using small index and padding and alignment
 	And an Input "[[b]]" and merge type "Index" and string at as "3" and Padding "0" and Alignment "Right"
 	When the data merge tool is executed
 	Then the merged result is "War123"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 	 
 Scenario: Merge a long string using small index and padding and alignment at invalid index
@@ -126,22 +126,22 @@ Scenario: Merge a long string using small index and padding and alignment at inv
 	And an Input "[[b]]" and merge type "Index" and string at as "-1" and Padding "0" and Alignment "Right"
 	When the data merge tool is executed
 	Then the merged result is ""
-	And the data merge execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Merge a negative recordset index Input
 	Given an Input "[[my(-1).a]]" and merge type "Index" and string at as "10" and Padding " " and Alignment "Left"	
 	When the data merge tool is executed
-	Then the data merge execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Merge a negative recordset index for String At
 	Given an Input "12" and merge type "Index" and string at as "[[my(-1).a]]" and Padding " " and Alignment "Left"	
 	When the data merge tool is executed
-	Then the data merge execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Merge a negative recordset index for Padding
 	Given an Input "12" and merge type "Index" and string at as "10" and Padding "[[my(-1).a]]" and Alignment "Left"	
 	When the data merge tool is executed
-	Then the data merge execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Merge a variable using index that is a variable and is not blank
 	Given a merge variable "[[a]]" equal to "aA "
@@ -151,7 +151,7 @@ Scenario: Merge a variable using index that is a variable and is not blank
 	And an Input "[[b]]" and merge type "Index" and string at as "[[c]]" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "ab"
-	And the data merge execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Merge a variable using index that is blank
 	Given a merge variable "[[a]]" equal to "aA "
@@ -161,4 +161,4 @@ Scenario: Merge a variable using index that is blank
 	And an Input "[[b]]" and merge type "Index" and string at as "[[c]]" and Padding "" and Alignment "Left"
 	When the data merge tool is executed
 	Then the merged result is "b"
-	And the data merge execution has "AN" error
+	And the execution has "AN" error

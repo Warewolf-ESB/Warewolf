@@ -6,14 +6,17 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
+    [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
         protected const string ResultVariable = "[[resultVar]]";
 
+        protected abstract void BuildDataList();
 
         protected void BuildShapeAndTestData()
         {

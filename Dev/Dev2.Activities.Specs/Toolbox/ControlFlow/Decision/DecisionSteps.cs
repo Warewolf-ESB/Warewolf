@@ -15,7 +15,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             BuildShapeAndTestData();
             var decisionActivity = new DsfFlowDecisionActivity();
@@ -111,17 +111,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                     ));
         }
 
-        //[Given(@"""(.*)"" error occurred")]
-        //public void GivenErrorOccurred(string anError)
-        //{
-        //    bool errorOccurred = anError.Equals("An");
-        //    //Simulate an error condition
-        //    if (errorOccurred)
-        //    {
-        //       throw new Exception("How to create an error before execution ???");
-        //    }
-        //}
-
         [Given(@"I want to check ""(.*)""")]
         public void GivenIWantToCheck(string decision)
         {
@@ -196,18 +185,6 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                                                                      });
             bool expected = Boolean.Parse(expectedRes);
             Assert.AreEqual(expected, actual);
-        }
-
-        [Then(@"the decision execution has ""(.*)"" error")]
-        public void ThenTheDecisionExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
         }
     }
 }

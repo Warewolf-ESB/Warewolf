@@ -14,7 +14,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
@@ -130,18 +130,6 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             {
                 Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
-        }
-
-        [Then(@"the xpath execution has ""(.*)"" error")]
-        public void ThenTheXpathExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
         }
     }
 }

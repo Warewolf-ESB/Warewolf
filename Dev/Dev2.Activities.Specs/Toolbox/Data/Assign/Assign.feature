@@ -7,7 +7,7 @@ Scenario: Assign a value to a variable
 	Given I assign the value 10 to a variable "[[var]]"	
 	When the assign tool is executed
 	Then the value of "[[var]]" equals 10
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a variable to a variable
 	Given I assign the value 20 to a variable "[[var]]"	
@@ -15,14 +15,14 @@ Scenario: Assign a variable to a variable
 	And I assign the value [[test]] to a variable "[[var]]"
 	When the assign tool is executed
 	Then the value of "[[var]]" equals 60
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign multiple variables with a calculate expression to a variable
 	Given I assign the value SUM(1,2,3)-5 to a variable "[[var]]"	
 	And I assign the value =[[var]] to a variable "[[test]]"	
 	When the assign tool is executed
 	Then the value of "[[test]]" equals 1
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign multiple variables to a variable
 	Given I assign the value Hello to a variable "[[var]]"	
@@ -30,7 +30,7 @@ Scenario: Assign multiple variables to a variable
 	And I assign the value [[var]][[test]] to a variable "[[value]]"
 	When the assign tool is executed
 	Then the value of "[[value]]" equals HelloWorld
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a variable to mixed scalar, char and recordset values
 	Given I assign the value Hello to a variable "[[var]]"	
@@ -38,7 +38,7 @@ Scenario: Assign a variable to mixed scalar, char and recordset values
 	And I assign the value [[var]] [[rec(1).set]] ! to a variable "[[value]]"
 	When the assign tool is executed
 	Then the value of "[[value]]" equals "Hello World !"
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign multiple variables to the end of a recordset
 	Given I assign the value 10 to a variable "[[rec().set]]"	
@@ -47,7 +47,7 @@ Scenario: Assign multiple variables to the end of a recordset
 	And I assign the value [[rec(3).set]] to a variable "[[value]]"
 	When the assign tool is executed
 	Then the value of "[[value]]" equals 30
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign all recordset values to a single variable
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
@@ -58,7 +58,7 @@ Scenario: Assign all recordset values to a single variable
 	Then the value of "[[rec(3).set]]" equals ""
 	And the value of "[[rec(2).set]]" equals ""
 	And the value of "[[rec(1).set]]" equals ""
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a record set to a scalar
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
@@ -67,21 +67,21 @@ Scenario: Assign a record set to a scalar
 	And I assign the value "[[rec(*)]]" to a variable "[[var]]"
 	When the assign tool is executed
 	Then the value of "[[var]]" equals "30"
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a scalar equal to a record set
 	Given I assign the value 30 to a variable "[[var]]"
 	And I assign the value "[[var]]" to a variable "[[rec().set]]"
 	When the assign tool is executed
 	Then the value of "[[rec(1).set]]" equals "30"
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a scalar equal to a calculation
 	Given I assign the value 30 to a variable "[[var]]"
 	And I assign the value "=30-[[var]]" to a variable "[[Result]]"	
 	When the assign tool is executed
 	Then the value of "[[Result]]" equals "0"
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign a variable equal to a group calculation (sum)
 	Given I assign the value 30 to a variable "[[var1]]"
@@ -89,7 +89,7 @@ Scenario: Assign a variable equal to a group calculation (sum)
 	And I assign the value "=SUM([[var1]],[[var2]])" to a variable "[[Result]]"
 	When the assign tool is executed
 	Then the value of "[[Result]]" equals "60"
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign multiple recordset to the end of a recordset
 	Given I assign the value 10 to a variable "[[rec().set]]"	
@@ -98,14 +98,14 @@ Scenario: Assign multiple recordset to the end of a recordset
 	And I assign the value [[rec(3).set]] to a variable "[[des().val]]"
 	When the assign tool is executed
 	Then the value of "[[des().val]]" equals 30
-	And the assign execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Assign the value of a negative recordset index
 	Given I assign the value 10 to a variable "[[rec().set]]"	
 	And I assign the value [[rec(-1).set]] to a variable "[[var]]"
 	When the assign tool is executed
 	Then the value of "[[var]]" equals ""
-	And the assign execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Assign the value of a negative recordset index and another assign after
 	Given I assign the value 10 to a variable "[[rec().set]]"	
@@ -115,9 +115,9 @@ Scenario: Assign the value of a negative recordset index and another assign afte
 	Then the value of "[[rec().set]]" equals "10"
 	Then the value of "[[var]]" equals ""
 	Then the value of "[[scalar]]" equals "30"
-	And the assign execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Assign to a negative recordset index
 	Given I assign the value 10 to a variable "[[des(-1).val]]"
 	When the assign tool is executed
-	Then the assign execution has "AN" error
+	Then the execution has "AN" error

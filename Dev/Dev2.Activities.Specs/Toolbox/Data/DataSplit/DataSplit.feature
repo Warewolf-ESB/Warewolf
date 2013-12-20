@@ -15,7 +15,7 @@ Scenario: Split text to a recordset using Index
 	| c		  |
 	| d		  |
 	| e		  |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split characters using Index Going Backwards
 	Given A string to split with value "@!?><":}{+_)(*&^~"
@@ -27,7 +27,7 @@ Scenario: Split characters using Index Going Backwards
 	| _)(*&^~	|
 	| ><":}{+	|
 	| @!?		|
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split text using All split types - Some with Include selected
 	Given A string to split with value "IndexTab	Chars,space end"
@@ -44,7 +44,7 @@ Scenario: Split text using All split types - Some with Include selected
 	| Chars,	  |
 	| space		  |
 	| end		  |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split CSV file format into recordset - some fields blank
 	Given A file "CSVExample.txt" to split	
@@ -61,7 +61,7 @@ Scenario: Split CSV file format into recordset - some fields blank
 	| 2        | Tshepo     | 5678        |
 	|          |            |             |
 	| 3        | Mo         |             |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split CSV file format into recordset - Skip blank rows selected
 	Given A file "CSVExample.txt" to split	
@@ -77,7 +77,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	| 1        | Barney     | 1234        |
 	| 2        | Tshepo     | 5678        |
 	| 3        | Mo         | 01          |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
@@ -90,7 +90,7 @@ Scenario: Split blank text using All split types
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split text using Index where index > provided
 	Given A string to split with value "123"	
@@ -98,14 +98,14 @@ Scenario: Split text using Index where index > provided
 	And  assign to variable "[[vowels().letters]]" split type as "Space" at "" and escape "\" and include is "unselected"
 	When the data split tool is executed	
 	Then the split result for "[[var]]" will be "123"
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split text using Char and Escape character
 	Given A string to split with value "123|,45,1"
 	And assign to variable "[[var]]" split type "Chars" at "," and Include "Unselected" and Escape '|'
 	When the data split tool is executed
 	Then the split result for "[[var]]" will be "123|,45"
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split blank text	
 	Given A string to split with value ""
@@ -113,7 +113,7 @@ Scenario: Split blank text
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	And the data split execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Split text to a recordset using a negative Index 
 	Given A string to split with value "abcde"
@@ -121,30 +121,30 @@ Scenario: Split text to a recordset using a negative Index
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	And the data split execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Split negative record index as Input
 	Given A string to split with value "[[my(-1).var]]"
 	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
 	When the data split tool is executed
-	Then the data split execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Split text into negative recordset index
 	Given A string to split with value "abcd"
 	And assign to variable "[[vowels(-1).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
 	When the data split tool is executed
-	Then the data split execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Split text into negative recordset index as the index to split at
 	Given A string to split with value "abcd"
 	And assign to variable "[[vowels().letters]]" split type "Index" at "[[my(-1).index]]" and Include "Selected" and Escape '\'	
 	When the data split tool is executed
-	Then the data split execution has "AN" error
+	Then the execution has "AN" error
 
 Scenario: Split text using a negative recordset index as escape character
 	Given A string to split with value "abcd"
 	And assign to variable "[[vowels().letters]]" split type "Index" at "2" and Include "Selected" and Escape '[[my(-1).escape]]'	
 	When the data split tool is executed
-	Then the data split execution has "AN" error
+	Then the execution has "AN" error
 
 

@@ -32,7 +32,7 @@ namespace ActivityUnitTests
 
         public IEsbWorkspaceChannel DsfChannel;
         public Mock<IEsbWorkspaceChannel> MockChannel;
-        public IDataListCompiler Compiler;
+        public static IDataListCompiler Compiler;
 
         public BaseActivityUnitTest()
         {
@@ -474,7 +474,7 @@ namespace ActivityUnitTests
         #endregion Retrieve DataList Values
 
         #region Retrieve Errors
-        public string FetchErrors(Guid dataListId)
+        public static string FetchErrors(Guid dataListId)
         {
             return Compiler.FetchErrors(dataListId);
         }

@@ -13,7 +13,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
-        private void BuildDataList()
+        protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
@@ -137,19 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
         }
-
-        [Then(@"the data split execution has ""(.*)"" error")]
-        public void ThenTheDataSplitExecutionHasError(string anError)
-        {
-            bool expected = anError.Equals("NO");
-            var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = FetchErrors(result.DataListID);
-            bool actual = string.IsNullOrEmpty(fetchErrors);
-            string message = string.Format("expected {0} error but an error {1}", anError.ToLower(),
-                                           actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
-        }
-
+        
         [Then(@"the split result for ""(.*)"" will be ""(.*)""")]
         public void ThenTheSplitResultForWillBe(string variable, string value)
         {

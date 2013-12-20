@@ -18,7 +18,7 @@ Scenario: Find unique records in a recordset
 	| rec().unique | 10     |
 	| rec().unique | 20     |
 	| rec().unique | 30     |
-	And the unique execution has "NO" error
+	And the execution has "NO" error
 		
 Scenario: Find unique records in a recordset comma separated
 	Given I have the following duplicated recordset
@@ -39,7 +39,7 @@ Scenario: Find unique records in a recordset comma separated
 	| rec().unique | 10     |
 	| rec().unique | 20     |
 	| rec().unique | 30     |
-	And the unique execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find unique records in an empty recordset
 	Given I have the following empty recordset
@@ -49,7 +49,7 @@ Scenario: Find unique records in an empty recordset
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
-	And the unique execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Find unique records in a recordset and the in field is blank
 	Given I have the following duplicated recordset
@@ -63,7 +63,7 @@ Scenario: Find unique records in a recordset and the in field is blank
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
-	And the unique execution has "AN" error
+	And the execution has "AN" error
 		
 Scenario: Find unique records in a recordset the return field is blank
 	Given I have the following duplicated recordset
@@ -77,7 +77,7 @@ Scenario: Find unique records in a recordset the return field is blank
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
-	And the unique execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Find unique records using a negative recordset index for In Field
 	Given I have the following duplicated recordset
@@ -91,7 +91,7 @@ Scenario: Find unique records using a negative recordset index for In Field
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
-	And the unique execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Find unique records using a * for In Field
 	Given I have the following duplicated recordset
@@ -108,7 +108,7 @@ Scenario: Find unique records using a * for In Field
 	| rec().unique | 1      |
 	| rec().unique | 2      |
 	| rec().unique | 3      |
-	And the unique execution has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find unique records using a negative recordset index for Return Field
 	Given I have the following duplicated recordset
@@ -122,7 +122,7 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	When the unique tool is executed	
 	Then the unique result will be
 	| rec       | unique |
-	And the unique execution has "AN" error
+	And the execution has "AN" error
 
 Scenario: Find unique records using a * for Return Field
 	Given I have the following duplicated recordset
@@ -139,4 +139,4 @@ Scenario: Find unique records using a * for Return Field
 	| rec().unique | 1   |
 	| rec().unique | 2   |
 	| rec().unique | 3   |
-	And the unique execution has "NO" error
+	And the execution has "NO" error

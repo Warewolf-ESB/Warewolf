@@ -112,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.Then("the new table will have", ((string)(null)), table2, "Then ");
 #line 17
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -143,7 +143,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 27
  testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 28
- testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -199,7 +199,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 40
  testRunner.Then("the new table will have", ((string)(null)), table5, "Then ");
 #line 45
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -255,7 +255,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Then("the new table will have", ((string)(null)), table7, "Then ");
 #line 60
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -298,7 +298,7 @@ testRunner.Given("I have this data", ((string)(null)), table8, "Given ");
 #line 72
  testRunner.Then("the new table will will have 0 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 73
- testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -341,7 +341,7 @@ testRunner.Given("I have this data", ((string)(null)), table9, "Given ");
 #line 85
  testRunner.Then("the new table will will have 3 of rows", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 86
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -397,7 +397,7 @@ testRunner.Given("I have this data", ((string)(null)), table10, "Given ");
 #line 97
  testRunner.Then("the new table will have", ((string)(null)), table11, "Then ");
 #line 102
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -453,7 +453,7 @@ testRunner.Given("I have this data", ((string)(null)), table12, "Given ");
 #line 113
  testRunner.Then("the new table will have", ((string)(null)), table13, "Then ");
 #line 118
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -492,7 +492,7 @@ testRunner.Given("I have this data", ((string)(null)), table14, "Given ");
 #line 128
  testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 129
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -531,7 +531,7 @@ testRunner.Given("I have this data", ((string)(null)), table15, "Given ");
 #line 139
  testRunner.Then("number of inserts is 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 140
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -570,7 +570,7 @@ testRunner.Given("I have this data", ((string)(null)), table16, "Given ");
 #line 150
  testRunner.Then("number of inserts is 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 151
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -609,7 +609,7 @@ testRunner.Given("I have this data", ((string)(null)), table17, "Given ");
 #line 162
  testRunner.Then("number of inserts is 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 163
- testRunner.And("the sqlbulkinsert execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -648,7 +648,7 @@ testRunner.Given("I have this data", ((string)(null)), table18, "Given ");
 #line 174
  testRunner.Then("number of inserts is 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 175
- testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -678,7 +678,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 181
  testRunner.Then("the new table will have", ((string)(null)), table20, "Then ");
 #line 183
- testRunner.And("the sqlbulkinsert execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

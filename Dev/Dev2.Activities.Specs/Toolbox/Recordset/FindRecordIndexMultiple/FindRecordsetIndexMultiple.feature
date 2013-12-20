@@ -13,7 +13,7 @@ Scenario: Find an index of data in a recordset with Is Between numeric
 	And  is between search the recordset with type "Is Between" and criteria is "16" and "33"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in an empty recordset
 	Given I have the following recordset to search for multiple criteria
@@ -21,7 +21,7 @@ Scenario: Find an index of data in an empty recordset
 	And  is between search the recordset with type "Is Between" and criteria is "16" and "33"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
-	And  the find record index has "AN" error
+	And the execution has "AN" error
 
 Scenario: Find an index of data in a recordset with a blank from
 	Given I have the following recordset to search for multiple criteria
@@ -33,7 +33,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	And  is between search the recordset with type "Is Between" and criteria is "" and "33"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be "-1"
-	And  the find record index has "AN" error
+	And the execution has "AN" error
 
 	Scenario: Find an index of data in a recordset with blank to
 	Given I have the following recordset to search for multiple criteria
@@ -45,7 +45,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	And  is between search the recordset with type "Is Between" and criteria is "16" and ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be ""
-	And  the find record index has "AN" error
+	And the execution has "AN" error
 
 
 Scenario: Find an index of data in a recordset with Is Between DateTime
@@ -58,7 +58,7 @@ Scenario: Find an index of data in a recordset with Is Between DateTime
 	And  is between search the recordset with type "Is Between" and criteria is "1/3/2013" and "3/3/2013"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Is Between Numbers and recordsets with stars
 	Given I have the following recordset in my datalist
@@ -78,7 +78,7 @@ Scenario: Find an index of data in a recordset with Is Between Numbers and recor
 	And when all row true is "true"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Find an index of data in a recordset with Is Base64
 	Given I have the following recordset to search for multiple criteria
@@ -90,7 +90,7 @@ Scenario: Find an index of data in a recordset with Is Base64
 	And search the recordset with type "Is Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Is Binary
 	Given I have the following recordset to search for multiple criteria
@@ -102,7 +102,7 @@ Scenario: Find an index of data in a recordset with Is Binary
 	And search the recordset with type "Is Binary" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Is Hex
 	Given I have the following recordset to search for multiple criteria
@@ -114,7 +114,7 @@ Scenario: Find an index of data in a recordset with Is Hex
 	And search the recordset with type "Is Hex" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Base64
 	Given I have the following recordset to search for multiple criteria
@@ -126,7 +126,7 @@ Scenario: Find an index of data in a recordset with Not Base64
 	And search the recordset with type "Not Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Between DateTime
 	Given I have the following recordset to search for multiple criteria
@@ -138,7 +138,7 @@ Scenario: Find an index of data in a recordset with Not Between DateTime
 	And  is between search the recordset with type "Not Between" and criteria is "1/3/2013" and "3/3/2013"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 2
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Between numeric
 	Given I have the following recordset to search for multiple criteria
@@ -150,7 +150,7 @@ Scenario: Find an index of data in a recordset with Not Between numeric
 	And  is between search the recordset with type "Not Between" and criteria is "16" and "33"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 3
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Binary
 	Given I have the following recordset to search for multiple criteria
@@ -162,7 +162,7 @@ Scenario: Find an index of data in a recordset with Not Binary
 	And search the recordset with type "Not Binary" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Hex
 	Given I have the following recordset to search for multiple criteria
@@ -174,7 +174,7 @@ Scenario: Find an index of data in a recordset with Not Hex
 	And search the recordset with type "Not Hex" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Not Regex
 	Given I have the following recordset to search for multiple criteria
@@ -186,7 +186,7 @@ Scenario: Find an index of data in a recordset with Not Regex
 	And search the recordset with type "Not Regex" and criteria is "\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Doesn't Start With
 	Given I have the following recordset to search for multiple criteria
@@ -198,7 +198,7 @@ Scenario: Find an index of data in a recordset with Doesn't Start With
 	And search the recordset with type "Doesn't Start With" and criteria is "w"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset with Doesn't End With
 	Given I have the following recordset to search for multiple criteria
@@ -210,7 +210,7 @@ Scenario: Find an index of data in a recordset with Doesn't End With
 	And search the recordset with type "Doesn't End With" and criteria is "v"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 4
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -224,7 +224,7 @@ Scenario: Find an index of data in a recordset search type is Equal To
 	And search the recordset with type "=" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -239,7 +239,7 @@ Scenario: Find an index of data in a recordset search type is Equal To multiple 
 	And search the recordset with type "=" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -253,7 +253,7 @@ Scenario: Find an index of data in a recordset search type is Equal To result do
 	And search the recordset with type "=" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Than
 	Given I have the following recordset to search for multiple criteria
@@ -267,7 +267,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Than multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -282,7 +282,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than multi
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Than result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -296,7 +296,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than resul
 	And search the recordset with type ">" and criteria is "50"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Find an index of data in a recordset search type is Less Than
 	Given I have the following recordset to search for multiple criteria
@@ -310,7 +310,7 @@ Scenario: Find an index of data in a recordset search type is Less Than
 	And search the recordset with type "<" and criteria is "5"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Less Than multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -325,7 +325,7 @@ Scenario: Find an index of data in a recordset search type is Less Than multiple
 	And search the recordset with type "<" and criteria is "5"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Less Than result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -339,7 +339,7 @@ Scenario: Find an index of data in a recordset search type is Less Than result d
 	And search the recordset with type "<" and criteria is "1"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 	
 Scenario: Find an index of data in a recordset search type is Not Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -353,7 +353,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To
 	And search the recordset with type "<> (Not Equal)" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -367,7 +367,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To multi
 	And search the recordset with type "<> (Not Equal)" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2,3,4,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -381,7 +381,7 @@ Scenario: Find an index of data in a recordset search type is Not Equal To resul
 	And search the recordset with type "<> (Not Equal)" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To
 	Given I have the following recordset to search for multiple criteria
@@ -395,7 +395,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -409,7 +409,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -423,7 +423,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal
 	Given I have the following recordset to search for multiple criteria
@@ -437,7 +437,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal
 	And search the recordset with type "<=" and criteria is "5"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -451,7 +451,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal mult
 	And search the recordset with type "<=" and criteria is "5"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Less Or Equal result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -465,7 +465,7 @@ Scenario: Find an index of data in a recordset search type is Less Or Equal resu
 	And search the recordset with type "<=" and criteria is "1"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Starts With
 	Given I have the following recordset to search for multiple criteria
@@ -479,7 +479,7 @@ Scenario: Find an index of data in a recordset search type is Starts With
 	And search the recordset with type "Starts With" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Starts With multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -494,7 +494,7 @@ Scenario: Find an index of data in a recordset search type is Starts With multip
 	And search the recordset with type "Starts With" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Starts With result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -508,7 +508,7 @@ Scenario: Find an index of data in a recordset search type is Starts With result
 	And search the recordset with type "Starts With" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Ends With
 	Given I have the following recordset to search for multiple criteria
@@ -522,7 +522,7 @@ Scenario: Find an index of data in a recordset search type is Ends With
 	And search the recordset with type "Ends With" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Ends With multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -537,7 +537,7 @@ Scenario: Find an index of data in a recordset search type is Ends With multiple
 	And search the recordset with type "Ends With" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Ends With result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -551,7 +551,7 @@ Scenario: Find an index of data in a recordset search type is Ends With result d
 	And search the recordset with type "Ends With" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Contains
 	Given I have the following recordset to search for multiple criteria
@@ -565,7 +565,7 @@ Scenario: Find an index of data in a recordset search type is Contains
 	And search the recordset with type "Contains" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Contains multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -580,7 +580,7 @@ Scenario: Find an index of data in a recordset search type is Contains multiple 
 	And search the recordset with type "Contains" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Contains result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -594,7 +594,7 @@ Scenario: Find an index of data in a recordset search type is Contains result do
 	And search the recordset with type "Contains" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Doesn't Contain
 	Given I have the following recordset to search for multiple criteria
@@ -608,7 +608,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain
 	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Doesn't Contain multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -622,7 +622,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain mu
 	And search the recordset with type "Doesn't Contain" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Doesn't Contain result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -636,7 +636,7 @@ Scenario: Find an index of data in a recordset search type is Doesn't Contain re
 	And search the recordset with type "Doesn't Contain" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric
 	Given I have the following recordset to search for multiple criteria
@@ -650,7 +650,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric
 	And search the recordset with type "Is Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -665,7 +665,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric mu
 	And search the recordset with type "Is Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Alphanumeric result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -679,7 +679,7 @@ Scenario: Find an index of data in a recordset search type is Is Alphanumeric re
 	And search the recordset with type "Is Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Base64
 	Given I have the following recordset to search for multiple criteria
@@ -693,7 +693,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64
 	And search the recordset with type "Is Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Base64 multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -708,7 +708,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 multiple
 	And search the recordset with type "Is Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Base64 result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -722,7 +722,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 result d
 	And search the recordset with type "Is Base64" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 	Scenario: Find an index of data in a recordset search type is Is Date
 	Given I have the following recordset to search for multiple criteria
@@ -736,7 +736,7 @@ Scenario: Find an index of data in a recordset search type is Is Base64 result d
 	And search the recordset with type "Is Date" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Date multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -751,7 +751,7 @@ Scenario: Find an index of data in a recordset search type is Is Date multiple r
 	And search the recordset with type "Is Date" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Date result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -765,7 +765,7 @@ Scenario: Find an index of data in a recordset search type is Is Date result doe
 	And search the recordset with type "Is Date" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Email
 	Given I have the following recordset to search for multiple criteria
@@ -779,7 +779,7 @@ Scenario: Find an index of data in a recordset search type is Is Email
 	And search the recordset with type "Is Email" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Email multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -794,7 +794,7 @@ Scenario: Find an index of data in a recordset search type is Is Email multiple 
 	And search the recordset with type "Is Email" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Email result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -808,7 +808,7 @@ Scenario: Find an index of data in a recordset search type is Is Email result do
 	And search the recordset with type "Is Email" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Numeric
 	Given I have the following recordset to search for multiple criteria
@@ -822,7 +822,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric
 	And search the recordset with type "Is Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Numeric multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -837,7 +837,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric multipl
 	And search the recordset with type "Is Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Numeric result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -851,7 +851,7 @@ Scenario: Find an index of data in a recordset search type is Is Numeric result 
 	And search the recordset with type "Is Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Regex
 	Given I have the following recordset to search for multiple criteria
@@ -865,7 +865,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex
 	And search the recordset with type "Is Regex" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Regex multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -880,7 +880,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex multiple 
 	And search the recordset with type "Is Regex" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Regex result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -894,7 +894,7 @@ Scenario: Find an index of data in a recordset search type is Is Regex result do
 	And search the recordset with type "Is Regex" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Text
 	Given I have the following recordset to search for multiple criteria
@@ -908,7 +908,7 @@ Scenario: Find an index of data in a recordset search type is Is Text
 	And search the recordset with type "Is Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Text multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -923,7 +923,7 @@ Scenario: Find an index of data in a recordset search type is Is Text multiple r
 	And search the recordset with type "Is Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is Text result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -937,7 +937,7 @@ Scenario: Find an index of data in a recordset search type is Is Text result doe
 	And search the recordset with type "Is Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is XML
 	Given I have the following recordset to search for multiple criteria
@@ -951,7 +951,7 @@ Scenario: Find an index of data in a recordset search type is Is XML
 	And search the recordset with type "Is XML" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is XML multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -966,7 +966,7 @@ Scenario: Find an index of data in a recordset search type is Is XML multiple re
 	And search the recordset with type "Is XML" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Is XML result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -980,7 +980,7 @@ Scenario: Find an index of data in a recordset search type is Is XML result does
 	And search the recordset with type "Is XML" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric
@@ -995,7 +995,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric
 	And search the recordset with type "Not Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1010,7 +1010,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric m
 	And search the recordset with type "Not Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Alphanumeric result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1024,7 +1024,7 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric r
 	And search the recordset with type "Not Alphanumeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Date
 	Given I have the following recordset to search for multiple criteria
@@ -1038,7 +1038,7 @@ Scenario: Find an index of data in a recordset search type is Not Date
 	And search the recordset with type "Not Date" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Date multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1053,7 +1053,7 @@ Scenario: Find an index of data in a recordset search type is Not Date multiple 
 	And search the recordset with type "Not Date" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Date result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1067,7 +1067,7 @@ Scenario: Find an index of data in a recordset search type is Not Date result do
 	And search the recordset with type "Not Date" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Email
 	Given I have the following recordset to search for multiple criteria
@@ -1081,7 +1081,7 @@ Scenario: Find an index of data in a recordset search type is Not Email
 	And search the recordset with type "Not Email" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Email multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1096,7 +1096,7 @@ Scenario: Find an index of data in a recordset search type is Not Email multiple
 	And search the recordset with type "Not Email" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Email result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1110,7 +1110,7 @@ Scenario: Find an index of data in a recordset search type is Not Email result d
 	And search the recordset with type "Not Email" and criteria is "Mars"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Numeric
 	Given I have the following recordset to search for multiple criteria
@@ -1124,7 +1124,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric
 	And search the recordset with type "Not Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Numeric multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1139,7 +1139,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric multip
 	And search the recordset with type "Not Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Numeric result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1153,7 +1153,7 @@ Scenario: Find an index of data in a recordset search type is Not Numeric result
 	And search the recordset with type "Not Numeric" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Text
 	Given I have the following recordset to search for multiple criteria
@@ -1167,7 +1167,7 @@ Scenario: Find an index of data in a recordset search type is Not Text
 	And search the recordset with type "Not Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Text multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1182,7 +1182,7 @@ Scenario: Find an index of data in a recordset search type is Not Text multiple 
 	And search the recordset with type "Not Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not Text result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1196,7 +1196,7 @@ Scenario: Find an index of data in a recordset search type is Not Text result do
 	And search the recordset with type "Not Text" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not XML
 	Given I have the following recordset to search for multiple criteria
@@ -1210,7 +1210,7 @@ Scenario: Find an index of data in a recordset search type is Not XML
 	And search the recordset with type "Not XML" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 5
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not XML multiple results
 	Given I have the following recordset to search for multiple criteria
@@ -1225,7 +1225,7 @@ Scenario: Find an index of data in a recordset search type is Not XML multiple r
 	And search the recordset with type "Not XML" and criteria is "Warewolf"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,6
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type is Not XML result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -1239,7 +1239,7 @@ Scenario: Find an index of data in a recordset search type is Not XML result doe
 	And search the recordset with type "Not XML" and criteria is ""
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be -1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows true
 	Given I have the following recordset to search for multiple criteria
@@ -1268,7 +1268,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And when requires all fields to match is "true"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows true
 	Given I have the following recordset to search for multiple criteria
@@ -1299,7 +1299,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,3
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows false
 	Given I have the following recordset to search for multiple criteria
@@ -1328,7 +1328,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And when requires all fields to match is "false"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2,3
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows false
 	Given I have the following recordset to search for multiple criteria
@@ -1357,7 +1357,7 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 	And when requires all fields to match is "true"
 	When the find records index multiple tool is executed
 	Then the find records index multiple result should be 1,2
-	And  the find record index has "NO" error
+	And the execution has "NO" error
 
 Scenario: Search using a negative index recordset criteria
 	Given I have the following recordset to search for multiple criteria
@@ -1366,4 +1366,4 @@ Scenario: Search using a negative index recordset criteria
 	| rs().row | <test></test>      |
 	And search the recordset with type "Not XML" and criteria is "[[my(-1).set]]"
 	When the find records index multiple tool is executed
-	Then the find record index has "AN" error
+	Then the execution has "AN" error

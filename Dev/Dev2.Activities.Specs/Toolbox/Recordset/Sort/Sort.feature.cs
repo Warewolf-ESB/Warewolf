@@ -138,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table2, "Then ");
 #line 28
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -212,7 +212,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 43
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table4, "Then ");
 #line 52
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -286,7 +286,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table6, "Then ");
 #line 76
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -360,7 +360,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 91
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table8, "Then ");
 #line 100
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -392,7 +392,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 108
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table10, "Then ");
 #line 110
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -424,7 +424,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 118
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table12, "Then ");
 #line 120
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -462,7 +462,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 129
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table14, "Then ");
 #line 132
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -500,7 +500,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 141
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table16, "Then ");
 #line 144
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -574,7 +574,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 159
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table18, "Then ");
 #line 168
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -648,7 +648,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 183
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table20, "Then ");
 #line 192
- testRunner.And("the sort execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
