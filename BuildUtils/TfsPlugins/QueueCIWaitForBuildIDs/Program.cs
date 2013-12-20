@@ -40,7 +40,8 @@ namespace QueueCIWaitForBuildID
             string def = args[2].Trim();
             string user = args[3].Trim();
             string changeSetID = args[4].Trim();
-            string buildIDs = args[5].Trim();
+            string branchID = args[5].Trim();
+            string buildIDs = args[6].Trim();
 
             BuildQueuer qb = new BuildQueuer();
 
@@ -50,7 +51,7 @@ namespace QueueCIWaitForBuildID
 
             try
             {
-                return qb.Run(server, project, def, user, changeSetID, buildIDs);
+                return qb.Run(server, project, def, user, changeSetID, branchID, buildIDs);
             }
             catch(Exception e)
             {
@@ -64,7 +65,7 @@ namespace QueueCIWaitForBuildID
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def, string user, string changeSetID, string buildIDs)
+        public int Run(string server, string project, string def, string user, string changeSetID, string branchID, string buildIDs)
         {
             var tfs = TeamFoundationServerFactory.GetServer(server);
             var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
@@ -74,7 +75,7 @@ namespace QueueCIWaitForBuildID
             // is there a changeset?
             if(!string.IsNullOrEmpty(changeSetID))
             {
-                req.ProcessParameters = UpdateAgentTag(changeSetID, buildIDs);
+                req.ProcessParameters = UpdateAgentTag(changeSetID, branchID, buildIDs);
             }
             req.RequestedFor = user;
 
@@ -84,10 +85,11 @@ namespace QueueCIWaitForBuildID
 
         }
 
-        private static string UpdateAgentTag(string changeSetID, string buildIDs)
+        private static string UpdateAgentTag(string changeSetID, string branchID, string buildIDs)
         {
             IDictionary<String, Object> paramValues = new Dictionary<string, object>();
             paramValues.Add("SpecifiedChangeSet", changeSetID);
+            paramValues.Add("BranchID", branchID);
             paramValues.Add("BuildIDs", buildIDs);
             return XamlServices.Save(paramValues);
         }
