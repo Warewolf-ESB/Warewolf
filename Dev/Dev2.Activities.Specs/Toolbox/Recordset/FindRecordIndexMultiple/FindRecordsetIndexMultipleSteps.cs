@@ -1,11 +1,11 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -19,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -39,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
 
             string recordsetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordsetName);
-            
+
             var findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = string.IsNullOrEmpty(fieldsToSearch) ? recordsetName + "()" : fieldsToSearch,
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -68,20 +68,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -89,13 +89,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
-        
+
         [Given(@"the fields to search is")]
         public void GivenTheFieldsToSearchIs(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -103,21 +103,21 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
             string fieldsToSearch = string.Empty;
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 fieldsToSearch += t[0] + ",";
             }
-            if (fieldsToSearch.EndsWith(","))
+            if(fieldsToSearch.EndsWith(","))
             {
                 fieldsToSearch = fieldsToSearch.Remove(fieldsToSearch.Length - 1);
             }
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -138,20 +138,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -174,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         {
             int row;
             bool rowAdded = ScenarioContext.Current.TryGetValue("row", out row);
-            if (rowAdded)
+            if(rowAdded)
             {
                 ScenarioContext.Current.Add("row", row);
             }
@@ -191,12 +191,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             searchList.Add(new FindRecordsTO(string.Empty, searchType, row, false, false, from, to));
         }
 
-        private  List<FindRecordsTO> GetSearchList()
+        private List<FindRecordsTO> GetSearchList()
         {
             List<FindRecordsTO> searchList;
             ScenarioContext.Current.TryGetValue("searchList", out searchList);
 
-            if (searchList == null)
+            if(searchList == null)
             {
                 searchList = new List<FindRecordsTO>();
                 ScenarioContext.Current.Add("searchList", searchList);
@@ -204,8 +204,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             return searchList;
         }
 
-        [Given(@"when all row true is ""(.*)""")]
-        public void GivenWhenAllRowTrueIs(bool requireAllTrue)
+        [Given(@"when match all search criteria is ""(.*)""")]
+        public void GivenWhenMatchAllSearchCriteriaIs(bool requireAllTrue)
         {
             ScenarioContext.Current.Pending();
             ScenarioContext.Current.Add("requireAllTrue", requireAllTrue);
@@ -223,7 +223,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            if (DataListUtil.IsValueRecordset(ResultVariable))
+            if(DataListUtil.IsValueRecordset(ResultVariable))
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, ResultVariable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
@@ -261,7 +261,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             bool actual = string.IsNullOrEmpty(fetchErrors);
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);
-             Assert.IsTrue(expected == actual, message);
+            Assert.IsTrue(expected == actual, message);
         }
     }
 }

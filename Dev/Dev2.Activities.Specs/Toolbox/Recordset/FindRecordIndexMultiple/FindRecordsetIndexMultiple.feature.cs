@@ -82,16 +82,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table1.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table1.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "15"});
             table1.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "20"});
             table1.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "34"});
 #line 7
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1, "Given ");
@@ -148,16 +148,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table3.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table3.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "15"});
             table3.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "20"});
             table3.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "34"});
 #line 27
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table3, "Given ");
@@ -187,16 +187,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "15"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "20"});
             table4.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "34"});
 #line 39
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table4, "Given ");
@@ -226,16 +226,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table5.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5/3/2013"});
             table5.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2/3/2013"});
             table5.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "7/4/2013"});
             table5.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "11/11/2012"});
 #line 52
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table5, "Given ");
@@ -291,13 +291,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table8.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "15"});
             table8.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "20"});
             table8.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "25"});
 #line 72
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table8, "Given ");
@@ -329,16 +329,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table9.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table9.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table9.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table9.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
 #line 84
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table9, "Given ");
@@ -367,16 +367,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table10.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table10.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table10.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table10.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "101011110010"});
 #line 96
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table10, "Given ");
@@ -405,16 +405,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table11.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table11.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table11.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table11.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "77617265776f6c66"});
 #line 108
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table11, "Given ");
@@ -443,16 +443,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table12.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table12.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table12.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table12.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
 #line 120
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table12, "Given ");
@@ -481,16 +481,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table13.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2/3/2013"});
             table13.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "7/3/2013"});
             table13.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2/3/2013"});
             table13.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2/3/2013"});
 #line 132
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table13, "Given ");
@@ -520,16 +520,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "17"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "22"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "400"});
             table14.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "31"});
 #line 144
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table14, "Given ");
@@ -559,16 +559,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table15.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "101011110010"});
             table15.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "101011110010"});
             table15.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "101011110010"});
             table15.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "warewolf"});
 #line 156
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table15, "Given ");
@@ -597,16 +597,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table16.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "77617265776f6c66"});
             table16.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "77617265776f6c66"});
             table16.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "77617265776f6c66"});
             table16.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "warewolf"});
 #line 168
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table16, "Given ");
@@ -635,16 +635,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table17.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "999.999.999.999"});
             table17.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "999.999.999.999"});
             table17.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "999.999.999.999"});
             table17.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "warewolf"});
 #line 180
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table17, "Given ");
@@ -674,16 +674,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "what"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "where"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "why"});
             table18.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "yay"});
 #line 192
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table18, "Given ");
@@ -712,16 +712,16 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table19.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "arev"});
             table19.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "wherev"});
             table19.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "modev"});
             table19.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "yay"});
 #line 204
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table19, "Given ");
@@ -750,22 +750,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table20.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 216
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table20, "Given ");
@@ -794,25 +794,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table21.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 230
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table21, "Given ");
@@ -841,22 +841,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table22.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 245
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table22, "Given ");
@@ -885,22 +885,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table23.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 259
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table23, "Given ");
@@ -931,25 +931,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "8"});
             table24.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 273
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table24, "Given ");
@@ -980,22 +980,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "8"});
             table25.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 288
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table25, "Given ");
@@ -1024,22 +1024,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "8"});
             table26.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 302
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table26, "Given ");
@@ -1068,25 +1068,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table27.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 316
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table27, "Given ");
@@ -1117,22 +1117,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
             table28.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 331
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table28, "Given ");
@@ -1161,22 +1161,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table29.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
 #line 345
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table29, "Given ");
@@ -1207,22 +1207,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table30.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 359
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table30, "Given ");
@@ -1253,22 +1253,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table31.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
 #line 373
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table31, "Given ");
@@ -1297,22 +1297,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table32.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 387
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table32, "Given ");
@@ -1343,22 +1343,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "50"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table33.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
 #line 401
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table33, "Given ");
@@ -1389,22 +1389,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "3"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table34.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "3"});
 #line 415
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table34, "Given ");
@@ -1433,22 +1433,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
             table35.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 429
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table35, "Given ");
@@ -1479,22 +1479,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table36.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
 #line 443
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table36, "Given ");
@@ -1525,22 +1525,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
             table37.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 457
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table37, "Given ");
@@ -1569,22 +1569,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table38.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 471
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table38, "Given ");
@@ -1613,25 +1613,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table39.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 485
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table39, "Given ");
@@ -1662,22 +1662,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table40.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 500
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table40, "Given ");
@@ -1706,22 +1706,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table41.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 514
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table41, "Given ");
@@ -1750,25 +1750,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table42.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 528
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table42, "Given ");
@@ -1799,22 +1799,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table43.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 543
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table43, "Given ");
@@ -1843,22 +1843,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table44.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 557
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table44, "Given ");
@@ -1887,25 +1887,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table45.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 571
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table45, "Given ");
@@ -1934,22 +1934,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table46.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 586
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table46, "Given ");
@@ -1978,22 +1978,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
             table47.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
 #line 600
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table47, "Given ");
@@ -2024,22 +2024,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
             table48.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
 #line 614
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table48, "Given ");
@@ -2070,22 +2070,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
             table49.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Mars"});
 #line 628
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table49, "Given ");
@@ -2114,22 +2114,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table50.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
 #line 642
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table50, "Given ");
@@ -2160,25 +2160,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table51.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
 #line 656
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table51, "Given ");
@@ -2209,22 +2209,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table52.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
 #line 671
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table52, "Given ");
@@ -2253,22 +2253,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table53.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
 #line 685
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table53, "Given ");
@@ -2297,25 +2297,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "d2FyZXdvbGY="});
             table54.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
 #line 699
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table54, "Given ");
@@ -2346,22 +2346,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table55.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
 #line 714
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table55, "Given ");
@@ -2390,22 +2390,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/10/2013"});
             table56.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 728
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table56, "Given ");
@@ -2434,25 +2434,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/10/2013"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/10/2013"});
             table57.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 742
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table57, "Given ");
@@ -2481,22 +2481,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table58.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 757
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table58, "Given ");
@@ -2525,22 +2525,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table59.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 771
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table59, "Given ");
@@ -2569,25 +2569,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table60.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 785
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table60, "Given ");
@@ -2616,22 +2616,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table61.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 800
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table61, "Given ");
@@ -2660,22 +2660,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "45"});
             table62.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 814
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table62, "Given ");
@@ -2704,25 +2704,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "41"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "54"});
             table63.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 828
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table63, "Given ");
@@ -2753,22 +2753,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table64.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 843
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table64, "Given ");
@@ -2797,22 +2797,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table65.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 857
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table65, "Given ");
@@ -2841,25 +2841,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table66.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 871
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table66, "Given ");
@@ -2888,22 +2888,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table67.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 886
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table67, "Given ");
@@ -2932,22 +2932,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "15"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "56"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "45"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "7"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table68.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "16"});
 #line 900
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table68, "Given ");
@@ -2976,25 +2976,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "45"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "54"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "51"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "86"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table69.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "8"});
 #line 914
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table69, "Given ");
@@ -3023,22 +3023,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "3"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "6"});
             table70.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
 #line 929
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table70, "Given ");
@@ -3067,22 +3067,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table71.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 943
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table71, "Given ");
@@ -3111,25 +3111,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table72.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 957
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table72, "Given ");
@@ -3158,22 +3158,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table73.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 972
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table73, "Given ");
@@ -3202,22 +3202,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table74.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 987
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table74, "Given ");
@@ -3248,25 +3248,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "$$"});
             table75.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 1001
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table75, "Given ");
@@ -3297,22 +3297,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table76.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 1016
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table76, "Given ");
@@ -3341,22 +3341,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table77.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
 #line 1030
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table77, "Given ");
@@ -3385,25 +3385,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table78.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
 #line 1044
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table78, "Given ");
@@ -3432,22 +3432,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
             table79.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "12/11/2013"});
 #line 1059
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table79, "Given ");
@@ -3476,22 +3476,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table80.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
 #line 1073
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table80, "Given ");
@@ -3520,25 +3520,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table81.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
 #line 1087
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table81, "Given ");
@@ -3569,22 +3569,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
             table82.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "test@testEmail.co.za"});
 #line 1102
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table82, "Given ");
@@ -3613,22 +3613,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "152"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "6"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "7"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table83.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
 #line 1116
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table83, "Given ");
@@ -3657,25 +3657,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "45"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "4"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table84.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "5"});
 #line 1130
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table84, "Given ");
@@ -3706,22 +3706,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "1"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "2"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "3"});
             table85.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "3"});
 #line 1145
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table85, "Given ");
@@ -3750,22 +3750,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "52"});
             table86.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 1159
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table86, "Given ");
@@ -3794,25 +3794,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "45"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "741"});
             table87.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 1173
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table87, "Given ");
@@ -3841,22 +3841,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "You"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "are"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "the"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "best"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table88.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "user"});
 #line 1188
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table88, "Given ");
@@ -3885,22 +3885,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table89.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
 #line 1202
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table89, "Given ");
@@ -3929,25 +3929,25 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "Warewolf"});
             table90.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
 #line 1216
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table90, "Given ");
@@ -3976,22 +3976,22 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
             table91.AddRow(new string[] {
-                        "rs().row",
+                        "rs().field",
                         "<test></test>"});
 #line 1231
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table91, "Given ");
@@ -4022,13 +4022,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table92.AddRow(new string[] {
-                        "rs(1).row1",
+                        "rs(1).field1",
                         "123"});
             table92.AddRow(new string[] {
-                        "rs(2).row1",
+                        "rs(2).field1",
                         "2"});
             table92.AddRow(new string[] {
-                        "rs(3).row1",
+                        "rs(3).field1",
                         "5"});
 #line 1245
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table92, "Given ");
@@ -4037,13 +4037,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table93.AddRow(new string[] {
-                        "rs1(1).row2",
+                        "rs1(1).field2",
                         "214"});
             table93.AddRow(new string[] {
-                        "rs1(2).row2",
+                        "rs1(2).field2",
                         "51"});
             table93.AddRow(new string[] {
-                        "rs1(3).row2",
+                        "rs1(3).field2",
                         "56"});
 #line 1250
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table93, "Given ");
@@ -4052,13 +4052,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table94.AddRow(new string[] {
-                        "rs2(1).row3",
+                        "rs2(1).field3",
                         "512"});
             table94.AddRow(new string[] {
-                        "rs2(2).row3",
+                        "rs2(2).field3",
                         "84"});
             table94.AddRow(new string[] {
-                        "rs2(3).row3",
+                        "rs2(3).field3",
                         "12"});
 #line 1255
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table94, "Given ");
@@ -4066,11 +4066,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table95 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
             table95.AddRow(new string[] {
-                        "[[rs().row1]]"});
+                        "[[rs().field1]]"});
             table95.AddRow(new string[] {
-                        "[[rs1().row2]]"});
+                        "[[rs1().field2]]"});
             table95.AddRow(new string[] {
-                        "[[rs2().row3]]"});
+                        "[[rs2().field3]]"});
 #line 1260
  testRunner.And("the fields to search is", ((string)(null)), table95, "And ");
 #line 1265
@@ -4078,7 +4078,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1266
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1267
- testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when match all search criteria is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1268
  testRunner.And("when requires all fields to match is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1269
@@ -4106,13 +4106,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table96.AddRow(new string[] {
-                        "rs(1).row1",
+                        "rs(1).field1",
                         "123"});
             table96.AddRow(new string[] {
-                        "rs(2).row1",
+                        "rs(2).field1",
                         "2"});
             table96.AddRow(new string[] {
-                        "rs(3).row1",
+                        "rs(3).field1",
                         "5"});
 #line 1274
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table96, "Given ");
@@ -4121,13 +4121,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table97.AddRow(new string[] {
-                        "rs1(1).row2",
+                        "rs1(1).field2",
                         "214"});
             table97.AddRow(new string[] {
-                        "rs1(2).row2",
+                        "rs1(2).field2",
                         "51"});
             table97.AddRow(new string[] {
-                        "rs1(3).row2",
+                        "rs1(3).field2",
                         "56"});
 #line 1279
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table97, "Given ");
@@ -4136,13 +4136,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table98.AddRow(new string[] {
-                        "rs2(1).row3",
+                        "rs2(1).field3",
                         "512"});
             table98.AddRow(new string[] {
-                        "rs2(2).row3",
+                        "rs2(2).field3",
                         "84"});
             table98.AddRow(new string[] {
-                        "rs2(3).row3",
+                        "rs2(3).field3",
                         "12"});
 #line 1284
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table98, "Given ");
@@ -4150,11 +4150,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table99 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
             table99.AddRow(new string[] {
-                        "[[rs().row1]]"});
+                        "[[rs().field1]]"});
             table99.AddRow(new string[] {
-                        "[[rs1().row2]]"});
+                        "[[rs1().field2]]"});
             table99.AddRow(new string[] {
-                        "[[rs2().row3]]"});
+                        "[[rs2().field3]]"});
 #line 1289
  testRunner.And("the fields to search is", ((string)(null)), table99, "And ");
 #line 1294
@@ -4162,7 +4162,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1295
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1298
- testRunner.And("when all row true is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when match all search criteria is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1299
  testRunner.And("when requires all fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1300
@@ -4246,7 +4246,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1326
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1327
- testRunner.And("when all row true is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when match all search criteria is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1328
  testRunner.And("when requires all fields to match is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1329
@@ -4274,13 +4274,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table104.AddRow(new string[] {
-                        "rs(1).row1",
+                        "rs(1).field1",
                         "123"});
             table104.AddRow(new string[] {
-                        "rs(2).row1",
+                        "rs(2).field1",
                         "2"});
             table104.AddRow(new string[] {
-                        "rs(3).row1",
+                        "rs(3).field1",
                         "5"});
 #line 1334
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table104, "Given ");
@@ -4289,13 +4289,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table105.AddRow(new string[] {
-                        "rs1(1).row2",
+                        "rs1(1).field2",
                         "214"});
             table105.AddRow(new string[] {
-                        "rs1(2).row2",
+                        "rs1(2).field2",
                         "52"});
             table105.AddRow(new string[] {
-                        "rs1(3).row2",
+                        "rs1(3).field2",
                         "56"});
 #line 1339
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table105, "Given ");
@@ -4304,13 +4304,13 @@ this.ScenarioSetup(scenarioInfo);
                         "rs",
                         "value"});
             table106.AddRow(new string[] {
-                        "rs2(1).row3",
+                        "rs2(1).field3",
                         "512"});
             table106.AddRow(new string[] {
-                        "rs2(2).row3",
+                        "rs2(2).field3",
                         "82"});
             table106.AddRow(new string[] {
-                        "rs2(3).row3",
+                        "rs2(3).field3",
                         "12"});
 #line 1344
  testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table106, "Given ");
@@ -4318,11 +4318,11 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table107 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
             table107.AddRow(new string[] {
-                        "[[rs().row1]]"});
+                        "[[rs().field1]]"});
             table107.AddRow(new string[] {
-                        "[[rs1().row2]]"});
+                        "[[rs1().field2]]"});
             table107.AddRow(new string[] {
-                        "[[rs2().row3]]"});
+                        "[[rs2().field3]]"});
 #line 1349
  testRunner.And("the fields to search is", ((string)(null)), table107, "And ");
 #line 1354
@@ -4330,7 +4330,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1355
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1356
- testRunner.And("when all row true is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("when match all search criteria is \"false\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1357
  testRunner.And("when requires all fields to match is \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1358
