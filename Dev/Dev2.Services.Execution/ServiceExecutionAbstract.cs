@@ -18,7 +18,7 @@ namespace Dev2.Services.Execution
                                                                                          where TSource:Resource,new()
                                                                                         
     {
-        // Plugins need to handle formatting inside the RemoteObjectHandler 
+        // Plug-ins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
         public string InstanceOutputDefintions { get; set; }
         public IDSFDataObject DataObj { get; set; }
