@@ -3,7 +3,6 @@
 	As a Warewolf user
 	I want a tool that splits two or more pieces of data
 
-#Note that the Include and Escape is not yet hooked up on the activity
 
 Scenario: Split text to a recordset using Index 
 	Given A string to split with value "abcde"
@@ -46,7 +45,6 @@ Scenario: Split text using All split types - Some with Include selected
 	| space		  |
 	| end		  |
 	And the data split execution has "NO" error
-
 
 Scenario: Split CSV file format into recordset - some fields blank
 	Given A file "CSVExample.txt" to split	

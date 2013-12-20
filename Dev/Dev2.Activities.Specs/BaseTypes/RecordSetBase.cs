@@ -24,7 +24,6 @@ namespace Dev2.Activities.Specs.BaseTypes
             data.Append("<root>");
 
             int row = 1;
-
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
