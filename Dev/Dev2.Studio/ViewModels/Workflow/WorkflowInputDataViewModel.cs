@@ -1,5 +1,11 @@
-﻿using Dev2.Common;
-using Dev2.Data.Binary_Objects;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Windows.Input;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -7,19 +13,12 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.ViewModels.Workflow;
 using Dev2.ViewModels.WorkSurface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -35,18 +34,37 @@ namespace Dev2.Studio.ViewModels.Workflow
         private readonly IContextualResourceModel _resourceModel;
         private IBinaryDataList _dataList;
         private bool _rememberInputs;
-        readonly DebugOutputViewModel _debugOutputViewModel;
         RelayCommand _viewInBrowserCommmand;
         readonly DataListConversionUtils _dataListConversionUtils;
 
         #endregion Fields
 
+        public event Action DebugExecutionStart;
+        public event Action DebugExecutionFinished;
+
+        protected virtual void OnDebugExecutionFinished()
+        {
+            var handler = DebugExecutionFinished;
+            if(handler != null)
+            {
+                handler();
+            }
+        }
+
+        protected virtual void OnDebugExecutionStart()
+        {
+            var handler = DebugExecutionStart;
+            if(handler != null)
+            {
+                handler();
+            }
+        }
+
         #region Ctor
 
-        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, DebugOutputViewModel debugOutputViewModel)
+        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionID)
         {
-            VerifyArgument.IsNotNull("debugOutputViewModel", debugOutputViewModel);
-            _debugOutputViewModel = debugOutputViewModel;
+            VerifyArgument.IsNotNull("input", input);
 
             DebugTO = new DebugTO
             {
@@ -61,7 +79,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ResourceID = input.ResourceModel.ID,
                 ServerID = input.ResourceModel.ServerID,
                 RememberInputs = input.RememberInputs,
-                SessionID = debugOutputViewModel.SessionID
+                SessionID = sessionID
             };
 
             if(input.DebugModeSetting == DebugMode.DebugInteractive)
@@ -248,11 +266,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
                 dataList.Add(new XElement("DebugSessionID", DebugTO.SessionID));
                 dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
-                _debugOutputViewModel.DebugStatus = DebugStatus.Executing;
-
+                OnDebugExecutionStart();
                 SendExecuteRequest(dataList);
             }
-            }
+        }
 
         protected virtual void SendExecuteRequest(XElement payload)
         {
@@ -291,7 +308,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SendFinishedMessage()
         {
-            _debugOutputViewModel.DebugStatus = DebugStatus.Finished;
+            OnDebugExecutionFinished();
         }
 
         /// <summary>
@@ -368,6 +385,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Used for removing a row for the collection
         /// </summary>
         /// <param name="itemToRemove">The item that will be removed from the collection</param>
+        /// <param name="indexToSelect"></param>
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -482,6 +500,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// Used for just adding a blank row to a recordset
         /// </summary>
         /// <param name="selectedItem">The item that is currently selected</param>
+        /// <param name="indexToSelect"></param>
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -575,6 +594,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if(!CloseRequested)
                 SendFinishedMessage();
+        }
+
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel)
+        {
+            VerifyArgument.IsNotNull("resourceModel", resourceModel);
+            IServiceDebugInfoModel debugInfoModel =
+                ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, DebugMode.Run);
+            return new WorkflowInputDataViewModel(debugInfoModel, Guid.Empty);
         }
     }
 }

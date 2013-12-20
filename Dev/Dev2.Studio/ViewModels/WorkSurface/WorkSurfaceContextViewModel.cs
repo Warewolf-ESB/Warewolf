@@ -394,12 +394,6 @@ namespace Dev2.ViewModels.WorkSurface
             DebugOutputViewModel.DebugStatus = debugStatus;
         }
 
-        public WorkflowInputDataViewModel GetServiceInputDataFromUser(IServiceDebugInfoModel input)
-        {
-            var inputDataViewModel = new WorkflowInputDataViewModel(input, DebugOutputViewModel) { Parent = this };
-            return inputDataViewModel;
-        }
-
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
@@ -410,8 +404,16 @@ namespace Dev2.ViewModels.WorkSurface
             SetDebugStatus(DebugStatus.Configure);
 
             Save(resourceModel, true);
-            var inputDataViewModel = GetWorkflowInputDataViewModel(resourceModel, isDebug);
+            var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
             _windowManager.ShowDialog(inputDataViewModel);
+        }
+
+        WorkflowInputDataViewModel SetupForDebug(IContextualResourceModel resourceModel, bool isDebug)
+        {
+            var inputDataViewModel = GetWorkflowInputDataViewModel(resourceModel, isDebug);
+            inputDataViewModel.DebugExecutionStart += () => DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+            inputDataViewModel.DebugExecutionFinished += () => DebugOutputViewModel.DebugStatus = DebugStatus.Finished;
+            return inputDataViewModel;
         }
 
         WorkflowInputDataViewModel GetWorkflowInputDataViewModel(IContextualResourceModel resourceModel, bool isDebug)
@@ -419,7 +421,7 @@ namespace Dev2.ViewModels.WorkSurface
             var mode = isDebug ? DebugMode.DebugInteractive : DebugMode.Run;
             IServiceDebugInfoModel debugInfoModel =
                 ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, mode);
-            var inputDataViewModel = GetServiceInputDataFromUser(debugInfoModel);
+            var inputDataViewModel = new WorkflowInputDataViewModel(debugInfoModel, DebugOutputViewModel.SessionID) { Parent = this };
             return inputDataViewModel;
         }
 
@@ -462,9 +464,9 @@ namespace Dev2.ViewModels.WorkSurface
         {
             SetDebugStatus(DebugStatus.Configure);
             Save(ContextualResourceModel, true);
-            var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, true);
-            workflowInputDataViewModel.LoadWorkflowInputs();
-            workflowInputDataViewModel.Save();
+            var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
+            inputDataViewModel.LoadWorkflowInputs();
+            inputDataViewModel.Save();
         }
 
         public void BindToModel()

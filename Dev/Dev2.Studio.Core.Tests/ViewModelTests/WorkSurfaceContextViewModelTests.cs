@@ -1,4 +1,7 @@
-﻿using Dev2.Communication;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Messages;
 using Dev2.Providers.Events;
@@ -7,13 +10,11 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels.WorkSurface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ViewModelTests
 {
@@ -314,7 +315,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.SetupGet(p => p.ServerID).Returns(It.IsAny<Guid>);
 
             mockServiceDebugInfoModel.SetupGet(p => p.ResourceModel).Returns(mockResourceModel.Object);
-            workSurfaceContextViewModel.GetServiceInputDataFromUser(mockServiceDebugInfoModel.Object);
+            var inputDataViewModel = new WorkflowInputDataViewModel(mockServiceDebugInfoModel.Object, workSurfaceContextViewModel.DebugOutputViewModel.SessionID) { Parent = workSurfaceContextViewModel };
+            WorkflowInputDataViewModel temp = inputDataViewModel;
             //------------Assert---------------------------------
             //mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
         }

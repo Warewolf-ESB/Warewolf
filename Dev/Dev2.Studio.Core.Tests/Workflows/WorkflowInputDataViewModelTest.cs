@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
             for(int i = 1; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests.Workflows
             mockResouce.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             IList<IDataListItem> testDataListItems = GetInputTestDataDataNames();
             for(int i = 1; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns("<DataList></DataList>");
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             foreach(var input in workflowInputDataviewModel.WorkflowInputs)
             {
@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResouce = GetMockResource();
             mockResouce.SetupGet(s => s.DataList).Returns("<DataList></DataList>");
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             Assert.IsTrue(workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResouce = GetMockResource();
             mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             workflowInputDataviewModel.Save();
             Assert.AreEqual("", workflowInputDataviewModel.DebugTO.Error);
@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             workflowInputDataviewModel.Cancel();
             Assert.AreEqual("", workflowInputDataviewModel.DebugTO.Error);
@@ -131,7 +131,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResouce = GetMockResource();
             mockResouce.SetupGet(s => s.DataList).Returns(string.Empty);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             Assert.IsTrue(workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
@@ -140,12 +140,41 @@ namespace Dev2.Core.Tests.Workflows
         #region SetWorkflowInputData
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_Create")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void WorkflowInputDataViewModel_Create_NullResourceModel_ThrowException()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            WorkflowInputDataViewModel.Create(null);
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowInputDataViewModel_Create")]
+        public void WorkflowInputDataViewModel_Create_WithResourceModel_IsValid()
+        {
+            //------------Setup for test--------------------------
+            var mockResouce = GetMockResource();
+            //------------Execute Test---------------------------
+            var viewModel = WorkflowInputDataViewModel.Create(mockResouce.Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel);
+            Assert.IsNotNull(viewModel.DebugTO);
+        }
+
+
+        [TestMethod]
         public void SetWorkflowInputData_ExtraRows_Expected_Row_Available()
         {
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel());
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             OptomizedObservableCollection<IDataListItem> inputValues = GetInputTestDataDataNames();
 
@@ -169,7 +198,8 @@ namespace Dev2.Core.Tests.Workflows
             var debugVM = CreateDebugOutputViewModel();
             var mockResouce = GetMockResource();
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
-            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, debugVM);
+            var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, debugVM.SessionID);
+            workflowInputDataviewModel.DebugExecutionFinished += () => debugVM.DebugStatus = DebugStatus.Finished;
             workflowInputDataviewModel.ViewClosed();
             Assert.AreEqual(DebugStatus.Finished, debugVM.DebugStatus);
         }
@@ -199,7 +229,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugVM = CreateDebugOutputViewModel();
             //------------Execute Test---------------------------
-            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM);
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(rm.Object.DataList, workflowInputDataViewModel.DebugTO.DataList);
@@ -243,7 +273,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
             var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
-
+            workflowInputDataViewModel.DebugExecutionStart += () => debugOutputViewModel.DebugStatus = DebugStatus.Executing;
             //------------Execute Test---------------------------
             workflowInputDataViewModel.ExecuteWorkflow();
 
@@ -374,7 +404,7 @@ namespace Dev2.Core.Tests.Workflows
             var debugOutputViewModel = CreateDebugOutputViewModel();
             var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
             workflowInputDataViewModel.LoadWorkflowInputs();
-            
+
 
             //------------Execute Test---------------------------
             workflowInputDataViewModel.WorkflowInputs.Add(new DataListItem() { DisplayValue = "rs(2).val", Field = "val", Recordset = "rs", IsRecordset = true, Value = "2", RecordsetIndex = "2" });
@@ -497,7 +527,7 @@ namespace Dev2.Core.Tests.Workflows
     public class WorkflowInputDataViewModelMock : WorkflowInputDataViewModel
     {
         public WorkflowInputDataViewModelMock(IServiceDebugInfoModel serviceDebugInfoModel, DebugOutputViewModel debugOutputViewModel)
-            : base(serviceDebugInfoModel, debugOutputViewModel)
+            : base(serviceDebugInfoModel, debugOutputViewModel.SessionID)
         {
         }
 
