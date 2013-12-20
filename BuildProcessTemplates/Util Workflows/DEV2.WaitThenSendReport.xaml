@@ -44,6 +44,7 @@
       <Variable x:TypeArguments="mtbc:IBuildAgent" Name="BuildAgent" />
       <Variable x:TypeArguments="mtbc:IBuildDetail" Name="BuildDetail" />
     </Sequence.Variables>
+    <mtbwa:GetBuildDetail DisplayName="Get the Build" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildDetail]" sap2010:WorkflowViewState.IdRef="GetBuildDetail_1" />
     <mtbwa:UpdateBuildNumber BuildNumberFormat="Waiting To Send Report_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run On Agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.MaxExecutionTime]" MaxWaitTime="[AgentSettings.MaxWaitTime]" ReservationSpec="[AgentSettings.GetAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
       <mtbwa:WriteBuildMessage sap2010:WorkflowViewState.IdRef="WriteBuildMessage_7" Message="[&quot;Waiting for test runs &quot; &amp; BuildIDs &amp; &quot; queued by checkin &quot; &amp; ChangeSetID &amp; &quot; on branch &quot; &amp; BranchID]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
@@ -81,24 +82,25 @@
       </mtbwa:InvokeProcess>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBMBkAMBxgMBAwFhAe8CAQIqA1UOAgEBLwUvvQECAR8wBVMYAgECLzAvYgIBIDCxATDOAQIBBzCCATCkAQIBBTDfATCKAgIBAzEHMd8CAgEZMgdBHQIBFEIHUR0CAQxSB1KZAgIBCTFeMfgBAgEbMiYy1AECARYygwIyrQICARVCJkLyAQIBDkKWAkK4AgIBDVJ+UrIBAgEL</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBUBkAMBxgMBAwFhAe8CAQIqA1YOAgEBLwUvswECASEwBTC9AQIBHzEFVBgCAQIvbi99AgEiMDAwYgIBIDGxATHOAQIBBzGCATGkAQIBBTHfATGKAgIBAzIHMt8CAgEZMwdCHQIBFEMHUh0CAQxTB1OZAgIBCTJeMvgBAgEbMyYz1AECARYzgwIzrQICARVDJkPyAQIBDkOWAkO4AgIBDVN+U7IBAgEL</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="222,22" />
       <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="222,22" />
       <sap2010:ViewStateData Id="WriteBuildMessage_7" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="222,816" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="244,1002">
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="244,1064">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="284,1082" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="284,1144" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
