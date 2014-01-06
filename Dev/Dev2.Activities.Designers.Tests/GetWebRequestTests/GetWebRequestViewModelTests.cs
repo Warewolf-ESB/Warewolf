@@ -18,11 +18,21 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
         [TestCategory("GetWebRequestDesignerViewModel_Constructor")]
         public void GetWebRequestDesignerViewModel_Constructor_PreviewViewModel_NotNull()
         {
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+
+            var url = new Mock<ModelProperty>();
+            url.SetupProperty(p => p.ComputedValue, null);
+            properties.Add("Url", url);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
+            
             var modelItemMock = new Mock<ModelItem>();
+            modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             Assert.IsNotNull(sut.PreviewViewModel);
         }
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("GetWebRequestDesignerViewModel_UrlSet")]
