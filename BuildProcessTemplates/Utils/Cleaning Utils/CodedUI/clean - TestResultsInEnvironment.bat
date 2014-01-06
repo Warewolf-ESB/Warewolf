@@ -1,6 +1,7 @@
 REM  Clean Staging Directory
 
 @echo off
+@echo Cleaning UITestResults%1 ...
 call :cleanDIR
 goto :eof
 
