@@ -1,5 +1,4 @@
-﻿using System;
-namespace Dev2.DataList.Contract
+﻿namespace Dev2.DataList.Contract
 {
     interface IIntellisenseFilterOpsTO {
         string FilterCondition { get; set; }

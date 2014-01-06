@@ -384,7 +384,6 @@
     <Compile Include="Translators\TranslatorUtils.cs" />
     <Compile Include="Util\DataListCleaningUtils.cs" />
     <Compile Include="Util\DataListUtil.cs" />
-    <Compile Include="Util\GCWriter.cs" />
     <Compile Include="Util\Scrubber.cs" />
     <Compile Include="Util\ScrubType.cs" />
     <Compile Include="Util\XmlHelper.cs" />

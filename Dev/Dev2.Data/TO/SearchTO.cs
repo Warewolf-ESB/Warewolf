@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Dev2.DataList.Contract
+﻿namespace Dev2.DataList.Contract
 {
     /// <summary>
     /// Class for holding all the properties that are needed by the find records operation

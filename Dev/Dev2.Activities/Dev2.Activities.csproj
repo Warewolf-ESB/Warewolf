@@ -212,9 +212,6 @@
     <Compile Include="Activities\DsfForEachActivity.cs" />
     <Compile Include="TO\DataMergeDTO.cs" />
     <Compile Include="TO\DataSplitDTO.cs" />
-    <Compile Include="Dev2HTMLObject.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ImageConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
