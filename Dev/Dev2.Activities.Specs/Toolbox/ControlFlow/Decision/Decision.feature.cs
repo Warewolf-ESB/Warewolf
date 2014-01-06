@@ -1560,7 +1560,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 490
  testRunner.And("a decision variable \"[[B]]\" value \"country\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 491
- testRunner.And("is \"[[A]]\" \"DoesntStartWith\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotStartsWith\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 492
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 493
@@ -1584,7 +1584,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 498
  testRunner.And("a decision variable \"[[B]]\" value \"South\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 499
- testRunner.And("is \"[[A]]\" \"DoesntStartWith\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("is \"[[A]]\" \"NotStartsWith\" \"[[B]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 500
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 501

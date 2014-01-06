@@ -488,7 +488,7 @@ Scenario: decide if variable [[A]] Contains variable [[B]] (False)
 Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "country"
-	And is "[[A]]" "DoesntStartWith" "[[B]]"	
+	And is "[[A]]" "NotStartsWith" "[[B]]"	
 	When the decision tool is executed
 	Then the decision result should be "True"
 	And the execution has "NO" error
@@ -496,7 +496,7 @@ Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (True)
 Scenario: decide if variable [[A]] Doesn't Starts With variable [[B]] (False)
 	Given a decision variable "[[A]]" value "South Africa is a fantastic country"
 	And  a decision variable "[[B]]" value "South"
-	And is "[[A]]" "DoesntStartWith" "[[B]]"	
+	And is "[[A]]" "NotStartsWith" "[[B]]"	
 	When the decision tool is executed
 	Then the decision result should be "False"
 	And the execution has "NO" error
