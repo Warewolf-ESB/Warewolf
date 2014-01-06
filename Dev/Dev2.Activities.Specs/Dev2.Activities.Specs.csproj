@@ -87,6 +87,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\Dev2.Integration.Tests\Services.Sql\SqlServerTests.cs">
+      <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTests.cs</Link>
+    </Compile>
     <Compile Include="BaseTypes\CommonSteps.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
@@ -414,6 +417,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
+      <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
+      <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
