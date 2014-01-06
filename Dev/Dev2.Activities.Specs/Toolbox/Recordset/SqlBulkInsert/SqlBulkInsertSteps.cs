@@ -7,7 +7,6 @@ using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract;
-using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -318,6 +317,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             }
 
             Assert.AreEqual(numOfInserts, actualInserts);
+        }
+    }
+
+    public class SqlServerTests
+    {
+        public static DbSource CreateDev2TestingDbSource()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Text;
 using ActivityUnitTests;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -26,7 +25,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var data = new StringBuilder();
             data.Append("<root>");
 
-            int row = 1;
+            int row = 0;
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 

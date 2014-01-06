@@ -383,6 +383,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Tests\Dev2.Activities.Tests.csproj">
+      <Project>{2A8088A6-8F8D-42FD-B877-D809C494C561}</Project>
+      <Name>Dev2.Activities.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>
@@ -402,10 +406,6 @@
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Integration.Tests\Dev2.Integration.Tests.csproj">
-      <Project>{2C7F0E32-C4C4-422D-A767-92F3B3510392}</Project>
-      <Name>Dev2.Integration.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
