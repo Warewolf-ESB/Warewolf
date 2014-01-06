@@ -6,7 +6,7 @@ namespace Dev2.Data.Decisions.Operations
     {
         public Enum HandlesType()
         {
-            return enDecisionType.DoesntStartWith;
+            return enDecisionType.NotStartsWith;
         }
 
         public bool Invoke(string[] cols)

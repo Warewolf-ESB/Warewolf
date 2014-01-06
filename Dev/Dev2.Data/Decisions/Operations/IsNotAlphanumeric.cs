@@ -1,6 +1,5 @@
-﻿using System;
-using System.IO;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
+using System;
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -9,12 +8,12 @@ namespace Dev2.Data.Decisions.Operations
         public bool Invoke(string[] cols)
         {
 
-            if (!string.IsNullOrEmpty(cols[0]))
+            if(!string.IsNullOrEmpty(cols[0]))
             {
                 return !(cols[0].IsAlphaNumeric());
             }
 
-            return false;
+            return true;
         }
 
         public Enum HandlesType()

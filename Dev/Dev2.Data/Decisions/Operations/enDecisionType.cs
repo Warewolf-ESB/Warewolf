@@ -96,7 +96,7 @@ namespace Dev2.Data.Decisions.Operations
         [DecisionTypeDisplayValue("Starts With")]
         IsStartsWith,
         [DecisionTypeDisplayValue("Doesn't Start With")]
-        DoesntStartWith,
+        NotStartsWith,
         [DecisionTypeDisplayValue("Is Between")]
         IsBetween,
         [DecisionTypeDisplayValue("Not Between")]
