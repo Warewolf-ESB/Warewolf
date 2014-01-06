@@ -589,7 +589,7 @@
           <If Condition="[DoResultDeployment]" DisplayName="If can deploy results" sap2010:WorkflowViewState.IdRef="If_70">
             <If.Then>
               <Sequence DisplayName="Deploy Test Results" sap2010:WorkflowViewState.IdRef="Sequence_81">
-                <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_16">
+                <Assign DisplayName="Create Test Results File Name - U" sap2010:WorkflowViewState.IdRef="Assign_16">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</OutArgument>
                   </Assign.To>
@@ -597,7 +597,7 @@
                     <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; "_" &amp; BuildDetail.RequestedFor.Replace(" ", ".") &amp; "_" &amp; BranchID &amp; "_Unit.xml"]</InArgument>
                   </Assign.Value>
                 </Assign>
-                <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_17">
+                <Assign DisplayName="Create Test Results File Name - S" sap2010:WorkflowViewState.IdRef="Assign_17">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName2]</OutArgument>
                   </Assign.To>
@@ -632,7 +632,7 @@
                     <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_9" Message="No test results found to deploy" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                   </If.Else>
                 </If>
-                <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_18">
+                <Assign DisplayName="Create Test Results File Name - U" sap2010:WorkflowViewState.IdRef="Assign_18">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</OutArgument>
                   </Assign.To>
@@ -640,7 +640,7 @@
                     <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; "_" &amp; BuildDetail.RequestedFor.Replace(" ", ".") &amp; "_" &amp; BranchID &amp; "_Unit.xml"]</InArgument>
                   </Assign.Value>
                 </Assign>
-                <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_19">
+                <Assign DisplayName="Create Test Results File Name - S" sap2010:WorkflowViewState.IdRef="Assign_19">
                   <Assign.To>
                     <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName2]</OutArgument>
                   </Assign.To>
