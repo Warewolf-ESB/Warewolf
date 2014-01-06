@@ -25,6 +25,16 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                     InputsVisibility = Visibility.Collapsed,
                 };
             PreviewViewModel.PreviewRequested += DoPreview;
+
+            if (Url == null)
+            {
+                Url = string.Empty;
+            }
+
+            if (Headers == null)
+            {
+                Headers = string.Empty;
+            }
         }
 
         public PreviewViewModel PreviewViewModel { get; private set; }
@@ -43,11 +53,13 @@ namespace Dev2.Activities.Designers2.GetWebRequest
         private string Url
         {
             get { return GetProperty<string>(); }
+            set { SetProperty(value); }
         }
 
         private string Headers
         {
             get { return GetProperty<string>(); }
+            set { SetProperty(value); }
         }
 
         public override void Validate()
