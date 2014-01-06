@@ -13,10 +13,7 @@ using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Services.Execution
 {
-    public abstract class ServiceExecutionAbstract<TService, TSource> : IServiceExecution
-                                                                                         where TService : Service, new()
-                                                                                         where TSource:Resource,new()
-                                                                                        
+    public abstract class ServiceExecutionAbstract<TService, TSource> : IServiceExecution where TService : Service, new() where TSource:Resource,new()                                                                                  
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
