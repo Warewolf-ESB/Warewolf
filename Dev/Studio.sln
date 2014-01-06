@@ -74,10 +74,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.PluginTester", "Dev2.P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Data.Tests", "Dev2.Data.Tests\Dev2.Data.Tests.csproj", "{86E580CD-C480-435A-8978-A9C27377C900}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Specs", "Dev2.Activities.Specs\Dev2.Activities.Specs.csproj", "{A03004BE-79B5-47AF-88EF-112197619A5F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services.Specs", "Dev2.Runtime.Services.Specs\Dev2.Runtime.Services.Specs.csproj", "{DD7772F4-E445-48F6-B594-B4C31E962336}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58434E37-3D21-4C5B-A405-9D17DFDA8F79}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
@@ -85,7 +81,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58434E
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 35
+		SccNumberOfProjects = 33
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -185,12 +181,6 @@ Global
 		SccProjectUniqueName32 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
 		SccProjectName32 = Dev2.Data.Tests
 		SccLocalPath32 = Dev2.Data.Tests
-		SccProjectUniqueName33 = Dev2.Activities.Specs\\Dev2.Activities.Specs.csproj
-		SccProjectName33 = Dev2.Activities.Specs
-		SccLocalPath33 = Dev2.Activities.Specs
-		SccProjectUniqueName34 = Dev2.Runtime.Services.Specs\\Dev2.Runtime.Services.Specs.csproj
-		SccProjectName34 = Dev2.Runtime.Services.Specs
-		SccLocalPath34 = Dev2.Runtime.Services.Specs
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -610,30 +600,6 @@ Global
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|x64.ActiveCfg = Release|Any CPU
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|x86.ActiveCfg = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|x64.ActiveCfg = Release|Any CPU
-		{A03004BE-79B5-47AF-88EF-112197619A5F}.Release|x86.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x64.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
