@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -11,7 +12,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             bool expected = anError.Equals("NO");
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
+            var comiler = DataListFactory.CreateDataListCompiler();
+            // 06.01.2014 Line Below is Causing Compile Errors ;)
+            string fetchErrors = comiler.FetchErrors(result.DataListID, false); 
+            //string fetchErrors = RecordSetBases.FetchErrors(result.DataListID);
             bool actual = string.IsNullOrEmpty(fetchErrors);
             string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actual ? "did not occur" : "did occur" + fetchErrors);

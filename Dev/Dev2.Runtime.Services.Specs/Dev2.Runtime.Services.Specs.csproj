@@ -49,12 +49,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="SpecRun.SpecFlowPlugin">
+      <HintPath>..\packages\SpecRun.SpecFlow.1.2.0\lib\net35\SpecRun.SpecFlowPlugin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="TechTalk.SpecRun">
+      <HintPath>..\packages\SpecRun.SpecFlow.1.2.0\lib\net35\TechTalk.SpecRun.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -80,7 +86,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Default.srprofile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+    <None Include="runtests.cmd" />
+    <None Include="SpecRunTestProfile.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WebService\WebService.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>WebService.feature.cs</LastGenOutput>
