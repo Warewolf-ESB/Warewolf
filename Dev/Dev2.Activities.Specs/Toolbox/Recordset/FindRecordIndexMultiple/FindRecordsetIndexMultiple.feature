@@ -60,25 +60,25 @@ Scenario: Find an index of data in a recordset with Is Between DateTime
 	Then the find records index multiple result should be 2
 	And the execution has "NO" error
 
-Scenario: Find an index of data in a recordset with Is Between Numbers and recordsets with stars
-	Given I have the following recordset in my datalist
-	| rs | value |
-	| BetweenFrom().from | 15|	
-	| BetweenFrom().from | 0|
-	Given I have the following recordset in my datalist
-	| rs | value |
-	| BetweenTo().to | 25|	
-	| BetweenTo().to | 26|
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs().field | 15|
-	| rs().field | 20|
-	| rs().field | 25|				
-	And  is between search the recordset with type "Is Between" and criteria is "[[BetweenFrom(*).from]]" and "[[BetweenTo(*).to]]"
-	And when all row true is "true"
-	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 2
-	And the execution has "NO" error
+#Scenario: Find an index of data in a recordset with Is Between Numbers and recordsets with stars
+#	Given I have the following recordset in my datalist
+#	| rs | value |
+#	| BetweenFrom().from | 15|	
+#	| BetweenFrom().from | 0|
+#	Given I have the following recordset in my datalist
+#	| rs | value |
+#	| BetweenTo().to | 25|	
+#	| BetweenTo().to | 26|
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs().field | 15|
+#	| rs().field | 20|
+#	| rs().field | 25|				
+#	And  is between search the recordset with type "Is Between" and criteria is "[[BetweenFrom(*).from]]" and "[[BetweenTo(*).to]]"
+#	And when all row true is "true"
+#	When the find records index multiple tool is executed
+#	Then the find records index multiple result should be 2
+#	And the execution has "NO" error
 	
 Scenario: Find an index of data in a recordset with Is Base64
 	Given I have the following recordset to search for multiple criteria
@@ -1241,123 +1241,123 @@ Scenario: Find an index of data in a recordset search type is Not XML result doe
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 
-Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows true
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs(1).field1 |123 |
-	| rs(2).field1 |2 |
-	| rs(3).field1 |5 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |	
-	| rs1(1).field2 |214 |
-	| rs1(2).field2 |51 |
-	| rs1(3).field2 |56 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs2(1).field3 |512 |
-	| rs2(2).field3 |84 |
-	| rs2(3).field3 |12 |
-	And the fields to search is
-	| field    |
-	| [[rs().field1]] |
-	| [[rs1().field2]] |
-	| [[rs2().field3]] |
-	And search the recordset with type "Contains" and criteria is "1"	
-	And search the recordset with type "Contains" and criteria is "2"	
-	And when match all search criteria is "true"
-	And when requires all fields to match is "true"
-	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1
-	And the execution has "NO" error
+#Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows true
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs(1).field1 |123 |
+#	| rs(2).field1 |2 |
+#	| rs(3).field1 |5 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |	
+#	| rs1(1).field2 |214 |
+#	| rs1(2).field2 |51 |
+#	| rs1(3).field2 |56 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs2(1).field3 |512 |
+#	| rs2(2).field3 |84 |
+#	| rs2(3).field3 |12 |
+#	And the fields to search is
+#	| field    |
+#	| [[rs().field1]] |
+#	| [[rs1().field2]] |
+#	| [[rs2().field3]] |
+#	And search the recordset with type "Contains" and criteria is "1"	
+#	And search the recordset with type "Contains" and criteria is "2"	
+#	And when match all search criteria is "true"
+#	And when requires all fields to match is "true"
+#	When the find records index multiple tool is executed
+#	Then the find records index multiple result should be 1
+#	And the execution has "NO" error
 
-Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows true
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs(1).field1 |123 |
-	| rs(2).field1 |2 |
-	| rs(3).field1 |5 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |	
-	| rs1(1).field2 |214 |
-	| rs1(2).field2 |51 |
-	| rs1(3).field2 |56 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs2(1).field3 |512 |
-	| rs2(2).field3 |84 |
-	| rs2(3).field3 |12 |
-	And the fields to search is
-	| field    |
-	| [[rs().field1]] |
-	| [[rs1().field2]] |
-	| [[rs2().field3]] |
-	And search the recordset with type "Contains" and criteria is "1"	
-	And search the recordset with type "Contains" and criteria is "2"	
-	#And when All Contains true is "true"
-	#And when requires All Fields to match is "false"
-	And when match all search criteria is "true"
-	And when requires all fields to match is "false"
-	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,3
-	And the execution has "NO" error
+#Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows true
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs(1).field1 |123 |
+#	| rs(2).field1 |2 |
+#	| rs(3).field1 |5 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |	
+#	| rs1(1).field2 |214 |
+#	| rs1(2).field2 |51 |
+#	| rs1(3).field2 |56 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs2(1).field3 |512 |
+#	| rs2(2).field3 |84 |
+#	| rs2(3).field3 |12 |
+#	And the fields to search is
+#	| field    |
+#	| [[rs().field1]] |
+#	| [[rs1().field2]] |
+#	| [[rs2().field3]] |
+#	And search the recordset with type "Contains" and criteria is "1"	
+#	And search the recordset with type "Contains" and criteria is "2"	
+#	#And when All Contains true is "true"
+#	#And when requires All Fields to match is "false"
+#	And when match all search criteria is "true"
+#	And when requires all fields to match is "false"
+#	When the find records index multiple tool is executed
+#	Then the find records index multiple result should be 1,3
+#	And the execution has "NO" error
 
-Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows false
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| AB(1).f1 |123 |
-	| AB(2).f1 |2 |
-	| AB(3).f1 |5 |
-	And I have the following recordset to search for multiple criteria
-	| rs       | value    |	
-	| CD(1).f2 |214 |
-	| CD(2).f2 |51 |
-	| CD(3).f2 |56 |
-	And I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| EF(1).f3 |512 |
-	| EF(2).f3 |84 |
-	| EF(3).f3 |12 |
-	And the fields to search is
-	| field    |
-	| [[AB().f1]] |
-	| [[CD().f2]] |
-	| [[EF().f3]] |
-	And search the recordset with type "Contains" and criteria is "1"	
-	And search the recordset with type "Contains" and criteria is "2"	
-	And when match all search criteria is "false"
-	And when requires all fields to match is "false"
-	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,2,3
-	And the execution has "NO" error
-
-Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows false
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs(1).field1 |123 |
-	| rs(2).field1 |2 |
-	| rs(3).field1 |5 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |	
-	| rs1(1).field2 |214 |
-	| rs1(2).field2 |52 |
-	| rs1(3).field2 |56 |
-	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs2(1).field3 |512 |
-	| rs2(2).field3 |82 |
-	| rs2(3).field3 |12 |
-	And the fields to search is
-	| field    |
-	| [[rs().field1]] |
-	| [[rs1().field2]] |
-	| [[rs2().field3]] |
-	And search the recordset with type "Contains" and criteria is "1"	
-	And search the recordset with type "Contains" and criteria is "2"	
-	And when match all search criteria is "false"
-	And when requires all fields to match is "true"
-	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,2
-	And the execution has "NO" error
+#Scenario: Find an index of data in a recordset search type Contains and requires all fields to match false and match all rows false
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| AB(1).f1 |123 |
+#	| AB(2).f1 |2 |
+#	| AB(3).f1 |5 |
+#	And I have the following recordset to search for multiple criteria
+#	| rs       | value    |	
+#	| CD(1).f2 |214 |
+#	| CD(2).f2 |51 |
+#	| CD(3).f2 |56 |
+#	And I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| EF(1).f3 |512 |
+#	| EF(2).f3 |84 |
+#	| EF(3).f3 |12 |
+#	And the fields to search is
+#	| field    |
+#	| [[AB().f1]] |
+#	| [[CD().f2]] |
+#	| [[EF().f3]] |
+#	And search the recordset with type "Contains" and criteria is "1"	
+#	And search the recordset with type "Contains" and criteria is "2"	
+#	And when match all search criteria is "false"
+#	And when requires all fields to match is "false"
+#	When the find records index multiple tool is executed
+#	Then the find records index multiple result should be 1,2,3
+#	And the execution has "NO" error
+#
+#Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows false
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs(1).field1 |123 |
+#	| rs(2).field1 |2 |
+#	| rs(3).field1 |5 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |	
+#	| rs1(1).field2 |214 |
+#	| rs1(2).field2 |52 |
+#	| rs1(3).field2 |56 |
+#	Given I have the following recordset to search for multiple criteria
+#	| rs       | value    |
+#	| rs2(1).field3 |512 |
+#	| rs2(2).field3 |82 |
+#	| rs2(3).field3 |12 |
+#	And the fields to search is
+#	| field    |
+#	| [[rs().field1]] |
+#	| [[rs1().field2]] |
+#	| [[rs2().field3]] |
+#	And search the recordset with type "Contains" and criteria is "1"	
+#	And search the recordset with type "Contains" and criteria is "2"	
+#	And when match all search criteria is "false"
+#	And when requires all fields to match is "true"
+#	When the find records index multiple tool is executed
+#	Then the find records index multiple result should be 1,2
+#	And the execution has "NO" error
 
 Scenario: Search using a negative index recordset criteria
 	Given I have the following recordset to search for multiple criteria
