@@ -13,7 +13,7 @@
     <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
-  <NamingScheme baseName="RES" useDefault="false"  appendTimeStamp="true" />
+  <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
   <Execution>
     <Hosts skipUnhostableTests="false" />
     <Timeouts runTimeout="5400000" testTimeout="300000" />
