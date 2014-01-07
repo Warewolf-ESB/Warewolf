@@ -35,7 +35,6 @@ namespace Unlimited.Framework
     public class UnlimitedObject : DynamicObject
     {
 
-
         #region Properties
         /// <summary>
         /// The actual xml data that we will be manipulating or reading from
@@ -271,7 +270,7 @@ namespace Unlimited.Framework
         /// <param name="dataObject"></param>
         public UnlimitedObject(object dataObject)
         {
-            VerifyArgument.IsNotNull("dataObject",dataObject);
+            VerifyArgument.IsNotNull("dataObject", dataObject);
 
             var element = dataObject as XElement;
             if(element != null)
@@ -340,7 +339,7 @@ namespace Unlimited.Framework
             }
         }
 
-       
+
         /// <summary>
         /// Determines whether [is valid element or attribute name] [the specified name].
         /// </summary>
@@ -368,7 +367,7 @@ namespace Unlimited.Framework
             return true;
         }
 
-       
+
         /// <summary>
         /// Get the value of node or attribute in the current XmlData propery
         /// </summary>
@@ -414,9 +413,9 @@ namespace Unlimited.Framework
                     else
                     {
                         return currentXMLData.Attribute(XName.Get(name)) != null ? currentXMLData.Attribute(XName.Get(name)).Value : xm.Value;
-                            //This is a singleton value that we can return
-                        }
+                        //This is a singleton value that we can return
                     }
+                }
                 else
                 {
                     var attrib = currentXMLData.DescendantsAndSelf().Where(c => c.Attribute(name) != null);
@@ -425,19 +424,19 @@ namespace Unlimited.Framework
                     {
                         var firstOrDefault = elements.FirstOrDefault();
                         if(firstOrDefault != null)
-                    {
+                        {
                             returnVal = firstOrDefault.Attribute(name).Value;
                         }
                     }
-                    }
                 }
-            return returnVal;
             }
+            return returnVal;
+        }
 
         static IList<XElement> ExcludeDatalistFromNodes(string name, XElement currentXMLData)
         {
             var matches = currentXMLData.DescendantsAndSelf(name);
-            var xElements = matches as IList<XElement> ?? matches.Where(element => (element.Parent != null && element.Parent.Name != "DataList") || element.Parent==null).ToList();
+            var xElements = matches as IList<XElement> ?? matches.Where(element => (element.Parent != null && element.Parent.Name != "DataList") || element.Parent == null).ToList();
             return xElements;
         }
 
@@ -597,7 +596,7 @@ namespace Unlimited.Framework
                     }
                 }
 
-               
+
             }
             return returnValue;
         }
@@ -617,7 +616,7 @@ namespace Unlimited.Framework
                     reader.Read();
                     while(!reader.EOF)
                     {
-                        
+
                         var test = string.Empty;
 
                         test = XNode.ReadFrom(reader).ToString();
@@ -742,7 +741,7 @@ namespace Unlimited.Framework
             xmlData = data;
         }
 
-       
+
         /// <summary>
         /// Recursively reflects over an object and returns an xml representation of its members
         /// </summary>

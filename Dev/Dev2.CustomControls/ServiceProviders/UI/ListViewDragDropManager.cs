@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - January 2007
+
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -10,7 +11,7 @@ using System.Windows.Media;
 using WPF.JoshSmith.Adorners;
 using WPF.JoshSmith.Controls.Utilities;
 
-namespace WPF.JoshSmith.ServiceProviders.UI
+namespace Dev2.CustomControls.ServiceProviders.UI
 {
     #region ListViewDragDropManager
 
@@ -48,10 +49,10 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public ListViewDragDropManager()
         {
-            this.canInitiateDrag = false;
-            this.dragAdornerOpacity = 0.7;
-            this.indexToSelect = -1;
-            this.showDragAdorner = true;
+            canInitiateDrag = false;
+            dragAdornerOpacity = 0.7;
+            indexToSelect = -1;
+            showDragAdorner = true;
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         public ListViewDragDropManager(ListView listView)
             : this()
         {
-            this.ListView = listView;
+            ListView = listView;
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         public ListViewDragDropManager(ListView listView, double dragAdornerOpacity)
             : this(listView)
         {
-            this.DragAdornerOpacity = dragAdornerOpacity;
+            DragAdornerOpacity = dragAdornerOpacity;
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         public ListViewDragDropManager(ListView listView, bool showDragAdorner)
             : this(listView)
         {
-            this.ShowDragAdorner = showDragAdorner;
+            ShowDragAdorner = showDragAdorner;
         }
 
         #endregion // Constructors
@@ -98,16 +99,16 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public double DragAdornerOpacity
         {
-            get { return this.dragAdornerOpacity; }
+            get { return dragAdornerOpacity; }
             set
             {
-                if (this.IsDragInProgress)
+                if (IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the DragAdornerOpacity property during a drag operation.");
 
                 if (value < 0.0 || value > 1.0)
                     throw new ArgumentOutOfRangeException("DragAdornerOpacity", value, "Must be between 0 and 1.");
 
-                this.dragAdornerOpacity = value;
+                dragAdornerOpacity = value;
             }
         }
 
@@ -120,8 +121,8 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public bool IsDragInProgress
         {
-            get { return this.isDragInProgress; }
-            private set { this.isDragInProgress = value; }
+            get { return isDragInProgress; }
+            private set { isDragInProgress = value; }
         }
 
         #endregion // IsDragInProgress
@@ -138,38 +139,38 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             get { return listView; }
             set
             {
-                if (this.IsDragInProgress)
+                if (IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the ListView property during a drag operation.");
 
-                if (this.listView != null)
+                if (listView != null)
                 {
                     #region Unhook Events
 
-                    this.listView.PreviewMouseLeftButtonDown -= listView_PreviewMouseLeftButtonDown;
-                    this.listView.PreviewMouseMove -= listView_PreviewMouseMove;
-                    this.listView.DragOver -= listView_DragOver;
-                    this.listView.DragLeave -= listView_DragLeave;
-                    this.listView.DragEnter -= listView_DragEnter;
-                    this.listView.Drop -= listView_Drop;
+                    listView.PreviewMouseLeftButtonDown -= listView_PreviewMouseLeftButtonDown;
+                    listView.PreviewMouseMove -= listView_PreviewMouseMove;
+                    listView.DragOver -= listView_DragOver;
+                    listView.DragLeave -= listView_DragLeave;
+                    listView.DragEnter -= listView_DragEnter;
+                    listView.Drop -= listView_Drop;
 
                     #endregion // Unhook Events
                 }
 
-                this.listView = value;
+                listView = value;
 
-                if (this.listView != null)
+                if (listView != null)
                 {
-                    if (!this.listView.AllowDrop)
-                        this.listView.AllowDrop = true;
+                    if (!listView.AllowDrop)
+                        listView.AllowDrop = true;
 
                     #region Hook Events
 
-                    this.listView.PreviewMouseLeftButtonDown += listView_PreviewMouseLeftButtonDown;
-                    this.listView.PreviewMouseMove += listView_PreviewMouseMove;
-                    this.listView.DragOver += listView_DragOver;
-                    this.listView.DragLeave += listView_DragLeave;
-                    this.listView.DragEnter += listView_DragEnter;
-                    this.listView.Drop += listView_Drop;
+                    listView.PreviewMouseLeftButtonDown += listView_PreviewMouseLeftButtonDown;
+                    listView.PreviewMouseMove += listView_PreviewMouseMove;
+                    listView.DragOver += listView_DragOver;
+                    listView.DragLeave += listView_DragLeave;
+                    listView.DragEnter += listView_DragEnter;
+                    listView.Drop += listView_Drop;
 
                     #endregion // Hook Events
                 }
@@ -198,13 +199,13 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public bool ShowDragAdorner
         {
-            get { return this.showDragAdorner; }
+            get { return showDragAdorner; }
             set
             {
-                if (this.IsDragInProgress)
+                if (IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the ShowDragAdorner property during a drag operation.");
 
-                this.showDragAdorner = value;
+                showDragAdorner = value;
             }
         }
 
@@ -218,25 +219,25 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void listView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.IsMouseOverScrollbar)
+            if (IsMouseOverScrollbar)
             {
-                this.canInitiateDrag = false;
+                canInitiateDrag = false;
                 return;
             }
 
-            int index = this.IndexUnderDragCursor;
-            this.canInitiateDrag = index > -1;
+            int index = IndexUnderDragCursor;
+            canInitiateDrag = index > -1;
 
-            if (this.canInitiateDrag)
+            if (canInitiateDrag)
             {
                 // Remember the location and index of the ListViewItem the user clicked on for later.
-                this.ptMouseDown = MouseUtilities.GetMousePosition(this.listView);
-                this.indexToSelect = index;
+                ptMouseDown = MouseUtilities.GetMousePosition(listView);
+                indexToSelect = index;
             }
             else
             {
-                this.ptMouseDown = new Point(-10000, -10000);
-                this.indexToSelect = -1;
+                ptMouseDown = new Point(-10000, -10000);
+                indexToSelect = -1;
             }
         }
 
@@ -246,27 +247,27 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void listView_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (!this.CanStartDragOperation)
+            if (!CanStartDragOperation)
                 return;
 
             // Select the item the user clicked on.
-            if (this.listView.SelectedIndex != this.indexToSelect)
-                this.listView.SelectedIndex = this.indexToSelect;
+            if (listView.SelectedIndex != indexToSelect)
+                listView.SelectedIndex = indexToSelect;
 
             // If the item at the selected index is null, there's nothing
             // we can do, so just return;
-            if (this.listView.SelectedItem == null)
+            if (listView.SelectedItem == null)
                 return;
 
-            ListViewItem itemToDrag = this.GetListViewItem(this.listView.SelectedIndex);
+            ListViewItem itemToDrag = GetListViewItem(listView.SelectedIndex);
             if (itemToDrag == null)
                 return;
 
-            AdornerLayer adornerLayer = this.ShowDragAdornerResolved ? this.InitializeAdornerLayer(itemToDrag) : null;
+            AdornerLayer adornerLayer = ShowDragAdornerResolved ? InitializeAdornerLayer(itemToDrag) : null;
 
-            this.InitializeDragOperation(itemToDrag);
-            this.PerformDragOperation();
-            this.FinishDragOperation(itemToDrag, adornerLayer);
+            InitializeDragOperation(itemToDrag);
+            PerformDragOperation();
+            FinishDragOperation(itemToDrag, adornerLayer);
         }
 
         #endregion // listView_PreviewMouseMove
@@ -277,12 +278,12 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         {
             e.Effects = DragDropEffects.Move;
 
-            if (this.ShowDragAdornerResolved)
-                this.UpdateDragAdornerLocation();
+            if (ShowDragAdornerResolved)
+                UpdateDragAdornerLocation();
 
             // Update the item which is known to be currently under the drag cursor.
-            int index = this.IndexUnderDragCursor;
-            this.ItemUnderDragCursor = index < 0 ? null : this.ListView.Items[index] as ItemType;
+            int index = IndexUnderDragCursor;
+            ItemUnderDragCursor = index < 0 ? null : ListView.Items[index] as ItemType;
         }
 
         #endregion // listView_DragOver
@@ -291,13 +292,13 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void listView_DragLeave(object sender, DragEventArgs e)
         {
-            if (!this.IsMouseOver(this.listView))
+            if (!IsMouseOver(listView))
             {
-                if (this.ItemUnderDragCursor != null)
-                    this.ItemUnderDragCursor = null;
+                if (ItemUnderDragCursor != null)
+                    ItemUnderDragCursor = null;
 
-                if (this.dragAdorner != null)
-                    this.dragAdorner.Visibility = Visibility.Collapsed;
+                if (dragAdorner != null)
+                    dragAdorner.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -307,11 +308,11 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void listView_DragEnter(object sender, DragEventArgs e)
         {
-            if (this.dragAdorner != null && this.dragAdorner.Visibility != Visibility.Visible)
+            if (dragAdorner != null && dragAdorner.Visibility != Visibility.Visible)
             {
                 // Update the location of the adorner and then show it.				
-                this.UpdateDragAdornerLocation();
-                this.dragAdorner.Visibility = Visibility.Visible;
+                UpdateDragAdornerLocation();
+                dragAdorner.Visibility = Visibility.Visible;
             }
         }
 
@@ -321,8 +322,8 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void listView_Drop(object sender, DragEventArgs e)
         {
-            if (this.ItemUnderDragCursor != null)
-                this.ItemUnderDragCursor = null;
+            if (ItemUnderDragCursor != null)
+                ItemUnderDragCursor = null;
 
             e.Effects = DragDropEffects.None;
 
@@ -335,13 +336,13 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 return;
 
             // Get the ObservableCollection<ItemType> which contains the dropped data object.
-            ObservableCollection<ItemType> itemsSource = this.listView.ItemsSource as ObservableCollection<ItemType>;
+            ObservableCollection<ItemType> itemsSource = listView.ItemsSource as ObservableCollection<ItemType>;
             if (itemsSource == null)
                 throw new Exception(
                     "A ListView managed by ListViewDragManager must have its ItemsSource set to an ObservableCollection<ItemType>.");
 
             int oldIndex = itemsSource.IndexOf(data);
-            int newIndex = this.IndexUnderDragCursor;
+            int newIndex = IndexUnderDragCursor;
 
             if (newIndex < 0)
             {
@@ -366,11 +367,11 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             if (oldIndex == newIndex)
                 return;
 
-            if (this.ProcessDrop != null)
+            if (ProcessDrop != null)
             {
                 // Let the client code process the drop.
                 ProcessDropEventArgs<ItemType> args = new ProcessDropEventArgs<ItemType>(itemsSource, data, oldIndex, newIndex, e.AllowedEffects);
-                this.ProcessDrop(this, args);
+                ProcessDrop(this, args);
                 e.Effects = args.Effects;
             }
             else
@@ -403,13 +404,13 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 if (Mouse.LeftButton != MouseButtonState.Pressed)
                     return false;
 
-                if (!this.canInitiateDrag)
+                if (!canInitiateDrag)
                     return false;
 
-                if (this.indexToSelect == -1)
+                if (indexToSelect == -1)
                     return false;
 
-                if (!this.HasCursorLeftDragThreshold)
+                if (!HasCursorLeftDragThreshold)
                     return false;
 
                 return true;
@@ -425,16 +426,16 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             // Let the ListViewItem know that it is not being dragged anymore.
             ListViewItemDragState.SetIsBeingDragged(draggedItem, false);
 
-            this.IsDragInProgress = false;
+            IsDragInProgress = false;
 
-            if (this.ItemUnderDragCursor != null)
-                this.ItemUnderDragCursor = null;
+            if (ItemUnderDragCursor != null)
+                ItemUnderDragCursor = null;
 
             // Remove the drag adorner from the adorner layer.
             if (adornerLayer != null)
             {
-                adornerLayer.Remove(this.dragAdorner);
-                this.dragAdorner = null;
+                adornerLayer.Remove(dragAdorner);
+                dragAdorner = null;
             }
         }
 
@@ -444,18 +445,18 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         ListViewItem GetListViewItem(int index)
         {
-            if (this.listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            if (listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
                 return null;
 
-            return this.listView.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+            return listView.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
         }
 
         ListViewItem GetListViewItem(ItemType dataItem)
         {
-            if (this.listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            if (listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
                 return null;
 
-            return this.listView.ItemContainerGenerator.ContainerFromItem(dataItem) as ListViewItem;
+            return listView.ItemContainerGenerator.ContainerFromItem(dataItem) as ListViewItem;
         }
 
         #endregion // GetListViewItem
@@ -466,12 +467,12 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         {
             get
             {
-                if (this.indexToSelect < 0)
+                if (indexToSelect < 0)
                     return false;
 
-                ListViewItem item = this.GetListViewItem(this.indexToSelect);
+                ListViewItem item = GetListViewItem(indexToSelect);
                 Rect bounds = VisualTreeHelper.GetDescendantBounds(item);
-                Point ptInItem = this.listView.TranslatePoint(this.ptMouseDown, item);
+                Point ptInItem = listView.TranslatePoint(ptMouseDown, item);
 
                 // In case the cursor is at the very top or bottom of the ListViewItem
                 // we want to make the vertical threshold very small so that dragging
@@ -484,9 +485,9 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 double height = Math.Min(SystemParameters.MinimumVerticalDragDistance, vertOffset) * 2;
                 Size szThreshold = new Size(width, height);
 
-                Rect rect = new Rect(this.ptMouseDown, szThreshold);
+                Rect rect = new Rect(ptMouseDown, szThreshold);
                 rect.Offset(szThreshold.Width / -2, szThreshold.Height / -2);
-                Point ptInListView = MouseUtilities.GetMousePosition(this.listView);
+                Point ptInListView = MouseUtilities.GetMousePosition(listView);
                 return !rect.Contains(ptInListView);
             }
         }
@@ -504,10 +505,10 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             get
             {
                 int index = -1;
-                for (int i = 0; i < this.listView.Items.Count; ++i)
+                for (int i = 0; i < listView.Items.Count; ++i)
                 {
-                    ListViewItem item = this.GetListViewItem(i);
-                    if (this.IsMouseOver(item))
+                    ListViewItem item = GetListViewItem(i);
+                    if (IsMouseOver(item))
                     {
                         index = i;
                         break;
@@ -528,16 +529,16 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             VisualBrush brush = new VisualBrush(itemToDrag);
 
             // Create an element which displays the source item while it is dragged.
-            this.dragAdorner = new DragAdorner(this.listView, itemToDrag.RenderSize, brush);
+            dragAdorner = new DragAdorner(listView, itemToDrag.RenderSize, brush);
 
             // Set the drag adorner's opacity.		
-            this.dragAdorner.Opacity = this.DragAdornerOpacity;
+            dragAdorner.Opacity = DragAdornerOpacity;
 
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(this.listView);
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(listView);
             layer.Add(dragAdorner);
 
             // Save the location of the cursor when the left mouse button was pressed.
-            this.ptMouseDown = MouseUtilities.GetMousePosition(this.listView);
+            ptMouseDown = MouseUtilities.GetMousePosition(listView);
 
             return layer;
         }
@@ -549,8 +550,8 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         void InitializeDragOperation(ListViewItem itemToDrag)
         {
             // Set some flags used during the drag operation.
-            this.IsDragInProgress = true;
-            this.canInitiateDrag = false;
+            IsDragInProgress = true;
+            canInitiateDrag = false;
 
             // Let the ListViewItem know that it is being dragged.
             ListViewItemDragState.SetIsBeingDragged(itemToDrag, true);
@@ -582,8 +583,8 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         {
             get
             {
-                Point ptMouse = MouseUtilities.GetMousePosition(this.listView);
-                HitTestResult res = VisualTreeHelper.HitTest(this.listView, ptMouse);
+                Point ptMouse = MouseUtilities.GetMousePosition(listView);
+                HitTestResult res = VisualTreeHelper.HitTest(listView, ptMouse);
                 if (res == null)
                     return false;
 
@@ -612,10 +613,10 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         ItemType ItemUnderDragCursor
         {
-            get { return this.itemUnderDragCursor; }
+            get { return itemUnderDragCursor; }
             set
             {
-                if (this.itemUnderDragCursor == value)
+                if (itemUnderDragCursor == value)
                     return;
 
                 // The first pass handles the previous item under the cursor.
@@ -623,11 +624,11 @@ namespace WPF.JoshSmith.ServiceProviders.UI
                 for (int i = 0; i < 2; ++i)
                 {
                     if (i == 1)
-                        this.itemUnderDragCursor = value;
+                        itemUnderDragCursor = value;
 
-                    if (this.itemUnderDragCursor != null)
+                    if (itemUnderDragCursor != null)
                     {
-                        ListViewItem listViewItem = this.GetListViewItem(this.itemUnderDragCursor);
+                        ListViewItem listViewItem = GetListViewItem(itemUnderDragCursor);
                         if (listViewItem != null)
                             ListViewItemDragState.SetIsUnderDragCursor(listViewItem, i == 1);
                     }
@@ -641,13 +642,13 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void PerformDragOperation()
         {
-            ItemType selectedItem = this.listView.SelectedItem as ItemType;
+            ItemType selectedItem = listView.SelectedItem as ItemType;
             DragDropEffects allowedEffects = DragDropEffects.Move | DragDropEffects.Move | DragDropEffects.Link;
-            if (DragDrop.DoDragDrop(this.listView, selectedItem, allowedEffects) != DragDropEffects.None)
+            if (DragDrop.DoDragDrop(listView, selectedItem, allowedEffects) != DragDropEffects.None)
             {
                 // The item was dropped into a new location,
                 // so make it the new selected item.
-                this.listView.SelectedItem = selectedItem;
+                listView.SelectedItem = selectedItem;
             }
         }
 
@@ -657,7 +658,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         bool ShowDragAdornerResolved
         {
-            get { return this.ShowDragAdorner && this.DragAdornerOpacity > 0.0; }
+            get { return ShowDragAdorner && DragAdornerOpacity > 0.0; }
         }
 
         #endregion // ShowDragAdornerResolved
@@ -666,18 +667,18 @@ namespace WPF.JoshSmith.ServiceProviders.UI
 
         void UpdateDragAdornerLocation()
         {
-            if (this.dragAdorner != null)
+            if (dragAdorner != null)
             {
-                Point ptCursor = MouseUtilities.GetMousePosition(this.ListView);
+                Point ptCursor = MouseUtilities.GetMousePosition(ListView);
 
-                double left = ptCursor.X - this.ptMouseDown.X;
+                double left = ptCursor.X - ptMouseDown.X;
 
                 // The top offset is relative to the item being dragged.
-                ListViewItem itemBeingDragged = this.GetListViewItem(this.indexToSelect);
-                Point itemLoc = itemBeingDragged.TranslatePoint(new Point(0, 0), this.ListView);
-                double top = itemLoc.Y + ptCursor.Y - this.ptMouseDown.Y;
+                ListViewItem itemBeingDragged = GetListViewItem(indexToSelect);
+                Point itemLoc = itemBeingDragged.TranslatePoint(new Point(0, 0), ListView);
+                double top = itemLoc.Y + ptCursor.Y - ptMouseDown.Y;
 
-                this.dragAdorner.SetOffsets(left, top);
+                dragAdorner.SetOffsets(left, top);
             }
         }
 
@@ -819,7 +820,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public ObservableCollection<ItemType> ItemsSource
         {
-            get { return this.itemsSource; }
+            get { return itemsSource; }
         }
 
         /// <summary>
@@ -827,7 +828,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public ItemType DataItem
         {
-            get { return this.dataItem; }
+            get { return dataItem; }
         }
 
         /// <summary>
@@ -835,7 +836,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public int OldIndex
         {
-            get { return this.oldIndex; }
+            get { return oldIndex; }
         }
 
         /// <summary>
@@ -843,7 +844,7 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         /// </summary>
         public int NewIndex
         {
-            get { return this.newIndex; }
+            get { return newIndex; }
         }
 
         /// <summary>

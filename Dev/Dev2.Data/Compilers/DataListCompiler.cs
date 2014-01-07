@@ -9,7 +9,6 @@ using Dev2.Common.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
-using Dev2.Data.Parsers;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
@@ -62,7 +61,7 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
-        /// Used to evalaute an expression against a given datalist
+        /// Used to evaluate an expression against a given datalist
         /// </summary>
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of evaluation.</param>
@@ -72,8 +71,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public IBinaryDataListEntry Evaluate(Guid curDLID, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
-
             return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot);
         }
 
@@ -88,7 +85,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public string GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false)
         {
-            IList<IDev2Definition> defs = new List<IDev2Definition>();
+            IList<IDev2Definition> defs;
             IList<IDev2Definition> wizdefs = new List<IDev2Definition>();
 
             if (defType == enDev2ArgumentType.Output)
@@ -162,7 +159,7 @@ namespace Dev2.DataList.Contract
         {
             errors = new ErrorResultTO();
             string dataList = GenerateDataListFromDefs(definitions, withData);
-            string result = Guid.Empty.ToString();
+            string result;
 
             if (pushToServer)
             {
@@ -189,7 +186,7 @@ namespace Dev2.DataList.Contract
         public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors,bool flipGeneration = false)
         {
             string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
-            string result = Guid.Empty.ToString();
+            string result;
 
             if (pushToServer)
             {
@@ -248,8 +245,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public IBinaryDataList FetchBinaryDataList(Guid curDLID, out ErrorResultTO errors)
         {
-
-            errors = new ErrorResultTO();
             return _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
         }
 
@@ -263,8 +258,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
-
             return _svrCompiler.Upsert(null, curDLID, expression, value, out errors);
         }
 
@@ -278,8 +271,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors)
         {
-
-            errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
         }
 
@@ -293,8 +284,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors)
         {
-
-            errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
         }
 
@@ -308,7 +297,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, string expression, string value, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in regular upsert
             var allRegions = DataListCleaningUtils.SplitIntoRegions(expression);
             var allValues = allRegions.Select(region => value).ToList();
@@ -324,7 +312,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
@@ -337,7 +324,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
@@ -350,7 +336,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Upsert(null, curDLID, payload, out errors);
         }
 
@@ -365,7 +350,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors,Guid overrideID = default(Guid))
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors, overrideID);
         }
 
@@ -379,7 +363,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
         }
 
@@ -393,7 +376,6 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.ShapeForSubExecution(null, parentDLID, childDLID, inputDefs, outputDefs, out errors);
         }
 
@@ -410,7 +392,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid Merge(Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.Merge(null, leftID, rightID, mergeType, depth, createNewList, out errors);
         }
 
@@ -426,7 +407,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public IBinaryDataList Merge(IBinaryDataList left, IBinaryDataList right, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return (left.Merge(right, mergeType, depth, createNewList, out errors));
         }
 
@@ -478,8 +458,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors)
         {
-
-            errors = new ErrorResultTO();
             byte[] data = Encoding.UTF8.GetBytes(payload);
             return _svrCompiler.ConvertTo(null, typeOf, data, shape, out errors);
         }
@@ -494,7 +472,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
 
@@ -508,8 +485,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors)
         {
-
-            errors = new ErrorResultTO();
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
 
@@ -524,7 +499,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             return _svrCompiler.PopulateDataList(null, typeOf, input, outputDefs, targetDLID, out errors);
         }
 
@@ -537,8 +511,6 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public Guid PushBinaryDataList(Guid dlID, IBinaryDataList bdl, out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
-
             return PushBinaryDataListInServerScope(dlID, bdl, out errors);
 
         }
@@ -803,19 +775,20 @@ namespace Dev2.DataList.Contract
         {
             ErrorResultTO errors;
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if (binaryDatalist != null) return (binaryDatalist.FetchErrors(returnAsXml));
-            else
+            if(binaryDatalist != null)
             {
-                var sb = new StringBuilder();
-                var count = 1;
-                var errorList = errors.FetchErrors();
-                foreach (var error in errorList)
-                {
-                    sb.AppendFormat("{0} {1}", count, error);
-                    count++;
-                }
-                return sb.ToString();
+                return (binaryDatalist.FetchErrors(returnAsXml));
             }
+            
+            var sb = new StringBuilder();
+            var count = 1;
+            var errorList = errors.FetchErrors();
+            foreach (var error in errorList)
+            {
+                sb.AppendFormat("{0} {1}", count, error);
+                count++;
+            }
+            return sb.ToString();
         }
 
         /// <summary>
@@ -826,7 +799,7 @@ namespace Dev2.DataList.Contract
         /// <date>2013/02/06</date>
         public void ClearErrors(Guid curDLID)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             var list = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
             if (list != null)
                 list.ClearErrors();
@@ -835,7 +808,7 @@ namespace Dev2.DataList.Contract
         public bool SetParentID(Guid curDLID, Guid newParent)
         {
             bool result = true;
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
             _svrCompiler.SetParentUID(curDLID, newParent, out errors);
             if (errors.HasErrors())
@@ -856,7 +829,7 @@ namespace Dev2.DataList.Contract
         public WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL)
         {
             WizardDataListMergeTO result = new WizardDataListMergeTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
 
             Guid wizardID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, wizardDL, out errors);
@@ -870,7 +843,7 @@ namespace Dev2.DataList.Contract
             allErrors.MergeErrors(errors);
 
 
-            // Added Removed refenced ParentDL
+            // Added Removed referenced ParentDL
             // First find difference between parent and wizard
             IList<IBinaryDataListEntry> serviceEntries = serviceBDL.FetchAllEntries();
             IList<IBinaryDataListEntry> wizardEntries = wizardBDL.FetchAllEntries();
@@ -910,7 +883,7 @@ namespace Dev2.DataList.Contract
                 {
 
                     IBinaryDataListEntry tmp = serviceEntries[pos];
-                    if (tmp.Namespace == wizardEntry.Namespace && ((tmp.Columns == null && wizardEntry.Columns == null) || (tmp.Columns.SequenceEqual(wizardEntry.Columns, Dev2ColumnComparer.Instance))))
+                    if (tmp.Namespace == wizardEntry.Namespace && ((tmp.Columns == null && wizardEntry.Columns == null) || tmp.Columns.SequenceEqual(wizardEntry.Columns, Dev2ColumnComparer.Instance)))
                     {
                         found = true;
                     }
@@ -933,8 +906,6 @@ namespace Dev2.DataList.Contract
             ForceDeleteDataListByID(serviceID);
             ForceDeleteDataListByID(wizardID);
 
-            errors = allErrors;
-
             return result;
         }
 
@@ -948,12 +919,10 @@ namespace Dev2.DataList.Contract
         /// <exception cref="System.Xml.XmlException">Inputs/Outputs tags were not found in the service definition</exception>
         public string GetWizardDataListForService(string serviceDefinition)
         {
-            string result;
+            ErrorResultTO errors;
 
-            ErrorResultTO errors = new ErrorResultTO();
-
-            string inputs = string.Empty;
-            string outputs = string.Empty;
+            string inputs;
+            string outputs;
             try
             {
                 inputs = DataListUtil.ExtractInputDefinitionsFromServiceDefinition(serviceDefinition);
@@ -964,17 +933,14 @@ namespace Dev2.DataList.Contract
                 throw new XmlException("Inputs/Outputs tags were not found in the service definition");
             }
 
-            string inputDl = string.Empty;
-            string outputDl = string.Empty;
+            string inputDl = GenerateWizardDataListFromDefs(inputs, enDev2ArgumentType.Input, false, out errors);
 
-            inputDl = GenerateWizardDataListFromDefs(inputs, enDev2ArgumentType.Input, false, out errors);
-
-            outputDl = GenerateWizardDataListFromDefs(outputs, enDev2ArgumentType.Output, false, out errors);
+            string outputDl = GenerateWizardDataListFromDefs(outputs, enDev2ArgumentType.Output, false, out errors);
 
             Guid inputDlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, inputDl, out errors);
             Guid outputDlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, outputDl, out errors);
             Guid mergedDlID = Merge(inputDlID, outputDlID, enDataListMergeTypes.Union, enTranslationDepth.Shape, true, out errors);
-            result = ConvertFrom(mergedDlID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            string result = ConvertFrom(mergedDlID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
             return result;
         }
 
@@ -1139,8 +1105,6 @@ namespace Dev2.DataList.Contract
         private int FetchNumberOfExecutions(IIntellisenseResult part, IBinaryDataList bdl)
         {
             int result = 1;
-            IBinaryDataListEntry entry;
-            string error = string.Empty;
 
             if (!part.Option.IsScalar)
             {
@@ -1149,6 +1113,8 @@ namespace Dev2.DataList.Contract
                 if (type == enRecordsetIndexType.Star)
                 {
                     // Fetch entry and find the last index
+                    IBinaryDataListEntry entry;
+                    string error;
                     if (bdl.TryGetEntry(part.Option.Recordset, out entry, out error))
                     {
                         result = entry.FetchLastRecordsetIndex();
@@ -1178,96 +1144,15 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Create a DL shape as per IO mapping
         /// </summary>
-        /// <param name="arguments"></param>
-        /// <param name="typeOf"></param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="errors">The errors.</param>
+        /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
         private string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
         {
-            errors = new ErrorResultTO();
             return DataListUtil.ShapeDefinitionsToDataList(arguments, typeOf, out errors, flipGeneration);
         }
-
-        #region Old Webpage mapping methods
-
-        private void BuildDataPart(string DataPartFieldData)
-        {
-
-            IDataListVerifyPart verifyPart;
-            string fullyFormattedStringValue;
-            string[] fieldList = DataPartFieldData.Split('.');
-            if (fieldList.Count() > 1 && !String.IsNullOrEmpty(fieldList[0]))
-            {  // If it's a RecordSet Containing a field
-                foreach (string item in fieldList)
-                {
-                    if (item.EndsWith(")") && item == fieldList[0])
-                    {
-                        if (item.Contains("("))
-                        {
-                            fullyFormattedStringValue = DataListUtil.RemoveRecordsetBracketsFromValue(item);
-                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
-                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                        }
-                        else
-                        { // If it's a field containing a single brace
-                            continue;
-                        }
-                    }
-                    else if (item == fieldList[1] && !(item.EndsWith(")") && item.Contains(")")))
-                    { // If it's a field to a record set
-                        verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(DataListUtil.RemoveRecordsetBracketsFromValue(fieldList.ElementAt(0)), item);
-                        AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            else if (fieldList.Count() == 1 && !String.IsNullOrEmpty(fieldList[0]))
-            { // If the workflow field is simply a scalar or a record set without a child
-                if (DataPartFieldData.EndsWith(")") && DataPartFieldData == fieldList[0])
-                {
-                    if (DataPartFieldData.Contains("("))
-                    {
-                        fullyFormattedStringValue = DataListUtil.RemoveRecordsetBracketsFromValue(fieldList[0]);
-                        verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
-                        AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                    }
-                }
-                else
-                {
-                    verifyPart = IntellisenseFactory.CreateDataListValidationScalarPart(DataListUtil.RemoveRecordsetBracketsFromValue(DataPartFieldData));
-                    AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                }
-            }
-        }
-
-        private void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart)
-        {
-            _uniqueWorkflowParts.Add(part, nameOfPart);
-        }
-
-        private IList<String> FormatDsfActivityField(string webpage)
-        {
-            Dev2DataLanguageParser languageParser = new Dev2DataLanguageParser();
-            try
-            {
-                IList<String> resultData = languageParser.ParseForActivityDataItems(webpage);
-                return resultData.Where(result => (!String.IsNullOrEmpty(result.ToString()))).ToList();
-            }
-            catch (Dev2DataLanguageParseError ddlex)
-            {
-                ServerLogger.LogError(ddlex);
-                return new List<String>();
-            }
-            catch (NullReferenceException nex)
-            {
-                ServerLogger.LogError(nex);
-                return new List<String>();
-            }
-        }
-
-        #endregion Old Webpage mapping methods
 
         #endregion
 

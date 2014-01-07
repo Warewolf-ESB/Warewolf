@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - February 2007
+
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using WPF.JoshSmith.Adorners;
 
-namespace WPF.JoshSmith.Controls
+namespace Dev2.CustomControls.Controls
 {
     /// <summary>
     /// A TextBox with support for displaying a list of suggestions when the user
@@ -50,19 +51,19 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public SmartTextBox()
         {
-            // Make sure that spellchecking is active for this TextBox.
+            // Make sure that spell checking is active for this TextBox.
             SpellCheck.SetIsEnabled(this, true);
 
             // Initialize the ListBox which displays suggestions.
-            this.suggestionList = new ListBox();
-            ScrollViewer.SetVerticalScrollBarVisibility(this.suggestionList, ScrollBarVisibility.Hidden);
-            this.suggestionList.IsKeyboardFocusWithinChanged += suggestionList_IsKeyboardFocusWithinChanged;
-            this.suggestionList.ItemContainerGenerator.StatusChanged += suggestionList_ItemContainerGenerator_StatusChanged;
-            this.suggestionList.MouseDoubleClick += suggestionList_MouseDoubleClick;
-            this.suggestionList.PreviewKeyDown += suggestionList_PreviewKeyDown;
+            suggestionList = new ListBox();
+            ScrollViewer.SetVerticalScrollBarVisibility(suggestionList, ScrollBarVisibility.Hidden);
+            suggestionList.IsKeyboardFocusWithinChanged += suggestionList_IsKeyboardFocusWithinChanged;
+            suggestionList.ItemContainerGenerator.StatusChanged += suggestionList_ItemContainerGenerator_StatusChanged;
+            suggestionList.MouseDoubleClick += suggestionList_MouseDoubleClick;
+            suggestionList.PreviewKeyDown += suggestionList_PreviewKeyDown;
 
             // Initialize the adorner which shows the Listbox.
-            this.adorner = new UIElementAdorner(this, this.suggestionList);
+            adorner = new UIElementAdorner(this, suggestionList);
         }
 
         #endregion // Constructor
@@ -76,7 +77,7 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public bool AreSuggestionsVisible
         {
-            get { return this.areSuggestionsVisible; }
+            get { return areSuggestionsVisible; }
         }
 
         #endregion // AreSuggestionsVisible
@@ -89,8 +90,8 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public SpellingError GetSpellingError()
         {
-            int idx = this.FindClosestCharacterInCurrentWord();
-            return idx < 0 ? null : base.GetSpellingError(idx);
+            int idx = FindClosestCharacterInCurrentWord();
+            return idx < 0 ? null : GetSpellingError(idx);
         }
 
         #endregion // GetSpellingError
@@ -103,18 +104,18 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public void HideSuggestions()
         {
-            if (!this.AreSuggestionsVisible)
+            if (!AreSuggestionsVisible)
                 return;
 
-            this.suggestionList.ItemsSource = null;
+            suggestionList.ItemsSource = null;
 
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(this);
             if (layer != null)
-                layer.Remove(this.adorner);
+                layer.Remove(adorner);
 
-            base.Focus();
+            Focus();
 
-            this.areSuggestionsVisible = false;
+            areSuggestionsVisible = false;
         }
 
         #endregion // HideSuggestions
@@ -126,7 +127,7 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public bool IsCurrentWordMisspelled
         {
-            get { return this.GetSpellingError() != null; }
+            get { return GetSpellingError() != null; }
         }
 
         #endregion // IsCurrentWordMisspelled
@@ -139,14 +140,14 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         public void ShowSuggestions()
         {
-            if (this.AreSuggestionsVisible || !this.IsCurrentWordMisspelled)
+            if (AreSuggestionsVisible || !IsCurrentWordMisspelled)
                 return;
 
             // If this method was called by external code,
             // the list of suggestions will not be populated yet.
-            if (this.suggestionList.ItemsSource == null)
+            if (suggestionList.ItemsSource == null)
             {
-                this.AttemptToShowSuggestions();
+                AttemptToShowSuggestions();
                 return;
             }
 
@@ -155,28 +156,24 @@ namespace WPF.JoshSmith.Controls
                 return;
 
             // Position the adorner beneath the misspelled word.
-            int idx = this.FindBeginningOfCurrentWord();
-            Rect rect = base.GetRectFromCharacterIndex(idx);
-            this.adorner.SetOffsets(rect.Left, rect.Bottom);
+            int idx = FindBeginningOfCurrentWord();
+            Rect rect = GetRectFromCharacterIndex(idx);
+            adorner.SetOffsets(rect.Left, rect.Bottom);
 
             // Add the adorner into the adorner layer.
-            layer.Add(this.adorner);
+            layer.Add(adorner);
 
             // Since the ListBox might have a new set of items but has not 
             // rendered yet, we force it to calculate its metrics so that
             // the height animation has a sensible target value.
-            this.suggestionList.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
-            this.suggestionList.Arrange(new Rect(new Point(), this.suggestionList.DesiredSize));
+            suggestionList.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+            suggestionList.Arrange(new Rect(new Point(), suggestionList.DesiredSize));
 
             // Animate the ListBox's height to the natural value.
-            DoubleAnimation anim = new DoubleAnimation();
-            anim.From = 0.0;
-            anim.To = this.suggestionList.ActualHeight;
-            anim.Duration = new Duration(TimeSpan.FromMilliseconds(200));
-            anim.FillBehavior = FillBehavior.Stop;
-            this.suggestionList.BeginAnimation(ListBox.HeightProperty, anim);
+            DoubleAnimation anim = new DoubleAnimation { From = 0.0, To = suggestionList.ActualHeight, Duration = new Duration(TimeSpan.FromMilliseconds(200)), FillBehavior = FillBehavior.Stop };
+            suggestionList.BeginAnimation(HeightProperty, anim);
 
-            this.areSuggestionsVisible = true;
+            areSuggestionsVisible = true;
         }
 
         #endregion // ShowSuggestions
@@ -201,7 +198,10 @@ namespace WPF.JoshSmith.Controls
         static void OnSuggestionListBoxStyleChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             SmartTextBox smartTextBox = depObj as SmartTextBox;
-            smartTextBox.suggestionList.Style = e.NewValue as Style;
+            if(smartTextBox != null)
+            {
+                smartTextBox.suggestionList.Style = e.NewValue as Style;
+            }
         }
 
         #endregion // SuggestionListBoxStyle
@@ -219,8 +219,8 @@ namespace WPF.JoshSmith.Controls
         {
             base.OnMouseDown(e);
 
-            if (this.AreSuggestionsVisible)
-                this.HideSuggestions();
+            if (AreSuggestionsVisible)
+                HideSuggestions();
         }
 
         #endregion // OnMouseDown
@@ -232,10 +232,10 @@ namespace WPF.JoshSmith.Controls
         /// </summary>
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if (this.AreSuggestionsVisible)
+            if (AreSuggestionsVisible)
             {
                 Debug.Assert(
-                    !this.suggestionList.IsEnabled,
+                    !suggestionList.IsEnabled,
                     @"The SmartTextBox should only get key messages when the ListBox is visible 
 					if there are no suggestions and the ListBox is disabled.");
 
@@ -243,7 +243,7 @@ namespace WPF.JoshSmith.Controls
                 // Hide the list of suggestions and mark the event as handled.
                 // Return without calling the base implementation so that the
                 // keystroke is completely eaten.
-                this.HideSuggestions();
+                HideSuggestions();
                 e.Handled = true;
                 return;
             }
@@ -252,16 +252,16 @@ namespace WPF.JoshSmith.Controls
 
             if (e.Key == Key.F1)
             {
-                Debug.Assert(!this.AreSuggestionsVisible, "Why is the suggestions list already visible?");
+                Debug.Assert(!AreSuggestionsVisible, "Why is the suggestions list already visible?");
 
-                this.AttemptToShowSuggestions();
+                AttemptToShowSuggestions();
 
-                if (this.AreSuggestionsVisible)
-                    this.suggestionList.SelectedIndex = 0;
+                if (AreSuggestionsVisible)
+                    suggestionList.SelectedIndex = 0;
             }
-            else if (this.AreSuggestionsVisible)
+            else if (AreSuggestionsVisible)
             {
-                this.HideSuggestions();
+                HideSuggestions();
             }
         }
 
@@ -276,8 +276,8 @@ namespace WPF.JoshSmith.Controls
         {
             base.OnRenderSizeChanged(sizeInfo);
 
-            if (this.AreSuggestionsVisible)
-                this.HideSuggestions();
+            if (AreSuggestionsVisible)
+                HideSuggestions();
         }
 
         #endregion // OnRenderSizeChanged
@@ -292,8 +292,8 @@ namespace WPF.JoshSmith.Controls
         {
             base.OnTextChanged(e);
 
-            if (this.AreSuggestionsVisible)
-                this.AttemptToHideSuggestions();
+            if (AreSuggestionsVisible)
+                AttemptToHideSuggestions();
         }
 
         #endregion // OnTextChanged
@@ -310,7 +310,7 @@ namespace WPF.JoshSmith.Controls
             // hide the list.
             bool focused = (bool)e.NewValue;
             if (!focused)
-                this.HideSuggestions();
+                HideSuggestions();
         }
 
         #endregion // IsKeyboardFocusWithinChanged
@@ -319,12 +319,12 @@ namespace WPF.JoshSmith.Controls
 
         void suggestionList_ItemContainerGenerator_StatusChanged(object sender, EventArgs e)
         {
-            if (this.AreSuggestionsVisible &&
-                this.suggestionList.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
+            if (AreSuggestionsVisible &&
+                suggestionList.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
             {
                 // The list of suggestions is visible and its ListBoxItems exist,
                 // so give input focus to the first item in the list.
-                ListBoxItem firstSuggestion = this.suggestionList.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                ListBoxItem firstSuggestion = suggestionList.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
                 if (firstSuggestion != null)
                     firstSuggestion.Focus();
             }
@@ -337,7 +337,7 @@ namespace WPF.JoshSmith.Controls
         void suggestionList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // The user clicked on a suggestion, so apply it.
-            this.ApplySelectedSuggestion();
+            ApplySelectedSuggestion();
         }
 
         #endregion // MouseDoubleClick
@@ -346,16 +346,16 @@ namespace WPF.JoshSmith.Controls
 
         void suggestionList_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (this.suggestionList.SelectedIndex < 0)
+            if (suggestionList.SelectedIndex < 0)
                 return;
 
             if (e.Key == Key.Escape)
             {
-                this.HideSuggestions();
+                HideSuggestions();
             }
             else if (e.Key == Key.Space || e.Key == Key.Enter || e.Key == Key.Tab)
             {
-                this.ApplySelectedSuggestion();
+                ApplySelectedSuggestion();
 
                 // Mark the event as handled so that the keystroke
                 // does not propogate to the TextBox.
@@ -373,19 +373,19 @@ namespace WPF.JoshSmith.Controls
 
         void ApplySelectedSuggestion()
         {
-            if (!this.AreSuggestionsVisible || this.suggestionList.SelectedIndex < 0)
+            if (!AreSuggestionsVisible || suggestionList.SelectedIndex < 0)
                 return;
 
-            SpellingError error = this.GetSpellingError();
+            SpellingError error = GetSpellingError();
             if (error != null)
             {
-                string correctWord = this.suggestionList.SelectedItem as string;
+                string correctWord = suggestionList.SelectedItem as string;
                 error.Correct(correctWord);
-                base.CaretIndex = this.FindEndOfCurrentWord();
-                base.Focus();
+                CaretIndex = FindEndOfCurrentWord();
+                Focus();
             }
 
-            this.HideSuggestions();
+            HideSuggestions();
         }
 
         #endregion // ApplySelectedSuggestion
@@ -394,33 +394,33 @@ namespace WPF.JoshSmith.Controls
 
         void AttemptToShowSuggestions()
         {
-            if (this.AreSuggestionsVisible)
+            if (AreSuggestionsVisible)
                 return;
 
             // If there is no spelling error, there is no
             // need to show the list of suggestions.
-            SpellingError error = this.GetSpellingError();
+            SpellingError error = GetSpellingError();
             if (error == null)
                 return;
 
-            this.suggestionList.ItemsSource = error.Suggestions;
+            suggestionList.ItemsSource = error.Suggestions;
 
-            if (this.suggestionList.Items.Count == 0)
+            if (suggestionList.Items.Count == 0)
             {
-                // The spellcheck API has no suggested words
+                // The spell check API has no suggested words
                 // so display a message which says so.
-                this.suggestionList.ItemsSource = SmartTextBox.noSuggestions;
-                this.suggestionList.IsEnabled = false;
+                suggestionList.ItemsSource = noSuggestions;
+                suggestionList.IsEnabled = false;
             }
             else
             {
                 // In case the ListBox was disabled previously
                 // we enable now.
-                if (!this.suggestionList.IsEnabled)
-                    this.suggestionList.IsEnabled = true;
+                if (!suggestionList.IsEnabled)
+                    suggestionList.IsEnabled = true;
             }
 
-            this.ShowSuggestions();
+            ShowSuggestions();
         }
 
         #endregion // AttemptToShowSuggestions
@@ -431,9 +431,9 @@ namespace WPF.JoshSmith.Controls
         {
             // If there is not still a spelling error at the
             // caret location, hide the suggestions.
-            if (this.AreSuggestionsVisible && !this.IsCurrentWordMisspelled)
+            if (AreSuggestionsVisible && !IsCurrentWordMisspelled)
             {
-                this.HideSuggestions();
+                HideSuggestions();
             }
         }
 
@@ -443,13 +443,13 @@ namespace WPF.JoshSmith.Controls
 
         int FindBeginningOfCurrentWord()
         {
-            if (base.Text == null)
+            if (Text == null)
                 return -1;
 
-            int idx = base.CaretIndex;
+            int idx = CaretIndex;
             while (idx > 0)
             {
-                char prevChar = base.Text[idx - 1];
+                char prevChar = Text[idx - 1];
                 if (char.IsWhiteSpace(prevChar) || char.IsPunctuation(prevChar))
                     break;
 
@@ -464,13 +464,13 @@ namespace WPF.JoshSmith.Controls
 
         int FindClosestCharacterInCurrentWord()
         {
-            if (base.Text == null)
+            if (Text == null)
                 return -1;
 
-            int idx = base.CaretIndex;
+            int idx = CaretIndex;
             if (idx > 0)
             {
-                char prevChar = base.Text[idx - 1];
+                char prevChar = Text[idx - 1];
                 // If the caret is at the end of a word
                 // then we have to use the preceding character
                 // so that the typo will be found.
@@ -486,13 +486,13 @@ namespace WPF.JoshSmith.Controls
 
         int FindEndOfCurrentWord()
         {
-            if (base.Text == null)
+            if (Text == null)
                 return -1;
 
-            int targetIdx = base.CaretIndex;
-            while (targetIdx < base.Text.Length)
+            int targetIdx = CaretIndex;
+            while (targetIdx < Text.Length)
             {
-                char nextChar = base.Text[targetIdx];
+                char nextChar = Text[targetIdx];
                 if (char.IsWhiteSpace(nextChar) || char.IsPunctuation(nextChar))
                     break;
 

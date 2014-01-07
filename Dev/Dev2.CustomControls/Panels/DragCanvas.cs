@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - August 2006 
+
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -6,7 +7,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
-namespace WPF.JoshSmith.Panels
+namespace Dev2.CustomControls.Panels
 {
     /// <summary>
     /// A Canvas which manages dragging of the UIElements it contains.  
@@ -61,14 +62,6 @@ namespace WPF.JoshSmith.Panels
         #endregion // Static Constructor
 
         #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of DragCanvas.  UIElements in
-        /// the DragCanvas will immediately be draggable by the user.
-        /// </summary>
-        public DragCanvas()
-        {
-        }
 
         #endregion // Constructor
 
@@ -125,8 +118,8 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         public bool AllowDragging
         {
-            get { return (bool)base.GetValue(AllowDraggingProperty); }
-            set { base.SetValue(AllowDraggingProperty, value); }
+            get { return (bool)GetValue(AllowDraggingProperty); }
+            set { SetValue(AllowDraggingProperty, value); }
         }
 
         #endregion // AllowDragging
@@ -165,7 +158,7 @@ namespace WPF.JoshSmith.Panels
         /// </param>
         public void BringToFront(UIElement element)
         {
-            this.UpdateZOrder(element, true);
+            UpdateZOrder(element, true);
         }
 
         /// <summary>
@@ -180,7 +173,7 @@ namespace WPF.JoshSmith.Panels
         /// </param>
         public void SendToBack(UIElement element)
         {
-            this.UpdateZOrder(element, false);
+            UpdateZOrder(element, false);
         }
 
         #endregion // BringToFront / SendToBack
@@ -198,27 +191,27 @@ namespace WPF.JoshSmith.Panels
         {
             get
             {
-                if (!this.AllowDragging)
+                if (!AllowDragging)
                     return null;
-                else
-                    return this.elementBeingDragged;
+
+                return elementBeingDragged;
             }
             protected set
             {
-                if (this.elementBeingDragged != null)
-                    this.elementBeingDragged.ReleaseMouseCapture();
+                if (elementBeingDragged != null)
+                    elementBeingDragged.ReleaseMouseCapture();
 
-                if (!this.AllowDragging)
-                    this.elementBeingDragged = null;
+                if (!AllowDragging)
+                    elementBeingDragged = null;
                 else
                 {
-                    if (DragCanvas.GetCanBeDragged(value))
+                    if (GetCanBeDragged(value))
                     {
-                        this.elementBeingDragged = value;
-                        this.elementBeingDragged.CaptureMouse();
+                        elementBeingDragged = value;
+                        elementBeingDragged.CaptureMouse();
                     }
                     else
-                        this.elementBeingDragged = null;
+                        elementBeingDragged = null;
                 }
             }
         }
@@ -243,7 +236,7 @@ namespace WPF.JoshSmith.Panels
                 // If the current object is a UIElement which is a child of the
                 // Canvas, exit the loop and return it.
                 UIElement elem = depObj as UIElement;
-                if (elem != null && base.Children.Contains(elem))
+                if (elem != null && Children.Contains(elem))
                     break;
 
                 // VisualTreeHelper works with objects of type Visual or Visual3D.
@@ -273,7 +266,7 @@ namespace WPF.JoshSmith.Panels
         {
             base.OnPreviewMouseLeftButtonDown(e);
 
-            this.isDragInProgress = false;
+            isDragInProgress = false;
 
             // Don't continue if there was a double or tripple click
             if(e.ClickCount > 1)
@@ -282,30 +275,30 @@ namespace WPF.JoshSmith.Panels
             }
 
             // Cache the mouse cursor location.
-            this.origCursorLocation = e.GetPosition(this);
+            origCursorLocation = e.GetPosition(this);
 
             // Walk up the visual tree from the element that was clicked, 
             // looking for an element that is a direct child of the Canvas.
-            this.ElementBeingDragged = this.FindCanvasChild(e.Source as DependencyObject);
-            if (this.ElementBeingDragged == null)
+            ElementBeingDragged = FindCanvasChild(e.Source as DependencyObject);
+            if (ElementBeingDragged == null)
                 return;
 
             // Get the element's offsets from the four sides of the Canvas.
-            double left = Canvas.GetLeft(this.ElementBeingDragged);
-            double right = Canvas.GetRight(this.ElementBeingDragged);
-            double top = Canvas.GetTop(this.ElementBeingDragged);
-            double bottom = Canvas.GetBottom(this.ElementBeingDragged);
+            double left = GetLeft(ElementBeingDragged);
+            double right = GetRight(ElementBeingDragged);
+            double top = GetTop(ElementBeingDragged);
+            double bottom = GetBottom(ElementBeingDragged);
 
             // Calculate the offset deltas and determine for which sides
             // of the Canvas to adjust the offsets.
-            this.origHorizOffset = ResolveOffset(left, right, out this.modifyLeftOffset);
-            this.origVertOffset = ResolveOffset(top, bottom, out this.modifyTopOffset);
+            origHorizOffset = ResolveOffset(left, right, out modifyLeftOffset);
+            origVertOffset = ResolveOffset(top, bottom, out modifyTopOffset);
 
             // Set the Handled flag so that a control being dragged 
             // does not react to the mouse input.
             e.Handled = true;
 
-            this.isDragInProgress = true;
+            isDragInProgress = true;
         }
 
         #endregion // OnPreviewMouseLeftButtonDown
@@ -318,7 +311,7 @@ namespace WPF.JoshSmith.Panels
         protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonUp(e);
-            this.ElementBeingDragged = null;
+            ElementBeingDragged = null;
         }
         #endregion
 
@@ -334,7 +327,7 @@ namespace WPF.JoshSmith.Panels
             base.OnPreviewMouseMove(e);
             
             // If no element is being dragged, there is nothing to do.
-            if (this.ElementBeingDragged == null || !this.isDragInProgress)
+            if (ElementBeingDragged == null || !isDragInProgress)
                 return;
 
             // Get the position of the mouse cursor, relative to the DragCanvas.
@@ -346,25 +339,25 @@ namespace WPF.JoshSmith.Panels
             #region Calculate Offsets
 
             // Determine the horizontal offset.
-            if (this.modifyLeftOffset)
-                newHorizontalOffset = this.origHorizOffset + (cursorLocation.X - this.origCursorLocation.X);
+            if (modifyLeftOffset)
+                newHorizontalOffset = origHorizOffset + (cursorLocation.X - origCursorLocation.X);
             else
-                newHorizontalOffset = this.origHorizOffset - (cursorLocation.X - this.origCursorLocation.X);
+                newHorizontalOffset = origHorizOffset - (cursorLocation.X - origCursorLocation.X);
 
             // Determine the vertical offset.
-            if (this.modifyTopOffset)
-                newVerticalOffset = this.origVertOffset + (cursorLocation.Y - this.origCursorLocation.Y);
+            if (modifyTopOffset)
+                newVerticalOffset = origVertOffset + (cursorLocation.Y - origCursorLocation.Y);
             else
-                newVerticalOffset = this.origVertOffset - (cursorLocation.Y - this.origCursorLocation.Y);
+                newVerticalOffset = origVertOffset - (cursorLocation.Y - origCursorLocation.Y);
 
             #endregion // Calculate Offsets
 
-            if (!this.AllowDragOutOfView)
+            if (!AllowDragOutOfView)
             {
                 #region Verify Drag Element Location
 
                 // Get the bounding rect of the drag element.
-                Rect elemRect = this.CalculateDragElementRect(newHorizontalOffset, newVerticalOffset);
+                Rect elemRect = CalculateDragElementRect(newHorizontalOffset, newVerticalOffset);
 
                 //
                 // If the element is being dragged out of the viewable area, 
@@ -372,35 +365,35 @@ namespace WPF.JoshSmith.Panels
                 // within the edge(s) of the canvas.
                 //
                 bool leftAlign = elemRect.Left < 0;
-                bool rightAlign = elemRect.Right > this.ActualWidth;
+                bool rightAlign = elemRect.Right > ActualWidth;
 
                 if (leftAlign)
-                    newHorizontalOffset = modifyLeftOffset ? 0 : this.ActualWidth - elemRect.Width;
+                    newHorizontalOffset = modifyLeftOffset ? 0 : ActualWidth - elemRect.Width;
                 else if (rightAlign)
-                    newHorizontalOffset = modifyLeftOffset ? this.ActualWidth - elemRect.Width : 0;
+                    newHorizontalOffset = modifyLeftOffset ? ActualWidth - elemRect.Width : 0;
 
                 bool topAlign = elemRect.Top < 0;
-                bool bottomAlign = elemRect.Bottom > this.ActualHeight;
+                bool bottomAlign = elemRect.Bottom > ActualHeight;
 
                 if (topAlign)
-                    newVerticalOffset = modifyTopOffset ? 0 : this.ActualHeight - elemRect.Height;
+                    newVerticalOffset = modifyTopOffset ? 0 : ActualHeight - elemRect.Height;
                 else if (bottomAlign)
-                    newVerticalOffset = modifyTopOffset ? this.ActualHeight - elemRect.Height : 0;
+                    newVerticalOffset = modifyTopOffset ? ActualHeight - elemRect.Height : 0;
 
                 #endregion // Verify Drag Element Location
             }
 
             #region Move Drag Element
 
-            if (this.modifyLeftOffset)
-                Canvas.SetLeft(this.ElementBeingDragged, newHorizontalOffset);
+            if (modifyLeftOffset)
+                SetLeft(ElementBeingDragged, newHorizontalOffset);
             else
-                Canvas.SetRight(this.ElementBeingDragged, newHorizontalOffset);
+                SetRight(ElementBeingDragged, newHorizontalOffset);
 
-            if (this.modifyTopOffset)
-                Canvas.SetTop(this.ElementBeingDragged, newVerticalOffset);
+            if (modifyTopOffset)
+                SetTop(ElementBeingDragged, newVerticalOffset);
             else
-                Canvas.SetBottom(this.ElementBeingDragged, newVerticalOffset);
+                SetBottom(ElementBeingDragged, newVerticalOffset);
 
             #endregion // Move Drag Element
         }
@@ -419,7 +412,7 @@ namespace WPF.JoshSmith.Panels
 
             // Reset the field whether the left or right mouse button was 
             // released, in case a context menu was opened on the drag element.
-            this.ElementBeingDragged = null;
+            ElementBeingDragged = null;
         }
         #endregion // OnHostPreviewMouseUp
 
@@ -434,22 +427,22 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         private Rect CalculateDragElementRect(double newHorizOffset, double newVertOffset)
         {
-            if (this.ElementBeingDragged == null)
+            if (ElementBeingDragged == null)
                 throw new InvalidOperationException("ElementBeingDragged is null.");
 
-            Size elemSize = this.ElementBeingDragged.RenderSize;
+            Size elemSize = ElementBeingDragged.RenderSize;
 
             double x, y;
 
-            if (this.modifyLeftOffset)
+            if (modifyLeftOffset)
                 x = newHorizOffset;
             else
-                x = this.ActualWidth - newHorizOffset - elemSize.Width;
+                x = ActualWidth - newHorizOffset - elemSize.Width;
 
-            if (this.modifyTopOffset)
+            if (modifyTopOffset)
                 y = newVertOffset;
             else
-                y = this.ActualHeight - newVertOffset - elemSize.Height;
+                y = ActualHeight - newVertOffset - elemSize.Height;
 
             Point elemLoc = new Point(x, y);
 
@@ -528,8 +521,8 @@ namespace WPF.JoshSmith.Panels
             if (element == null)
                 throw new ArgumentNullException("element");
 
-            if (!base.Children.Contains(element))
-                throw new ArgumentException("Must be a child element of the Canvas.", "element");
+            if (!Children.Contains(element))
+                throw new ArgumentException(@"Must be a child element of the Canvas.", "element");
 
             #endregion // Safety Check
 
@@ -552,27 +545,27 @@ namespace WPF.JoshSmith.Panels
             // should be raised or lowered by one. 
             int offset = (elementNewZIndex == 0) ? +1 : -1;
 
-            int elementCurrentZIndex = Canvas.GetZIndex(element);
+            int elementCurrentZIndex = GetZIndex(element);
 
             #endregion // Calculate Z-Indici And Offset
 
             #region Update Z-Indici
 
             // Update the Z-Index of every UIElement in the Canvas.
-            foreach (UIElement childElement in base.Children)
+            foreach (UIElement childElement in Children)
             {
                 if (childElement == element)
-                    Canvas.SetZIndex(element, elementNewZIndex);
+                    SetZIndex(element, elementNewZIndex);
                 else
                 {
-                    int zIndex = Canvas.GetZIndex(childElement);
+                    int zIndex = GetZIndex(childElement);
 
                     // Only modify the z-index of an element if it is  
                     // in between the target element's old and new z-index.
                     if (bringToFront && elementCurrentZIndex < zIndex ||
                         !bringToFront && zIndex < elementCurrentZIndex)
                     {
-                        Canvas.SetZIndex(childElement, zIndex + offset);
+                        SetZIndex(childElement, zIndex + offset);
                     }
                 }
             }

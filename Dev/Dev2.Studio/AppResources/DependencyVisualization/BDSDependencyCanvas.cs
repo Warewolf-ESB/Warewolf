@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WPF.JoshSmith.Panels;
 using System.Windows;
-using System.Windows.Media;
+using Dev2.CustomControls.Panels;
 
 namespace CircularDependencyTool {
     public class BDSDependencyCanvas : DragCanvas {
