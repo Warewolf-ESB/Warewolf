@@ -56,11 +56,11 @@ namespace Dev2.Studio.UI.Tests
             //Find the start point
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-                       
+
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
 
-            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab,"Assign",0);
-            
+            WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
+
             SendKeys.SendWait("Hello");
 
             //Get Large View button
@@ -69,7 +69,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Click it
             Mouse.Move(new Point(button.BoundingRectangle.X - 15, button.BoundingRectangle.Y));
-            Mouse.Click();                                   
+            Mouse.Click();
 
             //------------Execute Test---------------------------
 
@@ -139,7 +139,7 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.SetText("someRandomText");
             SendKeys.SendWait("^c"); // Copy command
             string clipboardText = Clipboard.GetText();
-            if (clipboardText == "someText")
+            if(clipboardText == "someText")
             {
                 Assert.Fail("Error - The Item was not deleted! [ " + clipboardText + " ]");
             }
@@ -196,12 +196,12 @@ namespace Dev2.Studio.UI.Tests
         {
             RibbonUIMap.CreateNewWorkflow();
             ToolboxUIMap.ClearSearch();
-            foreach (var tool in ToolboxUIMap.GetAllTools())
+            foreach(var tool in ToolboxUIMap.GetAllTools())
             {
 
                 var kids = tool.GetChildren();
 
-                if (kids.Count == 3)
+                if(kids.Count == 3)
                 {
                     var icon = kids[1];
 
@@ -226,6 +226,7 @@ namespace Dev2.Studio.UI.Tests
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
+            ExplorerUIMap.ClickServerInServerDDL("localhost");
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
 
@@ -259,11 +260,11 @@ namespace Dev2.Studio.UI.Tests
             Mouse.Click(step[1]);
             Playback.Wait(100);
             Mouse.Click(step[2]);
-            Playback.Wait(1500);
+            Playback.Wait(100);
 
             //Assert the design surface activity is highlighted
-            var workflow = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(workflow),
+            var assign = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Assign");
+            Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(assign),
                           "Selecting a step in the debug output does not select the activity on the design surface");
 
         }
@@ -328,7 +329,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
 
             string activeTab = TabManagerUIMap.GetActiveTabName();
-            if (activeTab == "Base64ToString")
+            if(activeTab == "Base64ToString")
             {
                 Assert.Fail("Opening the Dependency View twice should keep the UI on the same tab");
             }

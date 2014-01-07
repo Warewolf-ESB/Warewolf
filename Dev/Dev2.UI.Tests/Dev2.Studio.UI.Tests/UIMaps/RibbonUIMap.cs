@@ -99,7 +99,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public void CreateNewWorkflow()
         {
-            var uiTestControlCollection = UIBusinessDesignStudioWindow.GetChildren();
+            var uiTestControlCollection = StudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
             var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
             Mouse.Click(p);

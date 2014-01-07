@@ -994,25 +994,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public bool IsControlSelected(UITestControl workflow)
         {
-            const string Grey = "ffe9ecee";
-            const string Yellow = "ffffe8a6";
-            var pixelGrabber = new Bitmap(workflow.CaptureImage());
-            var thePixel = pixelGrabber.GetPixel(25, 10).Name;
-            return thePixel != Yellow && thePixel == Grey;
-        }
-
-        /// <summary>
-        /// Determines whether [is step selected] [the specified step].
-        /// </summary>
-        /// <param name="step">The step.</param>
-        /// <returns></returns>
-        public bool IsStepSelected(UITestControl step)
-        {
-            const string Blue = "ff3399ff";
-            const string White = "ffffffff";
-            var pixelGrabber = new Bitmap(step.CaptureImage());
-            var thePixel = pixelGrabber.GetPixel(2, 6).Name;
-            return thePixel == Blue && thePixel != White;
+            var flowchartDesigner = (workflow as WpfControl);
+            if(flowchartDesigner != null)
+            {
+                var itemStatus = flowchartDesigner.ItemStatus;
+                var itemStatusVariables = itemStatus.Split(new[] { '=', ' ' });
+                return itemStatusVariables[3] == "True";
+            }
+            throw new UITestControlNotFoundException("Cannot get flow chart designer as WpfControl");
         }
 
         /// <summary>

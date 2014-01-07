@@ -87,8 +87,21 @@
         /// </summary>
         public bool WaitForDebugWindow(int timeOut)
         {
-            Playback.Wait(2500);
-            return true;
+            const int waitLength = 100;
+            Type type = null;
+            var timeNow = 0;
+            while(type != typeof(WpfWindow) & timeNow < timeOut)
+            {
+                timeNow = timeNow + waitLength;
+                Playback.Wait(waitLength);
+                var tryGetDialog = StudioWindow.GetChildren()[0];
+                type = tryGetDialog.GetType();
+                if(timeNow > timeOut)
+                {
+                    break;
+                }
+            }
+            return type == typeof(WpfWindow);
         }
     }
 }

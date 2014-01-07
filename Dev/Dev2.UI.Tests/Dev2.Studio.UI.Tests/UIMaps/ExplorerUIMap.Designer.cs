@@ -127,31 +127,31 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="projectName">Name of the project.</param>
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>
         /// <returns></returns>
-        private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName,bool overrideDblClickBehavior = false)
+        private UITestControl GetServiceItem(string serverName, string serviceType, string folderName, string projectName, bool overrideDblClickBehavior = false)
         {
             Playback.Wait(200);
 
-            var args = new string[] {serverName, serviceType, folderName, projectName};
+            var args = new string[] { serverName, serviceType, folderName, projectName };
 
             var parent = _explorerTree;
 
-            foreach (var arg in args)
+            foreach(var arg in args)
             {
-                if (parent != null)
+                if(parent != null)
                 {
                     var kids = parent.GetChildren();
 
                     UITestControl canidate = null;
-                    foreach (var kid in kids)
+                    foreach(var kid in kids)
                     {
-                        if (kid.Exists)
+                        if(kid.Exists)
                         {
                             var id = kid.GetProperty("AutomationID").ToString();
 
-                            if (id.Contains(arg) ||
-                                kid.FriendlyName.Contains(arg) ||
-                                kid.ControlType.Name.Contains(arg) ||
-                                kid.ClassName.Contains(arg))
+                            if(id.ToUpper().Contains(arg.ToUpper()) ||
+                                kid.FriendlyName.ToUpper().Contains(arg.ToUpper()) ||
+                                kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
+                                kid.ClassName.ToUpper().Contains(arg.ToUpper()))
                             {
                                 canidate = kid;
                             }
@@ -201,7 +201,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUIUI_DataListSearchtxtEdit == null))
+                    if((this.mUIUI_DataListSearchtxtEdit == null))
                     {
                         this.mUIUI_DataListSearchtxtEdit = new WpfEdit(this);
                         #region Search Criteria
@@ -238,7 +238,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUIFilterTextBoxEdit == null))
+                    if((this.mUIFilterTextBoxEdit == null))
                     {
                         this.mUIFilterTextBoxEdit = new UIFilterTextBoxEdit(this);
                     }
@@ -270,7 +270,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             {
                 get
                 {
-                    if ((this.mUITheNavigationViewCustom == null))
+                    if((this.mUITheNavigationViewCustom == null))
                     {
                         this.mUITheNavigationViewCustom = new UITheNavigationViewCustom2(this);
                     }
@@ -288,7 +288,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void ClearExplorerSearchText()
         {
-            Mouse.Click(_explorerSearch,new Point(5,5));
+            Mouse.Click(_explorerSearch, new Point(5, 5));
             SendKeys.SendWait("{HOME}");
             Playback.Wait(50);
             SendKeys.SendWait("+{END}");
@@ -309,16 +309,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
         }
 
-       
+
 
         private UITestControl GetConnectedServer(string serverName)
         {
             UITestControl returnControl = new UITestControl();
             WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UINavigationViewUserCoCustom.UITvExplorerTree;
             UITestControl server = null;
-            foreach (UITestControl serverListItem in uITvExplorerTree.GetChildren()) // 0 for the first server in the list
+            foreach(UITestControl serverListItem in uITvExplorerTree.GetChildren()) // 0 for the first server in the list
             {
-                if (serverListItem.GetProperty(WpfTree.PropertyNames.AutomationId).ToString().Contains(serverName))
+                if(serverListItem.GetProperty(WpfTree.PropertyNames.AutomationId).ToString().Contains(serverName))
                 {
                     server = serverListItem;
                     break;
@@ -336,12 +336,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Point p;
             UITestControl server = GetConnectedServer(serverName);
             UITestControl serviceTypeReturn = null;
-            foreach (UITestControl serviceTypeListItem in server.GetChildren())
+            foreach(UITestControl serviceTypeListItem in server.GetChildren())
             {
-                if (serviceTypeListItem.FriendlyName.Contains(serviceType))
+                if(serviceTypeListItem.FriendlyName.Contains(serviceType))
                 {
                     // If the service type is not visible, expand the server list
-                    if (!serviceTypeListItem.TryGetClickablePoint(out p))
+                    if(!serviceTypeListItem.TryGetClickablePoint(out p))
                     {
                         Mouse.DoubleClick(new Point(server.BoundingRectangle.X + 50, server.BoundingRectangle.Y + 5));
                     }
@@ -365,7 +365,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUIBusinessDesignStudioWindow == null))
+                if((this.mUIBusinessDesignStudioWindow == null))
                 {
                     this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
@@ -399,7 +399,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUINavigationViewUserCoCustom == null))
+                if((this.mUINavigationViewUserCoCustom == null))
                 {
                     this.mUINavigationViewUserCoCustom = new UINavigationViewUserCoCustom(this);
                 }
@@ -417,7 +417,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUIExplorerCustom == null))
+                if((this.mUIExplorerCustom == null))
                 {
                     this.mUIExplorerCustom = new UIExplorerCustom(this);
                 }
@@ -438,7 +438,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public UIExplorerCustom(UITestControl searchLimitContainer) :
             base(searchLimitContainer)
         {
-           
+
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
             this.SearchProperties["AutomationId"] = "TheNavigationView";
@@ -468,7 +468,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 //}
                 //return this.mUIUI_txtSearch_AutoIDEdit;
 
-                if ((this.mUIUI_txtSearch_AutoIDEdit == null))
+                if((this.mUIUI_txtSearch_AutoIDEdit == null))
                 {
                     this.mUIUI_txtSearch_AutoIDEdit = new WpfEdit(this);
                     #region Search Criteria
@@ -485,7 +485,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUINavigationViewUserCoCustom == null))
+                if((this.mUINavigationViewUserCoCustom == null))
                 {
                     this.mUINavigationViewUserCoCustom = new UINavigationViewUserCoCustom(this);
                 }
@@ -520,7 +520,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUIUI_WORKFLOWSERVICES_TreeItem == null))
+                if((this.mUIUI_WORKFLOWSERVICES_TreeItem == null))
                 {
                     this.mUIUI_WORKFLOWSERVICES_TreeItem = new WpfTreeItem(this);
                     #region Search Criteria
@@ -559,7 +559,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUITvExplorerTree == null))
+                if((this.mUITvExplorerTree == null))
                 {
                     this.mUITvExplorerTree = new UITvExplorerTree(this);
                 }
@@ -591,7 +591,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUIUI_localhosthttp1270TreeItem == null))
+                if((this.mUIUI_localhosthttp1270TreeItem == null))
                 {
                     this.mUIUI_localhosthttp1270TreeItem = new UIUI_localhosthttp1270TreeItem(this);
                 }
@@ -623,7 +623,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             get
             {
-                if ((this.mUIUI_WORKFLOWSERVICES_TreeItem == null))
+                if((this.mUIUI_WORKFLOWSERVICES_TreeItem == null))
                 {
                     this.mUIUI_WORKFLOWSERVICES_TreeItem = new WpfTreeItem(this);
                     #region Search Criteria

@@ -417,6 +417,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Change it back
             ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            WizardsUIMap.WaitForWizard();
             actionName = PluginServiceWizardUIMap.GetActionName();
             PluginServiceWizardUIMap.ClickActionAtIndex(4);
             PluginServiceWizardUIMap.ClickTest();
@@ -436,9 +437,11 @@ namespace Dev2.Studio.UI.Tests
             var folderName = "Unassigned";
 
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+            Playback.Wait(4000);
 
             //CREATE A WORKFLOW
             RibbonUIMap.CreateNewWorkflow();
+            Playback.Wait(4000);
 
             var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
