@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Xml.Linq;
-using ActivityUnitTests.XML;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Execution;
+using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
@@ -47,13 +47,13 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Given(@"I have a webservice")]
         public void GivenIHaveAWebservice()
         {
-            var webSourceXML = XmlResource.Fetch("Google_Address_Lookup.xml");
+            var webSourceXML = XmlResource.Fetch("Google_Address_Lookup");
             var webSource = new WebSource(webSourceXML);
             var service = new ServiceModel.Data.WebService();
             service.Source = webSource;
             ScenarioContext.Current.Add("WebService", service);
         }
-
+        
         [Given(@"the webservice returns JSON with a primitive array")]
         public void GivenTheWebserviceReturnsJSONWithAPrimitiveArray()
         {
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
         [Given(@"I have a webservice calling http://maps\.googleapis\.com/maps/api/geocode/json\?sensor=true&amp;address=address")]
         public void GivenIHaveAWebserviceCallingHttpMaps_Googleapis_ComMapsApiGeocodeJsonSensorTrueAmpAddressAddress()
         {
-            var webSourceXML = XmlResource.Fetch("Google_Address_Lookup.xml");
+            var webSourceXML = XmlResource.Fetch("Google_Address_Lookup");
             var webSource = new WebSource(webSourceXML);
             var service = new ServiceModel.Data.WebService();
             service.Source = webSource;
@@ -83,7 +83,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             WebServices.ExecuteRequest(service, false, out errors);
             ScenarioContext.Current.Add("WebService", service);
         }
-
+        
         [When(@"the service is executed")]
         public void WhenTheServiceIsExecuted()
         {
@@ -97,9 +97,9 @@ namespace Dev2.Runtime.Services.Specs.WebService
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
 
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
-
+           
             var webSource = webService.Source as WebSource;
-
+            
             Assert.IsNotNull(webSource);
             serviceExecution.Service = webService;
             serviceExecution.Source = webSource;
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             Guid executeID = serviceExecution.Execute(out errors);
             ScenarioContext.Current.Add("DataListID", executeID);
         }
-
+        
         [Then(@"the mapping should contain the primitive array")]
         public void ThenTheMappingShouldContainThePrimitiveArray()
         {
@@ -123,7 +123,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             RecordsetField departmentAreasField = departmentFields.Find(field => field.Name == "Areas");
             Assert.IsNotNull(departmentAreasField);
         }
-
+        
         [Then(@"I have the following data")]
         public void ThenIHaveTheFollowingData(Table table)
         {

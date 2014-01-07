@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Xml.Linq;
 
-namespace ActivityUnitTests.XML
+namespace Dev2.Tests.Activities.XML
 {
     /// <summary>
     /// Utility class for retrieving embedded XML resources.
