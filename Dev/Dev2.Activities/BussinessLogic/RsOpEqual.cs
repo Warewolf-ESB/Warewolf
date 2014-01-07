@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
@@ -13,17 +12,13 @@ namespace Dev2.DataList
     public class RsOpEqual : AbstractRecsetSearchValidation
     {
 
-        public RsOpEqual()
-        {
-
-        }
-
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {
             // Default to a null function result
             Func<IList<string>> result = () => { return null; };
 
-            result = () => {
+            result = () =>
+            {
                 ErrorResultTO err = new ErrorResultTO();
                 IList<RecordSetSearchPayload> operationRange = GenerateInputRange(to, scopingObj, out err).Invoke();
                 IList<string> fnResult = new List<string>();
@@ -31,13 +26,13 @@ namespace Dev2.DataList
                 string toFind = to.SearchCriteria.Trim();
                 string toFindLower = toFind.ToLower();
 
-                foreach (RecordSetSearchPayload p in operationRange)
+                foreach(RecordSetSearchPayload p in operationRange)
                 {
                     string toMatch = p.Payload.Trim();
 
-                    if (to.MatchCase)
+                    if(to.MatchCase)
                     {
-                        if (toMatch.Equals(toFind, StringComparison.CurrentCulture))
+                        if(toMatch.Equals(toFind, StringComparison.CurrentCulture))
                         {
                             fnResult.Add(p.Index.ToString());
                         }
@@ -51,7 +46,7 @@ namespace Dev2.DataList
                     }
                     else
                     {
-                        if (toMatch.ToLower().Equals(toFindLower, StringComparison.CurrentCulture))
+                        if(toMatch.ToLower().Equals(toFindLower, StringComparison.CurrentCulture))
                         {
                             fnResult.Add(p.Index.ToString());
                         }
@@ -63,7 +58,7 @@ namespace Dev2.DataList
                             }
                         }
                     }
-                    
+
                 }
 
                 return fnResult.Distinct().ToList();

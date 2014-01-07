@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -199,11 +198,11 @@ namespace Dev2.Services.Sql
         {
             try
             {
-            using(var reader = command.ExecuteReader(commandBehavior))
-            {
-                return handler(reader);
+                using(var reader = command.ExecuteReader(commandBehavior))
+                {
+                    return handler(reader);
+                }
             }
-        }
             catch(SqlException e)
             {
                 if(e.Message.Contains("There is no text for object "))
@@ -229,8 +228,8 @@ namespace Dev2.Services.Sql
             return new SqlCommand(commandText, connection)
             {
                 CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,                
-                
+                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
+
             };
         }
 
@@ -294,7 +293,7 @@ namespace Dev2.Services.Sql
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
-            var parts =command.CommandText.Split('.');
+            var parts = command.CommandText.Split('.');
             command.CommandType = CommandType.Text;
             command.CommandText = string.Format("select * from information_schema.parameters where specific_name='{0}' and specific_schema='{1}'", parts[1], parts[0]);
             var dataTable = FetchDataTable(command);
@@ -304,7 +303,7 @@ namespace Dev2.Services.Sql
                 var parameterName = row["PARAMETER_NAME"] as string;
                 if(String.IsNullOrEmpty(parameterName))
                 {
-                    continue;                    
+                    continue;
                 }
                 SqlDbType sqlType;
                 Enum.TryParse(row["DATA_TYPE"] as string, true, out sqlType);

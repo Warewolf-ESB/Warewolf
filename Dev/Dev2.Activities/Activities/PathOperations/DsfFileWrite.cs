@@ -1,17 +1,15 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using Dev2.Enums;
 using Dev2.PathOperations;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Util;
-using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -65,12 +63,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
 
                 DebugItem itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = "Method"});                
+                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Method" });
                 itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetMethod() });
                 _debugInputs.Add(itemToAdd);
 
@@ -80,7 +78,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
@@ -96,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result = broker.PutRaw(endPoint, putTO);
                     outputs[0].OutputStrings.Add(result);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     outputs[0].OutputStrings.Add("Failure");
                     allErrors.AddError(e.Message);
@@ -129,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append.
         /// </summary>
-        [Inputs("Append")]        
+        [Inputs("Append")]
         public bool Append
         {
             get;
@@ -204,14 +202,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
-                    if (t.Item1 == OutputPath)
+                    if(t.Item1 == OutputPath)
                     {
                         OutputPath = t.Item2;
                     }
 
-                    if (t.Item1 == FileContents)
+                    if(t.Item1 == FileContents)
                     {
                         FileContents = t.Item2;
                     }
@@ -221,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

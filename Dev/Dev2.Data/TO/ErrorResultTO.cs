@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Web;
 
 namespace Dev2.DataList.Contract
 {
@@ -19,7 +18,7 @@ namespace Dev2.DataList.Contract
         /// <param name="msg">The MSG.</param>
         public void AddError(string msg)
         {
-            if (!string.IsNullOrEmpty(msg))
+            if(!string.IsNullOrEmpty(msg))
             {
                 _errorList.Add(msg);
             }
@@ -72,10 +71,12 @@ namespace Dev2.DataList.Contract
         /// Makes the error collection user ready.
         /// </summary>
         /// <returns></returns>
-        public string MakeUserReady() {
+        public string MakeUserReady()
+        {
             StringBuilder result = new StringBuilder("<Error>");
 
-            foreach (string e in _errorList) {
+            foreach(string e in _errorList)
+            {
                 result.Append(GlobalConstants.InnerErrorTag);
                 result.Append(e);
                 result.Append(GlobalConstants.InnerErrorTagEnd);
@@ -160,7 +161,7 @@ namespace Dev2.DataList.Contract
             }
             return s;
         }
-   
+
         /// <summary>
         /// Makes ErrorResultTO from a error string from the data list.
         /// </summary>
@@ -189,6 +190,6 @@ namespace Dev2.DataList.Contract
         }
 
 
-        
+
     }
 }

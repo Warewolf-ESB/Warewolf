@@ -4,9 +4,7 @@
 // All other rights reserved.
 
 using System.Collections;
-using System.Windows;
 using System.Windows.Automation.Peers;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace System.Windows.Controls
@@ -31,7 +29,7 @@ namespace System.Windows.Controls
         /// property value changes.
         /// </summary>
         event SelectionChangedEventHandler SelectionChanged;
-        
+
         /// <summary>
         /// Gets or sets a collection that is used to generate content for the
         /// selection adapter.

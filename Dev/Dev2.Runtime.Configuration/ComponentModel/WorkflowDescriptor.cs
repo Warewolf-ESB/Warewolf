@@ -1,5 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
+﻿using System.Xml.Linq;
 using Caliburn.Micro;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
@@ -16,7 +15,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _isSelected; }
             set
             {
-                if (_isSelected == value)
+                if(_isSelected == value)
                 {
                     return;
                 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dev2.DataList.Contract {
+namespace Dev2.DataList.Contract
+{
     [Serializable]
-    public class Dev2DataLanguageIntellisensePart : IDev2DataLanguageIntellisensePart {
+    public class Dev2DataLanguageIntellisensePart : IDev2DataLanguageIntellisensePart
+    {
 
         public string Name { get; private set; }
 
@@ -11,7 +13,8 @@ namespace Dev2.DataList.Contract {
 
         public IList<IDev2DataLanguageIntellisensePart> Children { get; private set; }
 
-        public Dev2DataLanguageIntellisensePart(string name, string desc,  IList<IDev2DataLanguageIntellisensePart> children) {
+        public Dev2DataLanguageIntellisensePart(string name, string desc, IList<IDev2DataLanguageIntellisensePart> children)
+        {
             Name = name;
             Children = children;
             Description = desc;

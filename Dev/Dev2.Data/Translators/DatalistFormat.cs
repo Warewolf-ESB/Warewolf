@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Common;
 using Dev2.Web;
 
 namespace Dev2.DataList.Contract
 {
-    public sealed class DataListFormat 
+    public sealed class DataListFormat
     {
         #region Static Members
-        private static object _formatLock = new object();
-        private static Dictionary<string, DataListFormat> _existingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
+        private static readonly object _formatLock = new object();
+        private static readonly Dictionary<string, DataListFormat> _existingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
 
         /// <summary>
         /// Gets the DatalistFormat instance that represents the given <paramref name="formatName" />, or creates a new one if a DatalistFormat instance
@@ -24,12 +23,12 @@ namespace Dev2.DataList.Contract
         /// <exception cref="System.ArgumentException">formatName cannot be null or empty string.</exception>
         public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName = EmitionTypes.XML, string headerType = "")
         {
-            if (String.IsNullOrEmpty(formatName)) throw new ArgumentException("formatName cannot be null or empty string.");
-            DataListFormat format = null;
+            if(String.IsNullOrEmpty(formatName)) throw new ArgumentException("formatName cannot be null or empty string.");
+            DataListFormat format;
 
-            lock (_formatLock)
+            lock(_formatLock)
             {
-                if (!_existingFormats.TryGetValue(formatName, out format))
+                if(!_existingFormats.TryGetValue(formatName, out format))
                 {
                     format = new DataListFormat(formatName, publicFormatName, headerType);
                     _existingFormats.Add(formatName, format);
@@ -56,10 +55,6 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Constructor
-        private DataListFormat(string formatName)
-        {
-            _formatName = formatName;
-        }
 
         private DataListFormat(string formatName, EmitionTypes publicType, string headerType)
         {

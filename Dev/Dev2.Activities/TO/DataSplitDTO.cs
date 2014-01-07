@@ -1,12 +1,11 @@
-﻿using Dev2.DataList.Contract;
-using Dev2.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using Dev2.Utilities;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -26,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
-        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false,bool inserted = false)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -120,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     _splitType = value;
                     OnPropertyChanged("SplitType");
@@ -148,7 +147,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -234,7 +233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Validate(string propertyName, RuleSet ruleSet)
         {
-            if (ruleSet == null)
+            if(ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
@@ -243,13 +242,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var errorsTos = ruleSet.ValidateRules();
                 var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
                 {
-                   //
+                    //
                 }));
                 Errors[propertyName] = actionableErrorInfos;
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if (Errors.TryGetValue(propertyName, out errorList))
+            if(Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -259,7 +258,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool Validate(string propertyName)
         {
             RuleSet ruleSet = null;
-            switch (propertyName)
+            switch(propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();

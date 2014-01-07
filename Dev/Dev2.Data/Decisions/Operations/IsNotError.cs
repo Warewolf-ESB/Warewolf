@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -7,7 +6,7 @@ namespace Dev2.Data.Decisions.Operations
     {
         public bool Invoke(string[] cols)
         {
-            return (cols[0].Length == 0);      
+            return (cols[0].Length == 0);
         }
 
         public Enum HandlesType()

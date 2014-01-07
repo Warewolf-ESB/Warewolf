@@ -1,4 +1,7 @@
-﻿using Dev2.Common.Enums;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Common.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -6,10 +9,6 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Development.Languages.Scripting;
 using Dev2.Diagnostics;
-using Dev2.Enums;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -77,44 +76,44 @@ namespace Dev2.Activities
 
             try
             {
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
-                    if (allErrors.HasErrors())
+                    if(allErrors.HasErrors())
                     {
                         return;
                     }
                     IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errors);
                     allErrors.MergeErrors(errors);
-                    if (allErrors.HasErrors())
+                    if(allErrors.HasErrors())
                     {
                         return;
                     }
 
-                    if (dataObject.IsDebug)
+                    if(dataObject.IsDebug)
                     {
                         AddDebugInputItem(Script, scriptEntry, executionId);
                     }
 
                     int iterationCounter = 0;
 
-                    while (colItr.HasMoreData())
+                    while(colItr.HasMoreData())
                     {
                         string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
                         var engine = new ScriptingEngineRepo().FindMatch(ScriptType);
                         var value = engine.Execute(scriptValue);
-                        
+
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
                             toUpsert.Add(region, value);
                             toUpsert.FlushIterationFrame();
 
-                            if (dataObject.IsDebug)
+                            if(dataObject.IsDebug)
                             {
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
                                 iterationCounter++;
@@ -127,9 +126,9 @@ namespace Dev2.Activities
                     allErrors.MergeErrors(errors);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException))
+                if(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException))
                 {
                     allErrors.AddError("There was an error when returning a value from your script, remember to use the 'Return' keyword when returning the result");
                 }
@@ -142,13 +141,13 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
-                if (dataObject.IsDebug)
+                if(dataObject.IsDebug)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -159,10 +158,10 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
 
-                if (t.Item1 == Script)
+                if(t.Item1 == Script)
                 {
                     Script = t.Item2;
                 }
@@ -171,7 +170,7 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }
@@ -203,7 +202,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -212,7 +211,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

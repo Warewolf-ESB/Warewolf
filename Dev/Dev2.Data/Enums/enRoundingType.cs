@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Dev2.Common;
 
 namespace Dev2.DataList.Contract
 {

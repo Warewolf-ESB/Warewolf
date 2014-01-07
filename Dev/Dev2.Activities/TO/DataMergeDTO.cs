@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Interfaces;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2.Interfaces;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
-using Dev2.Providers.Validation;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -28,16 +27,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Inserted = inserted;
             InputVariable = inputVariable;
             MergeType = string.IsNullOrEmpty(mergeType) ? "Index" : mergeType;
-            At = string.IsNullOrEmpty(at) ? string.Empty:at;
+            At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             _enableAt = true;
             Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
-            Alignment = string.IsNullOrEmpty(alignment) ? "Left": alignment;
+            Alignment = string.IsNullOrEmpty(alignment) ? "Left" : alignment;
         }
 
         public DataMergeDTO()
         {
-                Errors = new Dictionary<string, List<IActionableErrorInfo>>();
+            Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
         #endregion
@@ -96,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _mergeType; }
             set
             {
-                if (value != null)
+                if(value != null)
                 {
                     _mergeType = value;
                     OnPropertyChanged("MergeType");
@@ -136,15 +135,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region CanAdd, CanRemove and ClearRow
 
         public bool CanRemove()
-        {         
-            if (MergeType == "Index" || MergeType == "Chars")
+        {
+            if(MergeType == "Index" || MergeType == "Chars")
             {
-                if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
+                if(string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
                 return false;
-            }           
+            }
 
             return false;
         }
@@ -227,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Validate(string propertyName, RuleSet ruleSet)
         {
-            if (ruleSet == null)
+            if(ruleSet == null)
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
@@ -242,7 +241,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             OnPropertyChanged("Errors");
             List<IActionableErrorInfo> errorList;
-            if (Errors.TryGetValue(propertyName, out errorList))
+            if(Errors.TryGetValue(propertyName, out errorList))
             {
                 return errorList.Count == 0;
             }
@@ -252,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool Validate(string propertyName)
         {
             RuleSet ruleSet = null;
-            switch (propertyName)
+            switch(propertyName)
             {
                 case "FieldName":
                     ruleSet = GetFieldNameRuleSet();

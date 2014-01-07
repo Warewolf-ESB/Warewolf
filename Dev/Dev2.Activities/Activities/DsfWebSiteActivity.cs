@@ -1,8 +1,7 @@
-﻿using System.Activities;
-using Dev2;
+﻿using System;
+using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
-using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -50,7 +49,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
-            fields.Add(new ActivityDTO("[[FormView]]", Html, 0));            
+            fields.Add(new ActivityDTO("[[FormView]]", Html, 0));
             _assignActivity = new DsfMultiAssignActivity { OutputMapping = null, FieldsCollection = fields, InputMapping = null };
 
             metadata.AddChild(_assignActivity);

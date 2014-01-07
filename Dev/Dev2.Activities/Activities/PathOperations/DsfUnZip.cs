@@ -91,18 +91,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Zip Name", inputPathEntry, executionId);  
+                AddDebugInputItem(InputPath, "Zip Name", inputPathEntry, executionId);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Destination", outputPathEntry, executionId);
                 AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
                 AddDebugInputItemPassword("Archive Password", ArchivePassword);
-               
+
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
 
                 string error = string.Empty;
@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result = broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
                     outputs[0].OutputStrings.Add(result);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     outputs[0].OutputStrings.Add("Failure");
                     allErrors.AddError(e.Message);
@@ -192,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             int counter = 0;
             string result = string.Empty;
-            while (counter < password.Length)
+            while(counter < password.Length)
             {
                 result = result + "*";
                 counter++;
@@ -204,26 +204,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
-                if (t.Item1 == ArchivePassword)
+                if(t.Item1 == ArchivePassword)
                 {
                     ArchivePassword = t.Item2;
                 }
 
-                if (t.Item1 == Overwrite.ToString())
+                if(t.Item1 == Overwrite.ToString())
                 {
                     bool tmpOverwrite;
                     bool.TryParse(t.Item2, out tmpOverwrite);
                     Overwrite = tmpOverwrite;
                 }
 
-                if (t.Item1 == InputPath)
+                if(t.Item1 == InputPath)
                 {
                     InputPath = t.Item2;
                 }
 
-                if (t.Item1 == OutputPath)
+                if(t.Item1 == OutputPath)
                 {
                     OutputPath = t.Item2;
                 }
@@ -232,7 +232,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

@@ -2,7 +2,8 @@
 
 namespace Dev2.DataList.Contract
 {
-    public interface IDev2DataLanguageIntellisensePart {
+    public interface IDev2DataLanguageIntellisensePart
+    {
 
         string Name { get; }
 

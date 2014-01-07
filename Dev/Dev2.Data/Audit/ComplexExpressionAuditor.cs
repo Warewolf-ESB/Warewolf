@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Audit
 {
@@ -52,7 +51,7 @@ namespace Dev2.Data.Audit
                 TokenBinding = boundPart,
                 PassNumber = pass,
                 BoundValue = boundValue,
-                RawExpression  = rawExpression,
+                RawExpression = rawExpression,
             });
         }
 
@@ -63,7 +62,7 @@ namespace Dev2.Data.Audit
         public IList<ComplexExpressionAuditItem> FetchAuditItems()
         {
 
-            if (_auditItems.Any(c => c.PassNumber > 0))
+            if(_auditItems.Any(c => c.PassNumber > 0))
             {
                 // Now find the highest PassNumber
                 var len = _auditItems.Count;
@@ -77,7 +76,7 @@ namespace Dev2.Data.Audit
             else
             {
                 // single pass generation, skip the compile phase ;)
-                return _auditItems;    
+                return _auditItems;
             }
         }
 
@@ -85,7 +84,7 @@ namespace Dev2.Data.Audit
         {
             _maxIndex = expIdx;
         }
-        
+
         public int GetMaxIndex()
         {
             return _maxIndex;

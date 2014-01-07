@@ -3,8 +3,6 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
-using System.Windows;
 
 namespace System.Windows.Controls
 {
@@ -76,11 +74,11 @@ namespace System.Windows.Controls
             get { return _cancel; }
             set
             {
-                if (IsCancelable)
+                if(IsCancelable)
                 {
                     _cancel = value;
                 }
-                else if (value)
+                else if(value)
                 {
                     throw new InvalidOperationException(Dev2.Runtime.Configuration.Properties
                         .Resources.RoutedPropertyChangingEventArgs_CancelSet_InvalidOperation);
@@ -129,8 +127,8 @@ namespace System.Windows.Controls
         /// </param>
         public RoutedPropertyChangingEventArgs(
             DependencyProperty property,
-            T oldValue, 
-            T newValue, 
+            T oldValue,
+            T newValue,
             bool isCancelable)
         {
             Property = property;
@@ -141,7 +139,7 @@ namespace System.Windows.Controls
         }
 
 #if !SILVERLIGHT
-                /// <summary>
+        /// <summary>
         /// Initializes a new instance of the
         /// <see cref="T:System.Windows.Controls.RoutedPropertyChangingEventArgs`1" />
         /// class.

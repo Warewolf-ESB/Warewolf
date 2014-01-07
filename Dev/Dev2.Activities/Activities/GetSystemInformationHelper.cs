@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Management;
-using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
@@ -38,7 +37,7 @@ namespace Dev2.Activities
         string GetNumberOfWareWolfAgentsInformation();
     }
 
-    public class GetSystemInformationHelper:IGetSystemInformation
+    public class GetSystemInformationHelper : IGetSystemInformation
     {
         #region Implementation of IGetSystemInformation
 
@@ -53,16 +52,16 @@ namespace Dev2.Activities
 
         public string GetServicePackInformation()
         {
-            
+
             var stringBuilder = new StringBuilder();
             var operatingSystem = Environment.OSVersion;
-            stringBuilder.AppendFormat("{0}", operatingSystem.ServicePack.Replace("Service Pack ",""));
+            stringBuilder.AppendFormat("{0}", operatingSystem.ServicePack.Replace("Service Pack ", ""));
             return stringBuilder.ToString();
         }
 
         public string GetOSBitValueInformation()
         {
-            
+
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendFormat(Environment.Is64BitOperatingSystem ? " 64" : " 32");
             return stringBuilder.ToString();
@@ -73,8 +72,8 @@ namespace Dev2.Activities
             string fullPattern = CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern;
             if(fullPattern.Contains("ss"))
             {
-                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");    
-            }            
+                fullPattern = fullPattern.Insert(fullPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+            }
             var dateTimeString = DateTime.Now.ToString(fullPattern);
             return dateTimeString;
         }
@@ -83,14 +82,14 @@ namespace Dev2.Activities
         {
             var dateTimeParser = new DateTimeParser();
             string error;
-            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern,out error);
+            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
             return translatedDateTimeFormat;
         }
 
         public string GetDiskSpaceAvailableInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach (System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
             {
                 try
                 {
@@ -104,16 +103,16 @@ namespace Dev2.Activities
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });
-        } 
+        }
 
         public string GetDiskSpaceTotalInformation()
         {
             var stringBuilder = new StringBuilder();
-            foreach (System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
+            foreach(System.IO.DriveInfo driveInfo1 in System.IO.DriveInfo.GetDrives())
             {
                 try
                 {
-                    stringBuilder.AppendFormat("{0}" +" {1},", 
+                    stringBuilder.AppendFormat("{0}" + " {1},",
                         driveInfo1.Name, ConvertToGB(driveInfo1.TotalSize));
                 }
                 catch(Exception ex)
@@ -121,7 +120,7 @@ namespace Dev2.Activities
                     ServerLogger.LogError(ex);
                 }
             }
-            return stringBuilder.ToString().TrimEnd(new []{','});
+            return stringBuilder.ToString().TrimEnd(new[] { ',' });
         }
 
         public string GetPhysicalMemoryAvailableInformation()
@@ -131,8 +130,8 @@ namespace Dev2.Activities
             var availablePhysicalMemory = ConvertToMB(computerInfo.AvailablePhysicalMemory);
             stringBuilder.Append(availablePhysicalMemory.ToString());
             return stringBuilder.ToString();
-        }        
-        
+        }
+
         public string GetVirtualMemoryAvailableInformation()
         {
             var computerInfo = new ComputerInfo();
@@ -141,7 +140,7 @@ namespace Dev2.Activities
             stringBuilder.Append(availableVirtualMemory.ToString());
             return stringBuilder.ToString();
         }
-        
+
         public string GetPhysicalMemoryTotalInformation()
         {
             var computerInfo = new ComputerInfo();
@@ -149,8 +148,8 @@ namespace Dev2.Activities
             var totalPhysicalMemory = ConvertToMB(computerInfo.TotalPhysicalMemory);
             stringBuilder.Append(totalPhysicalMemory.ToString());
             return stringBuilder.ToString();
-        }        
-        
+        }
+
         public string GetVirtualMemoryTotalInformation()
         {
             var computerInfo = new ComputerInfo();
@@ -168,7 +167,7 @@ namespace Dev2.Activities
 
         ulong ConvertToGB(long valueToConvert)
         {
-            var convertedValue = ConvertToMB((ulong)valueToConvert)/ 1024;
+            var convertedValue = ConvertToMB((ulong)valueToConvert) / 1024;
             return convertedValue;
         }
 
@@ -178,23 +177,23 @@ namespace Dev2.Activities
             var winQuery = new ObjectQuery("SELECT LoadPercentage FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
 
-            foreach (ManagementObject item in searcher.Get())
+            foreach(ManagementObject item in searcher.Get())
             {
-                stringBuilder.Append((100-Convert.ToInt32(item["LoadPercentage"]))+"%");
+                stringBuilder.Append((100 - Convert.ToInt32(item["LoadPercentage"])) + "%");
             }
             return stringBuilder.ToString();
-        } 
-        
+        }
+
         public string GetCPUTotalInformation()
         {
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT MaxClockSpeed,NumberOfLogicalProcessors FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
-            foreach (ManagementObject item in searcher.Get())
+            foreach(ManagementObject item in searcher.Get())
             {
                 var maxClockSpeed = Convert.ToInt32(item["MaxClockSpeed"]);
                 var numberOfProcessors = Convert.ToInt32(item["NumberOfLogicalProcessors"]);
-                stringBuilder.Append(numberOfProcessors+"*"+maxClockSpeed+" Mhz");
+                stringBuilder.Append(numberOfProcessors + "*" + maxClockSpeed + " Mhz");
             }
             return stringBuilder.ToString();
         }
@@ -202,10 +201,10 @@ namespace Dev2.Activities
         public string GetLanguageInformation()
         {
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("{0}",CultureInfo.CurrentCulture.Parent.DisplayName);
+            stringBuilder.AppendFormat("{0}", CultureInfo.CurrentCulture.Parent.DisplayName);
             return stringBuilder.ToString();
-        }        
-        
+        }
+
         public string GetRegionInformation()
         {
             var stringBuilder = new StringBuilder();
@@ -222,7 +221,7 @@ namespace Dev2.Activities
                 var groups = from sid in currentIdentity.Groups select sid.Translate(typeof(NTAccount)).Value;
                 foreach(var grp in groups)
                 {
-                    stringBuilder.AppendFormat(grp+",");
+                    stringBuilder.AppendFormat(grp + ",");
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });
@@ -232,7 +231,7 @@ namespace Dev2.Activities
         {
             return Environment.UserName;
         }
-        
+
         public string GetDomainInformation()
         {
             return Environment.UserDomainName;

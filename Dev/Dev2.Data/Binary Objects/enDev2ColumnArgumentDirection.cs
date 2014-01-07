@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.ComponentModel;
 
 namespace Dev2.Data.Binary_Objects

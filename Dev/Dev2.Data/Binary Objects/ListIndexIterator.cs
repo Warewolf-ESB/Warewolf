@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Data.Binary_Objects
 {
-    public class ListIndexIterator :IIndexIterator
+    public class ListIndexIterator : IIndexIterator
     {
         private int _curValue;
         private int _curPos;
@@ -47,7 +47,7 @@ namespace Dev2.Data.Binary_Objects
         {
             _curPos++;
 
-            _curValue = IndexList.Indexes[_curPos-1];
+            _curValue = IndexList.Indexes[_curPos - 1];
 
             return _curValue;
         }
@@ -80,7 +80,7 @@ namespace Dev2.Data.Binary_Objects
         public IIndexIterator Clone()
         {
             List<int> indexes = new List<int>();
-            foreach (int g in IndexList.Indexes)
+            foreach(int g in IndexList.Indexes)
             {
                 indexes.Add(g);
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 
@@ -16,7 +15,7 @@ namespace Dev2.DataList
         private static Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
 
         /// <summary>
-        /// Private method for intitailizing the list of options
+        /// Private method for initializing the list of options
         /// </summary>
         static FindRecsetOptions()
         {
@@ -25,12 +24,12 @@ namespace Dev2.DataList
             List<Type> types = typeof(IFindRecsetOptions).Assembly.GetTypes()
                    .Where(t => (type.IsAssignableFrom(t))).ToList();
 
-            foreach (Type t in types)
+            foreach(Type t in types)
             {
-                if (!t.IsAbstract && !t.IsInterface)
+                if(!t.IsAbstract && !t.IsInterface)
                 {
                     IFindRecsetOptions item = Activator.CreateInstance(t, true) as IFindRecsetOptions;
-                    if (item != null)
+                    if(item != null)
                     {
                         _options.Add(item.HandlesType(), item);
                     }
@@ -47,11 +46,11 @@ namespace Dev2.DataList
                 KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType() == findRecordsOperation);
                 if(!string.IsNullOrEmpty(firstOrDefault.Key))
                 {
-                    tmpDictionary.Add(firstOrDefault.Key,firstOrDefault.Value);
+                    tmpDictionary.Add(firstOrDefault.Key, firstOrDefault.Value);
                 }
             }
 
-            _options = tmpDictionary;            
+            _options = tmpDictionary;
         }
 
         /// <summary>
@@ -62,7 +61,7 @@ namespace Dev2.DataList
         public static IFindRecsetOptions FindMatch(string expressionType)
         {
             IFindRecsetOptions result;
-            if (!_options.TryGetValue(expressionType, out result))
+            if(!_options.TryGetValue(expressionType, out result))
             {
                 result = null;
             }

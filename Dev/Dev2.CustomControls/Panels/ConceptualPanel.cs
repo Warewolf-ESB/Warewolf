@@ -28,11 +28,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using System.Windows;
 using System.Collections.Specialized;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace WPF.JoshSmith.Panels
@@ -88,7 +86,7 @@ namespace WPF.JoshSmith.Panels
         /// </summary>
         private void OnChildrenCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            switch(e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     OnChildAdded(e.NewItems[0] as UIElement);
@@ -115,7 +113,7 @@ namespace WPF.JoshSmith.Panels
         /// <returns></returns>
         protected override Visual GetVisualChild(int index)
         {
-            if (index < 0 || index >= _visualChildren.Count)
+            if(index < 0 || index >= _visualChildren.Count)
                 throw new ArgumentOutOfRangeException();
             return _visualChildren[index];
         }
@@ -127,12 +125,12 @@ namespace WPF.JoshSmith.Panels
         /// <param name="visualRemoved"></param>
         protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
         {
-            if (visualAdded is Visual)
+            if(visualAdded is Visual)
             {
                 _visualChildren.Add(visualAdded as Visual);
             }
 
-            if (visualRemoved is Visual)
+            if(visualRemoved is Visual)
             {
                 _visualChildren.Remove(visualRemoved as Visual);
             }

@@ -28,13 +28,13 @@ namespace Dev2.Runtime.Compiler
             // fetch rules for this service type ;)
             var ruleSet = _ruleRepo.FetchRulesFor(typeOf);
 
-            if (ruleSet != null)
+            if(ruleSet != null)
             {
-                foreach (var rule in ruleSet)
+                foreach(var rule in ruleSet)
                 {
                     var msg = rule.ApplyRule(serviceId, beforeAction, afterAction);
 
-                    if (msg != null)
+                    if(msg != null)
                     {
                         result.Add(msg);
                     }

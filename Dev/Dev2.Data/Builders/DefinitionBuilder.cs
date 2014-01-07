@@ -4,7 +4,8 @@ using System.Xml;
 
 namespace Dev2.DataList.Contract
 {
-    public class DefinitionBuilder {
+    public class DefinitionBuilder
+    {
 
         private static readonly string _nameAttribute = "Name";
         private static readonly string _mapsToAttribute = "MapsTo";
@@ -24,36 +25,45 @@ namespace Dev2.DataList.Contract
         /// Generates this instance.
         /// </summary>
         /// <returns></returns>
-        public string Generate() {
+        public string Generate()
+        {
             StringBuilder result = new StringBuilder();
 
             XmlDocument xDoc = new XmlDocument();
             XmlElement rootNode = xDoc.CreateElement((string.Concat(ArgumentType.ToString(), "s")));
 
 
-            foreach (IDev2Definition def in Definitions) {
+            foreach(IDev2Definition def in Definitions)
+            {
                 XmlElement tmp = xDoc.CreateElement(ArgumentType.ToString());
                 tmp.SetAttribute(_nameAttribute, def.Name);
 
-                if (ArgumentType != enDev2ArgumentType.Input) {
+                if(ArgumentType != enDev2ArgumentType.Input)
+                {
                     tmp.SetAttribute(_mapsToAttribute, def.MapsTo);
-                }else {
+                }
+                else
+                {
                     tmp.SetAttribute(_sourceAttribute, def.MapsTo);
                 }
-                
-                if (ArgumentType != enDev2ArgumentType.Input) {
+
+                if(ArgumentType != enDev2ArgumentType.Input)
+                {
                     tmp.SetAttribute(_valueAttribute, def.Value);
                 }
 
-                if (def.RecordSetName.Length > 0) {
+                if(def.RecordSetName.Length > 0)
+                {
                     tmp.SetAttribute(_recordsetAttribute, def.RecordSetName);
                 }
-                
-                if (def.DefaultValue.Length > 0 && ArgumentType == enDev2ArgumentType.Input) {
+
+                if(def.DefaultValue.Length > 0 && ArgumentType == enDev2ArgumentType.Input)
+                {
                     tmp.SetAttribute(_defaultValueAttribute, def.DefaultValue);
                 }
 
-                if (def.IsRequired && ArgumentType == enDev2ArgumentType.Input) {
+                if(def.IsRequired && ArgumentType == enDev2ArgumentType.Input)
+                {
                     XmlElement requiredElm = xDoc.CreateElement(_validateTag);
                     requiredElm.SetAttribute(_typeAttribute, _requiredValue);
                     tmp.AppendChild(requiredElm);

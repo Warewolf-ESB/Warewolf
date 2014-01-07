@@ -19,7 +19,7 @@ namespace Dev2.Data.Storage
 
         public static Func<string> StorageLayerSegments { get; set; }
 
-        public static Func<string> StorageLayerSegmentSize { get; set; } 
+        public static Func<string> StorageLayerSegmentSize { get; set; }
 
         // Static constructor to init Funcs ;)
         static StorageSettingManager()
@@ -62,7 +62,7 @@ namespace Dev2.Data.Storage
                 result = GlobalConstants.DefaultStorageSegments;
             }
 
-            
+
             return result;
         }
 
@@ -90,7 +90,7 @@ namespace Dev2.Data.Storage
             {
                 return adjustmentValue;
             }
-            
+
 
             return result;
         }
@@ -100,20 +100,20 @@ namespace Dev2.Data.Storage
             // Ensure we have the memory available ;)
             double totalSegments = GetSegmentCount() + 1; // account for background worker ;)
 
-            var totalRequiredMemory = totalSegments*requestedSize;
+            var totalRequiredMemory = totalSegments * requestedSize;
 
             var totalFreeMemory = TotalFreeMemory();
 
             // we need to adjust, shoot ;(
-            if (totalRequiredMemory >= totalFreeMemory)
+            if(totalRequiredMemory >= totalFreeMemory)
             {
                 ServerLogger.LogMessage("Memory Pressure...");
 
                 var usableMemeory = totalFreeMemory * _pressureFactor;
 
-                int result = (int)(usableMemeory/totalSegments);
+                int result = (int)(usableMemeory / totalSegments);
 
-                if (result < _minSlabSize)
+                if(result < _minSlabSize)
                 {
                     const string msg = "Too little memory to start server, at least 128 MB should be free.";
                     ServerLogger.LogError(msg);
@@ -146,7 +146,7 @@ namespace Dev2.Data.Storage
         /// </returns>
         public static bool Is64BitOperatingSystem()
         {
-            if (IntPtr.Size == 8) // 64-bit programs run only on Win64
+            if(IntPtr.Size == 8) // 64-bit programs run only on Win64
             {
                 return true;
             }
@@ -173,7 +173,7 @@ namespace Dev2.Data.Storage
         private static bool DoesWin32MethodExist(string moduleName, string methodName)
         {
             IntPtr moduleHandle = GetModuleHandle(moduleName);
-            if (moduleHandle == IntPtr.Zero)
+            if(moduleHandle == IntPtr.Zero)
             {
                 return false;
             }

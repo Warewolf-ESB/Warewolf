@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Decisions.Operations

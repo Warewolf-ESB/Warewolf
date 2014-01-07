@@ -51,9 +51,9 @@ namespace Dev2.Runtime.Services.Specs.WebService
             var webSource = new WebSource(webSourceXML);
             var service = new ServiceModel.Data.WebService();
             service.Source = webSource;
-            ScenarioContext.Current.Add("WebService",service);
+            ScenarioContext.Current.Add("WebService", service);
         }
-        
+
         [Given(@"the webservice returns JSON with a primitive array")]
         public void GivenTheWebserviceReturnsJSONWithAPrimitiveArray()
         {
@@ -80,10 +80,10 @@ namespace Dev2.Runtime.Services.Specs.WebService
             service.Source = webSource;
             service.RequestUrl = webSource.DefaultQuery;
             ErrorResultTO errors;
-            WebServices.ExecuteRequest(service,false,out errors); 
+            WebServices.ExecuteRequest(service, false, out errors);
             ScenarioContext.Current.Add("WebService", service);
         }
-        
+
         [When(@"the service is executed")]
         public void WhenTheServiceIsExecuted()
         {
@@ -97,9 +97,9 @@ namespace Dev2.Runtime.Services.Specs.WebService
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
 
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
-           
+
             var webSource = webService.Source as WebSource;
-            
+
             Assert.IsNotNull(webSource);
             serviceExecution.Service = webService;
             serviceExecution.Source = webSource;
@@ -107,7 +107,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             Guid executeID = serviceExecution.Execute(out errors);
             ScenarioContext.Current.Add("DataListID", executeID);
         }
-        
+
         [Then(@"the mapping should contain the primitive array")]
         public void ThenTheMappingShouldContainThePrimitiveArray()
         {
@@ -117,13 +117,13 @@ namespace Dev2.Runtime.Services.Specs.WebService
             var departmentsRecordSet = recordsetList.Find(recordset => recordset.Name == "Departments");
             Assert.IsNotNull(departmentsRecordSet);
             List<RecordsetField> departmentFields = departmentsRecordSet.Fields;
-            Assert.AreEqual(2,departmentFields.Count);
+            Assert.AreEqual(2, departmentFields.Count);
             RecordsetField departmentNameField = departmentFields.Find(field => field.Name == "Name");
             Assert.IsNotNull(departmentNameField);
             RecordsetField departmentAreasField = departmentFields.Find(field => field.Name == "Areas");
             Assert.IsNotNull(departmentAreasField);
         }
-        
+
         [Then(@"I have the following data")]
         public void ThenIHaveTheFollowingData(Table table)
         {
@@ -143,7 +143,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
                 var dataRow = dataListTable.Rows[rowID];
                 foreach(var header in table.Header)
                 {
-                    Assert.AreEqual(dataRow[header],tableRow[header]);
+                    Assert.AreEqual(dataRow[header], tableRow[header]);
                 }
                 rowID++;
             }

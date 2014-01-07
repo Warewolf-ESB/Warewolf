@@ -2,12 +2,11 @@
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.DataList.Contract;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Data.Util;
+using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TechTalk.SpecFlow;
 using netDumbster.smtp;
+using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Toolbox.Utility.Email
 {
@@ -20,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -99,7 +98,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -120,7 +119,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -132,7 +131,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         public void WhenTheEmailToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

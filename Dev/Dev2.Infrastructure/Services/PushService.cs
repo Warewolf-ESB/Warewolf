@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Dev2.Communication;
 using Dev2.Hosting;
-using Dev2.Providers.Events;
 
 namespace Dev2.Services
 {

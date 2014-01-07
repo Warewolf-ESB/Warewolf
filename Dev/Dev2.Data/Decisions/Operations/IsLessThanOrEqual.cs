@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace Dev2.Data.Decisions.Operations
 {
@@ -18,7 +17,7 @@ namespace Dev2.Data.Decisions.Operations
                 var isString = DecisionUtils.IsNumericComparison(cols, out tryGetNumber);
 
                 //either int compare
-                if (!isString)
+                if(!isString)
                 {
                     return (tryGetNumber[0].CompareTo(tryGetNumber[1]) <= 0);
                 }

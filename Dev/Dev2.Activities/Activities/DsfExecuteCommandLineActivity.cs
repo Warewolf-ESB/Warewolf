@@ -14,7 +14,6 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Runtime.Execution;
-using Dev2.Runtime.ServiceModel;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -31,7 +30,7 @@ namespace Dev2.Activities
         NativeActivityContext _nativeActivityContext;
 
         #endregion
-       
+
         /// <summary>
         /// Gets or sets the name of the recordset.
         /// </summary>  
@@ -67,7 +66,7 @@ namespace Dev2.Activities
 
         public DsfExecuteCommandLineActivity()
             : base("Execute Command Line")
-        {            
+        {
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -95,25 +94,25 @@ namespace Dev2.Activities
             try
             {
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, CommandFileName, false, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(CommandFileName, "Command to execute", expressionsEntry, dlID);
                 }
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                while (itr.HasMoreRecords())
+                while(itr.HasMoreRecords())
                 {
                     IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                    foreach (IBinaryDataListItem c in cols)
+                    foreach(IBinaryDataListItem c in cols)
                     {
-                        if (c.IsDeferredRead)
+                        if(c.IsDeferredRead)
                         {
                             toUpsert.HasLiveFlushing = true;
                             toUpsert.LiveFlushingLocation = dlID;
                         }
 
-                        if (string.IsNullOrEmpty(c.TheValue))
+                        if(string.IsNullOrEmpty(c.TheValue))
                         {
                             throw new Exception("Empty script to execute");
                         }
@@ -121,17 +120,17 @@ namespace Dev2.Activities
                         string val = c.TheValue;
                         StreamReader errorReader;
                         StringBuilder outputReader;
-                        if (!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
+                        if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
 
                         allErrors.AddError(errorReader.ReadToEnd());
                         var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
                         string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                         {
                             toUpsert.Add(region, readValue);
-                            if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
                             {
                                 AddDebugOutputItem(region, readValue, dlID);
                             }
@@ -139,14 +138,14 @@ namespace Dev2.Activities
 
                         errorReader.Close();
 
-                        if (toUpsert.HasLiveFlushing)
+                        if(toUpsert.HasLiveFlushing)
                         {
                             try
                             {
                                 toUpsert.FlushIterationFrame(true);
                                 toUpsert = null;
                             }
-                            catch (Exception e)
+                            catch(Exception e)
                             {
                                 allErrors.AddError(e.Message);
                             }
@@ -159,7 +158,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -167,12 +166,12 @@ namespace Dev2.Activities
             {
                 // Handle Errors
 
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(_nativeActivityContext, StateType.Before);
                     DispatchDebugState(_nativeActivityContext, StateType.After);
@@ -195,13 +194,13 @@ namespace Dev2.Activities
 
                 _process.StartInfo = processStartInfo;
                 var processStarted = _process.Start();
-                
+
                 _process.BeginOutputReadLine();
-                
+
                 StringBuilder reader = outputReader;
-                
+
                 _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
-                
+
                 errorReader = _process.StandardError;
 
                 if(!ProcessHasStarted(processStarted, _process))
@@ -219,7 +218,7 @@ namespace Dev2.Activities
                     if(!_process.HasExited)
                     {
                         var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
-                        
+
                         if(!isWaitingForUserInput)
                         {
                             continue;
@@ -232,7 +231,7 @@ namespace Dev2.Activities
                 }
 
                 // user termination exit ;)
-                if (executionToken.IsUserCanceled)
+                if(executionToken.IsUserCanceled)
                 {
                     // darn .Kill() does not kill the process tree ;(
                     // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
@@ -291,15 +290,15 @@ namespace Dev2.Activities
 
             ProcessStartInfo psi = null;
 
-            if (val.StartsWith("\""))
+            if(val.StartsWith("\""))
             {
                 // we have a quoted string for the cmd portion
                 var idx = val.IndexOf("\" \"", StringComparison.Ordinal);
-                if (idx < 0)
+                if(idx < 0)
                 {
                     // account for "xxx" arg
                     idx = val.IndexOf("\" ", StringComparison.Ordinal);
-                    if (idx < 0)
+                    if(idx < 0)
                     {
                         val += Environment.NewLine + "exit";
                         psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
@@ -329,14 +328,14 @@ namespace Dev2.Activities
                     else
                     {
                         psi = ExecuteSystemCommand(val);
-                    }                    
+                    }
                 }
             }
             else
             {
                 // no quotes ;)
                 var idx = val.IndexOf(" ", StringComparison.Ordinal);
-                if (idx < 0)
+                if(idx < 0)
                 {
                     psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
                 }
@@ -355,14 +354,14 @@ namespace Dev2.Activities
                 }
             }
 
-            if (psi != null)
+            if(psi != null)
             {
                 psi.UseShellExecute = false;
                 psi.ErrorDialog = false;
                 psi.RedirectStandardError = true;
                 psi.RedirectStandardInput = true;
                 psi.RedirectStandardOutput = true;
-                psi.CreateNoWindow = true;   
+                psi.CreateNoWindow = true;
             }
 
             return psi;
@@ -370,9 +369,9 @@ namespace Dev2.Activities
 
         static ProcessStartInfo ExecuteSystemCommand(string val)
         {
-            var fullPath = Path.Combine(Path.GetTempPath(),Path.GetTempFileName()+".bat");
+            var fullPath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".bat");
             File.Create(fullPath).Close();
-            File.WriteAllText(fullPath,val);
+            File.WriteAllText(fullPath, val);
             var psi = new ProcessStartInfo("cmd.exe", "/Q /C " + fullPath);
             return psi;
         }
@@ -405,7 +404,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -414,7 +413,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -439,12 +438,12 @@ namespace Dev2.Activities
         {
             var itemToAdd = new DebugItem();
 
-            if (!string.IsNullOrWhiteSpace(labelText))
+            if(!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
             }
 
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }

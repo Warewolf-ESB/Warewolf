@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.ComponentModel;
-using Dev2.Common;
 
 namespace Dev2.Diagnostics
 {
@@ -15,11 +14,11 @@ namespace Dev2.Diagnostics
 
     public enum ActivityType
     {
-        [Description("Workflow")] 
+        [Description("Workflow")]
         Workflow,
-        [Description("Step")] 
+        [Description("Step")]
         Step,
-        [Description("Service")] 
+        [Description("Service")]
         Service
     }
 

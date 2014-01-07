@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Dev2.Data.Storage
 {
     public static class IndexMemoryRanageAllocator
@@ -15,14 +14,14 @@ namespace Dev2.Data.Storage
         static IndexMemoryRanageAllocator()
         {
             // populate the total number of index files in the system ;)
-            for (int i = 0; i < TotalSlots; i++)
+            for(int i = 0; i < TotalSlots; i++)
             {
                 OpenSlots[i] = true;
-            }    
+            }
         }
 
         /// <summary>
-        /// Generates the view ranage.
+        /// Generates the view range.
         /// </summary>
         /// <param name="offset">The offset.</param>
         /// <param name="length">The length.</param>
@@ -31,7 +30,7 @@ namespace Dev2.Data.Storage
         {
             int rentedSlot = FetchRentableIndex();
 
-            offset = Offset+ (StandardLength*rentedSlot);
+            offset = Offset + (StandardLength * rentedSlot);
             length = StandardLength;
 
             return rentedSlot;
@@ -44,9 +43,9 @@ namespace Dev2.Data.Storage
         public static void ReturnIndexSlot(int idx)
         {
 
-            if (idx < TotalSlots && idx > 0)
+            if(idx < TotalSlots && idx > 0)
             {
-                lock (IdxLock)
+                lock(IdxLock)
                 {
                     OpenSlots[idx] = true;
                 }
@@ -63,12 +62,12 @@ namespace Dev2.Data.Storage
         {
             int pos = 0;
 
-            lock (IdxLock)
+            lock(IdxLock)
             {
 
-                while (pos < TotalSlots)
+                while(pos < TotalSlots)
                 {
-                    if (OpenSlots[pos])
+                    if(OpenSlots[pos])
                     {
                         OpenSlots[pos] = false;
                         return pos;

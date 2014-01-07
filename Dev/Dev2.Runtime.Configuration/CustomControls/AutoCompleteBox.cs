@@ -3,7 +3,6 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +14,6 @@ using System.Windows.Automation.Peers;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -65,7 +63,7 @@ namespace System.Windows.Controls
         /// Specifies the name of the Popup TemplatePart.
         /// </summary>
         private const string ElementPopup = "Popup";
-        
+
         /// <summary>
         /// The name for the text box part.
         /// </summary>
@@ -221,7 +219,7 @@ namespace System.Windows.Controls
         {
             int newValue = (int)e.NewValue;
 
-            if (newValue < 0 && newValue != -1)
+            if(newValue < 0 && newValue != -1)
             {
                 throw new ArgumentOutOfRangeException("MinimumPrefixLength");
             }
@@ -274,48 +272,48 @@ namespace System.Windows.Controls
         {
             AutoCompleteBox source = d as AutoCompleteBox;
 
-            if (source._ignorePropertyChange)
+            if(source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             int newValue = (int)e.NewValue;
-            if (newValue < 0)
+            if(newValue < 0)
             {
                 source._ignorePropertyChange = true;
                 d.SetValue(e.Property, e.OldValue);
 
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, 
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
                     Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue, newValue), "value");
             }
 
             // Stop any existing timer
-            if (source._delayTimer != null)
+            if(source._delayTimer != null)
             {
                 source._delayTimer.Stop();
-                
-                if (newValue == 0)
+
+                if(newValue == 0)
                 {
                     source._delayTimer = null;
                 }
             }
 
             // Create or clear a dispatcher timer instance
-            if (newValue > 0 && source._delayTimer == null)
+            if(newValue > 0 && source._delayTimer == null)
             {
                 source._delayTimer = new DispatcherTimer();
                 source._delayTimer.Tick += source.PopulateDropDown;
             }
 
             // Set the new tick interval
-            if (newValue > 0 && source._delayTimer != null)
+            if(newValue > 0 && source._delayTimer != null)
             {
                 source._delayTimer.Interval = TimeSpan.FromMilliseconds(newValue);
             }
         }
         #endregion public int MinimumPopulateDelay
-        
+
         #region public bool IsTextCompletionEnabled
         /// <summary>
         /// Gets or sets a value indicating whether the first possible match
@@ -498,16 +496,16 @@ namespace System.Windows.Controls
         private static void OnMaxDropDownHeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            if (source._ignorePropertyChange)
+            if(source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             double newValue = (double)e.NewValue;
-            
+
             // Revert to the old value if invalid (negative)
-            if (newValue < 0)
+            if(newValue < 0)
             {
                 source._ignorePropertyChange = true;
                 source.SetValue(e.Property, e.OldValue);
@@ -559,7 +557,7 @@ namespace System.Windows.Controls
             AutoCompleteBox source = d as AutoCompleteBox;
 
             // Ignore the change if requested
-            if (source._ignorePropertyChange)
+            if(source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
@@ -568,7 +566,7 @@ namespace System.Windows.Controls
             bool oldValue = (bool)e.OldValue;
             bool newValue = (bool)e.NewValue;
 
-            if (newValue)
+            if(newValue)
             {
                 source.TextUpdated(source.Text, true);
             }
@@ -667,14 +665,14 @@ namespace System.Windows.Controls
         {
             AutoCompleteBox source = d as AutoCompleteBox;
 
-            if (source._ignorePropertyChange)
+            if(source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             // Update the text display
-            if (source._skipSelectedItemTextUpdate)
+            if(source._skipSelectedItemTextUpdate)
             {
                 source._skipSelectedItemTextUpdate = false;
             }
@@ -685,22 +683,22 @@ namespace System.Windows.Controls
 
             // Fire the SelectionChanged event
             List<object> removed = new List<object>();
-            if (e.OldValue != null)
+            if(e.OldValue != null)
             {
                 removed.Add(e.OldValue);
             }
-            
+
             List<object> added = new List<object>();
-            if (e.NewValue != null)
+            if(e.NewValue != null)
             {
                 added.Add(e.NewValue);
             }
 
             source.OnSelectionChanged(new SelectionChangedEventArgs(
 #if !SILVERLIGHT
-                SelectionChangedEvent,
+SelectionChangedEvent,
 #endif
-                removed,
+ removed,
                 added));
         }
 
@@ -713,7 +711,7 @@ namespace System.Windows.Controls
         {
             string text;
 
-            if (newItem == null)
+            if(newItem == null)
             {
                 text = SearchText;
             }
@@ -726,7 +724,7 @@ namespace System.Windows.Controls
             UpdateTextValue(text);
 
             // Move the caret to the end of the text box
-            if (TextBox != null && Text != null)
+            if(TextBox != null && Text != null)
             {
                 TextBox.SelectionStart = Text.Length;
             }
@@ -830,14 +828,14 @@ namespace System.Windows.Controls
         private static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            if (source._ignorePropertyChange)
+            if(source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             // Ensure the property is only written when expected
-            if (!source._allowWrite)
+            if(!source._allowWrite)
             {
                 // Reset the old value before it was incorrectly written
                 source._ignorePropertyChange = true;
@@ -897,11 +895,11 @@ namespace System.Windows.Controls
             AutoCompleteBox source = d as AutoCompleteBox;
             AutoCompleteFilterMode mode = (AutoCompleteFilterMode)e.NewValue;
 
-            if (mode != AutoCompleteFilterMode.Contains &&
+            if(mode != AutoCompleteFilterMode.Contains &&
                 mode != AutoCompleteFilterMode.ContainsCaseSensitive &&
                 mode != AutoCompleteFilterMode.ContainsOrdinal &&
                 mode != AutoCompleteFilterMode.ContainsOrdinalCaseSensitive &&
-                mode != AutoCompleteFilterMode.Custom && 
+                mode != AutoCompleteFilterMode.Custom &&
                 mode != AutoCompleteFilterMode.Equals &&
                 mode != AutoCompleteFilterMode.EqualsCaseSensitive &&
                 mode != AutoCompleteFilterMode.EqualsOrdinal &&
@@ -968,9 +966,9 @@ namespace System.Windows.Controls
         {
             AutoCompleteBox source = d as AutoCompleteBox;
             AutoCompleteFilterPredicate<object> value = e.NewValue as AutoCompleteFilterPredicate<object>;
-            
+
             // If null, revert to the "None" predicate
-            if (value == null)
+            if(value == null)
             {
                 source.FilterMode = AutoCompleteFilterMode.None;
             }
@@ -1045,7 +1043,7 @@ namespace System.Windows.Controls
             set
             {
                 // Detach existing handlers
-                if (_text != null)
+                if(_text != null)
                 {
                     _text.SelectionChanged -= OnTextBoxSelectionChanged;
                     _text.TextChanged -= OnTextBoxTextChanged;
@@ -1054,12 +1052,12 @@ namespace System.Windows.Controls
                 _text = value;
 
                 // Attach handlers
-                if (_text != null)
+                if(_text != null)
                 {
                     _text.SelectionChanged += OnTextBoxSelectionChanged;
                     _text.TextChanged += OnTextBoxTextChanged;
 
-                    if (Text != null)
+                    if(Text != null)
                     {
                         UpdateTextValue(Text);
                     }
@@ -1078,12 +1076,12 @@ namespace System.Windows.Controls
         /// use with AutoCompleteBox or deriving from AutoCompleteBox to 
         /// create a custom control.
         /// </remarks>
-        protected internal ISelectionAdapter SelectionAdapter 
-        { 
+        protected internal ISelectionAdapter SelectionAdapter
+        {
             get { return _adapter; }
             set
             {
-                if (_adapter != null)
+                if(_adapter != null)
                 {
                     _adapter.SelectionChanged -= OnAdapterSelectionChanged;
                     _adapter.Commit -= OnAdapterSelectionComplete;
@@ -1094,7 +1092,7 @@ namespace System.Windows.Controls
 
                 _adapter = value;
 
-                if (_adapter != null)
+                if(_adapter != null)
                 {
                     _adapter.SelectionChanged += OnAdapterSelectionChanged;
                     _adapter.Commit += OnAdapterSelectionComplete;
@@ -1384,7 +1382,7 @@ namespace System.Windows.Controls
         protected override Size ArrangeOverride(Size finalSize)
         {
             Size r = base.ArrangeOverride(finalSize);
-            if (DropDownPopup != null)
+            if(DropDownPopup != null)
             {
                 DropDownPopup.Arrange();
             }
@@ -1399,12 +1397,12 @@ namespace System.Windows.Controls
         public override void OnApplyTemplate()
         {
 #if !SILVERLIGHT
-            if (TextBox != null)
+            if(TextBox != null)
             {
                 TextBox.PreviewKeyDown -= OnTextBoxPreviewKeyDown;
             }
 #endif
-            if (DropDownPopup != null)
+            if(DropDownPopup != null)
             {
                 DropDownPopup.Closed -= DropDownPopup_Closed;
                 DropDownPopup.FocusChanged -= OnDropDownFocusChanged;
@@ -1418,7 +1416,7 @@ namespace System.Windows.Controls
             // Set the template parts. Individual part setters remove and add 
             // any event handlers.
             Popup popup = GetTemplateChild(ElementPopup) as Popup;
-            if (popup != null)
+            if(popup != null)
             {
                 DropDownPopup = new PopupHelper(this, popup);
                 DropDownPopup.MaxDropDownHeight = MaxDropDownHeight;
@@ -1430,7 +1428,7 @@ namespace System.Windows.Controls
             SelectionAdapter = GetSelectionAdapterPart();
             TextBox = GetTemplateChild(AutoCompleteBox.ElementTextBox) as TextBox;
 #if !SILVERLIGHT
-            if (TextBox != null)
+            if(TextBox != null)
             {
                 TextBox.PreviewKeyDown += OnTextBoxPreviewKeyDown;
             }
@@ -1439,7 +1437,7 @@ namespace System.Windows.Controls
 
             // If the drop down property indicates that the popup is open,
             // flip its value to invoke the changed handler.
-            if (IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
+            if(IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
             {
                 OpeningDropDown(false);
             }
@@ -1472,7 +1470,7 @@ namespace System.Windows.Controls
         private void ClosingDropDown(bool oldValue)
         {
             bool delayedClosingVisual = false;
-            if (DropDownPopup != null)
+            if(DropDownPopup != null)
             {
                 delayedClosingVisual = DropDownPopup.UsesClosingVisualState;
             }
@@ -1485,12 +1483,12 @@ namespace System.Windows.Controls
 
             OnDropDownClosing(args);
 
-            if (_view == null || _view.Count == 0)
+            if(_view == null || _view.Count == 0)
             {
                 delayedClosingVisual = false;
             }
 
-            if (args.Cancel)
+            if(args.Cancel)
             {
                 _ignorePropertyChange = true;
                 SetValue(IsDropDownOpenProperty, oldValue);
@@ -1502,7 +1500,7 @@ namespace System.Windows.Controls
                 // slightly different and the actual call to CloseDropDown will 
                 // be called only after the visual state's transition is done
                 RaiseExpandCollapseAutomationEvent(oldValue, false);
-                if (!delayedClosingVisual)
+                if(!delayedClosingVisual)
                 {
                     CloseDropDown(oldValue, false);
                 }
@@ -1526,7 +1524,7 @@ namespace System.Windows.Controls
             // Opening
             OnDropDownOpening(args);
 
-            if (args.Cancel)
+            if(args.Cancel)
             {
                 _ignorePropertyChange = true;
                 SetValue(IsDropDownOpenProperty, oldValue);
@@ -1548,7 +1546,7 @@ namespace System.Windows.Controls
         private void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
         {
             AutoCompleteBoxAutomationPeer peer = FrameworkElementAutomationPeer.FromElement(this) as AutoCompleteBoxAutomationPeer;
-            if (peer != null)
+            if(peer != null)
             {
                 peer.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
             }
@@ -1575,13 +1573,13 @@ namespace System.Windows.Controls
         private void DropDownPopup_Closed(object sender, EventArgs e)
         {
             // Force the drop down dependency property to be false.
-            if (IsDropDownOpen)
+            if(IsDropDownOpen)
             {
                 IsDropDownOpen = false;
             }
 
             // Fire the DropDownClosed event
-            if (_popupHasOpened)
+            if(_popupHasOpened)
             {
 #if SILVERLIGHT
                 OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false));
@@ -1619,9 +1617,9 @@ namespace System.Windows.Controls
             // if you currently have the focus you need to do consult the 
             // FocusManager (see HasFocus()).
 
-            if (hasFocus)
+            if(hasFocus)
             {
-                if (TextBox != null && TextBox.SelectionLength == 0)
+                if(TextBox != null && TextBox.SelectionLength == 0)
                 {
                     TextBox.SelectAll();
                 }
@@ -1630,7 +1628,7 @@ namespace System.Windows.Controls
             {
                 IsDropDownOpen = false;
                 _userCalledPopulate = false;
-                if (TextBox != null)
+                if(TextBox != null)
                 {
                     TextBox.Select(TextBox.Text.Length, 0);
                 }
@@ -1655,9 +1653,9 @@ namespace System.Windows.Controls
                 // FocusManager.GetFocusedElement(this) will return null in such a case.
                 this.IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
 #endif
-            while (focused != null)
+            while(focused != null)
             {
-                if (object.ReferenceEquals(focused, this))
+                if(object.ReferenceEquals(focused, this))
                 {
                     return true;
                 }
@@ -1665,11 +1663,11 @@ namespace System.Windows.Controls
                 // This helps deal with popups that may not be in the same 
                 // visual tree
                 DependencyObject parent = VisualTreeHelper.GetParent(focused);
-                if (parent == null)
+                if(parent == null)
                 {
                     // Try the logical parent.
                     FrameworkElement element = focused as FrameworkElement;
-                    if (element != null)
+                    if(element != null)
                     {
                         parent = element.Parent;
                     }
@@ -1725,10 +1723,10 @@ namespace System.Windows.Controls
         private void ControlIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             bool isEnabled = (bool)e.NewValue;
-            if (!isEnabled)
+            if(!isEnabled)
             {
                 IsDropDownOpen = false;
-                if (TextBox != null)
+                if(TextBox != null)
                 {
                     TextBox.Text = string.Empty;
                 }
@@ -1749,17 +1747,17 @@ namespace System.Windows.Controls
         {
             ISelectionAdapter adapter = null;
             Selector selector = GetTemplateChild(ElementSelector) as Selector;
-            if (selector != null)
+            if(selector != null)
             {
                 // Check if it is already an IItemsSelector
                 adapter = selector as ISelectionAdapter;
-                if (adapter == null)
+                if(adapter == null)
                 {
                     // Built in support for wrapping a Selector control
                     adapter = new SelectorSelectionAdapter(selector);
                 }
             }
-            if (adapter == null)
+            if(adapter == null)
             {
                 adapter = GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
             }
@@ -1773,7 +1771,7 @@ namespace System.Windows.Controls
         /// <param name="e">The event arguments.</param>
         private void PopulateDropDown(object sender, EventArgs e)
         {
-            if (_delayTimer != null)
+            if(_delayTimer != null)
             {
                 _delayTimer.Stop();
             }
@@ -1792,7 +1790,7 @@ namespace System.Windows.Controls
 #endif
 
             OnPopulating(populating);
-            if (!populating.Cancel)
+            if(!populating.Cancel)
             {
                 PopulateComplete();
             }
@@ -1956,7 +1954,7 @@ namespace System.Windows.Controls
         private string FormatValue(object value, bool clearDataContext)
         {
             string str = FormatValue(value);
-            if (clearDataContext && _valueBindingEvaluator != null)
+            if(clearDataContext && _valueBindingEvaluator != null)
             {
                 _valueBindingEvaluator.ClearDataContext();
             }
@@ -1978,7 +1976,7 @@ namespace System.Windows.Controls
         /// </remarks>
         protected virtual string FormatValue(object value)
         {
-            if (_valueBindingEvaluator != null)
+            if(_valueBindingEvaluator != null)
             {
                 return _valueBindingEvaluator.GetDynamicValue(value) ?? string.Empty;
             }
@@ -2029,7 +2027,7 @@ namespace System.Windows.Controls
             // If ignoring updates. This happens after text is updated, and 
             // before the PopulateComplete method is called. Required for the 
             // IsTextCompletionEnabled feature.
-            if (_ignoreTextSelectionChange)
+            if(_ignoreTextSelectionChange)
             {
                 return;
             }
@@ -2062,7 +2060,7 @@ namespace System.Windows.Controls
         private void UpdateTextValue(string value, bool? userInitiated)
         {
             // Update the Text dependency property
-            if ((userInitiated == null || userInitiated == true) && Text != value)
+            if((userInitiated == null || userInitiated == true) && Text != value)
             {
                 _ignoreTextPropertyChange++;
                 Text = value;
@@ -2074,13 +2072,13 @@ namespace System.Windows.Controls
             }
 
             // Update the TextBox's Text dependency property
-            if ((userInitiated == null || userInitiated == false) && TextBox != null && TextBox.Text != value)
+            if((userInitiated == null || userInitiated == false) && TextBox != null && TextBox.Text != value)
             {
                 _ignoreTextPropertyChange++;
                 TextBox.Text = value ?? string.Empty;
 
                 // Text dependency property value was set, fire event
-                if (Text == value || Text == null)
+                if(Text == value || Text == null)
                 {
 #if SILVERLIGHT
                     OnTextChanged(new RoutedEventArgs());
@@ -2103,13 +2101,13 @@ namespace System.Windows.Controls
         {
             // Only process this event if it is coming from someone outside 
             // setting the Text dependency property directly.
-            if (_ignoreTextPropertyChange > 0)
+            if(_ignoreTextPropertyChange > 0)
             {
                 _ignoreTextPropertyChange--;
                 return;
             }
 
-            if (newText == null)
+            if(newText == null)
             {
                 newText = string.Empty;
             }
@@ -2117,7 +2115,7 @@ namespace System.Windows.Controls
             // The TextBox.TextChanged event was not firing immediately and 
             // was causing an immediate update, even with wrapping. If there is 
             // a selection currently, no update should happen.
-            if (IsTextCompletionEnabled && TextBox != null && TextBox.SelectionLength > 0 && TextBox.SelectionStart != TextBox.Text.Length)
+            if(IsTextCompletionEnabled && TextBox != null && TextBox.SelectionLength > 0 && TextBox.SelectionStart != TextBox.Text.Length)
             {
                 return;
             }
@@ -2131,11 +2129,11 @@ namespace System.Windows.Controls
             // Update the interface and values only as necessary
             UpdateTextValue(newText, userInitiated);
 
-            if (populateReady)
+            if(populateReady)
             {
                 _ignoreTextSelectionChange = true;
 
-                if (_delayTimer != null)
+                if(_delayTimer != null)
                 {
                     _delayTimer.Start();
                 }
@@ -2147,12 +2145,12 @@ namespace System.Windows.Controls
             else
             {
                 SearchText = string.Empty;
-                if (SelectedItem != null)
+                if(SelectedItem != null)
                 {
                     _skipSelectedItemTextUpdate = true;
                 }
                 SelectedItem = null;
-                if (IsDropDownOpen)
+                if(IsDropDownOpen)
                 {
                     IsDropDownOpen = false;
                 }
@@ -2177,7 +2175,7 @@ namespace System.Windows.Controls
         /// When the long-running process has completed you call 
         /// PopulateComplete to indicate the drop-down is populated.
         /// </remarks>
-        public void PopulateComplete() 
+        public void PopulateComplete()
         {
             // Apply the search filter
             RefreshView();
@@ -2190,21 +2188,21 @@ namespace System.Windows.Controls
 #endif
             OnPopulated(populated);
 
-            if (SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
             }
 
             bool isDropDownOpen = _userCalledPopulate && (_view.Count > 0);
-            if (isDropDownOpen != IsDropDownOpen)
+            if(isDropDownOpen != IsDropDownOpen)
             {
                 _ignorePropertyChange = true;
                 IsDropDownOpen = isDropDownOpen;
             }
-            if (IsDropDownOpen)
+            if(IsDropDownOpen)
             {
                 OpeningDropDown(false);
-                if (DropDownPopup != null)
+                if(DropDownPopup != null)
                 {
                     DropDownPopup.Arrange();
                 }
@@ -2234,13 +2232,13 @@ namespace System.Windows.Controls
             // line with WPF's ComboBox lookup. When in use it will associate 
             // a Value with the Text if it is found in ItemsSource. This is 
             // only valid when there is data and the user initiated the action.
-            if (_view.Count > 0)
+            if(_view.Count > 0)
             {
-                if (IsTextCompletionEnabled && TextBox != null && userInitiated)
+                if(IsTextCompletionEnabled && TextBox != null && userInitiated)
                 {
                     int currentLength = TextBox.Text.Length;
                     int selectionStart = TextBox.SelectionStart;
-                    if (selectionStart == text.Length && selectionStart > _textSelectionStart)
+                    if(selectionStart == text.Length && selectionStart > _textSelectionStart)
                     {
                         // When the FilterMode dependency property is set to 
                         // either StartsWith or StartsWithCaseSensitive, the 
@@ -2253,14 +2251,14 @@ namespace System.Windows.Controls
                             : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
 
                         // If the search was successful, update SelectedItem
-                        if (top != null)
+                        if(top != null)
                         {
                             newSelectedItem = top;
                             string topString = FormatValue(top, true);
 
                             // Only replace partially when the two words being the same
                             int minLength = Math.Min(topString.Length, Text.Length);
-                            if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
+                            if(AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
                             {
                                 // Update the text
                                 UpdateTextValue(topString);
@@ -2287,17 +2285,17 @@ namespace System.Windows.Controls
 
             // Update the selected item property
 
-            if (SelectedItem != newSelectedItem)
+            if(SelectedItem != newSelectedItem)
             {
                 _skipSelectedItemTextUpdate = true;
             }
             SelectedItem = newSelectedItem;
 
             // Restore updates for TextSelection
-            if (_ignoreTextSelectionChange)
+            if(_ignoreTextSelectionChange)
             {
                 _ignoreTextSelectionChange = false;
-                if (TextBox != null)
+                if(TextBox != null)
                 {
                     _textSelectionStart = TextBox.SelectionStart;
                 }
@@ -2315,11 +2313,11 @@ namespace System.Windows.Controls
         /// <returns>Returns the object or null.</returns>
         private object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
         {
-            if (view != null && view.Count > 0)
+            if(view != null && view.Count > 0)
             {
-                foreach (object o in view)
+                foreach(object o in view)
                 {
-                    if (predicate(searchText, FormatValue(o)))
+                    if(predicate(searchText, FormatValue(o)))
                     {
                         return o;
                     }
@@ -2335,7 +2333,7 @@ namespace System.Windows.Controls
         /// </summary>
         private void ClearView()
         {
-            if (_view == null)
+            if(_view == null)
             {
                 _view = new ObservableCollection<object>();
             }
@@ -2351,7 +2349,7 @@ namespace System.Windows.Controls
         /// </summary>
         private void RefreshView()
         {
-            if (_items == null)
+            if(_items == null)
             {
                 ClearView();
                 return;
@@ -2367,23 +2365,23 @@ namespace System.Windows.Controls
             int view_index = 0;
             int view_count = _view.Count;
             List<object> items = _items;
-            foreach (object item in items)
+            foreach(object item in items)
             {
                 bool inResults = !(stringFiltering || objectFiltering);
-                if (!inResults)
+                if(!inResults)
                 {
                     inResults = stringFiltering ? TextFilter(text, FormatValue(item)) : ItemFilter(text, item);
                 }
 
-                if (view_count > view_index && inResults && _view[view_index] == item)
+                if(view_count > view_index && inResults && _view[view_index] == item)
                 {
                     // Item is still in the view
                     view_index++;
                 }
-                else if (inResults)
+                else if(inResults)
                 {
                     // Insert the item
-                    if (view_count > view_index && _view[view_index] != item)
+                    if(view_count > view_index && _view[view_index] != item)
                     {
                         // Replace item
                         // Unfortunately replacing via index throws a fatal 
@@ -2395,7 +2393,7 @@ namespace System.Windows.Controls
                     else
                     {
                         // Add the item
-                        if (view_index == view_count)
+                        if(view_index == view_count)
                         {
                             // Constant time is preferred (Add).
                             _view.Add(item);
@@ -2408,7 +2406,7 @@ namespace System.Windows.Controls
                         view_count++;
                     }
                 }
-                else if (view_count > view_index && _view[view_index] == item)
+                else if(view_count > view_index && _view[view_index] == item)
                 {
                     // Remove the item
                     _view.RemoveAt(view_index);
@@ -2417,7 +2415,7 @@ namespace System.Windows.Controls
             }
 
             // Clear the evaluator to discard a reference to the last item
-            if (_valueBindingEvaluator != null)
+            if(_valueBindingEvaluator != null)
             {
                 _valueBindingEvaluator.ClearDataContext();
             }
@@ -2435,7 +2433,7 @@ namespace System.Windows.Controls
         {
             // Remove handler for oldValue.CollectionChanged (if present)
             INotifyCollectionChanged oldValueINotifyCollectionChanged = oldValue as INotifyCollectionChanged;
-            if (null != oldValueINotifyCollectionChanged && null != _collectionChangedWeakEventListener)
+            if(null != oldValueINotifyCollectionChanged && null != _collectionChangedWeakEventListener)
             {
                 _collectionChangedWeakEventListener.Detach();
                 _collectionChangedWeakEventListener = null;
@@ -2443,7 +2441,7 @@ namespace System.Windows.Controls
 
             // Add handler for newValue.CollectionChanged (if possible)
             INotifyCollectionChanged newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
-            if (null != newValueINotifyCollectionChanged)
+            if(null != newValueINotifyCollectionChanged)
             {
                 _collectionChangedWeakEventListener = new WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs>(this);
                 _collectionChangedWeakEventListener.OnEventAction = (instance, source, eventArgs) => instance.ItemsSourceCollectionChanged(source, eventArgs);
@@ -2456,11 +2454,11 @@ namespace System.Windows.Controls
 
             // Clear and set the view on the selection adapter
             ClearView();
-            if (SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
             }
-            if (IsDropDownOpen)
+            if(IsDropDownOpen)
             {
                 RefreshView();
             }
@@ -2474,47 +2472,47 @@ namespace System.Windows.Controls
         private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // Update the cache
-            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
+            if(e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
             {
-                for (int index = 0; index < e.OldItems.Count; index++)
+                for(int index = 0; index < e.OldItems.Count; index++)
                 {
                     _items.RemoveAt(e.OldStartingIndex);
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null && _items.Count >= e.NewStartingIndex)
+            if(e.Action == NotifyCollectionChangedAction.Add && e.NewItems != null && _items.Count >= e.NewStartingIndex)
             {
-                for (int index = 0; index < e.NewItems.Count; index++)
+                for(int index = 0; index < e.NewItems.Count; index++)
                 {
                     _items.Insert(e.NewStartingIndex + index, e.NewItems[index]);
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Replace && e.NewItems != null && e.OldItems != null)
+            if(e.Action == NotifyCollectionChangedAction.Replace && e.NewItems != null && e.OldItems != null)
             {
-                for (int index = 0; index < e.NewItems.Count; index++)
+                for(int index = 0; index < e.NewItems.Count; index++)
                 {
                     _items[e.NewStartingIndex] = e.NewItems[index];
                 }
             }
 
             // Update the view
-            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+            if(e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
             {
-                for (int index = 0; index < e.OldItems.Count; index++)
+                for(int index = 0; index < e.OldItems.Count; index++)
                 {
                     _view.Remove(e.OldItems[index]);
                 }
             }
 
-            if (e.Action == NotifyCollectionChangedAction.Reset)
+            if(e.Action == NotifyCollectionChangedAction.Reset)
             {
                 // Significant changes to the underlying data.
                 ClearView();
-                if (ItemsSource != null)
+                if(ItemsSource != null)
                 {
                     _items = new List<object>(ItemsSource.Cast<object>().ToList());
                 }
             }
-            
+
             // Refresh the observable collection used in the selection adapter.
             RefreshView();
         }
@@ -2544,7 +2542,7 @@ namespace System.Windows.Controls
             UpdateTextCompletion(false);
 
             // Text should not be selected
-            if (TextBox != null)
+            if(TextBox != null)
             {
                 TextBox.Select(TextBox.Text.Length, 0);
             }
@@ -2555,7 +2553,7 @@ namespace System.Windows.Controls
             // Focus is treated differently in SL and WPF.
             // This forces the textbox to get keyboard focus, in the case where
             // another part of the control may have temporarily received focus.
-            if (TextBox != null)
+            if(TextBox != null)
             {
                 Keyboard.Focus(TextBox);
             }
@@ -2591,7 +2589,7 @@ namespace System.Windows.Controls
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "newValue", Justification = "This makes it easy to add validation or other changes in the future.")]
         private void OnMaxDropDownHeightChanged(double newValue)
         {
-            if (DropDownPopup != null)
+            if(DropDownPopup != null)
             {
                 DropDownPopup.MaxDropDownHeight = newValue;
                 DropDownPopup.Arrange();
@@ -2607,7 +2605,7 @@ namespace System.Windows.Controls
         /// <param name="newValue">The new value.</param>
         private void OpenDropDown(bool oldValue, bool newValue)
         {
-            if (DropDownPopup != null)
+            if(DropDownPopup != null)
             {
                 DropDownPopup.IsOpen = true;
             }
@@ -2627,13 +2625,13 @@ namespace System.Windows.Controls
         /// <param name="newValue">The new value.</param>
         private void CloseDropDown(bool oldValue, bool newValue)
         {
-            if (_popupHasOpened)
+            if(_popupHasOpened)
             {
-                if (SelectionAdapter != null)
+                if(SelectionAdapter != null)
                 {
                     SelectionAdapter.SelectedItem = null;
                 }
-                if (DropDownPopup != null)
+                if(DropDownPopup != null)
                 {
                     DropDownPopup.IsOpen = false;
                 }
@@ -2655,14 +2653,14 @@ namespace System.Windows.Controls
         /// that contains the event data.</param>
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             base.OnKeyDown(e);
 
-            if (e.Handled || !IsEnabled)
+            if(e.Handled || !IsEnabled)
             {
                 return;
             }
@@ -2671,18 +2669,18 @@ namespace System.Windows.Controls
             // selection adapter. If it isn't handled by the adapter's logic,
             // then we handle some simple navigation scenarios for controlling
             // the drop down.
-            if (IsDropDownOpen)
+            if(IsDropDownOpen)
             {
-                if (SelectionAdapter != null)
+                if(SelectionAdapter != null)
                 {
                     SelectionAdapter.HandleKeyDown(e);
-                    if (e.Handled)
+                    if(e.Handled)
                     {
                         return;
                     }
                 }
 
-                if (e.Key == Key.Escape)
+                if(e.Key == Key.Escape)
                 {
                     OnAdapterSelectionCanceled(this, new RoutedEventArgs());
                     e.Handled = true;
@@ -2691,7 +2689,7 @@ namespace System.Windows.Controls
             else
             {
                 // The drop down is not open, the Down key will toggle it open.
-                if (e.Key == Key.Down)
+                if(e.Key == Key.Down)
                 {
                     IsDropDownOpen = true;
                     e.Handled = true;
@@ -2699,7 +2697,7 @@ namespace System.Windows.Controls
             }
 
             // Standard drop down navigation
-            switch (e.Key)
+            switch(e.Key)
             {
                 case Key.F4:
                     IsDropDownOpen = !IsDropDownOpen;

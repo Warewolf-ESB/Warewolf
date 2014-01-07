@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Net.Http.Headers;
 using Dev2.Runtime.WebServer.Responses.Streams;

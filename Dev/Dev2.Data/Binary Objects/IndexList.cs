@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -9,22 +8,24 @@ namespace Dev2.Data.Binary_Objects
     {
         private int _maxValue;
 
-        public int MaxValue { 
+        public int MaxValue
+        {
             get { return _maxValue; }
-            set { 
+            set
+            {
                 _maxValue = value;
             }
         }
 
         public int MinValue { get; set; }
 
-        public HashSet<int> Gaps {get; private set;}
+        public HashSet<int> Gaps { get; private set; }
 
-        private IndexList(){}
+        private IndexList() { }
 
         public IndexList(HashSet<int> gaps, int maxValue, int minValue = 1)
         {
-            if (gaps == null)
+            if(gaps == null)
             {
                 gaps = new HashSet<int>();
             }
@@ -37,7 +38,7 @@ namespace Dev2.Data.Binary_Objects
         public int GetMaxIndex()
         {
             int result = MaxValue;
-            while (Gaps.Contains(result) && result > 1)
+            while(Gaps.Contains(result) && result > 1)
             {
                 result--;
             }
@@ -48,7 +49,7 @@ namespace Dev2.Data.Binary_Objects
         public int GetMinIndex()
         {
             int result = MinValue;
-            while (Gaps.Contains(result))
+            while(Gaps.Contains(result))
             {
                 result++;
             }
@@ -58,7 +59,7 @@ namespace Dev2.Data.Binary_Objects
 
         public void AddGap(int idx)
         {
-            if (idx > 0)
+            if(idx > 0)
             {
                 Gaps.Add(idx);
             }
@@ -79,7 +80,7 @@ namespace Dev2.Data.Binary_Objects
         public int Count()
         {
 
-            if (MinValue > 1)
+            if(MinValue > 1)
             {
                 var res = (MaxValue - MinValue);
 
@@ -96,25 +97,25 @@ namespace Dev2.Data.Binary_Objects
         {
             var currMax = MaxValue;
 
-            if (idx > MaxValue && idx > 0)
+            if(idx > MaxValue && idx > 0)
             {
                 MaxValue = idx;
 
                 // set to zero so we populate gaps correctly ;)
-                if (isEmpty)
+                if(isEmpty)
                 {
                     currMax = 0;
                 }
 
                 // now fill in the gaps?!
-                for (int i = (currMax + 1); i < idx; i++)
+                for(int i = (currMax + 1); i < idx; i++)
                 {
                     Gaps.Add(i);
                 }
             }
 
             // check to ensure idx is not in the gaps collection ;)
-            if (Gaps.Contains(idx))
+            if(Gaps.Contains(idx))
             {
                 Gaps.Remove(idx);
             }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Configuration;
 using System.Diagnostics;
-using System.Dynamic;
 using System.IO;
 
 namespace Dev2.Providers.Logs
@@ -16,13 +15,13 @@ namespace Dev2.Providers.Logs
         static string FileName;
         StreamWriter _traceWriter;
         AppSettingsReader _appSettingsReader;
-        bool _streamClosed = false;
+        bool _streamClosed;
 
         public CustomTextWriter(string fileName)
         {
-           FileName = fileName;
+            FileName = fileName;
             _appSettingsReader = new AppSettingsReader();
-           _traceWriter = new StreamWriter(LoggingFileName, true);
+            _traceWriter = new StreamWriter(LoggingFileName, true);
         }
 
         public static string LoggingFileName
@@ -94,26 +93,26 @@ namespace Dev2.Providers.Logs
 
         void CheckRollover()
         {
-           var maxFileSize = GetMaxFileSize();
+            var maxFileSize = GetMaxFileSize();
 
-           if(maxFileSize > 0)
-           {
-               try
-               {
-                   if(_traceWriter.BaseStream.Length > maxFileSize && !_streamClosed)
-                   {
-                       var fileName = FileName;
-                       CloseTraceWriter();
-                       FileName = fileName;
-                       _traceWriter = new StreamWriter(LoggingFileName, false);
-                       _streamClosed = false;
-                   }
-               }
-               catch(ObjectDisposedException)
-               {
-                   //ignore this exception
-               }
-           }
+            if(maxFileSize > 0)
+            {
+                try
+                {
+                    if(_traceWriter.BaseStream.Length > maxFileSize && !_streamClosed)
+                    {
+                        var fileName = FileName;
+                        CloseTraceWriter();
+                        FileName = fileName;
+                        _traceWriter = new StreamWriter(LoggingFileName, false);
+                        _streamClosed = false;
+                    }
+                }
+                catch(ObjectDisposedException)
+                {
+                    //ignore this exception
+                }
+            }
         }
 
         int GetMaxFileSize()
@@ -126,7 +125,7 @@ namespace Dev2.Providers.Logs
             catch(Exception)
             {
                 //Could not read setttings. Use default.
-           }
+            }
             return DefaultMaxFileSize;
         }
 

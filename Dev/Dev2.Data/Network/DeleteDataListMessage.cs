@@ -1,5 +1,4 @@
 ﻿using System;
-using Dev2.Network.Messaging.Messages;
 
 namespace Dev2.DataList.Contract.Network
 {
@@ -33,7 +32,7 @@ namespace Dev2.DataList.Contract.Network
     }
 
     public class DeleteDataListResultMessage : DataListMessage
-    {        
+    {
         public DeleteDataListResultMessage()
         {
         }

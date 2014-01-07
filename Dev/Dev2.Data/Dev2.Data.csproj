@@ -140,7 +140,6 @@
     <Compile Include="Storage\Binary Objects\FederatedStorageKey.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryKeyAlias.cs" />
     <Compile Include="Storage\Binary Objects\StorageKey.cs" />
-    <Compile Include="Storage\BinaryDataListKeyAliasManager.cs" />
     <Compile Include="Storage\Dev2BinaryStorage.cs" />
     <Compile Include="Storage\Dev2DistributedCache.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />

@@ -3,7 +3,6 @@ using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Extensions;
 using Dev2.DataList.Contract.TO;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Server.DataList.Translators;
 
 namespace Dev2.DataList.Contract.Network
@@ -74,7 +73,7 @@ namespace Dev2.DataList.Contract.Network
             byte[] datalistData = null;
             if(Datalist != null)
             {
-                DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist,  out tmpErrors);
+                DataListTranslatedPayloadTO dataListTranslatedPayloadTO = translator.ConvertFrom(Datalist, out tmpErrors);
                 datalistData = dataListTranslatedPayloadTO.FetchAsByteArray();
             }
 

@@ -1,5 +1,4 @@
 // Copyright (C) Josh Smith - October 2006
-using System;
 using System.Windows;
 
 namespace WPF.JoshSmith.ServiceProviders.UI
@@ -71,11 +70,11 @@ namespace WPF.JoshSmith.ServiceProviders.UI
         static void OnIsManagedChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
             FrameworkElement elem = depObj as FrameworkElement;
-            if (elem == null)
+            if(elem == null)
                 return;
 
             bool isManaged = (bool)e.NewValue;
-            if (isManaged)
+            if(isManaged)
                 elem.Unloaded += OnManagedFrameworkElementUnloaded;
             else
                 elem.Unloaded -= OnManagedFrameworkElementUnloaded;
@@ -90,11 +89,11 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             // Call Unload() on the element's DataContext.
 
             FrameworkElement elem = sender as FrameworkElement;
-            if (elem == null)
+            if(elem == null)
                 return;
 
             IUnloadable unloadable = elem.DataContext as IUnloadable;
-            if (unloadable == null)
+            if(unloadable == null)
                 return;
 
             unloadable.Unload();

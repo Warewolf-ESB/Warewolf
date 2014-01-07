@@ -1,11 +1,10 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
@@ -18,7 +17,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -63,7 +62,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -71,7 +70,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("rs", emptyRecordset);
@@ -79,12 +78,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -108,7 +107,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -143,7 +142,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
 
             List<TableRow> tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }

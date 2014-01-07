@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Activities;
-using System.Collections;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
@@ -57,13 +56,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);                
+                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
@@ -105,7 +104,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 InputPath = updates[0].Item2;
             }
@@ -113,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

@@ -1,5 +1,4 @@
 ﻿
-using System.ComponentModel;
 using Caliburn.Micro;
 using Dev2.Runtime.Configuration.Services;
 
@@ -20,7 +19,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         protected void OnUnderlyingObjectChanged()
         {
-            if (UnderlyingObjectChanged != null)
+            if(UnderlyingObjectChanged != null)
             {
                 UnderlyingObjectChanged();
             }

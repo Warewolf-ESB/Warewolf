@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -14,10 +13,6 @@ namespace Dev2.DataList
     /// </summary>
     public class RsOpNotRegex : AbstractRecsetSearchValidation
     {
-        public RsOpNotRegex()
-        {
-
-        }
 
         public override Func<IList<string>> BuildSearchExpression(IBinaryDataList scopingObj, IRecsetSearch to)
         {

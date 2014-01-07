@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -27,7 +26,7 @@ namespace Dev2.Data.Binary_Objects
         {
             int result = -1;
 
-            if (Indexes != null)
+            if(Indexes != null)
             {
                 result = Indexes.Max();
             }
@@ -39,7 +38,7 @@ namespace Dev2.Data.Binary_Objects
         {
             int result = -1;
 
-            if (Indexes != null)
+            if(Indexes != null)
             {
                 result = Indexes.Min();
             }
@@ -51,7 +50,7 @@ namespace Dev2.Data.Binary_Objects
         {
             bool result = false;
 
-            if (Indexes != null)
+            if(Indexes != null)
             {
                 result = Indexes.Contains(idx);
             }
@@ -62,7 +61,7 @@ namespace Dev2.Data.Binary_Objects
         public int Count()
         {
             int result = -1;
-            if (Indexes != null)
+            if(Indexes != null)
             {
                 result = Indexes.Count;
             }
