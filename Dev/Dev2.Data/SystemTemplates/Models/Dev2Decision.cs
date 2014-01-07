@@ -20,34 +20,36 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string Col3 { get; set; }
 
-        public int PopulatedColumnCount { 
-            get { 
-                    int cnt = 0;
+        public int PopulatedColumnCount
+        {
+            get
+            {
+                int cnt = 0;
 
-                    if (!string.IsNullOrEmpty(Col1))
-                    {
-                        cnt++;
-                    }
+                if(!string.IsNullOrEmpty(Col1))
+                {
+                    cnt++;
+                }
 
-                    if (!string.IsNullOrEmpty(Col2))
-                    {
-                        cnt++;
-                    }
+                if(!string.IsNullOrEmpty(Col2))
+                {
+                    cnt++;
+                }
 
-                    if (!string.IsNullOrEmpty(Col3))
-                    {
-                        cnt++;
-                    }   
+                if(!string.IsNullOrEmpty(Col3))
+                {
+                    cnt++;
+                }
 
-                    return cnt;
-            } 
+                return cnt;
+            }
         }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public enDecisionType EvaluationFn { get; set; }
 
         [JsonIgnore]
-        public string Version {  get { return "1.0.0"; } }
+        public string Version { get { return "1.0.0"; } }
 
         [JsonIgnore]
         public Dev2ModelType ModelName { get { return Dev2ModelType.Dev2Decision; } }
@@ -63,9 +65,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
         {
-            ErrorResultTO errors = new ErrorResultTO();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-
+            ErrorResultTO errors;
             string fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
 
             if(PopulatedColumnCount == 0)
@@ -82,7 +82,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
                     expandStarredIndex.Append(allValues[0] + " " + fn);
                     allValues.RemoveAt(0);
-                    foreach (var value in allValues)
+                    foreach(var value in allValues)
                     {
                         expandStarredIndex.Append(" " + mode + " " + value + " " + fn);
                     }
@@ -94,13 +94,13 @@ namespace Dev2.Data.SystemTemplates.Models
             if(PopulatedColumnCount == 2)
             {
                 StringBuilder expandStarredIndices = new StringBuilder();
-                if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
+                if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
 
                     expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0]);
                     allCol2Values.RemoveAt(0);
-                    foreach (var value in allCol2Values)
+                    foreach(var value in allCol2Values)
                     {
                         expandStarredIndices.Append(" " + mode + " " + Col1 + " " + fn + " " + value);
                     }
@@ -112,14 +112,14 @@ namespace Dev2.Data.SystemTemplates.Models
 
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2);
                     allCol1Values.RemoveAt(0);
-                    foreach (var value in allCol1Values)
+                    foreach(var value in allCol1Values)
                     {
                         expandStarredIndices.Append(" " + mode + " " + value + " " + fn + " " + Col2);
                     }
                     return "If " + expandStarredIndices;
 
                 }
-                if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
+                if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
@@ -127,13 +127,13 @@ namespace Dev2.Data.SystemTemplates.Models
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0]);
                     allCol1Values.RemoveAt(0);
                     allCol2Values.RemoveAt(0);
-                    for (var i = 0;i<Math.Max(allCol1Values.Count,allCol2Values.Count);i++)
+                    for(var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
                     {
                         if(i > allCol1Values.Count)
                         {
                             allCol1Values.Add(null);
                         }
-                        if (i > allCol2Values.Count)
+                        if(i > allCol2Values.Count)
                         {
                             allCol2Values.Add(null);
                         }
@@ -143,7 +143,7 @@ namespace Dev2.Data.SystemTemplates.Models
                             expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " +
                                                         allCol2Values[i]);
                         }
-                        catch (IndexOutOfRangeException)
+                        catch(IndexOutOfRangeException)
                         {
                             errors.AddError("You appear to have recordsets of differnt sizes");
                         }
@@ -153,7 +153,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 return "If " + Col1 + " " + fn + " " + Col2 + " ";
             }
-             
+
             if(PopulatedColumnCount == 3)
             {
                 var expandStarredIndices = ResolveStarredIndices(dlid, mode.ToString(), out errors);
@@ -177,25 +177,25 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 expandStarredIndices.Append(Col1 + " " + fn + " " + Col2 + " AND " + allCol3Values[0]);
                 allCol3Values.RemoveAt(0);
-                foreach (var value in allCol3Values)
+                foreach(var value in allCol3Values)
                 {
                     expandStarredIndices.Append(" " + mode + " " + Col1 + " " + fn + " " + Col2 + " AND " + value);
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
                 var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
 
                 expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0] + " AND " + Col3);
                 allCol2Values.RemoveAt(0);
-                foreach (var value in allCol2Values)
+                foreach(var value in allCol2Values)
                 {
                     expandStarredIndices.Append(" " + mode + " " + Col1 + " " + fn + " " + value + " AND " + Col3);
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
                 var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
                 var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, dlid, out errors);
@@ -203,13 +203,13 @@ namespace Dev2.Data.SystemTemplates.Models
                 expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0] + " AND " + allCol3Values[0]);
                 allCol2Values.RemoveAt(0);
                 allCol3Values.RemoveAt(0);
-                for (var i = 0; i < Math.Max(allCol2Values.Count, allCol3Values.Count); i++)
+                for(var i = 0; i < Math.Max(allCol2Values.Count, allCol3Values.Count); i++)
                 {
-                    if (i > allCol2Values.Count)
+                    if(i > allCol2Values.Count)
                     {
                         allCol2Values.Add(null);
                     }
-                    if (i > allCol3Values.Count)
+                    if(i > allCol3Values.Count)
                     {
                         allCol3Values.Add(null);
                     }
@@ -217,19 +217,19 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
                 var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2 + " AND " + Col3);
                 allCol1Values.RemoveAt(0);
-                foreach (var value in allCol1Values)
+                foreach(var value in allCol1Values)
                 {
                     expandStarredIndices.Append(" " + mode + " " + value + " " + fn + " " + Col2 + " AND " + Col3);
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
                 var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
                 var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, dlid, out errors);
@@ -237,13 +237,13 @@ namespace Dev2.Data.SystemTemplates.Models
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2 + " AND " + allCol3Values[0]);
                 allCol1Values.RemoveAt(0);
                 allCol3Values.RemoveAt(0);
-                for (var i = 0; i < Math.Max(allCol1Values.Count, allCol3Values.Count); i++)
+                for(var i = 0; i < Math.Max(allCol1Values.Count, allCol3Values.Count); i++)
                 {
-                    if (i > allCol1Values.Count)
+                    if(i > allCol1Values.Count)
                     {
                         allCol1Values.Add(null);
                     }
-                    if (i > allCol3Values.Count)
+                    if(i > allCol3Values.Count)
                     {
                         allCol3Values.Add(null);
                     }
@@ -251,7 +251,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) != enRecordsetIndexType.Star)
             {
                 var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
                 var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
@@ -259,13 +259,13 @@ namespace Dev2.Data.SystemTemplates.Models
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0] + " AND " + Col3);
                 allCol1Values.RemoveAt(0);
                 allCol2Values.RemoveAt(0);
-                for (var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
+                for(var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
                 {
-                    if (i > allCol1Values.Count)
+                    if(i > allCol1Values.Count)
                     {
                         allCol1Values.Add(null);
                     }
-                    if (i > allCol2Values.Count)
+                    if(i > allCol2Values.Count)
                     {
                         allCol2Values.Add(null);
                     }
@@ -273,7 +273,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 }
                 return "If " + expandStarredIndices;
             }
-            if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
+            if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
                 var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
                 var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
@@ -283,17 +283,17 @@ namespace Dev2.Data.SystemTemplates.Models
                 allCol1Values.RemoveAt(0);
                 allCol2Values.RemoveAt(0);
                 allCol3Values.RemoveAt(0);
-                for (var i = 0; i < Math.Max(allCol1Values.Count, Math.Max(allCol2Values.Count, allCol3Values.Count)); i++)
+                for(var i = 0; i < Math.Max(allCol1Values.Count, Math.Max(allCol2Values.Count, allCol3Values.Count)); i++)
                 {
-                    if (i > allCol1Values.Count)
+                    if(i > allCol1Values.Count)
                     {
                         allCol1Values.Add(null);
                     }
-                    if (i > allCol2Values.Count)
+                    if(i > allCol2Values.Count)
                     {
                         allCol2Values.Add(null);
                     }
-                    if (i > allCol3Values.Count)
+                    if(i > allCol3Values.Count)
                     {
                         allCol3Values.Add(null);
                     }
@@ -313,23 +313,23 @@ namespace Dev2.Data.SystemTemplates.Models
         {
             string[] result = new string[TotalCols];
 
-            if (Col1 == null)
+            if(Col1 == null)
             {
                 Col1 = string.Empty;
             }
 
-            if (Col2 == null)
+            if(Col2 == null)
             {
                 Col2 = string.Empty;
             }
 
-            if (Col3 == null)
+            if(Col3 == null)
             {
                 Col3 = string.Empty;
             }
 
 
-            result[0] = Col1.Replace("\\\\","\\");
+            result[0] = Col1.Replace("\\\\", "\\");
             result[1] = Col2.Replace("\\\\", "\\");
             result[2] = Col3.Replace("\\\\", "\\");
 

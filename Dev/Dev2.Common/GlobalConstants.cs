@@ -15,7 +15,7 @@ namespace Dev2.Common
         // Max String Size
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 
-        // Force Webserver Contants
+        // Force Webserver Constants
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 
         //Runtime Configuration
@@ -27,12 +27,12 @@ namespace Dev2.Common
         // WF Constants
         public const int _xamlPoolSize = 5;
 
-        // Contant for unique batch size processing 
+        // Constant for unique batch size processing 
         public const int _uniqueBatchSize = 1000;
 
         //Network
         public const int NetworkTimeOut = 30000; //Bug 8796
-        public const string NetworkCommunicationErrorTextFormat = "An error occured while executing the '{0}' command";
+        public const string NetworkCommunicationErrorTextFormat = "An error occurred while executing the '{0}' command";
 
         //Resource Constants
         public const string ResourceFileExtension = ".xml";
@@ -214,8 +214,8 @@ namespace Dev2.Common
         public static string GreaterThenOrEqualToUnicodeChar = "≥";
         public static string LessThenOrEqualToUnicodeChar = "≤";
 
-        public static List<string> FindRecordsOperations = new List<string>()
-        {
+        public static List<string> FindRecordsOperations = new List<string>
+            {
                 "=",
                 ">",
                 "<",
@@ -251,8 +251,6 @@ namespace Dev2.Common
                 "Not Text",
                 "Not XML"                
         };
-
-
 
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }

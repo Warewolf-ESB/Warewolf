@@ -1,17 +1,19 @@
-﻿using Dev2.Data.Factories;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Activity used for executing JavaScript through a tool
@@ -43,7 +45,7 @@ namespace Dev2.Activities
             : base("JavaScript")
         {
             Script = string.Empty;
-            Result = string.Empty;                     
+            Result = string.Empty;
         }
 
         #endregion
@@ -60,67 +62,67 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler(); 
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;         
-            allErrors.MergeErrors(errors);
+            ErrorResultTO errorResultTO = new ErrorResultTO();
+            Guid executionId = dlID;
+            allErrors.MergeErrors(errorResultTO);
 
 
             try
             {
-                if (!errors.HasErrors())
+                if(!errorResultTO.HasErrors())
                 {
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                    IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
                     if(allErrors.HasErrors())
                     {
                         return;
                     }
-                    IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errors);
-                    allErrors.MergeErrors(errors);
-                    if (allErrors.HasErrors())
+                    IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
+                    if(allErrors.HasErrors())
                     {
                         return;
                     }
 
-                    if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                    if(dataObject.IsDebug || dataObject.RemoteInvoke)
                     {
                         AddDebugInputItem(Script, scriptEntry, executionId);
                     }
 
                     int iterationCounter = 0;
 
-                    while (colItr.HasMoreData())
+                    while(colItr.HasMoreData())
                     {
-                        string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
                         dynamic value = null;
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            toUpsert.Add(region, value);
-                        toUpsert.FlushIterationFrame();
+                            toUpsert.Add(region, null);
+                            toUpsert.FlushIterationFrame();
 
-                            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                            if(dataObject.IsDebug || dataObject.RemoteInvoke)
                             {
+                                // ReSharper disable ExpressionIsAlwaysNull
                                 AddDebugOutputItem(region, value, executionId, iterationCounter);
+                                // ReSharper restore ExpressionIsAlwaysNull
                             }
                         }
 
                         iterationCounter++;
                     }
 
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 if(e.GetType() == typeof(NullReferenceException))
                 {
@@ -128,42 +130,42 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                allErrors.AddError(e.Message);
-            }
+                    allErrors.AddError(e.Message);
+                }
             }
             finally
             {
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
                 }
 
-                if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
-           
-        }                  
+
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
 
-                if (t.Item1 == Script)
+                if(t.Item1 == Script)
                 {
                     Script = t.Item2;
-                }                             
+                }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }
@@ -172,7 +174,7 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-       
+
 
         private void AddDebugInputItem(string scriptExpression, IBinaryDataListEntry scriptEntry, Guid executionId)
         {
@@ -186,7 +188,7 @@ namespace Dev2.Activities
         private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
         {
             DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));            
+            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }
 
@@ -196,7 +198,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -205,7 +207,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }

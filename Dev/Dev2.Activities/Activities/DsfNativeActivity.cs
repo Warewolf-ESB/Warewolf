@@ -26,7 +26,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity
     {
-        protected ErrorResultTO errors;
+        protected ErrorResultTO errorsTo;
 
         // TODO: Remove legacy properties - when we've figured out how to load files when these are not present
         [GeneralSettings("IsSimulationEnabled")]
@@ -183,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 errorResultTO.AddError(errorString);
                 if(compiler != null)
                 {
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorsTo);
                 }
             }
             finally
@@ -204,7 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if(dataObject != null)
                                 {
-                                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errors);
+                                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, _tmpErrors.MakeDataListReady(), out errorsTo);
                                     if(!String.IsNullOrEmpty(currentError))
                                     {
                                         PerformCustomErrorHandling(context, compiler, dataObject, currentError, _tmpErrors);
@@ -235,7 +235,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     tmpErrors = new ErrorResultTO();
                 }
                 tmpErrors.AddError(e.Message);
-                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errors);
+                compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, tmpErrors.MakeDataListReady(), out errorsTo);
             }
             finally
             {
@@ -366,19 +366,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(compiler != null && dataObject != null)
                 {
                     var allErrors = new ErrorResultTO();
-                    var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                    allErrors.MergeErrors(errors);
+                    var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
+                    allErrors.MergeErrors(errorsTo);
 
-                    compiler.Merge(dataList, result.Value, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errors);
-                    allErrors.MergeErrors(errors);
+                    compiler.Merge(dataList, result.Value, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out errorsTo);
+                    allErrors.MergeErrors(errorsTo);
 
-                    compiler.Shape(dataListExecutionID, enDev2ArgumentType.Output, OutputMapping, out errors);
-                    allErrors.MergeErrors(errors);
+                    compiler.Shape(dataListExecutionID, enDev2ArgumentType.Output, OutputMapping, out errorsTo);
+                    allErrors.MergeErrors(errorsTo);
 
                     if(allErrors.HasErrors())
                     {
                         DisplayAndWriteError(rootInfo.ProxyName, allErrors);
-                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                        compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
                     }
                 }
             }
@@ -468,7 +468,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
+            var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
 
             bool hasError = false;
             string errorMessage = string.Empty;
@@ -802,7 +802,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                         {
                             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                            IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errors);
+                            IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errorsTo);
                             IBinaryDataListEntry tmpEntry;
                             string error;
                             if(indexToUse == -1)

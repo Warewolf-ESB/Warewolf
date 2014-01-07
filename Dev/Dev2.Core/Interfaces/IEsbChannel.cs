@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
-using System;
 
+// ReSharper disable CheckNamespace
 namespace Dev2
+// ReSharper restore CheckNamespace
 {
     public interface IEsbChannel
     {
@@ -11,6 +13,7 @@ namespace Dev2
         /// Executes the request placing it into a transactional scope
         /// </summary>
         /// <param name="dataObject">The data object.</param>
+        /// <param name="request">The request.</param>
         /// <param name="workspaceID">The workspace ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
@@ -65,12 +68,12 @@ namespace Dev2
         /// <returns></returns>
         Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler);
 
-        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID,string uri, out ErrorResultTO errors);
+        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri, out ErrorResultTO errors);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel
     {
-        
+
     }
 
     public interface IEsbActivityChannel

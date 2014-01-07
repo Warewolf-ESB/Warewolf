@@ -92,7 +92,7 @@ namespace Dev2.Activities
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);
-            XPathParser parser =new XPathParser();
+            XPathParser parser = new XPathParser();
             int i = 0;
             try
             {
@@ -103,9 +103,9 @@ namespace Dev2.Activities
                     if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, executionID);
-                        AddResultDebugInputs(ResultsCollection,executionID,compiler);
+                        AddResultDebugInputs(ResultsCollection, executionID, compiler);
                     }
-                    
+
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     while(itr.HasMoreRecords())
                     {
@@ -123,7 +123,7 @@ namespace Dev2.Activities
                                     while(xpathItr.HasMoreRecords())
                                     {
                                         IList<IBinaryDataListItem> xpathCols = xpathItr.FetchNextRowData();
-                                        foreach (IBinaryDataListItem xPathCol in xpathCols)
+                                        foreach(IBinaryDataListItem xPathCol in xpathCols)
                                         {
                                             List<string> eval = parser.ExecuteXPath(c.TheValue, xPathCol.TheValue).ToList();
 
@@ -158,36 +158,36 @@ namespace Dev2.Activities
                                 }
                             }
 
-                                compiler.Upsert(executionID, toUpsert, out errors);
-                            }
-                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                            {
-                                int innerCount = 0;
-                                foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
-                                {
-                                    var expression = ResultsCollection[innerCount].OutputVariable;
-                                    enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
-                                    if (indexType == enRecordsetIndexType.Blank)
-                                    {
-                                        expression = expression.Replace("().", "(*).");
-                                    }
-                                    IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
-                                    AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount + 1, executionID);
-                                    innerCount++;
-                                    if(debugOutputTO.FromEntry != null)
-                                        debugOutputTO.FromEntry.Dispose();
-                                    if(debugOutputTO.TargetEntry != null)
-                                        debugOutputTO.TargetEntry.Dispose();
-                                }
-                                toUpsert.DebugOutputs.Clear();
-                            }
-                            allErrors.MergeErrors(errors);
+                            compiler.Upsert(executionID, toUpsert, out errors);
                         }
+                        if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                        {
+                            int innerCount = 0;
+                            foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                            {
+                                var expression = ResultsCollection[innerCount].OutputVariable;
+                                enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
+                                if(indexType == enRecordsetIndexType.Blank)
+                                {
+                                    expression = expression.Replace("().", "(*).");
+                                }
+                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
+                                AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount + 1, executionID);
+                                innerCount++;
+                                if(debugOutputTO.FromEntry != null)
+                                    debugOutputTO.FromEntry.Dispose();
+                                if(debugOutputTO.TargetEntry != null)
+                                    debugOutputTO.TargetEntry.Dispose();
+                            }
+                            toUpsert.DebugOutputs.Clear();
+                        }
+                        allErrors.MergeErrors(errors);
                     }
-
                 }
-            
-            catch (Exception ex)
+
+            }
+
+            catch(Exception ex)
             {
                 ResultsCollection[i].XPath = "";
                 allErrors.AddError(ex.Message);
@@ -218,11 +218,11 @@ namespace Dev2.Activities
                     var itemToAdd = new DebugItem();
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = xPathDto.OutputVariable });
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, xPathDto.XPath, false, out errors);
+                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, xPathDto.XPath, false, out errorsTo);
                     itemToAdd.AddRange(CreateDebugItemsFromEntry(xPathDto.XPath, expressionsEntry, executionID, enDev2ArgumentType.Input));
                     _debugInputs.Add(itemToAdd);
                 }
-            }            
+            }
         }
 
         private void AddSourceStringDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
@@ -250,7 +250,7 @@ namespace Dev2.Activities
             var itemToAdd = new DebugItem();
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
-            
+
             itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
         }

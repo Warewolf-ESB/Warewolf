@@ -11,13 +11,15 @@ using Dev2.Server.Datalist;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
+// ReSharper restore CheckNamespace
 {
     public static class DataListFactory
     {
         #region Class Members
 
-        private static object _cacheGuard = new object();
+        private static readonly object _cacheGuard = new object();
         private static volatile IEnvironmentModelDataListCompiler _serverCompilerCache;
         private static volatile IDataListServer _serverCache;
 
@@ -33,7 +35,7 @@ namespace Dev2.DataList.Contract
         {
             return new Dev2DataLanguageParser();
         }
-        
+
         /// <summary>
         /// Creates the studio language parser.
         /// </summary>
@@ -60,12 +62,11 @@ namespace Dev2.DataList.Contract
 
         public static IRecordSetCollection CreateRecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput)
         {
-            IRecordSetCollection result;
             RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
 
             b.setParsedOutput(parsedOutput);
             b.IsOutput = isOutput;
-            result = b.Generate();
+            IRecordSetCollection result = b.Generate();
 
             return result;
         }
@@ -74,13 +75,13 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            foreach (IDev2Definition def in parsedOutput)
+            foreach(IDev2Definition def in parsedOutput)
             {
-                if (isOutput)
+                if(isOutput)
                 {
                     var rsName = DataListUtil.ExtractRecordsetNameFromValue(def.Value);
 
-                    if (!def.IsRecordSet && string.IsNullOrEmpty(rsName))
+                    if(!def.IsRecordSet && string.IsNullOrEmpty(rsName))
                     {
                         result.Add(def);
                     }
@@ -135,11 +136,11 @@ namespace Dev2.DataList.Contract
 
         public static IEnvironmentModelDataListCompiler CreateServerDataListCompiler()
         {
-            if (_serverCompilerCache == null)
+            if(_serverCompilerCache == null)
             {
-                lock (_cacheGuard)
+                lock(_cacheGuard)
                 {
-                    if (_serverCompilerCache == null)
+                    if(_serverCompilerCache == null)
                     {
                         _serverCompilerCache = CreateServerDataListCompiler(CreateDataListServer());
                     }
@@ -155,11 +156,11 @@ namespace Dev2.DataList.Contract
 
         public static IDataListServer CreateDataListServer()
         {
-            if (_serverCache == null)
+            if(_serverCache == null)
             {
-                lock (_cacheGuard)
+                lock(_cacheGuard)
                 {
-                    if (_serverCache == null)
+                    if(_serverCache == null)
                     {
                         _serverCache = CreateDataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
                     }
@@ -177,7 +178,7 @@ namespace Dev2.DataList.Contract
             DataListTranslatorFactory dltf = new DataListTranslatorFactory();
             IDataListServer svr = new DataListServer(persistenceProvider);
 
-            foreach (var translator in dltf.FetchAll())
+            foreach(var translator in dltf.FetchAll())
             {
                 svr.AddTranslator(translator);
             }
@@ -197,39 +198,29 @@ namespace Dev2.DataList.Contract
 
         public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
         {
-            DefinitionBuilder b = new DefinitionBuilder();
-            b.ArgumentType = typeOf;
-            b.Definitions = defs;
+            DefinitionBuilder b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
 
             return b.Generate();
         }
 
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList)
         {
-            IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
-
             DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder();
 
-            IntellisenseFilterOpsTO ifot = new IntellisenseFilterOpsTO();
-            ifot.FilterType = enIntellisensePartType.All;
+            IntellisenseFilterOpsTO ifot = new IntellisenseFilterOpsTO { FilterType = enIntellisensePartType.All };
 
             dlib.FilterTO = ifot;
 
-            result = dlib.Generate();
+            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
 
             return result;
         }
 
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IntellisenseFilterOpsTO fiterTO)
         {
-            IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
+            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTO, DataList = dataList };
 
-            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder();
-
-            dlib.FilterTO = fiterTO;
-            dlib.DataList = dataList;
-
-            result = dlib.Generate();
+            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
 
             return result;
         }
@@ -271,17 +262,17 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Creating a new SearchTO object
         /// </summary>
-        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result,string from,string to)
+        public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, string from, string to)
         {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria,startIndex, result,false,from,to);
-        }        
+            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, false, from, to);
+        }
 
         /// <summary>
         /// Creating a new SearchTO object
         /// </summary>
         public static SearchTO CreateSearchTO(string fieldsToSearch, string searchType, string searchCriteria, string startIndex, string result, bool matchCase, bool requireAllFieldsToMatch = false, string from = "", string to = "")
         {
-            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase,from,to,requireAllFieldsToMatch);
+            return new SearchTO(fieldsToSearch, searchType, searchCriteria, startIndex, result, matchCase, from, to, requireAllFieldsToMatch);
         }
 
         /// <summary>

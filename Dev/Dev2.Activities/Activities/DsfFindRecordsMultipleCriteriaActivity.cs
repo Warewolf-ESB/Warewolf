@@ -134,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var toSearchList = compiler.FetchBinaryDataList(executionID, out errorResultTO);
                     allErrors.MergeErrors(errorResultTO);
 
-                    
+
 
                     var searchType = ResultsCollection[i].SearchType;
                     if(string.IsNullOrEmpty(searchType))
@@ -144,16 +144,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     while(itrCollection.HasMoreData())
                     {
                         var currentResults = results as IList<string> ?? results.ToList();
-                        var splitOn = new[] {","};
+                        var splitOn = new[] { "," };
                         var fieldsToSearch = FieldsToSearch.Split(splitOn, StringSplitOptions.RemoveEmptyEntries);
 
                         SearchTO searchTO;
                         IList<string> iterationResults = new List<string>();
 
-                        if (fieldsToSearch.Length > 0)
+                        if(fieldsToSearch.Length > 0)
                         {
 
-                            foreach (var field in fieldsToSearch)
+                            foreach(var field in fieldsToSearch)
                             {
                                 searchTO = DataListFactory.CreateSearchTO(field, searchType,
                                                                           itrCollection.FetchNextRow(searchCritItr)
@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(errorResultTO);
                                 (RecordsetInterrogator.FindRecords(toSearchList, searchTO,
                                                                                      out errorResultTO)).ToList().ForEach(it => iterationResults.Add(it));
-                               
+
                             }
                         }
                         else
@@ -195,7 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             results = currentResults.Union(iterationResults);
                         }
                         isFirstIteration = false;
-                    }             
+                    }
                 }
 
                 var regions = DataListCleaningUtils.SplitIntoRegions(Result);
@@ -264,24 +264,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void ValidateRequiredFields(SearchTO searchTO, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if (string.IsNullOrEmpty(searchTO.FieldsToSearch))
+            if(string.IsNullOrEmpty(searchTO.FieldsToSearch))
             {
                 errors.AddError("Fields to search is required");
             }
 
-            if (string.IsNullOrEmpty(searchTO.SearchType))
+            if(string.IsNullOrEmpty(searchTO.SearchType))
             {
                 errors.AddError("Search type is required");
             }
 
-            if (searchTO.SearchType.Equals("Is Between"))
+            if(searchTO.SearchType.Equals("Is Between"))
             {
-                if (string.IsNullOrEmpty(searchTO.From))
+                if(string.IsNullOrEmpty(searchTO.From))
                 {
                     errors.AddError("From is required");
                 }
 
-                if (string.IsNullOrEmpty(searchTO.To))
+                if(string.IsNullOrEmpty(searchTO.To))
                 {
                     errors.AddError("To is required");
                 }
@@ -355,17 +355,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = findRecordsTO.SearchType });
                     if(!String.IsNullOrEmpty(findRecordsTO.SearchCriteria))
                     {
-                        var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.SearchCriteria, false, out errors);
+                        var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.SearchCriteria, false, out errorsTo);
                         itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.SearchCriteria, expressionsEntry, executionID, enDev2ArgumentType.Input));
                     }
                     if(findRecordsTO.SearchType == "Is Between" || findRecordsTO.SearchType == "Not Between")
                     {
-                        var expressionsEntryFrom = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.From, false, out errors);
+                        var expressionsEntryFrom = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.From, false, out errorsTo);
                         itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.From, expressionsEntryFrom, executionID, enDev2ArgumentType.Input));
 
-                        itemToAdd.Add(new DebugItemResult{Type = DebugItemResultType.Label,Value = " And "});
+                        itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = " And " });
 
-                        var expressionsEntryTo = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.To, false, out errors);
+                        var expressionsEntryTo = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.To, false, out errorsTo);
                         itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.To, expressionsEntryTo, executionID, enDev2ArgumentType.Input));
                     }
 

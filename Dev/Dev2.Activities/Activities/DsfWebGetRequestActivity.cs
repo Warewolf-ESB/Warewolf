@@ -19,7 +19,7 @@ namespace Dev2.Activities
     public class DsfWebGetRequestActivity : DsfActivityAbstract<string>
     {
         IWebRequestInvoker _webRequestInvoker;
-        
+
 
         public IWebRequestInvoker WebRequestInvoker
         {
@@ -45,7 +45,7 @@ namespace Dev2.Activities
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
-        [FindMissing]       
+        [FindMissing]
         public new string Result { get; set; }
 
         public DsfWebGetRequestActivity()
@@ -65,7 +65,7 @@ namespace Dev2.Activities
         {
             _debugOutputs.Clear();
             _debugInputs.Clear();
-            if (WebRequestInvoker == null)
+            if(WebRequestInvoker == null)
             {
                 return;
             }
@@ -77,14 +77,14 @@ namespace Dev2.Activities
             try
             {
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false,
-                                                                          out errors);
-                allErrors.MergeErrors(errors);
+                                                                          out errorsTo);
+                allErrors.MergeErrors(errorsTo);
 
                 IBinaryDataListEntry headersEntry = compiler.Evaluate(executionId, enActionType.User, Headers, false,
-                                                                      out errors);
-                allErrors.MergeErrors(errors);
+                                                                      out errorsTo);
+                allErrors.MergeErrors(errorsTo);
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddUrlDebugInputItem(Url, expressionsEntry, executionId);
                 }
@@ -99,18 +99,18 @@ namespace Dev2.Activities
                 colItr.AddIterator(urlitr);
                 colItr.AddIterator(headerItr);
                 int indexToUpsertTo = 1;
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
                     IList<IBinaryDataListItem> cols = headerItr.FetchNextRowData();
                     var c = colItr.FetchNextRow(urlitr);
                     var headerValue = colItr.FetchNextRow(headerItr).TheValue;
                     var headers = string.IsNullOrEmpty(headerValue)
                                       ? new string[0]
-                                      : headerValue.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
+                                      : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                     var headersEntries = new List<Tuple<string, string>>();
 
-                    foreach (var header in headers)
+                    foreach(var header in headers)
                     {
                         var headerSegments = header.Split(':');
                         headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
@@ -118,35 +118,35 @@ namespace Dev2.Activities
                     }
 
                     string result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
-                        allErrors.MergeErrors(errors);
-                        string expression;
-                    if (DataListUtil.IsValueRecordset(Result) &&
+                    allErrors.MergeErrors(errorsTo);
+                    string expression;
+                    if(DataListUtil.IsValueRecordset(Result) &&
                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
+                    {
                         expression = Result.Replace(GlobalConstants.StarExpression,
                                                     indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                        }
-                        else
-                        {
-                            expression = Result;
-                        }
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                        {
-                            toUpsert.Add(region, result);
-                            toUpsert.FlushIterationFrame();
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||
+                    }
+                    else
+                    {
+                        expression = Result;
+                    }
+                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                    {
+                        toUpsert.Add(region, result);
+                        toUpsert.FlushIterationFrame();
+                        if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||
                             dataObject.RemoteInvoke)
-                            {
-                                AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
-                            }
-                            indexToUpsertTo++;
+                        {
+                            AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
                         }
-                    compiler.Upsert(executionId, toUpsert, out errors);
-                    allErrors.MergeErrors(errors);
+                        indexToUpsertTo++;
+                    }
+                    compiler.Upsert(executionId, toUpsert, out errorsTo);
+                    allErrors.MergeErrors(errorsTo);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -154,12 +154,12 @@ namespace Dev2.Activities
             {
                 // Handle Errors
 
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -190,7 +190,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -203,7 +203,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -218,20 +218,20 @@ namespace Dev2.Activities
         {
             if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
 
-                    if (t.Item1 == Url)
+                    if(t.Item1 == Url)
                     {
                         Url = t.Item2;
-                    }               
+                    }
                 }
             }
         }
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

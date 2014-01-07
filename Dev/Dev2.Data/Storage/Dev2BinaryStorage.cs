@@ -1,11 +1,11 @@
-﻿using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
-using Dev2.Common;
-using System;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Data.Storage.ProtocolBuffers;
 
 namespace Dev2.Data.Storage
@@ -93,7 +93,7 @@ namespace Dev2.Data.Storage
     {
         public static InternalStorageBuffer scrubBuffer;
 
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         public static void Init(int bufCap)
         {
@@ -104,7 +104,7 @@ namespace Dev2.Data.Storage
         /// Compacts the specified from buffer.
         /// </summary>
         /// <param name="fromBuffer">From buffer.</param>
-        /// <param name="indexs">The indexs.</param>
+        /// <param name="indexs">The indexes.</param>
         public static void Compact(ref InternalStorageBuffer fromBuffer, ref ConcurrentDictionary<string, BinaryStorageKey> indexs)
         {
             lock(_lock)
@@ -146,12 +146,14 @@ namespace Dev2.Data.Storage
     public class Dev2BinaryStorage<T> where T : AProtocolBuffer
     {
         // internal location data ;)
+        // ReSharper disable StaticFieldInGenericType
         private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         private const string _savePath = @"Warewolf\DataListServerTmp\";
         private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
 
-        private static object _dirLock = new object();
+        private static readonly object _dirLock = new object();
         private static bool startupCleaned;
+        // ReSharper restore StaticFieldInGenericType
 
         #region Fields
 
@@ -159,8 +161,8 @@ namespace Dev2.Data.Storage
         private FileStream _file;
         private ConcurrentDictionary<string, BinaryStorageKey> _bufferIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
         private readonly ConcurrentDictionary<string, BinaryStorageKey> _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
-        private object _opsLock = new object();
-        private static readonly long _compactThresholdSize = 512 * 1024 * 1024; // 512 MB compact 
+        private readonly object _opsLock = new object();
+        const long _compactThresholdSize = 512 * 1024 * 1024; // 512 MB compact 
         private long _lastCompactSize;
         private bool _hasBeenRemoveSinceLastCompact;
 
@@ -212,7 +214,7 @@ namespace Dev2.Data.Storage
             }
 
             _file = new FileStream(_completeFilename, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            _internalBuffer = new InternalStorageBuffer() { Buffer = new byte[bufCap], Capacity = bufCap, UsedStorage = 0 };
+            _internalBuffer = new InternalStorageBuffer { Buffer = new byte[bufCap], Capacity = bufCap, UsedStorage = 0 };
         }
 
         #endregion Constructors
@@ -485,8 +487,6 @@ namespace Dev2.Data.Storage
             _file.Seek(offSet, SeekOrigin.Begin);
             _file.Write(_internalBuffer.Buffer, 0, _internalBuffer.UsedStorage);
 
-            BinaryStorageKey tmp;
-
             foreach(var tmpKey in _bufferIndexes.Keys)
             {
                 BinaryStorageKey bufferKeyValue;
@@ -498,6 +498,7 @@ namespace Dev2.Data.Storage
                 var newPos = offSet + bufferKeyValue.Position;
                 var newLen = bufferKeyValue.Length;
 
+                BinaryStorageKey tmp;
                 if(_lstIndexes.TryGetValue(tmpKey, out tmp))
                 {
                     // adjust pos to reflect location in file ;)
@@ -622,11 +623,9 @@ namespace Dev2.Data.Storage
             int removedItems = 0;
             lock(_opsLock)
             {
-                BinaryStorageKey tmp;
-
-                Parallel.ForEach(_bufferIndexes.Keys.Where(c => theList.Any(guid => c.IndexOf(guid.ToString(), System.StringComparison.Ordinal) >= 0)), (theKey) =>
+                Parallel.ForEach(_bufferIndexes.Keys.Where(c => theList.Any(guid => c.IndexOf(guid.ToString(), StringComparison.Ordinal) >= 0)), theKey =>
                 {
-
+                    BinaryStorageKey tmp;
                     _bufferIndexes.TryRemove(theKey, out tmp);
                     removedItems++;
                     _itemCnt--;
@@ -685,7 +684,7 @@ namespace Dev2.Data.Storage
         public void CompactMemory()
         {
             // compact when we get to a set size ;)
-            if (_runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
+            if(_runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
             {
                 CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
                 _runningRemoveCnt = 0;

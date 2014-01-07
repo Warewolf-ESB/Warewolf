@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Control
 
         #region IFrameworkDuplexDataChannel Members
 
-        Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
+        readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
 
         public void Register(string userName)
         {
@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ESB.Control
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
-                throw ex;
+                throw;
             }
         }
 
@@ -197,7 +197,7 @@ namespace Dev2.Runtime.ESB.Control
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                string theShape = null;
+                string theShape;
 
                 try
                 {
@@ -222,12 +222,12 @@ namespace Dev2.Runtime.ESB.Control
 
             try
             {
-                ErrorResultTO invokeErrors;
                 // Setup the invoker endpoint ;)
-                using(var invoker = new DynamicServicesInvoker(this, this, theWorkspace,request))
+                using(var invoker = new DynamicServicesInvoker(this, this, theWorkspace, request))
                 {
 
                     // Should return the top level DLID
+                    ErrorResultTO invokeErrors;
                     resultID = invoker.Invoke(dataObject, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                 }
@@ -273,7 +273,6 @@ namespace Dev2.Runtime.ESB.Control
         {
             IWorkspace theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
             var invoker = CreateDynamicServicesInvoker(theWorkspace);
-            errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -323,15 +322,17 @@ namespace Dev2.Runtime.ESB.Control
 
             // The act of doing this moves the index data correctly ;)
             // We need to remove this in the future.
+#pragma warning disable 168
             var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
             var dl2 = compiler.ConvertFrom(oldID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+#pragma warning restore 168
 
             return result;
         }
 
 
         /// <summary>
-        /// Shapes for sub request. Returns a key valid pair with remaing output mappings to be processed later!
+        /// Shapes for sub request. Returns a key valid pair with remaining output mappings to be processed later!
         /// </summary>
         /// <param name="dataObject">The data object.</param>
         /// <param name="inputDefs">The input defs.</param>
@@ -596,7 +597,10 @@ namespace Dev2.Runtime.ESB.Control
                     XmlDocument oDLXDoc = new XmlDocument();
                     oDLXDoc.LoadXml(outputFragment);
 
-                    outputFragment = oDLXDoc.DocumentElement.InnerXml;
+                    if(oDLXDoc.DocumentElement != null)
+                    {
+                        outputFragment = oDLXDoc.DocumentElement.InnerXml;
+                    }
                 }
                 catch(Exception e)
                 {
@@ -614,7 +618,10 @@ namespace Dev2.Runtime.ESB.Control
                     XmlDocument iDLXDoc = new XmlDocument();
                     iDLXDoc.LoadXml(inputFragment);
 
-                    inputFragment = iDLXDoc.DocumentElement.InnerXml;
+                    if(iDLXDoc.DocumentElement != null)
+                    {
+                        inputFragment = iDLXDoc.DocumentElement.InnerXml;
+                    }
                 }
                 catch(Exception e)
                 {
