@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Windows.Data;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using System;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {

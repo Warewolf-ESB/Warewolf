@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using Dev2.Providers.Logs;
+﻿using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Services.Communication.Mapi;
+using System;
 
 namespace Dev2.Studio.Core.Services.Communication
 {
@@ -15,7 +10,7 @@ namespace Dev2.Studio.Core.Services.Communication
     /// <typeparam name="T"></typeparam>
     /// <author>Jurie.smit</author>
     /// <datetime>2013/01/14-09:09 AM</datetime>
-    public class MapiEmailCommService<T> : ICommService<T> 
+    public class MapiEmailCommService<T> : ICommService<T>
         where T : EmailCommMessage
     {
         /// <summary>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using Dev2.Studio.Core.AppResources.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
-using Dev2.Studio.Core.AppResources.Attributes;
 
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
     public static class EnumExtensions
-    {       
+    {
 
         public static string GetTreeDescription(this Enum value)
         {

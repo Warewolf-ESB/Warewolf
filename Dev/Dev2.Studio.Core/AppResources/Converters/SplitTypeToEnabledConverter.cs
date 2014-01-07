@@ -1,8 +1,5 @@
 using System;
-using System.Windows;
 using System.Windows.Data;
-using Dev2.Common;
-using Dev2.Data.Enums;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
@@ -12,10 +9,10 @@ namespace Dev2.Studio.Core.AppResources.Converters
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             bool result = false;
-            if (value != null)
+            if(value != null)
             {
                 string stringVal = value.ToString();
-                if (stringVal == "Index" || stringVal == "Chars")
+                if(stringVal == "Index" || stringVal == "Chars")
                 {
                     result = true;
                 }

@@ -5,7 +5,6 @@ using Dev2.Studio.Core.Wizards.Interfaces;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -65,7 +64,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             get
             {
-                if (_createCompiler == null) return new Func<IDataListCompiler>(() => null);
+                if(_createCompiler == null) return new Func<IDataListCompiler>(() => null);
                 return _createCompiler;
             }
             set
@@ -82,28 +81,28 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
             string error = string.Empty;
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler != null)
+            if(_activity != null && _datalistID != null && compiler != null)
             {
                 IBinaryDataList wizardDataList;
                 ErrorResultTO errors;
                 wizardDataList = compiler.FetchBinaryDataList(_datalistID, out errors);
-                if (wizardDataList != null && !errors.HasErrors())
+                if(wizardDataList != null && !errors.HasErrors())
                 {
                     IList<BaseConvertTO> newConvertCollection = new List<BaseConvertTO>();
 
                     IList<IBinaryDataListEntry> recsets = wizardDataList.FetchRecordsetEntries();
                     IBinaryDataListEntry recset = recsets.FirstOrDefault(c => c.Namespace == "ConvertCollection");
-                    if (recset != null)
+                    if(recset != null)
                     {
                         int count = 0;
-                        while (count < recset.ItemCollectionSize())
+                        while(count < recset.ItemCollectionSize())
                         {
                             IList<IBinaryDataListItem> listOfRows = recset.FetchRecordAt(count + 1, out error);
                             IBinaryDataListItem fromExpressionItem = listOfRows.FirstOrDefault(c => c.FieldName == "FromExpression");
                             IBinaryDataListItem fromTypeItem = listOfRows.FirstOrDefault(c => c.FieldName == "FromType");
                             IBinaryDataListItem toTypeItem = listOfRows.FirstOrDefault(c => c.FieldName == "ToType");
                             IBinaryDataListItem toExpressionItem = listOfRows.FirstOrDefault(c => c.FieldName == "Result");
-                            if (fromExpressionItem != null && fromTypeItem != null && toTypeItem != null && toExpressionItem != null)
+                            if(fromExpressionItem != null && fromTypeItem != null && toTypeItem != null && toExpressionItem != null)
                             {
                                 newConvertCollection.Add(new BaseConvertTO(fromExpressionItem.TheValue, fromTypeItem.TheValue, toTypeItem.TheValue, toExpressionItem.TheValue, count));
                             }
@@ -122,7 +121,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (compiler != null)
+            if(compiler != null)
             {
                 compiler.DeleteDataListByID(_datalistID);
             }

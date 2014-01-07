@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
@@ -14,7 +11,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             IList list = value as IList;
 
-            if (list == null || list.Count == 0)
+            if(list == null || list.Count == 0)
             {
                 return Visibility.Collapsed;
             }

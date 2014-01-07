@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 
@@ -14,7 +10,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             var val = value as bool?;
 
-            if (val == null)
+            if(val == null)
             {
                 return SystemColors.ControlTextBrush;
             }

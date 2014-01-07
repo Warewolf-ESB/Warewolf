@@ -1,19 +1,12 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Unlimited.Framework;
-
-
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
@@ -71,7 +64,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             get
             {
-                if (_createCompiler == null) return new Func<IDataListCompiler>(() => null);
+                if(_createCompiler == null) return new Func<IDataListCompiler>(() => null);
                 return _createCompiler;
             }
             set
@@ -87,7 +80,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler != null)
+            if(_activity != null && _datalistID != null && compiler != null)
             {
                 IBinaryDataList wizardDataList;
                 ErrorResultTO errors;
@@ -115,28 +108,28 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
                 //wizardDataList = result;
                 //****
 
-                if (wizardDataList != null && !errors.HasErrors())
+                if(wizardDataList != null && !errors.HasErrors())
                 {
                     IList<DataSplitDTO> newResultsCollection = new List<DataSplitDTO>();
 
                     IList<IBinaryDataListEntry> recsets = wizardDataList.FetchRecordsetEntries();
                     IList<IBinaryDataListEntry> scalarEntries = wizardDataList.FetchScalarEntries();
                     IList<IBinaryDataListItem> scalars = new List<IBinaryDataListItem>();
-                    foreach (IBinaryDataListEntry item in scalarEntries)
+                    foreach(IBinaryDataListEntry item in scalarEntries)
                     {
                         scalars.Add(item.FetchScalar());
                     }
                     IBinaryDataListItem sourceStringItem = scalars.FirstOrDefault(c => c.FieldName == "SourceString");
                     IBinaryDataListItem reverseOrderItem = scalars.FirstOrDefault(c => c.FieldName == "ReverseOrder");
 
-                    if (sourceStringItem != null)
+                    if(sourceStringItem != null)
                     {
                         Activity.Properties.SetValue("SourceString", sourceStringItem.TheValue);
                     }
-                    if (reverseOrderItem != null)
+                    if(reverseOrderItem != null)
                     {
                         string _reverseOrder = reverseOrderItem.TheValue;
-                        if (_reverseOrder.Equals("true", StringComparison.OrdinalIgnoreCase))
+                        if(_reverseOrder.Equals("true", StringComparison.OrdinalIgnoreCase))
                         {
                             Activity.Properties.SetValue("ReverseOrder", true);
                         }
@@ -148,10 +141,10 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
                     }
 
                     IBinaryDataListEntry recset = recsets.FirstOrDefault(c => c.Namespace == "ResultsCollection");
-                    if (recset != null)
+                    if(recset != null)
                     {
                         int count = 0;
-                        while (count < recset.ItemCollectionSize())
+                        while(count < recset.ItemCollectionSize())
                         {
                             string error = string.Empty;
                             IList<IBinaryDataListItem> listOfRows = recset.FetchRecordAt(count + 1, out error);
@@ -159,7 +152,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
                             IBinaryDataListItem atItem = listOfRows.FirstOrDefault(c => c.FieldName == "At");
                             IBinaryDataListItem includeItem = listOfRows.FirstOrDefault(c => c.FieldName == "Include");
                             IBinaryDataListItem resultItem = listOfRows.FirstOrDefault(c => c.FieldName == "Result");
-                            if (splitTypeItem != null && atItem != null && includeItem != null && resultItem != null)
+                            if(splitTypeItem != null && atItem != null && includeItem != null && resultItem != null)
                             {
                                 newResultsCollection.Add(new DataSplitDTO(resultItem.TheValue, splitTypeItem.TheValue, atItem.TheValue, count + 1, Convert.ToBoolean(includeItem.TheValue)));
                             }
@@ -177,7 +170,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (compiler != null)
+            if(compiler != null)
             {
                 //Deletes the data list being kept on the server.
                 compiler.DeleteDataListByID(_datalistID);

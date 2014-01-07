@@ -1,11 +1,13 @@
+using Dev2.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 
-namespace Dev2.Studio.Core.Interfaces {
-    public interface ILayoutGridViewModel {
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface ILayoutGridViewModel
+    {
 
         ICommand UndoCommand { get; }
         ICommand RedoCommand { get; }

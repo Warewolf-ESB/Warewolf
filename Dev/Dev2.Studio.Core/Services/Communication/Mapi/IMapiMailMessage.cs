@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 
 namespace Dev2.Studio.Core.Services.Communication.Mapi
 {
@@ -12,5 +8,4 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         ArrayList Files { get; }
         void ShowDialog();
     }
-
 }

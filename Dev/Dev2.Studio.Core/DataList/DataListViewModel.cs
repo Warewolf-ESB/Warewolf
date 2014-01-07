@@ -1,11 +1,4 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -21,8 +14,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
-
-#endregion
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -238,7 +234,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 foreach(var dataListItemModel in unusedScalars)
                 {
-                    ScalarCollection.Remove(dataListItemModel);                    
+                    ScalarCollection.Remove(dataListItemModel);
                 }
             }
             var unusedRecordsets = RecsetCollection.Where(c => c.IsUsed == false).ToList();
@@ -246,7 +242,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 foreach(var dataListItemModel in unusedRecordsets)
                 {
-                    RecsetCollection.Remove(dataListItemModel);                    
+                    RecsetCollection.Remove(dataListItemModel);
                 }
             }
             foreach(var recset in RecsetCollection)
@@ -258,7 +254,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     {
                         foreach(var unusedRecsetChild in unusedRecsetChildren)
                         {
-                            recset.Children.Remove(unusedRecsetChild);                           
+                            recset.Children.Remove(unusedRecsetChild);
                         }
                     }
                 }
@@ -289,7 +285,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         else
                         {
                             ScalarCollection.Insert(ScalarCollection.Count, scalar);
-                        }                        
+                        }
                     }
                 }
                 else
@@ -313,7 +309,7 @@ namespace Dev2.Studio.ViewModels.DataList
                             else
                             {
                                 recsetToAddTo.Children.Add(child);
-                            }                           
+                            }
                         }
                     }
                     else if(tmpRecset != null)
@@ -367,11 +363,11 @@ namespace Dev2.Studio.ViewModels.DataList
             if(Resource == null) return;
 
             string errorString;
-            CreateListsOfIDataListItemModelToBindTo(out errorString);            
+            CreateListsOfIDataListItemModelToBindTo(out errorString);
             if(!string.IsNullOrEmpty(errorString))
             {
                 throw new Exception(errorString);
-            }            
+            }
         }
         public void InitializeDataListViewModel()
         {
@@ -505,39 +501,42 @@ namespace Dev2.Studio.ViewModels.DataList
 
             while(recsetCount < recsetNum)
             {
-                IDataListItemModel recset = RecsetCollection[recsetCount];
-
-                if(!string.IsNullOrWhiteSpace(recset.DisplayName))
+                if(RecsetCollection != null)
                 {
-                    FixNamingForRecset(recset);
-                    int childrenNum = recset.Children.Count;
-                    int childrenCount = 0;
+                    IDataListItemModel recset = RecsetCollection[recsetCount];
 
-                    while(childrenCount < childrenNum)
+                    if(!string.IsNullOrWhiteSpace(recset.DisplayName))
                     {
-                        IDataListItemModel child = recset.Children[childrenCount];
+                        FixNamingForRecset(recset);
+                        int childrenNum = recset.Children.Count;
+                        int childrenCount = 0;
 
-                        if(!string.IsNullOrWhiteSpace(child.DisplayName))
+                        while(childrenCount < childrenNum)
                         {
-                            int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
-                            if(indexOfDot > -1)
+                            IDataListItemModel child = recset.Children[childrenCount];
+
+                            if(!string.IsNullOrWhiteSpace(child.DisplayName))
                             {
-                                string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
-                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
+                                int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
+                                if(indexOfDot > -1)
+                                {
+                                    string recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
+                                    child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
+                                }
+                                else
+                                {
+                                    child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
+                                }
+                                FixCommonNamingProblems(child);
                             }
-                            else
-                            {
-                                child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
-                            }
-                            FixCommonNamingProblems(child);
+                            childrenCount++;
                         }
-                        childrenCount++;
                     }
                 }
                 recsetCount++;
             }
             NotifyOfPropertyChange(() => DataList);
-        }       
+        }
 
         public void ValidateNames(IDataListItemModel item)
         {
@@ -555,7 +554,7 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 ValidateScalar();
             }
-        }        
+        }
 
         public void RemoveBlankRecordsets()
         {
@@ -1084,6 +1083,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// Finds the missing workflow data regions.
         /// </summary>
         /// <param name="partsToVerify">The parts to verify.</param>
+        /// <param name="excludeUnusedItems"></param>
         /// <returns></returns>
         public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false)
         {

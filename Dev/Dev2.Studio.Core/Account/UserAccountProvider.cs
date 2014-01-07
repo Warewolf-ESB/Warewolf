@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Studio.Core.Account
 {
@@ -14,7 +11,7 @@ namespace Dev2.Studio.Core.Account
         {
             get
             {
-                if (string.IsNullOrEmpty(_userName))
+                if(string.IsNullOrEmpty(_userName))
                 {
                     _userName = Guid.NewGuid().ToString();
                 }
@@ -58,7 +55,7 @@ namespace Dev2.Studio.Core.Account
         // Properties of the class
         public UserAccountProvider(string userName, string password)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            if(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
                 throw new ArgumentNullException("User Name or password must not be null");
             _userName = userName;
             _password = password;

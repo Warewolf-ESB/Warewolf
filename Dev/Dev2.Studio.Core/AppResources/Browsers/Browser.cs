@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using CefSharp;
+﻿using CefSharp;
 using CefSharp.Wpf;
-using Dev2.Common;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Studio.Core.Interfaces;
+using System;
+using System.ComponentModel;
 
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
@@ -120,7 +117,6 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         #endregion
 
-
         #region FormatUrl
 
         [Obsolete("use FormatUrl(string uriString, string args)")]
@@ -146,9 +142,5 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         }
 
         #endregion
-
-        
-        
-
     }
 }

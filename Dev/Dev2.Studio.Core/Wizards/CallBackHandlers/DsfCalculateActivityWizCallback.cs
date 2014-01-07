@@ -7,6 +7,6 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
     //[Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfCalculateActivity>))]
     //[PartCreationPolicy(CreationPolicy.NonShared)]
     public class DsfCalculateActivityWizCallback : DsfBaseWizCallback<DsfCalculateActivity>
-    {       
+    {
     }
 }

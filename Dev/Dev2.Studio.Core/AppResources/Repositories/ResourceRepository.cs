@@ -256,7 +256,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage Save(IResourceModel instanceObj)
         {
             var workflow = FindSingle(c => c.ResourceName.Equals(instanceObj.ResourceName, StringComparison.CurrentCultureIgnoreCase));
-            
+
             if(workflow == null)
             {
                 _resourceModels.Add(instanceObj);
@@ -390,7 +390,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
             IResourceModel res = _resourceModels.FirstOrDefault(c => c.ID == resource.ID);
-            
+
             if(res == null)
             {
                 var msg = new ExecuteMessage { HasError = true };
@@ -399,7 +399,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
 
             int index = _resourceModels.IndexOf(res);
-            
+
             if(index != -1)
             {
                 _resourceModels.RemoveAt(index);
@@ -553,10 +553,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                     }
                 }
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Ignore malformed resource
-
                 }
             }
         }
@@ -576,7 +577,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 var isNewWorkflow = data.IsNewResource;
 
                 var resource = ResourceModelFactory.CreateResourceModel(_environmentModel);
-                
+
                 resource.Inputs = data.Inputs;
                 resource.Outputs = data.Outputs;
                 resource.ResourceType = resourceType;
@@ -607,11 +608,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
                 if(data.Errors != null)
                 {
-                // set the errors ;)
+                    // set the errors ;)
                     foreach(var error in data.Errors)
-                {
-                    resource.AddError(error);
-                }
+                    {
+                        resource.AddError(error);
+                    }
                 }
 
                 if(fetchXAML)
@@ -798,7 +799,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var payload = comsController.ExecuteCommand<ExecuteMessage>(resourceModel.Environment.Connection, workspaceID);
 
             if(payload == null)
-        {
+            {
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "FindDependencyService"));
             }
 
@@ -810,13 +811,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #region Read and Write Settings
 
         public ExecuteMessage ReadSettings(string key, string value, IEnvironmentModel currentEnv)
-            {
+        {
             var serviceName = "SettingsReadService";
             var comController = new CommunicationController { ServiceName = serviceName };
             comController.AddPayloadArgument(key, value);
 
             return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, currentEnv.Connection.WorkspaceID);
-            }
+        }
 
         public ExecuteMessage WriteSettings(string key, string value, IEnvironmentModel currentEnv)
         {
@@ -838,18 +839,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return string.Empty;
             }
-            
+
             var comController = new CommunicationController { ServiceName = "FetchCurrentServerLogService" };
-            var serverLogData = comController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, environmentModel.Connection.WorkspaceID);        
-            
+            var serverLogData = comController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, environmentModel.Connection.WorkspaceID);
+
             if(serverLogData != null && serverLogData.Message.Length > 0)
-                {
+            {
                 string uniqueOutputPath = FileHelper.GetUniqueOutputPath(".txt");
                 return FileHelper.CreateATemporaryFile(serverLogData.Message, uniqueOutputPath);
-                }
+            }
 
             return null;
-            }
+        }
 
         #endregion
 
@@ -898,7 +899,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, Enums.ResourceType resourceType)
         {
             if(targetEnvironment == null || guids == null)
-        {
+            {
                 return new List<IResourceModel>();
             }
 
@@ -915,27 +916,27 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             if(models != null)
             {
                 foreach(var model in models)
-            {
+                {
                     IResourceModel resource = HydrateResourceModel(resourceType, model, serverID);
                     result.Add(resource);
                 }
             }
 
             return result;
-            }
+        }
 
         #endregion
 
         #region FindSourcesByType
 
         public List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType)
-            {
+        {
             var result = new List<T>();
 
             if(targetEnvironment == null)
-                {
+            {
                 return result;
-                }
+            }
 
             var comsController = new CommunicationController { ServiceName = "FindSourcesByType" };
 
@@ -944,7 +945,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             result = comsController.ExecuteCommand<List<T>>(targetEnvironment.Connection, targetEnvironment.Connection.WorkspaceID);
 
             return result;
-            }
+        }
 
         /// <summary>
         /// Fetches the resource definition.

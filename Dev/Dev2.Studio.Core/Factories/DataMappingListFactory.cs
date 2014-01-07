@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
+using System.Collections.Generic;
 
 namespace Dev2.Studio.Core.Factories
 {
@@ -21,7 +21,7 @@ namespace Dev2.Studio.Core.Factories
         public static IRecordSetCollection CreateListOutputRecordSetMapping(string xmlServiceDefintion)
         {
             IList<IDev2Definition> outputDef = DataListFactory.CreateOutputParser().Parse(xmlServiceDefintion);
-            IRecordSetCollection outputRecSet = DataListFactory.CreateRecordSetCollection(outputDef,true);
+            IRecordSetCollection outputRecSet = DataListFactory.CreateRecordSetCollection(outputDef, true);
             return outputRecSet;
         }
 

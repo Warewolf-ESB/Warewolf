@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Dev2.Composition;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using Dev2.Composition;
 
 namespace Dev2.Studio.Core.Network
 {
@@ -63,12 +61,12 @@ namespace Dev2.Studio.Core.Network
             //
             // Check parameters
             //
-            if (key == null)
+            if(key == null)
             {
                 throw new ArgumentNullException("key");
             }
 
-            if (enpointGenerationStrategy == null)
+            if(enpointGenerationStrategy == null)
             {
                 throw new ArgumentNullException("enpointGenerationStrategy");
             }
@@ -77,7 +75,7 @@ namespace Dev2.Studio.Core.Network
             // Check if key has been used to register a static endpoint
             //
             Uri staticEndpoint;
-            if (StaticEndpoints.TryGetValue(key, out staticEndpoint))
+            if(StaticEndpoints.TryGetValue(key, out staticEndpoint))
             {
                 throw new Exception("The key '" + key + "' has already been used to register a static enpoint.");
             }
@@ -86,7 +84,7 @@ namespace Dev2.Studio.Core.Network
             // Update or add new generation strategy
             //
             object untypedEnpointGenerationStrategy;
-            if (!EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
+            if(!EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
             {
                 EndPointGenerationStrategies.Add(key, enpointGenerationStrategy);
             }
@@ -106,12 +104,12 @@ namespace Dev2.Studio.Core.Network
             //
             // Check parameters
             //
-            if (key == null)
+            if(key == null)
             {
                 throw new ArgumentNullException("key");
             }
 
-            if (endpoint == null)
+            if(endpoint == null)
             {
                 throw new ArgumentNullException("endpoint");
             }
@@ -120,7 +118,7 @@ namespace Dev2.Studio.Core.Network
             // Check if key has been used to register an endpoint generation strategy
             //
             object untypedEnpointGenerationStrategy;
-            if (EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
+            if(EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
             {
                 throw new Exception("The key '" + key + "' has already been used to register an enpoint generation strategy.");
             }
@@ -129,14 +127,14 @@ namespace Dev2.Studio.Core.Network
             // Update or add new generation strategy
             //
             Uri staticEndpoint;
-            if (!StaticEndpoints.TryGetValue(key, out staticEndpoint))
+            if(!StaticEndpoints.TryGetValue(key, out staticEndpoint))
             {
                 StaticEndpoints.Add(key, endpoint);
             }
             else
             {
                 StaticEndpoints[key] = endpoint;
-            }            
+            }
         }
 
         /// <summary>
@@ -148,12 +146,12 @@ namespace Dev2.Studio.Core.Network
             //
             // Check parameters
             //
-            if (key == null)
+            if(key == null)
             {
                 throw new ArgumentNullException("key");
             }
 
-            if (!AlreadyInitialized)
+            if(!AlreadyInitialized)
             {
                 Initialize();
             }
@@ -162,7 +160,7 @@ namespace Dev2.Studio.Core.Network
             // Try get the static endpoint for the given key
             //
             Uri staticEndpoint;
-            if (!StaticEndpoints.TryGetValue(key, out staticEndpoint))
+            if(!StaticEndpoints.TryGetValue(key, out staticEndpoint))
             {
                 staticEndpoint = null;
             }
@@ -181,12 +179,12 @@ namespace Dev2.Studio.Core.Network
             //
             // Check parameters
             //
-            if (key == null)
+            if(key == null)
             {
                 throw new ArgumentNullException("key");
             }
 
-            if (!AlreadyInitialized)
+            if(!AlreadyInitialized)
             {
                 Initialize();
             }
@@ -195,7 +193,7 @@ namespace Dev2.Studio.Core.Network
             // Try get the static endpoint generation strategy for the given key
             //
             object untypedEnpointGenerationStrategy;
-            if (!EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
+            if(!EndPointGenerationStrategies.TryGetValue(key, out untypedEnpointGenerationStrategy))
             {
                 return null;
             }
@@ -204,7 +202,7 @@ namespace Dev2.Studio.Core.Network
             // Cast the strategy to the correct type
             //
             Func<T, Uri> endpointGenerationStrategy = untypedEnpointGenerationStrategy as Func<T, Uri>;
-            if (endpointGenerationStrategy == null)
+            if(endpointGenerationStrategy == null)
             {
                 throw new Exception("The endpoint generation strategy registered for '" + key + "' was registered as '" + untypedEnpointGenerationStrategy.GetType().ToString() + "' but the caller expected a type of '" + typeof(Func<T, Uri>).ToString() + "'.");
             }
@@ -217,7 +215,7 @@ namespace Dev2.Studio.Core.Network
             {
                 endpoint = endpointGenerationStrategy(arg);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception("An error occured while generating the Uri for '" + key + "'.", e);
             }
@@ -229,14 +227,14 @@ namespace Dev2.Studio.Core.Network
 
         public void Initialize()
         {
-            if (AlreadyInitialized || EndpointGenerationStrategyProviders == null)
+            if(AlreadyInitialized || EndpointGenerationStrategyProviders == null)
             {
                 return;
             }
 
             AlreadyInitialized = true;
 
-            foreach (IServiceEndpointGenerationStrategyProvider provider in EndpointGenerationStrategyProviders)
+            foreach(IServiceEndpointGenerationStrategyProvider provider in EndpointGenerationStrategyProviders)
             {
                 provider.RegisterEndpointGenerationStrategies(this);
             }

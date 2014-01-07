@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Data.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.Data.Interfaces;
 
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
@@ -12,9 +12,9 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         IResourceModel Resource { get; }
         ICommand FindUnusedAndMissingCommand { get; }
 
-        ObservableCollection<IDataListItemModel> ScalarCollection { get;}
+        ObservableCollection<IDataListItemModel> ScalarCollection { get; }
 
-        ObservableCollection<IDataListItemModel> RecsetCollection { get;}
+        ObservableCollection<IDataListItemModel> RecsetCollection { get; }
 
         ObservableCollection<IDataListItemModel> DataList { get; }
 
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         void InitializeDataListViewModel(IResourceModel resourceModel);
 
         void InitializeDataListViewModel();
-      
+
         /// <summary>
         /// Adds the blank row.
         /// </summary>
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// </summary>
         string WriteToResourceModel();
 
-       
+
         /// <summary>
         /// Adds the recordset names if missing.
         /// </summary>
@@ -86,6 +86,7 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         /// Finds the missing workflow data regions.
         /// </summary>
         /// <param name="partsToVerify">The parts to verify.</param>
+        /// <param name="excludeUnusedItems"></param>
         /// <returns></returns>
         List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false);
 

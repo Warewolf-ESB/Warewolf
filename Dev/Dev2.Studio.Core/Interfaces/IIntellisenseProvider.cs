@@ -6,10 +6,10 @@
 
 namespace Dev2.Studio.Core.Interfaces
 {
+    using Dev2.DataList.Contract;
     using System;
     using System.Collections.Generic;
-    using Dev2.DataList.Contract;
-    
+
 
     /// <summary>
     /// The intellisense provider gives is used to handle intellisense result requests.
@@ -56,11 +56,11 @@ namespace Dev2.Studio.Core.Interfaces
             _arguments = arguments;
             _argumentDescriptions = argumentDescriptions;
 
-            if (_arguments != null && _arguments.Length != 0)
+            if(_arguments != null && _arguments.Length != 0)
             {
                 List<string> args = new List<string>(_arguments);
-                for (int i = args.Count - 1; i >= 0; i--)
-                    if (String.IsNullOrEmpty(args[i]))
+                for(int i = args.Count - 1; i >= 0; i--)
+                    if(String.IsNullOrEmpty(args[i]))
                         args.RemoveAt(i);
 
                 _arguments = args.ToArray();

@@ -1,9 +1,9 @@
-﻿using System;
-using Dev2.Data.Interfaces;
+﻿using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
+using System;
 
 namespace Dev2.Studio.ViewModels.DataList
 {
@@ -270,7 +270,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
 
             IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();
-            IInputOutputViewModel result = new InputOutputViewModel(this.Name, this.Value, this.MapsTo, this.DefaultValue, this.Required, this.RecordSetName, this.EmptyToNull);
+            IInputOutputViewModel result = new InputOutputViewModel(Name, Value, MapsTo, DefaultValue, Required, RecordSetName, EmptyToNull);
 
             return result;
         }

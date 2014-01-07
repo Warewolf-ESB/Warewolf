@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 
 namespace Dev2.Studio.Core.AppResources.Converters
@@ -16,12 +13,12 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             string s = value as string;
 
-            if (!string.IsNullOrEmpty(s))
+            if(!string.IsNullOrEmpty(s))
             {
-                return string.Concat(_autoIdPrefix,s,_autoIdSufix);
+                return string.Concat(_autoIdPrefix, s, _autoIdSufix);
             }
             return s;
-           
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

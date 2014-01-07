@@ -1,12 +1,7 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract;
+﻿using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
+using System.Activities.Presentation.Model;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 
@@ -78,7 +73,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             get
             {
-                if (_createCompiler == null) return new Func<IDataListCompiler>(() => null);
+                if(_createCompiler == null) return new Func<IDataListCompiler>(() => null);
                 return _createCompiler;
             }
             set
@@ -98,12 +93,12 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler == null)
-            {                              
+            if(_activity != null && _datalistID != null && compiler == null)
+            {
                 //Sets the properties from the datalist
-                ActivityInputOutputUtils.SetValues<GeneralSettings>(Activity, _datalistID,compiler);                 
+                ActivityInputOutputUtils.SetValues<GeneralSettings>(Activity, _datalistID, compiler);
                 //Deletes the data list being kept on the server.
-                compiler.DeleteDataListByID(_datalistID);   
+                compiler.DeleteDataListByID(_datalistID);
             }
         }
 
@@ -114,7 +109,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (compiler == null)
+            if(compiler == null)
             {
                 compiler.DeleteDataListByID(_datalistID);
             }

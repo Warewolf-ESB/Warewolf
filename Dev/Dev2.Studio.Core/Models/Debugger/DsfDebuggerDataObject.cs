@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Data.Enums;
+﻿using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Models.Debugger
 {

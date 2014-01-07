@@ -1,7 +1,6 @@
 ﻿using Dev2.Studio.Core.AppResources.Attributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.Core.AppResources.Enums
 {
@@ -37,22 +36,22 @@ namespace Dev2.Studio.Core.AppResources.Enums
     }
 
     public static class ResourceTypeExtensions
-    {        
+    {
         public static WorkSurfaceContext ToWorkSurfaceContext(this ResourceType resourceType)
-        {            
-            switch (resourceType)
+        {
+            switch(resourceType)
             {
-                 case ResourceType.WorkflowService:
+                case ResourceType.WorkflowService:
                     return Enums.WorkSurfaceContext.Workflow;
-                 case ResourceType.Service:
+                case ResourceType.Service:
                     return Enums.WorkSurfaceContext.Service;
-                 case ResourceType.Source:
+                case ResourceType.Source:
                     return Enums.WorkSurfaceContext.SourceManager;
-                 case ResourceType.Unknown:
+                case ResourceType.Unknown:
                     return Enums.WorkSurfaceContext.Unknown;
-                 case ResourceType.Website:
+                case ResourceType.Website:
                     return Enums.WorkSurfaceContext.Website;
-                 case ResourceType.HumanInterfaceProcess:
+                case ResourceType.HumanInterfaceProcess:
                     return Enums.WorkSurfaceContext.Webpage;
                 default: return Enums.WorkSurfaceContext.Unknown;
             }

@@ -1,6 +1,4 @@
-﻿using Dev2.Studio.Core.Wizards.Interfaces;
-using System.ComponentModel.Composition;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
+﻿using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {

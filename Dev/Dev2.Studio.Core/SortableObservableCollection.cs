@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Windows.Threading;
+
 
 #endregion
 
@@ -39,9 +37,9 @@ namespace Dev2.Studio.Core
 
         protected override void InsertItem(int index, T item)
         {
-            for (int i = 0; i < Count; i++)
+            for(int i = 0; i < Count; i++)
             {
-                switch (Math.Sign(this[i].CompareTo(item)))
+                switch(Math.Sign(this[i].CompareTo(item)))
                 {
                     case 0:
                         //TODO at least log this!

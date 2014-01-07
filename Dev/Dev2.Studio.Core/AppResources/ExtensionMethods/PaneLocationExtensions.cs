@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infragistics.Windows.DockManager;
+﻿using Infragistics.Windows.DockManager;
+using System;
 
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
@@ -12,7 +9,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             InitialPaneLocation initialPaneLocation;
 
-            switch (location)
+            switch(location)
             {
                 case PaneLocation.DockedLeft:
                 case PaneLocation.DockedRight:
@@ -43,7 +40,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             PaneLocation paneLocation;
 
-            switch (location)
+            switch(location)
             {
                 case InitialPaneLocation.DockedLeft:
                 case InitialPaneLocation.DockedTop:

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
@@ -15,9 +13,9 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
                                    ? child.GetGenericTypeDefinition()
                                    : child;
 
-            while (currentChild != typeof(object))
+            while(currentChild != typeof(object))
             {
-                if (parent == currentChild || HasAnyInterfaces(parent, currentChild))
+                if(parent == currentChild || HasAnyInterfaces(parent, currentChild))
                     return true;
 
                 currentChild = currentChild.BaseType != null
@@ -25,7 +23,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
                                    ? currentChild.BaseType.GetGenericTypeDefinition()
                                    : currentChild.BaseType;
 
-                if (currentChild == null)
+                if(currentChild == null)
                     return false;
             }
             return false;
@@ -47,10 +45,10 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         private static Type ResolveGenericTypeDefinition(Type parent)
         {
             var shouldUseGenericType = true;
-            if (parent.IsGenericType && parent.GetGenericTypeDefinition() != parent)
+            if(parent.IsGenericType && parent.GetGenericTypeDefinition() != parent)
                 shouldUseGenericType = false;
 
-            if (parent.IsGenericType && shouldUseGenericType)
+            if(parent.IsGenericType && shouldUseGenericType)
                 parent = parent.GetGenericTypeDefinition();
             return parent;
         }

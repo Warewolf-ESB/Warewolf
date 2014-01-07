@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
 
 namespace Dev2.Studio.Core.AppResources.Converters
@@ -21,12 +18,12 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             bool? boolValue = value as bool?;
 
-            if (boolValue == null)
+            if(boolValue == null)
             {
                 return Binding.DoNothing;
             }
 
-            if (boolValue.GetValueOrDefault())
+            if(boolValue.GetValueOrDefault())
             {
                 return TrueValue;
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
-using Dev2.Common.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -12,6 +7,9 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.DataList
 {
@@ -21,7 +19,7 @@ namespace Dev2.DataList
     /// </summary>
     class FuzzyMatchVO
     {
-        internal IDictionary<string, string> _recordsetColumnsToName; 
+        internal IDictionary<string, string> _recordsetColumnsToName;
 
         internal FuzzyMatchVO(IDictionary<string, string> matches)
         {
@@ -129,33 +127,33 @@ namespace Dev2.DataList
 
                 if(activity.ResourceModel != null)
                 {
-                IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+                    IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
 
-                        string inputs = string.Empty;
-                        string outputs = string.Empty;
+                    string inputs = string.Empty;
+                    string outputs = string.Empty;
 
-                        // handle workflows differently ;)
+                    // handle workflows differently ;)
                     if(IsWorkflow)
-                        {
-                            var datalist = activity.ResourceModel.DataList;
-                            var compiler = DataListFactory.CreateDataListCompiler();
+                    {
+                        var datalist = activity.ResourceModel.DataList;
+                        var compiler = DataListFactory.CreateDataListCompiler();
 
-                            inputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
-                            outputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Output);
-                        }
-                        else
-                        {
-                            // handle services ;)
+                        inputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Input);
+                        outputs = compiler.GenerateSerializableDefsFromDataList(datalist, enDev2ColumnArgumentDirection.Output);
+                    }
+                    else
+                    {
+                        // handle services ;)
                         inputs = activity.ResourceModel.Inputs;
                         outputs = activity.ResourceModel.Outputs;
-                        }
-
-                        ActivityInputDefinitions = inputs;
-                        ActivityOutputDefinitions = outputs;     
                     }
 
+                    ActivityInputDefinitions = inputs;
+                    ActivityOutputDefinitions = outputs;
                 }
+
             }
+        }
 
         /// <summary>
         /// Generates this instance.
@@ -169,11 +167,11 @@ namespace Dev2.DataList
             var inputParser = DataListFactory.CreateInputParser();
 
             var inputList = GenerateMapping(SavedInputMapping, ActivityInputDefinitions, false, inputParser);
-            
+
             var outputList = GenerateMapping(SavedOutputMapping, ActivityOutputDefinitions, true, outputParser);
 
             result = new MappingViewModelTO(inputList, outputList);
-           
+
             // and set the data to save?!
             if(string.IsNullOrEmpty(SavedInputMapping))
             {
@@ -186,7 +184,7 @@ namespace Dev2.DataList
             }
 
             return result;
-            }
+        }
 
         /// <summary>
         /// Gets the input string.
@@ -207,7 +205,7 @@ namespace Dev2.DataList
             }
             return inputString;
         }
-           
+
         /// <summary>
         /// Gets the output string.
         /// </summary>
@@ -249,7 +247,7 @@ namespace Dev2.DataList
             }
             else
             {
-                
+
                 // generate the master view ;)
                 var masterView = CreateMappingList(mappingDefinitions, parser, true, isOutputMapping);
 
@@ -310,7 +308,7 @@ namespace Dev2.DataList
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
 
-            
+
             var masterRecordsetName = string.Empty;
 
             foreach(var def in concreteDefinitions)
@@ -352,7 +350,7 @@ namespace Dev2.DataList
 
 
                             injectValue = FormatString(masterRecordsetName, field);
-                            
+
                         }
                         else
                         {
@@ -390,7 +388,7 @@ namespace Dev2.DataList
                                     injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -521,9 +519,9 @@ namespace Dev2.DataList
                 }
 
                 result = new FuzzyMatchVO(tmp);
-                
+
             }
-            
+
             return result;
         }
     }

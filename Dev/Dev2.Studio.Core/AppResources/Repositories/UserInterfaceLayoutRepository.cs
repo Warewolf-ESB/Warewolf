@@ -1,13 +1,11 @@
-﻿using System;
+﻿using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Unlimited.Framework;
 
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
@@ -59,17 +57,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public string Save(UserInterfaceLayoutModel instanceObj)
         {
-            if (instanceObj == null) return "Not Saved";
+            if(instanceObj == null) return "Not Saved";
 
             string file;
-            if (_userInterfaceLayoutModels.TryGetValue(instanceObj, out file))
+            if(_userInterfaceLayoutModels.TryGetValue(instanceObj, out file))
             {
-                if (Path.GetFileNameWithoutExtension(file) != instanceObj.LayoutName)
+                if(Path.GetFileNameWithoutExtension(file) != instanceObj.LayoutName)
                 {
                     DirectoryInfo di = new DirectoryInfo(file);
                     string newFile = Path.Combine(di.FullName, instanceObj.LayoutName + ".xml");
 
-                    if (File.Exists(newFile))
+                    if(File.Exists(newFile))
                     {
                         throw new Exception("Layout with that name already exists.");
                     }
@@ -85,7 +83,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 string path = GetLayoutDirectory();
 
                 DirectoryInfo di = new DirectoryInfo(path);
-                if (!di.Exists)
+                if(!di.Exists)
                 {
                     di.Create();
                 }
@@ -103,7 +101,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Save(ICollection<UserInterfaceLayoutModel> instanceObjs)
         {
-            foreach (UserInterfaceLayoutModel userInterfaceLayoutModel in instanceObjs)
+            foreach(UserInterfaceLayoutModel userInterfaceLayoutModel in instanceObjs)
             {
                 Save(userInterfaceLayoutModel);
             }
@@ -113,10 +111,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             _userInterfaceLayoutModels.Clear();
 
-            foreach (string file in GetLayoutFiles())
+            foreach(string file in GetLayoutFiles())
             {
                 UserInterfaceLayoutModel userInterfaceLayoutModel = ModelFromFile(file);
-                if (userInterfaceLayoutModel != null)
+                if(userInterfaceLayoutModel != null)
                 {
                     _userInterfaceLayoutModels.Add(userInterfaceLayoutModel, file);
                 }
@@ -125,10 +123,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Remove(UserInterfaceLayoutModel instanceObj)
         {
-            if (instanceObj == null) return;
+            if(instanceObj == null) return;
 
             string file;
-            if (_userInterfaceLayoutModels.TryGetValue(instanceObj, out file) && File.Exists(file))
+            if(_userInterfaceLayoutModels.TryGetValue(instanceObj, out file) && File.Exists(file))
             {
                 FilePersistenceProvider.Delete(file);
                 _userInterfaceLayoutModels.Remove(instanceObj);
@@ -137,7 +135,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void Remove(ICollection<UserInterfaceLayoutModel> instanceObjs)
         {
-            foreach (UserInterfaceLayoutModel userInterfaceLayoutModel in instanceObjs)
+            foreach(UserInterfaceLayoutModel userInterfaceLayoutModel in instanceObjs)
             {
                 Remove(userInterfaceLayoutModel);
             }
@@ -150,7 +148,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         private string[] GetLayoutFiles()
         {
             string path = GetLayoutDirectory();
-            if (!Directory.Exists(path))
+            if(!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -160,7 +158,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private static string GetLayoutDirectory()
         {
-            string path = Path.Combine(new string[] 
+            string path = Path.Combine(new[] 
                 { 
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
                     StringResources.App_Data_Directory, 
@@ -174,7 +172,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             UserInterfaceLayoutModel userInterfaceLayoutModel = null;
 
-            if (FilePersistenceProvider != null)
+            if(FilePersistenceProvider != null)
             {
                 userInterfaceLayoutModel = new UserInterfaceLayoutModel();
                 userInterfaceLayoutModel.LayoutName = Path.GetFileNameWithoutExtension(file);
@@ -189,7 +187,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected void OnItemAdded(object sender)
         {
-            if (ItemAdded != null)
+            if(ItemAdded != null)
             {
                 ItemAdded.Invoke(sender, new System.EventArgs());
             }

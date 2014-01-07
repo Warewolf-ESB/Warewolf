@@ -1,9 +1,6 @@
-﻿
-
-using Dev2.Providers.Logs;
+﻿using Dev2.Providers.Logs;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -13,7 +10,9 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
     #region Public MapiMailMessage Class
     /// <summary>
     /// Represents an email message to be sent through MAPI.
+    // ReSharper disable CSharpWarnings::CS1570
     /// Original source http://www.vbusers.com/codecsharp/codeget.asp?ThreadID=71&PostID=1
+    // ReSharper restore CSharpWarnings::CS1570
     /// also see http://weblogs.asp.net/jgalloway/archive/2007/02/24/sending-files-via-the-default-e-mail-client.aspx
     /// </summary>
     public class MapiMailMessage : IMailMessage
@@ -23,8 +22,6 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         private class MapiFileDescriptor
         {
-            public int reserved = 0;
-            public int flags = 0;
             public int position = 0;
             public string path = null;
             public string name = null;
@@ -168,7 +165,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         {
             var message = new MAPIHelperInterop.MapiMessage();
 
-            using (RecipientCollection.InteropRecipientCollection interopRecipients
+            using(RecipientCollection.InteropRecipientCollection interopRecipients
                 = _recipientCollection.GetInteropRepresentation())
             {
 
@@ -179,7 +176,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 message.RecipientCount = _recipientCollection.Count;
 
                 // Check if we need to add attachments
-                if (_files.Count > 0)
+                if(_files.Count > 0)
                 {
                     // Add attachments
                     message.Files = _AllocAttachments(out message.FileCount);
@@ -193,14 +190,14 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 const int SUCCESS_SUCCESS = 0;
                 int error = MAPIHelperInterop.MAPISendMail(IntPtr.Zero, IntPtr.Zero, message, MAPI_DIALOG, 0);
 
-                if (_files.Count > 0)
+                if(_files.Count > 0)
                 {
                     // Deallocate the files
                     _DeallocFiles(message);
                 }
 
                 // Check for error
-                if (error != SUCCESS_SUCCESS)
+                if(error != SUCCESS_SUCCESS)
                 {
                     _LogErrorMapi(error);
                 }
@@ -213,7 +210,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// <param name="message">The message to deallocate the files from.</param>
         private void _DeallocFiles(MAPIHelperInterop.MapiMessage message)
         {
-            if (message.Files != IntPtr.Zero)
+            if(message.Files != IntPtr.Zero)
             {
                 Type fileDescType = typeof(MapiFileDescriptor);
                 int fsize = Marshal.SizeOf(fileDescType);
@@ -221,7 +218,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 // Get the ptr to the files
                 int runptr = (int)message.Files;
                 // Release each file
-                for (int i = 0; i < message.FileCount; i++)
+                for(int i = 0; i < message.FileCount; i++)
                 {
                     Marshal.DestroyStructure((IntPtr)runptr, fileDescType);
                     runptr += fsize;
@@ -239,11 +236,11 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         private IntPtr _AllocAttachments(out int fileCount)
         {
             fileCount = 0;
-            if (_files == null)
+            if(_files == null)
             {
                 return IntPtr.Zero;
             }
-            if ((_files.Count <= 0) || (_files.Count > 100))
+            if((_files.Count <= 0) || (_files.Count > 100))
             {
                 return IntPtr.Zero;
             }
@@ -255,7 +252,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             MapiFileDescriptor mfd = new MapiFileDescriptor();
             mfd.position = -1;
             int runptr = (int)ptra;
-            for (int i = 0; i < _files.Count; i++)
+            for(int i = 0; i < _files.Count; i++)
             {
                 string path = _files[i] as string;
                 mfd.name = Path.GetFileName(path);
@@ -311,7 +308,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             const int MAPI_E_INVALID_PARAMETER = 998;
 
             string error = string.Empty;
-            switch (errorCode)
+            switch(errorCode)
             {
                 case MAPI_USER_ABORT:
                     error = "User Aborted.";
@@ -549,7 +546,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         {
             MapiMailMessage.MAPIHelperInterop.MapiRecipDesc interop = new MapiMailMessage.MAPIHelperInterop.MapiRecipDesc();
 
-            if (DisplayName == null)
+            if(DisplayName == null)
             {
                 interop.Name = Address;
             }
@@ -589,7 +586,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         public void Add(string address)
         {
-            this.Add(new Recipient(address));
+            Add(new Recipient(address));
         }
 
         /// <summary>
@@ -597,7 +594,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         public void Add(string address, string displayName)
         {
-            this.Add(new Recipient(address, displayName));
+            Add(new Recipient(address, displayName));
         }
 
         /// <summary>
@@ -605,7 +602,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         public void Add(string address, MapiMailMessage.RecipientType recipientType)
         {
-            this.Add(new Recipient(address, recipientType));
+            Add(new Recipient(address, recipientType));
         }
 
         /// <summary>
@@ -613,7 +610,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         public void Add(string address, string displayName, MapiMailMessage.RecipientType recipientType)
         {
-            this.Add(new Recipient(address, displayName, recipientType));
+            Add(new Recipient(address, displayName, recipientType));
         }
 
         /// <summary>
@@ -654,7 +651,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             {
                 _count = outer.Count;
 
-                if (_count == 0)
+                if(_count == 0)
                 {
                     _handle = IntPtr.Zero;
                     return;
@@ -666,7 +663,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
 
                 // place all interop recipients into the memory just allocated
                 int ptr = (int)_handle;
-                foreach (Recipient native in outer)
+                foreach(Recipient native in outer)
                 {
                     MapiMailMessage.MAPIHelperInterop.MapiRecipDesc interop = native.GetInteropRepresentation();
 
@@ -694,14 +691,14 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             /// </summary>
             public void Dispose()
             {
-                if (_handle != IntPtr.Zero)
+                if(_handle != IntPtr.Zero)
                 {
                     Type type = typeof(MapiMailMessage.MAPIHelperInterop.MapiRecipDesc);
                     int size = Marshal.SizeOf(type);
 
                     // destroy all the structures in the memory area
                     int ptr = (int)_handle;
-                    for (int i = 0; i < _count; i++)
+                    for(int i = 0; i < _count; i++)
                     {
                         Marshal.DestroyStructure((IntPtr)ptr, type);
                         ptr += size;

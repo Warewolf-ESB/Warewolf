@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Activities.Presentation.Model;
 
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
@@ -17,7 +13,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         public static void SetValue(this ModelPropertyCollection properties, string propertyName, object value)
         {
             ModelProperty mp = properties.Find(propertyName);
-            if (mp != null)
+            if(mp != null)
             {
                 mp.SetValue(value);
             }

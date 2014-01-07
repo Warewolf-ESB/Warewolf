@@ -1,8 +1,8 @@
-﻿using System;
-using Dev2.Data.Util;
+﻿using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
+using System;
 
 namespace Dev2.Studio.Core.AppResources
 {
@@ -11,12 +11,12 @@ namespace Dev2.Studio.Core.AppResources
     /// </summary>
     public class ExecutionRequestExtractor
     {
-
         /// <summary>
         /// Fetches the results.
         /// </summary>
         /// <param name="dlID">The dl ID.</param>
         /// <param name="dataListChannel">The data list channel.</param>
+        /// <param name="existingErrors"></param>
         /// <returns></returns>
         /// <exception cref="System.Exception"></exception>
         public string FetchResults(Guid dlID, INetworkDataListChannel dataListChannel, ErrorResultTO existingErrors)
@@ -35,16 +35,16 @@ namespace Dev2.Studio.Core.AppResources
             bdl.TryGetEntry(DataListUtil.BuildSystemTagForDataList(enSystemTag.ManagmentServicePayload, false), out entry, out error);
             allErrors.AddError(error);
             var data = string.Empty;
-            if (entry != null)
+            if(entry != null)
             {
                 IBinaryDataListItem item = entry.FetchScalar();
-                if (item != null)
+                if(item != null)
                 {
                     data = item.TheValue;
                 }
             }
 
-            if (allErrors.HasErrors())
+            if(allErrors.HasErrors())
             {
                 throw new Exception(allErrors.MakeDisplayReady());
             }

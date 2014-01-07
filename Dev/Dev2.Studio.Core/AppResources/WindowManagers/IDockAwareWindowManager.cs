@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Infragistics.Windows.DockManager;
 
 namespace Dev2.Studio.Core.AppResources.WindowManagers
@@ -15,7 +11,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         /// <param name = "viewModel">The view model.</param>
         /// <param name = "context">The context.</param>
         /// <param name="selectWhenShown">If set to <c>true</c> the window will be selected when shown.</param>
-        /// <param name = "dockSide">The dock side (Left, Right, Top, Bottom).</param>
+        /// <param name="dockstate"></param>
         void ShowDockedWindow(object viewModel,
                                                         object context = null,
                                                         bool selectWhenShown = true,

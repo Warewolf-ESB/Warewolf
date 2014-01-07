@@ -1,6 +1,4 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.ViewModels.Base;
+﻿using Dev2.Studio.Core.ViewModels.Base;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -36,7 +34,7 @@ namespace Dev2.Studio.Core.ViewModels.Wizards
         {
             get
             {
-                if (_okCommand == null)
+                if(_okCommand == null)
                 {
                     _okCommand = new RelayCommand(param =>
                     {

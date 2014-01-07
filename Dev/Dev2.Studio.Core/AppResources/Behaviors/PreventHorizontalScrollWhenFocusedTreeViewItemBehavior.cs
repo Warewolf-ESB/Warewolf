@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
-using System.Windows.Media;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.Core.AppResources.Behaviors
 {
@@ -14,7 +9,7 @@ namespace Dev2.Studio.Core.AppResources.Behaviors
     {
         TreeViewItem _treeViewItem;
         protected override void OnAttached()
-          {
+        {
             base.OnAttached();
             var item = AssociatedObject.GetParentByType(typeof(TreeViewItem));
             if(item is TreeViewItem)
@@ -26,7 +21,7 @@ namespace Dev2.Studio.Core.AppResources.Behaviors
 
         protected override void OnDetaching()
         {
-            if (_treeViewItem != null)
+            if(_treeViewItem != null)
                 _treeViewItem.RequestBringIntoView -= AssociatedObject_RequestBringIntoView;
         }
 

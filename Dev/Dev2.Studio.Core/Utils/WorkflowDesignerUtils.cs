@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Parsing.Intellisense;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
@@ -13,6 +8,11 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Parsing.Intellisense;
+using System.Windows;
 
 namespace Dev2.Utils
 {
@@ -87,7 +87,7 @@ namespace Dev2.Utils
                             nodeName = nodeName.Substring(2, nodeName.Length - 4);
                             result.Add(nodeName);
                         }
-                        
+
                     }
                 }
             }
@@ -100,28 +100,29 @@ namespace Dev2.Utils
         /// Finds the missing workflow data regions.
         /// </summary>
         /// <param name="partsToVerify">The parts to verify.</param>
+        /// <param name="excludeUnusedItems"></param>
         /// <returns></returns>
         public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems = false)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
-            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
+            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
             {
-                foreach (var dataListItem in DataListSingleton.ActiveDataList.DataList)
+                foreach(var dataListItem in DataListSingleton.ActiveDataList.DataList)
                 {
-                    if (String.IsNullOrEmpty(dataListItem.Name))
+                    if(String.IsNullOrEmpty(dataListItem.Name))
                     {
                         continue;
                     }
-                    if ((dataListItem.Children.Count > 0))
+                    if((dataListItem.Children.Count > 0))
                     {
-                        if (partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
+                        if(partsToVerify.Count(part => part.Recordset == dataListItem.Name) == 0)
                         {
                             //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                            if (dataListItem.IsEditable)
+                            if(dataListItem.IsEditable)
                             {
                                 // skip it if unused and exclude is on ;)
-                                if (excludeUnusedItems && !dataListItem.IsUsed)
+                                if(excludeUnusedItems && !dataListItem.IsUsed)
                                 {
                                     continue;
                                 }
@@ -129,12 +130,12 @@ namespace Dev2.Utils
                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
-                                foreach (var child in dataListItem.Children)
+                                foreach(var child in dataListItem.Children)
                                 {
-                                    if (!(String.IsNullOrEmpty(child.Name)))
+                                    if(!(String.IsNullOrEmpty(child.Name)))
                                     {
                                         //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                        if (dataListItem.IsEditable)
+                                        if(dataListItem.IsEditable)
                                         {
                                             missingWorkflowParts.Add(
                                                 IntellisenseFactory.CreateDataListValidationRecordsetPart(
@@ -146,14 +147,14 @@ namespace Dev2.Utils
                         }
                         else
                         {
-                            foreach (var child in dataListItem.Children)
-                                if (partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
+                            foreach(var child in dataListItem.Children)
+                                if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part
-                                    if (child.IsEditable)
+                                    if(child.IsEditable)
                                     {
                                         // skip it if unused and exclude is on ;)
-                                        if (excludeUnusedItems && !dataListItem.IsUsed)
+                                        if(excludeUnusedItems && !dataListItem.IsUsed)
                                         {
                                             continue;
                                         }
@@ -165,13 +166,13 @@ namespace Dev2.Utils
                                 }
                         }
                     }
-                    else if (partsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
+                    else if(partsToVerify.Count(part => part.Field == dataListItem.Name) == 0)
                     {
 
-                        if (dataListItem.IsEditable)
+                        if(dataListItem.IsEditable)
                         {
                             // skip it if unused and exclude is on ;)
-                            if (excludeUnusedItems && !dataListItem.IsUsed)
+                            if(excludeUnusedItems && !dataListItem.IsUsed)
                             {
                                 continue;
                             }
@@ -191,15 +192,15 @@ namespace Dev2.Utils
 
 
 
-        public static void EditResource(IResourceModel resource,IEventAggregator eventAggregator)
+        public static void EditResource(IResourceModel resource, IEventAggregator eventAggregator)
         {
-            if (eventAggregator == null)
+            if(eventAggregator == null)
             {
                 throw new ArgumentNullException("eventAggregator");
             }
-            if (resource != null)
+            if(resource != null)
             {
-                switch (resource.ResourceType)
+                switch(resource.ResourceType)
                 {
                     case ResourceType.WorkflowService:
                         eventAggregator.Publish(new AddWorkSurfaceMessage(resource));
@@ -213,7 +214,7 @@ namespace Dev2.Utils
                         break;
                 }
             }
-            
+
         }
 
         public static void ShowExampleWorkflow(string activityName, IEnvironmentModel environment, IPopupController popupController)
@@ -222,9 +223,9 @@ namespace Dev2.Utils
             var resource = environment.ResourceRepository
                       .FindSingle(r => r.DisplayName.Equals(resourceName));
 
-            if (resource == null)
+            if(resource == null)
             {
-                if (popupController == null)
+                if(popupController == null)
                 {
                     var message =
                         string.Format(

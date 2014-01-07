@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Interfaces;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
-using Dev2.Interfaces;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
@@ -66,7 +65,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             get
             {
-                if (_createCompiler == null) return new Func<IDataListCompiler>(() => null);
+                if(_createCompiler == null) return new Func<IDataListCompiler>(() => null);
                 return _createCompiler;
             }
             set
@@ -82,34 +81,34 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler != null)
+            if(_activity != null && _datalistID != null && compiler != null)
             {
                 IBinaryDataList wizardDataList = Dev2BinaryDataListFactory.CreateDataList();
                 ErrorResultTO errors;
                 wizardDataList = compiler.FetchBinaryDataList(_datalistID, out errors);
-                if (wizardDataList != null && !errors.HasErrors())
+                if(wizardDataList != null && !errors.HasErrors())
                 {
                     IList<ICaseConvertTO> newConvertCollection = new List<ICaseConvertTO>();
 
                     IList<IBinaryDataListEntry> recsets = wizardDataList.FetchRecordsetEntries();
                     IBinaryDataListEntry recset = recsets.FirstOrDefault(c => c.Namespace == "ConvertCollection");
-                    if (recset != null)
+                    if(recset != null)
                     {
                         int count = 0;
                         string error = string.Empty;
-                        while (count < recset.ItemCollectionSize())
+                        while(count < recset.ItemCollectionSize())
                         {
                             IList<IBinaryDataListItem> listOfRows = recset.FetchRecordAt(count + 1, out error);
                             IBinaryDataListItem stringToConvertItem = listOfRows.FirstOrDefault(c => c.FieldName == "StringToConvert");
-                            IBinaryDataListItem convertTypeItem = listOfRows.FirstOrDefault(c => c.FieldName == "ConvertType");                            
+                            IBinaryDataListItem convertTypeItem = listOfRows.FirstOrDefault(c => c.FieldName == "ConvertType");
                             IBinaryDataListItem resultItem = listOfRows.FirstOrDefault(c => c.FieldName == "Result");
-                            if (stringToConvertItem != null && convertTypeItem != null && resultItem != null)
+                            if(stringToConvertItem != null && convertTypeItem != null && resultItem != null)
                             {
                                 newConvertCollection.Add(new CaseConvertTO(stringToConvertItem.TheValue, convertTypeItem.TheValue, resultItem.TheValue, count));
                             }
                             count++;
                         }
-                        Activity.Properties.SetValue("ConvertCollection", newConvertCollection);                        
+                        Activity.Properties.SetValue("ConvertCollection", newConvertCollection);
                         //Deletes the data list being kept on the server.
                         compiler.DeleteDataListByID(_datalistID);
                     }
@@ -121,7 +120,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (compiler != null)
+            if(compiler != null)
             {
                 //Deletes the data list being kept on the server.
                 compiler.DeleteDataListByID(_datalistID);

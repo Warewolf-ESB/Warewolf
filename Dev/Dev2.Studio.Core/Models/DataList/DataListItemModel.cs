@@ -1,11 +1,8 @@
-﻿using System;
-using System.Linq;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces.DataList;
+using System;
 using System.Xml;
-using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Studio.Core.Models.DataList
 {
@@ -136,7 +133,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if (_errorMessage == string.Empty)
+                if(_errorMessage == string.Empty)
                 {
                     return null;
                 }
@@ -180,7 +177,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return (_columnIODir == enDev2ColumnArgumentDirection.Both 
+                return (_columnIODir == enDev2ColumnArgumentDirection.Both
                     || _columnIODir == enDev2ColumnArgumentDirection.Input);
             }
             set
@@ -271,13 +268,13 @@ namespace Dev2.Studio.Core.Models.DataList
         /// </returns>
         public override string ValidateName(string name)
         {
-            if (!string.IsNullOrEmpty(name))
+            if(!string.IsNullOrEmpty(name))
             {
-                if (IsRecordset)
+                if(IsRecordset)
                 {
                     name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
                 }
-                else if (IsField)
+                else if(IsField)
                 {
                     name = DataListUtil.ExtractFieldNameFromValue(name);
                 }
@@ -291,15 +288,15 @@ namespace Dev2.Studio.Core.Models.DataList
                             SetError(StringResources.ErrorMessageInvalidChar);
                             return name;
                         }
-                    XmlConvert.VerifyName(name);
-                    if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) && 
-                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) && 
-                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture)&&
-                        !string.Equals(ErrorMessage,StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                    {
-                        RemoveError();
+                        XmlConvert.VerifyName(name);
+                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                        {
+                            RemoveError();
+                        }
                     }
-                }
                 }
                 catch
                 {
@@ -313,9 +310,9 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             UpdatingChildren = true;
             var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
-            if (Children != null)
+            if(Children != null)
             {
-                foreach (DataListItemModel child in Children)
+                foreach(DataListItemModel child in Children)
                 {
                     child.UpdatingChildren = true;
                     child.Input = value;
@@ -338,9 +335,9 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             UpdatingChildren = true;
             var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
-            if (Children != null)
+            if(Children != null)
             {
-                foreach (DataListItemModel child in Children)
+                foreach(DataListItemModel child in Children)
                 {
                     child.UpdatingChildren = true;
                     child.Output = value;
@@ -354,9 +351,9 @@ namespace Dev2.Studio.Core.Models.DataList
                 Children.Clear();
                 foreach(var dataListItemModel in updatedChildren)
                 {
-                    Children.Add(dataListItemModel);    
+                    Children.Add(dataListItemModel);
                 }
-                
+
             }
         }
 
@@ -364,24 +361,24 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
-            if (!value)
+            if(!value)
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
+                if(_columnIODir == enDev2ColumnArgumentDirection.Both)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                else if(_columnIODir == enDev2ColumnArgumentDirection.Input)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.None;
                 }
             }
             else
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                if(_columnIODir == enDev2ColumnArgumentDirection.Output)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else if(_columnIODir == enDev2ColumnArgumentDirection.None)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
@@ -400,30 +397,30 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             enDev2ColumnArgumentDirection original = _columnIODir;
 
-            if (!value)
+            if(!value)
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Both)
+                if(_columnIODir == enDev2ColumnArgumentDirection.Both)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                else if(_columnIODir == enDev2ColumnArgumentDirection.Output)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.None;
                 }
             }
             else
             {
-                if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                if(_columnIODir == enDev2ColumnArgumentDirection.Input)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else if(_columnIODir == enDev2ColumnArgumentDirection.None)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
             }
 
-            if (original != _columnIODir)
+            if(original != _columnIODir)
             {
                 if(!UpdatingChildren)
                 {

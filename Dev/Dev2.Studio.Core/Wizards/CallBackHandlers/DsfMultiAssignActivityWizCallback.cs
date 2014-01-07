@@ -1,17 +1,12 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
-using System.Text;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Wizards.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract;
 
 namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 {
@@ -69,7 +64,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             get
             {
-                if (_createCompiler == null) return new Func<IDataListCompiler>(() => null);
+                if(_createCompiler == null) return new Func<IDataListCompiler>(() => null);
                 return _createCompiler;
             }
             set
@@ -85,32 +80,33 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler != null)
+            if(_activity != null && _datalistID != null && compiler != null)
             {
                 IBinaryDataList wizardDataList;
                 ErrorResultTO errors;
                 wizardDataList = compiler.FetchBinaryDataList(_datalistID, out errors);
-                if (wizardDataList != null && !errors.HasErrors())
+                if(wizardDataList != null && !errors.HasErrors())
                 {
                     IList<ActivityDTO> newFieldsCollection = new List<ActivityDTO>();
 
                     IList<IBinaryDataListEntry> recsets = wizardDataList.FetchRecordsetEntries();
                     IBinaryDataListEntry recset = recsets.FirstOrDefault(c => c.Namespace == "FieldsCollection");
-                    if (recset != null)
+                    if(recset != null)
                     {
                         int count = 0;
                         string error = string.Empty;
-                        while (count < recset.ItemCollectionSize())
+                        while(count < recset.ItemCollectionSize())
                         {
                             IList<IBinaryDataListItem> listOfRows = recset.FetchRecordAt(count + 1, out error);
                             IBinaryDataListItem fieldNameItem = listOfRows.FirstOrDefault(c => c.FieldName == "FieldName");
                             IBinaryDataListItem fieldValueItem = listOfRows.FirstOrDefault(c => c.FieldName == "FieldValue");
-                            if(fieldNameItem != null && fieldValueItem != null){
-                                newFieldsCollection.Add(new ActivityDTO(fieldNameItem.TheValue,fieldValueItem.TheValue,count));
-                            }                            
+                            if(fieldNameItem != null && fieldValueItem != null)
+                            {
+                                newFieldsCollection.Add(new ActivityDTO(fieldNameItem.TheValue, fieldValueItem.TheValue, count));
+                            }
                             count++;
                         }
-                        _activity.Properties.SetValue("FieldsCollection", newFieldsCollection);                        
+                        _activity.Properties.SetValue("FieldsCollection", newFieldsCollection);
                         //Deletes the data list being kept on the server.
                         compiler.DeleteDataListByID(_datalistID);
                     }
@@ -122,7 +118,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
         {
             IDataListCompiler compiler = CreateCompiler();
 
-            if (_activity != null && _datalistID != null && compiler != null)
+            if(_activity != null && _datalistID != null && compiler != null)
             {
                 //Deletes the data list being kept on the server.
                 compiler.DeleteDataListByID(_datalistID);
@@ -132,7 +128,7 @@ namespace Dev2.Studio.Core.Wizards.CallBackHandlers
 
         #region Private Methods
 
-      
+
         #endregion Private Methods
 
     }
