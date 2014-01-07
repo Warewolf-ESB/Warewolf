@@ -42,25 +42,25 @@ namespace Dev2.Data.Binary_Objects
         /// <value>
         ///   <c>true</c> if [is empty]; otherwise, <c>false</c>.
         /// </value>
-        public bool IsEmpty 
-        { 
+        public bool IsEmpty
+        {
             get
             {
                 int result = _curValue - Count;
 
-                if (result == 0 && HasMore())
+                if(result == 0 && HasMore())
                 {
                     return false;
                 }
 
                 // we know this case things are always empty ;) ... most likely a manual delete
-                if (Count == 0)
+                if(Count == 0)
                 {
                     return true;
                 }
 
                 return (result == 0);
-            } 
+            }
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Dev2.Data.Binary_Objects
         public bool HasMore()
         {
             int canidate = _curValue;
-            while (IndexList.Gaps.Contains(canidate))
+            while(IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
@@ -98,15 +98,14 @@ namespace Dev2.Data.Binary_Objects
         {
 
             int canidate = _curValue;
-            int result = _curValue;
             // assign a new curValue
 
-            while (IndexList.Gaps.Contains(canidate))
+            while(IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
 
-            result = canidate;
+            int result = canidate;
 
             _curValue = canidate + 1; // save next value ;)
 
@@ -157,7 +156,7 @@ namespace Dev2.Data.Binary_Objects
         public IIndexIterator Clone()
         {
             HashSet<int> gaps = new HashSet<int>();
-            foreach (int g in IndexList.Gaps)
+            foreach(int g in IndexList.Gaps)
             {
                 gaps.Add(g);
             }

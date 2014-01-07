@@ -20,7 +20,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         // Travis Mods ;) - Build the row TO for fetching as per the tooling ;)
         IList<IBinaryDataListItem> _internalReturnValue;
-        private IDictionary<string, BinaryDataListAlias> _keyToAliasMap; 
+        private IDictionary<string, BinaryDataListAlias> _keyToAliasMap;
 
         #region Properties
         public bool IsEditable { get; set; }
@@ -99,7 +99,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                                     // FOR : Bug_10247_Outter
                                     // if -1 skip and try next key ;) 
-                                    if (internalIdx != -1)
+                                    if(internalIdx != -1)
                                     {
                                         IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
 
@@ -138,7 +138,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     var fetchKeys = GenerateFederatedKey(key);
 
                     BinaryDataListRow parentRow = null; // Master location
-                    BinaryDataListRow childRow = null; // Child location
+                    BinaryDataListRow childRow; // Child location
 
                     // Fetch master location
                     if(fetchKeys.HasParentKey())
@@ -185,7 +185,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                 if(keyAlias != null)
                                 {
                                     // alias update, use row 1
-                                    parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    if(parentRow != null)
+                                    {
+                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    }
                                 }
                                 else
                                 {
@@ -251,24 +254,24 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             int aliasSearchRounds = 0;
             BinaryDataListAlias binaryDataListAlias = null;
 
-            while (searchID != Guid.Empty)
+            while(searchID != Guid.Empty)
             {
                 ErrorResultTO invokeErrors;
                 var bdl = compiler.FetchBinaryDataList(searchID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
-               
-                if (bdl != null)
+
+                if(bdl != null)
                 {
                     string error;
                     bdl.TryGetEntry(masterRS, out masterEntry, out error);
                     errors.AddError(error);
 
-                    if (masterEntry != null)
+                    if(masterEntry != null)
                     {
                         var aliases = masterEntry.FetchAlias();
 
-                        if (aliases.TryGetValue(masterCol, out binaryDataListAlias))
+                        if(aliases.TryGetValue(masterCol, out binaryDataListAlias))
                         {
                             // we have a hit ;)
                             masterID = binaryDataListAlias.MasterKeyID;
@@ -294,16 +297,16 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     }
                     else
                     {
-                        if (aliasSearchRounds == 0)
+                        if(aliasSearchRounds == 0)
                         {
                             throw new Exception("Missing Entry");
                         }
-                        else
+                        // we hit the bottom earlier, handle it ;)
+                        if(binaryDataListAlias != null)
                         {
-                            // we hit the bottom earlier, handle it ;)
                             masterEntry = binaryDataListAlias.MasterEntry;
-                            searchID = Guid.Empty; // signal end ;)
                         }
+                        searchID = Guid.Empty; // signal end ;)
                     }
 
                 }
@@ -313,9 +316,9 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 }
             }
 
-            
+
             // Check MasterKeyID to see if it contains an alias, if so keep bubbling until we at end ;)
-            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterID, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRS , masterID), MasterColumn = masterCol, MasterNamespace = masterRS, MasterEntry = masterEntry};
+            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterID, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRS, masterID), MasterColumn = masterCol, MasterNamespace = masterRS, MasterEntry = masterEntry };
         }
 
         public void AddGap(int idx)
@@ -337,7 +340,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps, bool onMasterEntry)
         {
             // signal that we have data here ;)
-            _appendIndex = 2; 
+            _appendIndex = 2;
             _isEmpty = false;
 
             _myKeys.MinValue = min;
@@ -416,7 +419,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 {
                     result = -1; // it failed, default back to non-valid index
                 }
-                
+
             }
 
             return result;
@@ -469,7 +472,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public bool ContainsRow(int idx)
         {
 
-            if (IsEmtpy)
+            if(IsEmtpy)
             {
                 return false;
             }
@@ -484,7 +487,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// <param name="cols">The cols.</param>
         public void Add(int idx, IList<IBinaryDataListItem> cols)
         {
-            var colCnt = (short) cols.Count;
+            var colCnt = (short)cols.Count;
 
             BinaryDataListRow row = new BinaryDataListRow(colCnt);
 
@@ -510,7 +513,6 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void ApplySortAction(IDictionary<int, IList<IBinaryDataListItem>> payload)
         {
             // Apply IDic back into my object ;)
-            IList<IBinaryDataListItem> cols;
             foreach(int i in payload.Keys)
             {
                 // TODO : What if they are in different locations?
@@ -519,19 +521,20 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
                 BinaryDataListRow row;
 
-                short colCnt = (short) Columns.Count;
+                short colCnt = (short)Columns.Count;
 
-                if(_itemStorage.TryGetValue(sk, colCnt,out row))
+                if(_itemStorage.TryGetValue(sk, colCnt, out row))
                 {
+                    IList<IBinaryDataListItem> cols;
                     if(payload.TryGetValue(i, out cols))
                     {
-                            foreach(IBinaryDataListItem c in cols)
-                            {
-                                int idx = InternalFetchColumnIndex(c.FieldName);
-                                    row.UpdateValue(c.TheValue, idx, colCnt);
-                            }
+                        foreach(IBinaryDataListItem c in cols)
+                        {
+                            int idx = InternalFetchColumnIndex(c.FieldName);
+                            row.UpdateValue(c.TheValue, idx, colCnt);
+                        }
 
-                                _itemStorage.TrySetValue(sk, colCnt, row);
+                        _itemStorage.TrySetValue(sk, colCnt, row);
                     }
                 }
             }
@@ -543,7 +546,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             IIndexIterator ii = Keys;
             if(IsRecordset)
             {
-                short colCnt = (short) Columns.Count;
+                short colCnt = (short)Columns.Count;
 
                 while(ii.HasMore())
                 {
@@ -554,8 +557,8 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                     int next = ii.FetchNextIndex();
 
                     // Hi-jack lookup
-                    
-                    StorageKey sk = new StorageKey(DataListKey, next+GenerateKeyPrefix(Namespace, DataListKey));
+
+                    StorageKey sk = new StorageKey(DataListKey, next + GenerateKeyPrefix(Namespace, DataListKey));
 
                     if(_itemStorage.TryGetValue(sk, colCnt, out row))
                     {
@@ -577,7 +580,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             get
             {
                 // - New
-                if (_isEmpty && _myKeys.Count() > 1)
+                if(_isEmpty && _myKeys.Count() > 1)
                 {
                     return false;
                 }
@@ -601,11 +604,11 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             // TODO : Hi-jack lookup
 
-            StorageKey sk = new StorageKey(DataListKey, GenerateKeyPrefix(Namespace,DataListKey));
+            StorageKey sk = new StorageKey(DataListKey, GenerateKeyPrefix(Namespace, DataListKey));
 
             var distinctBinaryDataListRows = _itemStorage.DistinctGetRows(sk, Keys, filterColIndexes);
             return distinctBinaryDataListRows;
-        } 
+        }
 
         /// <summary>
         /// Copies the data from the clonable instance into the cloned instance ;)
@@ -614,29 +617,25 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void CopyTo(SBinaryDataListEntry thisObj)
         {
 
-            // This is dangerus. We need to check for alias keys and use them instead ;)
+            // This is dangerous. We need to check for alias keys and use them instead ;)
             var keys = thisObj._myKeys;
 
-            HashSet<int> gaps = null;
-            int max = -1;
-            int min = -1;
+            HashSet<int> gaps = keys.Gaps;
+            int min = keys.MinValue;
+            int max = keys.MaxValue;
 
-            gaps = keys.Gaps;
-            min = keys.MinValue;
-            max = keys.MaxValue;
-
-            this.Columns = thisObj.Columns;
-            this._itemStorage = thisObj._itemStorage;
+            Columns = thisObj.Columns;
+            _itemStorage = thisObj._itemStorage;
             // avoid referencing issues ;)
-            this._myKeys = new IndexList(gaps, max, min);
-            this.DataListKey = thisObj.DataListKey;
-            this.IsEmtpy = thisObj.IsEmtpy;
-            this.IsRecordset = thisObj.IsRecordset;
-            this.IsEvaluationScalar = thisObj.IsEvaluationScalar;
-            this.Namespace = thisObj.Namespace;
-            this.IsManagmentServicePayload = thisObj.IsManagmentServicePayload;
-            this._strToColIdx = thisObj._strToColIdx;
-            this._keyToAliasMap = thisObj._keyToAliasMap;
+            _myKeys = new IndexList(gaps, max, min);
+            DataListKey = thisObj.DataListKey;
+            IsEmtpy = thisObj.IsEmtpy;
+            IsRecordset = thisObj.IsRecordset;
+            IsEvaluationScalar = thisObj.IsEvaluationScalar;
+            Namespace = thisObj.Namespace;
+            IsManagmentServicePayload = thisObj.IsManagmentServicePayload;
+            _strToColIdx = thisObj._strToColIdx;
+            _keyToAliasMap = thisObj._keyToAliasMap;
 
 
         }
@@ -656,12 +655,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             ICollection<string> entry1Columns = null;
 
             // fetch alias key first ;)
-            if (firstKey != null){
-                var magicKey =  _keyToAliasMap[firstKey];
+            if(firstKey != null)
+            {
+                var magicKey = _keyToAliasMap[firstKey];
 
                 var sk1 = new StorageKey(magicKey.MasterKeyID, idx + magicKey.MasterKey);
                 entry1Columns = _keyToAliasMap.Keys;
-                result.ParentKey = new FederatedStorageKey {TheKey = sk1, ImpactedColumns = entry1Columns};
+                result.ParentKey = new FederatedStorageKey { TheKey = sk1, ImpactedColumns = entry1Columns };
 
                 // set master entry for the federation ;)
                 result.MasterEntry = magicKey.MasterEntry;
@@ -670,7 +670,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             // now create the child key
             var sk2 = new StorageKey(DataListKey, idx + GenerateKeyPrefix(Namespace, DataListKey));
 
-            result.ChildKey = new FederatedStorageKey {TheKey = sk2, ImpactedColumns = FilterColumns(entry1Columns)};
+            result.ChildKey = new FederatedStorageKey { TheKey = sk2, ImpactedColumns = FilterColumns(entry1Columns) };
 
             return result;
         }
@@ -679,13 +679,13 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         {
             IList<string> result = new List<string>();
 
-            if (Columns != null)
+            if(Columns != null)
             {
-                if (entry1Columns != null)
+                if(entry1Columns != null)
                 {
-                    foreach (var col in Columns)
+                    foreach(var col in Columns)
                     {
-                        if (!entry1Columns.Contains(col.ColumnName))
+                        if(!entry1Columns.Contains(col.ColumnName))
                         {
                             result.Add(col.ColumnName);
                         }
@@ -694,7 +694,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 else
                 {
                     // we want all of them ;)
-                    foreach (var col in Columns)
+                    foreach(var col in Columns)
                     {
                         result.Add(col.ColumnName);
                     }
@@ -706,7 +706,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             }
 
             return result;
-        } 
+        }
 
         /// <summary>
         /// Generates the storage key.

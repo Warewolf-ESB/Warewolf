@@ -13,7 +13,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public IDictionary<string, IBinaryDataListEntry> _templateDict;
         // Intellisesne parts to return 
         public IList<IDev2DataLanguageIntellisensePart> _intellisenseParts;
-        // Catelog for intelisense namespaces
+        // Catalog for intellisense namespaces
         public IList<string> _intellisensedNamespace;
     }
 }

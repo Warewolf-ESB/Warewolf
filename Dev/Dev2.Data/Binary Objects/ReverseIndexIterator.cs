@@ -38,7 +38,7 @@ namespace Dev2.Data.Binary_Objects
         public bool HasMore()
         {
             int canidate = _curValue;
-            while (IndexList.Gaps.Contains(canidate))
+            while(IndexList.Gaps.Contains(canidate))
             {
                 canidate--;
             }
@@ -50,15 +50,14 @@ namespace Dev2.Data.Binary_Objects
         {
 
             int canidate = _curValue;
-            int result = _curValue;
             // assign a new curValue
 
-            while (IndexList.Gaps.Contains(canidate))
+            while(IndexList.Gaps.Contains(canidate))
             {
                 canidate--;
             }
 
-            result = canidate;
+            int result = canidate;
 
             _curValue = canidate - 1; // save next value ;)
 
@@ -93,7 +92,7 @@ namespace Dev2.Data.Binary_Objects
         public IIndexIterator Clone()
         {
             HashSet<int> gaps = new HashSet<int>();
-            foreach (int g in IndexList.Gaps)
+            foreach(int g in IndexList.Gaps)
             {
                 gaps.Add(g);
             }

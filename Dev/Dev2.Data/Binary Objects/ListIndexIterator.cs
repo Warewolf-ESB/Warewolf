@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -79,11 +80,7 @@ namespace Dev2.Data.Binary_Objects
 
         public IIndexIterator Clone()
         {
-            List<int> indexes = new List<int>();
-            foreach(int g in IndexList.Indexes)
-            {
-                indexes.Add(g);
-            }
+            List<int> indexes = IndexList.Indexes.ToList();
             return new ListIndexIterator(indexes);
         }
     }

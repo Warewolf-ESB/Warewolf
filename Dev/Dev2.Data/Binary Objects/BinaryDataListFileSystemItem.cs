@@ -16,8 +16,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private SBinaryDataListItem _internalObj;
 
         private string _fileData;
-        private string _filePath;
-
+        private readonly string _filePath;
 
         #endregion
 
@@ -29,7 +28,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             get
             {
-                if (string.IsNullOrEmpty(_fileData))
+                if(string.IsNullOrEmpty(_fileData))
                 {
                     // Use File Broker ;)
                     BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
@@ -59,12 +58,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             get
             {
-                if (_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue.Length < 1)
+                if(_internalObj.ItemCollectionIndex >= 0 && _internalObj.DisplayValue.Length < 1)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
 
-                if (_internalObj.DisplayValue == null)
+                if(_internalObj.DisplayValue == null)
                 {
                     return "null";
                 }
@@ -86,7 +85,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _internalObj.FieldName = field;
             _filePath = filePath;
             int tmp;
-            if (Int32.TryParse(idx, out tmp))
+            if(Int32.TryParse(idx, out tmp))
             {
                 _internalObj.ItemCollectionIndex = tmp;
             }
@@ -124,7 +123,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IBinaryDataListItem result;
 
-            if (_internalObj.ItemCollectionIndex > 0)
+            if(_internalObj.ItemCollectionIndex > 0)
             {
                 result = new BinaryDataListFileSystemItem(_internalObj.TheValue, _filePath, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
             }

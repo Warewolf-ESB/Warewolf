@@ -1,14 +1,14 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using Dev2.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -17,7 +17,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Fields
         SBinaryDataListEntry _internalObj;
-        private bool _isEvalauteReady = false;
+        private bool _isEvalauteReady;
         #endregion Fields
 
         #region Properties
@@ -188,6 +188,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="parentColumn">The parent column.</param>
         /// <param name="parentNamespace">The parent namespace.</param>
         /// <param name="childColumn">The child column.</param>
+        /// <param name="errors">The errors.</param>
         public void AdjustForIOMapping(Guid parentDLID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
             // Need to adjust the storage layer to retain the parent DLID storage location ;)
@@ -251,7 +252,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(IsRecordset)
             {
-                if(idx <= FetchLastRecordsetIndex(false) && _internalObj.ContainsRow(myIdx))
+                if(idx <= FetchLastRecordsetIndex() && _internalObj.ContainsRow(myIdx))
                 {
                     // entry already exist, so update the row ;)
                     _internalObj[myIdx] = itms;
@@ -274,7 +275,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(IsRecordset)
             {
-                if(idx <= FetchLastRecordsetIndex(false) && _internalObj.ContainsRow(myIdx))
+                if(idx <= FetchLastRecordsetIndex() && _internalObj.ContainsRow(myIdx))
                 {
                     int colIdx = InternalFetchColumnIndex(item.FieldName);
                     if(colIdx >= 0)
@@ -427,7 +428,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             if(clonedStorageId.Equals(DataListKey))
             {
                 // manip result's _internalObj aka the view of the data ;)
-                result._internalObj.CopyTo(this._internalObj);
+                result._internalObj.CopyTo(_internalObj);
                 // copy express auditing data too ;)
                 result.ComplexExpressionAuditor = ComplexExpressionAuditor;
             }
@@ -585,7 +586,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         public int FetchAppendRecordsetIndex()
         {
-            int result = FetchLastRecordsetIndex(false);
+            int result = FetchLastRecordsetIndex();
             if(result >= 1 && _internalObj._appendIndex > 0)
             {
                 if(!_internalObj.IsEmtpy)
@@ -863,9 +864,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public IList<IBinaryDataListItem> FetchRecordAt(int idx, string field, out string error, bool isEntireRow = false)
         {
             error = string.Empty;
-            IList<IBinaryDataListItem> result;
 
-            result = _internalObj[idx];
+            IList<IBinaryDataListItem> result = _internalObj[idx];
 
             if(isEntireRow)
             {
@@ -947,20 +947,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 return false;
             }
 
-            var tmp = new SBinaryDataListEntry();
+            var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
 
-            tmp.IsRecordset = _internalObj.IsRecordset;
-            tmp.Columns = _internalObj.Columns;
-            tmp.Namespace = _internalObj.Namespace;
-            tmp.DataListKey = _internalObj.DataListKey;
-            tmp.Description = _internalObj.Description;
-            tmp.IsEditable = _internalObj.IsEditable;
-            tmp.ColumnIODirection = _internalObj.ColumnIODirection;
-            tmp._appendIndex = -1;
             tmp.Init(_internalObj.Columns.Count);
 
             _internalObj = tmp;
-            int lastRowIndex = FetchLastRecordsetIndex(false);
+            int lastRowIndex = FetchLastRecordsetIndex();
             _internalObj.Remove(lastRowIndex);
 
             return true;
@@ -972,7 +964,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         bool DeleteLastRow(out string error)
         {
-            int lastRowIndex = FetchLastRecordsetIndex(false);
+            int lastRowIndex = FetchLastRecordsetIndex();
             error = string.Empty;
             // Bug 8725
             if(!_internalObj.IsEmtpy)
@@ -990,15 +982,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         }
 
         /// <summary>
-        ///     Deletes the row at a specific index.
+        /// Deletes the row at a specific index.
         /// </summary>
         /// <param name="index">The index.</param>
+        /// <param name="error">The error.</param>
         /// <returns></returns>
         bool DeleteRowAtIndex(int index, out string error)
         {
             error = string.Empty;
             bool result = false;
-            int lastIndex = FetchLastRecordsetIndex(false);
+            int lastIndex = FetchLastRecordsetIndex();
             if(index <= lastIndex && index > 0)
             {
                 _internalObj.Remove(index);
@@ -1229,12 +1222,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <returns></returns>
         IBinaryDataListItem InternalFetchIndexedRecordsetUpsertPayload(int idx, out string error)
         {
-            error = string.Empty;
-            IBinaryDataListItem result = Dev2BinaryDataListFactory.CreateBinaryItem(string.Empty, string.Empty);
             // in this case there is a single row, with a single column's data to extract
             Dev2Column col = Columns.FirstOrDefault();
-            result = TryFetchRecordsetColumnAtIndex(col.ColumnName, idx, out error);
-            return result;
+            error = string.Empty;
+            if(col != null)
+            {
+                IBinaryDataListItem result = TryFetchRecordsetColumnAtIndex(col.ColumnName, idx, out error);
+                return result;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1249,33 +1246,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 int next = idxItr.FetchNextIndex();
                 _internalObj.Remove(next);
             }
-        }
-
-        /// <summary>
-        ///     Corrects the recordset fetch miss.
-        /// </summary>
-        /// <param name="idx">The idx.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
-        IList<IBinaryDataListItem> CorrectRecordsetFetchMiss(int idx, out string error)
-        {
-            IList<IBinaryDataListItem> result = new List<IBinaryDataListItem>();
-            error = string.Empty;
-            bool isEmtpy = _internalObj.IsEmtpy;
-            foreach(Dev2Column c in Columns)
-            {
-                IBinaryDataListItem tmp = new BinaryDataListItem(string.Empty, Namespace, c.ColumnName, idx);
-                if(error == string.Empty)
-                {
-                    if(!isEmtpy)
-                    {
-                        TryPutRecordItemAtIndex(tmp, idx, out error);
-                    }
-                    result.Add(tmp);
-                }
-            }
-
-            return result;
         }
 
         #endregion Private Methods

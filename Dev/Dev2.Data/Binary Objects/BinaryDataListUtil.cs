@@ -1,6 +1,6 @@
-﻿using System.Runtime.Serialization.Formatters.Binary;
-using System;
+﻿using System;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Dev2.Data.Binary_Objects
 {
@@ -9,12 +9,12 @@ namespace Dev2.Data.Binary_Objects
 
         public string SerializeDeferredItem(object item)
         {
-            string result = string.Empty;
+            string result;
             using(MemoryStream ms = new MemoryStream())
             {
                 BinaryFormatter formater = new BinaryFormatter();
                 formater.Serialize(ms, item);
-                
+
                 result = Convert.ToBase64String(ms.ToArray());
 
                 ms.Dispose();
@@ -26,7 +26,7 @@ namespace Dev2.Data.Binary_Objects
 
         public T DeserializeDeferredItem<T>(string item)
         {
-           
+
             using(MemoryStream ms = new MemoryStream(Convert.FromBase64String(item)))
             {
                 BinaryFormatter formater = new BinaryFormatter();

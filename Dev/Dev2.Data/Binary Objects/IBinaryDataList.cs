@@ -45,6 +45,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="description">The description.</param>
         /// <param name="overwrite">if set to <c>true</c> [overwrite].</param>
         /// <param name="isEditable">if set to <c>true</c> [is editable].</param>
+        /// <param name="ioDir">The io dir.</param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
         bool TryCreateScalarTemplate(string theNameSpace, string fieldName, string description, bool overwrite, bool isEditable, enDev2ColumnArgumentDirection ioDir, out string error);

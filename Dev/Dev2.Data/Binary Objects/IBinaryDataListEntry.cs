@@ -1,8 +1,8 @@
-﻿using Dev2.Data.Audit;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
@@ -140,6 +140,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// <param name="idx">The idx.</param>
         /// <param name="field">The field.</param>
         /// <param name="error">The error.</param>
+        /// <param name="isEntireRow"></param>
         /// <returns></returns>
         IList<IBinaryDataListItem> FetchRecordAt(int idx, string field, out string error, bool isEntireRow = false);
 

@@ -9,8 +9,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Fields
 
-        private static readonly string recsetName = "Results";
-        private static readonly string fieldName = "Field";
+        const string recsetName = "Results";
+        const string fieldName = "Field";
 
         #endregion Fields
 
@@ -22,9 +22,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             errors = new ErrorResultTO();
             ActivityUpsertTO result = new ActivityUpsertTO();
 
-            string error = string.Empty;
-
-            foreach (OutputTO outputTO in outputTOList)
+            foreach(OutputTO outputTO in outputTOList)
             {
 
                 // I first need to detect if the entry is a recordset!!!!!!!!!!!
@@ -35,12 +33,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 IBinaryDataListEntry entry = Dev2BinaryDataListFactory.CreateEntry(recsetName, string.Empty, dlID);
 
                 int idx = 1;
-                foreach (string output in outputTO.OutputStrings)
+                foreach(string output in outputTO.OutputStrings)
                 {
                     IBinaryDataListItem itemToAdd = Dev2BinaryDataListFactory.CreateBinaryItem(output, recsetName, fieldName, idx);
                     idx++;
+                    string error;
                     entry.TryAppendRecordItem(itemToAdd, out error);
-                    if (error != string.Empty)
+                    if(error != string.Empty)
                     {
                         errors.AddError(error);
                     }

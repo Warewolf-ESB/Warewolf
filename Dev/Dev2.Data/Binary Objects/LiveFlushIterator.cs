@@ -21,9 +21,9 @@ namespace Dev2.DataList.Contract.Builders
         IList<IBinaryDataListItem> _rowData;
         IBinaryDataListEntry _entry;
         int _upsertIdx = 1;
-        Dev2RecordsetIndexScope dris = new Dev2RecordsetIndexScope();
+        readonly Dev2RecordsetIndexScope dris = new Dev2RecordsetIndexScope();
 
-        IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+        readonly IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
         public LiveFlushIterator(Guid loc)
         {
@@ -32,7 +32,7 @@ namespace Dev2.DataList.Contract.Builders
 
             _bdl = c.FetchBinaryDataList(loc, out errors);
 
-            if (errors.HasErrors())
+            if(errors.HasErrors())
             {
                 throw new Exception(errors.MakeDataListReady());
             }
@@ -41,12 +41,12 @@ namespace Dev2.DataList.Contract.Builders
 
         public void PublishLiveIterationData()
         {
-            if (_bdl != null && _liveFlushingLocation != GlobalConstants.NullDataListID)
+            if(_bdl != null && _liveFlushingLocation != GlobalConstants.NullDataListID)
             {
                 ErrorResultTO errors;
-                // push the exising version of the DataList on change ;)
+                // push the existing version of the DataList on change ;)
                 c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
-                if (errors.HasErrors())
+                if(errors.HasErrors())
                 {
                     throw new Exception(errors.MakeDataListReady());
                 }
@@ -56,37 +56,34 @@ namespace Dev2.DataList.Contract.Builders
         // 2 seconds for 10k entries with 75 columns ;)
         public void FlushIterations(PayloadIterationFrame<string> scopedFrame, bool isFramed, bool isTerminalFlush)
         {
-            ErrorResultTO errors;
-
             string error;
 
             Dev2TokenConverter tc = new Dev2TokenConverter();
-            enRecordsetIndexType idxType;
 
             bool amendedData = false;
             // We do not care about data language in these cases, skip all the junk and get it done son ;)
 
-            while (scopedFrame.HasData())
+            while(scopedFrame.HasData())
             {
                 DataListPayloadFrameTO<string> tmp = scopedFrame.FetchNextFrameItem();
                 string exp = tmp.Expression; //.Replace("(*)", "()"); // force conversion ;)
-                string val = (tmp.Value as string);
+                string val = tmp.Value;
 
                 IIntellisenseResult token = tc.ParseTokenForMatch(exp, _bdl.FetchIntellisenseParts());
 
-                if (token != null)
+                if(token != null)
                 {
                     // Get rs and field
                     string rs = token.Option.Recordset;
                     string field = token.Option.Field;
                     string idx = token.Option.RecordsetIndex;
 
-                    if (rs != _lastRs && !string.IsNullOrEmpty(rs))
+                    if(rs != _lastRs && !string.IsNullOrEmpty(rs))
                     {
                         // Flush any existing row data for a different recordset ;)
-                        if (_rowData != null)
+                        if(_rowData != null)
                         {
-                            if (!token.Option.IsScalar)
+                            if(!token.Option.IsScalar)
                             {
                                 DumpColAtATime();
                             }
@@ -95,9 +92,9 @@ namespace Dev2.DataList.Contract.Builders
                         }
 
                         _bdl.TryGetEntry(rs, out _entry, out error);
-                        if (error != string.Empty || _entry == null)
+                        if(error != string.Empty || _entry == null)
                         {
-                            throw new Exception("Upsert Execption : " + error);
+                            throw new Exception("Upsert Exception : " + error);
                         }
 
                         // stash last rs
@@ -110,7 +107,7 @@ namespace Dev2.DataList.Contract.Builders
                     }
 
 
-                    if (!token.Option.IsScalar)
+                    if(!token.Option.IsScalar)
                     {
                         // set commit flag ;)
                         amendedData = true;
@@ -119,11 +116,11 @@ namespace Dev2.DataList.Contract.Builders
 
                         IBinaryDataListItem itm = _rowData[colIdx];
 
-                        idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
-                        
+                        enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
+
                         int tmpIdx = dris.FetchRecordsetIndex(token, _entry, isFramed);
 
-                        if (tmpIdx != _upsertIdx)
+                        if(tmpIdx != _upsertIdx)
                         {
                             // silly users making algorithms slow ;(
                             // we need to dump data at this point... 1 fliping column at a time
@@ -133,23 +130,23 @@ namespace Dev2.DataList.Contract.Builders
 
                         _upsertIdx = tmpIdx;
 
-                        if (_upsertIdx == 0)
+                        if(_upsertIdx == 0)
                         {
                             throw new Exception("Invalid recordset index of 0");
                         }
 
                         // if numeric fetch the index
-                        if (idxType == enRecordsetIndexType.Numeric)
+                        if(idxType == enRecordsetIndexType.Numeric)
                         {
                             Int32.TryParse(idx, out _upsertIdx);
                         }
 
-                        
+
                         itm.UpdateIndex(_upsertIdx);
                         itm.UpdateField(field);
                         itm.UpdateValue(val);
 
-                        if (_rowData == null)
+                        if(_rowData == null)
                         {
                             throw new Exception("Invalid Bulk Load Data");
                         }
@@ -168,7 +165,7 @@ namespace Dev2.DataList.Contract.Builders
 
                         scalarEntry.TryPutScalar(itm, out error);
 
-                        if (error != string.Empty)
+                        if(error != string.Empty)
                         {
                             throw new Exception(error);
                         }
@@ -181,11 +178,10 @@ namespace Dev2.DataList.Contract.Builders
             }
 
             // flush the rowData out ;)
-            if (_entry != null && _entry.IsRecordset && amendedData)
+            if(_entry != null && _entry.IsRecordset && amendedData)
             {
-                error = string.Empty;
                 _entry.TryPutRecordRowAt(_rowData, _upsertIdx, out error);
-                if (error != string.Empty)
+                if(error != string.Empty)
                 {
                     throw new Exception(error);
                 }
@@ -193,8 +189,9 @@ namespace Dev2.DataList.Contract.Builders
                 dris.MoveIndexesToNextPosition();
             }
 
-            if (isTerminalFlush)
+            if(isTerminalFlush)
             {
+                ErrorResultTO errors;
                 c.PushBinaryDataListInServerScope(_liveFlushingLocation, _bdl, out errors);
             }
 
@@ -204,13 +201,13 @@ namespace Dev2.DataList.Contract.Builders
 
         private void DumpColAtATime()
         {
-            string error;
             // silly users making algorithms slow ;(
-            // we need to dump data at this point... 1 fliping column at a time
-            foreach (IBinaryDataListItem item in _rowData)
+            // we need to dump data at this point... 1 flipping column at a time
+            foreach(IBinaryDataListItem item in _rowData)
             {
-                if (item.ItemCollectionIndex != -1)
+                if(item.ItemCollectionIndex != -1)
                 {
+                    string error;
                     _entry.TryPutRecordItemAtIndex(item, item.ItemCollectionIndex, out error);
                 }
             }
@@ -223,9 +220,9 @@ namespace Dev2.DataList.Contract.Builders
 
         private void InitRowBuffer(int cnt)
         {
-            if (_rowData != null)
+            if(_rowData != null)
             {
-                for (int i = 0; i < cnt; i++)
+                for(int i = 0; i < cnt; i++)
                 {
                     IBinaryDataListItem itm = DataListConstants.baseItem.Clone();
                     itm.UpdateRecordset(_lastRs);
@@ -236,9 +233,9 @@ namespace Dev2.DataList.Contract.Builders
 
         private void ClearRowBuffer()
         {
-            if (_rowData != null)
+            if(_rowData != null)
             {
-                foreach (IBinaryDataListItem t in _rowData)
+                foreach(IBinaryDataListItem t in _rowData)
                 {
                     t.ToClear();
                 }
