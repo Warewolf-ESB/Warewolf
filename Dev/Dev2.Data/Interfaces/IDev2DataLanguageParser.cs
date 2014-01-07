@@ -3,16 +3,19 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
+// ReSharper restore CheckNamespace
 {
-    public interface IDev2DataLanguageParser {
+    public interface IDev2DataLanguageParser
+    {
         /// <summary>
         /// Parses the data language for intellisense.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <param name="dataList">The data list.</param>
         /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
-        /// <param name="fiterTO">The fiter TO.</param>
+        /// <param name="fiterTO">The filter TO.</param>
         /// <param name="isFromIntellisense"></param>
         /// <returns></returns>
         IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO fiterTO = null, bool isFromIntellisense = false);
@@ -33,7 +36,7 @@ namespace Dev2.DataList.Contract
         IList<ParseTO> MakeParts(string payload);
 
         /// <summary>
-        /// Makes the parts exculing recordset index with is added back to the results later.
+        /// Makes the parts excluding recordset index with is added back to the results later.
         /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
@@ -43,6 +46,7 @@ namespace Dev2.DataList.Contract
         /// Parses the expression into parts.
         /// </summary>
         /// <param name="expression">The expression.</param>
+        /// <param name="parts"></param>
         /// <returns></returns>
         IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts);
 
