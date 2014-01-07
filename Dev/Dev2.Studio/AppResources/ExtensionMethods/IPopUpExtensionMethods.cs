@@ -1,7 +1,7 @@
 ﻿using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.ViewModels;
 using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class IPopUpExtensionMethods
@@ -13,7 +13,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             popup.Header = header;
             popup.ImageType = image;
             popup.DontShowAgainKey = dontShowAgainKey;
-            return popup.Show(); 
+            return popup.Show();
         }
     }
 }

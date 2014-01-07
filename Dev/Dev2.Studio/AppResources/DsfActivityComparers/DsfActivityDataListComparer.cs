@@ -1,36 +1,41 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Collections.ObjectModel;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 
-namespace Dev2.Studio {
-    public class DsfActivityDataListComparer {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio
+{
+    public class DsfActivityDataListComparer
+    {
 
-        public static List<string> ContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
-            switch (objectToCheck.ItemType.Name) {
+        public static List<string> ContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
+            switch(objectToCheck.ItemType.Name)
+            {
                 case "DsfWebPageActivity":
                 case "DsfActivity":
-                return DsfActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfAssignActivity":
-                return DsfAssignActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfAssignActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfForEachActivity":
-                return DsfForEachActivityContainsDataListItem(objectToCheck, dataListItem);                
+                    return DsfForEachActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfTransformActivity":
-                return DsfTransformActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfTransformActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfFileForEachActivity":
-                return DsfFileForEachActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfFileForEachActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfMultiAssignActivity":
-                return DsfMultiAssignActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfMultiAssignActivityContainsDataListItem(objectToCheck, dataListItem);
                 case "DsfCountRecordsetActivity":
-                return DsfCountRecordsetActivityContainsDataListItem(objectToCheck, dataListItem);
+                    return DsfCountRecordsetActivityContainsDataListItem(objectToCheck, dataListItem);
                 default:
-                throw new InvalidOperationException("Unexpected Dev2 activity encountered");
+                    throw new InvalidOperationException("Unexpected Dev2 activity encountered");
             }
         }
 
@@ -85,16 +90,15 @@ namespace Dev2.Studio {
             var verifyedParts = BuildParts(buildPartsName);
             foreach(string item in verifyedParts)
             {
-                string test = dataListItem.DisplayName;
-                string test2 = dataListItem.DisplayName;
+                string test;
                 if(dataListItem.DisplayName.Contains("("))
                 {
-                    int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                     test = dataListItem.DisplayName.Remove(startIndex);
                     if(dataListItem.DisplayName.Contains(")"))
                     {
-                        startIndex = dataListItem.DisplayName.IndexOf(")");
-                        test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                        startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                        string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
                         if(item.Contains(test) && item.Contains(test2))
                         {
                             containingFeilds.Add(nameForContainingFields);
@@ -115,15 +119,19 @@ namespace Dev2.Studio {
         }
 
 
-        static List<string> DsfForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             var containingFeilds = new List<string>();
             var comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
 
             var forEachElementNameProperty = objectToCheck.Properties["ForEachElementName"];
-            if (forEachElementNameProperty != null) {
+            if(forEachElementNameProperty != null)
+            {
                 var foreachElementName = forEachElementNameProperty.ComputedValue == null ? string.Empty : forEachElementNameProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (foreachElementName.StartsWith("[[") && foreachElementName.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(foreachElementName.StartsWith("[[") && foreachElementName.EndsWith("]]"))
+                    {
                         ValidateItemsWithElement(dataListItem, foreachElementName, containingFeilds, "foreachElementName");
                     }
                 }
@@ -131,39 +139,48 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        static List<string> DsfAssignActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfAssignActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             List<string> containingFeilds = new List<string>();
             var fieldValueProperty = objectToCheck.Properties["FieldValue"];
             var fieldNameProperty = objectToCheck.Properties["FieldName"];
 
-            string fieldValue = string.Empty;
+            string fieldValue;
             string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
-            if (fieldNameProperty != null) {
+            if(fieldNameProperty != null)
+            {
                 fieldValue = fieldNameProperty.ComputedValue == null ? string.Empty : fieldNameProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!fieldValue.StartsWith("[[") && !fieldValue.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!fieldValue.StartsWith("[[") && !fieldValue.EndsWith("]]"))
+                    {
                         fieldValue = "[[" + fieldValue + "]]";
                     }
                     ValidateItemsWithElement(dataListItem, fieldValue, containingFeilds, "FieldName");
                     var verifyedParts = BuildParts(fieldValue);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("FieldName");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("FieldName");
                                 break;
                             }
@@ -172,28 +189,35 @@ namespace Dev2.Studio {
                 }
             }
 
-            if (fieldValueProperty != null) {
+            if(fieldValueProperty != null)
+            {
                 fieldValue = fieldValueProperty.ComputedValue == null ? string.Empty : fieldValueProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue)) {
+                if(!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue))
+                {
                     var verifyedParts = BuildParts(fieldValue);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("FieldValue");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("FieldValue");
                                 break;
                             }
@@ -207,38 +231,47 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        static List<string> DsfCountRecordsetActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfCountRecordsetActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             List<string> containingFeilds = new List<string>();
-            var RecordsetNameProperty = objectToCheck.Properties["RecordsetName"];
-            var CountNumberProperty = objectToCheck.Properties["CountNumber"];
+            var recordsetNameProperty = objectToCheck.Properties["RecordsetName"];
+            var countNumberProperty = objectToCheck.Properties["CountNumber"];
 
-            string countNumber = string.Empty;
+            string countNumber;
             string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
-            if (CountNumberProperty != null) {
-                countNumber = CountNumberProperty.ComputedValue == null ? string.Empty : CountNumberProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(countNumber) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!countNumber.StartsWith("[[") && !countNumber.EndsWith("]]")) {
+            if(countNumberProperty != null)
+            {
+                countNumber = countNumberProperty.ComputedValue == null ? string.Empty : countNumberProperty.ComputedValue.ToString();
+                if(!string.IsNullOrEmpty(countNumber) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!countNumber.StartsWith("[[") && !countNumber.EndsWith("]]"))
+                    {
                         countNumber = "[[" + countNumber + "]]";
                     }
                     var verifyedParts = BuildParts(countNumber);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("RecordsetName");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("RecordsetName");
                                 break;
                             }
@@ -247,28 +280,35 @@ namespace Dev2.Studio {
                 }
             }
 
-            if (RecordsetNameProperty != null) {
-                countNumber = RecordsetNameProperty.ComputedValue == null ? string.Empty : RecordsetNameProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(countNumber) && !string.IsNullOrEmpty(comparisonValue)) {
+            if(recordsetNameProperty != null)
+            {
+                countNumber = recordsetNameProperty.ComputedValue == null ? string.Empty : recordsetNameProperty.ComputedValue.ToString();
+                if(!string.IsNullOrEmpty(countNumber) && !string.IsNullOrEmpty(comparisonValue))
+                {
                     var verifyedParts = BuildParts(countNumber);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("CountNumber");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("CountNumber");
                                 break;
                             }
@@ -282,80 +322,97 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        static List<string> DsfActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             List<string> containingFields = new List<string>();
 
             var inputMappingProperty = objectToCheck.Properties["InputMapping"];
             var outputMappingProperty = objectToCheck.Properties["OutputMapping"];
 
-            string inputMapping = string.Empty;
-            string outputMapping = string.Empty;
             List<string> names = new List<string>();
 
-            if (outputMappingProperty != null) {
-                outputMapping = outputMappingProperty.ComputedValue == null ? string.Empty : outputMappingProperty.ComputedValue.ToString();
+            if(outputMappingProperty != null)
+            {
+                string outputMapping = outputMappingProperty.ComputedValue == null ? string.Empty : outputMappingProperty.ComputedValue.ToString();
 
-                if (!string.IsNullOrEmpty(outputMapping)) {
+                if(!string.IsNullOrEmpty(outputMapping))
+                {
                     XElement data = XElement.Parse(outputMapping);
                     var nodes = data.DescendantsAndSelf("Output");
                     var maps = nodes.Attributes("Value").Where(c => !string.IsNullOrEmpty(c.Value));
-                    if (maps.Any()) {
-                        maps.ToList().ForEach(item => names.Add(item.Value));
+                    IEnumerable<XAttribute> xAttributes = maps as XAttribute[] ?? maps.ToArray();
+                    if(xAttributes.Any())
+                    {
+                        xAttributes.ToList().ForEach(item => names.Add(item.Value));
                     }
                 }
             }
 
-            if (inputMappingProperty != null) {
-                inputMapping = inputMappingProperty.ComputedValue == null ? string.Empty : inputMappingProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(inputMapping)) {
+            if(inputMappingProperty != null)
+            {
+                string inputMapping = inputMappingProperty.ComputedValue == null ? string.Empty : inputMappingProperty.ComputedValue.ToString();
+                if(!string.IsNullOrEmpty(inputMapping))
+                {
                     XElement data = XElement.Parse(inputMapping);
                     var nodes = data.DescendantsAndSelf("Input");
                     var maps = nodes.Attributes("Source");
-                    if (maps.Any()) {
-                        maps.ToList().ForEach(item => names.Add(item.Value));
+                    IEnumerable<XAttribute> xAttributes = maps as XAttribute[] ?? maps.ToArray();
+                    if(xAttributes.Any())
+                    {
+                        xAttributes.ToList().ForEach(item => names.Add(item.Value));
                     }
                 }
             }
 
             string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
-            if (names.Contains(comparisonValue)) {
+            if(names.Contains(comparisonValue))
+            {
                 containingFields.Add("Contains");
             }
             return containingFields;
         }
 
-        static List<string> DsfFileForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfFileForEachActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             List<string> containingFeilds = new List<string>();
             string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
 
             var forEachElementNameProperty = objectToCheck.Properties["ForEachElementName"];
             var additionalDataProperty = objectToCheck.Properties["AdditionalData"];
 
-            if (forEachElementNameProperty != null) {
+            if(forEachElementNameProperty != null)
+            {
                 var foreachElementName = forEachElementNameProperty.ComputedValue == null ? string.Empty : forEachElementNameProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!foreachElementName.StartsWith("[[") && !foreachElementName.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(foreachElementName) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!foreachElementName.StartsWith("[[") && !foreachElementName.EndsWith("]]"))
+                    {
                         foreachElementName = "[[" + foreachElementName + "]]";
                     }
                     var verifyedParts = BuildParts(foreachElementName);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("foreachElementName");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("foreachElementName");
                                 break;
                             }
@@ -364,31 +421,39 @@ namespace Dev2.Studio {
                 }
             }
 
-            if (additionalDataProperty != null) {
+            if(additionalDataProperty != null)
+            {
                 var additionalData = additionalDataProperty.ComputedValue == null ? string.Empty : additionalDataProperty.ComputedValue.ToString();
-                if (!string.IsNullOrEmpty(additionalData) && !string.IsNullOrEmpty(comparisonValue)) {
-                    if (!additionalData.StartsWith("[[") && !additionalData.EndsWith("]]")) {
+                if(!string.IsNullOrEmpty(additionalData) && !string.IsNullOrEmpty(comparisonValue))
+                {
+                    if(!additionalData.StartsWith("[[") && !additionalData.EndsWith("]]"))
+                    {
                         additionalData = "[[" + additionalData + "]]";
                     }
                     var verifyedParts = BuildParts(additionalData);
-                    foreach (string item in verifyedParts) {
-                        string test = dataListItem.DisplayName;
-                        string test2 = dataListItem.DisplayName;
-                        if (dataListItem.DisplayName.Contains("(")) {
-                            int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
+                    foreach(string item in verifyedParts)
+                    {
+                        string test;
+                        if(dataListItem.DisplayName.Contains("("))
+                        {
+                            int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
                             test = dataListItem.DisplayName.Remove(startIndex);
-                            if (dataListItem.DisplayName.Contains(")")) {
-                                startIndex = dataListItem.DisplayName.IndexOf(")");
-                                test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                if (item.Contains(test) && item.Contains(test2)) {
+                            if(dataListItem.DisplayName.Contains(")"))
+                            {
+                                startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                if(item.Contains(test) && item.Contains(test2))
+                                {
                                     containingFeilds.Add("additionalData");
                                     break;
                                 }
                             }
                         }
-                        else {
+                        else
+                        {
                             test = dataListItem.DisplayName;
-                            if (item.Equals(test)) {
+                            if(item.Equals(test))
+                            {
                                 containingFeilds.Add("additionalData");
                                 break;
                             }
@@ -400,72 +465,96 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        static List<string> DsfMultiAssignActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem) {
+        static List<string> DsfMultiAssignActivityContainsDataListItem(ModelItem objectToCheck, IDataListItemModel dataListItem)
+        {
             List<string> containingFeilds = new List<string>();
-            ObservableCollection<ActivityDTO> multiAssignRows = objectToCheck.Properties["FieldsCollection"].ComputedValue as ObservableCollection<ActivityDTO>;
-            foreach (ActivityDTO row in multiAssignRows) {
-                var fieldValueProperty = row.FieldValue;
-                var fieldNameProperty = row.FieldName;
+            ModelProperty modelProperty = objectToCheck.Properties["FieldsCollection"];
+            if(modelProperty != null)
+            {
+                ObservableCollection<ActivityDTO> multiAssignRows = modelProperty.ComputedValue as ObservableCollection<ActivityDTO>;
+                if(multiAssignRows != null)
+                {
+                    foreach(ActivityDTO row in multiAssignRows)
+                    {
+                        var fieldValueProperty = row.FieldValue;
+                        var fieldNameProperty = row.FieldName;
 
-                string fieldValue = string.Empty;
-                string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
-                if (fieldNameProperty != null) {
-                    fieldValue = fieldNameProperty == null ? string.Empty : fieldNameProperty;
-                    if (!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue)) {
-                        if (!fieldValue.StartsWith("[[") && !fieldValue.EndsWith("]]")) {
-                            fieldValue = "[[" + fieldValue + "]]";
-                        }
-                        var verifyedParts = BuildParts(fieldValue);
-                        foreach (string item in verifyedParts) {
-                            string test = dataListItem.DisplayName;
-                            string test2 = dataListItem.DisplayName;
-                            if (dataListItem.DisplayName.Contains("(")) {
-                                int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                                test = dataListItem.DisplayName.Remove(startIndex);
-                                if (dataListItem.DisplayName.Contains(")")) {
-                                    startIndex = dataListItem.DisplayName.IndexOf(")");
-                                    test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                    if (item.Contains(test) && item.Contains(test2)) {
-                                        containingFeilds.Add(test);
-                                        break;
+                        string fieldValue;
+                        string comparisonValue = string.IsNullOrEmpty(dataListItem.Name) ? string.Empty : string.Format("[[{0}]]", dataListItem.Name);
+                        if(fieldNameProperty != null)
+                        {
+                            fieldValue = fieldNameProperty;
+                            if(!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue))
+                            {
+                                if(!fieldValue.StartsWith("[[") && !fieldValue.EndsWith("]]"))
+                                {
+                                    fieldValue = "[[" + fieldValue + "]]";
+                                }
+                                var verifyedParts = BuildParts(fieldValue);
+                                foreach(string item in verifyedParts)
+                                {
+                                    string test;
+                                    if(dataListItem.DisplayName.Contains("("))
+                                    {
+                                        int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
+                                        test = dataListItem.DisplayName.Remove(startIndex);
+                                        if(dataListItem.DisplayName.Contains(")"))
+                                        {
+                                            startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                            string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                            if(item.Contains(test) && item.Contains(test2))
+                                            {
+                                                containingFeilds.Add(test);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        test = dataListItem.DisplayName;
+                                        if(item.Equals(test))
+                                        {
+                                            containingFeilds.Add(test);
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                            else {
-                                test = dataListItem.DisplayName;
-                                if (item.Equals(test)) {
-                                    containingFeilds.Add(test);
-                                    break;
-                                }
-                            }
                         }
-                    }
-                }
 
-                if (fieldValueProperty != null) {
-                    fieldValue = fieldValueProperty == null ? string.Empty : fieldValueProperty;
-                    if (!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue)) {
-                        var verifyedParts = BuildParts(fieldValue);
-                        foreach (string item in verifyedParts) {
-                            string test = dataListItem.DisplayName;
-                            string test2 = dataListItem.DisplayName;
-                            if (dataListItem.DisplayName.Contains("(")) {
-                                int startIndex = dataListItem.DisplayName.IndexOf("(") + 1;
-                                test = dataListItem.DisplayName.Remove(startIndex);
-                                if (dataListItem.DisplayName.Contains(")")) {
-                                    startIndex = dataListItem.DisplayName.IndexOf(")");
-                                    test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
-                                    if (item.Contains(test) && item.Contains(test2)) {
-                                        containingFeilds.Add(test);
-                                        break;
+                        if(fieldValueProperty != null)
+                        {
+                            fieldValue = fieldValueProperty;
+                            if(!string.IsNullOrEmpty(fieldValue) && !string.IsNullOrEmpty(comparisonValue))
+                            {
+                                var verifyedParts = BuildParts(fieldValue);
+                                foreach(string item in verifyedParts)
+                                {
+                                    string test;
+                                    if(dataListItem.DisplayName.Contains("("))
+                                    {
+                                        int startIndex = dataListItem.DisplayName.IndexOf("(", StringComparison.Ordinal) + 1;
+                                        test = dataListItem.DisplayName.Remove(startIndex);
+                                        if(dataListItem.DisplayName.Contains(")"))
+                                        {
+                                            startIndex = dataListItem.DisplayName.IndexOf(")", StringComparison.Ordinal);
+                                            string test2 = dataListItem.DisplayName.Substring(startIndex, dataListItem.DisplayName.Length - startIndex);
+                                            if(item.Contains(test) && item.Contains(test2))
+                                            {
+                                                containingFeilds.Add(test);
+                                                break;
+                                            }
+                                        }
                                     }
-                                }
-                            }
-                            else {
-                                test = dataListItem.DisplayName;
-                                if (item.Equals(test)) {
-                                    containingFeilds.Add(test);
-                                    break;
+                                    else
+                                    {
+                                        test = dataListItem.DisplayName;
+                                        if(item.Equals(test))
+                                        {
+                                            containingFeilds.Add(test);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -475,17 +564,20 @@ namespace Dev2.Studio {
             return containingFeilds;
         }
 
-        private static IList<String> BuildParts(string item) {
+        private static IEnumerable<string> BuildParts(string item)
+        {
             IDev2StudioDataLanguageParser languageParser = DataListFactory.CreateStudioLanguageParser();
 
             IList<String> resultData = languageParser.ParseForActivityDataItems(item);
             return resultData;
         }
 
-        public static string RemoveRecordSetBrace(string item) {
+        public static string RemoveRecordSetBrace(string item)
+        {
             string fullyFormattedStringValue;
-            if (item.Contains("(") && item.Contains(")")) {
-                fullyFormattedStringValue = item.Remove(item.IndexOf("("));
+            if(item.Contains("(") && item.Contains(")"))
+            {
+                fullyFormattedStringValue = item.Remove(item.IndexOf("(", StringComparison.Ordinal));
             }
             else
                 return item;

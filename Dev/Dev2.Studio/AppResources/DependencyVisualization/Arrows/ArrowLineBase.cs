@@ -1,7 +1,6 @@
 //----------------------------------------------
 // ArrowLineBase.cs (c) 2007 by Charles Petzold
 //----------------------------------------------
-using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -126,10 +125,10 @@ namespace Petzold.Media2D
             {
                 int count = polysegLine.Points.Count;
 
-                if (count > 0)
+                if(count > 0)
                 {
                     // Draw the arrow at the start of the line.
-                    if ((ArrowEnds & ArrowEnds.Start) == ArrowEnds.Start)
+                    if((ArrowEnds & ArrowEnds.Start) == ArrowEnds.Start)
                     {
                         Point pt1 = pathfigLine.StartPoint;
                         Point pt2 = polysegLine.Points[0];
@@ -137,7 +136,7 @@ namespace Petzold.Media2D
                     }
 
                     // Draw the arrow at the end of the line.
-                    if ((ArrowEnds & ArrowEnds.End) == ArrowEnds.End)
+                    if((ArrowEnds & ArrowEnds.End) == ArrowEnds.End)
                     {
                         Point pt1 = count == 1 ? pathfigLine.StartPoint :
                                                  polysegLine.Points[count - 2];
@@ -157,13 +156,16 @@ namespace Petzold.Media2D
             vect *= ArrowLength;
 
             PolyLineSegment polyseg = pathfig.Segments[0] as PolyLineSegment;
-            polyseg.Points.Clear();
-            matx.Rotate(ArrowAngle / 2);
-            pathfig.StartPoint = pt2 + vect * matx;
-            polyseg.Points.Add(pt2);
+            if(polyseg != null)
+            {
+                polyseg.Points.Clear();
+                matx.Rotate(ArrowAngle / 2);
+                pathfig.StartPoint = pt2 + vect * matx;
+                polyseg.Points.Add(pt2);
 
-            matx.Rotate(-ArrowAngle);
-            polyseg.Points.Add(pt2 + vect * matx);
+                matx.Rotate(-ArrowAngle);
+                polyseg.Points.Add(pt2 + vect * matx);
+            }
             pathfig.IsClosed = IsArrowClosed;
 
             return pathfig;

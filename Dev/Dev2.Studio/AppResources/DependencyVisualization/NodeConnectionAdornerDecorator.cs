@@ -1,7 +1,8 @@
-﻿using System.Windows;
+﻿using Dev2.AppResources.DependencyVisualization;
+using System.Windows;
 using System.Windows.Documents;
-using Dev2.AppResources.DependencyVisualization;
 
+// ReSharper disable once CheckNamespace
 namespace CircularDependencyTool
 {
     /// <summary>
@@ -11,13 +12,13 @@ namespace CircularDependencyTool
         // Derive from AdornerDecorator in case the 
         // Window that hosts the GraphView has a custom
         // template that does not include an AdornerLayer.
-        : AdornerDecorator 
+        : AdornerDecorator
     {
         #region Constructor
 
         public NodeConnectionAdornerDecorator()
         {
-            base.Loaded += this.OnLoaded;
+            Loaded += OnLoaded;
         }
 
         #endregion // Constructor
@@ -27,12 +28,12 @@ namespace CircularDependencyTool
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             var layer = AdornerLayer.GetAdornerLayer(this);
-            if (layer == null)
+            if(layer == null)
                 return;
 
             _adorner = new NodeConnectionAdorner(this);
             layer.Add(_adorner);
-            this.GiveGraphToAdorner();
+            GiveGraphToAdorner();
         }
 
         #endregion // OnLoaded
@@ -54,7 +55,11 @@ namespace CircularDependencyTool
 
         static void OnGraphChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            (sender as NodeConnectionAdornerDecorator).GiveGraphToAdorner();
+            NodeConnectionAdornerDecorator nodeConnectionAdornerDecorator = sender as NodeConnectionAdornerDecorator;
+            if(nodeConnectionAdornerDecorator != null)
+            {
+                nodeConnectionAdornerDecorator.GiveGraphToAdorner();
+            }
         }
 
         #endregion // Graph (DP)
@@ -63,16 +68,10 @@ namespace CircularDependencyTool
 
         void GiveGraphToAdorner()
         {
-            if (_adorner != null && this.Graph != null)
+            if(_adorner != null && Graph != null)
             {
-                _adorner.Graph = this.Graph;
+                _adorner.Graph = Graph;
             }
-        }
-
-        protected override Size MeasureOverride(Size constraint)
-        {
-
-            return base.MeasureOverride(constraint);
         }
 
         #endregion // Private Helpers

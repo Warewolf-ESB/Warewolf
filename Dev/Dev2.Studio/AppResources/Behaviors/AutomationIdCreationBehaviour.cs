@@ -2,7 +2,6 @@
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.UiAutomation;
 using System.Activities.Presentation.Model;
@@ -27,7 +26,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         protected override void OnAttached()
         {
-            if (!App.IsAutomationMode)
+            if(!App.IsAutomationMode)
             {
                 AssociatedObject.Visibility = Visibility.Collapsed;
             }
@@ -51,10 +50,10 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
 #if Debug
             //AutomationIdCreaterView view = new AutomationIdCreaterView();
-            string _automationId = ModelItemUtils.GetProperty("AutomationID", AutomationIdCreation) as string ?? string.Empty;;
+            string _automationId = ModelItemUtils.GetProperty("AutomationID", AutomationIdCreation) as string ?? string.Empty; ;
 
             AutomationIdCreaterViewModel viewModel = new AutomationIdCreaterViewModel();
-            if (!string.IsNullOrEmpty(_automationId))
+            if(!string.IsNullOrEmpty(_automationId))
             {
                 viewModel.AutomationID = _automationId;
             }
@@ -62,7 +61,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             //view.DataContext = viewModel;
             //view.ShowDialog();
-            if (viewModel.DialogResult == ViewModelDialogResults.Okay)
+            if(viewModel.DialogResult == ViewModelDialogResults.Okay)
             {
                 ModelItemUtils.SetProperty("AutomationID", viewModel.AutomationID, AutomationIdCreation);
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Dev2.Studio.Core.ViewModels.Navigation;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -6,8 +7,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
-using System.Windows.Media;
-using Dev2.Studio.Core.ViewModels.Navigation;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -28,8 +27,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         public static readonly DependencyProperty InsertAnimationProperty =
-            DependencyProperty.Register("InsertAnimation", 
-            typeof(System.Windows.Media.Animation.Storyboard), 
+            DependencyProperty.Register("InsertAnimation",
+            typeof(System.Windows.Media.Animation.Storyboard),
             typeof(TreeViewFocusOnAddBehavior), new PropertyMetadata(null));
 
         #endregion Dependency Properties
@@ -56,27 +55,27 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AttachSourceCollectionChangedHandler(INotifyCollectionChanged collection)
         {
-            if (collection == null)
+            if(collection == null)
             {
                 return;
             }
             collection.CollectionChanged += ItemsSourceCollectionChanged;
 
             var nodes = collection as ObservableCollection<ITreeNode>;
-            if (nodes != null)
+            if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
                 return;
             }
 
             var collectionView = collection as CollectionView;
-            if (collectionView == null)
+            if(collectionView == null)
             {
                 return;
             }
 
             nodes = collectionView.SourceCollection as ObservableCollection<ITreeNode>;
-            if (nodes != null)
+            if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
             }
@@ -84,7 +83,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void DetachSourceCollectionChangedHandler(INotifyCollectionChanged collection)
         {
-            if (collection == null)
+            if(collection == null)
             {
                 return;
             }
@@ -93,7 +92,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewItems == null)
+            if(e.NewItems == null)
             {
                 return;
             }
@@ -103,7 +102,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 {
                     n.Children.CollectionChanged += ItemsSourceCollectionChanged;
 
-                    if (!n.IsNew)
+                    if(!n.IsNew)
                     {
                         return;
                     }
@@ -114,22 +113,22 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void ExpandToTop(ITreeNode treeNode, IList<ITreeNode> childrenToExpandTo)
         {
-            if (treeNode == null || treeNode.IsExpanded)
+            if(treeNode == null || treeNode.IsExpanded)
             {
-                if (childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
+                if(childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
                 {
                     childrenToExpandTo.Reverse().ToList()
                         .ForEach(c => c.IsExpanded = true);
                 }
             }
-            else if (!treeNode.IsExpanded)
+            else if(!treeNode.IsExpanded)
             {
-                if (treeNode.TreeParent != null)
+                if(treeNode.TreeParent != null)
                 {
                     childrenToExpandTo.Add(treeNode);
                     ExpandToTop(treeNode.TreeParent, childrenToExpandTo);
                 }
-                else if (childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
+                else if(childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
                 {
                     childrenToExpandTo.ToList().ForEach(c => c.IsExpanded = true);
                 }
@@ -139,7 +138,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             AttachSourceCollectionChangedHandler(AssociatedObject.Items);
-            foreach (var node in AssociatedObject.Items.OfType<ITreeNode>())
+            foreach(var node in AssociatedObject.Items.OfType<ITreeNode>())
             {
                 AttachSourceCollectionChangedHandler(node.Children);
             }

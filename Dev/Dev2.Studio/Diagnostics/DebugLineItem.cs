@@ -1,5 +1,6 @@
 ﻿using Dev2.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public class DebugLineItem : IDebugLineItem

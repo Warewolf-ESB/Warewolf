@@ -39,20 +39,17 @@ namespace Dev2.Studio.AppResources.Converters
 
                         return Application.Current.Resources[resourceName];
                     }
-                    else
+                    var navigationItemViewModel = values[1] as AbstractTreeViewModel;
+                    if(navigationItemViewModel == null)
+                        return null;
+
+                    Uri uri;
+                    if(!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
                     {
-                        var navigationItemViewModel = values[1] as AbstractTreeViewModel;
-                        if(navigationItemViewModel == null)
-                            return null;
+                        uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
+                    }
 
-                        Uri uri;
-                        if(!Uri.TryCreate(iconpath, UriKind.Absolute, out uri))
-                        {
-                            uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
-                        }
-
-                        return new BitmapImage(uri);
-                    }                    
+                    return new BitmapImage(uri);
                 }                              
                 return new BitmapImage();
             }

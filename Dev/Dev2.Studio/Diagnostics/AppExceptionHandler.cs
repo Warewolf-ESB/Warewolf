@@ -1,8 +1,7 @@
-﻿using System;
-using Caliburn.Micro;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.ViewModels;
+﻿using Dev2.Studio.ViewModels;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public class AppExceptionHandler : AppExceptionHandlerAbstract
@@ -13,7 +12,7 @@ namespace Dev2.Studio.Diagnostics
         #region CTOR
 
         public AppExceptionHandler(IApp current, IMainViewModel mainViewModel)
-        {            
+        {
             if(current == null)
             {
                 throw new ArgumentNullException("current");
@@ -21,7 +20,7 @@ namespace Dev2.Studio.Diagnostics
             if(mainViewModel == null)
             {
                 throw new ArgumentNullException("mainViewModel");
-            }     
+            }
             _current = current;
             _mainViewModel = mainViewModel;
         }

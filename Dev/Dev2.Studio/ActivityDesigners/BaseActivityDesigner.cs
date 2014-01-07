@@ -1,11 +1,9 @@
-﻿using System;
+﻿using Dev2.Interfaces;
+using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Interfaces;
 
 namespace Dev2.Studio
 {
@@ -40,8 +38,8 @@ namespace Dev2.Studio
         public void RemoveRow()
         {
             //do nothing if smaller or equal than 2 (which is minimum size)
-            if (ItemList == null || ItemList.Count() <= MinSize ||  
-                 //never remove the last blank item
+            if(ItemList == null || ItemList.Count() <= MinSize ||
+                //never remove the last blank item
                 BlankIndexes == null || BlankIndexes.Count() <= MinBlanks)
             {
                 return;
@@ -50,7 +48,7 @@ namespace Dev2.Studio
             //remove all the other blank items
             var firstIdxToRemove = BlankIndexes.First() - 1;
             ItemList.RemoveAt(firstIdxToRemove);
-            for (var i = firstIdxToRemove; i < ItemList.Count; i++)
+            for(var i = firstIdxToRemove; i < ItemList.Count; i++)
             {
                 dynamic tmp = ItemList[i];
                 tmp.IndexNumber = i + 1;

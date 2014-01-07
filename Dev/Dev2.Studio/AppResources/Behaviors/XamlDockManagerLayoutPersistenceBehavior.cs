@@ -1,10 +1,6 @@
-﻿using System.Text;
-using Caliburn.Micro;
-using Dev2.Common;
-using Dev2.Composition;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Infragistics.Windows.DockManager;
@@ -25,12 +21,12 @@ namespace Dev2.Studio.AppResources.Behaviors
         #endregion Class Members
 
         #region Override Methods
-        
+
         protected override void OnAttached()
         {
             base.OnAttached();
             EventPublishers.Aggregator.Subscribe(this);
-            
+
             if(Application.Current != null)
             {
                 Application.Current.Exit -= AppOnExit;
@@ -69,8 +65,8 @@ namespace Dev2.Studio.AppResources.Behaviors
         private static void UserInterfaceLayoutRepositoryChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             XamlDockManagerLayoutPersistenceBehavior xamlDockManagerLayoutPersistenceBehavior = dependencyObject as XamlDockManagerLayoutPersistenceBehavior;
-            if (xamlDockManagerLayoutPersistenceBehavior == null) return;
-            if (xamlDockManagerLayoutPersistenceBehavior.UserInterfaceLayoutRepository == null) return;
+            if(xamlDockManagerLayoutPersistenceBehavior == null) return;
+            if(xamlDockManagerLayoutPersistenceBehavior.UserInterfaceLayoutRepository == null) return;
             xamlDockManagerLayoutPersistenceBehavior.UserInterfaceLayoutRepository.Load();
             xamlDockManagerLayoutPersistenceBehavior.LoadLayout(xamlDockManagerLayoutPersistenceBehavior.LayoutName);
         }
@@ -92,9 +88,9 @@ namespace Dev2.Studio.AppResources.Behaviors
         private static void LayoutNameyChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             XamlDockManagerLayoutPersistenceBehavior xamlDockManagerLayoutPersistenceBehavior = dependencyObject as XamlDockManagerLayoutPersistenceBehavior;
-            if (xamlDockManagerLayoutPersistenceBehavior == null) return;
+            if(xamlDockManagerLayoutPersistenceBehavior == null) return;
 
-            if (e.NewValue == null) return;
+            if(e.NewValue == null) return;
             xamlDockManagerLayoutPersistenceBehavior.LoadLayout(e.NewValue.ToString());
         }
 
@@ -115,7 +111,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         private static void LayoutDataPropertyNameChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             XamlDockManagerLayoutPersistenceBehavior xamlDockManagerLayoutPersistenceBehavior = dependencyObject as XamlDockManagerLayoutPersistenceBehavior;
-            if (xamlDockManagerLayoutPersistenceBehavior == null) return;
+            if(xamlDockManagerLayoutPersistenceBehavior == null) return;
 
             xamlDockManagerLayoutPersistenceBehavior.LoadLayout(xamlDockManagerLayoutPersistenceBehavior.LayoutName);
         }
@@ -132,28 +128,28 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void LoadLayout(string layoutName)
         {
-            if (AssociatedObject == null) return;
+            if(AssociatedObject == null) return;
 
-            if (UserInterfaceLayoutRepository == null)
+            if(UserInterfaceLayoutRepository == null)
             {
                 AssociatedObject.LoadLayout(StringResources.XmlOriginalLayout);
                 return;
             }
 
             _userInterfaceLayoutModel = UserInterfaceLayoutRepository.FindSingle(model => model.LayoutName == layoutName);
-            if (_userInterfaceLayoutModel == null) return;
+            if(_userInterfaceLayoutModel == null) return;
 
             PropertyInfo pi = _userInterfaceLayoutModel.GetType().GetProperty(LayoutDataPropertyName);
-            if (pi == null) return;
+            if(pi == null) return;
 
             string layoutData = pi.GetValue(_userInterfaceLayoutModel, null) as string;
-            if (layoutData == null) return;
+            if(layoutData == null) return;
 
             try
             {
                 AssociatedObject.LoadLayout(layoutData);
             }
-            catch (Exception)
+            catch(Exception)
             {
                 Logger.TraceInfo("Invalid user interface layout file encountered, reverting to default layout.");
             }
@@ -161,9 +157,9 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void SaveLayout()
         {
-            if (UserInterfaceLayoutRepository == null || string.IsNullOrWhiteSpace(LayoutName)) return;
+            if(UserInterfaceLayoutRepository == null || string.IsNullOrWhiteSpace(LayoutName)) return;
 
-            if (_userInterfaceLayoutModel == null)
+            if(_userInterfaceLayoutModel == null)
             {
                 _userInterfaceLayoutModel = new UserInterfaceLayoutModel()
                 {
@@ -202,7 +198,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         public void Handle(IResetLayoutMessage message)
         {
             Logger.TraceInfo(message.GetType().Name);
-            if (!AssociatedObject.Equals(message.Context))
+            if(!AssociatedObject.Equals(message.Context))
             {
                 return;
             }

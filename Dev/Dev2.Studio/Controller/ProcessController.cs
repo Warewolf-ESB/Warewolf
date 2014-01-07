@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Management;
 using System.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Controller
 {
     public class ProcessController
@@ -21,7 +22,8 @@ namespace Dev2.Studio.Controller
 
         public string Verb { get; set; }
 
-        public ProcessController() : this(null)
+        public ProcessController()
+            : this(null)
         {
         }
 
@@ -32,19 +34,19 @@ namespace Dev2.Studio.Controller
 
         public void Start()
         {
-            if (_isRunning)
+            if(_isRunning)
             {
                 throw new InvalidOperationException("Process already started");
             }
 
-            if (UtilityProcess != null)
+            if(UtilityProcess != null)
             {
                 UtilityProcess.Start();
                 _isRunning = true;
                 return;
             }
 
-            var startInfo = new ProcessStartInfo()
+            var startInfo = new ProcessStartInfo
             {
                 CreateNoWindow = true,
                 FileName = CmdLine,
@@ -55,7 +57,7 @@ namespace Dev2.Studio.Controller
             };
 
             UtilityProcess = Process.Start(startInfo);
-            _isRunning = true;           
+            _isRunning = true;
         }
 
         public void Kill(string processName)
@@ -65,12 +67,13 @@ namespace Dev2.Studio.Controller
             var theSearcher = new ManagementObjectSearcher(theScope, theQuery);
             var theCollection = theSearcher.Get();
 
-            foreach (ManagementObject theCurObject in theCollection)
+            foreach(var o in theCollection)
             {
+                var theCurObject = (ManagementObject)o;
                 theCurObject.InvokeMethod("Terminate", null);
             }
 
-            while (!UtilityProcess.HasExited)
+            while(!UtilityProcess.HasExited)
             {
                 CheckChildProcesses(UtilityProcess.Id);
                 Thread.Sleep(10);
@@ -84,8 +87,9 @@ namespace Dev2.Studio.Controller
             var searcher = new ManagementObjectSearcher("root\\CIMV2", string.Format("SELECT * FROM Win32_Process Where ParentProcessId={0}", id));
 
             var managementObjectCollection = searcher.Get();
-            foreach (ManagementObject queryObj in managementObjectCollection)
+            foreach(var o in managementObjectCollection)
             {
+                var queryObj = (ManagementObject)o;
                 var pid = Convert.ToInt32(queryObj["ProcessId"]);
                 var processById = Process.GetProcessById(pid);
                 processById.Kill();

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Dev2.Providers.Logs;
+using System;
 using System.Text;
-using Dev2.Providers.Logs;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public abstract class AppExceptionHandlerAbstract : IAppExceptionHandler

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class StringExtensions
     {
         public static string GetManagementPayload(this string payload)
         {
-            if (payload.Contains("<Dev2System.ManagmentServicePayload>"))
+            if(payload.Contains("<Dev2System.ManagmentServicePayload>"))
             {
                 var startIndx = payload.IndexOf("<Dev2System.ManagmentServicePayload>", StringComparison.Ordinal);
                 var length = "<Dev2System.ManagmentServicePayload>".Length;
@@ -25,10 +24,10 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         public static string ExceptChars(this string str, IEnumerable<char> toExclude)
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < str.Length; i++)
+            foreach(char c in str)
             {
-                char c = str[i];
-                if (!toExclude.Contains(c))
+                // ReSharper disable once PossibleMultipleEnumeration
+                if(!toExclude.Contains(c))
                     sb.Append(c);
             }
             return sb.ToString();
@@ -36,7 +35,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
 
         public static bool SpaceCaseInsenstiveComparision(this string stringa, string stringb)
         {
-            return (stringa == null && stringb == null) || stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
+            return (stringa == null && stringb == null) || (stringa != null && stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' })));
         }
     }
 }

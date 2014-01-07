@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
@@ -30,7 +29,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         protected override void OnAttached()
         {
-            base.OnAttached();            
+            base.OnAttached();
             SubscribeToEvents();
             _eventPublisher.Subscribe(this);
         }
@@ -117,7 +116,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void SubscribeToEvents()
         {
-            if (AssociatedObject == null)
+            if(AssociatedObject == null)
             {
                 return;
             }
@@ -131,7 +130,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// </summary>
         private void UnsubscribeToEvents()
         {
-            if (AssociatedObject == null)
+            if(AssociatedObject == null)
             {
                 return;
             }
@@ -147,13 +146,13 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             var treenode = AssociatedObject.DataContext as ITreeNode;
 
-            if (treenode == null)
+            if(treenode == null)
             {
                 return;
             }
 
             //Select on rightclick
-            if (SelectOnRightClick)
+            if(SelectOnRightClick)
             {
                 treenode.IsSelected = true;
             }
@@ -161,28 +160,28 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             // Active environment logic
             //
-            if (SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
+            if(SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
             {
                 Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
             }
 
             var model = treenode as ResourceTreeViewModel;
-            if (model != null)
+            if(model != null)
             {
                 var resourceTreeViewModel = model;
-                if (resourceTreeViewModel.DataContext != null)
+                if(resourceTreeViewModel.DataContext != null)
                 {
                     //
                     // Double click logic
                     //
-                    if (OpenOnDoubleClick && e.ClickCount == 2)
+                    if(OpenOnDoubleClick && e.ClickCount == 2)
                     {
                         Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
-                        if (!DontAllowDoubleClick)
-                        {                                
-                            if (resourceTreeViewModel.EditCommand.CanExecute(null))
+                        if(!DontAllowDoubleClick)
+                        {
+                            if(resourceTreeViewModel.EditCommand.CanExecute(null))
                             {
                                 resourceTreeViewModel.EditCommand.Execute(null);
                             }
@@ -196,7 +195,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     else if(OpenOnDoubleClick && e.ClickCount == 1)
                     {
                         Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
-                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false)); 
+                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false));
                     }
 
                 }
@@ -204,7 +203,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             else
             {
                 Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
-                _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null,false));
+                _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
             }
         }
 

@@ -1,12 +1,13 @@
-﻿using System;
+﻿//using MvvmFoundation.Wpf;
+using Dev2.AppResources.DependencyVisualization;
+using Petzold.Media2D;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
-//using MvvmFoundation.Wpf;
-using Dev2.AppResources.DependencyVisualization;
-using Petzold.Media2D;
 
+// ReSharper disable once CheckNamespace
 namespace CircularDependencyTool
 {
     /// <summary>
@@ -21,20 +22,12 @@ namespace CircularDependencyTool
             _startNode = startNode;
             _endNode = endNode;
 
-            this.SetIsPartOfCircularDependency();
-            this.SetToolTip();
-            this.UpdateLocations(false);
+            SetIsPartOfCircularDependency();
+            SetToolTip();
+            UpdateLocations(false);
 
-            startNode.PropertyChanged += new PropertyChangedEventHandler(startNode_PropertyChanged);
-            endNode.PropertyChanged += new PropertyChangedEventHandler(endNode_PropertyChanged);
-
-            //_startObserver = new PropertyObserver<Node>(_startNode)
-            //    .RegisterHandler(n => n.LocationX, n => this.UpdateLocations(true))
-            //    .RegisterHandler(n => n.LocationY, n => this.UpdateLocations(true));
-
-            //_endObserver = new PropertyObserver<Node>(_endNode)
-            //    .RegisterHandler(n => n.LocationX, n => this.UpdateLocations(true))
-            //    .RegisterHandler(n => n.LocationY, n => this.UpdateLocations(true));
+            startNode.PropertyChanged += StartNodePropertyChanged;
+            endNode.PropertyChanged += EndNodePropertyChanged;
         }
 
         #endregion // Constructor
@@ -70,20 +63,20 @@ namespace CircularDependencyTool
             };
 
             bool overlapY = Math.Abs(node1.LocationY - node2.LocationY) < node1.NodeHeight;
-            if (!overlapY)
+            if(!overlapY)
             {
                 bool above = node1.LocationY < node2.LocationY;
-                if (above)
+                if(above)
                     loc.Y += node1.NodeHeight / 2;
                 else
                     loc.Y -= node1.NodeHeight / 2;
             }
 
             bool overlapX = Math.Abs(node1.LocationX - node2.LocationX) < node1.NodeWidth;
-            if (!overlapX)
+            if(!overlapX)
             {
                 bool left = node1.LocationX < node2.LocationX;
-                if (left)
+                if(left)
                     loc.X += node1.NodeWidth / 2;
                 else
                     loc.X -= node1.NodeWidth / 2;
@@ -94,17 +87,17 @@ namespace CircularDependencyTool
 
         void SetIsPartOfCircularDependency()
         {
-            this.IsPartOfCircularDependency = _startNode.CircularDependencies.Intersect(_endNode.CircularDependencies).Any();
+            IsPartOfCircularDependency = _startNode.CircularDependencies.Intersect(_endNode.CircularDependencies).Any();
         }
 
         void SetToolTip()
         {
             string toolTipText = String.Format("{0} depends on {1}", _startNode.ID, _endNode.ID);
 
-            if (_endNode.NodeDependencies.Contains(_startNode))
+            if(_endNode.NodeDependencies.Contains(_startNode))
                 toolTipText += String.Format("\n{0} depends on {1}", _endNode.ID, _startNode.ID);
 
-            base.ToolTip = toolTipText;
+            ToolTip = toolTipText;
         }
 
         void UpdateLocations(bool animate)
@@ -112,30 +105,31 @@ namespace CircularDependencyTool
             var start = ComputeLocation(_startNode, _endNode);
             var end = ComputeLocation(_endNode, _startNode);
 
-            if (animate)
+            if(animate)
             {
-                base.BeginAnimation(ArrowLine.X1Property, CreateAnimation(base.X1, start.X));
-                base.BeginAnimation(ArrowLine.Y1Property, CreateAnimation(base.Y1, start.Y)); 
-                base.BeginAnimation(ArrowLine.X2Property, CreateAnimation(base.X2, end.X)); 
-                base.BeginAnimation(ArrowLine.Y2Property, CreateAnimation(base.Y2, end.Y));
+                BeginAnimation(X1Property, CreateAnimation(X1, start.X));
+                BeginAnimation(Y1Property, CreateAnimation(Y1, start.Y));
+                BeginAnimation(X2Property, CreateAnimation(X2, end.X));
+                BeginAnimation(Y2Property, CreateAnimation(Y2, end.Y));
             }
             else
             {
-                base.X1 = start.X;
-                base.Y1 = start.Y;
-                base.X2 = end.X;
-                base.Y2 = end.Y;
+                X1 = start.X;
+                Y1 = start.Y;
+                X2 = end.X;
+                Y2 = end.Y;
             }
         }
 
         static AnimationTimeline CreateAnimation(double from, double to)
         {
 
-            return new DoubleAnimation {
-                Duration = _Duration,
+            return new DoubleAnimation
+            {
+                Duration = Duration,
                 From = from,
                 To = to
-            
+
 
 
 
@@ -153,7 +147,7 @@ namespace CircularDependencyTool
 
         #region Fields
 
-        static readonly Duration _Duration = new Duration(TimeSpan.FromMilliseconds(10));
+        static readonly Duration Duration = new Duration(TimeSpan.FromMilliseconds(10));
 
         readonly Node _startNode, _endNode;
         //readonly PropertyObserver<Node> _startObserver, _endObserver;
@@ -162,17 +156,17 @@ namespace CircularDependencyTool
 
         #region Event Handlers
 
-        void endNode_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void EndNodePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "LocationX" || e.PropertyName == "LocationY")
+            if(e.PropertyName == "LocationX" || e.PropertyName == "LocationY")
             {
                 UpdateLocations(true);
             }
         }
 
-        void startNode_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void StartNodePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "LocationX" || e.PropertyName == "LocationY")
+            if(e.PropertyName == "LocationX" || e.PropertyName == "LocationY")
             {
                 UpdateLocations(true);
             }

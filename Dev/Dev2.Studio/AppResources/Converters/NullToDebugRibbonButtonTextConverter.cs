@@ -1,13 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
-using Dev2.Studio.Core;
-using Dev2.Studio.ViewModels.WorkSurface;
-
-#endregion
 
 namespace Dev2.Studio.AppResources.Converters
 {
@@ -15,10 +8,10 @@ namespace Dev2.Studio.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if(value == null)
             {
                 return "Debug";
-            }           
+            }
             return value;
         }
 

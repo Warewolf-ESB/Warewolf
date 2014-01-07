@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.CustomControls
 {
     public class SplitterPanel : Control

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class FrameworkElementExtensionMethods
@@ -18,29 +19,29 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
 
         private static FrameworkElement FindNameAcrossNamescopesImpl(DependencyObject dp, string name, bool partialMatch = false)
         {
-            if (dp == null)
+            if(dp == null)
             {
                 return null;
             }
 
             int childCount = VisualTreeHelper.GetChildrenCount(dp);
-            for (int i = 0; i < childCount; i++)
+            for(int i = 0; i < childCount; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(dp, i);
 
                 FrameworkElement feChild = child as FrameworkElement;
-                if (feChild != null && (feChild.Name == name || (partialMatch && feChild.Name.Contains(name))))
+                if(feChild != null && (feChild.Name == name || (partialMatch && feChild.Name.Contains(name))))
                 {
                     return feChild;
                 }
             }
 
-            for (int i = 0; i < childCount; i++)
+            for(int i = 0; i < childCount; i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(dp, i);
 
                 FrameworkElement recursiveResult = FindNameAcrossNamescopesImpl(child, name, partialMatch);
-                if (recursiveResult != null)
+                if(recursiveResult != null)
                 {
                     return recursiveResult;
                 }

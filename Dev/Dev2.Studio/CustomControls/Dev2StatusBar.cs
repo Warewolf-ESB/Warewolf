@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.CustomControls
 {
     /// <author>Massimo.Guerrera</author>
@@ -8,6 +9,7 @@ namespace Dev2.Studio.CustomControls
     [TemplatePart(Name = PART_Label, Type = typeof(Label))]
     public class Dev2StatusBar : TextBox
     {
+        // ReSharper disable once InconsistentNaming
         private const string PART_Label = "StatusBarLabel";
 
         private Label _label;

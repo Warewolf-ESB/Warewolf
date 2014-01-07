@@ -1,8 +1,5 @@
 ﻿#region
 
-using System.Activities.Presentation.Model;
-using System.ComponentModel.Composition;
-using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates;
@@ -16,10 +13,14 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs;
 using Dev2.Studio.Webs.Callbacks;
 using Newtonsoft.Json;
+using System.Activities.Presentation.Model;
+using System.ComponentModel.Composition;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Controller
 {
     [Export]

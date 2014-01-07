@@ -7,6 +7,7 @@ using System.Windows;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.UI
 {
     // Moved code incorrectly put into ConnectViewModel here

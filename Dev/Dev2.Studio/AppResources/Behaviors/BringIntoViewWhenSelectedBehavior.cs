@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Dev2.Studio.Core.ViewModels.Navigation;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Dev2.Studio.Core.ViewModels.Navigation;
 
 namespace Dev2.CustomControls.Behavior
 {
@@ -47,14 +43,14 @@ namespace Dev2.CustomControls.Behavior
             // whose IsSelected property was modified. Ignore all ancestors
             // who are merely reporting that a descendant's Selected fired.
             _item = e.OriginalSource as TreeViewItem;
-            if (_item == null)
+            if(_item == null)
             {
                 return;
             }
 
-            if (!ReferenceEquals(sender, e.OriginalSource))
+            if(!ReferenceEquals(sender, e.OriginalSource))
             {
-                if (!_item.IsLoaded)
+                if(!_item.IsLoaded)
                 {
                     _item.Loaded -= ItemInitialized;
                     _item.Loaded += ItemInitialized;
@@ -71,28 +67,28 @@ namespace Dev2.CustomControls.Behavior
             //THis has to do with the original source getting lost somewhere along the way.
             //Look into this.
             _item = sender as TreeViewItem;
-            if (_item == null)
+            if(_item == null)
             {
                 return;
             }
 
             if(_item.IsSelected)
             {
-                BringIntoView(_item);    
-            }            
+                BringIntoView(_item);
+            }
         }
-        
+
         private void BringIntoView(TreeViewItem item)
         {
             var treeNode = _item.DataContext as ITreeNode;
-            if (treeNode == null)
+            if(treeNode == null)
             {
                 return;
             }
 
             item.BringIntoView();
 
-            if (!treeNode.IsNew)
+            if(!treeNode.IsNew)
             {
                 return;
             }

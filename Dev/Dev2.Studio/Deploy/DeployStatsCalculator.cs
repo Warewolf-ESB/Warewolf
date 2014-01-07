@@ -14,6 +14,7 @@ using System.Linq;
 
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Deploy
 {
     public class DeployStatsCalculator : IDeployStatsCalculator
@@ -28,11 +29,11 @@ namespace Dev2.Studio.Deploy
             deployItemCount = 0;
             var predicateCounts = new Dictionary<string, int>();
 
-            foreach (var predicate in predicates)
+            foreach(var predicate in predicates)
             {
                 var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicate.Key);
 
-                if (deployStatsTO == null)
+                if(deployStatsTO == null)
                 {
                     deployStatsTO = new DeployStatsTO(predicate.Key, "");
                     stats.Add(deployStatsTO);
@@ -41,21 +42,22 @@ namespace Dev2.Studio.Deploy
                 predicateCounts.Add(predicate.Key, 0);
             }
 
-            foreach (AbstractTreeViewModel item in items)
+            foreach(var treeNode in items)
             {
-                foreach (var predicate in predicates)
+                var item = (AbstractTreeViewModel)treeNode;
+                foreach(var predicate in predicates)
                 {
-                    if (!predicate.Value(item)) continue;
+                    if(!predicate.Value(item)) continue;
 
                     predicateCounts[predicate.Key]++;
                     break;
                 }
             }
 
-            foreach (var predicateCount in predicateCounts)
+            foreach(var predicateCount in predicateCounts)
             {
                 var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicateCount.Key);
-                if (deployStatsTO != null)
+                if(deployStatsTO != null)
                 {
                     deployStatsTO.Description = predicateCount.Value.ToString(CultureInfo.InvariantCulture);
                     deployItemCount += predicateCount.Value;
@@ -71,7 +73,7 @@ namespace Dev2.Studio.Deploy
                                                                   List<string> exclusionCategories)
         {
             var vm = node as ResourceTreeViewModel;
-            if (vm == null
+            if(vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
@@ -89,7 +91,7 @@ namespace Dev2.Studio.Deploy
         public bool SelectForDeployPredicate(ITreeNode node)
         {
             var vm = node as ResourceTreeViewModel;
-            if (vm == null
+            if(vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
@@ -103,7 +105,7 @@ namespace Dev2.Studio.Deploy
                                                    IEnvironmentModel targetEnvironment)
         {
             var vm = node as ResourceTreeViewModel;
-            if (vm == null
+            if(vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
@@ -121,7 +123,7 @@ namespace Dev2.Studio.Deploy
         public bool DeploySummaryPredicateNew(ITreeNode node, IEnvironmentModel targetEnvironment)
         {
             var vm = node as ResourceTreeViewModel;
-            if (vm == null
+            if(vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 

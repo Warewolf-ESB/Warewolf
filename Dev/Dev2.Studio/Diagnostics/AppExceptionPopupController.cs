@@ -1,8 +1,9 @@
-using System;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public class AppExceptionPopupController : AppExceptionPopupControllerAbstract

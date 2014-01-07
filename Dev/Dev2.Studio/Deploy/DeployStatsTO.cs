@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.TO
 {
     /// <summary>
@@ -19,7 +16,7 @@ namespace Dev2.Studio.TO
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }

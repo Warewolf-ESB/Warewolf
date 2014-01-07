@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Dev2.AppResources.DependencyVisualization;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using Dev2.AppResources.DependencyVisualization;
 
+// ReSharper disable once CheckNamespace
 namespace CircularDependencyTool
 {
     /// <summary>
@@ -30,13 +31,13 @@ namespace CircularDependencyTool
             get { return _graph; }
             set
             {
-                if (value == _graph)
+                if(value == _graph)
                     return;
 
                 _graph = value;
 
-                if (_graph != null)
-                    this.ProcessGraph();
+                if(_graph != null)
+                    ProcessGraph();
             }
         }
 
@@ -46,21 +47,21 @@ namespace CircularDependencyTool
 
         void ProcessGraph()
         {
-            this.RemoveConnectors();
+            RemoveConnectors();
 
-            foreach (Node node in _graph.Nodes)
-                foreach (Node dependency in node.NodeDependencies)
-                    this.AddConnector(node, dependency);
+            foreach(Node node in _graph.Nodes)
+                foreach(Node dependency in node.NodeDependencies)
+                    AddConnector(node, dependency);
 
-            base.InvalidateMeasure();
+            InvalidateMeasure();
         }
 
         void RemoveConnectors()
         {
-            foreach (NodeConnector connector in _nodeConnectors)
+            foreach(NodeConnector connector in _nodeConnectors)
             {
-                base.RemoveVisualChild(connector);
-                base.RemoveLogicalChild(connector);
+                RemoveVisualChild(connector);
+                RemoveLogicalChild(connector);
             }
 
             _nodeConnectors.Clear();
@@ -74,10 +75,10 @@ namespace CircularDependencyTool
 
             // Add the connector to the visual and logical tree so that
             // rendering and resource inheritance will work properly.
-            base.AddVisualChild(connector);
-            base.AddLogicalChild(connector);
+            AddVisualChild(connector);
+            AddLogicalChild(connector);
 
-       }
+        }
 
         #endregion // Private Helpers
 
@@ -100,14 +101,14 @@ namespace CircularDependencyTool
 
         protected override Size MeasureOverride(Size constraint)
         {
-            foreach (var nodeConnector in _nodeConnectors)
+            foreach(var nodeConnector in _nodeConnectors)
                 nodeConnector.Measure(constraint);
 
-            if (Double.IsInfinity(constraint.Width) || Double.IsInfinity(constraint.Height))
+            if(Double.IsInfinity(constraint.Width) || Double.IsInfinity(constraint.Height))
                 return new Size(10000, 10000);
 
 
-            
+
 
 
             return constraint;
@@ -115,10 +116,10 @@ namespace CircularDependencyTool
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var bounds = VisualTreeHelper.GetDescendantBounds(base.AdornedElement);
+            var bounds = VisualTreeHelper.GetDescendantBounds(AdornedElement);
 
-            if (!bounds.IsEmpty)
-                foreach (var nodeConnector in _nodeConnectors)
+            if(!bounds.IsEmpty)
+                foreach(var nodeConnector in _nodeConnectors)
                     nodeConnector.Arrange(bounds);
 
 

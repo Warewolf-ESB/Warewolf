@@ -1,4 +1,5 @@
-﻿namespace Dev2.Studio.Diagnostics
+﻿// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Diagnostics
 {
     public enum ErrorSeverity
     {

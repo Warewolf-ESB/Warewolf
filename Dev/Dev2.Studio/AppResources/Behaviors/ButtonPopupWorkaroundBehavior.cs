@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Interactivity;
 
@@ -104,7 +100,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// <param name="e">The <see cref="System.Windows.Input.MouseButtonEventArgs" /> instance containing the event data.</param>
         private void AssociatedObject_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (_isButtonDown == false)
+            if(_isButtonDown == false)
             {
                 IsInWorkaroundState = true;
             }

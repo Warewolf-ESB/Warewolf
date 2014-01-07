@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -73,7 +72,7 @@ namespace Dev2.CustomControls.Behavior
 
         void AssociatedObjectTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (string.IsNullOrEmpty(RegexOptions))
+            if(string.IsNullOrEmpty(RegexOptions))
             {
                 return;
             }
@@ -81,12 +80,12 @@ namespace Dev2.CustomControls.Behavior
             var text = AssociatedObject.Text;
             var newText = Regex.Replace(AssociatedObject.Text, RegexOptions, "");
 
-            if (MaxStringLength > 0 && newText.Length > MaxStringLength)
+            if(MaxStringLength > 0 && newText.Length > MaxStringLength)
             {
                 newText = newText.Substring(0, MaxStringLength);
             }
 
-            if (text.Length == newText.Length)
+            if(text.Length == newText.Length)
             {
                 return;
             }

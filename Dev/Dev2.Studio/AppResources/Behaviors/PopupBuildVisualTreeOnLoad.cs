@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors

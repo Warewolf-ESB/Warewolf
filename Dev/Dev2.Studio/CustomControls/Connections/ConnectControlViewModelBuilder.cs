@@ -3,6 +3,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Navigation;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.UI
 {
     public class ConnectControlViewModelBuilder

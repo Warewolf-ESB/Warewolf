@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public class DebugLineTemplateSelector : DataTemplateSelector

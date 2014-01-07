@@ -284,7 +284,6 @@
     <Compile Include="Diagnostics\IAppExceptionHandler.cs" />
     <Compile Include="Diagnostics\IAppExceptionPopupController.cs" />
     <Compile Include="Diagnostics\JsonDebugProvider.cs" />
-    <Compile Include="Diagnostics\MoreLinkCommand.cs" />
     <Compile Include="Diagnostics\DebugLineTemplateSelector.cs" />
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="Dock\BindingHelper.cs" />
@@ -1275,9 +1274,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ActivityDesigners\PathOperationDesigners\" />
-    <Folder Include="ActivityDesigners\Singeltons\" />
-    <Folder Include="AppResources\Messages\" />
     <Folder Include="ViewModels\ActivityViewModels\" />
     <Folder Include="ViewModels\Configuration\" />
     <Folder Include="ViewModels\Web\" />

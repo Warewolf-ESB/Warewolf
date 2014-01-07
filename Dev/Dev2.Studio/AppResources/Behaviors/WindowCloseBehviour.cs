@@ -1,28 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Interactivity;
 using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
     public class WindowCloseBehviour : Behavior<Window>
     {
-        #region Override Methods
-
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-        }
-
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-        }
-
-        #endregion Override Methods
-
         #region Dependency Properties
 
         #region CloseIndicator
@@ -41,10 +24,10 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             WindowCloseBehviour windowCloseBehviour = d as WindowCloseBehviour;
 
-            if (windowCloseBehviour == null || windowCloseBehviour.AssociatedObject == null) return;
+            if(windowCloseBehviour == null || windowCloseBehviour.AssociatedObject == null) return;
 
             bool value = Convert.ToBoolean(e.NewValue);
-            if (value)
+            if(value)
             {
                 windowCloseBehviour.AssociatedObject.Close();
             }

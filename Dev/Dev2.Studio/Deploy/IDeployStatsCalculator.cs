@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Dev2.Studio.Core.AppResources.Enums;
+﻿using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.TO;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Deploy
 {
     public interface IDeployStatsCalculator

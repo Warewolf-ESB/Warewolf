@@ -1,19 +1,20 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Converters;
+using System;
+using System.Linq;
+using System.Windows;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics
 {
     public class DebugOutputFilterStrategy
     {
         #region Class Members
 
-        private DateTimeToStringConverter _dateTimeToStringConverter = null;
-        private TimeSpanToStringConverter _timeSpanToStringConverter = null;
-        private EnumToStringConverter _enumToStringConverter = null;
+        private readonly DateTimeToStringConverter _dateTimeToStringConverter;
+        private readonly TimeSpanToStringConverter _timeSpanToStringConverter;
+        private readonly EnumToStringConverter _enumToStringConverter;
 
         #endregion Class Members
 
@@ -21,24 +22,24 @@ namespace Dev2.Studio.Diagnostics
 
         public DebugOutputFilterStrategy()
         {
-            if (App.Current != null)
+            if(Application.Current != null)
             {
-                _timeSpanToStringConverter = App.Current.Resources["TimeSpanToStringConverter"] as TimeSpanToStringConverter;
-                _dateTimeToStringConverter = App.Current.Resources["DateTimeToStringConverter"] as DateTimeToStringConverter;
-                _enumToStringConverter = App.Current.Resources["EnumToStringConverter"] as EnumToStringConverter;
+                _timeSpanToStringConverter = Application.Current.Resources["TimeSpanToStringConverter"] as TimeSpanToStringConverter;
+                _dateTimeToStringConverter = Application.Current.Resources["DateTimeToStringConverter"] as DateTimeToStringConverter;
+                _enumToStringConverter = Application.Current.Resources["EnumToStringConverter"] as EnumToStringConverter;
             }
 
-            if (_timeSpanToStringConverter == null)
+            if(_timeSpanToStringConverter == null)
             {
                 _timeSpanToStringConverter = new TimeSpanToStringConverter();
             }
 
-            if (_dateTimeToStringConverter == null)
+            if(_dateTimeToStringConverter == null)
             {
                 _dateTimeToStringConverter = new DateTimeToStringConverter();
             }
 
-            if (_enumToStringConverter == null)
+            if(_enumToStringConverter == null)
             {
                 _enumToStringConverter = new EnumToStringConverter();
             }
@@ -52,9 +53,10 @@ namespace Dev2.Studio.Diagnostics
         /// Filters the specified content.
         /// </summary>
         /// <param name="content">The content.</param>
+        /// <param name="filterText"></param>
         public bool Filter(object content, string filterText)
         {
-            if (filterText == null)
+            if(filterText == null)
             {
                 return false;
             }
@@ -62,36 +64,36 @@ namespace Dev2.Studio.Diagnostics
             filterText = filterText.ToLower();
             IDebugState debugState = content as IDebugState;
 
-            if (debugState != null)
+            if(debugState != null)
             {
                 string convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
-                if (convertedActivityType.ToLower().Contains(filterText)) return true;
+                if(convertedActivityType.ToLower().Contains(filterText)) return true;
 
-                if (debugState.ActivityType.ToString().ToLower().Contains(filterText)) return true;
-                if (debugState.DisplayName != null && debugState.DisplayName.ToString().ToLower().Contains(filterText)) return true;
-                if (debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToString().ToLower().Contains(filterText)) return true;
-                if (debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToString().ToLower().Contains(filterText)) return true;
-                if (debugState.Version != null && debugState.Version.ToString().ToLower().Contains(filterText)) return true;
+                if(debugState.ActivityType.ToString().ToLower().Contains(filterText)) return true;
+                if(debugState.DisplayName != null && debugState.DisplayName.ToLower().Contains(filterText)) return true;
+                if(debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToLower().Contains(filterText)) return true;
+                if(debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToLower().Contains(filterText)) return true;
+                if(debugState.Version != null && debugState.Version.ToLower().Contains(filterText)) return true;
 
-                if (debugState.ActivityType == ActivityType.Step)
+                if(debugState.ActivityType == ActivityType.Step)
                 {
                     string convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
-                    if (convertedDuration.ToLower().Contains(filterText)) return true;
+                    if(convertedDuration.ToLower().Contains(filterText)) return true;
                 }
 
-                if (debugState.ActivityType == ActivityType.Workflow)
+                if(debugState.ActivityType == ActivityType.Workflow)
                 {
                     string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
-                    if (debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText)) return true;
+                    if(debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText)) return true;
 
-                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null,null));
-                    if (debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText)) return true;
+                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
+                    if(debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText)) return true;
                 }
 
                 if(debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText))) return true;
                 if(debugState.Outputs != null && debugState.Outputs.Any(o => o.Contains(filterText))) return true;
             }
-            else if (content is string && content.ToString().ToLower().Contains(filterText))
+            else if(content is string && content.ToString().ToLower().Contains(filterText))
             {
                 return true;
             }

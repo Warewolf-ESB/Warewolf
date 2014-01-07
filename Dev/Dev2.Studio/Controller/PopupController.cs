@@ -3,10 +3,13 @@ using Dev2.Studio.ViewModels.Dialogs;
 using System.ComponentModel.Composition;
 using System.Windows;
 
-namespace Dev2.Studio.Controller {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Controller
+{
 
     [Export(typeof(IPopupController))]
-    public class PopupController : IPopupController {
+    public class PopupController : IPopupController
+    {
         private string _header;
         private string _discripton;
         private string _question;
@@ -14,7 +17,7 @@ namespace Dev2.Studio.Controller {
         MessageBoxButton _buttons;
         string _dontShowAgainKey;
 
-        public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons) 
+        public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
         {
             Header = headerText;
             Description = discriptionText;
@@ -22,51 +25,67 @@ namespace Dev2.Studio.Controller {
             Buttons = buttons;
         }
 
-        public PopupController() {
+        public PopupController()
+        {
 
         }
 
-        public string Header {
-            get {
+        public string Header
+        {
+            get
+            {
                 return _header;
             }
-            set {
+            set
+            {
                 _header = value;
             }
         }
 
-        public string Description {
-            get {
+        public string Description
+        {
+            get
+            {
                 return _discripton;
             }
-            set {
+            set
+            {
                 _discripton = value;
             }
         }
 
-        public string Question {
-            get {
+        public string Question
+        {
+            get
+            {
                 return _question;
             }
-            set {
+            set
+            {
                 _question = value;
             }
         }
 
-        public MessageBoxImage ImageType {
-            get {
+        public MessageBoxImage ImageType
+        {
+            get
+            {
                 return _imageType;
             }
-            set {
+            set
+            {
                 _imageType = value;
             }
         }
 
-        public MessageBoxButton Buttons {
-            get {
+        public MessageBoxButton Buttons
+        {
+            get
+            {
                 return _buttons;
             }
-            set {
+            set
+            {
                 _buttons = value;
             }
         }
@@ -83,7 +102,8 @@ namespace Dev2.Studio.Controller {
             }
         }
 
-        public MessageBoxResult Show() {
+        public MessageBoxResult Show()
+        {
             return Dev2MessageBoxViewModel.Show(Description, Header, Buttons, ImageType, DontShowAgainKey);
         }
 

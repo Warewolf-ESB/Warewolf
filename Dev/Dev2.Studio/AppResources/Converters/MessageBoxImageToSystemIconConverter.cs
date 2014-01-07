@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dev2.Common;
+using System;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Dev2.Common;
 
 namespace Dev2.Studio.AppResources.Converters
 {
-    
+
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
-        
-        
+
+
         private static Bitmap emptyBitmap;
         private static IntPtr hicon;
 
         static MessageBoxImageToSystemIconConverter()
         {
-            emptyBitmap = new Bitmap(1,1);
+            emptyBitmap = new Bitmap(1, 1);
             hicon = emptyBitmap.GetHicon();
         }
 
@@ -28,13 +26,13 @@ namespace Dev2.Studio.AppResources.Converters
         {
             Icon icon = Icon.FromHandle(hicon);
 
-            if (value == null)
+            if(value == null)
             {
                 return BitmapSourceFromIcon(icon);
             }
 
             MessageBoxImage messageBoxImage;
-            if (Enum.TryParse(value.ToString(), true, out messageBoxImage))
+            if(Enum.TryParse(value.ToString(), true, out messageBoxImage))
             {
                 switch(messageBoxImage)
                 {
