@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Dev2.Runtime.Configuration.ComponentModel;
 
@@ -10,8 +6,6 @@ namespace Dev2.Runtime.Configuration.CustomControls
 {
     public class DirectoryCompletionBox : AutoCompleteBox
     {
-
-
 
         #region public string Text
         /// <summary>
@@ -49,7 +43,7 @@ namespace Dev2.Runtime.Configuration.CustomControls
         private static void OnCurrentDrivePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var source = d as DirectoryCompletionBox;
-            if (source != null) source.DirectoryUpdated((ComputerDrive)e.NewValue);
+            if(source != null) source.DirectoryUpdated((ComputerDrive)e.NewValue);
         }
 
         /// <summary>
@@ -58,14 +52,14 @@ namespace Dev2.Runtime.Configuration.CustomControls
         /// </summary>
         /// <param name="newDirectory">The new directory.</param>
         private void DirectoryUpdated(ComputerDrive newDirectory)
-        {              
+        {
             // Update the interface and values only as necessary
             UpdateDirectoryValue(newDirectory);
         }
 
         private void UpdateDirectoryValue(ComputerDrive CurrentDrive)
         {
-           
+
         }
 
         #endregion public string Text
@@ -78,7 +72,7 @@ namespace Dev2.Runtime.Configuration.CustomControls
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (TextBox != null)
+            if(TextBox != null)
             {
                 TextBox.GotFocus += TextBoxOnGotFocus;
             }

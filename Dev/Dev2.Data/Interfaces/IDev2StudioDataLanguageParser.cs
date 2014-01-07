@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Dev2.DataList.Contract.Interfaces {
     public interface IDev2StudioDataLanguageParser {

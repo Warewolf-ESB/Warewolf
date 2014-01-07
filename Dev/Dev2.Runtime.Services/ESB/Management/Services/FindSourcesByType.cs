@@ -6,7 +6,6 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -38,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // TODO : Based upon the enum type return correct JSON model ;)
                 // NOTE : Current types are : Email, SqlDatabase, Dev2Server
 
-                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+                // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog re-factor
                 var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
                 if(result != null)
                 {

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 
 namespace Dev2.MathOperations {

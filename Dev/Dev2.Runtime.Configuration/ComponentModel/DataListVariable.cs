@@ -1,8 +1,4 @@
 ﻿using Caliburn.Micro;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
 {
@@ -15,7 +11,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _name; }
             set
             {
-                if (_name == value)
+                if(_name == value)
                 {
                     return;
                 }

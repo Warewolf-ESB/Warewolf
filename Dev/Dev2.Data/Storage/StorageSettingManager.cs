@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Configuration;
-using System.IO;
 using System.Runtime.InteropServices;
 using Dev2.Common;
-using Dev2.Providers.Logs;
 using Microsoft.VisualBasic.Devices;
 
 namespace Dev2.Data.Storage

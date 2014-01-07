@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 namespace Dev2.DataList.Contract
 {
     public interface IRecordsetTO {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;

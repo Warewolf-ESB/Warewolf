@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Network;
 using System.Cryptography;
+using System.Network;
+using System.Text;
 
 namespace Dev2.DynamicServices.Network.Auxiliary
 {
