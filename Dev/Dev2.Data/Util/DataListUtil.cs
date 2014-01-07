@@ -15,17 +15,17 @@ using Dev2.DataList.Contract.Value_Objects;
 namespace Dev2.Data.Util
 {
     /// <summary>
-    /// General DataList utilite methods
+    /// General DataList utility methods
     /// </summary>
     public static class DataListUtil
     {
         #region Class Members
 
-        private static HashSet<string> _sysTags = new HashSet<string>();
-        private static readonly string _emptyTag = "<Empty />";
-        private static readonly string _cdataStart = "<![CDATA[";
-        private static readonly string _cdataEnd = "]]>";
-        private static readonly string _adlRoot = "ADL";
+        private static readonly HashSet<string> _sysTags = new HashSet<string>();
+        const string _emptyTag = "<Empty />";
+        const string _cdataStart = "<![CDATA[";
+        const string _cdataEnd = "]]>";
+        const string _adlRoot = "ADL";
         private static readonly string[] stripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<DataList>", "</DataList>", "<ADL />" };
         private static readonly string[] naughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>", 
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>", 
@@ -37,7 +37,7 @@ namespace Dev2.Data.Util
                                                          "<DL>","</DL>"
                                                        };
 
-        private static XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        private static readonly XmlReaderSettings _isXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         #endregion Class Members
 
@@ -62,12 +62,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceStarWithFixedIndex(string exp, int idx)
         {
-            if(idx > 0)
-            {
-                return exp.Replace("(*)", "(" + idx + ")");    
-            }
-
-            return exp;
+            return idx > 0 ? exp.Replace("(*)", "(" + idx + ")") : exp;
         }
 
         /// <summary>
@@ -129,9 +124,9 @@ namespace Dev2.Data.Util
             {
                 XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""False""]");
 
-                foreach(XmlNode node in nodeList)
+                if(nodeList != null)
                 {
-                    result += node.OuterXml;
+                    result = nodeList.Cast<XmlNode>().Aggregate(result, (current, node) => current + node.OuterXml);
                 }
 
                 result += "</ADL>";
@@ -155,10 +150,9 @@ namespace Dev2.Data.Util
             {
                 XmlNodeList nodeList = xDoc.FirstChild.SelectNodes(@"./*[@IsEditable = ""True""]");
 
-                foreach(XmlNode node in nodeList)
+                if(nodeList != null)
                 {
-                    result += node.OuterXml;
-
+                    result = nodeList.Cast<XmlNode>().Aggregate(result, (current, node) => current + node.OuterXml);
                 }
             }
             return result;
@@ -244,7 +238,7 @@ namespace Dev2.Data.Util
             string result = payload;
             string[] veryNaughtyTags = naughtyTags;
 
-            if(payload != null && payload != string.Empty)
+            if(!string.IsNullOrEmpty(payload))
             {
 
                 if(stripTags != null)
@@ -264,7 +258,7 @@ namespace Dev2.Data.Util
 
                 // we now need to remove non-valid chars from the stream
 
-                int start = result.IndexOf("<");
+                int start = result.IndexOf("<", StringComparison.Ordinal);
                 if(start >= 0)
                 {
                     result = result.Substring((start));
@@ -341,7 +335,11 @@ namespace Dev2.Data.Util
             XmlNodeList nl = xDoc.GetElementsByTagName(tagName);
             if(nl.Count > 0)
             {
-                result = nl[0].Attributes[attribute].Value;
+                var xmlAttributeCollection = nl[0].Attributes;
+                if(xmlAttributeCollection != null)
+                {
+                    result = xmlAttributeCollection[attribute].Value;
+                }
             }
 
             return result;
@@ -349,7 +347,7 @@ namespace Dev2.Data.Util
 
         public static string ExtractAttributeFromTagAndMakeRecordset(string payload, string tagName, string attribute)
         {
-            return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new string[] { attribute }, null);
+            return ExtractAttributeFromTagAndMakeRecordset(payload, tagName, new[] { attribute }, null);
         }
 
         /// <summary>
@@ -375,8 +373,11 @@ namespace Dev2.Data.Util
                     result.Append(MakeOpenTag(tagName));
                     foreach(string atr in attribute)
                     {
-                        string attrValue = n.Attributes[atr].Value;
-                        result.Append(string.Concat(MakeOpenTag(atr), attrValue, MakeCloseTag(atr)));
+                        if(n.Attributes != null)
+                        {
+                            string attrValue = n.Attributes[atr].Value;
+                            result.Append(string.Concat(MakeOpenTag(atr), attrValue, MakeCloseTag(atr)));
+                        }
                     }
                     // now fetch the extra tag names ;)
                     if(childTags != null)
@@ -385,11 +386,11 @@ namespace Dev2.Data.Util
                         {
                             string innerXML = n.InnerXml;
                             // we have a match!
-                            int idx = innerXML.IndexOf(MakeOpenTag(tag));
+                            int idx = innerXML.IndexOf(MakeOpenTag(tag), StringComparison.Ordinal);
                             if(idx >= 0)
                             {
                                 // we have a match ;)
-                                int end = innerXML.IndexOf(MakeCloseTag(tag));
+                                int end = innerXML.IndexOf(MakeCloseTag(tag), StringComparison.Ordinal);
                                 int properStart = (idx + MakeOpenTag(tag).Length);
                                 string val = innerXML.Substring(properStart, (end - properStart));
                                 result.Append(string.Concat(MakeOpenTag(tag), val, MakeCloseTag(tag)));
@@ -422,7 +423,9 @@ namespace Dev2.Data.Util
         public static string UpsertCleaning(string adl, string nodeToRemove, string evalNode)
         {
             string result = Regex.Replace(adl, @">\r\n*<", "><", RegexOptions.Singleline);
+            // ReSharper disable RedundantAssignment
             result = Regex.Replace(result, @">\n*<", "><", RegexOptions.Singleline);
+            // ReSharper restore RedundantAssignment
             result = Regex.Replace(adl, @">\r*<", "><", RegexOptions.Singleline);
 
             result = result.Replace(MakeOpenTag(nodeToRemove), "").Replace(MakeCloseTag(nodeToRemove), "").Replace(MakeSingleTag(nodeToRemove), "");
@@ -438,7 +441,7 @@ namespace Dev2.Data.Util
                 {
                     XmlDocument xDoc = new XmlDocument();
                     xDoc.LoadXml(result);
-                    if(xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
+                    if(xDoc.DocumentElement != null && xDoc.DocumentElement.Name == StripBracketsFromValue(evalNode))
                     {
                         result = string.Concat(MakeOpenTag(_adlRoot), result, MakeCloseTag(_adlRoot));
                     }
@@ -489,12 +492,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsMSXmlBugNode(string value)
         {
-            bool result = false;
-
-            if(value == "#text" || value == "#cdata-section")
-            {
-                result = true;
-            }
+            bool result = value == "#text" || value == "#cdata-section";
 
             return result;
         }
@@ -617,11 +615,11 @@ namespace Dev2.Data.Util
             string startTag = string.Concat("<", region, ">");
             string endTag = string.Concat("</", region, ">");
 
-            int start = adl.IndexOf(startTag);
+            int start = adl.IndexOf(startTag, StringComparison.Ordinal);
 
             if(start >= 0)
             {
-                int end = adl.IndexOf(endTag);
+                int end = adl.IndexOf(endTag, StringComparison.Ordinal);
 
                 if(end > start)
                 {
@@ -754,7 +752,7 @@ namespace Dev2.Data.Util
                         {
                             tmp = rsMap[d.RecordSetName];
                         }
-                        string _name = string.Empty;
+                        string _name;
                         if(d.Name.Contains("."))
                         {
                             _name = d.Name.Split('.')[1];
@@ -896,7 +894,7 @@ namespace Dev2.Data.Util
                 // do we want to do funky things ?!
                 if(flipGeneration)
                 {
-                    isInput = flipGeneration;
+                    isInput = true;
                 }
 
                 // append scalar shape
@@ -994,7 +992,7 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
             value = StripBracketsFromValue(value);
-            int dotIdx = value.IndexOf(".");
+            int dotIdx = value.IndexOf(".", StringComparison.Ordinal);
             if(dotIdx > 0)
             {
                 result = value.Substring((dotIdx + 1));
@@ -1080,8 +1078,6 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation = false)
         {
-            string result;
-
             var inject = "()";
 
             if(starNotation)
@@ -1089,7 +1085,7 @@ namespace Dev2.Data.Util
                 inject = "(*)";
             }
 
-            result = StripBracketsFromValue(value);
+            string result = StripBracketsFromValue(value);
 
             if(result.EndsWith("("))
             {
@@ -1097,7 +1093,7 @@ namespace Dev2.Data.Util
             }
             else if(result.EndsWith(")"))
             {
-                result.Replace(")", inject);
+                return result.Replace(")", inject);
             }
             else if(!result.EndsWith("()"))
             {
@@ -1115,10 +1111,10 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
 
-            int start = rs.IndexOf("(");
+            int start = rs.IndexOf("(", StringComparison.Ordinal);
             if(start > 0)
             {
-                int end = rs.LastIndexOf(")");
+                int end = rs.LastIndexOf(")", StringComparison.Ordinal);
                 if(end < 0)
                 {
                     end = rs.Length;
@@ -1141,12 +1137,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
-            bool result = false;
-
-            if(payload.IndexOf("[[") >= 0)
-            {
-                result = true;
-            }
+            bool result = payload.IndexOf("[[", StringComparison.Ordinal) >= 0;
 
             return result;
         }
@@ -1159,12 +1150,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool RequiresDesignTimeBindingSupport(string serviceName, string parentServiceName)
         {
-            bool result = false;
-
-            if(serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz"))
-            {
-                result = true;
-            }
+            bool result = serviceName.ToLower().EndsWith(".wiz") || parentServiceName.ToLower().EndsWith(".wiz");
 
             return result;
         }
@@ -1178,7 +1164,7 @@ namespace Dev2.Data.Util
         {
             string result = string.Empty;
 
-            int start = value.IndexOf("(");
+            int start = value.IndexOf("(", StringComparison.Ordinal);
 
             if(start > 0)
             {
@@ -1198,12 +1184,12 @@ namespace Dev2.Data.Util
         public static bool HasResumeTagsAlready(XmlDocument shapedDataList)
         {
             bool result = true;
-            // check for current resume region, if present, ingore addition
+            // check for current resume region, if present, ignore addition
             var tmp = shapedDataList.GetElementsByTagName(enSystemTag.Dev2ResumeData.ToString());
-            if(tmp == null || tmp.Count == 0)
+            if(tmp.Count == 0)
             {
                 tmp = shapedDataList.GetElementsByTagName(enSystemTag.Resumption.ToString());
-                if(tmp == null || tmp.Count == 0)
+                if(tmp.Count == 0)
                 {
                     result = false;
                 }
@@ -1234,7 +1220,9 @@ namespace Dev2.Data.Util
             {
                 try
                 {
+                    // ReSharper disable ReturnValueOfPureMethodIsNotUsed
                     Convert.ToInt32(idx);
+                    // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                     result = enRecordsetIndexType.Numeric;
                 }
                 catch(Exception ex)
@@ -1266,7 +1254,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                int convertIntTest = 0;
+                int convertIntTest;
                 if(Int32.TryParse(idx, out convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
@@ -1288,14 +1276,21 @@ namespace Dev2.Data.Util
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(payload);
             XmlNode node = xDoc.SelectSingleNode(string.Concat("//", tagName));
-            node.ParentNode.RemoveChild(node);
-            xDoc.DocumentElement.InnerXml = string.Concat(xDoc.DocumentElement.InnerXml, newValue);
+            if(node != null && node.ParentNode != null)
+            {
+                node.ParentNode.RemoveChild(node);
+            }
+            if(xDoc.DocumentElement != null)
+            {
+                xDoc.DocumentElement.InnerXml = string.Concat(xDoc.DocumentElement.InnerXml, newValue);
+            }
 
             return xDoc.OuterXml;
         }
 
         //used in the replace node method
-        private static readonly HashSet<char> _base64Characters = new HashSet<char>() { 
+        private static readonly HashSet<char> _base64Characters = new HashSet<char>
+            { 
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
     'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 
     'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 
@@ -1314,14 +1309,16 @@ namespace Dev2.Data.Util
             {
                 return false;
             }
-            else if(value.Any(c => !_base64Characters.Contains(c)))
+            if(value.Any(c => !_base64Characters.Contains(c)))
             {
                 return false;
             }
 
             try
             {
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
                 Convert.FromBase64String(value);
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 return true;
             }
             catch(FormatException fex)
@@ -1372,7 +1369,7 @@ namespace Dev2.Data.Util
                         try
                         {
                             long nodeCount = 0;
-                            while(reader.Read() && !isHtml && !isFragment && result && reader.NodeType != XmlNodeType.Document)
+                            while(reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
                             {
                                 nodeCount++;
 
@@ -1444,8 +1441,8 @@ namespace Dev2.Data.Util
             string expressionString = (expressionBuilder.ToString().Remove(0, 2));
             expressionString = expressionString.Remove(expressionString.Length - 2, 2);
             expressionBuilder.Clear().Append(expressionString);
-            // find the text before the next openregion
-            List<string> regions = new List<string>() { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
+            // find the text before the next open region
+            List<string> regions = new List<string> { expressionBuilder.ToString().Substring(0, expressionBuilder.ToString().IndexOf(openRegion, StringComparison.Ordinal)) };
             // if there are still regions
             if(expressionBuilder.ToString().Contains(openRegion) && expressionBuilder.ToString().Contains(closeRegion))
             {
@@ -1498,10 +1495,8 @@ namespace Dev2.Data.Util
         {
             StringBuilder result = new StringBuilder();
 
-            for(int i = 0; i < scalarList.Count; i++)
+            foreach(IDev2Definition def in scalarList)
             {
-                IDev2Definition def = scalarList[i];
-
                 if(!isInput)
                 {
                     if(IsEvaluated(def.RawValue))
@@ -1552,11 +1547,11 @@ namespace Dev2.Data.Util
             for(int i = 0; i < toRemove.Length; i++)
             {
                 string myTag = toRemove[i];
-                if(myTag.IndexOf("<") >= 0 && myTag.IndexOf("</") < 0)
+                if(myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
                 {
                     foundOpen = true;
                 }
-                else if(myTag.IndexOf("</") >= 0)
+                else if(myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
                 {
                     // close tag
                     if(foundOpen)
@@ -1565,13 +1560,13 @@ namespace Dev2.Data.Util
                         int loc = i - 1;
                         if(loc >= 0)
                         {
-                            int start = result.IndexOf(toRemove[loc]);
-                            int end = result.IndexOf(myTag);
+                            int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                            int end = result.IndexOf(myTag, StringComparison.Ordinal);
                             if(start < end && start >= 0)
                             {
                                 string canidate = result.Substring(start, ((end - start) + myTag.Length));
                                 string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if(tmpResult.IndexOf("</") >= 0 || tmpResult.IndexOf("/>") >= 0)
+                                if(tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
                                 {
                                     // replace just the tags
                                     result = result.Replace(myTag, "").Replace(toRemove[loc], "");
@@ -1609,9 +1604,8 @@ namespace Dev2.Data.Util
 
             IList<IRecordSetDefinition> defs = recCol.RecordSets;
             HashSet<string> processedSetNames = new HashSet<string>();
-            for(int i = 0; i < defs.Count; i++)
+            foreach(IRecordSetDefinition tmp in defs)
             {
-                IRecordSetDefinition tmp = defs[i];
                 IList<string> postProcessDefs = new List<string>();
                 // get DL recordset Name
                 if(tmp.Columns.Count > 0)
@@ -1623,9 +1617,8 @@ namespace Dev2.Data.Util
                     processedSetNames.Add(setName);
 
                     IList<IDev2Definition> cols = tmp.Columns;
-                    for(int q = 0; q < cols.Count; q++)
+                    foreach(IDev2Definition tmpDef in cols)
                     {
-                        IDev2Definition tmpDef = cols[q];
                         if(isInput)
                         {
                             var col = ExtractFieldNameFromValue(tmpDef.MapsTo);
@@ -1724,11 +1717,17 @@ namespace Dev2.Data.Util
                             {
                                 XmlAttribute editableAtt3 = xDoc.CreateAttribute("IsEditable");
                                 editableAtt3.Value = "False";
-                                childnode.Attributes.Append(editableAtt3);
+                                if(childnode.Attributes != null)
+                                {
+                                    childnode.Attributes.Append(editableAtt3);
+                                }
                             }
                             XmlAttribute editableAtt = xDoc.CreateAttribute("IsEditable");
                             editableAtt.Value = "False";
-                            node.Attributes.Append(editableAtt);
+                            if(node.Attributes != null)
+                            {
+                                node.Attributes.Append(editableAtt);
+                            }
                         }
                     }
                 }
@@ -1740,7 +1739,7 @@ namespace Dev2.Data.Util
         /// <summary>
         /// Extracts the input definitions from a service definition.
         /// </summary>
-        /// <param name="serviceDefintion">The service defintion.</param>
+        /// <param name="serviceDefintion">The service definition.</param>
         /// <returns></returns>
         public static string ExtractInputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
@@ -1749,7 +1748,11 @@ namespace Dev2.Data.Util
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);
-                result = xDoc.SelectSingleNode("//Inputs").OuterXml;
+                var selectSingleNode = xDoc.SelectSingleNode("//Inputs");
+                if(selectSingleNode != null)
+                {
+                    result = selectSingleNode.OuterXml;
+                }
             }
             return result;
         }
@@ -1758,7 +1761,7 @@ namespace Dev2.Data.Util
         /// <summary>
         /// Extracts the output definitions from a service definition.
         /// </summary>
-        /// <param name="serviceDefintion">The service defintion.</param>
+        /// <param name="serviceDefintion">The service definition.</param>
         /// <returns></returns>
         public static string ExtractOutputDefinitionsFromServiceDefinition(string serviceDefintion)
         {
@@ -1767,7 +1770,11 @@ namespace Dev2.Data.Util
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(serviceDefintion);
-                result = xDoc.SelectSingleNode("//Outputs").OuterXml;
+                var selectSingleNode = xDoc.SelectSingleNode("//Outputs");
+                if(selectSingleNode != null)
+                {
+                    result = selectSingleNode.OuterXml;
+                }
             }
             return result;
         }

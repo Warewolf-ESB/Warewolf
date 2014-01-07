@@ -11,7 +11,7 @@ using Dev2.Diagnostics;
 
 namespace Dev2.DataList.Contract
 {
-    public interface IDataListCompiler: IDisposable
+    public interface IDataListCompiler : IDisposable
     {
 
 
@@ -19,13 +19,15 @@ namespace Dev2.DataList.Contract
         #region New External Methods
 
         #region Evaluation Operations
+
         /// <summary>
-        /// Used to evalaute an expression against a given datalist
+        /// Used to evaluate an expression against a given datalist
         /// </summary>
         /// <param name="curDLID">The cur DL ID.</param>
         /// <param name="typeOf">The type of evaluation.</param>
         /// <param name="expression">The expression.</param>
-        /// <param name="returnExpressionIfNoMatch">if set to <c>true</c> [return expression if no match].</param>
+        /// <param name="toRoot"></param>
+        /// <param name="errors"></param>
         /// <returns></returns>
         IBinaryDataListEntry Evaluate(Guid curDLID, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors);
 
@@ -49,6 +51,7 @@ namespace Dev2.DataList.Contract
         /// <param name="defType">Type of the def.</param>
         /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="withData"></param>
         /// <returns></returns>
         string GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false);
 
@@ -56,6 +59,7 @@ namespace Dev2.DataList.Contract
         /// Generates the data list from defs
         /// </summary>
         /// <param name="definitions">The definitions as strings</param>
+        /// <param name="typeOf">The type of.</param>
         /// <param name="pushToServer">if set to <c>true</c> [push to server]. the GUID is returned</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
@@ -67,6 +71,7 @@ namespace Dev2.DataList.Contract
         /// <param name="definitions">The definitions as binary objects</param>
         /// <param name="pushToServer">if set to <c>true</c> [push to server]. the GUID is returned</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
         string GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false);
 
@@ -89,6 +94,7 @@ namespace Dev2.DataList.Contract
         /// Generate IO definitions from the DL
         /// </summary>
         /// <param name="dataList">The data list.</param>
+        /// <param name="dev2ColumnArgumentDirection">The dev2 column argument direction.</param>
         /// <returns></returns>
         IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
 
@@ -108,6 +114,8 @@ namespace Dev2.DataList.Contract
         /// </summary>
         /// <param name="definitions">The definitions as binary objects</param>
         /// <param name="defType">Type of the def Input or Output</param>
+        /// <param name="pushToServer">if set to <c>true</c> [push automatic server].</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         string ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors);
 
@@ -115,6 +123,7 @@ namespace Dev2.DataList.Contract
         /// Fetches the binary data list.
         /// </summary>
         /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         IBinaryDataList FetchBinaryDataList(Guid curDLID, out ErrorResultTO errors);
 
@@ -126,7 +135,7 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         Guid CloneDataList(Guid curDLID, out ErrorResultTO errors);
 
-         /// <summary>
+        /// <summary>
         /// Gets the wizard data list for a service.
         /// </summary>
         /// <param name="serviceDefinition">The service definition.</param>
@@ -140,12 +149,12 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Gets the wizard data list for a workflow.
         /// </summary>
-        /// <param name="serviceDefinition">The dataList.</param>
+        /// <param name="dataList">The data list.</param>
         /// <returns>
         /// The string for the data list
         /// </returns>
         /// <exception cref="System.Xml.XmlException">Inputs tag not found in the service definition</exception>
-        /// <exception cref="System.Xml.XmlException">Outputs tag not found in the service definition</exception>
+        /// <exception cref="System.Xml.XmlException">Inputs tag not found in the service definition</exception>
         string GetWizardDataListForWorkflow(string dataList);
 
         #endregion
@@ -157,6 +166,8 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
         Guid Upsert(Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
 
         /// <summary>
@@ -185,7 +196,7 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
-        /// <param name="error">The error.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Upsert(Guid curDLID, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors);
 
@@ -226,6 +237,7 @@ namespace Dev2.DataList.Contract
         /// <param name="typeOf">The type of.</param>
         /// <param name="inputDefinitions">The input definitions.</param>
         /// <param name="errors">The errors.</param>
+        /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
         Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors, Guid overrideID = default(Guid));
 
@@ -246,7 +258,9 @@ namespace Dev2.DataList.Contract
         /// <param name="leftID">The left ID.</param>
         /// <param name="rightID">The right ID.</param>
         /// <param name="mergeType">Type of the merge.</param>
-        /// <param name="error">The error.</param>
+        /// <param name="depth">The depth.</param>
+        /// <param name="createNewList">if set to <c>true</c> [create new list].</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid Merge(Guid leftID, Guid rightID, enDataListMergeTypes mergeType, enTranslationDepth depth, bool createNewList, out ErrorResultTO errors);
 
@@ -270,6 +284,7 @@ namespace Dev2.DataList.Contract
         /// <param name="curDLID">The cur DLID.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="val">The val.</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
         Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors);
 
@@ -286,8 +301,6 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Converts from selected Type to binary
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="depth">The depth.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="shape">The shape.</param>
@@ -298,8 +311,6 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Converts from selected Type to binary
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
-        /// <param name="depth">The depth.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="shape">The shape.</param>
@@ -471,6 +482,7 @@ namespace Dev2.DataList.Contract
         /// Fetches the errors.
         /// </summary>
         /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="returnAsXml">if set to <c>true</c> [return asynchronous XML].</param>
         /// <returns></returns>
         string FetchErrors(Guid curDLID, bool returnAsXml = false);
 
@@ -507,13 +519,13 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Merges the wizard data list.
         /// </summary>
-        /// <param name="wizardID">The wizard ID.</param>
-        /// <param name="serviceID">The service ID.</param>
+        /// <param name="wizardDL">The wizard dialog.</param>
+        /// <param name="serviceDL">The service dialog.</param>
         /// <returns></returns>
         WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL);
 
         #endregion
-       
+
         #endregion External Methods
 
         Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);

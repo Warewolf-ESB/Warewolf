@@ -18,7 +18,9 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Threading;
 
+// ReSharper disable CheckNamespace
 namespace System.Windows.Controls
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Represents a control that provides a text box for user input and a
@@ -26,12 +28,12 @@ namespace System.Windows.Controls
     /// box.
     /// </summary>
     /// <QualityBand>Stable</QualityBand>
-    [TemplatePart(Name = AutoCompleteBox.ElementSelectionAdapter, Type = typeof(ISelectionAdapter))]
-    [TemplatePart(Name = AutoCompleteBox.ElementSelector, Type = typeof(Selector))]
-    [TemplatePart(Name = AutoCompleteBox.ElementTextBox, Type = typeof(TextBox))]
-    [TemplatePart(Name = AutoCompleteBox.ElementPopup, Type = typeof(Popup))]
-    [StyleTypedProperty(Property = AutoCompleteBox.ElementTextBoxStyle, StyleTargetType = typeof(TextBox))]
-    [StyleTypedProperty(Property = AutoCompleteBox.ElementItemContainerStyle, StyleTargetType = typeof(ListBox))]
+    [TemplatePart(Name = ElementSelectionAdapter, Type = typeof(ISelectionAdapter))]
+    [TemplatePart(Name = ElementSelector, Type = typeof(Selector))]
+    [TemplatePart(Name = ElementTextBox, Type = typeof(TextBox))]
+    [TemplatePart(Name = ElementPopup, Type = typeof(Popup))]
+    [StyleTypedProperty(Property = ElementTextBoxStyle, StyleTargetType = typeof(TextBox))]
+    [StyleTypedProperty(Property = ElementItemContainerStyle, StyleTargetType = typeof(ListBox))]
     [TemplateVisualState(Name = VisualStates.StateNormal, GroupName = VisualStates.GroupCommon)]
     [TemplateVisualState(Name = VisualStates.StateMouseOver, GroupName = VisualStates.GroupCommon)]
     [TemplateVisualState(Name = VisualStates.StatePressed, GroupName = VisualStates.GroupCommon)]
@@ -63,7 +65,7 @@ namespace System.Windows.Controls
         /// Specifies the name of the Popup TemplatePart.
         /// </summary>
         private const string ElementPopup = "Popup";
-
+        
         /// <summary>
         /// The name for the text box part.
         /// </summary>
@@ -284,7 +286,7 @@ namespace System.Windows.Controls
                 source._ignorePropertyChange = true;
                 d.SetValue(e.Property, e.OldValue);
 
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, 
                     Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue, newValue), "value");
             }
 
@@ -292,7 +294,7 @@ namespace System.Windows.Controls
             if(source._delayTimer != null)
             {
                 source._delayTimer.Stop();
-
+                
                 if(newValue == 0)
                 {
                     source._delayTimer = null;
@@ -313,7 +315,7 @@ namespace System.Windows.Controls
             }
         }
         #endregion public int MinimumPopulateDelay
-
+        
         #region public bool IsTextCompletionEnabled
         /// <summary>
         /// Gets or sets a value indicating whether the first possible match
@@ -503,7 +505,7 @@ namespace System.Windows.Controls
             }
 
             double newValue = (double)e.NewValue;
-
+            
             // Revert to the old value if invalid (negative)
             if(newValue < 0)
             {
@@ -687,7 +689,7 @@ namespace System.Windows.Controls
             {
                 removed.Add(e.OldValue);
             }
-
+            
             List<object> added = new List<object>();
             if(e.NewValue != null)
             {
@@ -696,9 +698,9 @@ namespace System.Windows.Controls
 
             source.OnSelectionChanged(new SelectionChangedEventArgs(
 #if !SILVERLIGHT
-SelectionChangedEvent,
+                SelectionChangedEvent,
 #endif
- removed,
+                removed,
                 added));
         }
 
@@ -899,7 +901,7 @@ SelectionChangedEvent,
                 mode != AutoCompleteFilterMode.ContainsCaseSensitive &&
                 mode != AutoCompleteFilterMode.ContainsOrdinal &&
                 mode != AutoCompleteFilterMode.ContainsOrdinalCaseSensitive &&
-                mode != AutoCompleteFilterMode.Custom &&
+                mode != AutoCompleteFilterMode.Custom && 
                 mode != AutoCompleteFilterMode.Equals &&
                 mode != AutoCompleteFilterMode.EqualsCaseSensitive &&
                 mode != AutoCompleteFilterMode.EqualsOrdinal &&
@@ -966,7 +968,7 @@ SelectionChangedEvent,
         {
             AutoCompleteBox source = d as AutoCompleteBox;
             AutoCompleteFilterPredicate<object> value = e.NewValue as AutoCompleteFilterPredicate<object>;
-
+            
             // If null, revert to the "None" predicate
             if(value == null)
             {
@@ -1076,8 +1078,8 @@ SelectionChangedEvent,
         /// use with AutoCompleteBox or deriving from AutoCompleteBox to 
         /// create a custom control.
         /// </remarks>
-        protected internal ISelectionAdapter SelectionAdapter
-        {
+        protected internal ISelectionAdapter SelectionAdapter 
+        { 
             get { return _adapter; }
             set
             {
@@ -2175,7 +2177,7 @@ SelectionChangedEvent,
         /// When the long-running process has completed you call 
         /// PopulateComplete to indicate the drop-down is populated.
         /// </remarks>
-        public void PopulateComplete()
+        public void PopulateComplete() 
         {
             // Apply the search filter
             RefreshView();
@@ -2512,7 +2514,7 @@ SelectionChangedEvent,
                     _items = new List<object>(ItemsSource.Cast<object>().ToList());
                 }
             }
-
+            
             // Refresh the observable collection used in the selection adapter.
             RefreshView();
         }

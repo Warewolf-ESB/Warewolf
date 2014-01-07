@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -13,14 +14,19 @@ using Dev2.Common.Common;
 using Microsoft.Win32.SafeHandles;
 using Unlimited.Framework;
 
-namespace Dev2 {
+// ReSharper disable CheckNamespace
+namespace Dev2
+{
+    // ReSharper restore CheckNamespace
 
     /// <summary>
     /// Used for internal security reasons
     /// </summary>
-    public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid {
+    public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
+    {
         private SafeTokenHandle()
-            : base(true) {
+            : base(true)
+        {
         }
 
         [DllImport("kernel32.dll")]
@@ -29,13 +35,15 @@ namespace Dev2 {
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool CloseHandle(IntPtr handle);
 
-        protected override bool ReleaseHandle() {
+        protected override bool ReleaseHandle()
+        {
             return CloseHandle(handle);
         }
     }
 
 
-    public class FileIO {
+    public class FileIO
+    {
         IFrameworkFileIO _ioProvider;
 
         const int LOGON32_PROVIDER_DEFAULT = 0;
@@ -44,39 +52,43 @@ namespace Dev2 {
 
 
         #region Delete
-        public string Delete(Uri path, string userName = "", string password = "") {
+        public string Delete(Uri path, string userName = "", string password = "")
+        {
             dynamic returnData = new UnlimitedObject();
             CreateProvider(path);
 
-            try {
+            try
+            {
                 _ioProvider.Delete(path, userName, password);
                 returnData.Result = "File Deleted";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
         }
 
-        public string Delete(object parameterData) {
-            Uri destinationPath = null;
-            string userName = string.Empty;
-            string password = string.Empty;
-
+        public string Delete(object parameterData)
+        {
             object[] parameters = parameterData as object[];
-            try {
-                if (parameterData != null) {
-                    if (parameters.Length >= 1) {
-                        destinationPath = new Uri(parameters[0].ToString());
-                        userName = parameters[1].ToString();
-                        password = parameters[2].ToString();
+            try
+            {
+                if(parameterData != null)
+                {
+                    if(parameters != null && parameters.Length >= 1)
+                    {
+                        Uri destinationPath = new Uri(parameters[0].ToString());
+                        string userName = parameters[1].ToString();
+                        string password = parameters[2].ToString();
 
                         return Delete(destinationPath, userName, password);
                     }
 
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 ServerLogger.LogError(ex);
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
@@ -86,28 +98,27 @@ namespace Dev2 {
         #endregion
 
         #region Move
-        public string Move(object parameterData) {
-            Uri sourcePath = null;
-            Uri destinationPath = null;
-
-            string userName = string.Empty;
-            string password = string.Empty;
-
+        public string Move(object parameterData)
+        {
             object[] parameters = parameterData as object[];
-            try {
-                if (parameterData != null) {
-                    if (parameters.Length >= 2) {
-                        sourcePath = new Uri(parameters[0].ToString());
-                        destinationPath = new Uri(parameters[1].ToString());
-                        userName = parameters[2].ToString();
-                        password = parameters[3].ToString();
+            try
+            {
+                if(parameterData != null)
+                {
+                    if(parameters != null && parameters.Length >= 2)
+                    {
+                        Uri sourcePath = new Uri(parameters[0].ToString());
+                        Uri destinationPath = new Uri(parameters[1].ToString());
+                        string userName = parameters[2].ToString();
+                        string password = parameters[3].ToString();
 
                         return Move(sourcePath, destinationPath, userName, password);
                     }
 
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
@@ -116,15 +127,18 @@ namespace Dev2 {
         }
 
 
-        public string Move(Uri sourcePath, Uri destinationPath, string userName = "", string password = "") {
+        public string Move(Uri sourcePath, Uri destinationPath, string userName = "", string password = "")
+        {
             dynamic returnData = new UnlimitedObject();
             CreateProvider(sourcePath);
 
-            try {
+            try
+            {
                 _ioProvider.Move(sourcePath, destinationPath, false, userName, password);
                 returnData.Result = "File Moved";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
@@ -133,28 +147,27 @@ namespace Dev2 {
         #endregion
 
         #region Copy
-        public string Copy(object parameterData) {
-            Uri sourcePath = null;
-            Uri destinationPath = null;
-
-            string userName = string.Empty;
-            string password = string.Empty;
-
+        public string Copy(object parameterData)
+        {
             object[] parameters = parameterData as object[];
-            try {
-                if (parameterData != null) {
-                    if (parameters.Length >= 2) {
-                        sourcePath = new Uri(parameters[0].ToString());
-                        destinationPath = new Uri(parameters[1].ToString());
-                        userName = parameters[2].ToString();
-                        password = parameters[3].ToString();
+            try
+            {
+                if(parameterData != null)
+                {
+                    if(parameters != null && parameters.Length >= 2)
+                    {
+                        Uri sourcePath = new Uri(parameters[0].ToString());
+                        Uri destinationPath = new Uri(parameters[1].ToString());
+                        string userName = parameters[2].ToString();
+                        string password = parameters[3].ToString();
 
                         return Copy(sourcePath, destinationPath, false, userName, password);
                     }
 
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
@@ -163,15 +176,18 @@ namespace Dev2 {
         }
 
 
-        public string Copy(Uri sourcePath, Uri destinationPath, bool overWrite, string userName = "", string password = "") {
+        public string Copy(Uri sourcePath, Uri destinationPath, bool overWrite, string userName = "", string password = "")
+        {
             dynamic returnData = new UnlimitedObject();
             CreateProvider(sourcePath);
 
-            try {
+            try
+            {
                 _ioProvider.Copy(sourcePath, destinationPath, false, userName, password);
                 returnData.Result = "File Copied";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
@@ -181,50 +197,53 @@ namespace Dev2 {
 
         #region Put
 
-        public string CreateFileFromBase64String(object parameterData) {
-            string base64Data = null;
-            Uri destinationPath = null;
-            string userName = string.Empty;
-            string password = string.Empty;
-
+        public string CreateFileFromBase64String(object parameterData)
+        {
             object[] parameters = parameterData as object[];
 
-            try {
-                if (parameterData != null) {
-                    if (parameters.Length >= 2) {
+            try
+            {
+                if(parameterData != null)
+                {
+                    if(parameters != null && parameters.Length >= 2)
+                    {
 
-                        base64Data = parameters[0].ToString();
-                        destinationPath = new Uri(parameters[1].ToString());
-                        userName = parameters[2].ToString();
-                        password = parameters[3].ToString();
+                        string base64Data = parameters[0].ToString();
+                        Uri destinationPath = new Uri(parameters[1].ToString());
+                        string userName = parameters[2].ToString();
+                        string password = parameters[3].ToString();
 
                         return CreateFileFromBase64String(base64Data, destinationPath, userName, password);
                     }
 
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
             return string.Format("<Error>{0}</Error>", "Input data was in incorrect format");
         }
 
-        public string CreateFileFromBase64String(string base64FileData, Uri destinationPath, string userName, string password) {
+        public string CreateFileFromBase64String(string base64FileData, Uri destinationPath, string userName, string password)
+        {
             dynamic returnData = new UnlimitedObject();
             CreateProvider(destinationPath);
-            try {
+            try
+            {
                 byte[] fileData = Convert.FromBase64String(base64FileData);
 
                 using(MemoryStream ms = new MemoryStream(fileData))
                 {
-                    _ioProvider.Put(ms, destinationPath, true, userName, password);    
+                    _ioProvider.Put(ms, destinationPath, true, userName, password);
                 }
-                
+
 
                 returnData.Result = "File Created";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
@@ -232,25 +251,31 @@ namespace Dev2 {
         #endregion
 
         #region Get
-        public string GetFileInBase64String(object parameterData) {
+        public string GetFileInBase64String(object parameterData)
+        {
             object[] parameters = parameterData as object[];
             dynamic data = new UnlimitedObject();
 
             string userName = string.Empty;
             string password = string.Empty;
 
-            try {
+            try
+            {
                 Uri fileUri = null;
-                if (parameterData != null) {
-                    fileUri = new Uri(parameters[0].ToString());
-                    userName = parameters[1].ToString();
-                    password = parameters[2].ToString();
-
+                if(parameterData != null)
+                {
+                    if(parameters != null)
+                    {
+                        fileUri = new Uri(parameters[0].ToString());
+                        userName = parameters[1].ToString();
+                        password = parameters[2].ToString();
+                    }
                 }
                 return GetFileInBase64String(fileUri, userName, password);
 
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 string errorXml = new UnlimitedObject(ex).XmlString;
                 data.Error = errorXml;
                 Debug.WriteLine(errorXml);
@@ -260,21 +285,25 @@ namespace Dev2 {
 
         }
 
-        public string GetFileInBase64String(Uri sourceFilePath, string userName, string password) {
+        public string GetFileInBase64String(Uri sourceFilePath, string userName, string password)
+        {
             dynamic returnData = new UnlimitedObject();
             CreateProvider(sourceFilePath);
-            try {
+            try
+            {
                 var fileStream = _ioProvider.Get(sourceFilePath, userName, password);
                 returnData.FileBase64 = fileStream.ToBase64String();
                 returnData.Result = "File Retrieved";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
         }
 
-        public Stream Get(string filePath, string userName = "", string password = "") {
+        public Stream Get(string filePath, string userName = "", string password = "")
+        {
             var fileUri = new Uri(filePath);
             CreateProvider(fileUri);
             return _ioProvider.Get(fileUri, userName, password);
@@ -283,28 +312,33 @@ namespace Dev2 {
 
         #region List
 
-        public string GetFilePathsFromDirectory(Uri directory, string userName, string password) {
+        public string GetFilePathsFromDirectory(Uri directory, string userName, string password)
+        {
             CreateProvider(directory);
             dynamic returnData = new UnlimitedObject();
 
-            try {
+            try
+            {
                 var fileList = _ioProvider.List(directory, userName, password);
 
 
-                fileList.ToList().ForEach(c => {
+                fileList.ToList().ForEach(c =>
+                {
                     dynamic fileUri = new UnlimitedObject("FileData");
                     fileUri.FilePath = c.ToString();
                     returnData.AddResponse(fileUri);
                 });
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
 
             return returnData.XmlString;
         }
 
-        public string GetFilePathsFromDirectory(object directoryPath) {
+        public string GetFilePathsFromDirectory(object directoryPath)
+        {
             var directoryParam = directoryPath as object[];
             string directory = string.Empty;
             string userName = string.Empty;
@@ -314,17 +348,20 @@ namespace Dev2 {
 
             dynamic returnData = new UnlimitedObject();
 
-            try {
-                if (directoryParam != null) {
+            try
+            {
+                if(directoryParam != null)
+                {
                     directory = directoryParam[0].ToString();
-                    userName = directory[1].ToString();
-                    password = directory[2].ToString();
+                    userName = directory[1].ToString(CultureInfo.InvariantCulture);
+                    password = directory[2].ToString(CultureInfo.InvariantCulture);
                 }
 
 
                 return GetFilePathsFromDirectory(new Uri(directory), userName, password);
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
             return returnData.XmlString;
@@ -333,20 +370,24 @@ namespace Dev2 {
 
         #region Create Directory
 
-        public string CreateDirectory(object createDirectoryData) {
+        public string CreateDirectory(object createDirectoryData)
+        {
             dynamic returnData = new UnlimitedObject();
 
 
-            try {
+            try
+            {
                 object[] parameters = createDirectoryData as object[];
-                if (parameters != null) {
+                if(parameters != null)
+                {
                     string directory = parameters[0].ToString();
                     string userName = parameters[1].ToString();
                     string password = parameters[2].ToString();
                     _ioProvider.CreateDirectory(new Uri(directory), userName, password);
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).XmlString;
             }
 
@@ -354,27 +395,33 @@ namespace Dev2 {
 
         }
 
-        public string CreateDirectory(string directoryPath, string userName, string password) {
+        public string CreateDirectory(string directoryPath, string userName, string password)
+        {
             dynamic returnData = new UnlimitedObject();
 
 
-            try {
+            try
+            {
                 _ioProvider.CreateDirectory(new Uri(directoryPath), userName, password);
                 returnData.Result = "Directory Created";
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 returnData.Error = new UnlimitedObject(ex).ToString();
             }
-            
+
             return returnData.XmlString;
         }
 
         #endregion
-        private void CreateProvider(Uri path) {
-            if (path.Scheme.Equals("ftp", StringComparison.CurrentCultureIgnoreCase) || path.Scheme.Equals("ftps", StringComparison.CurrentCultureIgnoreCase)) {
+        private void CreateProvider(Uri path)
+        {
+            if(path.Scheme.Equals("ftp", StringComparison.CurrentCultureIgnoreCase) || path.Scheme.Equals("ftps", StringComparison.CurrentCultureIgnoreCase))
+            {
                 _ioProvider = new FTP();
             }
-            else {
+            else
+            {
                 _ioProvider = new FileSystem();
             }
         }
@@ -394,12 +441,14 @@ namespace Dev2 {
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private static string ExtractUserName(string path) {
+        private static string ExtractUserName(string path)
+        {
             string result = string.Empty;
 
-            int idx = path.IndexOf("\\");
+            int idx = path.IndexOf("\\", StringComparison.Ordinal);
 
-            if (idx > 0) {
+            if(idx > 0)
+            {
                 result = path.Substring((idx + 1));
             }
 
@@ -411,12 +460,14 @@ namespace Dev2 {
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private static string ExtractDomain(string path) {
+        private static string ExtractDomain(string path)
+        {
             string result = string.Empty;
 
-            int idx = path.IndexOf("\\");
+            int idx = path.IndexOf("\\", StringComparison.Ordinal);
 
-            if (idx > 0) {
+            if(idx > 0)
+            {
                 result = path.Substring(0, idx);
             }
 
@@ -432,22 +483,27 @@ namespace Dev2 {
         /// <param name="rights">The rights.</param>
         /// <returns></returns>
         /// <exception cref="System.Exception">Failed to authenticate with user [  + userAndDomain +  ] for resource [  + path +  ] </exception>
-        public static bool CheckPermissions(string userAndDomain, string pass, string path, FileSystemRights rights) {
-            bool result = false;
+        public static bool CheckPermissions(string userAndDomain, string pass, string path, FileSystemRights rights)
+        {
+            bool result;
 
             // handle UNC path
-            SafeTokenHandle safeTokenHandle;
-            try {
+            try
+            {
                 string user = ExtractUserName(userAndDomain);
                 string domain = ExtractDomain(userAndDomain);
+                SafeTokenHandle safeTokenHandle;
                 bool loginOk = LogonUser(user, domain, pass, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
-                if (loginOk) {
-                    using (safeTokenHandle) {
+                if(loginOk)
+                {
+                    using(safeTokenHandle)
+                    {
 
                         WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate()) {
+                        using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        {
                             // Do the operation here
                             result = CheckPermissions(newID, path, rights);
 
@@ -455,14 +511,16 @@ namespace Dev2 {
                         }
                     }
                 }
-                else {
+                else
+                {
                     // login failed
                     throw new Exception("Failed to authenticate with user [ " + userAndDomain + " ] for resource [ " + path + " ] ");
                 }
             }
-            catch (Exception ex) {
+            catch(Exception ex)
+            {
                 ServerLogger.LogError(ex);
-                throw ex;
+                throw;
             }
             return result;
         }
@@ -481,11 +539,11 @@ namespace Dev2 {
             DirectoryInfo di = new DirectoryInfo(path);
             AuthorizationRuleCollection acl;
 
-            if (fi.Exists)
+            if(fi.Exists)
             {
                 acl = fi.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
             }
-            else if (di.Exists)
+            else if(di.Exists)
             {
                 acl = di.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
             }
@@ -496,21 +554,21 @@ namespace Dev2 {
 
             // gets rules that concern the user and his groups
             IEnumerable<AuthorizationRule> userRules = from AuthorizationRule rule in acl
-                                                       where user.User.Equals(rule.IdentityReference)
-                                                       || user.Groups.Contains(rule.IdentityReference)
+                                                       where user.Groups != null && (user.User != null && (user.User.Equals(rule.IdentityReference)
+                                                                                                           || user.Groups.Contains(rule.IdentityReference)))
                                                        select rule;
 
             FileSystemRights denyRights = 0;
             FileSystemRights allowRights = 0;
 
             // iterates on rules to compute denyRights and allowRights
-            foreach (FileSystemAccessRule rule in userRules)
+            foreach(FileSystemAccessRule rule in userRules)
             {
-                if (rule.AccessControlType.Equals(AccessControlType.Deny))
+                if(rule.AccessControlType.Equals(AccessControlType.Deny))
                 {
                     denyRights = denyRights | rule.FileSystemRights;
                 }
-                else if (rule.AccessControlType.Equals(AccessControlType.Allow))
+                else if(rule.AccessControlType.Equals(AccessControlType.Allow))
                 {
                     allowRights = allowRights | rule.FileSystemRights;
                 }
