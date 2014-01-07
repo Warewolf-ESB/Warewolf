@@ -184,7 +184,7 @@ namespace Dev2.Data.Util
             errors.MergeErrors(invokeErrors);
             MergeOp(right, left, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            
+
         }
 
         private static void MergeOp(IBinaryDataList left, IBinaryDataList right, out ErrorResultTO errors)
@@ -221,7 +221,7 @@ namespace Dev2.Data.Util
                     }
                     else
                     {
-                        errors.AddError(error);    
+                        errors.AddError(error);
                     }
                 }
             }
@@ -718,7 +718,7 @@ namespace Dev2.Data.Util
             // Transfer System Tags
             bool result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
 
-            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
+            if(!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
             {
                 tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
                 result = _sysTags.Contains(tag) || nastyJunk.Contains(tag);
@@ -1355,7 +1355,7 @@ namespace Dev2.Data.Util
         {
             string trimedData = data.Trim();
             bool result = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
-            
+
             isFragment = false;
             isHtml = false;
 
@@ -1464,13 +1464,13 @@ namespace Dev2.Data.Util
         {
             string trimedData = payload.Trim();
             var isXML = (trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA["));
-            
+
             if(!isXML)
             {
                 // we need to adjust. there might be a silly encoding issue with first char!
                 if(trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
                 {
-                    trimedData = trimedData.Substring(1);    
+                    trimedData = trimedData.Substring(1);
                 }
                 else if(trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
                 {
@@ -1525,7 +1525,7 @@ namespace Dev2.Data.Util
                     {
                         var tmpValue = RemoveLanguageBrackets(def.Value);
                         result.Append(string.Concat("<", tmpValue, "></", tmpValue, ">"));
-                        result.Append(Environment.NewLine);   
+                        result.Append(Environment.NewLine);
                     }
                 }
             }
@@ -1840,7 +1840,7 @@ namespace Dev2.Data.Util
                     token = AddBracketsToValueIfNotExist(string.Format("{0}{1}{2}", tokenPrefix, StripLeadingAndTrailingBracketsFromValue(token), tokenSuffix));
                     newTokens.Add(token);
                     target.Add(new ObservablePair<string, string>(token, string.Empty));
-                }               
+                }
             }
 
             foreach(var observablePair in target)
