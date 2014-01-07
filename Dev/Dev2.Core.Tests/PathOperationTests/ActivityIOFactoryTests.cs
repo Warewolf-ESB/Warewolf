@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Data.PathOperations;
+using Dev2.PathOperations;
 using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.PathOperations;
 
 namespace Unlimited.UnitTest.Framework.PathOperationTests {
     [TestClass][ExcludeFromCodeCoverage]

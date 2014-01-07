@@ -32,9 +32,9 @@ NOTE: CoInitialize(Ex) must be called before you use any of the functions and in
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Globalization;
 
 namespace Dev2.Common.Reflection
 {
@@ -124,7 +124,9 @@ namespace Dev2.Common.Reflection
     }
 
     /// <summary>
+#pragma warning disable 1584,1711,1572,1581,1580
     /// <see cref="IAssemblyChance.InstallAssembly"/>
+#pragma warning restore 1584,1711,1572,1581,1580
     /// </summary>
     public enum IASSEMBLYCACHE_INSTALL_FLAG
     {
@@ -260,17 +262,6 @@ namespace Dev2.Common.Reflection
             ASM_CACHE_FLAGS dwFlags, IntPtr pvReserved);
 
         /// <summary>
-        /// To obtain an instance of the CreateInstallReferenceEnum API, call the CreateInstallReferenceEnum API.
-        /// </summary>
-        /// <param name="ppRefEnum">A pointer to a memory location that receives the IInstallReferenceEnum pointer.</param>
-        /// <param name="pName">The assembly name for which the references are enumerated.</param>
-        /// <param name="dwFlags"> Must be zero.</param>
-        /// <param name="pvReserved">Must be null.</param>
-        [DllImport("fusion.dll", SetLastError = true, PreserveSig = false)]
-        static extern void CreateInstallReferenceEnum(out IInstallReferenceEnum ppRefEnum, IAssemblyName pName,
-            uint dwFlags, IntPtr pvReserved);
-
-        /// <summary>
         /// The GetCachePath API returns the storage location of the GAC. 
         /// </summary>
         /// <param name="dwCacheFlags">Exactly one of the bits defined in the ASM_CACHE_FLAGS enumeration.</param>
@@ -348,7 +339,7 @@ namespace Dev2.Common.Reflection
         {
             IAssemblyCache ac;
 
-            GAC.CreateAssemblyCache(out ac, 0);
+            CreateAssemblyCache(out ac, 0);
 
             return ac;
         }
@@ -366,7 +357,7 @@ namespace Dev2.Common.Reflection
         {
             IAssemblyName an;
 
-            GAC.CreateAssemblyNameObject(out an, name, 2, (IntPtr)0);
+            CreateAssemblyNameObject(out an, name, 2, (IntPtr)0);
 
             return an;
         }
@@ -457,7 +448,12 @@ namespace Dev2.Common.Reflection
             name.GetProperty(ASM_NAME.ASM_NAME_CULTURE, buffer, ref bufferSize);
             string result = Marshal.PtrToStringAuto(buffer);
             Marshal.FreeHGlobal(buffer);
-            return new CultureInfo(result);
+            if(result != null)
+            {
+                return new CultureInfo(result);
+            }
+
+            return null;
         }
 
         #endregion
@@ -472,7 +468,7 @@ namespace Dev2.Common.Reflection
         {
             IAssemblyEnum ae;
 
-            GAC.CreateAssemblyEnum(out ae, (IntPtr)0, null, ASM_CACHE_FLAGS.ASM_CACHE_GAC, (IntPtr)0);
+            CreateAssemblyEnum(out ae, (IntPtr)0, null, ASM_CACHE_FLAGS.ASM_CACHE_GAC, (IntPtr)0);
 
             return ae;
         }
@@ -496,7 +492,7 @@ namespace Dev2.Common.Reflection
         {
             uint bufferSize = 255;
             StringBuilder buffer = new StringBuilder((int)bufferSize);
-            GAC.GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_GAC, buffer, ref bufferSize);
+            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_GAC, buffer, ref bufferSize);
             return buffer.ToString();
         }
 
@@ -508,7 +504,7 @@ namespace Dev2.Common.Reflection
         {
             uint bufferSize = 255;
             StringBuilder buffer = new StringBuilder((int)bufferSize);
-            GAC.GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_ZAP, buffer, ref bufferSize);
+            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_ZAP, buffer, ref bufferSize);
             return buffer.ToString();
         }
 
@@ -520,7 +516,7 @@ namespace Dev2.Common.Reflection
         {
             uint bufferSize = 255;
             StringBuilder buffer = new StringBuilder((int)bufferSize);
-            GAC.GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_DOWNLOAD, buffer, ref bufferSize);
+            GetCachePath(ASM_CACHE_FLAGS.ASM_CACHE_DOWNLOAD, buffer, ref bufferSize);
             return buffer.ToString();
         }
         #endregion
@@ -567,22 +563,21 @@ namespace Dev2.Common.Reflection
             {
                 Version latest = null;
 
-
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
+                foreach(GACAssemblyName t in matchingName)
+                    if (t != null)
                     {
                         if (latest == null)
                         {
-                            winner = matchingName[i];
+                            winner = t;
                             latest = new Version(winner.Version);
                         }
                         else
                         {
-                            Version compare = new Version(matchingName[i].Version);
+                            Version compare = new Version(t.Version);
 
                             if (latest < compare)
                             {
-                                winner = matchingName[i];
+                                winner = t;
                                 latest = compare;
                             }
                         }
@@ -603,13 +598,13 @@ namespace Dev2.Common.Reflection
             if (displayName.StartsWith(GlobalConstants.GACPrefix)) displayName = displayName.Substring(4);
 
             string[] split = displayName.Split(',');
-            int index = -1;
 
             string culture = null, version = null, publicKeyToken = null, name = null;
 
             foreach (string part in split)
             {
-                if (name == null && (index = part.IndexOf("=", StringComparison.OrdinalIgnoreCase)) == -1)
+                int index = part.IndexOf("=", StringComparison.OrdinalIgnoreCase);
+                if (name == null && index == -1)
                     name = part.Trim();
                 else
                 {
@@ -703,23 +698,16 @@ namespace Dev2.Common.Reflection
         {
             if (_gacNameCache.Length != 0 && !forceRebuild) return true;
 
-            IAssemblyEnum iterator = null;
-
-            try { iterator = GAC.CreateGACEnum(); }
-            catch 
-            {
-                iterator = null;
-                throw;
-            }
+            IAssemblyEnum iterator = CreateGACEnum();
 
             if (iterator == null) return false;
-            IAssemblyName currentName = null;
+            IAssemblyName currentName;
             List<GACAssemblyName> gacNames = new List<GACAssemblyName>();
 
-            while (GAC.GetNextAssembly(iterator, out currentName) == 0)
+            while (GetNextAssembly(iterator, out currentName) == 0)
             {
                 if (currentName == null) continue;
-                string displayName = GAC.GetDisplayName(currentName, ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE);
+                string displayName = GetDisplayName(currentName, ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE);
                 gacNames.Add(new GACAssemblyName(displayName));
             }
 
@@ -734,10 +722,10 @@ namespace Dev2.Common.Reflection
     {
         public static readonly GACAssemblyName[] EmptyNames = new GACAssemblyName[0];
 
-        private string _name;
-        private string _version;
-        private string _culture;
-        private string _publicKeyToken;
+        private readonly string _name;
+        private readonly string _version;
+        private readonly string _culture;
+        private readonly string _publicKeyToken;
 
         public string Name { get { return _name; } }
         public string Version { get { return _version; } }
@@ -747,11 +735,11 @@ namespace Dev2.Common.Reflection
         public GACAssemblyName(string displayName)
         {
             string[] split = displayName.Split(',');
-            int index = -1;
 
             foreach (string part in split)
             {
-                if (_culture == null && (index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase)) != -1)
+                int index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase);
+                if (_culture == null && index != -1)
                     _culture = part.Substring(index + 8).Trim();
                 else if (_version == null && (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
                     _version = part.Substring(index + 8).Trim();
@@ -918,7 +906,9 @@ namespace Dev2.Common.Reflection
         /// </summary>
         /// <returns></returns>
         [PreserveSig]
+#pragma warning disable 465
         int Finalize();
+#pragma warning restore 465
 
         /// <summary>
         /// The IAssemblyName::GetDisplayName method returns a string representation of the assembly name.
@@ -1025,7 +1015,7 @@ namespace Dev2.Common.Reflection
         /// name of the next assembly that is enumerated.</param>
         /// <param name="dwFlags">Must be zero.</param>
         /// <returns></returns>
-        [PreserveSig()]
+        [PreserveSig]
         int GetNextAssembly(
             IntPtr pvReserved,
             out IAssemblyName ppName,
@@ -1035,7 +1025,7 @@ namespace Dev2.Common.Reflection
         /// Undocumented. Best guess: reset the enumeration to the first assembly.
         /// </summary>
         /// <returns></returns>
-        [PreserveSig()]
+        [PreserveSig]
         int Reset();
 
         /// <summary>
@@ -1043,7 +1033,7 @@ namespace Dev2.Common.Reflection
         /// </summary>
         /// <param name="ppEnum"></param>
         /// <returns></returns>
-        [PreserveSig()]
+        [PreserveSig]
         int Clone(
             out IAssemblyEnum ppEnum);
     }
@@ -1089,7 +1079,7 @@ namespace Dev2.Common.Reflection
         /// <param name="dwFlags">Must be zero.</param>
         /// <param name="pvReserved">Must be null.</param>
         /// <returns></returns>
-        [PreserveSig()]
+        [PreserveSig]
         int GetNextInstallReferenceItem(
             out IInstallReferenceItem ppRefItem,
             uint dwFlags,
