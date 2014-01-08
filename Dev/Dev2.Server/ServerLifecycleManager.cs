@@ -39,7 +39,7 @@ namespace Dev2
     {
         #region Constants
 
-        const string _defaultConfigFileName = "LifecycleConfig.xml";
+        const string DefaultConfigFileName = "LifecycleConfig.xml";
 
         #endregion
 
@@ -192,9 +192,9 @@ namespace Dev2
         bool _isWebServerEnabled;
         bool _isWebServerSslEnabled;
         bool _preloadAssemblies;
-        string[] _arguments;
+        readonly string[] _arguments;
         AssemblyReference[] _externalDependencies;
-        Dictionary<string, WorkflowEntry[]> _workflowGroups;
+        readonly Dictionary<string, WorkflowEntry[]> _workflowGroups;
         Dev2Endpoint[] _endpoints;
         EsbServicesEndpoint _esbEndpoint;
 
@@ -202,7 +202,7 @@ namespace Dev2
         string _configFile;
 
         // START OF GC MANAGEMENT
-        bool _enableGCManager;
+        bool _enableGcManager;
         long _minimumWorkingSet;
         long _lastKnownWorkingSet;
         volatile bool _gcmRunning;
@@ -242,7 +242,7 @@ namespace Dev2
         ServerLifecycleManager(string[] arguments)
         {
             _arguments = arguments ?? new string[0];
-            _configFile = _defaultConfigFileName;
+            _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
             _workflowGroups = new Dictionary<string, WorkflowEntry[]>(StringComparer.OrdinalIgnoreCase);
 
@@ -320,21 +320,7 @@ namespace Dev2
                 result = 98; // ????
                 didBreak = true;
             }
-
-
-            //            if(!didBreak && !OpenNetworkExecutionChannel())
-            //            {
-            //                result = 97;
-            //                didBreak = true;
-            //            }
-            //
-            //            if(!didBreak && !OpenNetworkDataListChannel())
-            //            {
-            //                result = 96;
-            //                didBreak = true;
-            //            }
-
-
+            
             if(!didBreak && !StartWebServer())
             {
                 result = 4;
@@ -420,9 +406,9 @@ namespace Dev2
 
             try
             {
-                // Brendon.Page - The following line is has had it warning supressed because if the working dirctory can't be set
-                //                then it can't be garunteed that the server will operate correctly, and in this case the desired
-                //                behaviour is a fail with an exception.
+                // Brendon.Page - The following line is has had it warning suppressed because if the working directory can't be set
+                //                then it can't be guaranteed that the server will operate correctly, and in this case the desired
+                //                behavior is a fail with an exception.
                 // ReSharper disable AssignNullToNotNullAttribute
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 // ReSharper restore AssignNullToNotNullAttribute
@@ -443,12 +429,9 @@ namespace Dev2
             {
                 if(!IsElevated())
                 {
-                    ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location);
-                    startInfo.Verb = "runas";
-                    startInfo.Arguments = string.Join(" ", arguments);
+                    ProcessStartInfo startInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().Location) { Verb = "runas", Arguments = string.Join(" ", arguments) };
 
-                    Process process = new Process();
-                    process.StartInfo = startInfo;
+                    Process process = new Process { StartInfo = startInfo };
 
                     try
                     {
@@ -493,8 +476,6 @@ namespace Dev2
             XmlDocument document = new XmlDocument();
             if(File.Exists(filePath))
             {
-
-
                 try
                 {
                     document.Load(filePath);
@@ -504,8 +485,6 @@ namespace Dev2
                     Fail("Configuration load error", e);
                     result = false;
                 }
-
-
             }
             else
                 recreate = true;
@@ -570,7 +549,6 @@ namespace Dev2
                     if(result)
                     {
                         ReadBooleanSection(section, "PreloadAssemblies", ref result, ref _preloadAssemblies);
-
 
                         if(String.Equals(section.Name, "Logging", StringComparison.OrdinalIgnoreCase))
                         {
@@ -655,7 +633,7 @@ namespace Dev2
                 {
                     if(String.Equals(sAttrib.Name, "Enabled", StringComparison.OrdinalIgnoreCase))
                     {
-                        _enableGCManager = String.Equals(sAttrib.Value, "True", StringComparison.OrdinalIgnoreCase);
+                        _enableGcManager = String.Equals(sAttrib.Value, "True", StringComparison.OrdinalIgnoreCase);
                     }
                 }
             }
@@ -942,7 +920,7 @@ namespace Dev2
 
                                     if(allAttribs != null)
                                     {
-                                        string key = null, value = null;
+                                        string key = null;
 
                                         foreach(XmlAttribute argAttrib in allAttribs)
                                         {
@@ -958,7 +936,7 @@ namespace Dev2
                                             return false;
                                         }
 
-                                        value = currentArg.InnerText ?? "";
+                                        string value = currentArg.InnerText ?? "";
 
                                         if(arguments.ContainsKey(key))
                                         {
@@ -1007,20 +985,19 @@ namespace Dev2
         {
             if(!LoadExternalDependencies())
                 return false;
-            bool result = true;
+            const bool Result = true;
 
             if(_preloadAssemblies)
             {
                 Write("Preloading assemblies...  ");
                 Assembly currentAsm = typeof(ServerLifecycleManager).Assembly;
-                HashSet<string> inspected = new HashSet<string>();
-                inspected.Add(currentAsm.GetName().ToString());
+                HashSet<string> inspected = new HashSet<string> { currentAsm.GetName().ToString() };
                 LoadReferences(currentAsm, inspected);
 
                 WriteLine("done.");
             }
 
-            return result;
+            return Result;
         }
 
         /// <summary>
@@ -1039,8 +1016,6 @@ namespace Dev2
                     LoadReferences(loaded, inspected);
                 }
             }
-
-            allReferences = null;
         }
 
         /// <summary>
@@ -1083,7 +1058,6 @@ namespace Dev2
 
                             if(asm == null && result)
                             {
-                                asm = null;
                                 Fail("External assembly \"" + gacName + "\" failed to load from global assembly cache");
                                 result = false;
                             }
@@ -1108,7 +1082,6 @@ namespace Dev2
 
                             if(asm == null && result)
                             {
-                                asm = null;
                                 Fail("External assembly failed to load from \"" + fullPath + "\"");
                                 result = false;
                             }
@@ -1129,7 +1102,7 @@ namespace Dev2
 
         bool StartGCManager()
         {
-            if(_enableGCManager)
+            if(_enableGcManager)
             {
                 WriteLine("SLM garbage collection manager enabled.");
                 _gcmThreadStart = GCM_EntryPoint;
@@ -1162,12 +1135,7 @@ namespace Dev2
                     }
                     else
                     {
-                        bool shouldCollect = false;
-
-                        if((_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet)
-                        {
-                            shouldCollect = true;
-                        }
+                        bool shouldCollect = (_lastKnownWorkingSet / 1024L / 1024L) > _minimumWorkingSet;
 
                         if(shouldCollect)
                         {
@@ -1190,7 +1158,7 @@ namespace Dev2
 
         void TerminateGCManager()
         {
-            if(_enableGCManager)
+            if(_enableGcManager)
             {
                 if(_gcmThread != null)
                 {
@@ -1229,7 +1197,6 @@ namespace Dev2
                 if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                 {
                     _configFile = argument.Value;
-                    continue;
                 }
             }
         }
@@ -1245,7 +1212,6 @@ namespace Dev2
 
             try
             {
-                string uriAddress = null;
                 string webServerPort = null;
                 string webServerSslPort = null;
 
@@ -1267,7 +1233,6 @@ namespace Dev2
                 {
                     if(argument.Key.Equals("endpointAddress", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        uriAddress = argument.Value;
                         continue;
                     }
 
@@ -1286,19 +1251,13 @@ namespace Dev2
                     if(argument.Key.Equals("lifecycleConfigFile", StringComparison.InvariantCultureIgnoreCase))
                     {
                         _configFile = argument.Value;
-                        continue;
                     }
                 }
 
-                uriAddress = uriAddress ?? ConfigurationManager.AppSettings["endpointAddress"];
                 GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
                 _esbEndpoint = new EsbServicesEndpoint();
 
-                StudioFileSystem fileSystem = new StudioFileSystem(Path.Combine(Environment.CurrentDirectory, "Studio Server"), new List<string>());
-
-
-                //_networkServer = new StudioNetworkServer("Studio Server", fileSystem, _esbEndpoint, ServerID);
                 _isWebServerEnabled = false;
 
                 Boolean.TryParse(ConfigurationManager.AppSettings["webServerEnabled"], out _isWebServerEnabled);
@@ -1327,8 +1286,6 @@ namespace Dev2
 
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);                    
 
-                    // TODO: This does not work - cause 503 errors
-                    //HostSecurityProvider.Instance.EnsureAccessToPort(httpEndpoint);
 
                     // start SSL traffic if it is enabled ;)
                     if(!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
@@ -1457,7 +1414,7 @@ namespace Dev2
                         builder.AppendLine("</XmlData>");
                     }
 
-                    string requestXML = new UnlimitedObject().GenerateServiceRequest(entry.Name, null, new List<string>(new string[] { builder.ToString() }), null);
+                    string requestXML = new UnlimitedObject().GenerateServiceRequest(entry.Name, null, new List<string>(new[] { builder.ToString() }), null);
                     Guid result;
 
                     try
@@ -1660,8 +1617,6 @@ namespace Dev2
         {
             try
             {
-                //var instance = SettingsProvider.Instance;
-                //instance.Stop(StudioMessaging.MessageAggregator);
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
