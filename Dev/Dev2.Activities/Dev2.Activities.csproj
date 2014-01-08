@@ -135,6 +135,7 @@
     <Compile Include="Activities\ISqlBulkInserter.cs" />
     <Compile Include="Activities\IWebRequestInvoker.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
+    <Compile Include="Activities\PathOperations\DsfAbstractMultipleFilesActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingActivity.cs" />
     <Compile Include="Activities\Scripting\DsfScriptingJavaScriptActivity.cs" />
     <Compile Include="Activities\DsfWebSiteActivity.cs" />

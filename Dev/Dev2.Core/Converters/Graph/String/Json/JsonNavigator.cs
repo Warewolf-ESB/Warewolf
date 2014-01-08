@@ -373,6 +373,17 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return returnVal;
         }
 
+        protected override void WriteToResults(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode, Dictionary<IPath, IList<object>> results)
+        {
+            foreach (IPath path in paths)
+            {
+                List<IPathSegment> indexedPathSegment = indexedPathSegments[path];
+                List<string> complexKey = indexedPathSegment.Select(p => p.ActualSegment).ToList();
+                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode[complexKey];
+                results[path].Add(IndexedPathSegmentTreeNode.CurrentValue.ToString());
+            }
+        }
+
         #endregion Private Methods
     }
 }
