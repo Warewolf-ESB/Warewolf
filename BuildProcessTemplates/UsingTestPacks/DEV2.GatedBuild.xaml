@@ -441,7 +441,7 @@
                             </ActivityAction>
                           </mtbwa:InvokeProcess.OutputDataReceived>
                         </mtbwa:InvokeProcess>
-                        <Delay DisplayName="Wait for Test Pack" Duration="00:02:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
+                        <Delay DisplayName="Wait for Test Pack" Duration="00:03:30" sap2010:WorkflowViewState.IdRef="Delay_1" />
                       </Sequence>
                     </If.Then>
                     <If.Else>
