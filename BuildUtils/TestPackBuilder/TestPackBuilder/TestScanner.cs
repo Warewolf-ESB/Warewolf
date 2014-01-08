@@ -74,16 +74,6 @@ namespace TestPackBuilder
 
             result.Append("</Methods>");
 
-            try
-            {
-
-                File.WriteAllText(@"c:\foo\scan.txt", result.ToString());
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch { }
-            // ReSharper restore EmptyGeneralCatchClause
-
-
             return result.ToString();
         }
 
