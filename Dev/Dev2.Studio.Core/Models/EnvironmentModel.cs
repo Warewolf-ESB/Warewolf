@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Network;
+using System.Text;
+using System.Windows;
+using System.Xml;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -6,14 +12,9 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Workspaces;
-using System;
-using System.Network;
-using System.Text;
-using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
 using Action = System.Action;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -61,8 +62,8 @@ namespace Dev2.Studio.Core.Models
             Connection = environmentConnection;
 
             // MUST set Connection before creating new ResourceRepository!!
-            ResourceRepository = resourceRepository ?? new ResourceRepository(this); 
-            
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this);
+
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
             // This is also triggered by a network state change
@@ -241,7 +242,7 @@ namespace Dev2.Studio.Core.Models
         {
             RaiseIsConnectedChanged(isOnline);
 
-          
+
             AbstractEnvironmentMessage message;
             if(isOnline)
             {

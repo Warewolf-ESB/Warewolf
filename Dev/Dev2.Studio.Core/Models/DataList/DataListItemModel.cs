@@ -313,8 +313,9 @@ namespace Dev2.Studio.Core.Models.DataList
             var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
             if(Children != null)
             {
-                foreach(DataListItemModel child in Children)
+                foreach(var dataListItemModel in Children)
                 {
+                    var child = (DataListItemModel)dataListItemModel;
                     child.UpdatingChildren = true;
                     child.Input = value;
                     child.UpdatingChildren = false;
@@ -338,8 +339,9 @@ namespace Dev2.Studio.Core.Models.DataList
             var updatedChildren = new OptomizedObservableCollection<IDataListItemModel>();
             if(Children != null)
             {
-                foreach(DataListItemModel child in Children)
+                foreach(var dataListItemModel in Children)
                 {
+                    var child = (DataListItemModel)dataListItemModel;
                     child.UpdatingChildren = true;
                     child.Output = value;
                     child.UpdatingChildren = false;

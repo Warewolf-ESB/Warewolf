@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Input;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Models;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
@@ -11,7 +10,6 @@ namespace Dev2.Studio.Core.Interfaces
         event OperatorTypeEventHandler OnExpressionBuilt;
         event EventHandler OnUserClose;
         dynamic DecisionTypes { get; }
-        DecisionType SelectedDecisionType { get; set; }
         ICommand OkCommand { get; }
         bool CanSelect { get; }
     }

@@ -198,7 +198,6 @@
     <Compile Include="DataMappingViewModelTest.cs" />
     <Compile Include="DebugOutputFilterStrategyTests.cs" />
     <Compile Include="DebugOutputViewModelTest.cs" />
-    <Compile Include="DecisionTypeTest.cs" />
     <Compile Include="DeployServiceTest.cs" />
     <Compile Include="DeployStatsCalculatorTests.cs" />
     <Compile Include="Deploy\DeployViewModelTest.cs" />
