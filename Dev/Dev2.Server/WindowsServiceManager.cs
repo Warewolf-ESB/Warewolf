@@ -1,10 +1,10 @@
-﻿using Dev2.Common;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
+using Dev2.Common;
 
 namespace Dev2
 {
@@ -14,8 +14,6 @@ namespace Dev2
         #region Fields
 
         private static bool _pendingCommit;
-        ServiceProcessInstaller processInstaller;
-        ServiceInstaller serviceInstaller;
 
         #endregion
 
@@ -23,12 +21,8 @@ namespace Dev2
 
         public WindowsServiceManager()
         {
-            processInstaller = new ServiceProcessInstaller();
-            serviceInstaller = new ServiceInstaller();
-
-            processInstaller.Account = ServiceAccount.LocalSystem;
-            serviceInstaller.StartType = ServiceStartMode.Automatic;
-            serviceInstaller.ServiceName = GlobalConstants.ServiceName;
+            var processInstaller = new ServiceProcessInstaller { Account = ServiceAccount.LocalSystem };
+            var serviceInstaller = new ServiceInstaller { StartType = ServiceStartMode.Automatic, ServiceName = GlobalConstants.ServiceName };
 
             while(Installers.Count > 0)
             {
@@ -178,7 +172,7 @@ namespace Dev2
 
         private static void LogMessage(string message, InstallContext context)
         {
-            if (context == null)
+            if(context == null)
             {
                 Console.WriteLine(message);
             }
@@ -190,7 +184,7 @@ namespace Dev2
 
         private static void WriteExceptions(Exception e, InstallContext context)
         {
-            if (context == null)
+            if(context == null)
             {
                 return;
             }
@@ -212,7 +206,7 @@ namespace Dev2
         #endregion
 
         #region Override Methods
-        
+
         public override void Install(IDictionary stateSaver)
         {
             _pendingCommit = false;
@@ -232,7 +226,7 @@ namespace Dev2
             if(serviceExists)
             {
                 LogMessage("Service already installed.", Context);
-                if (tryStartService)
+                if(tryStartService)
                 {
                     LogMessage("Attempting to start service.", Context);
                     StartService(Context);
@@ -251,16 +245,17 @@ namespace Dev2
             bool serviceExists = false;
             try
             {
-                ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
-                string name = controller.DisplayName;
+                // ReSharper disable UnusedVariable
+                var controller = new ServiceController(GlobalConstants.ServiceName);
+                // ReSharper restore UnusedVariable
                 serviceExists = true;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
             }
 
-            if (serviceExists)
+            if(serviceExists)
             {
                 base.Uninstall(savedState);
             }
@@ -272,7 +267,7 @@ namespace Dev2
 
         public override void Commit(IDictionary savedState)
         {
-            if (_pendingCommit)
+            if(_pendingCommit)
             {
                 base.Commit(savedState);
             }
