@@ -114,7 +114,7 @@ namespace TestPackBuilder
 
         private string ProcessFile(string contents, string testAnnotationSearchString)
         {
-            var idx = -1;
+            int idx;
             var result = new StringBuilder();
             var nameEnd = 0;
 
