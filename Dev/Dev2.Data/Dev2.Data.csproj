@@ -370,7 +370,6 @@
     <Compile Include="Translators\DataListXMLTranslatorDebug.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
     <Compile Include="Translators\StudioDataListXMLTranslator.cs" />
-    <Compile Include="Translators\FixedWizardDataListXMLTranslator.cs" />
     <Compile Include="Translators\DataListBinaryTranslator.cs" />
     <Compile Include="Translators\DatalistFormat.cs" />
     <Compile Include="Translators\DataListJSONTranslator.cs" />

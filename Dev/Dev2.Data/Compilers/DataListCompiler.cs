@@ -14,25 +14,25 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.EqualityComparers;
 using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
 using Dev2.Server.Datalist;
 using Newtonsoft.Json;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
 {
     internal class DataListCompiler : IDataListCompiler
     {
         #region Attributes
 
-        private object _disposeGuard = new object();
-        private bool _isDisposed = false;
+        private readonly object _disposeGuard = new object();
+        private bool _isDisposed;
 
         // New Stuff
-        private static readonly IDev2LanguageParser _outputParser = DataListFactory.CreateOutputParser();
-        private static readonly IDev2LanguageParser _inputParser = DataListFactory.CreateInputParser();
-        private static readonly IDev2DataLanguageParser _parser = DataListFactory.CreateLanguageParser();
+        private static readonly IDev2LanguageParser OutputParser = DataListFactory.CreateOutputParser();
+        private static readonly IDev2LanguageParser InputParser = DataListFactory.CreateInputParser();
+        private static readonly IDev2DataLanguageParser Parser = DataListFactory.CreateLanguageParser();
 
         // These are tags to strip from the ADL for ExtractShapeFromADLAndCleanWithDefs used with ShapeInput ;)
 
@@ -88,35 +88,21 @@ namespace Dev2.DataList.Contract
             IList<IDev2Definition> defs;
             IList<IDev2Definition> wizdefs = new List<IDev2Definition>();
 
-            if (defType == enDev2ArgumentType.Output)
+            if(defType == enDev2ArgumentType.Output)
             {
-                defs = _outputParser.ParseAndAllowBlanks(definitions);
+                defs = OutputParser.ParseAndAllowBlanks(definitions);
 
-                foreach (IDev2Definition def in defs)
+                foreach(IDev2Definition def in defs)
                 {
-                    if (def.IsRecordSet)
-                    {
-                        wizdefs.Add(DataListFactory.CreateDefinition(def.RecordSetName + GlobalConstants.RecordsetJoinChar + def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
-                    }
-                    else
-                    {
-                        wizdefs.Add(DataListFactory.CreateDefinition(def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
-                    }
+                    wizdefs.Add(def.IsRecordSet ? DataListFactory.CreateDefinition(def.RecordSetName + GlobalConstants.RecordsetJoinChar + def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue) : DataListFactory.CreateDefinition(def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
                 }
             }
-            else if (defType == enDev2ArgumentType.Input)
+            else if(defType == enDev2ArgumentType.Input)
             {
-                defs = _inputParser.Parse(definitions);
-                foreach (IDev2Definition def in defs)
+                defs = InputParser.Parse(definitions);
+                foreach(IDev2Definition def in defs)
                 {
-                    if (def.IsRecordSet)
-                    {
-                        wizdefs.Add(DataListFactory.CreateDefinition(def.RecordSetName + GlobalConstants.RecordsetJoinChar + def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
-                    }
-                    else
-                    {
-                        wizdefs.Add(DataListFactory.CreateDefinition(def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
-                    }
+                    wizdefs.Add(def.IsRecordSet ? DataListFactory.CreateDefinition(def.RecordSetName + GlobalConstants.RecordsetJoinChar + def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue) : DataListFactory.CreateDefinition(def.Name, def.MapsTo, def.Value, def.IsEvaluated, def.DefaultValue, def.IsRequired, def.RawValue));
                 }
             }
 
@@ -135,13 +121,13 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2Definition> defs = new List<IDev2Definition>();
 
-            if (defType == enDev2ArgumentType.Output)
+            if(defType == enDev2ArgumentType.Output)
             {
-                defs = _outputParser.ParseAndAllowBlanks(definitions);
+                defs = OutputParser.ParseAndAllowBlanks(definitions);
             }
-            else if (defType == enDev2ArgumentType.Input)
+            else if(defType == enDev2ArgumentType.Input)
             {
-                defs = _inputParser.Parse(definitions);
+                defs = InputParser.Parse(definitions);
             }
 
             return GenerateDataListFromDefs(defs, pushToServer, out errors);
@@ -161,7 +147,7 @@ namespace Dev2.DataList.Contract
             string dataList = GenerateDataListFromDefs(definitions, withData);
             string result;
 
-            if (pushToServer)
+            if(pushToServer)
             {
                 byte[] data = new byte[0];
                 result = _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString();
@@ -183,12 +169,12 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
-        public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors,bool flipGeneration = false)
+        public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false)
         {
             string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
             string result;
 
-            if (pushToServer)
+            if(pushToServer)
             {
                 //  Push to server and return GUID
                 byte[] data = new byte[0];
@@ -223,7 +209,7 @@ namespace Dev2.DataList.Contract
             string result = GlobalConstants.NullDataListID.ToString();
             // ReSharper restore RedundantAssignment
 
-            if (pushToServer)
+            if(pushToServer)
             {
                 //  Push to server and return GUID
                 byte[] data = new byte[0];
@@ -348,7 +334,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors,Guid overrideID = default(Guid))
+        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors, Guid overrideID = default(Guid))
         {
             return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors, overrideID);
         }
@@ -527,7 +513,7 @@ namespace Dev2.DataList.Contract
             errors = new ErrorResultTO();
             string error;
 
-            if (_svrCompiler.TryPushDataList(bdl, out error))
+            if(_svrCompiler.TryPushDataList(bdl, out error))
             {
                 errors.AddError(error);
                 return bdl.UID;
@@ -551,12 +537,12 @@ namespace Dev2.DataList.Contract
 
             DataListTranslatedPayloadTO tmp = _svrCompiler.ConvertFrom(null, curDLID, depth, typeOf, out errors);
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 return tmp.FetchAsString();
             }
 
-            return string.Empty;            
+            return string.Empty;
         }
 
         /// <summary>
@@ -632,7 +618,7 @@ namespace Dev2.DataList.Contract
 
             // Create a new DL if need be
             Guid pushID = dlID;
-            if (pushID == GlobalConstants.NullDataListID)
+            if(pushID == GlobalConstants.NullDataListID)
             {
                 IBinaryDataList bdl = Dev2BinaryDataListFactory.CreateDataList();
                 pushID = PushBinaryDataList(bdl.UID, bdl, out errors);
@@ -661,10 +647,10 @@ namespace Dev2.DataList.Contract
 
             T obj = Activator.CreateInstance<T>();
 
-            if (!string.IsNullOrEmpty(modelData))
+            if(!string.IsNullOrEmpty(modelData))
             {
 
-                if (!String.IsNullOrEmpty(modelData))
+                if(!String.IsNullOrEmpty(modelData))
                 {
                     obj = ConvertFromJsonToModel<T>(modelData);
                 }
@@ -690,11 +676,11 @@ namespace Dev2.DataList.Contract
             T model = FetchSystemModelFromDataList<T>(dlID, out errors);
             string result = "{}"; // empty data set for injection ;)
 
-            if (!errors.HasErrors())
+            if(!errors.HasErrors())
             {
                 var dev2DataModel = model as IDev2DataModel;
 
-                if (dev2DataModel != null) result = dev2DataModel.ToWebModel();
+                if(dev2DataModel != null) result = dev2DataModel.ToWebModel();
 
             }
 
@@ -735,13 +721,13 @@ namespace Dev2.DataList.Contract
         {
 
             int result = 1;
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             IBinaryDataList bdl = FetchBinaryDataList(curDLID, out errors);
             // Loop each expression to find the total number of executions ;)
-            foreach (string exp in expressions)
+            foreach(var exp in expressions)
             {
-                IList<IIntellisenseResult> parts = _parser.ParseExpressionIntoParts(exp, bdl.FetchIntellisenseParts());
-                foreach (IIntellisenseResult p in parts)
+                IList<IIntellisenseResult> parts = Parser.ParseExpressionIntoParts(exp, bdl.FetchIntellisenseParts());
+                foreach(IIntellisenseResult p in parts)
                 {
                     result = Math.Max(result, FetchNumberOfExecutions(p, bdl));
                 }
@@ -762,7 +748,7 @@ namespace Dev2.DataList.Contract
             ErrorResultTO errors;
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
 
-            if (binaryDatalist != null)
+            if(binaryDatalist != null)
             {
                 return (binaryDatalist.HasErrors());
             }
@@ -771,7 +757,7 @@ namespace Dev2.DataList.Contract
             return true;
         }
 
-        public string FetchErrors(Guid curDLID,bool returnAsXml = false)
+        public string FetchErrors(Guid curDLID, bool returnAsXml = false)
         {
             ErrorResultTO errors;
             var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
@@ -779,11 +765,11 @@ namespace Dev2.DataList.Contract
             {
                 return (binaryDatalist.FetchErrors(returnAsXml));
             }
-            
+
             var sb = new StringBuilder();
             var count = 1;
             var errorList = errors.FetchErrors();
-            foreach (var error in errorList)
+            foreach(var error in errorList)
             {
                 sb.AppendFormat("{0} {1}", count, error);
                 count++;
@@ -801,7 +787,7 @@ namespace Dev2.DataList.Contract
         {
             ErrorResultTO errors;
             var list = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
-            if (list != null)
+            if(list != null)
                 list.ClearErrors();
         }
 
@@ -811,7 +797,7 @@ namespace Dev2.DataList.Contract
             ErrorResultTO errors;
 
             _svrCompiler.SetParentUID(curDLID, newParent, out errors);
-            if (errors.HasErrors())
+            if(errors.HasErrors())
             {
                 result = false;
             }
@@ -819,95 +805,6 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        /// <summary>
-        /// Merges the wizard data list.
-        /// </summary>
-        /// <param name="wizardDL"></param>
-        /// <param name="serviceDL"></param>
-        /// <returns></returns>
-        /// NOTE: This method is not production safe. It does not clean up data list and since it returns entries this is a BIG ISSUE!
-        public WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL)
-        {
-            WizardDataListMergeTO result = new WizardDataListMergeTO();
-            ErrorResultTO errors;
-            ErrorResultTO allErrors = new ErrorResultTO();
-
-            Guid wizardID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, wizardDL, out errors);
-            allErrors.MergeErrors(errors);
-            Guid serviceID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, serviceDL, out errors);
-            allErrors.MergeErrors(errors);
-
-            IBinaryDataList wizardBDL = FetchBinaryDataList(wizardID, out errors);
-            allErrors.MergeErrors(errors);
-            IBinaryDataList serviceBDL = FetchBinaryDataList(serviceID, out errors);
-            allErrors.MergeErrors(errors);
-
-
-            // Added Removed referenced ParentDL
-            // First find difference between parent and wizard
-            IList<IBinaryDataListEntry> serviceEntries = serviceBDL.FetchAllEntries();
-            IList<IBinaryDataListEntry> wizardEntries = wizardBDL.FetchAllEntries();
-
-            // iterate each service entry
-            foreach (IBinaryDataListEntry serviceEntry in serviceEntries)
-            {
-
-                // Find all new entries
-                bool found = false;
-                int pos = 0;
-                while (pos < wizardEntries.Count && !found)
-                {
-
-                    IBinaryDataListEntry tmp = wizardEntries[pos];
-                    if (tmp.Namespace == serviceEntry.Namespace && ((tmp.Columns == null && serviceEntry.Columns == null) || (tmp.Columns.SequenceEqual(serviceEntry.Columns, Dev2ColumnComparer.Instance))))
-                    {
-                        found = true;
-                    }
-
-                    pos++;
-                }
-                if (!found)
-                {
-                    result.AddNewRegion(serviceEntry);
-                }
-            }
-
-            // iterate each service entry
-            foreach (IBinaryDataListEntry wizardEntry in wizardEntries)
-            {
-
-                // Find all new entries
-                bool found = false;
-                int pos = 0;
-                while (pos < serviceEntries.Count && !found)
-                {
-
-                    IBinaryDataListEntry tmp = serviceEntries[pos];
-                    if (tmp.Namespace == wizardEntry.Namespace && ((tmp.Columns == null && wizardEntry.Columns == null) || tmp.Columns.SequenceEqual(wizardEntry.Columns, Dev2ColumnComparer.Instance)))
-                    {
-                        found = true;
-                    }
-
-                    pos++;
-                }
-                if (!found)
-                {
-                    result.AddRemovedRegion(wizardEntry);
-                }
-
-            }
-
-            // Now build the new Binary Data List
-            string tmpDL = ConvertFrom(serviceID, DataListFormat.CreateFormat(GlobalConstants._FIXED_WIZARD), enTranslationDepth.Shape, out errors);
-            allErrors.MergeErrors(errors);
-            result.SetIntersectedDataList(tmpDL);
-
-            // now clean up
-            ForceDeleteDataListByID(serviceID);
-            ForceDeleteDataListByID(wizardID);
-
-            return result;
-        }
 
         /// <summary>
         /// Gets the wizard data list for a service.
@@ -958,26 +855,26 @@ namespace Dev2.DataList.Contract
             IBinaryDataList newDl = Dev2BinaryDataListFactory.CreateDataList();
             ErrorResultTO errors;
             Guid dlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataList, dataList, out errors);
-            if (!errors.HasErrors())
+            if(!errors.HasErrors())
             {
                 IBinaryDataList dl = FetchBinaryDataList(dlID, out errors);
-                if (!errors.HasErrors())
+                if(!errors.HasErrors())
                 {
                     IList<IBinaryDataListEntry> entries = dl.FetchAllEntries();
-                    foreach (IBinaryDataListEntry entry in entries)
+                    foreach(IBinaryDataListEntry entry in entries)
                     {
-                        if (entry.IsRecordset)
+                        if(entry.IsRecordset)
                         {
-                            if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
-                                {
+                            if(entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
+                            {
                                 string tmpError;
                                 newDl.TryCreateRecordsetTemplate(entry.Namespace, entry.Description, entry.Columns, true, out tmpError);
 
-                                }
+                            }
                         }
                         else
                         {
-                            if (entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
+                            if(entry.ColumnIODirection != enDev2ColumnArgumentDirection.None)
                             {
                                 string tmpError;
                                 IBinaryDataListItem scalar = entry.FetchScalar();
@@ -1004,14 +901,15 @@ namespace Dev2.DataList.Contract
         {
             DefinitionBuilder db = new DefinitionBuilder();
 
-            if (direction == enDev2ColumnArgumentDirection.Input)
+            if(direction == enDev2ColumnArgumentDirection.Input)
             {
-                db.ArgumentType = enDev2ArgumentType.Input;    
-            }else if (direction == enDev2ColumnArgumentDirection.Output)
+                db.ArgumentType = enDev2ArgumentType.Input;
+            }
+            else if(direction == enDev2ColumnArgumentDirection.Output)
             {
                 db.ArgumentType = enDev2ArgumentType.Output;
             }
-            
+
             db.Definitions = GenerateDefsFromDataList(datalist, direction);
 
             return db.Generate();
@@ -1026,7 +924,7 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
-            if (!string.IsNullOrEmpty(dataList))
+            if(!string.IsNullOrEmpty(dataList))
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
@@ -1034,29 +932,30 @@ namespace Dev2.DataList.Contract
                 XmlNodeList tmpRootNl = xDoc.ChildNodes;
                 XmlNodeList nl = tmpRootNl[0].ChildNodes;
 
-                for (int i = 0; i < nl.Count; i++)
+                for(int i = 0; i < nl.Count; i++)
                 {
                     XmlNode tmpNode = nl[i];
 
                     var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
 
-                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    if(CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                     {
-                        if (tmpNode.HasChildNodes)
+                        if(tmpNode.HasChildNodes)
                         {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
                             // now extract child node defs
-                            XmlNodeList childNL = tmpNode.ChildNodes;
-                            for (int q = 0; q < childNL.Count; q++)
+                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            for(int q = 0; q < childNl.Count; q++)
                             {
-                                var xmlNode = childNL[q];
+                                var xmlNode = childNl[q];
                                 var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
-                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection)) { 
-                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                            false, "", false));
+                                if(CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                                {
+                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                                false, "", false));
+                                }
                             }
-                        }
                         }
                         else
                         {
@@ -1095,7 +994,7 @@ namespace Dev2.DataList.Contract
 
         //PBI 8435 - Massimo.Guerrera - Added for getting the debug data for the multiAssign
 
-        public List<KeyValuePair<string,IBinaryDataListEntry>> GetDebugData()
+        public List<KeyValuePair<string, IBinaryDataListEntry>> GetDebugData()
         {
             return _svrCompiler.GetDebugItems();
         }
@@ -1106,21 +1005,21 @@ namespace Dev2.DataList.Contract
         {
             int result = 1;
 
-            if (!part.Option.IsScalar)
+            if(!part.Option.IsScalar)
             {
                 // process the recordset...
                 enRecordsetIndexType type = DataListUtil.GetRecordsetIndexType(part.Option.DisplayValue);
-                if (type == enRecordsetIndexType.Star)
+                if(type == enRecordsetIndexType.Star)
                 {
                     // Fetch entry and find the last index
                     IBinaryDataListEntry entry;
                     string error;
-                    if (bdl.TryGetEntry(part.Option.Recordset, out entry, out error))
+                    if(bdl.TryGetEntry(part.Option.Recordset, out entry, out error))
                     {
                         result = entry.FetchLastRecordsetIndex();
                     }
                 }
-                else if (type == enRecordsetIndexType.Numeric)
+                else if(type == enRecordsetIndexType.Numeric)
                 {
                     // Fetch index out
                     Int32.TryParse(part.Option.RecordsetIndex, out result);
@@ -1162,9 +1061,9 @@ namespace Dev2.DataList.Contract
 
         public void Dispose()
         {
-            lock (_disposeGuard)
+            lock(_disposeGuard)
             {
-                if (_isDisposed)
+                if(_isDisposed)
                 {
                     return;
                 }

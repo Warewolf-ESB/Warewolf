@@ -6,7 +6,6 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
 
 namespace Dev2.DataList.Contract
@@ -516,13 +515,6 @@ namespace Dev2.DataList.Contract
 
         #region Studio Method
 
-        /// <summary>
-        /// Merges the wizard data list.
-        /// </summary>
-        /// <param name="wizardDL">The wizard dialog.</param>
-        /// <param name="serviceDL">The service dialog.</param>
-        /// <returns></returns>
-        WizardDataListMergeTO MergeFixedWizardDataList(string wizardDL, string serviceDL);
 
         #endregion
 

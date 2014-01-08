@@ -1,13 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.DataList.Contract.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Tests
 {
@@ -105,14 +104,14 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dlc = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            string error; 
+            string error;
 
             //------------Execute Test---------------------------
             var result = dlc.Evaluate(dl1.UID, enActionType.User, "[[recset(3).f1]]", false, out errors);
             var res = result.TryFetchLastIndexedRecordsetUpsertPayload(out error);
-            
+
             //------------Assert Results-------------------------
-           
+
             var value = res.TheValue;
 
             Assert.AreEqual(string.Empty, value);
@@ -131,7 +130,7 @@ namespace Dev2.Tests
             {
                 dataListCompiler.HasErrors(id);
             }
-            catch (NullReferenceException)
+            catch(NullReferenceException)
             {
                 Assert.Inconclusive("No NullReferenceException should be thrown.");
             }
@@ -156,96 +155,7 @@ namespace Dev2.Tests
         }
 
 
-        #region FixedWizardTest
 
-        [TestMethod]
-        public void FixedWizardScalar_Converter_Expected_FixedDataListPortion()
-        {
-            const string wizDL = @"<DataList>
-       <TestVar IsEditable=""False"" Description=""""/>
-       <Port IsEditable=""False"" Description=""""/>
-       <From IsEditable=""False"" Description=""""/>
-       <To IsEditable=""False"" Description=""""/>
-       <Subject IsEditable=""False"" Description=""""/>
-       <BodyType IsEditable=""False"" Description=""""/>
-       <Body IsEditable=""False"" Description=""""/>
-       <Attachment IsEditable=""False"" Description=""""/>
-       <FailureMessage IsEditable=""False"" Description=""""/>
-       <Message IsEditable=""False"" Description=""""/>
-</DataList>
-";
-            const string serviceDL = @"<DataList>
-       <Movember IsEditable=""False"" Description=""""/>
-       <Port IsEditable=""False"" Description=""""/>
-       <From IsEditable=""False"" Description=""""/>
-       <To IsEditable=""False"" Description=""""/>
-       <Subject IsEditable=""False"" Description=""""/>
-       <BodyType IsEditable=""False"" Description=""""/>
-       <Body IsEditable=""False"" Description=""""/>
-       <Attachment IsEditable=""False"" Description=""""/>
-       <FailureMessage IsEditable=""False"" Description=""""/>
-       <Message IsEditable=""False"" Description=""""/>
-</DataList>
-";
-            const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
-
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
-
-            WizardDataListMergeTO result = dataListCompiler.MergeFixedWizardDataList(wizDL, serviceDL);
-
-            var res1 = result.AddedRegions[0].FetchScalar().FieldName;
-            var res2 = result.RemovedRegions[0].FetchScalar().FieldName;
-
-            Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", res1);
-            Assert.AreEqual("TestVar", res2);
-        }
-
-        [TestMethod]
-        public void FixedWizardRecordset_Converter_Expected_FixedDataListPortion()
-        {
-            const string wizDL = @"<DataList>
-       <Port IsEditable=""False"" Description=""""/>
-       <From IsEditable=""False"" Description=""""/>
-       <To IsEditable=""False"" Description=""""/>
-       <Subject IsEditable=""False"" Description=""""/>
-       <BodyType IsEditable=""False"" Description=""""/>
-       <Body IsEditable=""False"" Description=""""/>
-       <Attachment IsEditable=""False"" Description=""""/>
-       <FailureMessage IsEditable=""False"" Description=""""/>
-       <Message IsEditable=""False"" Description=""""/>
-</DataList>
-";
-            const string serviceDL = @"<DataList>
-       <Movember IsEditable=""False"" Description=""""/>
-       <Recordset IsEditable=""False"" Description="""">
-            <FirstName/>
-        </Recordset>
-       <Port IsEditable=""False"" Description=""""/>
-       <From IsEditable=""False"" Description=""""/>
-       <To IsEditable=""False"" Description=""""/>
-       <Subject IsEditable=""False"" Description=""""/>
-       <BodyType IsEditable=""False"" Description=""""/>
-       <Body IsEditable=""False"" Description=""""/>
-       <Attachment IsEditable=""False"" Description=""""/>
-       <FailureMessage IsEditable=""False"" Description=""""/>
-       <Message IsEditable=""False"" Description=""""/>
-</DataList>
-";
-            const string expected = @"<DataList><Movember IsEditable=""False"" ></Movember><Recordset IsEditable=""False"" ><FirstName IsEditable=""False"" ></FirstName></Recordset><Port IsEditable=""False"" ></Port><From IsEditable=""False"" ></From><To IsEditable=""False"" ></To><Subject IsEditable=""False"" ></Subject><BodyType IsEditable=""False"" ></BodyType><Body IsEditable=""False"" ></Body><Attachment IsEditable=""False"" ></Attachment><FailureMessage IsEditable=""False"" ></FailureMessage><Message IsEditable=""False"" ></Message></DataList>";
-            string error;
-
-            var dataListCompiler = DataListFactory.CreateDataListCompiler();
-
-            WizardDataListMergeTO result = dataListCompiler.MergeFixedWizardDataList(wizDL, serviceDL);
-
-            Assert.AreEqual(expected, result.IntersectedDataList);
-            Assert.AreEqual("Movember", result.AddedRegions[0].FetchScalar().FieldName);
-            Assert.AreEqual("Recordset", (result.AddedRegions[1].FetchRecordAt(1, out error))[0].Namespace);
-            Assert.AreEqual(0, result.RemovedRegions.Count);
-        }
-
-        #endregion
 
         #region Generate Defintion Tests
 
@@ -267,7 +177,7 @@ namespace Dev2.Tests
   </DataList>";
 
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
-            
+
             //------------Execute Test---------------------------
 
             var result = dataListCompiler.GenerateSerializableDefsFromDataList(datalistFragment, enDev2ColumnArgumentDirection.Output);
@@ -317,7 +227,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Input);
             //------------Assert Results-------------------------
-            Assert.AreEqual(5,generateDefsFromDataList.Count);
+            Assert.AreEqual(5, generateDefsFromDataList.Count);
         }
 
         [TestMethod]
@@ -331,7 +241,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
-            Assert.AreEqual(6,generateDefsFromDataList.Count);
+            Assert.AreEqual(6, generateDefsFromDataList.Count);
         }
 
         [TestMethod]
@@ -345,7 +255,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
             //------------Assert Results-------------------------
-            Assert.AreEqual(4,generateDefsFromDataList.Count);
+            Assert.AreEqual(4, generateDefsFromDataList.Count);
         }
 
         [TestMethod]
@@ -359,7 +269,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
-            Assert.AreEqual(5,generateDefsFromDataList.Count);
+            Assert.AreEqual(5, generateDefsFromDataList.Count);
         }
 
         #endregion Generate Defintion Tests
@@ -427,7 +337,7 @@ namespace Dev2.Tests
             toUpsert.Add("[[rec().f1]]", new List<string> { "test1", "test2" });
             IBinaryDataList dataList = Dev2BinaryDataListFactory.CreateDataList();
             string creationError;
-            dataList.TryCreateRecordsetTemplate("rec", "recset", new List<Dev2Column>{DataListFactory.CreateDev2Column("f1","f1")}, true, out creationError);
+            dataList.TryCreateRecordsetTemplate("rec", "recset", new List<Dev2Column> { DataListFactory.CreateDev2Column("f1", "f1") }, true, out creationError);
             ErrorResultTO localErrors;
             compiler.PushBinaryDataList(dataList.UID, dataList, out localErrors);
             //------------Execute Test---------------------------
@@ -472,7 +382,7 @@ namespace Dev2.Tests
             IBinaryDataListItem binaryDataListItem = binaryDataListItems[0];
             IBinaryDataListItem binaryDataListItem2 = binaryDataListItems[1];
             string theValue = binaryDataListItem.TheValue;
-            Assert.AreEqual("test11",theValue);
+            Assert.AreEqual("test11", theValue);
             theValue = binaryDataListItem2.TheValue;
             Assert.AreEqual("test21", theValue);
             binaryDataListItems = binaryDataListEntry.FetchRecordAt(2, out errString);

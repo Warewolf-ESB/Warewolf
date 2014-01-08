@@ -28,18 +28,18 @@ namespace Dev2.Converters.DateAndTime
 
         #region Class Members
 
-        private static readonly char _dateLiteralCharacter = '\'';
-        private static readonly char _timeLiteralCharacter = ':';
-        private static readonly char _escapeCharacter = '\\';
-        private static readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
-        private static readonly Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatParts = new Dictionary<string, IDateTimeFormatPartTO>();
-        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static readonly Dictionary<string, ITimeZoneTO> _timeZones = new Dictionary<string, ITimeZoneTO>();
+        const char DateLiteralCharacter = '\'';
+        const char TimeLiteralCharacter = ':';
+        const char EscapeCharacter = '\\';
+        private static readonly Dictionary<char, List<int>> DateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
+        private static readonly Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
+        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> TimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static readonly Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
 
-        private static readonly Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatPartsForDotNet = new Dictionary<string, IDateTimeFormatPartTO>();
-        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static readonly Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
+        private static readonly Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatPartsForDotNet = new Dictionary<string, IDateTimeFormatPartTO>();
+        private static readonly Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static readonly Dictionary<char, List<int>> DateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
         #endregion Class Members
 
@@ -64,11 +64,7 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
-            bool nothingDied;
-
-            result = new DateTimeResultTO();
-
-            nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
+            var nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 
             return nothingDied;
         }
@@ -86,8 +82,8 @@ namespace Dev2.Converters.DateAndTime
             //
             // Get input format parts for the dotnet format
             //
-            List<IDateTimeFormatPartTO> dotNetFormatParts = new List<IDateTimeFormatPartTO>();
-            TryGetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet, _dateTimeFormatPartOptionsForDotNet, out dotNetFormatParts, out error);
+            List<IDateTimeFormatPartTO> dotNetFormatParts;
+            TryGetDateTimeFormatParts(originalFormat, DateTimeFormatForwardLookupsForDotNet, DateTimeFormatPartOptionsForDotNet, out dotNetFormatParts, out error);
 
             //
             // Replace input format parts with Dev2 equivilents
@@ -140,7 +136,7 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         internal static bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
-            return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
+            return TryGetDateTimeFormatParts(format, DateTimeFormatForwardLookups, DateTimeFormatPartOptions, out formatParts, out error);
         }
 
         /// <summary>
@@ -148,31 +144,31 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         internal static bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             formatParts = new List<IDateTimeFormatPartTO>();
             error = "";
 
-            char[] formatArray = format.ToArray();
+            var formatArray = format.ToArray();
             LiteralRegionStates literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
-            int count = 0;
+            var count = 0;
 
-            string currentValue = "";
+            var currentValue = "";
             while (count < formatArray.Length && nothingDied)
             {
-                int forwardLookupLength = 0;
-                char currentChar = formatArray[count];
+                var forwardLookupLength = 0;
+                var currentChar = formatArray[count];
 
                 if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _dateLiteralCharacter)
+                    else if (currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                     }
@@ -193,18 +189,18 @@ namespace Dev2.Converters.DateAndTime
                 {
                     string tmpCurrentValue;
                     string tmpForwardLookupResult;
-                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _dateLiteralCharacter)
+                    else if (currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                         currentValue = "";
                     }
-                    else if (currentChar == _escapeCharacter)
+                    else if (currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegionWithEscape;
                     }
@@ -224,7 +220,7 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
                 {
-                    if (currentChar == _dateLiteralCharacter || currentChar == _escapeCharacter)
+                    if (currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
@@ -238,18 +234,18 @@ namespace Dev2.Converters.DateAndTime
                 else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == _dateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == _dateLiteralCharacter)
+                    else if (currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                         currentValue = "";
                     }
-                    else if (currentChar == _escapeCharacter)
+                    else if (currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegionWithEscape;
                     }
@@ -260,7 +256,7 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
                 {
-                    if (currentChar == _dateLiteralCharacter || currentChar == _escapeCharacter)
+                    if (currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         currentValue += currentChar;
@@ -340,109 +336,106 @@ namespace Dev2.Converters.DateAndTime
                 //never try invariant culture if the user set the input format
                 culturesTried = MaxAttempts;
             }
-            if (nothingDied)
+            //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
+            while (culturesTried <= MaxAttempts)
             {
-                //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
-                while (culturesTried <= MaxAttempts)
+                char[] dateTimeArray = data.ToArray();
+                List<IDateTimeFormatPartTO> formatParts;
+                int position = 0;
+
+                //
+                // Get input format parts
+                //
+                nothingDied = TryGetDateTimeFormatParts(inputFormat, DateTimeFormatForwardLookups, DateTimeFormatPartOptions, out formatParts, out error);
+                if (!string.IsNullOrEmpty(error))
                 {
-                    char[] dateTimeArray = data.ToArray();
-                    List<IDateTimeFormatPartTO> formatParts = new List<IDateTimeFormatPartTO>();
-                    int position = 0;
-
+                    return false;
+                }
+                if (nothingDied)
+                {
                     //
-                    // Get input format parts
+                    // Extract information from the dateTime string for every part
                     //
-                    nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
-                    if (!string.IsNullOrEmpty(error))
+                    int count = 0;
+                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
-                        return false;
-                    }
-                    if (nothingDied)
-                    {
-                        //
-                        // Extract information from the dateTime string for every part
-                        //
-                        int count = 0;
-                        while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
-                        {
-                            IDateTimeFormatPartTO formatPart = formatParts[count];
+                        IDateTimeFormatPartTO formatPart = formatParts[count];
                             
-                            int resultLength;
-                            if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
-                            {
-                                position += resultLength;
-                            }
-                            else
-                            {
-                                //clear invalid result!
-                                result = new DateTimeResultTO();
-                                nothingDied = false;
-                            }
-
-                            count++;
-                        }
-                        //2013.05.03: Ashley Lewis - Bug 9300 try other cultures and patterns (be very lenient if the user left input format blank)
-                        if (!nothingDied)
+                        int resultLength;
+                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
                         {
-                            switch (culturesTried)
-                            {
-                                case 0: inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
-                                    break;
-                                case 1: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
-                                    break;
-                                case 2: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
-                                    break;
-                                case 3: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
-                                    break;
-                                case 4: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
-                                    break;
-                                case 5: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
-                                    break;
-                                case 6: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
-                                    break;
-                                case 7:
-                                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                                    string finalPattern = shortPattern + " " + longPattern;
-                                    if(finalPattern.Contains("ss"))
-                                    {
-                                        finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal)+2,".fff");
-                                    }
-                                    inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
-                                    break;
-                            }
-
-                            if(culturesTried >= MaxAttempts)
-                            {
-                                if (!IsBlankResult(result))
-                                {
-                                    //Return the result if it isn't blank
-                                    nothingDied = true;
-                                }
-                                else
-                                {
-                                    //no result, throw error
-                                    error = "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
-                                }
-                            }
-                            else
-                            {
-                                nothingDied = true;
-                            }
-
-                            culturesTried++;
+                            position += resultLength;
                         }
                         else
                         {
-                            //Stop trying different formats
-                            culturesTried = MaxAttempts + 1;
+                            //clear invalid result!
+                            result = new DateTimeResultTO();
+                            nothingDied = false;
                         }
+
+                        count++;
+                    }
+                    //2013.05.03: Ashley Lewis - Bug 9300 try other cultures and patterns (be very lenient if the user left input format blank)
+                    if (!nothingDied)
+                    {
+                        switch (culturesTried)
+                        {
+                            case 0: inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
+                                break;
+                            case 1: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
+                                break;
+                            case 2: inputFormat = TranslateDotNetToDev2Format(CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " + CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
+                                break;
+                            case 3: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
+                                break;
+                            case 4: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
+                                break;
+                            case 5: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
+                                break;
+                            case 6: inputFormat = TranslateDotNetToDev2Format(new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " + new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
+                                break;
+                            case 7:
+                                string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                                string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                                string finalPattern = shortPattern + " " + longPattern;
+                                if(finalPattern.Contains("ss"))
+                                {
+                                    finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal)+2,".fff");
+                                }
+                                inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
+                                break;
+                        }
+
+                        if(culturesTried >= MaxAttempts)
+                        {
+                            if (!IsBlankResult(result))
+                            {
+                                //Return the result if it isn't blank
+                                nothingDied = true;
+                            }
+                            else
+                            {
+                                //no result, throw error
+                                error = "Could not parse input datetime with given input format (even after trying default datetime formats from other cultures)";
+                            }
+                        }
+                        else
+                        {
+                            nothingDied = true;
+                        }
+
+                        culturesTried++;
                     }
                     else
                     {
-                        culturesTried++;
+                        //Stop trying different formats
+                        culturesTried = MaxAttempts + 1;
+                    }
                 }
-            }
+                else
+                {
+                    culturesTried++;
+                }
             }
 
             return nothingDied;
@@ -500,7 +493,7 @@ namespace Dev2.Converters.DateAndTime
 
                 if (passAsTime)
                 {
-                    if (!_timeFormatPartOptions.TryGetValue(part.Value, out partOptions))
+                    if (!TimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
                         error = string.Concat("Unrecognised format part '", part.Value, "'.");
@@ -508,7 +501,7 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else
                 {
-                    if (!_dateTimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
+                    if (!DateTimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
                         error = string.Concat("Unrecognised format part '", part.Value, "'.");
@@ -523,11 +516,11 @@ namespace Dev2.Converters.DateAndTime
                     //
                     // Try get a value for each option
                     //
-                    while (partOptionsCount < partOptions.Count && nothingDied)
+                    while (partOptionsCount < partOptions.Count)
                     {
                         IDateTimeFormatPartOptionTO partOption = partOptions[partOptionsCount];
 
-                        string forwardLookupResult = string.Empty;
+                        string forwardLookupResult;
                         bool predicateRun;
 
                         //Added by Massimo.Guerrera - For Bug 9494 to let the input format to be more forgiving
@@ -684,106 +677,106 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         private static void CreateDateTimeFormatPartsForDotNet()
         {
-            _dateTimeFormatPartsForDotNet.Add("d", new DateTimeFormatPartTO("d", false, "Day in 1 or 2 digits: 8"));
-            _dateTimeFormatPartOptionsForDotNet.Add("d", null);
-            _dateTimeFormatPartsForDotNet.Add("dd", new DateTimeFormatPartTO("dd", false, "Day in 2 digits: 8"));
-            _dateTimeFormatPartOptionsForDotNet.Add("dd", null);
-            _dateTimeFormatPartsForDotNet.Add("ddd", new DateTimeFormatPartTO("ddd", false, "The abbreviated name of the day of the week: Mon"));
-            _dateTimeFormatPartOptionsForDotNet.Add("ddd", null);
-            _dateTimeFormatPartsForDotNet.Add("dddd", new DateTimeFormatPartTO("dddd", false, "The full name of the day of the week: Monday"));
-            _dateTimeFormatPartOptionsForDotNet.Add("dddd", null);
+            DateTimeFormatPartsForDotNet.Add("d", new DateTimeFormatPartTO("d", false, "Day in 1 or 2 digits: 8"));
+            DateTimeFormatPartOptionsForDotNet.Add("d", null);
+            DateTimeFormatPartsForDotNet.Add("dd", new DateTimeFormatPartTO("dd", false, "Day in 2 digits: 8"));
+            DateTimeFormatPartOptionsForDotNet.Add("dd", null);
+            DateTimeFormatPartsForDotNet.Add("ddd", new DateTimeFormatPartTO("ddd", false, "The abbreviated name of the day of the week: Mon"));
+            DateTimeFormatPartOptionsForDotNet.Add("ddd", null);
+            DateTimeFormatPartsForDotNet.Add("dddd", new DateTimeFormatPartTO("dddd", false, "The full name of the day of the week: Monday"));
+            DateTimeFormatPartOptionsForDotNet.Add("dddd", null);
 
-            _dateTimeFormatPartsForDotNet.Add("f", new DateTimeFormatPartTO("f", false, "The tenths of a second: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("f", null);
-            _dateTimeFormatPartsForDotNet.Add("ff", new DateTimeFormatPartTO("ff", false, "The hundredths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("ff", null);
-            _dateTimeFormatPartsForDotNet.Add("fff", new DateTimeFormatPartTO("fff", false, "The milliseconds in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("fff", null);
-            _dateTimeFormatPartsForDotNet.Add("ffff", new DateTimeFormatPartTO("ffff", false, "The ten thousandths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("ffff", null);
-            _dateTimeFormatPartsForDotNet.Add("fffff", new DateTimeFormatPartTO("fffff", false, "The hundred thousandths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("fffff", null);
-            _dateTimeFormatPartsForDotNet.Add("ffffff", new DateTimeFormatPartTO("ffffff", false, "The millionths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("ffffff", null);
-            _dateTimeFormatPartsForDotNet.Add("fffffff", new DateTimeFormatPartTO("ffffffff", false, "The ten millionths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("fffffff", null);
+            DateTimeFormatPartsForDotNet.Add("f", new DateTimeFormatPartTO("f", false, "The tenths of a second: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("f", null);
+            DateTimeFormatPartsForDotNet.Add("ff", new DateTimeFormatPartTO("ff", false, "The hundredths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("ff", null);
+            DateTimeFormatPartsForDotNet.Add("fff", new DateTimeFormatPartTO("fff", false, "The milliseconds in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("fff", null);
+            DateTimeFormatPartsForDotNet.Add("ffff", new DateTimeFormatPartTO("ffff", false, "The ten thousandths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("ffff", null);
+            DateTimeFormatPartsForDotNet.Add("fffff", new DateTimeFormatPartTO("fffff", false, "The hundred thousandths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("fffff", null);
+            DateTimeFormatPartsForDotNet.Add("ffffff", new DateTimeFormatPartTO("ffffff", false, "The millionths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("ffffff", null);
+            DateTimeFormatPartsForDotNet.Add("fffffff", new DateTimeFormatPartTO("ffffffff", false, "The ten millionths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("fffffff", null);
 
-            _dateTimeFormatPartsForDotNet.Add("F", new DateTimeFormatPartTO("f", false, "If non-zero, the tenths of a second: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("F", null);
-            _dateTimeFormatPartsForDotNet.Add("FF", new DateTimeFormatPartTO("FF", false, "If non-zero, the hundredths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("FF", null);
-            _dateTimeFormatPartsForDotNet.Add("FFF", new DateTimeFormatPartTO("FFF", false, "If non-zero, the milliseconds in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("FFF", null);
-            _dateTimeFormatPartsForDotNet.Add("FFFF", new DateTimeFormatPartTO("FFFF", false, "If non-zero, the ten thousandths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("FFFF", null);
-            _dateTimeFormatPartsForDotNet.Add("FFFFF", new DateTimeFormatPartTO("FFFFF", false, "If non-zero, the hundred thousandths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("FFFFF", null);
-            _dateTimeFormatPartsForDotNet.Add("FFFFFF", new DateTimeFormatPartTO("FFFFFF", false, "If non-zero, the millionths of a second in a date and time value: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("FFFFFF", null);
+            DateTimeFormatPartsForDotNet.Add("F", new DateTimeFormatPartTO("f", false, "If non-zero, the tenths of a second: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("F", null);
+            DateTimeFormatPartsForDotNet.Add("FF", new DateTimeFormatPartTO("FF", false, "If non-zero, the hundredths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("FF", null);
+            DateTimeFormatPartsForDotNet.Add("FFF", new DateTimeFormatPartTO("FFF", false, "If non-zero, the milliseconds in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("FFF", null);
+            DateTimeFormatPartsForDotNet.Add("FFFF", new DateTimeFormatPartTO("FFFF", false, "If non-zero, the ten thousandths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("FFFF", null);
+            DateTimeFormatPartsForDotNet.Add("FFFFF", new DateTimeFormatPartTO("FFFFF", false, "If non-zero, the hundred thousandths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("FFFFF", null);
+            DateTimeFormatPartsForDotNet.Add("FFFFFF", new DateTimeFormatPartTO("FFFFFF", false, "If non-zero, the millionths of a second in a date and time value: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("FFFFFF", null);
 
-            _dateTimeFormatPartsForDotNet.Add("g", new DateTimeFormatPartTO("g", false, "The period or era: A.D."));
-            _dateTimeFormatPartOptionsForDotNet.Add("g", null);
-            _dateTimeFormatPartsForDotNet.Add("gg", new DateTimeFormatPartTO("gg", false, "The period or era: A.D."));
-            _dateTimeFormatPartOptionsForDotNet.Add("gg", null);
+            DateTimeFormatPartsForDotNet.Add("g", new DateTimeFormatPartTO("g", false, "The period or era: A.D."));
+            DateTimeFormatPartOptionsForDotNet.Add("g", null);
+            DateTimeFormatPartsForDotNet.Add("gg", new DateTimeFormatPartTO("gg", false, "The period or era: A.D."));
+            DateTimeFormatPartOptionsForDotNet.Add("gg", null);
 
-            _dateTimeFormatPartsForDotNet.Add("h", new DateTimeFormatPartTO("h", false, "The hour, using a 12-hour clock from 1 to 12: 1"));
-            _dateTimeFormatPartOptionsForDotNet.Add("h", null);
-            _dateTimeFormatPartsForDotNet.Add("hh", new DateTimeFormatPartTO("hh", false, "The hour, using a 12-hour clock from 1 to 12: 01"));
-            _dateTimeFormatPartOptionsForDotNet.Add("hh", null);
-            _dateTimeFormatPartsForDotNet.Add("H", new DateTimeFormatPartTO("H", false, "The hour, using a 24-hour clock from 1 to 24: 01"));
-            _dateTimeFormatPartOptionsForDotNet.Add("H", null);
-            _dateTimeFormatPartsForDotNet.Add("HH", new DateTimeFormatPartTO("HH", false, "The hour, using a 24-hour clock from 1 to 24: 13"));
-            _dateTimeFormatPartOptionsForDotNet.Add("HH", null);
+            DateTimeFormatPartsForDotNet.Add("h", new DateTimeFormatPartTO("h", false, "The hour, using a 12-hour clock from 1 to 12: 1"));
+            DateTimeFormatPartOptionsForDotNet.Add("h", null);
+            DateTimeFormatPartsForDotNet.Add("hh", new DateTimeFormatPartTO("hh", false, "The hour, using a 12-hour clock from 1 to 12: 01"));
+            DateTimeFormatPartOptionsForDotNet.Add("hh", null);
+            DateTimeFormatPartsForDotNet.Add("H", new DateTimeFormatPartTO("H", false, "The hour, using a 24-hour clock from 1 to 24: 01"));
+            DateTimeFormatPartOptionsForDotNet.Add("H", null);
+            DateTimeFormatPartsForDotNet.Add("HH", new DateTimeFormatPartTO("HH", false, "The hour, using a 24-hour clock from 1 to 24: 13"));
+            DateTimeFormatPartOptionsForDotNet.Add("HH", null);
 
-            _dateTimeFormatPartsForDotNet.Add("K", new DateTimeFormatPartTO("K", false, "Time zone information: +02:00"));
-            _dateTimeFormatPartOptionsForDotNet.Add("K", null);
+            DateTimeFormatPartsForDotNet.Add("K", new DateTimeFormatPartTO("K", false, "Time zone information: +02:00"));
+            DateTimeFormatPartOptionsForDotNet.Add("K", null);
 
-            _dateTimeFormatPartsForDotNet.Add("m", new DateTimeFormatPartTO("m", false, "Minute in 1 or 2 digits: 9"));
-            _dateTimeFormatPartOptionsForDotNet.Add("m", null);
-            _dateTimeFormatPartsForDotNet.Add("mm", new DateTimeFormatPartTO("mm", false, "Minute in two digits: 09"));
-            _dateTimeFormatPartOptionsForDotNet.Add("mm", null);
+            DateTimeFormatPartsForDotNet.Add("m", new DateTimeFormatPartTO("m", false, "Minute in 1 or 2 digits: 9"));
+            DateTimeFormatPartOptionsForDotNet.Add("m", null);
+            DateTimeFormatPartsForDotNet.Add("mm", new DateTimeFormatPartTO("mm", false, "Minute in two digits: 09"));
+            DateTimeFormatPartOptionsForDotNet.Add("mm", null);
 
-            _dateTimeFormatPartsForDotNet.Add("M", new DateTimeFormatPartTO("M", false, "Month in 1 or 2 digits: 6"));
-            _dateTimeFormatPartOptionsForDotNet.Add("M", null);
-            _dateTimeFormatPartsForDotNet.Add("MM", new DateTimeFormatPartTO("MM", false, "Month in two digits: 06"));
-            _dateTimeFormatPartOptionsForDotNet.Add("MM", null);
-            _dateTimeFormatPartsForDotNet.Add("MMM", new DateTimeFormatPartTO("MMM", false, "Abbreviated name of the month: Jun"));
-            _dateTimeFormatPartOptionsForDotNet.Add("MMM", null);
-            _dateTimeFormatPartsForDotNet.Add("MMMM", new DateTimeFormatPartTO("MMM", false, "Full name of the month: June"));
-            _dateTimeFormatPartOptionsForDotNet.Add("MMMM", null);
+            DateTimeFormatPartsForDotNet.Add("M", new DateTimeFormatPartTO("M", false, "Month in 1 or 2 digits: 6"));
+            DateTimeFormatPartOptionsForDotNet.Add("M", null);
+            DateTimeFormatPartsForDotNet.Add("MM", new DateTimeFormatPartTO("MM", false, "Month in two digits: 06"));
+            DateTimeFormatPartOptionsForDotNet.Add("MM", null);
+            DateTimeFormatPartsForDotNet.Add("MMM", new DateTimeFormatPartTO("MMM", false, "Abbreviated name of the month: Jun"));
+            DateTimeFormatPartOptionsForDotNet.Add("MMM", null);
+            DateTimeFormatPartsForDotNet.Add("MMMM", new DateTimeFormatPartTO("MMM", false, "Full name of the month: June"));
+            DateTimeFormatPartOptionsForDotNet.Add("MMMM", null);
 
-            _dateTimeFormatPartsForDotNet.Add("s", new DateTimeFormatPartTO("s", false, "Second in 1 or 2 digits: 9"));
-            _dateTimeFormatPartOptionsForDotNet.Add("s", null);
-            _dateTimeFormatPartsForDotNet.Add("ss", new DateTimeFormatPartTO("ss", false, "Second in two digits: 09"));
-            _dateTimeFormatPartOptionsForDotNet.Add("ss", null);
+            DateTimeFormatPartsForDotNet.Add("s", new DateTimeFormatPartTO("s", false, "Second in 1 or 2 digits: 9"));
+            DateTimeFormatPartOptionsForDotNet.Add("s", null);
+            DateTimeFormatPartsForDotNet.Add("ss", new DateTimeFormatPartTO("ss", false, "Second in two digits: 09"));
+            DateTimeFormatPartOptionsForDotNet.Add("ss", null);
 
-            _dateTimeFormatPartsForDotNet.Add("t", new DateTimeFormatPartTO("t", false, "First character of the AM/PM designator: 9"));
-            _dateTimeFormatPartOptionsForDotNet.Add("t", null);
-            _dateTimeFormatPartsForDotNet.Add("tt", new DateTimeFormatPartTO("tt", false, "AM/PM designator: 09"));
-            _dateTimeFormatPartOptionsForDotNet.Add("tt", null);
+            DateTimeFormatPartsForDotNet.Add("t", new DateTimeFormatPartTO("t", false, "First character of the AM/PM designator: 9"));
+            DateTimeFormatPartOptionsForDotNet.Add("t", null);
+            DateTimeFormatPartsForDotNet.Add("tt", new DateTimeFormatPartTO("tt", false, "AM/PM designator: 09"));
+            DateTimeFormatPartOptionsForDotNet.Add("tt", null);
 
-            _dateTimeFormatPartsForDotNet.Add("y", new DateTimeFormatPartTO("y", false, "Year in 1 or 2 digits: 13"));
-            _dateTimeFormatPartOptionsForDotNet.Add("y", null);
-            _dateTimeFormatPartsForDotNet.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in two digits: 13"));
-            _dateTimeFormatPartOptionsForDotNet.Add("yy", null);
-            _dateTimeFormatPartsForDotNet.Add("yyy", new DateTimeFormatPartTO("yyy", false, "Year, with a minimum of three digits: 2013"));
-            _dateTimeFormatPartOptionsForDotNet.Add("yyy", null);
-            _dateTimeFormatPartsForDotNet.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in four digits: 2013"));
-            _dateTimeFormatPartOptionsForDotNet.Add("yyyy", null);
-            _dateTimeFormatPartsForDotNet.Add("yyyyy", new DateTimeFormatPartTO("yyyyy", false, "Year in five digits: 02013"));
-            _dateTimeFormatPartOptionsForDotNet.Add("yyyyy", null);
+            DateTimeFormatPartsForDotNet.Add("y", new DateTimeFormatPartTO("y", false, "Year in 1 or 2 digits: 13"));
+            DateTimeFormatPartOptionsForDotNet.Add("y", null);
+            DateTimeFormatPartsForDotNet.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in two digits: 13"));
+            DateTimeFormatPartOptionsForDotNet.Add("yy", null);
+            DateTimeFormatPartsForDotNet.Add("yyy", new DateTimeFormatPartTO("yyy", false, "Year, with a minimum of three digits: 2013"));
+            DateTimeFormatPartOptionsForDotNet.Add("yyy", null);
+            DateTimeFormatPartsForDotNet.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in four digits: 2013"));
+            DateTimeFormatPartOptionsForDotNet.Add("yyyy", null);
+            DateTimeFormatPartsForDotNet.Add("yyyyy", new DateTimeFormatPartTO("yyyyy", false, "Year in five digits: 02013"));
+            DateTimeFormatPartOptionsForDotNet.Add("yyyyy", null);
 
-            _dateTimeFormatPartsForDotNet.Add("z", new DateTimeFormatPartTO("z", false, "Hours offset from UTC, with no leading zeros: +2"));
-            _dateTimeFormatPartOptionsForDotNet.Add("z", null);
-            _dateTimeFormatPartsForDotNet.Add("zz", new DateTimeFormatPartTO("zz", false, "Hours offset from UTC in two digits: +02"));
-            _dateTimeFormatPartOptionsForDotNet.Add("zz", null);
-            _dateTimeFormatPartsForDotNet.Add("zzz", new DateTimeFormatPartTO("zzz", false, "Hours and minutes offset from UTC: +02:00"));
-            _dateTimeFormatPartOptionsForDotNet.Add("zzz", null);
+            DateTimeFormatPartsForDotNet.Add("z", new DateTimeFormatPartTO("z", false, "Hours offset from UTC, with no leading zeros: +2"));
+            DateTimeFormatPartOptionsForDotNet.Add("z", null);
+            DateTimeFormatPartsForDotNet.Add("zz", new DateTimeFormatPartTO("zz", false, "Hours offset from UTC in two digits: +02"));
+            DateTimeFormatPartOptionsForDotNet.Add("zz", null);
+            DateTimeFormatPartsForDotNet.Add("zzz", new DateTimeFormatPartTO("zzz", false, "Hours and minutes offset from UTC: +02:00"));
+            DateTimeFormatPartOptionsForDotNet.Add("zzz", null);
 
-            _dateTimeFormatPartsForDotNet.Add(_timeLiteralCharacter.ToString(), new DateTimeFormatPartTO(_timeLiteralCharacter.ToString(), false, "The time separator: '" + _timeLiteralCharacter + "'"));
-            _dateTimeFormatPartOptionsForDotNet.Add(_timeLiteralCharacter.ToString(), null);
-            _dateTimeFormatPartsForDotNet.Add(_dateLiteralCharacter.ToString(), new DateTimeFormatPartTO(_dateLiteralCharacter.ToString(), false, "The date separator: " + _dateLiteralCharacter));
-            _dateTimeFormatPartOptionsForDotNet.Add(_dateLiteralCharacter.ToString(), null);
+            DateTimeFormatPartsForDotNet.Add(TimeLiteralCharacter.ToString(CultureInfo.InvariantCulture), new DateTimeFormatPartTO(TimeLiteralCharacter.ToString(CultureInfo.InvariantCulture), false, "The time separator: '" + TimeLiteralCharacter + "'"));
+            DateTimeFormatPartOptionsForDotNet.Add(TimeLiteralCharacter.ToString(CultureInfo.InvariantCulture), null);
+            DateTimeFormatPartsForDotNet.Add(DateLiteralCharacter.ToString(CultureInfo.InvariantCulture), new DateTimeFormatPartTO(DateLiteralCharacter.ToString(CultureInfo.InvariantCulture), false, "The date separator: " + DateLiteralCharacter));
+            DateTimeFormatPartOptionsForDotNet.Add(DateLiteralCharacter.ToString(CultureInfo.InvariantCulture), null);
 
         }
 
@@ -792,37 +785,37 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         private static void CreateDateTimeFormatParts()
         {
-            _dateTimeFormatParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
-            _dateTimeFormatPartOptions.Add("yy",
+            DateTimeFormatsParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
+            DateTimeFormatPartOptions.Add("yy",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(2, IsTextNumeric, true, null, AssignYears) 
             });
 
-            _dateTimeFormatParts.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in 4 digits: 2008"));
-            _dateTimeFormatPartOptions.Add("yyyy",
+            DateTimeFormatsParts.Add("yyyy", new DateTimeFormatPartTO("yyyy", false, "Year in 4 digits: 2008"));
+            DateTimeFormatPartOptions.Add("yyyy",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(4, IsTextNumeric, true, null, AssignYears) 
             });
 
-            _dateTimeFormatParts.Add("mm", new DateTimeFormatPartTO("mm", false, "Month in 2 digits: 03"));
-            _dateTimeFormatPartOptions.Add("mm",
+            DateTimeFormatsParts.Add("mm", new DateTimeFormatPartTO("mm", false, "Month in 2 digits: 03"));
+            DateTimeFormatPartOptions.Add("mm",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths) 
             });
 
-            _dateTimeFormatParts.Add("m", new DateTimeFormatPartTO("m", false, "Month in single digit: 3"));
-            _dateTimeFormatPartOptions.Add("m",
+            DateTimeFormatsParts.Add("m", new DateTimeFormatPartTO("m", false, "Month in single digit: 3"));
+            DateTimeFormatPartOptions.Add("m",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
                 new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
             });
 
-            _dateTimeFormatParts.Add("M", new DateTimeFormatPartTO("M", false, "Month text abbreviated: Mar"));
-            _dateTimeFormatPartOptions.Add("M",
+            DateTimeFormatsParts.Add("M", new DateTimeFormatPartTO("M", false, "Month text abbreviated: Mar"));
+            DateTimeFormatPartOptions.Add("M",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[0].Length, IsTextJanuary, false, 1, AssignMonths),
@@ -839,8 +832,8 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[11].Length, IsTextDecember, false, 12, AssignMonths),
             });
 
-            _dateTimeFormatParts.Add("MM", new DateTimeFormatPartTO("MM", false, "Month text in full: March"));
-            _dateTimeFormatPartOptions.Add("MM",
+            DateTimeFormatsParts.Add("MM", new DateTimeFormatPartTO("MM", false, "Month text in full: March"));
+            DateTimeFormatPartOptions.Add("MM",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[0].Length, IsTextJanuary, false, 1, AssignMonths),
@@ -857,23 +850,23 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[11].Length, IsTextDecember, false, 12, AssignMonths),
             });
 
-            _dateTimeFormatParts.Add("d", new DateTimeFormatPartTO("d", false, "Day of month in single digit: 6"));
-            _dateTimeFormatPartOptions.Add("d",
+            DateTimeFormatsParts.Add("d", new DateTimeFormatPartTO("d", false, "Day of month in single digit: 6"));
+            DateTimeFormatPartOptions.Add("d",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays),
                 new DateTimeFormatPartOptionTO(1, IsNumberDay, true, null, AssignDays)
             });
 
-            _dateTimeFormatParts.Add("dd", new DateTimeFormatPartTO("dd", false, "Day of month in 2 digits: 06"));
-            _dateTimeFormatPartOptions.Add("dd",
+            DateTimeFormatsParts.Add("dd", new DateTimeFormatPartTO("dd", false, "Day of month in 2 digits: 06"));
+            DateTimeFormatPartOptions.Add("dd",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays)
             });
 
-            _dateTimeFormatParts.Add("DW", new DateTimeFormatPartTO("DW", false, "Day of Week in full: Thursday"));
-            _dateTimeFormatPartOptions.Add("DW",
+            DateTimeFormatsParts.Add("DW", new DateTimeFormatPartTO("DW", false, "Day of Week in full: Thursday"));
+            DateTimeFormatPartOptions.Add("DW",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].Length, IsTextSunday, false, 7, AssignDaysOfWeek),
@@ -885,8 +878,8 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].Length, IsTextSaturday, false, 6, AssignDaysOfWeek),
             });
 
-            _dateTimeFormatParts.Add("dW", new DateTimeFormatPartTO("dW", false, "Day of Week text abbreviated: Thu"));
-            _dateTimeFormatPartOptions.Add("dW",
+            DateTimeFormatsParts.Add("dW", new DateTimeFormatPartTO("dW", false, "Day of Week text abbreviated: Thu"));
+            DateTimeFormatPartOptions.Add("dW",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, IsTextSunday, false, 7, AssignDaysOfWeek,6),
@@ -898,15 +891,15 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, IsTextSaturday, false, 6, AssignDaysOfWeek,7),
             });
 
-            _dateTimeFormatParts.Add("dw", new DateTimeFormatPartTO("dw", false, "Day of Week number: 4"));
-            _dateTimeFormatPartOptions.Add("dw",
+            DateTimeFormatsParts.Add("dw", new DateTimeFormatPartTO("dw", false, "Day of Week number: 4"));
+            DateTimeFormatPartOptions.Add("dw",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
             });
 
-            _dateTimeFormatParts.Add("dy", new DateTimeFormatPartTO("dy", false, "Day of year: 66"));
-            _dateTimeFormatPartOptions.Add("dy",
+            DateTimeFormatsParts.Add("dy", new DateTimeFormatPartTO("dy", false, "Day of year: 66"));
+            DateTimeFormatPartOptions.Add("dy",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, IsNumberDayOfYear, true, null, AssignDaysOfYear),
@@ -914,54 +907,54 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfYear, true, null, AssignDaysOfYear)
             });
 
-            _dateTimeFormatParts.Add("ww", new DateTimeFormatPartTO("ww", false, "Week of year: 09"));
-            _dateTimeFormatPartOptions.Add("ww",
+            DateTimeFormatsParts.Add("ww", new DateTimeFormatPartTO("ww", false, "Week of year: 09"));
+            DateTimeFormatPartOptions.Add("ww",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
             });
 
-            _dateTimeFormatParts.Add("w", new DateTimeFormatPartTO("w", false, "Week of year: 9"));
-            _dateTimeFormatPartOptions.Add("w",
+            DateTimeFormatsParts.Add("w", new DateTimeFormatPartTO("w", false, "Week of year: 9"));
+            DateTimeFormatPartOptions.Add("w",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
                 new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
             });            
 
-            _dateTimeFormatParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
-            _dateTimeFormatPartOptions.Add("24h",
+            DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
+            DateTimeFormatPartOptions.Add("24h",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumber24H, true, null, Assign24Hours)
             });
 
-            _dateTimeFormatParts.Add("12h", new DateTimeFormatPartTO("12h", false, "Hours in 12 hour format: 3"));
-            _dateTimeFormatPartOptions.Add("12h",
+            DateTimeFormatsParts.Add("12h", new DateTimeFormatPartTO("12h", false, "Hours in 12 hour format: 3"));
+            DateTimeFormatPartOptions.Add("12h",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumber12H, true, null, Assign12Hours),
                 new DateTimeFormatPartOptionTO(1, IsNumber12H, true, null, Assign12Hours),
             });
 
-            _dateTimeFormatParts.Add("min", new DateTimeFormatPartTO("min", false, "Minutes: 30"));
-            _dateTimeFormatPartOptions.Add("min",
+            DateTimeFormatsParts.Add("min", new DateTimeFormatPartTO("min", false, "Minutes: 30"));
+            DateTimeFormatPartOptions.Add("min",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMinutes, true, null, AssignMinutes),
                 new DateTimeFormatPartOptionTO(1, IsNumberMinutes, true, null, AssignMinutes),
             });
 
-            _dateTimeFormatParts.Add("ss", new DateTimeFormatPartTO("ss", false, "Seconds: 29"));
-            _dateTimeFormatPartOptions.Add("ss",
+            DateTimeFormatsParts.Add("ss", new DateTimeFormatPartTO("ss", false, "Seconds: 29"));
+            DateTimeFormatPartOptions.Add("ss",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberSeconds, true, null, AssignSeconds),
                 new DateTimeFormatPartOptionTO(1, IsNumberSeconds, true, null, AssignSeconds),
             });
 
-            _dateTimeFormatParts.Add("sp", new DateTimeFormatPartTO("sp", false, "Split Seconds: 987"));
-            _dateTimeFormatPartOptions.Add("sp",
+            DateTimeFormatsParts.Add("sp", new DateTimeFormatPartTO("sp", false, "Split Seconds: 987"));
+            DateTimeFormatPartOptions.Add("sp",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, IsNumberMilliseconds, true, null, AssignMilliseconds),
@@ -969,8 +962,8 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(1, IsNumberMilliseconds, true, null, AssignMilliseconds),
             });
 
-            _dateTimeFormatParts.Add("am/pm", new DateTimeFormatPartTO("am/pm", false, "am or pm"));
-            _dateTimeFormatPartOptions.Add("am/pm",
+            DateTimeFormatsParts.Add("am/pm", new DateTimeFormatPartTO("am/pm", false, "am or pm"));
+            DateTimeFormatPartOptions.Add("am/pm",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(4, IsTextAmPm, false, null, AssignAmPm),
@@ -978,42 +971,42 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(2, IsTextAmPm, false, null, AssignAmPm),
             });
 
-            _dateTimeFormatParts.Add("Z", new DateTimeFormatPartTO("Z", false, "Time zone in short format: GMT (if available on the system)"));
-            _dateTimeFormatPartOptions.Add("Z", _timeZones.Select(k =>
+            DateTimeFormatsParts.Add("Z", new DateTimeFormatPartTO("Z", false, "Time zone in short format: GMT (if available on the system)"));
+            DateTimeFormatPartOptions.Add("Z", TimeZones.Select(k =>
             {
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _dateTimeFormatParts.Add("ZZ", new DateTimeFormatPartTO("ZZ", false, "Time zone: Grenwich mean time"));
-            _dateTimeFormatPartOptions.Add("ZZ", _timeZones.Select(k =>
+            DateTimeFormatsParts.Add("ZZ", new DateTimeFormatPartTO("ZZ", false, "Time zone: Grenwich mean time"));
+            DateTimeFormatPartOptions.Add("ZZ", TimeZones.Select(k =>
             {
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _dateTimeFormatParts.Add("ZZZ", new DateTimeFormatPartTO("ZZZ", false, "Time zone offset: GMT + 02:00"));
-            _dateTimeFormatPartOptions.Add("ZZZ", _timeZones.Select(k =>
+            DateTimeFormatsParts.Add("ZZZ", new DateTimeFormatPartTO("ZZZ", false, "Time zone offset: GMT + 02:00"));
+            DateTimeFormatPartOptions.Add("ZZZ", TimeZones.Select(k =>
             {
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _dateTimeFormatParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
+            DateTimeFormatsParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
 
-            _dateTimeFormatPartOptions.Add("era",
+            DateTimeFormatPartOptions.Add("era",
            new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD", AssignEra)
             });
 
-            _dateTimeFormatPartOptions.Add("Era",
+            DateTimeFormatPartOptions.Add("Era",
            new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D", AssignEra)
             });
 
-            _dateTimeFormatPartOptions.Add("ERA",
+            DateTimeFormatPartOptions.Add("ERA",
           new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.", AssignEra)
@@ -1026,76 +1019,76 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         private static void CreateTimeFormatParts()
         {
-            _timeFormatPartOptions.Add("yy",
+            TimeFormatPartOptions.Add("yy",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(2, IsTextNumeric, true, null, AssignYears) 
             });
 
-            _timeFormatPartOptions.Add("yyyy",
+            TimeFormatPartOptions.Add("yyyy",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(4, IsTextNumeric, true, null, AssignYears) 
             });
 
-            _timeFormatPartOptions.Add("mm",
+            TimeFormatPartOptions.Add("mm",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths) 
             });
 
-            _timeFormatPartOptions.Add("m",
+            TimeFormatPartOptions.Add("m",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
                 new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
             });
 
-            _timeFormatPartOptions.Add("MM",
+            TimeFormatPartOptions.Add("MM",
             new List<IDateTimeFormatPartOptionTO> 
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths) 
             });
 
-            _timeFormatPartOptions.Add("M",
+            TimeFormatPartOptions.Add("M",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMonth, true, null, AssignMonths),
                 new DateTimeFormatPartOptionTO(1, IsNumberMonth, true, null, AssignMonths),
             });
 
-            _timeFormatPartOptions.Add("d",
+            TimeFormatPartOptions.Add("d",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays),
                 new DateTimeFormatPartOptionTO(1, IsNumberDay, true, null, AssignDays)
             });
 
-            _timeFormatPartOptions.Add("dd",
+            TimeFormatPartOptions.Add("dd",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberDay, true, null, AssignDays)
             });
 
-            _timeFormatPartOptions.Add("DW",
+            TimeFormatPartOptions.Add("DW",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
             });
 
-            _timeFormatPartOptions.Add("dW",
+            TimeFormatPartOptions.Add("dW",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
             });
 
-            _timeFormatPartOptions.Add("dw",
+            TimeFormatPartOptions.Add("dw",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfWeek, true, null, AssignDaysOfWeek),
             });
 
-            _timeFormatPartOptions.Add("dy",
+            TimeFormatPartOptions.Add("dy",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, IsNumberDayOfYear, true, null, AssignDaysOfYear),
@@ -1103,41 +1096,41 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(1, IsNumberDayOfYear, true, null, AssignDaysOfYear)
             });
 
-            _timeFormatPartOptions.Add("w",
+            TimeFormatPartOptions.Add("w",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
                 new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
             });
 
-            _timeFormatPartOptions.Add("24h",
+            TimeFormatPartOptions.Add("24h",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumber24H, true, null, Assign24Hours)
             });
 
-            _timeFormatPartOptions.Add("12h",
+            TimeFormatPartOptions.Add("12h",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumber12H, true, null, Assign12Hours),
                 new DateTimeFormatPartOptionTO(1, IsNumber12H, true, null, Assign12Hours),
             });
 
-            _timeFormatPartOptions.Add("min",
+            TimeFormatPartOptions.Add("min",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberMinutes, true, null, AssignMinutes),
                 new DateTimeFormatPartOptionTO(1, IsNumberMinutes, true, null, AssignMinutes),
             });
 
-            _timeFormatPartOptions.Add("ss",
+            TimeFormatPartOptions.Add("ss",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberSeconds, true, null, AssignSeconds),
                 new DateTimeFormatPartOptionTO(1, IsNumberSeconds, true, null, AssignSeconds),
             });
 
-            _timeFormatPartOptions.Add("sp",
+            TimeFormatPartOptions.Add("sp",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, IsNumberMilliseconds, true, null, AssignMilliseconds),
@@ -1145,7 +1138,7 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(1, IsNumberMilliseconds, true, null, AssignMilliseconds),
             });
 
-            _timeFormatPartOptions.Add("am/pm",
+            TimeFormatPartOptions.Add("am/pm",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(4, IsTextAmPm, false, null, AssignAmPm),
@@ -1153,37 +1146,37 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(2, IsTextAmPm, false, null, AssignAmPm),
             });
 
-            _timeFormatPartOptions.Add("Z", _timeZones.Select(k => 
+            TimeFormatPartOptions.Add("Z", TimeZones.Select(k => 
                 {
                     IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                     return dateTimeFormatPartOptionTO;
                 }).OrderByDescending(k => k.Length).ToList());
 
-            _timeFormatPartOptions.Add("ZZ", _timeZones.Select(k =>
+            TimeFormatPartOptions.Add("ZZ", TimeZones.Select(k =>
             {
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _timeFormatPartOptions.Add("ZZZ", _timeZones.Select(k =>
+            TimeFormatPartOptions.Add("ZZZ", TimeZones.Select(k =>
             {
                 IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                 return dateTimeFormatPartOptionTO;
             }).OrderByDescending(k => k.Length).ToList());
 
-            _timeFormatPartOptions.Add("era",
+            TimeFormatPartOptions.Add("era",
             new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(2, (data, treatAsTim) => data.ToLower().Equals("ad"), false, "AD", AssignEra)
             });
 
-            _timeFormatPartOptions.Add("Era",
+            TimeFormatPartOptions.Add("Era",
            new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(3, (data, treatAsTim) => data.ToLower().Equals("a.d"), false, "A.D", AssignEra)
             });
 
-            _timeFormatPartOptions.Add("ERA",
+            TimeFormatPartOptions.Add("ERA",
           new List<IDateTimeFormatPartOptionTO>
             { 
                 new DateTimeFormatPartOptionTO(4, (data, treatAsTim) => data.ToLower().Equals("a.d."), false, "A.D.", AssignEra)
@@ -1198,10 +1191,10 @@ namespace Dev2.Converters.DateAndTime
             //
             // Create UCT entries
             //
-            string UCTShort = "UCT";
-            string UCTLong = "Coordinated Universal Time";
-            _timeZones.Add(UCTShort.ToLower(), new TimeZoneTO(UCTShort, UCTShort, UCTLong));
-            _timeZones.Add(UCTLong.ToLower(), new TimeZoneTO(UCTShort, UCTShort, UCTLong));
+            const string UctShort = "UCT";
+            const string UctLong = "Coordinated Universal Time";
+            TimeZones.Add(UctShort.ToLower(), new TimeZoneTO(UctShort, UctShort, UctLong));
+            TimeZones.Add(UctLong.ToLower(), new TimeZoneTO(UctShort, UctShort, UctLong));
 
             for (int hours = -12; hours < 13; hours++)
             {
@@ -1210,15 +1203,15 @@ namespace Dev2.Converters.DateAndTime
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = (minutes == 0) ? "00" : "30";
-                        string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString().PadLeft(2, '0'));
-                        string UCT = string.Concat(UCTShort, hrs, ":", min);
-                        _timeZones.Add(UCT.ToLower(), new TimeZoneTO(UCTShort, UCT, UCTLong));
+                        string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
+                        string uct = string.Concat(UctShort, hrs, ":", min);
+                        TimeZones.Add(uct.ToLower(), new TimeZoneTO(UctShort, uct, UctLong));
                     }
                 }
                 else
                 {
-                    _timeZones.Add(UCTShort + "-00:30", new TimeZoneTO(UCTShort, UCTShort + "-00:30", UCTLong));
-                    _timeZones.Add(UCTShort + "+00:30", new TimeZoneTO(UCTShort, UCTShort + "+00:30", UCTLong));
+                    TimeZones.Add(UctShort + "-00:30", new TimeZoneTO(UctShort, UctShort + "-00:30", UctLong));
+                    TimeZones.Add(UctShort + "+00:30", new TimeZoneTO(UctShort, UctShort + "+00:30", UctLong));
                 }
 
             }
@@ -1226,10 +1219,10 @@ namespace Dev2.Converters.DateAndTime
             //
             // Create GMT entries
             //
-            string GMTShort = "GMT";
-            string GMTLong = "Greenwich Mean Time";
-            _timeZones.Add(GMTShort.ToLower(), new TimeZoneTO(GMTShort, GMTShort, GMTLong));
-            _timeZones.Add(GMTLong.ToLower(), new TimeZoneTO(GMTShort, GMTShort, GMTLong));
+            const string GmtShort = "GMT";
+            const string GmtLong = "Greenwich Mean Time";
+            TimeZones.Add(GmtShort.ToLower(), new TimeZoneTO(GmtShort, GmtShort, GmtLong));
+            TimeZones.Add(GmtLong.ToLower(), new TimeZoneTO(GmtShort, GmtShort, GmtLong));
 
             for (int hours = -12; hours < 13; hours++)
             {
@@ -1238,15 +1231,15 @@ namespace Dev2.Converters.DateAndTime
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = (minutes == 0) ? "00" : "30";
-                        string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString().PadLeft(2, '0'));
-                        string GMT = string.Concat(GMTShort, hrs, ":", min);
-                        _timeZones.Add(GMT.ToLower(), new TimeZoneTO(GMTShort, GMT, GMTLong));
+                        string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
+                        string gmt = string.Concat(GmtShort, hrs, ":", min);
+                        TimeZones.Add(gmt.ToLower(), new TimeZoneTO(GmtShort, gmt, GmtLong));
                     }
                 }
                 else
                 {
-                    _timeZones.Add(GMTShort + "-00:30", new TimeZoneTO(GMTShort, GMTShort + "-00:30", GMTLong));
-                    _timeZones.Add(GMTShort + "+00:30", new TimeZoneTO(GMTShort, GMTShort + "+00:30", GMTLong));
+                    TimeZones.Add(GmtShort + "-00:30", new TimeZoneTO(GmtShort, GmtShort + "-00:30", GmtLong));
+                    TimeZones.Add(GmtShort + "+00:30", new TimeZoneTO(GmtShort, GmtShort + "+00:30", GmtLong));
                 }
             }
 
@@ -1256,19 +1249,19 @@ namespace Dev2.Converters.DateAndTime
             foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
             {
                 ITimeZoneTO timeZoneTO;
-                if (!_timeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out timeZoneTO))
+                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out timeZoneTO))
                 {
-                    _timeZones.Add(timeZoneInfo.DisplayName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
+                    TimeZones.Add(timeZoneInfo.DisplayName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
                 }
 
-                if (!_timeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTO))
+                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTO))
                 {
-                    _timeZones.Add(timeZoneInfo.DaylightName.ToLower(), new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
+                    TimeZones.Add(timeZoneInfo.DaylightName.ToLower(), new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
                 }
 
-                if (!_timeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTO))
+                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTO))
                 {
-                    _timeZones.Add(timeZoneInfo.StandardName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
+                    TimeZones.Add(timeZoneInfo.StandardName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
                 }
             }
         }
@@ -1282,67 +1275,67 @@ namespace Dev2.Converters.DateAndTime
             //
             // Lookups for dddd, ddd, dd, d
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('d', new List<int> { 4, 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('d', new List<int> { 4, 3, 2, 1 });
 
             //
             // Lookups for fffffff, ffffff, fffff, ffff, fff, ff, f
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('f', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('f', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
 
             //
             // Lookups for FFFFFFF, FFFFFF, FFFFF, FFFF, FFF, FF, F
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('F', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('F', new List<int> { 7, 6, 5, 4, 3, 2, 1 });
 
             //
             // Lookups for gg, g
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('g', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('g', new List<int> { 2, 1 });
 
             //
             // Lookups for hh, h
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('h', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('h', new List<int> { 2, 1 });
 
             //
             // Lookups for HH, H
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('H', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('H', new List<int> { 2, 1 });
 
             //
             // Lookups for K
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('K', new List<int> { 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('K', new List<int> { 1 });
 
             //
             // Lookups for mm, m
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('m', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('m', new List<int> { 2, 1 });
 
             //
             // Lookups for MMMM, MMM, MM, M
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('M', new List<int> { 4, 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('M', new List<int> { 4, 3, 2, 1 });
 
             //
             // Lookups for ss, s
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('s', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('s', new List<int> { 2, 1 });
 
             //
             // Lookups for tt, t
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('t', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('t', new List<int> { 2, 1 });
 
             //
             // Lookups for yyyyy, yyyy, yyy, yy, y
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('y', new List<int> { 5, 4, 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('y', new List<int> { 5, 4, 3, 2, 1 });
 
             //
             // Lookups for zzz, zz, z
             //
-            _dateTimeFormatForwardLookupsForDotNet.Add('z', new List<int> { 3, 2, 1 });
+            DateTimeFormatForwardLookupsForDotNet.Add('z', new List<int> { 3, 2, 1 });
         }
 
         /// <summary>
@@ -1353,70 +1346,70 @@ namespace Dev2.Converters.DateAndTime
             //
             // Lookups for yyyyy, yyyy, yyy, yy and y
             //
-            _dateTimeFormatForwardLookups.Add('y', new List<int> { 5, 4, 3, 2, 1 });
+            DateTimeFormatForwardLookups.Add('y', new List<int> { 5, 4, 3, 2, 1 });
 
             //
             // Lookups for min, mm and m
             //
-            _dateTimeFormatForwardLookups.Add('m', new List<int> { 3, 2, 1 });
+            DateTimeFormatForwardLookups.Add('m', new List<int> { 3, 2, 1 });
 
             //
             // Lookups for MM and M
             //
-            _dateTimeFormatForwardLookups.Add('M', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookups.Add('M', new List<int> { 2, 1 });
 
             //
             // Lookups for dd, dW, dw, dy and d
             //
-            _dateTimeFormatForwardLookups.Add('d', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookups.Add('d', new List<int> { 2, 1 });
 
             //
             // Lookups for w
             //
-            _dateTimeFormatForwardLookups.Add('w', new List<int> { 2, 1 });
+            DateTimeFormatForwardLookups.Add('w', new List<int> { 2, 1 });
 
             //
             // Lookups for DW
             //
-            _dateTimeFormatForwardLookups.Add('D', new List<int> { 2 });
+            DateTimeFormatForwardLookups.Add('D', new List<int> { 2 });
 
             //
             // Lookups for 24h
             //
-            _dateTimeFormatForwardLookups.Add('2', new List<int> { 3 });
+            DateTimeFormatForwardLookups.Add('2', new List<int> { 3 });
 
             //
             // Lookups for 12h
             //
-            _dateTimeFormatForwardLookups.Add('1', new List<int> { 3 });
+            DateTimeFormatForwardLookups.Add('1', new List<int> { 3 });
 
             //
             // Lookups for ss and sp
             //
-            _dateTimeFormatForwardLookups.Add('s', new List<int> { 2 });
+            DateTimeFormatForwardLookups.Add('s', new List<int> { 2 });
 
             //
             // Lookups for am/pm
             //
-            _dateTimeFormatForwardLookups.Add('a', new List<int> { 5 });
+            DateTimeFormatForwardLookups.Add('a', new List<int> { 5 });
 
             //
             // Lookups for ZZZ, ZZ and Z
             //
-            _dateTimeFormatForwardLookups.Add('Z', new List<int> { 3, 2, 1 });
+            DateTimeFormatForwardLookups.Add('Z', new List<int> { 3, 2, 1 });
 
             //
             // Lookups for Era
             //
-            _dateTimeFormatForwardLookups.Add('E', new List<int> { 3 });
-            _dateTimeFormatForwardLookups.Add('e', new List<int> { 3 });
+            DateTimeFormatForwardLookups.Add('E', new List<int> { 3 });
+            DateTimeFormatForwardLookups.Add('e', new List<int> { 3 });
         }
 
         #region DateTime Assign Actions
 
         private static void AssignEra(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Era = value.ToString();
+            dateTimeResultTO.Era = value.ToString(CultureInfo.InvariantCulture);
         }
 
         private static void AssignYears(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
@@ -1484,7 +1477,7 @@ namespace Dev2.Converters.DateAndTime
 
         private static void AssignAmPm(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString().ToLower();
+            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
             if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
             {
@@ -1498,10 +1491,10 @@ namespace Dev2.Converters.DateAndTime
 
         private static void AssignTimeZone(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString().ToLower();
+            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
             ITimeZoneTO timeZoneTO;
-            if (_timeZones.TryGetValue(lowerValue, out timeZoneTO))
+            if (TimeZones.TryGetValue(lowerValue, out timeZoneTO))
             {
                 dateTimeResultTO.TimeZone = timeZoneTO;
             }
@@ -1748,15 +1741,6 @@ namespace Dev2.Converters.DateAndTime
         }
 
         /// <summary>
-        /// Determines if a given string represents an era
-        /// </summary>
-        private static bool IsTextEra(string data, bool treatAsTime)
-        {
-            string lowerData = data.ToLower();
-            return lowerData == "ad" || lowerData == "a.d.";
-        }
-
-        /// <summary>
         /// Determines if a given string represents am
         /// </summary>
         private static bool IsTextAmPm(string data, bool treatAsTime)
@@ -1772,7 +1756,7 @@ namespace Dev2.Converters.DateAndTime
         {
             string lowerData = data.ToLower();
             ITimeZoneTO timeZoneTO;
-            return _timeZones.TryGetValue(lowerData, out timeZoneTO);
+            return TimeZones.TryGetValue(lowerData, out timeZoneTO);
         }
 
         /// <summary>
@@ -1956,7 +1940,7 @@ namespace Dev2.Converters.DateAndTime
         {
             get
             {
-                return _dateTimeFormatParts.Values.ToList();
+                return DateTimeFormatsParts.Values.ToList();
             }
         }
 

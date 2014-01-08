@@ -12,15 +12,16 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 using Dev2.DataList.Contract.Translators;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Server.DataList.Translators
 {
     internal sealed class StudioDataListXMLTranslator : IDataListTranslator
     {
-        private const string _rootTag = "DataList";
+        private const string RootTag = "DataList";
 
         // Attribute Constants for the Target XML format
-        private const string _isEditable = "IsEditable";
-        private const string _description = "Description";
+        private const string IsEditable = "IsEditable";
+        private const string Description = "Description";
 
         private readonly DataListFormat _format;
         private readonly Encoding _encoding;
@@ -47,38 +48,25 @@ namespace Dev2.Server.DataList.Translators
                 throw new ArgumentNullException("payload");
             }
 
-            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
             errors = new ErrorResultTO();
-            string error = string.Empty;
 
-            IList<IBinaryDataListEntry> entries = payload.FetchAllEntries();
+            var entries = payload.FetchAllEntries();
 
-            foreach(IBinaryDataListEntry entry in entries)
+            foreach(var entry in entries)
             {
                 if(entry.IsRecordset)
                 {
-                    result.Append("<");
-                    result.Append(entry.Namespace);
-                    result.Append(" " + _description + "=\"");
-                    result.Append(entry.Description);
-                    result.Append("\" ");
-                    result.Append(_isEditable + "=\"");
-                    result.Append(entry.IsEditable);
-                    result.Append("\" ");
-                    // Travis.Frisinger - Added Column direction
-                    result.Append(GlobalConstants.DataListIoColDirection + "=\"");
-                    result.Append(entry.ColumnIODirection);
-                    result.Append("\" ");
+                    AddEntryToBuilder(result, entry);
                     result.Append(">");
-
-                    foreach(Dev2Column col in entry.Columns)
+                    foreach(var col in entry.Columns)
                     {
                         result.Append("<");
                         result.Append(col.ColumnName);
-                        result.Append(" " + _description + "=\"");
+                        result.Append(" " + Description + "=\"");
                         result.Append(col.ColumnDescription);
                         result.Append("\" ");
-                        result.Append(_isEditable + "=\"");
+                        result.Append(IsEditable + "=\"");
                         result.Append(col.IsEditable);
                         result.Append("\" ");
                         // Travis.Frisinger - Added Column direction
@@ -94,33 +82,39 @@ namespace Dev2.Server.DataList.Translators
                 }
                 else
                 {
-                    result.Append("<");
-                    result.Append(entry.Namespace);
-                    result.Append(" " + _description + "=\"");
-                    result.Append(entry.Description);
-                    result.Append("\" ");
-                    result.Append(_isEditable + "=\"");
-                    result.Append(entry.IsEditable);
-                    result.Append("\" ");
-                    // Travis.Frisinger - Added Column direction
-                    result.Append(GlobalConstants.DataListIoColDirection + "=\"");
-                    result.Append(entry.ColumnIODirection);
-                    result.Append("\" ");
+                    AddEntryToBuilder(result, entry);
                     result.Append("/>");
                 }
             }
 
-            result.Append("</" + _rootTag + ">");
+            result.Append("</" + RootTag + ">");
 
             DataListTranslatedPayloadTO tmp = new DataListTranslatedPayloadTO(result.ToString());
 
             return tmp;
         }
 
+        static void AddEntryToBuilder(StringBuilder result, IBinaryDataListEntry entry)
+        {
+            result.Append("<");
+            result.Append(entry.Namespace);
+            result.Append(" " + Description + "=\"");
+            result.Append(entry.Description);
+            result.Append("\" ");
+            result.Append(IsEditable + "=\"");
+            result.Append(entry.IsEditable);
+            result.Append("\" ");
+            // Travis.Frisinger - Added Column direction
+            result.Append(GlobalConstants.DataListIoColDirection + "=\"");
+            result.Append(entry.ColumnIODirection);
+            result.Append("\" ");
+
+        }
+
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            string payload = Encoding.UTF8.GetString(input);
+            var payload = Encoding.UTF8.GetString(input);
 
             IBinaryDataList result = null;
 
@@ -145,51 +139,42 @@ namespace Dev2.Server.DataList.Translators
                     {
                         XmlDocument xDoc = new XmlDocument();
                         xDoc.LoadXml(payload);
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-
-                        IDictionary<string, int> indexCache = new Dictionary<string, int>();
-
-                        if(children != null)
+                        if(xDoc.DocumentElement != null)
                         {
-                            IBinaryDataListEntry entry = null;
-                            int idx = 1; // recset index
+                            var children = xDoc.DocumentElement.ChildNodes;
 
-                            // spin through each element in the XML
-                            foreach(XmlNode c in children)
+                            IDictionary<string, int> indexCache = new Dictionary<string, int>();
+
                             {
-                                if(!DataListUtil.IsSystemTag(c.Name))
+                                // spin through each element in the XML
+                                foreach(XmlNode c in children)
                                 {
-                                    // scalars and recordset fetch
-                                    if(result.TryGetEntry(c.Name, out entry, out error))
+                                    if(!DataListUtil.IsSystemTag(c.Name))
                                     {
-                                        if(entry.IsRecordset)
+                                        // scalars and recordset fetch
+                                        IBinaryDataListEntry entry;
+                                        if(result.TryGetEntry(c.Name, out entry, out error))
                                         {
-                                            // fetch recordset index
-                                            int fetchIdx = 0;
-                                            if(indexCache.TryGetValue(c.Name, out fetchIdx))
+                                            if(entry.IsRecordset)
                                             {
-                                                idx = fetchIdx;
-                                            }
-                                            else
-                                            {
-                                                // 28-02-2013 - Sashen.Naidoo
-                                                // BUG 9144
-                                                // A cache miss does not necessary mean there is nothing in the record set,
-                                                // it just means the value isn't in the record set.
-                                                if(indexCache.Count == 0)
+                                                // fetch recordset index
+                                                int fetchIdx;
+                                                int idx; // recset index
+                                                if(indexCache.TryGetValue(c.Name, out fetchIdx))
                                                 {
-                                                    idx = 1;
+                                                    idx = fetchIdx;
                                                 }
                                                 else
                                                 {
-                                                    idx = indexCache.Count;
-                                                }
+                                                    // 28-02-2013 - Sashen.Naidoo
+                                                    // BUG 9144
+                                                    // A cache miss does not necessary mean there is nothing in the record set,
+                                                    // it just means the value isn't in the record set.
+                                                    idx = indexCache.Count == 0 ? 1 : indexCache.Count;
 
-                                            }
-                                            // process recordset
-                                            XmlNodeList nl = c.ChildNodes;
-                                            if(nl != null)
-                                            {
+                                                }
+                                                // process recordset
+                                                var nl = c.ChildNodes;
                                                 foreach(XmlNode subc in nl)
                                                 {
                                                     entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
@@ -202,41 +187,39 @@ namespace Dev2.Server.DataList.Translators
 
                                                 }
                                                 indexCache[c.Name] = ++idx;
-
                                             }
+                                            else
+                                            {
+                                                // process scalar
+                                                entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
 
+                                                if(!string.IsNullOrEmpty(error))
+                                                {
+                                                    errors.AddError(error);
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                            // process scalar
-                                            entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
-
-                                            if(!string.IsNullOrEmpty(error))
-                                            {
-                                                errors.AddError(error);
-                                            }
+                                            errors.AddError(error);
                                         }
                                     }
-                                    else
-                                    {
-                                        errors.AddError(error);
-                                    }
                                 }
-                            }
 
+                            }
                         }
 
                         // Transfer System Tags
-                        IBinaryDataListEntry sysEntry;
-                        for(int i = 0; i < TranslationConstants.systemTags.Length; i++)
+                        for(var i = 0; i < TranslationConstants.systemTags.Length; i++)
                         {
-                            string key = TranslationConstants.systemTags.GetValue(i).ToString(); ;
-                            string query = String.Concat("//", key);
-                            XmlNode n = xDoc.SelectSingleNode(query);
+                            var key = TranslationConstants.systemTags.GetValue(i).ToString();
+                            var query = String.Concat("//", key);
+                            var n = xDoc.SelectSingleNode(query);
 
                             if(n != null && !string.IsNullOrEmpty(n.InnerXml))
                             {
-                                string bkey = GlobalConstants.SystemTagNamespace + "." + key;
+                                var bkey = GlobalConstants.SystemTagNamespace + "." + key;
+                                IBinaryDataListEntry sysEntry;
                                 if(result.TryGetEntry(bkey, out sysEntry, out error))
                                 {
                                     sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
@@ -290,17 +273,18 @@ namespace Dev2.Server.DataList.Translators
         private IBinaryDataList BuildTargetShape(string shape, out string error)
         {
             IBinaryDataList result = null;
+            error = null;
             try
             {
                 XmlDocument xDoc = new XmlDocument();
                 xDoc.LoadXml(shape);
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
-                error = string.Empty;
-
-                HashSet<string> procssesNamespaces = new HashSet<string>();
-
-                if(children != null)
+                if(xDoc.DocumentElement != null)
                 {
+                    var children = xDoc.DocumentElement.ChildNodes;
+                    error = string.Empty;
+
+                    HashSet<string> procssesNamespaces = new HashSet<string>();
+
                     result = Dev2BinaryDataListFactory.CreateDataList();
 
                     foreach(XmlNode c in children)
@@ -320,16 +304,16 @@ namespace Dev2.Server.DataList.Translators
                                         if(subc.Attributes != null)
                                         {
                                             cols.Add(DataListFactory.CreateDev2Column(subc.Name,
-                                                                                        ParseDescription(subc.Attributes[_description]),
-                                                                                        ParseIsEditable(subc.Attributes[_isEditable]),
-                                                                                        ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection])));
+                                                ParseDescription(subc.Attributes[Description]),
+                                                ParseIsEditable(subc.Attributes[IsEditable]),
+                                                ParseColumnIODirection(subc.Attributes[GlobalConstants.DataListIoColDirection])));
                                         }
                                         else
                                         {
                                             cols.Add(DataListFactory.CreateDev2Column(subc.Name,
-                                                                                        ParseDescription(null),
-                                                                                        ParseIsEditable(null),
-                                                                                        ParseColumnIODirection(null)));
+                                                ParseDescription(null),
+                                                ParseIsEditable(null),
+                                                ParseColumnIODirection(null)));
                                         }
                                     }
 
@@ -338,12 +322,12 @@ namespace Dev2.Server.DataList.Translators
                                     if(c.Attributes != null)
                                     {
                                         if(!result.TryCreateRecordsetTemplate(c.Name,
-                                                                                ParseDescription(c.Attributes[_description]),
-                                                                                cols,
-                                                                                true,
-                                                                                ParseIsEditable(c.Attributes[_isEditable]),
-                                                                                ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]),
-                                                                                out myError))
+                                            ParseDescription(c.Attributes[Description]),
+                                            cols,
+                                            true,
+                                            ParseIsEditable(c.Attributes[IsEditable]),
+                                            ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]),
+                                            out myError))
                                         {
                                             error = myError;
                                         }
@@ -352,12 +336,12 @@ namespace Dev2.Server.DataList.Translators
                                     else
                                     {
                                         if(!result.TryCreateRecordsetTemplate(c.Name,
-                                                                                ParseDescription(null),
-                                                                                cols,
-                                                                                true,
-                                                                                ParseIsEditable(null),
-                                                                                ParseColumnIODirection(null),
-                                                                                out myError))
+                                            ParseDescription(null),
+                                            cols,
+                                            true,
+                                            ParseIsEditable(null),
+                                            ParseColumnIODirection(null),
+                                            out myError))
                                         {
                                             error = myError;
                                         }
@@ -370,22 +354,22 @@ namespace Dev2.Server.DataList.Translators
                                 if(c.Attributes != null)
                                 {
                                     result.TryCreateScalarTemplate(string.Empty,
-                                                                   c.Name,
-                                                                   ParseDescription(c.Attributes[_description]),
-                                                                   true,
-                                                                   ParseIsEditable(c.Attributes[_isEditable]),
-                                                                   ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]),
-                                                                   out error);
+                                        c.Name,
+                                        ParseDescription(c.Attributes[Description]),
+                                        true,
+                                        ParseIsEditable(c.Attributes[IsEditable]),
+                                        ParseColumnIODirection(c.Attributes[GlobalConstants.DataListIoColDirection]),
+                                        out error);
                                 }
                                 else
                                 {
                                     result.TryCreateScalarTemplate(string.Empty,
-                                                                   c.Name,
-                                                                   ParseDescription(null),
-                                                                   true,
-                                                                   ParseIsEditable(null),
-                                                                   ParseColumnIODirection(null),
-                                                                   out error);
+                                        c.Name,
+                                        ParseDescription(null),
+                                        true,
+                                        ParseIsEditable(null),
+                                        ParseColumnIODirection(null),
+                                        out error);
                                 }
                             }
                         }
@@ -396,25 +380,22 @@ namespace Dev2.Server.DataList.Translators
             {
                 error = e.Message;
             }
-
             return result;
         }
 
         private string ParseDescription(XmlAttribute attr)
         {
-            string result = string.Empty;
-
+            var result = string.Empty;
             if(attr != null)
             {
                 result = attr.Value;
             }
-
             return result;
         }
 
         private bool ParseIsEditable(XmlAttribute attr)
         {
-            bool result = true;
+            var result = true;
             if(attr != null)
             {
                 Boolean.TryParse(attr.Value, out result);
@@ -427,21 +408,17 @@ namespace Dev2.Server.DataList.Translators
         {
             enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
 
-            if(attr != null)
+            if(attr == null)
             {
-                if(!Enum.TryParse(attr.Value, true, out result))
-                {
-                    result = enDev2ColumnArgumentDirection.None;
-                }
+                return result;
             }
-
+            if(!Enum.TryParse(attr.Value, true, out result))
+            {
+                result = enDev2ColumnArgumentDirection.None;
+            }
             return result;
         }
 
         #endregion
-
-
-
-
     }
 }
