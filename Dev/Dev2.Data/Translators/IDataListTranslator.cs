@@ -7,6 +7,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract
 {
     /// <summary>
@@ -28,7 +29,6 @@ namespace Dev2.DataList.Contract
         /// Converts from a binary representation in the standard format to the specified <see cref="Format" />.
         /// </summary>
         /// <param name="input">The binary representation of the datalist.</param>
-        /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the specified <see cref="Format" />
@@ -64,13 +64,13 @@ namespace Dev2.DataList.Contract
         /// binary representation of a datalist.
         /// </summary>
         /// <param name="input">The binary representation in the specifeid <see cref="Format" /></param>
-        /// <param name="targetDL">The target dialog.</param>
+        /// <param name="targetDl">The target dialog.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors);
+        Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and filter.

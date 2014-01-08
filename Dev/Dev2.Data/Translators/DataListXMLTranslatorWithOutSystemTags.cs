@@ -130,10 +130,10 @@ namespace Dev2.Data.Translators
             string payload = Encoding.UTF8.GetString(input);
             string error;
 
-            IBinaryDataList result = null; 
+            IBinaryDataList result = null;
 
             ErrorResultTO invokeErrors;
-            
+
 
             // build shape
             if(targetShape == null)
@@ -287,7 +287,7 @@ namespace Dev2.Data.Translators
         }
 
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test
-        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             // input is a string of output mappings ;)
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -298,8 +298,8 @@ namespace Dev2.Data.Translators
             // get sneeky and use the output shape operation for now,
             // as this should only every be called from external service containers all is good
             // if this is ever not the case be afraid, be very afraid!
-            
-            var targetDataList = compiler.FetchBinaryDataList(targetDL, out invokeErrors);
+
+            var targetDataList = compiler.FetchBinaryDataList(targetDl, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             var parentDataList = compiler.FetchBinaryDataList(targetDataList.ParentUID, out invokeErrors);
             errors.MergeErrors(invokeErrors);
@@ -317,8 +317,8 @@ namespace Dev2.Data.Translators
                 parentID = grandparentDL.UID;
             }
 
-            compiler.SetParentID(targetDL, parentID);
-            Guid result = compiler.Shape(targetDL, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
+            compiler.SetParentID(targetDl, parentID);
+            Guid result = compiler.Shape(targetDl, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             return result;
@@ -356,7 +356,7 @@ namespace Dev2.Data.Translators
 
                         var idxItr = entry.FetchRecordsetIndexes();
 
-                        while (idxItr.HasMore())
+                        while(idxItr.HasMore())
                         {
                             var i = idxItr.FetchNextIndex();
 
@@ -400,9 +400,9 @@ namespace Dev2.Data.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            if (entry.Namespace != GlobalConstants.ManagementServicePayload)
+                            if(entry.Namespace != GlobalConstants.ManagementServicePayload)
                             {
-                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                                result.Append(tu.FullCleanForEmit(val.TheValue));
                             }
                             else
                             {

@@ -248,7 +248,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -310,10 +310,10 @@ namespace Dev2.Server.DataList.Translators
                         {
                             errors.AddError(error);
                         }
-                                            }
-                                            }
-                                        }
-                                }
+                    }
+                }
+            }
+        }
 
         public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
         {

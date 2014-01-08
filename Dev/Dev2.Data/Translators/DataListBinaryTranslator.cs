@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using System.Runtime.Serialization.Formatters.Binary;
-using Dev2.Common;
 using Dev2.DataList.Contract.TO;
 
 namespace Dev2.Server.DataList.Translators
@@ -43,7 +43,8 @@ namespace Dev2.Server.DataList.Translators
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if (input == null) {
+            if(input == null)
+            {
                 errors.AddError("Null input argument");
                 throw new ArgumentNullException("input");
             }
@@ -74,11 +75,12 @@ namespace Dev2.Server.DataList.Translators
         {
 
             errors = new ErrorResultTO();
-            if (input == null) {
+            if(input == null)
+            {
                 errors.AddError("Null input argument");
                 throw new ArgumentNullException("input");
             }
-           
+
             IBinaryDataList result;
 
             using(MemoryStream ms = new MemoryStream(input))
@@ -96,7 +98,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

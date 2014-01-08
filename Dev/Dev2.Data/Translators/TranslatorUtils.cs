@@ -44,12 +44,13 @@ namespace Dev2.Data.Translators
         /// Translates the shape automatic object.
         /// </summary>
         /// <param name="shape">The shape.</param>
+        /// <param name="includeSysTags">Includes the system tags when building the DataList</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
         public IBinaryDataList TranslateShapeToObject(string shape, bool includeSysTags, out ErrorResultTO errors)
         {
             IBinaryDataList result = null;
-            errors = new ErrorResultTO(); 
+            errors = new ErrorResultTO();
 
             try
             {
@@ -72,88 +73,85 @@ namespace Dev2.Data.Translators
                             {
                                 IList<Dev2Column> cols = new List<Dev2Column>();
                                 //recordset
-                                if(c.ChildNodes != null)
+                                // build template
+                                if(!procssesNamespaces.Contains(c.Name))
                                 {
-                                    // build template
-                                    if (!procssesNamespaces.Contains(c.Name))
+                                    procssesNamespaces.Add(c.Name);
+
+                                    // build columns
+                                    foreach(XmlNode subc in c.ChildNodes)
                                     {
-                                        procssesNamespaces.Add(c.Name);
-
-                                        // build columns
-                                        foreach (XmlNode subc in c.ChildNodes)
+                                        if(subc.Attributes != null)
                                         {
-                                            if (subc.Attributes != null)
-                                            {
-                                                descAttribute = subc.Attributes["Description"];
-                                            }
-
-                                            if (descAttribute != null)
-                                            {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
-                                            }
-                                            else
-                                            {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
-                                            }
-                                        }
-                                        string myError;
-
-                                        if (c.Attributes != null)
-                                        {
-                                            descAttribute = c.Attributes["Description"];
+                                            descAttribute = subc.Attributes["Description"];
                                         }
 
-                                        if (descAttribute != null)
+                                        if(descAttribute != null)
                                         {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
-                                            {
-                                                errors.AddError(myError);
-                                            }
+                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
                                         }
                                         else
                                         {
-                                            if (!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out myError))
-                                            {
-                                                errors.AddError(myError);
-                                            }
+                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty));
+                                        }
+                                    }
+                                    string myError;
+
+                                    if(c.Attributes != null)
+                                    {
+                                        descAttribute = c.Attributes["Description"];
+                                    }
+
+                                    if(descAttribute != null)
+                                    {
+                                        if(!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                        {
+                                            errors.AddError(myError);
                                         }
                                     }
                                     else
                                     {
-                                        // it is a duplicate we need to handle this correctly ;)
-                                        // build columns
-
-                                        IBinaryDataListEntry amendEntry;
-                                        result.TryGetEntry(c.Name, out amendEntry, out error);
-                                        errors.AddError(error);
-
-                                        if (amendEntry != null)
+                                        if(!result.TryCreateRecordsetTemplate(c.Name, String.Empty, cols, true, out myError))
                                         {
-                                            cols = amendEntry.Columns;
+                                            errors.AddError(myError);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    // it is a duplicate we need to handle this correctly ;)
+                                    // build columns
 
-                                            foreach (XmlNode subc in c.ChildNodes)
+                                    IBinaryDataListEntry amendEntry;
+                                    result.TryGetEntry(c.Name, out amendEntry, out error);
+                                    errors.AddError(error);
+
+                                    if(amendEntry != null)
+                                    {
+                                        cols = amendEntry.Columns;
+
+                                        foreach(XmlNode subc in c.ChildNodes)
+                                        {
+                                            if(subc.Attributes != null)
                                             {
-                                                if (subc.Attributes != null)
-                                                {
-                                                    descAttribute = subc.Attributes["Description"];
-                                                }
-
-                                                if (descAttribute != null)
-                                                {
-                                                    cols.Add(DataListFactory.CreateDev2Column(subc.Name,
-                                                                                              descAttribute.Value));
-                                                }
-                                                else
-                                                {
-                                                    cols.Add(DataListFactory.CreateDev2Column(subc.Name, string.Empty));
-                                                }
+                                                descAttribute = subc.Attributes["Description"];
                                             }
 
-                                            // now re-insert the entry ;)
-                                            if(!result.TryCreateRecordsetTemplate(c.Name, string.Empty, cols, true, out error))
+                                            if(descAttribute != null)
                                             {
-                                                errors.AddError(error);
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name,
+                                                    descAttribute.Value));
                                             }
+                                            else
+                                            {
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty));
+                                            }
+                                        }
+
+                                        // now re-insert the entry ;)
+                                        if(!result.TryCreateRecordsetTemplate(c.Name, String.Empty, cols, true, out error))
+                                        {
+                                            errors.AddError(error);
                                         }
                                     }
                                 }
@@ -168,11 +166,11 @@ namespace Dev2.Data.Translators
 
                                 if(descAttribute != null)
                                 {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, descAttribute.Value, true, out error);
+                                    result.TryCreateScalarTemplate(String.Empty, c.Name, descAttribute.Value, true, out error);
                                 }
                                 else
                                 {
-                                    result.TryCreateScalarTemplate(string.Empty, c.Name, string.Empty, true, out error);
+                                    result.TryCreateScalarTemplate(String.Empty, c.Name, String.Empty, true, out error);
                                 }
                             }
                         }
@@ -181,16 +179,16 @@ namespace Dev2.Data.Translators
                 }
 
 
-                if (includeSysTags)
+                if(includeSysTags)
                 {
                     // Build System Tag Shape ;)
-                    for (int i = 0; i < TranslationConstants.systemTags.Length; i++)
+                    for(int i = 0; i < TranslationConstants.systemTags.Length; i++)
                     {
-                        if (result != null)
+                        if(result != null)
                         {
                             result.TryCreateScalarTemplate(GlobalConstants.SystemTagNamespace,
                                                            TranslationConstants.systemTags.GetValue(i).ToString(),
-                                                           string.Empty,
+                                                           String.Empty,
                                                            true,
                                                            out error);
                         }
@@ -202,7 +200,9 @@ namespace Dev2.Data.Translators
                 errors.AddError(e.Message);
             }
 
-            return result;   
+            return result;
         }
+
+
     }
 }

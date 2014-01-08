@@ -52,7 +52,7 @@ namespace Dev2.Server.DataList.Translators
         public DataListTranslatedPayloadTO ConvertFrom(IBinaryDataList input, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            if (input == null) throw new ArgumentNullException("input");
+            if(input == null) throw new ArgumentNullException("input");
 
             IList<string> itemKeys = input.FetchAllUserKeys();
             errors = new ErrorResultTO();
@@ -60,16 +60,16 @@ namespace Dev2.Server.DataList.Translators
             StringBuilder result = new StringBuilder("{");
             int keyCnt = 0;
 
-            foreach (string key in itemKeys)
+            foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
 
                 // This check was never here - this means this method has no testing and was never sane ;)
 
                 string error;
-                if (input.TryGetEntry(key, out entry, out error))
+                if(input.TryGetEntry(key, out entry, out error))
                 {
-                    if (entry.IsRecordset)
+                    if(entry.IsRecordset)
                     {
                         result.Append(ProcessRecordSet(entry, out error));
                         errors.AddError(error);
@@ -84,7 +84,7 @@ namespace Dev2.Server.DataList.Translators
 
                 // wack in , for field separator ;)
                 keyCnt++;
-                if (keyCnt < itemKeys.Count)
+                if(keyCnt < itemKeys.Count)
                 {
                     result.Append(",");
                 }
@@ -128,7 +128,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public Guid Populate(object input, Guid targetDL, string outputDefs, out ErrorResultTO errors)
+        public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -144,13 +144,13 @@ namespace Dev2.Server.DataList.Translators
         public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
         {
 
-            if (payload == null)
+            if(payload == null)
             {
                 throw new ArgumentNullException("payload");
             }
 
             int keyCnt = 0;
-            errors = new ErrorResultTO(); 
+            errors = new ErrorResultTO();
             string error;
 
             TranslatorUtils tu = new TranslatorUtils();
@@ -158,18 +158,18 @@ namespace Dev2.Server.DataList.Translators
 
             IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            
+
             IList<string> itemKeys = targetDL.FetchAllUserKeys();
             StringBuilder result = new StringBuilder("{");
 
-            foreach (string key in itemKeys)
+            foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
                 IBinaryDataListEntry tmpEntry;
-                if (payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
+                if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
                 {
 
-                    if (entry.IsRecordset)
+                    if(entry.IsRecordset)
                     {
                         result.Append(ProcessRecordSet(entry, out error));
                         errors.AddError(error);
@@ -181,7 +181,7 @@ namespace Dev2.Server.DataList.Translators
 
                     // wack in , for field separator ;)
                     keyCnt++;
-                    if (keyCnt < itemKeys.Count)
+                    if(keyCnt < itemKeys.Count)
                     {
                         result.Append(",");
                     }
@@ -212,7 +212,7 @@ namespace Dev2.Server.DataList.Translators
             string fName = entry.Namespace;
             IBinaryDataListItem val = entry.FetchScalar();
 
-            if (val != null)
+            if(val != null)
             {
                 result.Append("\"");
                 result.Append(fName);
@@ -244,7 +244,7 @@ namespace Dev2.Server.DataList.Translators
 
             int rsCnt = 0;
 
-            while (idxItr.HasMore() && !entry.IsEmpty())
+            while(idxItr.HasMore() && !entry.IsEmpty())
             {
                 int idx = idxItr.FetchNextIndex();
 
@@ -252,7 +252,7 @@ namespace Dev2.Server.DataList.Translators
                 result.Append("{");
 
                 int colIdx = 0;
-                foreach (IBinaryDataListItem col in rowData)
+                foreach(IBinaryDataListItem col in rowData)
                 {
                     result.Append("\"");
                     result.Append(col.FieldName);
@@ -262,7 +262,7 @@ namespace Dev2.Server.DataList.Translators
 
                     // add , if need be ;)
                     colIdx++;
-                    if (colIdx < rowData.Count)
+                    if(colIdx < rowData.Count)
                     {
                         result.Append(",");
                     }
@@ -272,7 +272,7 @@ namespace Dev2.Server.DataList.Translators
 
                 // append , for row data ;)
                 rsCnt++;
-                if (rsCnt < idxItr.Count)
+                if(rsCnt < idxItr.Count)
                 {
                     result.Append(", ");
                 }
