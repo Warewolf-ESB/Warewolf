@@ -33,10 +33,10 @@
   <x:Members>
     <x:Property Name="AgentSettings" Type="InArgument(mtbwa:AgentSettings)" />
     <x:Property Name="BuildIDs" Type="InArgument(x:String)" />
-    <x:Property Name="ChangeSetID" Type="InArgument(x:String)" />
     <x:Property Name="BranchID" Type="InArgument(x:String)" />
     <x:Property Name="WarewolfServerURI" Type="InArgument(x:String)" />
     <x:Property Name="SendReport" Type="InArgument(x:Boolean)" />
+    <x:Property Name="SpecifiedChangeSet" Type="InArgument(x:String)" />
   </x:Members>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
@@ -48,7 +48,7 @@
     <mtbwa:GetBuildDetail DisplayName="Get the Build" sap2010:WorkflowViewState.IdRef="GetBuildDetail_1" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildDetail]" />
     <mtbwa:UpdateBuildNumber BuildNumberFormat="Waiting To Send Report_$(Date:yyyyMMdd)$(Rev:.r)" DisplayName="Update Build Number" sap2010:WorkflowViewState.IdRef="UpdateBuildNumber_1" />
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run On Agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.MaxExecutionTime]" MaxWaitTime="[AgentSettings.MaxWaitTime]" ReservationSpec="[AgentSettings.GetAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
-      <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_1" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Waiting for test runs &quot; &amp; BuildIDs &amp; &quot; queued by checkin &quot; &amp; ChangeSetID &amp; &quot; on branch &quot; &amp; BranchID &amp; &quot; by executing C:\Builds\WaitForBuilds\WaitForBuild.exe &quot; &amp; &quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+      <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_1" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Waiting for test runs &quot; &amp; BuildIDs &amp; &quot; queued by checkin &quot; &amp; SpecifiedChangeSet &amp; &quot; on branch &quot; &amp; BranchID &amp; &quot; by executing C:\Builds\WaitForBuilds\WaitForBuild.exe &quot; &amp; &quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
       <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;]" DisplayName="Wait for All Test Runs" FileName="C:\Builds\WaitForBuilds\WaitForBuild.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_1">
         <mtbwa:InvokeProcess.ErrorDataReceived>
           <ActivityAction x:TypeArguments="x:String">
@@ -67,7 +67,7 @@
       </mtbwa:InvokeProcess>
       <If Condition="[SendReport]" DisplayName="If can send report" sap2010:WorkflowViewState.IdRef="If_1">
         <If.Then>
-          <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerUri &amp; &quot;?CheckInID=&quot; &amp; ChangeSetID &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedBy]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
+          <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedBy]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
             <mtbwa:InvokeProcess.ErrorDataReceived>
               <ActivityAction x:TypeArguments="x:String">
                 <ActivityAction.Argument>
@@ -87,7 +87,7 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBkBkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDWw4CAQEwBTCzAQIBJTEFMb0BAgEjMgVZGAIBAjChATCwAQIBJjEwMWICASQysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOrBQIBHDQHQx0CARdEB1cMAgEMWAdYmQICAQkzrwEzxAQCAR4zYTOmAQIBHTQmNNQBAgEZNIMCNK0CAgEYRBVEIwIBDUYLVSECAQ9YfliyAQIBC0YqRvYBAgERRpoCRrwCAgEQ</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBkBkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDWw4CAQEwBTCzAQIBJTEFMb0BAgEjMgVZGAIBAjChATCwAQIBJjEwMWICASQysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBHDQHQx0CARdEB1cMAgEMWAdYmQICAQkzrwEzywQCAR4zYTOmAQIBHTQmNNQBAgEZNIMCNK0CAgEYRBVEIwIBDUYLVSECAQ9YfliyAQIBC0YqRv0BAgERRqECRsMCAgEQ</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
