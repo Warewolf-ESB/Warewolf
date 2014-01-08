@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    internal class IndexedPathSegmentTreeNode<T> : Dictionary<T, IndexedPathSegmentTreeNode<T>>
+    public class IndexedPathSegmentTreeNode<T> : Dictionary<T, IndexedPathSegmentTreeNode<T>>
     {
         #region Indexers
 

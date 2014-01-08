@@ -198,6 +198,7 @@
     <Compile Include="Converters\Graph\Interfaces\IPath.cs" />
     <Compile Include="Converters\Graph\Interfaces\IPathSegment.cs" />
     <Compile Include="Converters\Graph\InterrogatorFactory.cs" />
+    <Compile Include="Converters\Graph\NavigatorBase.cs" />
     <Compile Include="Converters\Graph\Ouput\DataSourceShape.cs" />
     <Compile Include="Converters\Graph\Ouput\OutputDescription.cs" />
     <Compile Include="Converters\Graph\Ouput\ShapedXmlOutputFormatter.cs" />

@@ -124,7 +124,7 @@
     <value>Recordset - Count Records</value>
   </data>
   <data name="DsfDateTimeActivity" xml:space="preserve">
-    <value>Utility - Date and Time Difference</value>
+    <value>Utility - Date and Time</value>
   </data>
   <data name="DsfDeleteRecordActivity" xml:space="preserve">
     <value>Recordset - Delete Records</value>

@@ -124,7 +124,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Date and Time Difference.
+        ///   Looks up a localized string similar to Utility - Date and Time.
         /// </summary>
         internal static string DsfDateTimeActivity {
             get {

@@ -4,11 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Collections;
 using Dev2;
+using Dev2.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
-    public class PocoNavigator : INavigator
+    public class PocoNavigator : NavigatorBase, INavigator
     {
         #region Constructor
 
@@ -18,12 +19,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         }
 
         #endregion Constructor
-
-        #region Properties
-
-        public object Data { get; internal set; }
-
-        #endregion Properties
 
         #region Methods
 
@@ -255,89 +250,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return returnData;
         }
 
-        private void BuildResultsStructure(IList<IPath> paths, Dictionary<IPath, IList<object>> results)
-        {
-            foreach (IPath path in paths)
-            {
-                results.Add(path, new List<object>());
-            }
-        }
-
-        private void IndexPathSegments(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments)
-        {
-            indexedPathSegments.Clear();
-
-            foreach (IPath path in paths)
-            {
-                indexedPathSegments.Add(path, new List<IPathSegment>(path.GetSegements()));
-            }
-        }
-
-        private void BuildIndexedTree(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode)
-        {
-            foreach (IPath path in paths)
-            {
-                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode;
-                int pathSegmentCount = 0;
-
-                while (pathSegmentCount < indexedPathSegments[path].Count)
-                {
-                    IndexedPathSegmentTreeNode<string> tmpIndexedPathSegmentTreeNode;
-                    IPathSegment pathSegment = indexedPathSegments[path][pathSegmentCount];
-                    if (!IndexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment, out tmpIndexedPathSegmentTreeNode))
-                    {
-                        IndexedPathSegmentTreeNode<string> newIndexedPathSegmentTreeNode = CreatePathSegmentIndexedPathSegmentTreeNode(pathSegment, IndexedPathSegmentTreeNode);
-                        IndexedPathSegmentTreeNode.Add(pathSegment.ActualSegment, newIndexedPathSegmentTreeNode);
-                        IndexedPathSegmentTreeNode = newIndexedPathSegmentTreeNode;
-                    }
-                    else
-                    {
-                        IndexedPathSegmentTreeNode = tmpIndexedPathSegmentTreeNode;
-                    }
-
-                    pathSegmentCount++;
-                }
-            }
-        }
-
-        private void WriteToResults(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode, Dictionary<IPath, IList<object>> results)
-        {
-            foreach (IPath path in paths)
-            {
-                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode[indexedPathSegments[path].Select(p => p.ActualSegment).ToList()];
-                results[path].Add(IndexedPathSegmentTreeNode.CurrentValue);
-            }
-        }
-
-        private long EnumerateIndexedTree(IndexedPathSegmentTreeNode<string> node)
-        {
-            long enumerationCount = 0;
-
-            foreach (IndexedPathSegmentTreeNode<string> childNode in node.Values)
-            {
-                enumerationCount += EnumerateIndexedTree(childNode);
-            }
-
-            if (node.Enumerator != null && enumerationCount == 0)
-            {
-                node.EnumerationComplete = !node.Enumerator.MoveNext();
-                if (node.EnumerationComplete)
-                {
-                    node.CurrentValue = string.Empty;
-                }
-                else
-                {
-                    node.CurrentValue = node.Enumerator.Current;
-                    enumerationCount++;
-                }
-
-                node.Clear();
-            }
-
-            return enumerationCount;
-        }
-
-        private IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(IPathSegment pathSegment, IndexedPathSegmentTreeNode<string> parentNode)
+        protected override IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(IPathSegment pathSegment, IndexedPathSegmentTreeNode<string> parentNode)
         {
             IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode = new IndexedPathSegmentTreeNode<string>();
 

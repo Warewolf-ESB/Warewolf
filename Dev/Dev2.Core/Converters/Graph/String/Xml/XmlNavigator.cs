@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
-    public class XmlNavigator : INavigator
+    public class XmlNavigator : NavigatorBase, INavigator
     {
         #region Constructor
 
@@ -16,12 +17,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         }
 
         #endregion Constructor
-
-        #region Properties
-
-        public object Data { get; internal set; }
-
-        #endregion Properties
 
         #region Methods
 
@@ -198,25 +193,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         #region Private Methods
 
-        private void BuildResultsStructure(IList<IPath> paths, Dictionary<IPath, IList<object>> results)
-        {
-            foreach (IPath path in paths)
-            {
-                results.Add(path, new List<object>());
-            }
-        }
-
-        private void IndexPathSegments(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments)
-        {
-            indexedPathSegments.Clear();
-
-            foreach (IPath path in paths)
-            {
-                indexedPathSegments.Add(path, new List<IPathSegment>(path.GetSegements()));
-            }
-        }
-
-        private void BuildIndexedTree(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode)
+        protected override void BuildIndexedTree(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode)
         {
             foreach (IPath path in paths)
             {
@@ -254,7 +231,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
         }
 
-        private void WriteToResults(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode, Dictionary<IPath, IList<object>> results)
+        protected override void WriteToResults(IList<IPath> paths, Dictionary<IPath, List<IPathSegment>> indexedPathSegments, IndexedPathSegmentTreeNode<string> rootIndexedValueTreeNode, Dictionary<IPath, IList<object>> results)
         {
             foreach (IPath path in paths)
             {
@@ -275,34 +252,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     results[path].Add(IndexedPathSegmentTreeNode.CurrentValue.ToString());
                 }
             }
-        }
-
-        private long EnumerateIndexedTree(IndexedPathSegmentTreeNode<string> node)
-        {
-            long enumerationCount = 0;
-
-            foreach (IndexedPathSegmentTreeNode<string> childNode in node.Values)
-            {
-                enumerationCount += EnumerateIndexedTree(childNode);
-            }
-
-            if (node.Enumerator != null && enumerationCount == 0)
-            {
-                node.EnumerationComplete = !node.Enumerator.MoveNext();
-                if (node.EnumerationComplete)
-                {
-                    node.CurrentValue = string.Empty;
-                }
-                else
-                {
-                    node.CurrentValue = node.Enumerator.Current;
-                    enumerationCount++;
-                }
-
-                node.Clear();
-            }
-
-            return enumerationCount;
         }
 
         private IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(XmlPathSegment pathSegment, IPathSegment parentPathSegment, IndexedPathSegmentTreeNode<string> parentNode)
