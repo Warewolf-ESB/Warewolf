@@ -1,4 +1,5 @@
-﻿namespace Dev2.Studio.Views.Diagnostics
+﻿// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Views.Diagnostics
 {
     /// <summary>
     /// Interaction logic for DebugOutputWindow.xaml

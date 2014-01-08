@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using Caliburn.Micro;
-using Dev2.Common;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Factory;
 using Dev2.Webs.Callbacks;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class SaveNewWorkflowCallbackHandler
@@ -30,11 +23,11 @@ namespace Dev2.Studio.Webs.Callbacks
         #endregion
 
         public SaveNewWorkflowCallbackHandler(IContextualResourceModel resourceModel)
-            : this(EnvironmentRepository.Instance, resourceModel, true)
+            : this(EnvironmentRepository.Instance, resourceModel)
         {
         }
 
-        public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
+        public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel)
             : this(EventPublishers.Aggregator, currentEnvironmentRepository, resourceModel, true)
         {
         }
@@ -60,29 +53,29 @@ namespace Dev2.Studio.Webs.Callbacks
                 {
                     _resourceModel.IsNewWorkflow = false;
                     Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
-                    _eventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
+                    EventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
                     IContextualResourceModel newResourceModel =
                         ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
                                                                  resName);
                     newResourceModel.Category = resCat;
                     newResourceModel.ResourceName = resName;
-                    
+
                     newResourceModel.WorkflowXaml = _resourceModel.WorkflowXaml.Replace(_resourceModel.DisplayName,
                                                                                         resName);
                     newResourceModel.DataList = _resourceModel.DataList;
                     newResourceModel.IsNewWorkflow = false;
 
                     Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
-                    _eventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
+                    EventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
                     if(_addToTabManager)
                     {
                         Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                        _eventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
+                        EventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
                     }
                     Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
-                    _eventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
+                    EventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
                     Logger.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-                    _eventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
+                    EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                     NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);
                 }

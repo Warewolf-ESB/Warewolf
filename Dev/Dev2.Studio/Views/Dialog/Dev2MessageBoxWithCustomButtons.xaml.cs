@@ -1,16 +1,17 @@
-﻿using System.Drawing;
+﻿using Dev2.Common.ExtMethods;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Dev2.Common.ExtMethods;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.ViewModels.Dialogs
 {
     /// <summary>
     /// Interaction logic for Dev2MessageBoxWithCustomButtonsViewModel.xaml
     /// </summary>
-    internal partial class Dev2MessageBoxWithCustomButtons : Window
+    internal partial class Dev2MessageBoxWithCustomButtons
     {
         internal string Caption
         {
@@ -140,7 +141,7 @@ namespace Dev2.ViewModels.Dialogs
 
         private void DisplayButtons(MessageBoxButton button)
         {
-            switch (button)
+            switch(button)
             {
                 case MessageBoxButton.OKCancel:
                     // Hide all but OK, Cancel
@@ -185,7 +186,7 @@ namespace Dev2.ViewModels.Dialogs
         {
             Icon icon;
 
-            switch (image)
+            switch(image)
             {
                 case MessageBoxImage.Exclamation:       // Enumeration value 48 - also covers "Warning"
                     icon = SystemIcons.Exclamation;
@@ -213,25 +214,25 @@ namespace Dev2.ViewModels.Dialogs
             Image_MessageBox.Visibility = Visibility.Visible;
         }
 
-        private void Button_OK_Click(object sender, RoutedEventArgs e)
+        private void ButtonOkClick(object sender, RoutedEventArgs e)
         {
             Result = MessageBoxResult.OK;
             Close();
         }
 
-        private void Button_Cancel_Click(object sender, RoutedEventArgs e)
+        private void ButtonCancelClick(object sender, RoutedEventArgs e)
         {
             Result = MessageBoxResult.Cancel;
             Close();
         }
 
-        private void Button_Yes_Click(object sender, RoutedEventArgs e)
+        private void ButtonYesClick(object sender, RoutedEventArgs e)
         {
             Result = MessageBoxResult.Yes;
             Close();
         }
 
-        private void Button_No_Click(object sender, RoutedEventArgs e)
+        private void ButtonNoClick(object sender, RoutedEventArgs e)
         {
             Result = MessageBoxResult.No;
             Close();

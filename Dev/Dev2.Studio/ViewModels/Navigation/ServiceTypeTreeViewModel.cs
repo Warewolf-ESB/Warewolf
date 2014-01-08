@@ -1,13 +1,5 @@
-﻿#region
-
-using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.Common.ExtMethods;
-using Dev2.Composition;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -15,12 +7,11 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Core.Wizards.Interfaces;
-using Infragistics;
-using Microsoft.Expression.Interactivity.Core;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -28,7 +19,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public class ServiceTypeTreeViewModel : AbstractTreeViewModel
+    public sealed class ServiceTypeTreeViewModel : AbstractTreeViewModel
     {
         #region private fields
 
@@ -38,7 +29,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion private fields
 
         #region ctor + init
-       
+
         public ServiceTypeTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, ResourceType resourceCategory)
             : base(eventPublisher, parent)
         {
@@ -93,7 +84,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _resourceType; }
             set
             {
-                if (_resourceType == value) return;
+                if(_resourceType == value) return;
 
                 _resourceType = value;
                 NotifyOfPropertyChange(() => ResourceType);
@@ -121,7 +112,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                if (_children == null)
+                if(_children == null)
                 {
                     _children = new SortedObservableCollection<ITreeNode>();
                     _children.CollectionChanged += ChildrenOnCollectionChanged;
@@ -130,7 +121,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if (_children == value) return;
+                if(_children == value) return;
 
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
@@ -151,7 +142,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             var commandParameter = obj.ToString();
             Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
-            _eventPublisher.Publish(new ShowNewResourceWizard(commandParameter));
+            EventPublisher.Publish(new ShowNewResourceWizard(commandParameter));
         }
 
         public override bool HasNewWorkflowMenu
@@ -198,7 +189,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService || ResourceType == ResourceType.Source || ResourceType==ResourceType.Service;
+                return ResourceType == ResourceType.WorkflowService || ResourceType == ResourceType.Source || ResourceType == ResourceType.Service;
             }
         }
 
@@ -227,10 +218,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override ITreeNode FindChild<T>(T resourceToFind)
         {
-            if (resourceToFind is ResourceType)
+            if(resourceToFind is ResourceType)
             {
-                var type = (ResourceType) Enum.Parse(typeof (ResourceType), resourceToFind.ToString());
-                if (ResourceType == type)
+                var type = (ResourceType)Enum.Parse(typeof(ResourceType), resourceToFind.ToString());
+                if(ResourceType == type)
                     return this;
             }
             return base.FindChild(resourceToFind);
@@ -246,7 +237,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             child.TreeParent = this;
             Children.Add(child);
-            if (child.DisplayName == StringResources.Navigation_Category_Unassigned)
+            if(child.DisplayName == StringResources.Navigation_Category_Unassigned)
             {
                 Children.Move(Children.IndexOf(child), 0);
             }
@@ -267,12 +258,13 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/25</date>
         public override int CompareTo(object obj)
         {
-            if(obj is ServiceTypeTreeViewModel)
+            ServiceTypeTreeViewModel model = obj as ServiceTypeTreeViewModel;
+            if(model != null)
             {
-                var other = (ServiceTypeTreeViewModel)obj;
+                var other = model;
                 var order1 = ResourceType.GetDisplayOrder();
                 var order2 = other.ResourceType.GetDisplayOrder();
-                if (order1 != order2)
+                if(order1 != order2)
                     return order1.CompareTo(order2);
                 return String.Compare(DisplayName, other.DisplayName, StringComparison.Ordinal);
             }

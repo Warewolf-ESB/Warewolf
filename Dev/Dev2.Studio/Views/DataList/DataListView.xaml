@@ -6,7 +6,7 @@
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"            
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             LostKeyboardFocus="UserControl_LostKeyboardFocus">
+             LostKeyboardFocus="UserControlLostKeyboardFocus">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour />
     </i:Interaction.Behaviors>
@@ -81,9 +81,9 @@
 
                         <TextBox x:Name="NameTxt"
                                  Grid.Column="0"
-                                 LostFocus="Nametxt_FocusLost"
+                                 LostFocus="NametxtFocusLost"
                                  Background="{StaticResource LightForegroundBrush}"
-                                 TextChanged="Nametxt_TextChanged"
+                                 TextChanged="NametxtTextChanged"
                                  HorizontalAlignment="Stretch"
                                  MinWidth="75"
                                  aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

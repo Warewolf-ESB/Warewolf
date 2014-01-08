@@ -1,28 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Dev2.Common.ExtMethods;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
+﻿using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core.Interfaces;
+using System;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement
 {
     /// <summary>
     /// Interaction logic for DeleteResourceDialog.xaml
     /// </summary>
-    public partial class DeleteResourceDialog : Window
+    public partial class DeleteResourceDialog
     {
-        private bool _openDependencyGraph = false;
+        private bool _openDependencyGraph;
 
         public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
 
@@ -42,7 +31,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             tbDisplay.Text = message;
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void Button3Click(object sender, RoutedEventArgs e)
         {
             _openDependencyGraph = true;
             DialogResult = false;

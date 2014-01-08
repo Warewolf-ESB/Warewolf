@@ -35,7 +35,7 @@
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
-        <TabControl x:Name="TabItems" SelectionChanged="TabControl_SelectionChanged">
+        <TabControl x:Name="TabItems" SelectionChanged="TabControlSelectionChanged">
             <TabItem AutomationProperties.AutomationId="UI_InputDataTab_AutoID" Header="Input Data" IsSelected="True">
                 <Grid>
                 <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs."></TextBlock>
@@ -47,7 +47,7 @@
                           HeadersVisibility="None" 
                           CanUserDeleteRows="True" 
                           x:Name="DataListInputs" 
-                          SelectionChanged="DataListInputs_SelectionChanged">
+                          SelectionChanged="DataListInputsSelectionChanged">
                     <DataGrid.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Focusable" Value="False"/>
@@ -60,8 +60,8 @@
                                     <Label ToolTip="{Binding Path=Description}" Content="{Binding Path=DisplayValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" IsTabStop="False">
                                         <Label.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem Header="Delete Last Recordset Row (Shift+Delete)" Click="MenuItem_DeleteRow"/>
-                                                <MenuItem Header="Add Blank Row To Recordset (Shift+Enter)" Click="MenuItem_AddRow"/>
+                                                <MenuItem Header="Delete Last Recordset Row (Shift+Delete)" Click="MenuItemDeleteRow"/>
+                                                <MenuItem Header="Add Blank Row To Recordset (Shift+Enter)" Click="MenuItemAddRow"/>
                                             </ContextMenu>
                                         </Label.ContextMenu>
                                     </Label>
@@ -71,7 +71,7 @@
                         <DataGridTemplateColumn Width="1*"  IsReadOnly="False">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <ui:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBox_PreviewKeyDown" GotFocus="TextBox_GotFocus" TextChanged="TextBox_TextChanged" MaxHeight="39">
+                                    <ui:IntellisenseTextBox x:Name="txtValue" FilterType="All" WrapInBrackets="False" Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,2,1,2" Width="Auto" PreviewKeyDown="IntellisenseTextBoxPreviewKeyDown" GotFocus="TextBoxGotFocus" TextChanged="TextBoxTextChanged" MaxHeight="39">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}txt_AutoID">
                                                 <Binding Path="DisplayValue"/>

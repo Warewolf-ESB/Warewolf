@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -7,7 +6,9 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Explorer;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
 {
     public class DsfActivityDropViewModel : SimpleBaseViewModel, IHandle<SetSelectedIContextualResourceModel>
@@ -81,7 +82,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public ICommand OKCommand
+        public ICommand OkCommand
         {
             get
             {

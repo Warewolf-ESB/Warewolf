@@ -1,11 +1,7 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Windows.Media.Imaging;
-using Dev2.Studio.Core;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -32,8 +28,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             bitmap.EndInit();
 
             return bitmap;
-        }        
-        
+        }
+
         /// <summary>
         /// Gets the display name of the category, returns Unassigned if empty.
         /// </summary>

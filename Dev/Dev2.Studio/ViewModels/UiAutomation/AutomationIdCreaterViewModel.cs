@@ -1,31 +1,25 @@
 ﻿using Dev2.Studio.Core.ViewModels.Base;
 using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.UiAutomation
-{    
+{
     public class AutomationIdCreaterViewModel : SimpleBaseViewModel
     {
         #region Fields
 
+        // ReSharper disable InconsistentNaming
         public ICommand _OkCommand;
-        public ICommand _CancelCommand;     
+        public ICommand _CancelCommand;
+        // ReSharper restore InconsistentNaming
 
         #endregion Fields
 
         #region Properties
 
-        public string AutomationID { get; set; }        
+        public string AutomationID { get; set; }
 
         #endregion Properties
-
-        #region Ctor
-
-        public AutomationIdCreaterViewModel()
-        {
-            
-        }
-
-        #endregion Ctor
 
         #region Methods
 
@@ -33,7 +27,7 @@ namespace Dev2.Studio.ViewModels.UiAutomation
         {
             get
             {
-                if (_OkCommand == null)
+                if(_OkCommand == null)
                 {
                     _OkCommand = new RelayCommand(param => { SaveID(); });
                 }
@@ -45,7 +39,7 @@ namespace Dev2.Studio.ViewModels.UiAutomation
         {
             get
             {
-                if (_CancelCommand == null)
+                if(_CancelCommand == null)
                 {
                     _CancelCommand = new RelayCommand(param => { Cancel(); });
                 }
@@ -59,7 +53,7 @@ namespace Dev2.Studio.ViewModels.UiAutomation
         }
 
         public void Cancel()
-        {            
+        {
             RequestClose(ViewModelDialogResults.Cancel);
         }
 

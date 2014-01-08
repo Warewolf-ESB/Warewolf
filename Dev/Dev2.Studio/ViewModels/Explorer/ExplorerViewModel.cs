@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -15,7 +10,13 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Threading;
 using Dev2.ViewModels.WorkSurface;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer
 {
     [Export]
@@ -31,8 +32,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         #region Class Members
 
         private RelayCommand _environmentChangedCommand;
-        private enDsfActivityType _activityType;
-        private bool _fromActivityDrop;
         private Guid? _context;
         System.Action _onLoadResourcesCompletedOnceOff;
 
@@ -57,9 +56,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
 
             EnvironmentRepository = environmentRepository;
-            _activityType = activityType;
-            _fromActivityDrop = isFromActivityDrop;
-            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, _fromActivityDrop, _activityType) { Parent = this };
+            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, isFromActivityDrop, activityType) { Parent = this };
             if(onLoadResourcesCompletedOnceOff != null)
             {
                 _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
@@ -183,7 +180,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             // Add last session's environments to the navigation view model
             //
             var sessionGuids = EnvironmentRepository.ReadSession();
-            if(sessionGuids!=null && sessionGuids.Count > 0)
+            if(sessionGuids != null && sessionGuids.Count > 0)
             {
                 ICollection<IEnvironmentModel> environmentModels = EnvironmentRepository.All();
                 if(environmentModels.Count > 0)

@@ -1,9 +1,6 @@
-﻿using System.ComponentModel.Composition;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Messages;
+﻿using Dev2.Studio.Core.AppResources.Browsers;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Help
 {
     /// <summary>

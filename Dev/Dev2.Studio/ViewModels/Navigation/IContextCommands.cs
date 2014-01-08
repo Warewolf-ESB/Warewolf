@@ -1,9 +1,6 @@
-﻿#region
+﻿using System.Windows.Input;
 
-using System.Windows.Input;
-
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>

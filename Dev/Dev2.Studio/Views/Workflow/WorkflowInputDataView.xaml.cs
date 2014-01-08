@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Dev2.Data.Interfaces;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.UI;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Folding;
+using ICSharpCode.AvalonEdit.Highlighting;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Dev2.Data.Interfaces;
-using Dev2.Studio.ViewModels.Workflow;
-using Dev2.UI;
-using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Folding;
-using ICSharpCode.AvalonEdit.Highlighting;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>
@@ -32,18 +33,13 @@ namespace Dev2.Studio.Views.Workflow
 
         private void SetUpTextEditor()
         {
-            _editor = new TextEditor();
-            _editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
-            _editor.ShowLineNumbers = true;
-            _editor.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            _editor.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;            
+            _editor = new TextEditor { SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML"), ShowLineNumbers = true, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
 
             _foldingStrategy = new XmlFoldingStrategy();
             _foldingManager = FoldingManager.Install(_editor.TextArea);
             _editor.TextArea.IndentationStrategy = new ICSharpCode.AvalonEdit.Indentation.DefaultIndentationStrategy();
 
-            _foldingUpdateTimer = new DispatcherTimer();
-            _foldingUpdateTimer.Interval = TimeSpan.FromSeconds(2);
+            _foldingUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(2) };
             _foldingUpdateTimer.Tick += OnFoldingUpdateTimerOnTick;
             _foldingUpdateTimer.Start();
         }
@@ -54,9 +50,9 @@ namespace Dev2.Studio.Views.Workflow
             {
                 if(!String.IsNullOrEmpty(_editor.Document.Text))
                 {
-                _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
+                    _foldingStrategy.UpdateFoldings(_foldingManager, _editor.Document);
+                }
             }
-        }
         }
 
         private void ShowDataInOutputWindow(string input)
@@ -65,18 +61,21 @@ namespace Dev2.Studio.Views.Workflow
             XmlOutput.Content = _editor;
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBoxTextChanged(object sender, TextChangedEventArgs e)
         {
             var tb = e.OriginalSource as TextBox;
-            var dli = tb.DataContext as IDataListItem;
-            var vm = DataContext as WorkflowInputDataViewModel;
-            if(vm != null)
+            if(tb != null)
             {
-                vm.AddRow(dli);
+                var dli = tb.DataContext as IDataListItem;
+                var vm = DataContext as WorkflowInputDataViewModel;
+                if(vm != null)
+                {
+                    vm.AddRow(dli);
+                }
             }
         }
 
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
 
@@ -89,7 +88,7 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     if(tabItem != null && tabItem.Header.ToString() == "XML")
                     {
-                        vm.SetXMLData();
+                        vm.SetXmlData();
                         ShowDataInOutputWindow(vm.XmlData);
                     }
                     else
@@ -101,16 +100,16 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void MenuItem_AddRow(object sender, RoutedEventArgs e)
+        private void MenuItemAddRow(object sender, RoutedEventArgs e)
         {
-            int indexToSelect = 1;
+            int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
 
             if(vm != null && (vm.AddBlankRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
                 DataListInputs.SelectedIndex = indexToSelect;
                 Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
-            } 
+            }
         }
 
         private void FocusOnAddition()
@@ -126,9 +125,9 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void MenuItem_DeleteRow(object sender, RoutedEventArgs e)
+        private void MenuItemDeleteRow(object sender, RoutedEventArgs e)
         {
-            int indexToSelect = 1;
+            int indexToSelect;
             var vm = DataContext as WorkflowInputDataViewModel;
             if(vm != null && (vm.RemoveRow(DataListInputs.SelectedItem as IDataListItem, out indexToSelect)))
             {
@@ -136,7 +135,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        private void TextBoxGotFocus(object sender, RoutedEventArgs e)
         {
             var tb = e.OriginalSource as TextBox;
             if(tb != null)
@@ -145,9 +144,9 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void IntellisenseTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void IntellisenseTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            int indexToSelect = 1;
+            int indexToSelect;
             if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
             {
                 var vm = DataContext as WorkflowInputDataViewModel;
@@ -155,7 +154,7 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                     Dispatcher.BeginInvoke(new Action(FocusOnAddition), DispatcherPriority.ApplicationIdle);
-                }                                                
+                }
                 e.Handled = true;
             }
             else if(e.Key == Key.Delete && e.KeyboardDevice.Modifiers == ModifierKeys.Shift)
@@ -165,13 +164,13 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     DataListInputs.SelectedIndex = indexToSelect;
                 }
-                
+
                 e.Handled = true;
             }
-        }        
+        }
 
-        private void DataListInputs_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {                      
+        private void DataListInputsSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var row = GetSelectedRow(DataListInputs);
             if(row != null)
             {
@@ -196,11 +195,12 @@ namespace Dev2.Studio.Views.Workflow
                         return current;
 
                     int count = VisualTreeHelper.GetChildrenCount(current);
-                    for(int SupplierCounter = 0; SupplierCounter < count; ++SupplierCounter)
+                    for(int supplierCounter = 0; supplierCounter < count; ++supplierCounter)
                     {
-                        DependencyObject child = VisualTreeHelper.GetChild(current, SupplierCounter);
-                        if(child is FrameworkElement)
-                            tree.Push((FrameworkElement)child);
+                        DependencyObject child = VisualTreeHelper.GetChild(current, supplierCounter);
+                        FrameworkElement item = child as FrameworkElement;
+                        if(item != null)
+                            tree.Push(item);
                     }
                 }
             }
@@ -223,20 +223,20 @@ namespace Dev2.Studio.Views.Workflow
                 {
                     vm.XmlData = _editor.Text;
                     vm.SetWorkflowInputData();
-                }             
+                }
             }
             DestroyTimer();
-            }
+        }
 
         void DestroyTimer()
         {
             if(_foldingUpdateTimer != null)
             {
-            _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
-            _foldingUpdateTimer.Stop();
-            _foldingUpdateTimer = null;
+                _foldingUpdateTimer.Tick -= OnFoldingUpdateTimerOnTick;
+                _foldingUpdateTimer.Stop();
+                _foldingUpdateTimer = null;
+            }
         }
-    }
 
         void CancelClicked(object sender, RoutedEventArgs e)
         {

@@ -1,17 +1,23 @@
 ﻿using System.Windows;
 
-namespace Unlimited.Applications.BusinessDesignStudio.Views {
+// ReSharper disable once CheckNamespace
+namespace Unlimited.Applications.BusinessDesignStudio.Views
+{
     /// <summary>
     /// Interaction logic for ConfigureDecisionWindow.xaml
     /// </summary>
-    public partial class ConfigureDecisionWindow : Window {
-        public ConfigureDecisionWindow() {
+    public partial class ConfigureDecisionWindow
+    {
+        public ConfigureDecisionWindow()
+        {
             InitializeComponent();
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            dynamic data = this.DataContext;
-            if (!data.CanSelect) {
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            dynamic data = DataContext;
+            if(!data.CanSelect)
+            {
                 MessageBox.Show("Please choose a decision type", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 e.Cancel = true;
             }

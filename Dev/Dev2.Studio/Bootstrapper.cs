@@ -1,4 +1,14 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Composition;
+using Dev2.Studio;
+using Dev2.Studio.Controller;
+using Dev2.Studio.Core.AppResources.WindowManagers;
+using Dev2.Studio.Core.Diagnostics;
+using Dev2.Studio.Core.Helpers;
+using Dev2.Studio.StartupResources;
+using Dev2.Studio.ViewModels;
+using Dev2.Workspaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -7,19 +17,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Controller;
-using Dev2.Studio.Core.AppResources.WindowManagers;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Diagnostics;
-using Dev2.Studio.Core.Helpers;
-using Dev2.Studio.Core.Services;
-using Dev2.Studio.StartupResources;
-using Dev2.Studio.ViewModels;
-using Dev2.Workspaces;
 
 namespace Dev2
 {
@@ -56,6 +53,7 @@ namespace Dev2
         protected override void Configure()
         {
             IEnumerable<AssemblyCatalog> assemblyCatalog = AssemblySource.Instance.Select(x => new AssemblyCatalog(x));
+            // ReSharper disable once RedundantEnumerableCastCall
             IEnumerable<ComposablePartCatalog> ofType = assemblyCatalog.OfType<ComposablePartCatalog>();
             _container = new CompositionContainer(new AggregateCatalog(ofType));
 
@@ -99,21 +97,24 @@ namespace Dev2
         {
             //Dev2MessageBoxViewModel.Show("cake you broke something with something ntuff cake you broke something with something ntuff", "heading cake", MessageBoxButton.OK, MessageBoxImage.Error);
 
+            // ReSharper disable once ConvertToConstant.Local
             bool start = true;
 #if !DEBUG
             start = CheckWindowsService();
 #endif
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if(start)
             {
                 base.OnStartup(sender, e);
             }
             else
+            // ReSharper disable HeuristicUnreachableCode
             {
                 Application.Shutdown();
             }
+            // ReSharper restore HeuristicUnreachableCode
         }
-
 
         protected override void StartRuntime()
         {
@@ -146,57 +147,13 @@ namespace Dev2
                         Assembly loaded = AppDomain.CurrentDomain.Load(toLoad);
                         LoadReferences(loaded, inspected);
                     }
+                    // ReSharper disable once EmptyGeneralCatchClause
                     catch
                     {
                         // Pissing me off ;) - Some strange dependency :: 'Microsoft.Scripting.Metadata'
                     }
                 }
             }
-        }
-
-        private bool CheckWindowsService()
-        {
-            IWindowsServiceManager windowsServiceManager = ImportService.GetExportValue<IWindowsServiceManager>();
-            IPopupController popup = ImportService.GetExportValue<IPopupController>();
-
-            if(windowsServiceManager == null)
-            {
-                throw new Exception("Unable to instantiate the windows service manager.");
-            }
-
-            if(popup == null)
-            {
-                throw new Exception("Unable to instantiate the popup manager.");
-            }
-
-            if(!windowsServiceManager.Exists())
-            {
-                popup.Show("The Warewolf service isn't installed. Please re-install the Warewolf server.", "Server Missing", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if(!windowsServiceManager.IsRunning())
-            {
-                MessageBoxResult promptResult = popup.Show("The Warewolf service isn't running would you like to start it?", "Service not Running", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-
-                if(promptResult == MessageBoxResult.Cancel)
-                {
-                    return false;
-                }
-
-                if(promptResult == MessageBoxResult.No)
-                {
-                    return true;
-                }
-
-                if(!windowsServiceManager.Start())
-                {
-                    popup.Show("A time out occured while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
-            }
-
-            return true;
         }
 
         private void CheckPath()

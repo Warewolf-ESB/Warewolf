@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
 using Dev2.Interfaces;
@@ -18,30 +15,26 @@ using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
+using System.Windows;
 
 namespace Dev2.Webs.Callbacks
 {
     public abstract class WebsiteCallbackHandler : IPropertyEditorWizard
     {
-        protected readonly IEventAggregator _eventPublisher;
+        protected readonly IEventAggregator EventPublisher;
 
         protected WebsiteCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null, IShowDependencyProvider showDependencyProvider = null)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("currentEnvironmentRepository", currentEnvironmentRepository);
-            _eventPublisher = eventPublisher;
+            EventPublisher = eventPublisher;
 
             Context = context;
             CurrentEnvironmentRepository = currentEnvironmentRepository;
             ImportService.SatisfyImports(this);
-            if(showDependencyProvider == null)
-            {
-                ShowDependencyProvider = new ShowDependencyProvider();
-            }
-            else
-            {
-                ShowDependencyProvider = showDependencyProvider;
-            }
+            ShowDependencyProvider = showDependencyProvider ?? new ShowDependencyProvider();
         }
 
         public IShowDependencyProvider ShowDependencyProvider { get; set; }
@@ -50,7 +43,7 @@ namespace Dev2.Webs.Callbacks
 
         public Window Owner { get; set; }
 
-        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }        
+        public IEnvironmentRepository CurrentEnvironmentRepository { get; private set; }
         public Guid? Context { get; private set; }
 
         #endregion
@@ -75,19 +68,19 @@ namespace Dev2.Webs.Callbacks
             }
 
             var getWorksurfaceItemRepo = WorkspaceItemRepository.Instance;
-            
+
             CheckForServerMessages(environmentModel, resourceID, getWorksurfaceItemRepo);
             var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current, true);
-            if (effectedResources != null)
+            if(effectedResources != null)
             {
-                foreach (var resource in effectedResources)
-            {
-                var resourceWithContext = new ResourceModel(environmentModel);
-                resourceWithContext.Update(resource);
-                    Logger.TraceInfo("Publish message of type - " + typeof (UpdateResourceMessage));
-                _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
-            }            
-        }
+                foreach(var resource in effectedResources)
+                {
+                    var resourceWithContext = new ResourceModel(environmentModel);
+                    resourceWithContext.Update(resource);
+                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    EventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
+                }
+            }
         }
 
         #endregion
@@ -187,7 +180,7 @@ namespace Dev2.Webs.Callbacks
             var provider = new DefaultIntellisenseProvider();
             var context = new IntellisenseProviderContext { InputText = searchTerm, CaretPosition = caretPosition };
 
-            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Where(c=>!c.IsError).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
+            return "[" + string.Join(",", provider.GetIntellisenseResults(context).Where(c => !c.IsError).Select(r => string.Format("\"{0}\"", r.ToString()))) + "]";
         }
 
         #endregion
@@ -195,21 +188,22 @@ namespace Dev2.Webs.Callbacks
         protected void CheckForServerMessages(IEnvironmentModel environmentModel, Guid resourceID, IWorkspaceItemRepository workspace)
         {
             var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceID);
-            if (resourceModel != null)
+            if(resourceModel != null)
             {
                 var resource = new ResourceModel(environmentModel);
                 resource.Update(resourceModel);
                 var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
 
-                if (compileMessageList.Count == 0){ 
+                if(compileMessageList.Count == 0)
+                {
                     return;
                 }
 
                 var numberOfDependants = compileMessageList.Dependants.Count;
                 //2013.07.29: Ashley Lewis for bug 9640 - If only dependancy is open right now, don't notify of change
-                if (numberOfDependants == 1)
+                if(numberOfDependants == 1)
                 {
-                    if (
+                    if(
                         compileMessageList.Dependants.Any(
                             dep =>
                                 workspace.WorkspaceItems != null &&
@@ -219,7 +213,7 @@ namespace Dev2.Webs.Callbacks
                     }
                 }
                 //2013.07.29: Ashley Lewis for bug 10199 - Don't show dependancy viewer dialog on source type callback
-                if (resource.ResourceType != ResourceType.Source)
+                if(resource.ResourceType != ResourceType.Source)
                 {
                     ShowDependencyProvider.ShowDependencyViewer(resource, compileMessageList.Dependants);
                 }

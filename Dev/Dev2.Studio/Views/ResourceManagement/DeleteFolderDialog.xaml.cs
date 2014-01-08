@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement
 {
     /// <summary>
     /// Interaction logic for DeleteResourceDialog.xaml
     /// </summary>
-    public partial class DeleteFolderDialog : Window
+    public partial class DeleteFolderDialog
     {
         public DeleteFolderDialog()
         {
@@ -21,11 +22,6 @@ namespace Dev2.Studio.Views.ResourceManagement
             InitializeComponent();
             Title = title;
             tbDisplay.Text = message;
-        }
-
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-            DialogResult = true;
         }
     }
 }

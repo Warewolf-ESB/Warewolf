@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Data;
-using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.UI.Controls
 {
     [ValueConversion(typeof(int), typeof(int))]
@@ -16,13 +13,13 @@ namespace Dev2.UI.Controls
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double val = (double)value;
-            return (val * -1);            
+            return (val * -1);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             double val = (double)value;
-            return (val * -1);            
+            return (val * -1);
         }
 
         #endregion

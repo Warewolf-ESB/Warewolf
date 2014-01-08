@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Windows.Controls;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.UserInterfaceBuilder
 {
     /// <summary>
     /// Interaction logic for DataGridQuickVariableInputView.xaml
     /// </summary>
-    public partial class DataGridQuickVariableInputView : UserControl, IDisposable
+    public partial class DataGridQuickVariableInputView : IDisposable
     {
         // Track whether Dispose has been called.
-        private bool disposed;
+        private bool _disposed;
 
         public DataGridQuickVariableInputView()
         {
@@ -40,11 +41,11 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if (!this.disposed)
+            if(!_disposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if (disposing)
+                if(disposing)
                 {
                     // Dispose managed resources.
 
@@ -57,7 +58,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
 
                 // Note disposing has been done.
-                disposed = true;
+                _disposed = true;
 
             }
         }
@@ -76,10 +77,10 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
 
         void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SplitTypeCbx.SelectedValue != null)
+            if(SplitTypeCbx.SelectedValue != null)
             {
                 string val = SplitTypeCbx.SelectedValue.ToString();
-                if (val == "Index" || val == "Chars")
+                if(val == "Index" || val == "Chars")
                 {
                     SplitTokenTxt.IsEnabled = true;
                 }
@@ -95,9 +96,9 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
         void TextBoxBase_OnTextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox tb = sender as TextBox;
-            if (tb != null)
+            if(tb != null)
             {
-                if (string.IsNullOrWhiteSpace(TxtVariableList.Text))
+                if(string.IsNullOrWhiteSpace(TxtVariableList.Text))
                 {
                     QuickVariableInputAddBtn.IsEnabled = false;
                     QuickVariableInputPreviewBtn.IsEnabled = false;

@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Utils;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
 {
     /// <summary>
@@ -26,7 +23,7 @@ namespace Dev2.Studio.ViewModels.Help
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <datetime>2013/01/14-09:12 AM</datetime>
-    public sealed class FeedbackViewModel : SimpleBaseViewModel 
+    public sealed class FeedbackViewModel : SimpleBaseViewModel
     {
         #region private fields
         private ICommand _sendCommand;
@@ -45,7 +42,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         #region ctors and init
 
-        public Func<string, bool> DoesFileExists = (fileName) => File.Exists(fileName);
+        public Func<string, bool> DoesFileExists = fileName => File.Exists(fileName);
 
         public FeedbackViewModel()
             : this(new Dictionary<string, string>())
@@ -193,7 +190,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             private set
             {
-                if (_recordingAttachmentPath == value) return;
+                if(_recordingAttachmentPath == value) return;
 
                 _recordingAttachmentPath = value;
                 NotifyOfPropertyChange(() => RecordingAttachmentPath);
@@ -404,6 +401,7 @@ namespace Dev2.Studio.ViewModels.Help
             {
                 Process.Start("explorer.exe", "/select, \"" + path + "\"");
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 //fail silently if the folder to the attachment couldn't be opened
@@ -483,7 +481,7 @@ namespace Dev2.Studio.ViewModels.Help
                                         , String.IsNullOrWhiteSpace(SelectedCategory) ? "" : " : ", SelectedCategory),
                 Content = Comment
             };
-            
+
             if(HasRecordingAttachment)
             {
                 Attachments += !string.IsNullOrEmpty(RecordingAttachmentPath) ? RecordingAttachmentPath : "";

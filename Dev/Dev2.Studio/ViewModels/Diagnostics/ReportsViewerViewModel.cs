@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Diagnostics;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -16,7 +10,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Net;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>
@@ -81,11 +82,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_debugOutput == null)
-                {
-                    _debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance) { ShowDebugStatus = false };
-                }
-                return _debugOutput;
+                return _debugOutput ?? (_debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance) { ShowDebugStatus = false });
             }
         }
 
@@ -105,6 +102,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
+                // ReSharper disable once PossibleUnintendedReferenceComparison
                 if(_selectedServer == value)
                 {
                     return;
@@ -276,7 +274,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         public void Delete(FilePath filePath)
         {
-            var address = String.Format(SelectedServer.Connection.WebServerUri+ "{0}/{1}?Directory={2}&FilePath={3}",
+            var address = String.Format(SelectedServer.Connection.WebServerUri + "{0}/{1}?Directory={2}&FilePath={3}",
                 "Services", "DeleteLogService", LogDirectory.PathToSerialize, filePath.Title);
             var response = WebClient.UploadString(address, string.Empty);
 
@@ -298,7 +296,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         public void DeleteAll()
         {
-            var address = String.Format(SelectedServer.Connection.WebServerUri+ "{0}/{1}?Directory={2}", "Services", "ClearLogService", LogDirectory.PathToSerialize);
+            var address = String.Format(SelectedServer.Connection.WebServerUri + "{0}/{1}?Directory={2}", "Services", "ClearLogService", LogDirectory.PathToSerialize);
             var response = WebClient.UploadString(address, string.Empty);
 
             if(response.Contains("Success"))
@@ -355,9 +353,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/05/24</date>
         private DirectoryPath GetLogDirectory(IEnvironmentModel server)
         {
-            var address = String.Format(server.Connection.WebServerUri+ "{0}/{1}", "Services", "FindLogDirectoryService");
-            var datalistJSON = WebClient.UploadString(address, string.Empty);
-            var directory = JsonConvert.DeserializeObject<DirectoryPath>(datalistJSON);
+            var address = String.Format(server.Connection.WebServerUri + "{0}/{1}", "Services", "FindLogDirectoryService");
+            var datalistJson = WebClient.UploadString(address, string.Empty);
+            var directory = JsonConvert.DeserializeObject<DirectoryPath>(datalistJson);
             return directory;
         }
 
@@ -378,18 +376,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 return new List<FilePath>();
             }
 
-            var address = String.Format(server.Connection.WebServerUri+ "{0}/{1}?DirectoryPath={2}",
+            var address = String.Format(server.Connection.WebServerUri + "{0}/{1}?DirectoryPath={2}",
                 "Services", "FindDirectoryService", directory.PathToSerialize);
-            var datalistJSON = WebClient.UploadString(address, string.Empty);
-            if(datalistJSON.Contains("Error"))
+            var datalistJson = WebClient.UploadString(address, string.Empty);
+            if(datalistJson.Contains("Error"))
             {
                 var error = "Error: Log directory not found." + Environment.NewLine +
-                            datalistJSON.GetManagementPayload();
+                            datalistJson.GetManagementPayload();
                 ShowErrorPopup(error);
             }
             else
             {
-                var filePaths = JsonConvert.DeserializeObject<List<FilePath>>(datalistJSON);
+                var filePaths = JsonConvert.DeserializeObject<List<FilePath>>(datalistJson);
                 filePaths.ForEach(fp =>
                     {
                         if(fp.Title.EndsWith(".wwlfl"))

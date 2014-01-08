@@ -1,19 +1,20 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.ViewModels.WorkSurface;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DataList
 {
     /// <summary>
     /// Interaction logic for DataListView.xaml
     /// </summary>
-    public partial class DataListView : UserControl
+    public partial class DataListView
     {
         readonly IEventAggregator _eventPublisher;
 
@@ -28,24 +29,24 @@ namespace Dev2.Studio.Views.DataList
 
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             _eventPublisher = eventPublisher;
-            this.DataContextChanged += OnDataContextChanged;
+            DataContextChanged += OnDataContextChanged;
         }
 
-        
+
         #region Events
 
         void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
                 vm.AddRecordsetNamesIfMissing();
             }
         }
 
-        private void Nametxt_TextChanged(object sender, RoutedEventArgs e)
+        private void NametxtTextChanged(object sender, RoutedEventArgs e)
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
 
@@ -66,14 +67,14 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-        private void Nametxt_FocusLost(object sender, RoutedEventArgs e)
+        private void NametxtFocusLost(object sender, RoutedEventArgs e)
         {
             DoDataListValidation(sender);
         }
 
         void DoDataListValidation(object sender)
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
                 TextBox txtbox = sender as TextBox;
@@ -87,7 +88,7 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-        private void UserControl_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             WriteToResourceModel();
         }
@@ -120,7 +121,7 @@ namespace Dev2.Studio.Views.DataList
 
         private void WriteToResourceModel()
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
                 vm.WriteToResourceModel();
@@ -133,7 +134,7 @@ namespace Dev2.Studio.Views.DataList
 
         void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            IDataListViewModel vm = this.DataContext as IDataListViewModel;
+            IDataListViewModel vm = DataContext as IDataListViewModel;
             if(vm != null)
             {
 

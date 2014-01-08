@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Dev2.Diagnostics;
+using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Diagnostics;
+using Dev2.Studio.ViewModels;
+using System;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Dev2.Diagnostics;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Diagnostics;
-using Dev2.Studio.ViewModels;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio
 {
     /// <summary>
@@ -18,7 +19,6 @@ namespace Dev2.Studio
     public partial class App : IApp
     {
         MainViewModel _mainViewModel;
-        private Mutex _processGuard = null;
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
 
@@ -47,13 +47,13 @@ namespace Dev2.Studio
         protected override void OnStartup(StartupEventArgs e)
         {
             bool createdNew;
+            // ReSharper disable once UnusedVariable
             var localprocessGuard = e.Args.Length > 0
                                         ? new Mutex(true, e.Args[0], out createdNew)
                                         : new Mutex(true, "Warewolf Studio", out createdNew);
 
             if(createdNew)
             {
-                _processGuard = localprocessGuard;
             }
             else
             {
@@ -92,6 +92,7 @@ namespace Dev2.Studio
             {
                 base.OnExit(e);
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 // Best effort ;)
@@ -119,6 +120,7 @@ namespace Dev2.Studio
             {
                 base.Shutdown();
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 // Best effort ;)

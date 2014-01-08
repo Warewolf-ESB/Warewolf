@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Composition;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using CefSharp.Wpf;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -8,7 +7,9 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
+using System.ComponentModel.Composition;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
 {
     [Export]

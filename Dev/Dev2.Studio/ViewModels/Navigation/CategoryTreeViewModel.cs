@@ -2,11 +2,6 @@
 
 #region
 
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Providers.Logs;
@@ -18,10 +13,16 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 
 
 #endregion
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -153,7 +154,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             hydrateWizard.Category = DisplayName;
             hydrateWizard.DisplayName = obj.ToString();
             Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
-            _eventPublisher.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
+            EventPublisher.Publish(new ShowEditResourceWizardMessage(hydrateWizard));
         }
 
         public override bool HasNewWorkflowMenu
@@ -194,7 +195,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public override bool IsRenaming
+        public override sealed bool IsRenaming
         {
             get { return _isRenaming; }
             set
@@ -226,7 +227,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         }
 
         //2013.07.01: Ashley Lewis for PBI 9487 - rename folder
-        public override string DisplayName
+        public override sealed string DisplayName
         {
             get
             {
@@ -316,7 +317,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void DeleteFolder(object obj)
         {
             Logger.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage));
-            _eventPublisher.Publish(new DeleteResourcesMessage(Children.Select(child =>
+            EventPublisher.Publish(new DeleteResourcesMessage(Children.Select(child =>
             {
                 var model = child as ResourceTreeViewModel;
                 return model != null ? model.DataContext : null;
@@ -400,7 +401,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         protected override ITreeNode CreateParent(string displayName)
         {
-            return new CategoryTreeViewModel(_eventPublisher, TreeParent, displayName, ResourceType);
+            return new CategoryTreeViewModel(EventPublisher, TreeParent, displayName, ResourceType);
         }
     }
 }

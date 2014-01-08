@@ -1,19 +1,18 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.DependencyVisualization;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Utils;
+using System.Windows;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DependencyVisualization
-{   
-    public partial class DependencyVisualiserView : UserControl
+{
+    public partial class DependencyVisualiserView
     {
-        private Point mouseDragStartPoint;
-        private Point scrollStartOffset; 
+        private Point _scrollStartOffset;
         readonly IEventAggregator _eventPublisher;
 
 
@@ -26,54 +25,54 @@ namespace Dev2.Studio.Views.DependencyVisualization
         {
             InitializeComponent();
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;        
+            _eventPublisher = eventPublisher;
         }
 
-        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e) {
+        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
             //2012.10.01: massimo.guerrera - Added for the click through on the dependency viewer
-            string resourceName = string.Empty;
-            if (e.ClickCount == 2)
+            if(e.ClickCount == 2)
             {
-                this.ReleaseMouseCapture();
+                ReleaseMouseCapture();
                 FrameworkElement fe = e.OriginalSource as FrameworkElement;
                 FrameworkContentElement fce = e.OriginalSource as FrameworkContentElement;
                 object dataContext = null;
 
-                if (fe != null)
+                if(fe != null)
                 {
                     dataContext = fe.DataContext;
                 }
-                else if (fce != null)
+                else if(fce != null)
                 {
                     dataContext = fce.DataContext;
                 }
 
-                resourceName = dataContext as string;
+                string resourceName = dataContext as string;
 
-                if (string.IsNullOrEmpty(resourceName) && dataContext is Node)
+                if(string.IsNullOrEmpty(resourceName) && dataContext is Node)
                 {
                     resourceName = (dataContext as Node).ID;
-                }                
-                               
-                if (!string.IsNullOrEmpty(resourceName))
+                }
+
+                if(!string.IsNullOrEmpty(resourceName))
                 {
-                    var vm = this.DataContext as DependencyVisualiserViewModel;
-                    if (vm != null)
+                    var vm = DataContext as DependencyVisualiserViewModel;
+                    if(vm != null)
                     {
                         IResourceModel resource = vm.ResourceModel.Environment
                                                                  .ResourceRepository.FindSingle(
                                                                      c => c.ResourceName == resourceName);
-                        if (resource != null)
+                        if(resource != null)
                         {
-                            WorkflowDesignerUtils.EditResource(resource,_eventPublisher);
+                            WorkflowDesignerUtils.EditResource(resource, _eventPublisher);
                         }
                     }
-                }                
+                }
             }
 
-            mouseDragStartPoint = e.GetPosition(this);
-            scrollStartOffset.X = myScrollViewer.HorizontalOffset;
-            scrollStartOffset.Y = myScrollViewer.VerticalOffset;
+            e.GetPosition(this);
+            _scrollStartOffset.X = myScrollViewer.HorizontalOffset;
+            _scrollStartOffset.Y = myScrollViewer.VerticalOffset;
 
             // Update the cursor if scrolling is possible 
             Cursor = (myScrollViewer.ExtentWidth > myScrollViewer.ViewportWidth) ||
@@ -84,19 +83,12 @@ namespace Dev2.Studio.Views.DependencyVisualization
             base.OnPreviewMouseDown(e);
         }
 
-        protected override void OnPreviewMouseMove(MouseEventArgs e) {
-            if (IsMouseCaptured) {
+        protected override void OnPreviewMouseMove(MouseEventArgs e)
+        {
+            if(IsMouseCaptured)
+            {
                 // Get the new mouse position. 
                 Point mouseDragCurrentPoint = e.GetPosition(this);
-
-                // Determine the new amount to scroll. 
-                Point delta = new Point(
-                    (mouseDragCurrentPoint.X > this.mouseDragStartPoint.X) ?
-                    -(mouseDragCurrentPoint.X - this.mouseDragStartPoint.X) :
-                    (this.mouseDragStartPoint.X - mouseDragCurrentPoint.X),
-                    (mouseDragCurrentPoint.Y > this.mouseDragStartPoint.Y) ?
-                    -(mouseDragCurrentPoint.Y - this.mouseDragStartPoint.Y) :
-                    (this.mouseDragStartPoint.Y - mouseDragCurrentPoint.Y));
 
                 // Scroll to the new position. 
                 myScrollViewer.ScrollToHorizontalOffset(mouseDragCurrentPoint.X);
@@ -105,12 +97,14 @@ namespace Dev2.Studio.Views.DependencyVisualization
             base.OnPreviewMouseMove(e);
         }
 
-        protected override void OnPreviewMouseUp(MouseButtonEventArgs e) {
-            if (this.IsMouseCaptured) {
-                this.Cursor = Cursors.Arrow;
-                this.ReleaseMouseCapture();
+        protected override void OnPreviewMouseUp(MouseButtonEventArgs e)
+        {
+            if(IsMouseCaptured)
+            {
+                Cursor = Cursors.Arrow;
+                ReleaseMouseCapture();
             }
             base.OnPreviewMouseUp(e);
-        } 
+        }
     }
 }

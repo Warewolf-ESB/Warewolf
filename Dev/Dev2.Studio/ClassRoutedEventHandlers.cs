@@ -2,11 +2,11 @@
 using Dev2.Composition;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.ViewModels;
 using Dev2.UI;
 using System;
 using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio
 {
     /// <summary>
@@ -16,7 +16,7 @@ namespace Dev2.Studio
     {
         #region Fields
 
-        private static bool Registered;
+        private static bool _registered;
 
         #endregion Fields
 
@@ -24,12 +24,12 @@ namespace Dev2.Studio
 
         public static void RegisterEvents()
         {
-            if (Registered)
+            if(_registered)
             {
                 return;
             }
 
-            Registered = true;
+            _registered = true;
             EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent, new RoutedEventHandler(IntellisenseTextBoxTabInsertedEvent));
         }
 
@@ -42,9 +42,9 @@ namespace Dev2.Studio
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 IPopupController popup = ImportService.GetExportValue<IPopupController>();
-                popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. " 
-                    + Environment.NewLine + Environment.NewLine + 
-                    "Please note that tabs are fully supported but the runtime, in variables and when reading from files.", 
+                popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. "
+                    + Environment.NewLine + Environment.NewLine +
+                    "Please note that tabs are fully supported but the runtime, in variables and when reading from files.",
                     "Tabs Pasted", MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog);
             }), null);
         }
@@ -52,4 +52,3 @@ namespace Dev2.Studio
         #endregion
     }
 }
- 

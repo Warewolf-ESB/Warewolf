@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     public enum DebugStatus

@@ -1,11 +1,5 @@
-﻿#region
-
-using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
@@ -13,10 +7,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Threading;
-using Unlimited.Applications.BusinessDesignStudio.Views;
+using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -26,7 +21,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// <author>
     /// Jurie.smit
     /// </author>
-    public class EnvironmentTreeViewModel : AbstractTreeViewModel
+    public sealed class EnvironmentTreeViewModel : AbstractTreeViewModel
     //,IHandle<UpdateActiveEnvironmentMessage>
     {
         #region private fields
@@ -37,17 +32,17 @@ namespace Dev2.Studio.ViewModels.Navigation
         private RelayCommand _removeCommand;
         private RelayCommand<string> _newResourceCommand;
         private RelayCommand _refreshCommand;
-        private IAsyncWorker _asyncWorker;
+        private readonly IAsyncWorker _asyncWorker;
 
         #endregion
 
         #region ctor + init
-        public EnvironmentTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IEnvironmentModel environmentModel,IAsyncWorker asyncWorker)
+        public EnvironmentTreeViewModel(IEventAggregator eventPublisher, ITreeNode parent, IEnvironmentModel environmentModel, IAsyncWorker asyncWorker)
             : base(eventPublisher, parent)
         {
             _asyncWorker = asyncWorker;
             EnvironmentModel = environmentModel;
-            IsExpanded = true;           
+            IsExpanded = true;
         }
 
         #endregion
@@ -117,7 +112,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public override sealed IEnvironmentModel EnvironmentModel
+        public override IEnvironmentModel EnvironmentModel
         {
             get { return _environmentModel; }
             protected set
@@ -301,11 +296,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _newResourceCommand ??
-                       (_newResourceCommand = new RelayCommand<string>((s)
+                       (_newResourceCommand = new RelayCommand<string>(s
                                                                        =>
                        {
                            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
-                           _eventPublisher.Publish(new ShowNewResourceWizard(s));
+                           EventPublisher.Publish(new ShowNewResourceWizard(s));
                        }, o => HasFileMenu));
             }
         }
@@ -385,7 +380,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region private methods
-        
+
         /// <summary>
         /// Refreshes the environment.
         /// </summary>
@@ -409,10 +404,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(EnvironmentModel == null) return;
             Disconnect();
-            var rootVM = FindRootNavigationViewModel();
-            var ctx = (rootVM == null) ? null : rootVM.Context;
+            var rootVm = FindRootNavigationViewModel();
+            var ctx = (rootVm == null) ? null : rootVm.Context;
             Logger.TraceInfo("Publish message of type - " + typeof(RemoveEnvironmentMessage));
-            _eventPublisher.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
+            EventPublisher.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
             RaisePropertyChangedForCommands();
         }
 
@@ -426,7 +421,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(EnvironmentModel.IsConnected && EnvironmentModel.CanStudioExecute) return;
 
             EnvironmentModel.CanStudioExecute = true;
-            _asyncWorker.Start(EnvironmentModel.Connect,()=>{});             
+            _asyncWorker.Start(EnvironmentModel.Connect, () => { });
             EnvironmentModel.ForceLoadResources();
             var vm = FindRootNavigationViewModel();
             vm.LoadEnvironmentResources(EnvironmentModel);

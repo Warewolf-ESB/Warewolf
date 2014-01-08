@@ -57,7 +57,7 @@
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}" >
-                    <StackPanel Mouse.MouseDown="StackPanel_MouseDown">
+                    <StackPanel Mouse.MouseDown="StackPanelMouseDown">
                         <Grid Margin="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50*" />

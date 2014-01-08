@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -20,7 +13,14 @@ using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
@@ -32,7 +32,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private IDeployStatsCalculator _deployStatsCalculator;
 
-        private IDeployService _deployService;
         private IEnvironmentModelProvider _serverProvider;
 
         private NavigationViewModel _source;
@@ -116,7 +115,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
-        
+
         public Guid? SourceContext
         {
             get
@@ -157,7 +156,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         bool HasItemsToDeploy()
         {
             return _sourceDeployItemCount > 0 && _destinationDeployItemCount > 0;
-            }
+        }
 
         bool SelectedDestinationServerIsValid()
         {
@@ -309,6 +308,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
+                // ReSharper disable once PossibleUnintendedReferenceComparison
                 if(value != _selectedDestinationServer)
                 {
                     _selectedDestinationServer = value;
@@ -330,7 +330,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             EnvironmentRepository = environmentRepository;
 
             _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
-            _deployService = new DeployService();
+            // ReSharper disable once ObjectCreationAsStatement
+            new DeployService();
             _serverProvider = serverProvider;
             _servers = new ObservableCollection<IEnvironmentModel>();
             _targetStats = new ObservableCollection<DeployStatsTO>();
@@ -501,7 +502,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 SelectedDestinationServer = server;
             }
-            EventPublisher.Publish(new UpdateSelectedServer(server,connectSource));
+            EventPublisher.Publish(new UpdateSelectedServer(server, connectSource));
         }
 
         /// <summary>
@@ -520,7 +521,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             var deployResourceRepo = SourceEnvironment.ResourceRepository;
 
-            if (resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+            if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
             {
                 return;
             }
@@ -561,7 +562,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             if(SourceEnvironment != null)
             {
-                if (_selectingAndExpandingFromNavigationItem)
+                if(_selectingAndExpandingFromNavigationItem)
                 {
                     Source.LoadResourcesCompleted += OnResourcesLoaded;
                 }
@@ -617,7 +618,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
-                SelectedSourceServer = server; 
+                SelectedSourceServer = server;
             }
             _selectingAndExpandingFromNavigationItem = false;
         }
@@ -629,7 +630,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             ITreeNode navigationItemViewModel = null;
 
-            if (_initialItemDisplayName != null)
+            if(_initialItemDisplayName != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialItemDisplayName)
                     .FirstOrDefault();
@@ -691,7 +692,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 var ctx = message.Context;
                 if(ctx.Equals(SourceContext))
                 {
-                    AddServer(message.Server, true, false);                    
+                    AddServer(message.Server, true, false);
                 }
                 else if(ctx.Equals(DestinationContext))
                 {

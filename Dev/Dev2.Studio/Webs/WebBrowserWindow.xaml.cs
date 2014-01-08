@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using Dev2.Studio.Core.AppResources.Browsers;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs
 {
     public partial class WebBrowserWindow
@@ -40,15 +40,5 @@ namespace Dev2.Studio.Webs
         }
 
         #endregion
-
-        //#region NavigateRequested
-
-        //protected void NavigateRequested(string uri)
-        //{
-        //    _layoutObjectModel.NavigateRequested -= NavigateRequested;
-        //    Browser.LoadSafe(uri);
-        //}
-
-        //#endregion
     }
 }

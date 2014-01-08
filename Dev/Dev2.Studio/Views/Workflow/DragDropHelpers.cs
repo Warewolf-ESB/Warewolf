@@ -1,16 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using Dev2.Studio.Core;
+﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels.Workflow;
+using System;
+using System.Linq;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {
     public class DragDropHelpers
     {
-        IWorkflowDesignerView _workflowDesignerView;
+        readonly IWorkflowDesignerView _workflowDesignerView;
 
         public DragDropHelpers(IWorkflowDesignerView workflowDesignerView)
         {
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Views.Workflow
             if(String.IsNullOrEmpty(modelItemString))
             {
                 //else if it is a workflowItemType, get data for this
-                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat",StringComparison.Ordinal) >= 0);
+                modelItemString = formats.FirstOrDefault(s => s.IndexOf("WorkflowItemTypeNameFormat", StringComparison.Ordinal) >= 0);
 
                 //else just bounce out, we didnt set it.
                 if(String.IsNullOrEmpty(modelItemString))

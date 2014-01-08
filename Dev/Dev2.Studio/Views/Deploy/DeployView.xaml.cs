@@ -1,9 +1,9 @@
 ﻿
-using System.Windows;
-using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Deploy
 {
     /// <summary>
@@ -27,7 +27,7 @@ namespace Dev2.Studio.Views.Deploy
                     DeployViewModel vm = DataContext as DeployViewModel;
                     if(vm != null)
                     {
-                        vm.SelectDependencies(rtvm.DataContext as IContextualResourceModel);
+                        vm.SelectDependencies(rtvm.DataContext);
                     }
                 }
             }

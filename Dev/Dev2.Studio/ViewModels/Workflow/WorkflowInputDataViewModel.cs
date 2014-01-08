@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Windows.Input;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -19,7 +12,16 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.ViewModels.Workflow;
 using Dev2.ViewModels.WorkSurface;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Windows.Input;
+using System.Xml.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
 {
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
@@ -29,10 +31,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private OptomizedObservableCollection<IDataListItem> _workflowInputs;
         private RelayCommand _executeCommmand;
         private RelayCommand _cancelComand;
-        private DebugTO _debugTO;
         private string _xmlData;
         private readonly IContextualResourceModel _resourceModel;
-        private IBinaryDataList _dataList;
         private bool _rememberInputs;
         RelayCommand _viewInBrowserCommmand;
         readonly DataListConversionUtils _dataListConversionUtils;
@@ -42,7 +42,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
 
-        protected virtual void OnDebugExecutionFinished()
+        void OnDebugExecutionFinished()
         {
             var handler = DebugExecutionFinished;
             if(handler != null)
@@ -51,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        protected virtual void OnDebugExecutionStart()
+        void OnDebugExecutionStart()
         {
             var handler = DebugExecutionStart;
             if(handler != null)
@@ -88,6 +88,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             _resourceModel = input.ResourceModel;
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisplayName = "Debug input data";
             _dataListConversionUtils = new DataListConversionUtils();
         }
@@ -102,26 +103,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Binary backing object for the data list
         /// </summary>
-        private IBinaryDataList DataList
-        {
-            get { return _dataList; }
-            set { _dataList = value; }
-        }
+        IBinaryDataList DataList { get; set; }
 
         /// <summary>
         /// The transfer object that holds all the information needed for a debug session
         /// </summary>
-        public DebugTO DebugTO
-        {
-            get
-            {
-                return _debugTO;
-            }
-            set
-            {
-                _debugTO = value;
-            }
-        }
+        public DebugTO DebugTO { get; set; }
 
         /// <summary>
         /// Collection of IDataListItems that contain all the inputs
@@ -185,15 +172,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public ICommand OKCommand
+        public ICommand OkCommand
         {
             get
             {
-                if(_executeCommmand == null)
-                {
-                    _executeCommmand = new RelayCommand(param => Save(), param => true);
-                }
-                return _executeCommmand;
+                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => true));
             }
         }
 
@@ -201,11 +184,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if(_viewInBrowserCommmand == null)
-                {
-                    _viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => true);
-                }
-                return _viewInBrowserCommmand;
+                return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => true));
             }
         }
 
@@ -213,11 +192,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if(_cancelComand == null)
-                {
-                    _cancelComand = new RelayCommand(param => Cancel(), param => true);
-                }
-                return _cancelComand;
+                return _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
             }
         }
         #endregion Cammands
@@ -237,7 +212,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void DoSaveActions()
         {
-            SetXMLData();
+            SetXmlData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
             if(DebugTO.DataList != null)
@@ -279,8 +254,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void ViewInBrowser()
         {
             DoSaveActions();
-            var isXML = false;
-            var payload = DebugTO.XmlData;
+            var isXml = false;
+            string payload;
             var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
             if(allScalars && WorkflowInputs.Count > 0)
             {
@@ -289,16 +264,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             else
             {
                 payload = XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
-                isXML = true;
+                isXml = true;
             }
-            SendViewInBrowserRequest(payload, isXML);
+            SendViewInBrowserRequest(payload, isXml);
             SendFinishedMessage();
             RequestClose();
         }
 
-        protected virtual void SendViewInBrowserRequest(string payload, bool isXML)
+        protected virtual void SendViewInBrowserRequest(string payload, bool isXml)
         {
-            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload, isXML);
+            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload, isXml);
         }
 
         private void ExecutionCallback(UploadStringCompletedEventArgs args)
@@ -317,7 +292,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Cancel()
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
-            SetXMLData();
+            SetXmlData();
             DebugTO.XmlData = XmlData;
             DebugTO.RememberInputs = RememberInputs;
             if(DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO); //2013.01.22: Ashley Lewis - Bug 7837
@@ -353,29 +328,29 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(itemToAdd != null && itemToAdd.IsRecordset)
             {
                 string error;
-                IList<Dev2Column> recsetCols = new List<Dev2Column>();
                 IBinaryDataListEntry recordset;
                 DataList.TryGetEntry(itemToAdd.Recordset, out recordset, out error);
                 if(recordset != null)
                 {
-                    recsetCols = recordset.Columns;
-                    IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-                    IDataListItem lastItem = NumberOfRows.Last();
-                    int IndexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                    IList<Dev2Column> recsetCols = recordset.Columns;
+                    IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+                    IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+                    IDataListItem lastItem = dataListItems.Last();
+                    int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
                     string indexString = lastItem.RecordsetIndex;
                     int indexNum = Convert.ToInt32(indexString) + 1;
-                    IEnumerable<IDataListItem> lastRow = NumberOfRows.Where(c => c.RecordsetIndex == indexString);
-                    bool DontAddRow = true;
+                    IEnumerable<IDataListItem> lastRow = dataListItems.Where(c => c.RecordsetIndex == indexString);
+                    bool dontAddRow = true;
                     foreach(IDataListItem item in lastRow)
                     {
                         if(item.Value != string.Empty)
                         {
-                            DontAddRow = false;
+                            dontAddRow = false;
                         }
                     }
-                    if(!DontAddRow)
+                    if(!dontAddRow)
                     {
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, IndexToInsertAt, indexNum, false);
+                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
                     }
                 }
             }
@@ -392,22 +367,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool itemsRemoved = false;
             if(itemToRemove != null && itemToRemove.IsRecordset)
             {
+                // ReSharper disable once InconsistentNaming
                 IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
                 int numberOfRows = NumberOfRows.Count();
-                List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.RecordsetIndex == numberOfRows.ToString() && c.Recordset == itemToRemove.Recordset).ToList();
+                List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.RecordsetIndex == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
 
                 if(numberOfRows == 2)
                 {
                     IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => (c.RecordsetIndex == "1") && c.Recordset == itemToRemove.Recordset);
-                    bool removeRow = true;
-                    foreach(IDataListItem item in firstRow)
-                    {
-                        if(!string.IsNullOrWhiteSpace(item.Value))
-                        {
-                            removeRow = false;
-                            break;
-                        }
-                    }
+                    bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
                     if(removeRow)
                     {
@@ -421,6 +389,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         foreach(IDataListItem item in listToRemove)
                         {
                             WorkflowInputs.Remove(item);
+                            // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                             if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
                             {
                                 indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item.Recordset));
@@ -435,7 +404,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else if(numberOfRows > 2)
                 {
-                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => (c.RecordsetIndex == (numberOfRows - 1).ToString()) && c.Recordset == itemToRemove.Recordset);
+                    IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => (c.RecordsetIndex == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture)) && c.Recordset == itemToRemove.Recordset);
                     foreach(IDataListItem item in listToChange)
                     {
                         item.Value = string.Empty;
@@ -443,6 +412,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     foreach(IDataListItem item in listToRemove)
                     {
                         WorkflowInputs.Remove(item);
+                        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                         if(itemToRemove.RecordsetIndex == item.RecordsetIndex)
                         {
                             indexToSelect = WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item.Recordset));
@@ -461,15 +431,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// Used to transform the WorkflowInputs into XML
         /// </summary>
-        public void SetXMLData()
+        public void SetXmlData()
         {
-            string error = "";
+            const string Error = "";
             CreateDataListObjectFromList();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
             string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
-            if(string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(Error))
             {
                 try
                 {
@@ -507,19 +477,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool itemsAdded = false;
             if(selectedItem != null && selectedItem.IsRecordset)
             {
-                string error = "";
+                string error;
                 IBinaryDataListEntry recordset;
                 DataList.TryGetEntry(selectedItem.Recordset, out recordset, out error);
                 if(recordset != null)
                 {
                     IList<Dev2Column> recsetCols = recordset.Columns;
-                    IEnumerable<IDataListItem> NumberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
-                    IDataListItem lastItem = NumberOfRows.Last();
-                    int IndexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                    IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
+                    IDataListItem lastItem = numberOfRows.Last();
+                    int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
                     string indexString = lastItem.RecordsetIndex;
                     int indexNum = Convert.ToInt32(indexString) + 1;
-                    indexToSelect = IndexToInsertAt + 1;
-                    itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, IndexToInsertAt, indexNum, true);
+                    indexToSelect = indexToInsertAt + 1;
+                    itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
                 }
             }
             return itemsAdded;
@@ -558,7 +528,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<Dev2Column> columns, int indexToInsertAt, int indexNum, bool setFocus)
+        private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<Dev2Column> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;
             if(dlItem.IsRecordset)
@@ -566,7 +536,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IList<Dev2Column> recsetCols = columns;
                 foreach(Dev2Column col in recsetCols)
                 {
-                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem()
+                    WorkflowInputs.Insert(indexToInsertAt + 1, new DataListItem
                     {
                         DisplayValue = string.Concat(dlItem.Recordset, "(", indexNum, ").", col.ColumnName),
                         Value = string.Empty,
@@ -574,7 +544,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         Recordset = dlItem.Recordset,
                         Field = col.ColumnName,
                         Description = col.ColumnDescription,
-                        RecordsetIndex = indexNum.ToString()
+                        RecordsetIndex = indexNum.ToString(CultureInfo.InvariantCulture)
                     });
                     itemsAdded = true;
                     indexToInsertAt++;

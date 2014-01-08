@@ -1,16 +1,16 @@
 ﻿
 using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.ViewModels.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
-using Dev2.ViewModels.Dialogs;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Dialogs
 {
     public class Dev2MessageBoxViewModel : Screen
@@ -26,8 +26,8 @@ namespace Dev2.Studio.ViewModels.Dialogs
         private readonly string _dontShowAgainKey;
         private bool _dontShowAgain;
         private bool _isButtonClickedForClosed;
-        
-        private static Dictionary<string, MessageBoxResult> DontShowAgainOptions;
+
+        private static Dictionary<string, MessageBoxResult> _dontShowAgainOptions;
 
         #endregion Fields
 
@@ -202,7 +202,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
         public void Closed()
         {
-            if (!_isButtonClickedForClosed)
+            if(!_isButtonClickedForClosed)
             {
                 Result = MessageBoxResult.None;
                 TryClose();
@@ -222,7 +222,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                     StringResources.User_Interface_Layouts_Directory 
                 });
 
-            if (!Directory.Exists(path))
+            if(!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -236,19 +236,19 @@ namespace Dev2.Studio.ViewModels.Dialogs
             {
                 IFilePersistenceProvider filePersistenceProviderInst = ImportService.GetExportValue<IFilePersistenceProvider>();
                 string data = filePersistenceProviderInst.Read(GetDontShowAgainPersistencePath());
-                DontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
+                _dontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
 
                 foreach(XElement element in XElement.Parse(data).Elements())
                 {
                     string key = element.Attribute("Key").Value;
                     MessageBoxResult val = (MessageBoxResult)Enum.Parse(typeof(MessageBoxResult), element.Attribute("Value").Value);
-                    DontShowAgainOptions.Add(key, val);
+                    _dontShowAgainOptions.Add(key, val);
                 }
             }
             catch(Exception)
             {
                 // If deserialization fails then create a blank dicitonary so that when a save occurs it will be saved in teh correct format.
-                DontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
+                _dontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
             }
         }
 
@@ -257,10 +257,10 @@ namespace Dev2.Studio.ViewModels.Dialogs
             try
             {
                 XElement root;
-                if (DontShowAgainOptions != null)
+                if(_dontShowAgainOptions != null)
                 {
                     root = new XElement("root",
-                                                DontShowAgainOptions.Select(k => new XElement("Option", new XAttribute("Key", k.Key), new XAttribute("Value", k.Value))));
+                                                _dontShowAgainOptions.Select(k => new XElement("Option", new XAttribute("Key", k.Key), new XAttribute("Value", k.Value))));
                 }
                 else
                 {
@@ -270,9 +270,9 @@ namespace Dev2.Studio.ViewModels.Dialogs
                 IFilePersistenceProvider filePersistenceProviderInst = ImportService.GetExportValue<IFilePersistenceProvider>();
                 filePersistenceProviderInst.Write(GetDontShowAgainPersistencePath(), root.ToString());
             }
-// ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // If persisting the data fails then do nothing
                 // TODO when loggin support is added to the studio write to the log here
@@ -282,13 +282,13 @@ namespace Dev2.Studio.ViewModels.Dialogs
         public static Tuple<bool, MessageBoxResult> GetDontShowAgainOption(string dontShowAgainKey)
         {
             // If no key then return false result
-            if (string.IsNullOrEmpty(dontShowAgainKey))
+            if(string.IsNullOrEmpty(dontShowAgainKey))
             {
                 return new Tuple<bool, MessageBoxResult>(false, MessageBoxResult.None);
             }
 
             // Load if null
-            if (DontShowAgainOptions == null)
+            if(_dontShowAgainOptions == null)
             {
                 LoadDontShowAgainOptions();
             }
@@ -296,7 +296,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             // Check if there an option for the key
             Tuple<bool, MessageBoxResult> result;
             MessageBoxResult tmp;
-            if (DontShowAgainOptions != null && DontShowAgainOptions.TryGetValue(dontShowAgainKey, out tmp))
+            if(_dontShowAgainOptions != null && _dontShowAgainOptions.TryGetValue(dontShowAgainKey, out tmp))
             {
                 result = new Tuple<bool, MessageBoxResult>(true, tmp);
             }
@@ -311,21 +311,21 @@ namespace Dev2.Studio.ViewModels.Dialogs
         public static void SetDontShowAgainOption(string dontShowAgainKey, MessageBoxResult result)
         {
             // If no key do nothing
-            if (string.IsNullOrEmpty(dontShowAgainKey))
+            if(string.IsNullOrEmpty(dontShowAgainKey))
             {
                 return;
             }
 
             // Load if null
-            if (DontShowAgainOptions == null)
+            if(_dontShowAgainOptions == null)
             {
                 LoadDontShowAgainOptions();
             }
 
             // Add/Update option
-            if(DontShowAgainOptions != null)
+            if(_dontShowAgainOptions != null)
             {
-                DontShowAgainOptions[dontShowAgainKey] = result;
+                _dontShowAgainOptions[dontShowAgainKey] = result;
             }
 
             // Save
@@ -335,21 +335,21 @@ namespace Dev2.Studio.ViewModels.Dialogs
         public static void ResetDontShowAgainOption(string dontShowAgainKey)
         {
             // If no key do nothing
-            if (string.IsNullOrEmpty(dontShowAgainKey))
+            if(string.IsNullOrEmpty(dontShowAgainKey))
             {
                 return;
             }
 
             // Load if null
-            if (DontShowAgainOptions == null)
+            if(_dontShowAgainOptions == null)
             {
                 LoadDontShowAgainOptions();
             }
 
             // Remove option
-            if(DontShowAgainOptions != null)
+            if(_dontShowAgainOptions != null)
             {
-                DontShowAgainOptions.Remove(dontShowAgainKey);
+                _dontShowAgainOptions.Remove(dontShowAgainKey);
             }
 
             // Save
@@ -359,27 +359,27 @@ namespace Dev2.Studio.ViewModels.Dialogs
         public static void ResetAllDontShowAgainOptions()
         {
             // Clear all options
-            if(DontShowAgainOptions != null)
+            if(_dontShowAgainOptions != null)
             {
-                DontShowAgainOptions.Clear();
+                _dontShowAgainOptions.Clear();
             }
 
             // Save
             SaveDontShowAgainOptions();
 
             // Reset dictionary
-            DontShowAgainOptions = null;
+            _dontShowAgainOptions = null;
         }
 
         public static MessageBoxResult Show(string messageBoxText, string caption, MessageBoxButton button, MessageBoxImage icon, string dontShowAgainKey)
         {
             // Claculate the appropriate default result
             MessageBoxResult defaultResult = MessageBoxResult.OK;
-            if (button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
+            if(button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
             {
                 defaultResult = MessageBoxResult.OK;
             }
-            else if (button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
+            else if(button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
             {
                 defaultResult = MessageBoxResult.Yes;
             }
@@ -391,11 +391,11 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             // Claculate the appropriate default result
             MessageBoxResult defaultResult = MessageBoxResult.OK;
-            if (button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
+            if(button == MessageBoxButton.OK || button == MessageBoxButton.OKCancel)
             {
                 defaultResult = MessageBoxResult.OK;
             }
-            else if (button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
+            else if(button == MessageBoxButton.YesNo || button == MessageBoxButton.YesNoCancel)
             {
                 defaultResult = MessageBoxResult.Yes;
             }
@@ -408,7 +408,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             // Check for don't show again option
             Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
-            if (dontShowAgainOption.Item1)
+            if(dontShowAgainOption.Item1)
             {
                 // Return the remembered option
                 return dontShowAgainOption.Item2;
@@ -418,7 +418,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             Dev2MessageBoxViewModel dev2MessageBoxViewModel = new Dev2MessageBoxViewModel(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey);
             IWindowManager windowManager = ImportService.GetExportValue<IWindowManager>();
 
-            if (windowManager == null)
+            if(windowManager == null)
             {
                 throw new Exception("Unable to locate an instance of the window manager.");
             }
@@ -426,7 +426,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
             windowManager.ShowDialog(dev2MessageBoxViewModel);
 
             // Save don't so again option
-            if (dev2MessageBoxViewModel.DontShowAgain)
+            if(dev2MessageBoxViewModel.DontShowAgain)
             {
                 SetDontShowAgainOption(dontShowAgainKey, dev2MessageBoxViewModel.Result);
             }
@@ -442,7 +442,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             // Check for don't show again option
             Tuple<bool, MessageBoxResult> dontShowAgainOption = GetDontShowAgainOption(dontShowAgainKey);
-            if (dontShowAgainOption.Item1)
+            if(dontShowAgainOption.Item1)
             {
                 // Return the remembered option
                 return dontShowAgainOption.Item2;
@@ -484,10 +484,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
                 return msg.Result;
             }
-            else
-            {
-                throw new ArgumentException();
-            }
+            throw new ArgumentException();
         }
 
         #endregion Static Methods

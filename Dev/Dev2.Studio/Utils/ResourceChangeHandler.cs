@@ -32,7 +32,7 @@ namespace Dev2.Utils
             }
             if(resourceChangedDialog == null)
             {
-                resourceChangedDialog = new ResourceChangedDialog(resource, numberOfDependants.Count, StringResources.MappingChangedWarningDialogTitle);
+                resourceChangedDialog = new ResourceChangedDialog(resource, numberOfDependants.Count);
             }
             resourceChangedDialog.ShowDialog();
             if(resourceChangedDialog.OpenDependencyGraph)

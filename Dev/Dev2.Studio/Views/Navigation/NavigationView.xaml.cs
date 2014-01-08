@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Activities.Presentation;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels;
-using System.Windows.Controls;
+﻿using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Navigation
 {
-    public partial class NavigationView : UserControl
+    public partial class NavigationView
     {
         #region Constructor
 
-        public NavigationView() 
+        public NavigationView()
         {
             InitializeComponent();
         }

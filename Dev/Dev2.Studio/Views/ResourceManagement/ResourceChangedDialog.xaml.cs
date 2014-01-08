@@ -1,9 +1,8 @@
-﻿using System;
-using System.Globalization;
+﻿using Dev2.Studio.Core.Interfaces;
+using System;
 using System.Windows;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement
 {
     public interface IResourceChangedDialog
@@ -15,32 +14,32 @@ namespace Dev2.Studio.Views.ResourceManagement
     /// <summary>
     /// Interaction logic for ResourceChangedDialog.xaml
     /// </summary>
-    public partial class ResourceChangedDialog : Window, IResourceChangedDialog
+    public partial class ResourceChangedDialog : IResourceChangedDialog
     {
-      private bool _openDependencyGraph = false;
+        private bool _openDependencyGraph;
 
         public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
 
-        public ResourceChangedDialog(IContextualResourceModel model, int numOfDependances, string title)
+        public ResourceChangedDialog(IContextualResourceModel model, int numOfDependances)
         {
             InitializeComponent();
             Owner = Application.Current.MainWindow;
-            if(numOfDependances <=1)
+            if(numOfDependances <= 1)
             {
                 tbDisplay.Text = String.Format("{0} is used by another workflow. That instance needs to be updated.", model.ResourceName);
                 button3.Content = "Open Affected Workflow";
             }
             else
             {
-                tbDisplay.Text = String.Format("{0} is used in {1} instances. Those instances need to be updated.",model.ResourceName,numOfDependances.ToString());
+                tbDisplay.Text = String.Format("{0} is used in {1} instances. Those instances need to be updated.", model.ResourceName, numOfDependances);
                 button3.Content = "Show Affected Workflows";
-            }            
-        }        
+            }
+        }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void Button3Click(object sender, RoutedEventArgs e)
         {
             _openDependencyGraph = true;
             DialogResult = false;
-        }        
+        }
     }
 }

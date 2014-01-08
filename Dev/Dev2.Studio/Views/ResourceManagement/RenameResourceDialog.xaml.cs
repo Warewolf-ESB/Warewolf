@@ -1,22 +1,24 @@
-﻿using System.Windows;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
 using Dev2.Studio.Core.Interfaces;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.ResourceManagement
 {
     /// <summary>
     /// Interaction logic for DeleteResourceDialog.xaml
     /// </summary>
-    public partial class RenameResourceDialog : Window
+    public partial class RenameResourceDialog
     {
-        private bool _openDependencyGraph = false;
+        // ReSharper disable once ConvertToConstant.Local
+        private readonly bool _openDependencyGraph = false;
 
         public bool OpenDependencyGraph { get { return _openDependencyGraph; } }
 
         public RenameResourceDialog(IContextualResourceModel model, string newName, Window owner)
         {
             InitializeComponent();
-            Owner = owner??Application.Current.MainWindow;
+            Owner = owner ?? Application.Current.MainWindow;
             Title = string.Format(StringResources.DialogTitle_HasDuplicateName, newName);
             tbDisplay.Text = string.Format(StringResources.DialogBody_HasDuplicateName,
                                 model.ResourceType.GetDescription(), model.ResourceName);

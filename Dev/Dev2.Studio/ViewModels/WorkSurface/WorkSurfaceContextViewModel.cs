@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.View;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Messages;
@@ -12,7 +8,6 @@ using Dev2.Services.Events;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -27,6 +22,10 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
 using Dev2.Utils;
 using Dev2.Workspaces;
+using System;
+using System.Activities.Presentation.View;
+using System.Linq;
+using System.Windows.Input;
 
 namespace Dev2.ViewModels.WorkSurface
 {

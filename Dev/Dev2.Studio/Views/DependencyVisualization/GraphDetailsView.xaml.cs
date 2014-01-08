@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
-
+﻿
+// ReSharper disable once CheckNamespace
 namespace CircularDependencyTool
 {
-    public partial class GraphDetailsView : UserControl
+    public partial class GraphDetailsView
     {
         public GraphDetailsView()
         {

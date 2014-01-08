@@ -1,21 +1,21 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class WorkflowDesignerView:IWorkflowDesignerView
+    public partial class WorkflowDesignerView : IWorkflowDesignerView
     {
         readonly DragDropHelpers _dragDropHelpers;
 
         public WorkflowDesignerView()
         {
             InitializeComponent();
-            this.PreviewDrop += DropPointOnDragEnter;
-            this.PreviewDragOver += DropPointOnDragEnter;
-            _dragDropHelpers = new DragDropHelpers(this);            
+            PreviewDrop += DropPointOnDragEnter;
+            PreviewDragOver += DropPointOnDragEnter;
+            _dragDropHelpers = new DragDropHelpers(this);
         }
 
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
@@ -27,7 +27,7 @@ namespace Dev2.Studio.Views.Workflow
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
-            }            
+            }
         }
     }
 

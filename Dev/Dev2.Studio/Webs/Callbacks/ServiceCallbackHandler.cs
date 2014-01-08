@@ -1,6 +1,4 @@
-﻿using System;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common.Common;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -8,14 +6,17 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
+using System;
+using System.Xml.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class ServiceCallbackHandler : WebsiteCallbackHandler
     {
         bool _isEditingSource;
         string _returnUri;
-        IEnvironmentModel _environmentModel = null;
+        IEnvironmentModel _environmentModel;
 
         public ServiceCallbackHandler()
             : this(EnvironmentRepository.Instance)
@@ -34,19 +35,18 @@ namespace Dev2.Studio.Webs.Callbacks
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            Guid resourceID;
-
             // NOTE : When using dynamics be very careful!
             try
             {
-                if (Guid.TryParse(jsonObj.ResourceID.Value, out resourceID))
+                Guid resourceID;
+                if(Guid.TryParse(jsonObj.ResourceID.Value, out resourceID))
                 {
                     _environmentModel = environmentModel;
                     var getDynamicResourceType = jsonObj.ResourceType.Value;
-                    if (getDynamicResourceType != null)
+                    if(getDynamicResourceType != null)
                     {
                         //2013.04.29: Ashley Lewis - PBI 8721 database source and plugin source wizards can be called from with their respective service wizards
-                        if (getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() ||
+                        if(getDynamicResourceType == Data.ServiceModel.ResourceType.DbSource.ToString() ||
                             getDynamicResourceType == Data.ServiceModel.ResourceType.PluginSource.ToString() ||
                             getDynamicResourceType == Data.ServiceModel.ResourceType.WebSource.ToString())
                         {
@@ -64,9 +64,9 @@ namespace Dev2.Studio.Webs.Callbacks
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-               Logger.Error(e.Message);
+                Logger.Error(e.Message);
             }
         }
 

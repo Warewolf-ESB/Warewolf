@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.AppResources.DependencyVisualization;
+using Dev2.Common.Common;
+using System;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Xml.Linq;
-using Dev2.AppResources.DependencyVisualization;
-using Dev2.Common.Common;
 
 namespace Dev2.ViewModels.DependencyVisualization
 {
@@ -34,7 +34,7 @@ namespace Dev2.ViewModels.DependencyVisualization
 
             // Create a graph.
             var graphElem = xe.AncestorsAndSelf("graph").FirstOrDefault();
-            if (graphElem == null)
+            if(graphElem == null)
             {
                 return new Graph("Dependency information is malformed");
             }
@@ -48,44 +48,44 @@ namespace Dev2.ViewModels.DependencyVisualization
                 var nodeElems = graphElem.Elements("node").ToList();
 
                 // Create all of the nodes and add them to the graph.
-                foreach (XElement nodeElem in nodeElems)
+                foreach(XElement nodeElem in nodeElems)
                 {
                     // build the graph position data
                     string id = nodeElem.Attribute("id").Value;
                     var node = CreateNode(nodeElem, modelName, width, height, ref count);
 
                     bool alreadyAdded = false;
-                    foreach (Node n in graph.Nodes)
+                    foreach(Node n in graph.Nodes)
                     {
-                        if (n.ID == id)
+                        if(n.ID == id)
                         {
                             alreadyAdded = true;
                         }
                     }
 
-                    if (!alreadyAdded)
+                    if(!alreadyAdded)
                     {
                         graph.Nodes.Add(node);
                     }
                 }
 
                 // Associate each node with its dependencies.
-                foreach (Node node in graph.Nodes)
+                foreach(Node node in graph.Nodes)
                 {
                     var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
                     var dependencyElems = nodeElem.Elements("dependency");
-                    foreach (XElement dependencyElem in dependencyElems)
+                    foreach(XElement dependencyElem in dependencyElems)
                     {
                         string depID = dependencyElem.Attribute("id").Value;
 
                         var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
-                        if (dependency != null)
+                        if(dependency != null)
                             node.NodeDependencies.Add(dependency);
                     }
 
                     //Now adjust position according to nodesize
                     node.LocationX = node.LocationX - node.NodeWidth;
-                    node.LocationY = node.LocationY - node.NodeHeight/2;
+                    node.LocationY = node.LocationY - node.NodeHeight / 2;
                 }
 
                 // Tell the graph to inspect itself for circular dependencies.
@@ -107,7 +107,7 @@ namespace Dev2.ViewModels.DependencyVisualization
             int centerY = Convert.ToInt32(screenHeight / 2);
             int maxX = Convert.ToInt32(screenWidth);
             int maxY = Convert.ToInt32(screenHeight);
-            const int distance = 300;
+            const int Distance = 300;
             Point centerPoint = new Point(centerX, centerY);
 
             double x;
@@ -130,13 +130,13 @@ namespace Dev2.ViewModels.DependencyVisualization
             }
             else
             {
-                if(count > distance)
+                if(count > Distance)
                 {
                     count = 1.5;
                 }
 
-                int xCoOrd = ((int)Math.Round(centerPoint.X - distance * Math.Sin(count)));
-                int yCoOrd = ((int)Math.Round(centerPoint.Y - distance * Math.Cos(count)));
+                int xCoOrd = ((int)Math.Round(centerPoint.X - Distance * Math.Sin(count)));
+                int yCoOrd = ((int)Math.Round(centerPoint.Y - Distance * Math.Cos(count)));
 
                 if(xCoOrd >= maxX)
                 {
@@ -157,6 +157,6 @@ namespace Dev2.ViewModels.DependencyVisualization
             return new Node(id, x, y, isTarget, broken);
         }
 
-        
+
     }
 }

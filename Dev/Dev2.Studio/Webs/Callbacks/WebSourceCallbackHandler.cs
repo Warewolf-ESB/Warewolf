@@ -1,14 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using Dev2.Studio.Core;
+﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using System.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class WebSourceCallbackHandler : SourceCallbackHandler
     {
-        public readonly static string[] ValidSchemes = new[] { "http", "https", "ftp" };
+        public readonly static string[] ValidSchemes = { "http", "https", "ftp" };
 
         public WebSourceCallbackHandler()
             : this(EnvironmentRepository.Instance)
@@ -19,15 +18,15 @@ namespace Dev2.Studio.Webs.Callbacks
             : base(environmentRepository)
         {
         }
-//
-//        protected override void NavigateTo(string uri, string args, string returnUri)
-//        {
-//            Uri theUri;
-//            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out theUri) && ValidSchemes.Contains(theUri.Scheme.ToLowerInvariant()))
-//            {
-//                StartUriProcess(uri);
-//            }
-//        }
+        //
+        //        protected override void NavigateTo(string uri, string args, string returnUri)
+        //        {
+        //            Uri theUri;
+        //            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out theUri) && ValidSchemes.Contains(theUri.Scheme.ToLowerInvariant()))
+        //            {
+        //                StartUriProcess(uri);
+        //            }
+        //        }
 
         protected virtual void StartUriProcess(string uri)
         {

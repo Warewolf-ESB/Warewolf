@@ -1,18 +1,18 @@
-﻿using System;
+﻿using Dev2.Activities;
+using System;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Statements;
 using System.Linq;
-using System.Windows.Controls;
-using Dev2.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+// ReSharper disable once CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
     /// <summary>
     /// Interaction logic for ToolboxUserControl.xaml
     /// </summary>
     /// 
-    public partial class ToolboxUserControl : UserControl
+    public partial class ToolboxUserControl
     {
 
         public ToolboxUserControl()
@@ -66,10 +66,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
 
             category = GetToolboxCategoryByName("Utility");
             if(category != null)
-            {                                
+            {
                 category.Add(new ToolboxItemWrapper(typeof(DsfCalculateActivity), "/images/ToolCalculate-32.png", "Calculate"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfNumberFormatActivity), "/images/ToolFormatNumber-32.png", "Format Number"));
-                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));                
+                category.Add(new ToolboxItemWrapper(typeof(DsfRandomActivity), "/images/ToolRandom-32.png", "Random"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeActivity), "/images/ToolDateTime-32.png", "Date and Time"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfDateTimeDifferenceActivity), "/images/ToolDateTimeDifference-32.png", "Date and Time Difference"));
                 category.Add(new ToolboxItemWrapper(typeof(DsfSendEmailActivity), "/images/ToolSendEmail-32.png", "Email"));

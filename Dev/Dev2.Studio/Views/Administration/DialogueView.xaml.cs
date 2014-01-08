@@ -1,6 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
-
+﻿// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Administration
 {
     /// <summary>
@@ -12,11 +10,5 @@ namespace Dev2.Studio.Views.Administration
         {
             InitializeComponent();
         }
-
-        private void Hyperlink_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            MessageBox.Show("Hello");
-        }
-
     }
 }

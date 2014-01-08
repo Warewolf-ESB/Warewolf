@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -17,8 +10,16 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Threading;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 using Action = System.Action;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 {
     /// <summary>
@@ -226,7 +227,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(environment.CanStudioExecute)
             {
-                ITreeNode newEnvNode = new EnvironmentTreeViewModel(_eventPublisher, Root, environment,new AsyncWorker());
+                ITreeNode newEnvNode = new EnvironmentTreeViewModel(_eventPublisher, Root, environment, new AsyncWorker());
                 newEnvNode.IsSelected = true;
             }
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
@@ -313,7 +314,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(returnNavigationItemViewModel == null && createIfMissing)
             {
-                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment,new AsyncWorker());
+                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment, new AsyncWorker());
             }
 
             return returnNavigationItemViewModel;
@@ -407,7 +408,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             // I am sick of this null point lazyness!
             var resourceModelCategory = resourceModel.Category;
-            if (!string.IsNullOrEmpty(resourceModelCategory))
+            if(!string.IsNullOrEmpty(resourceModelCategory))
             {
                 resourceModelCategory = resourceModelCategory.ToUpper();
             }
@@ -517,8 +518,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             var treeNodes = environmentNode.GetChildren(c => c.GetType() == typeof(ResourceTreeViewModel)).ToList();
 
-            foreach(ResourceTreeViewModel resourceTreeViewModel in treeNodes)
+            foreach(var treeNode in treeNodes)
             {
+                var resourceTreeViewModel = (ResourceTreeViewModel)treeNode;
                 preTreeViewModels.Add(resourceTreeViewModel);
             }
 

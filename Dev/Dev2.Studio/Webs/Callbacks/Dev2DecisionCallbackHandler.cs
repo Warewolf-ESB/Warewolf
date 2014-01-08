@@ -1,9 +1,10 @@
-﻿using System;
-using System.Windows;
-using Dev2.Interfaces;
+﻿using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
+using System;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class Dev2DecisionCallbackHandler : IPropertyEditorWizard

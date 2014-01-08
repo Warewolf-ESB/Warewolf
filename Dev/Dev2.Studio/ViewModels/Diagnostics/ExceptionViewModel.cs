@@ -1,15 +1,16 @@
-﻿using System.IO;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Model;
 using System.Drawing;
+using System.IO;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>
@@ -80,7 +81,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
             set
             {
-                if (_stackTrace == value) return;
+                if(_stackTrace == value) return;
 
                 _stackTrace = value;
                 NotifyOfPropertyChange(() => StackTrace);

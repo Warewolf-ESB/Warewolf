@@ -1,5 +1,7 @@
 ﻿using Dev2.Dialogs;
+using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>
@@ -10,7 +12,7 @@ namespace Dev2.Studio.Views.Workflow
         public DsfActivityDropWindow()
         {
             InitializeComponent();
-            Owner = App.Current.MainWindow;
+            Owner = Application.Current.MainWindow;
         }
     }
 }

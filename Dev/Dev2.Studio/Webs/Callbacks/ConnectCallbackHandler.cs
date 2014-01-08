@@ -1,21 +1,21 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Webs.Callbacks;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
+        // ReSharper disable once NotAccessedField.Local
         readonly int _webServerPort;
 
         #region CTOR
@@ -38,7 +38,7 @@ namespace Dev2.Studio.Webs.Callbacks
             _webServerPort = Uri.TryCreate(StringResources.Uri_WebServer, UriKind.Absolute, out defaultWebServerUri) ? defaultWebServerUri.Port : 80;
         }
 
-        #endregion        
+        #endregion
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
@@ -75,11 +75,9 @@ namespace Dev2.Studio.Webs.Callbacks
             Guid resourceID = Guid.Parse(connectionID);
             IEnvironmentModel activeEnvironment = CurrentEnvironmentRepository.ActiveEnvironment;
             var connection = new ServerProxy(new Uri(connectionUri));
-            var newEnvironment = new EnvironmentModel(resourceID, connection, activeEnvironment.ResourceRepository);
-            newEnvironment.Name = connectionName;
+            var newEnvironment = new EnvironmentModel(resourceID, connection, activeEnvironment.ResourceRepository) { Name = connectionName, Category = category };
 
             // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
-            newEnvironment.Category = category;
 
             if(defaultEnvironment != null)
             {
@@ -93,9 +91,9 @@ namespace Dev2.Studio.Webs.Callbacks
 
             CurrentEnvironmentRepository.Save(newEnvironment);
             Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
-            _eventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, Context,true));
+            EventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, Context, true));
             Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
-            _eventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, Context));
+            EventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, Context));
         }
 
         #endregion

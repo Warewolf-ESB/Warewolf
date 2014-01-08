@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
@@ -18,7 +10,16 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>
@@ -484,13 +485,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public void OpenMoreLink(IDebugLineItem item)
         {
-            if (item == null)
+            if(item == null)
             {
                 Logger.TraceInfo("Debug line item is null, did not proceed");
                 return;
             }
 
-            if (string.IsNullOrEmpty(item.MoreLink))
+            if(string.IsNullOrEmpty(item.MoreLink))
             {
                 Logger.TraceInfo("Link is empty");
             }
@@ -505,7 +506,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 catch(Exception ex)
                 {
                     Logger.Error(ex);
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -774,11 +775,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         if(theParent == null)
                         {
                             return;
-                }
+                        }
                         theParent.AppendError(content.ErrorMessage);
-                        theParent.HasError = true;                        
-            }
-        }
+                        theParent.HasError = true;
+                    }
+                }
             }
         }
 
@@ -832,8 +833,9 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         static void IterateItems<T>(IEnumerable<IDebugTreeViewItemViewModel> items, Action<T> processItem)
             where T : IDebugTreeViewItemViewModel
         {
-            foreach(T item in items.Where(i => i is T))
+            foreach(var debugTreeViewItemViewModel in items.Where(i => i is T))
             {
+                var item = (T)debugTreeViewItemViewModel;
                 processItem(item);
                 IterateItems(item.Children, processItem);
             }

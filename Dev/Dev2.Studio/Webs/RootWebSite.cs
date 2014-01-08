@@ -1,14 +1,13 @@
-﻿using System;
-using System.Web;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
+using System;
+using System.Web;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs
 {
     public static class RootWebSite
@@ -145,30 +144,29 @@ namespace Dev2.Studio.Webs
             }
 
             // Silly people not checking for nulls on properties that wraper other properties?! ;)
-            if (environment.Connection == null)
+            if(environment.Connection == null)
             {
-                if (!environment.IsConnected)
+                if(!environment.IsConnected)
                 {
-                    environment.Connect();   
+                    environment.Connect();
                 }
 
                 // server must not be up, just do nothing ;)
-                if (!environment.IsConnected)
+                if(!environment.IsConnected)
                 {
-                    return false;  
+                    return false;
                 }
                 // else we managed to connect ;)
             }
-
-            string pageName;
-            WebsiteCallbackHandler pageHandler;
-            double width;
-            double height;
 
             if(environment.Connection != null)
             {
                 var workspaceID = environment.Connection.WorkspaceID;
 
+                string pageName;
+                WebsiteCallbackHandler pageHandler;
+                double width;
+                double height;
                 switch(resourceType)
                 {
                     case ResourceType.Server:
@@ -244,7 +242,11 @@ namespace Dev2.Studio.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null, bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService", resourceID = null);
+            if(resourceID == null)
+            {
+                throw new ArgumentNullException("resourceID");
+            }
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EnvironmentRepository.Instance, resourceModel), "WorkflowService");
         }
 
         static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceID = null)
@@ -257,15 +259,16 @@ namespace Dev2.Studio.Webs
 
             if(environment == null)
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("environment");
             }
-            string pageName = "dialogs/savedialog";
-            double width = 604;
-            double height = 460;
+            const string PageName = "dialogs/savedialog";
+            const double Width = 604;
+            const double Height = 460;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", pageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, width, height);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, Width, Height);
         }
 
         #endregion

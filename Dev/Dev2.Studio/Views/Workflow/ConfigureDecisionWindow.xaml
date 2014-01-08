@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:bds="clr-namespace:Dev2.Studio.Core.Models;assembly=Dev2.Studio.Core"
         Title="Configure your decision..." Height="600" Width="800" 
-        WindowStartupLocation="CenterOwner" Closing="Window_Closing">   
+        WindowStartupLocation="CenterOwner" Closing="WindowClosing">   
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />

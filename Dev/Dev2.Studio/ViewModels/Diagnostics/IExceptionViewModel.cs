@@ -2,6 +2,7 @@
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Model;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     public interface IExceptionViewModel
