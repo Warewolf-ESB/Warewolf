@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Studio.AppResources.Comparers;
@@ -10,27 +8,26 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels.WorkSurface;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory
 {
     public static class WorkSurfaceContextFactory
     {
-
-        private static IDictionary<WorkSurfaceKey, WorkSurfaceContextViewModel> _designerCache = new Dictionary<WorkSurfaceKey, WorkSurfaceContextViewModel>();
-
         public static WorkSurfaceContextViewModel CreateResourceViewModel(IContextualResourceModel resourceModel, bool createDesigner = true)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             //TODO Juries move to factory
-            var workSurfaceVM = new WorkflowDesignerViewModel(resourceModel, createDesigner);
+            var workSurfaceVm = new WorkflowDesignerViewModel(resourceModel, createDesigner);
 
-            var contextVM = new WorkSurfaceContextViewModel(key, workSurfaceVM)
+            var contextVm = new WorkSurfaceContextViewModel(key, workSurfaceVm)
                 {
                     DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(resourceModel)
                 };
 
-            return contextVM;
+            return contextVm;
         }
 
         public static WorkSurfaceContextViewModel CreateDeployViewModel(object input)

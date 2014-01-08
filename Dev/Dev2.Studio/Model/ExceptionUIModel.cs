@@ -1,19 +1,20 @@
 ﻿using Caliburn.Micro;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Model
 {
-    public class ExceptionUIModel : PropertyChangedBase
+    public class ExceptionUiModel : PropertyChangedBase
     {
-        private BindableCollection<ExceptionUIModel> _exception;
-        public BindableCollection<ExceptionUIModel> Exception
+        private BindableCollection<ExceptionUiModel> _exception;
+        public BindableCollection<ExceptionUiModel> Exception
         {
             get
             {
-                return _exception ?? (_exception = new BindableCollection<ExceptionUIModel>());
+                return _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
             }
             set
             {
-                if (_exception == value) return;
+                if(_exception == value) return;
 
                 _exception = value;
                 NotifyOfPropertyChange(() => Exception);
@@ -29,7 +30,7 @@ namespace Dev2.Studio.Model
             }
             set
             {
-                if (_message == value) return;
+                if(_message == value) return;
 
                 _message = value;
                 NotifyOfPropertyChange(() => Message);

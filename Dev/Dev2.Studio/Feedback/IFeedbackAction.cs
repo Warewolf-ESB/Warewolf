@@ -1,5 +1,5 @@
-﻿using System;
-
+﻿
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Feedback
 {
     public interface IFeedbackAction

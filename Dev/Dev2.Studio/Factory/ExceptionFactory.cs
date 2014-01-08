@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory
 {
     /// <summary>
@@ -26,17 +27,17 @@ namespace Dev2.Studio.Factory
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
         /// <param name="isCritical">Will append the critical error text to the message if true</param>
-        public static ExceptionUIModel Create(Exception exception, bool isCritical = false)
+        public static ExceptionUiModel Create(Exception exception, bool isCritical = false)
         {
-            ExceptionUIModel uiModel;
+            ExceptionUiModel uiModel;
             if(isCritical)
             {
-                uiModel = new ExceptionUIModel { Message = StringResources.CriticalExceptionMessage};
+                uiModel = new ExceptionUiModel { Message = StringResources.CriticalExceptionMessage };
                 uiModel.Exception.Add(Create(exception));
             }
             else
             {
-                uiModel = new ExceptionUIModel { Message = StringResources.ErrorPrefix + exception.Message };
+                uiModel = new ExceptionUiModel { Message = StringResources.ErrorPrefix + exception.Message };
             }
 
             if(exception.InnerException != null)
@@ -52,6 +53,7 @@ namespace Dev2.Studio.Factory
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <param name="builder">The builder to use - null if not recursive.</param>
+        /// <param name="critical"></param>
         /// <returns></returns>
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
@@ -101,8 +103,8 @@ namespace Dev2.Studio.Factory
             return builder;
         }
 
-        public static Func<string, string> GetUniqueOutputPath = (extension) => FileHelper.GetUniqueOutputPath(extension);
-        public static Func<IEnvironmentModel, string> GetServerLogTempPath = (environmentModel) => environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel);
+        public static Func<string, string> GetUniqueOutputPath = extension => FileHelper.GetUniqueOutputPath(extension);
+        public static Func<IEnvironmentModel, string> GetServerLogTempPath = environmentModel => environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel);
         public static Func<string> GetStudioLogTempPath = () => FileHelper.GetStudioLogTempPath();
 
         /// <summary>
@@ -130,8 +132,8 @@ namespace Dev2.Studio.Factory
                     Critical = isCritical == ErrorSeverity.Critical
                 };
 
-            var attachedFiles = new Dictionary<string ,string>();
-            
+            var attachedFiles = new Dictionary<string, string>();
+
             if(!string.IsNullOrWhiteSpace(vm.ServerLogTempPath))
             {
                 attachedFiles.Add("ServerLog", vm.ServerLogTempPath);

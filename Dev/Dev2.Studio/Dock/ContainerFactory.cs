@@ -37,7 +37,7 @@ namespace Dev2.Studio.Dock
         {
             _generatedElements = new Dictionary<object, DependencyObject>();
             _itemBindings = new ItemBindingCollection();
-            _itemBindings.CollectionChanged += new NotifyCollectionChangedEventHandler(OnItemBindingsChanged);
+            _itemBindings.CollectionChanged += OnItemBindingsChanged;
         }
 
         #endregion //Constructor
@@ -51,7 +51,7 @@ namespace Dev2.Studio.Dock
         /// <returns></returns>
         protected override Freezable CreateInstanceCore()
         {
-            return (ContainerFactoryBase)Activator.CreateInstance(this.GetType());
+            return (ContainerFactoryBase)Activator.CreateInstance(GetType());
         }
         #endregion //CreateInstanceCore
 
@@ -91,21 +91,21 @@ namespace Dev2.Studio.Dock
         /// Identifies the <see cref="ItemsSource"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource",
-            typeof(IEnumerable), typeof(ContainerFactoryBase), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnItemsSourceChanged)));
+            typeof(IEnumerable), typeof(ContainerFactoryBase), new FrameworkPropertyMetadata(null, OnItemsSourceChanged));
 
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ContainerFactoryBase ef = (ContainerFactoryBase)d;
-            ef.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
+            ef.OnItemsSourceChanged((IEnumerable)e.NewValue);
         }
 
-        private void OnItemsSourceChanged(IEnumerable oldItems, IEnumerable newItems)
+        private void OnItemsSourceChanged(IEnumerable newItems)
         {
             if(_currentView != null)
             {
                 _currentView.CollectionChanged -= OnCollectionChanged;
                 _currentView = null;
-                this.ClearItems();
+                ClearItems();
             }
 
             if(null != newItems)
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Dock
                 _currentView = CollectionViewSource.GetDefaultView(newItems);
                 Debug.Assert(_currentView != null);
                 _currentView.CollectionChanged += OnCollectionChanged;
-                this.ReinitializeElements();
+                ReinitializeElements();
             }
         }
 
@@ -125,11 +125,11 @@ namespace Dev2.Studio.Dock
         {
             get
             {
-                return (IEnumerable)this.GetValue(ContainerFactoryBase.ItemsSourceProperty);
+                return (IEnumerable)GetValue(ItemsSourceProperty);
             }
             set
             {
-                this.SetValue(ContainerFactoryBase.ItemsSourceProperty, value);
+                SetValue(ItemsSourceProperty, value);
             }
         }
 
@@ -354,9 +354,9 @@ namespace Dev2.Studio.Dock
         /// </summary>
         protected void Reset()
         {
-            this.ClearItems();
+            ClearItems();
 
-            this.ReinitializeElements();
+            ReinitializeElements();
         }
         #endregion //Reset
 
@@ -384,6 +384,7 @@ namespace Dev2.Studio.Dock
             container.SetValue(ItemForContainerPropertyKey, item);
             container.SetValue(ContentControl.ContentProperty, item);
 
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             if(item != container)
                 container.SetValue(FrameworkElement.DataContextProperty, item);
         }
@@ -398,7 +399,7 @@ namespace Dev2.Studio.Dock
 
             foreach(DependencyObject container in elements)
             {
-                this.OnItemRemovedImpl(container, container.GetValue(ItemForContainerProperty));
+                OnItemRemovedImpl(container, container.GetValue(ItemForContainerProperty));
             }
         }
         #endregion //ClearItems
@@ -411,21 +412,21 @@ namespace Dev2.Studio.Dock
             // create the element and associate it with the new item
             ContentControl container;
 
-            if(this.IsItemItsOwnContainerImpl(newItem))
+            if(IsItemItsOwnContainerImpl(newItem))
                 container = newItem as ContentControl;
             else
-                container = this.GetContainerForItem(newItem);
+                container = GetContainerForItem(newItem);
 
             // keep a map between the new item and the element
             _generatedElements[newItem] = container;
 
-            this.AttachContainerToItem(container, newItem);
+            AttachContainerToItem(container, newItem);
 
-            this.ApplyItemContainerStyle(container, newItem);
+            ApplyItemContainerStyle(container, newItem);
 
-            this.PrepareContainerForItem(container, newItem);
+            PrepareContainerForItem(container, newItem);
 
-            this.OnItemInserted(container, newItem, index);
+            OnItemInserted(container, newItem, index);
 
         }
         #endregion //InsertItem
@@ -448,7 +449,7 @@ namespace Dev2.Studio.Dock
 
             if(_generatedElements.TryGetValue(item, out container))
             {
-                this.OnItemMoved(container, item, oldIndex, newIndex);
+                OnItemMoved(container, item, oldIndex, newIndex);
             }
         }
         #endregion //MoveItem
@@ -456,51 +457,51 @@ namespace Dev2.Studio.Dock
         #region OnItemBindingsChanged
         private void OnItemBindingsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.Reset();
+            Reset();
         }
         #endregion //OnItemBindingsChanged
 
         #region OnItemRemovedImpl
         private void OnItemRemovedImpl(DependencyObject container, object oldItem)
         {
-            this.OnItemRemoved(container, oldItem);
+            OnItemRemoved(container, oldItem);
 
             container.ClearValue(ItemForContainerPropertyKey);
 
-            this.ClearContainerForItem(container, oldItem);
+            ClearContainerForItem(container, oldItem);
         }
         #endregion //OnItemRemovedImpl
 
         #region OnCollectionChanged
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(this._isInitializing)
+            if(_isInitializing)
                 return;
 
             // since its a freezable make sure its not frozen
-            this.WritePreamble();
+            WritePreamble();
 
             switch(e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
                     for(int i = 0; i < e.NewItems.Count; i++)
-                        this.InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                        InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
                     break;
                 case NotifyCollectionChangedAction.Remove:
                     foreach(object newItem in e.OldItems)
-                        this.RemoveItem(newItem);
+                        RemoveItem(newItem);
                     break;
                 case NotifyCollectionChangedAction.Move:
-                    this.MoveItem(e.OldItems[0], e.OldStartingIndex, e.NewStartingIndex);
+                    MoveItem(e.OldItems[0], e.OldStartingIndex, e.NewStartingIndex);
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     foreach(object newItem in e.OldItems)
-                        this.RemoveItem(newItem);
+                        RemoveItem(newItem);
                     for(int i = 0; i < e.NewItems.Count; i++)
-                        this.InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
+                        InsertItem(i + e.NewStartingIndex, e.NewItems[i]);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    this.ReinitializeElements();
+                    ReinitializeElements();
                     break;
             }
         }
@@ -510,10 +511,10 @@ namespace Dev2.Studio.Dock
         private void ReinitializeElements()
         {
             if(_currentView == null || _currentView.IsEmpty)
-                this.ClearItems();
+                ClearItems();
             else
             {
-                if(this.IsInitializing)
+                if(IsInitializing)
                     return;
 
                 HashSet<object> oldItems = new HashSet<object>(_generatedElements.Keys);
@@ -528,7 +529,7 @@ namespace Dev2.Studio.Dock
                     DependencyObject container = _generatedElements[oldItem];
                     _generatedElements.Remove(oldItem);
 
-                    this.OnItemRemovedImpl(container, oldItem);
+                    OnItemRemovedImpl(container, oldItem);
                 }
 
                 int index = 0;
@@ -538,11 +539,11 @@ namespace Dev2.Studio.Dock
 
                     if(!_generatedElements.TryGetValue(item, out container))
                     {
-                        this.InsertItem(index, item);
+                        InsertItem(index, item);
                     }
                     else
                     {
-                        this.VerifyItemIndex(container, item, index);
+                        VerifyItemIndex(container, item, index);
                     }
 
                     index++;
@@ -580,7 +581,7 @@ namespace Dev2.Studio.Dock
         {
             Debug.Assert(!_isInitializing);
 
-            this.WritePreamble();
+            WritePreamble();
             _isInitializing = true;
         }
 
@@ -589,10 +590,10 @@ namespace Dev2.Studio.Dock
         /// </summary>
         public void EndInit()
         {
-            this.WritePreamble();
+            WritePreamble();
             _isInitializing = false;
 
-            this.ReinitializeElements();
+            ReinitializeElements();
         }
 
         #endregion
@@ -608,12 +609,7 @@ namespace Dev2.Studio.Dock
         #endregion //Member Variables
 
         #region Constructor
-        /// <summary>
-        /// Initializes a new <see cref="ContainerFactory"/>
-        /// </summary>
-        protected ContainerFactory()
-        {
-        }
+
         #endregion //Constructor
 
         #region Base class overrides
@@ -626,10 +622,10 @@ namespace Dev2.Studio.Dock
         /// <param name="item">The item from the source collection</param>
         protected override void ApplyItemContainerStyle(DependencyObject container, object item)
         {
-            Style style = this.ContainerStyle;
+            Style style = ContainerStyle;
 
-            if(null == style && this.ContainerStyleSelector != null)
-                style = this.ContainerStyleSelector.SelectStyle(item, container);
+            if(null == style && ContainerStyleSelector != null)
+                style = ContainerStyleSelector.SelectStyle(item, container);
 
             if(null != style)
             {
@@ -652,7 +648,7 @@ namespace Dev2.Studio.Dock
         /// <returns>The element to represent the item</returns>
         protected override ContentControl GetContainerForItem(object item)
         {
-            return (ContentControl)Activator.CreateInstance(this.ContainerType);
+            return (ContentControl)Activator.CreateInstance(ContainerType);
         }
         #endregion //GetContainerForItem
 
@@ -668,7 +664,7 @@ namespace Dev2.Studio.Dock
         /// Identifies the <see cref="ContainerStyle"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ContainerStyleProperty = DependencyProperty.Register("ContainerStyle",
-            typeof(Style), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnContainerStyleChanged)));
+            typeof(Style), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerStyleChanged));
 
         private static void OnContainerStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -687,11 +683,11 @@ namespace Dev2.Studio.Dock
         {
             get
             {
-                return (Style)this.GetValue(ContainerFactory.ContainerStyleProperty);
+                return (Style)GetValue(ContainerStyleProperty);
             }
             set
             {
-                this.SetValue(ContainerFactory.ContainerStyleProperty, value);
+                SetValue(ContainerStyleProperty, value);
             }
         }
 
@@ -703,7 +699,7 @@ namespace Dev2.Studio.Dock
         /// Identifies the <see cref="ContainerStyleSelector"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ContainerStyleSelectorProperty = DependencyProperty.Register("ContainerStyleSelector",
-            typeof(StyleSelector), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnContainerStyleChanged)));
+            typeof(StyleSelector), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerStyleChanged));
 
         /// <summary>
         /// Returns or sets a StyleSelector that can be used to provide a Style for the items.
@@ -716,11 +712,11 @@ namespace Dev2.Studio.Dock
         {
             get
             {
-                return (StyleSelector)this.GetValue(ContainerFactory.ContainerStyleSelectorProperty);
+                return (StyleSelector)GetValue(ContainerStyleSelectorProperty);
             }
             set
             {
-                this.SetValue(ContainerFactory.ContainerStyleSelectorProperty, value);
+                SetValue(ContainerStyleSelectorProperty, value);
             }
         }
 
@@ -732,7 +728,7 @@ namespace Dev2.Studio.Dock
         /// Identifies the <see cref="ContainerType"/> dependency property
         /// </summary>
         public static readonly DependencyProperty ContainerTypeProperty = DependencyProperty.Register("ContainerType",
-            typeof(Type), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnContainerTypeChanged), new CoerceValueCallback(CoerceContainerType)), new ValidateValueCallback(ValidateContainerType));
+            typeof(Type), typeof(ContainerFactory), new FrameworkPropertyMetadata(null, OnContainerTypeChanged, CoerceContainerType), ValidateContainerType);
 
         private static void OnContainerTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -778,11 +774,11 @@ namespace Dev2.Studio.Dock
         {
             get
             {
-                return (Type)this.GetValue(ContainerFactory.ContainerTypeProperty);
+                return (Type)GetValue(ContainerTypeProperty);
             }
             set
             {
-                this.SetValue(ContainerFactory.ContainerTypeProperty, value);
+                SetValue(ContainerTypeProperty, value);
             }
         }
 
@@ -812,9 +808,9 @@ namespace Dev2.Studio.Dock
         #region RefreshContainerStyles
         private void RefreshContainerStyles()
         {
-            foreach(DependencyObject container in this.GetElements())
+            foreach(DependencyObject container in GetElements())
             {
-                this.ApplyItemContainerStyle(container, this.GetItemFromContainer(container));
+                ApplyItemContainerStyle(container, GetItemFromContainer(container));
             }
         }
         #endregion //RefreshContainerStyles
@@ -846,7 +842,7 @@ namespace Dev2.Studio.Dock
         /// Identifies the <see cref="TargetCollection"/> dependency property
         /// </summary>
         public static readonly DependencyProperty TargetCollectionProperty = DependencyProperty.Register("TargetCollection",
-            typeof(T), typeof(CollectionContainerFactory<T>), new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnTargetCollectionChanged)));
+            typeof(T), typeof(CollectionContainerFactory<T>), new FrameworkPropertyMetadata(null, OnTargetCollectionChanged));
 
         private static void OnTargetCollectionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -858,15 +854,17 @@ namespace Dev2.Studio.Dock
 
         private void OnTargetCollectionChanged(T oldList, T newList)
         {
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(oldList != null)
             {
-                foreach(DependencyObject item in this.GetElements())
+                foreach(DependencyObject item in GetElements())
                     oldList.Remove(item);
             }
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(newList != null)
             {
-                foreach(DependencyObject item in this.GetElements())
+                foreach(DependencyObject item in GetElements())
                     newList.Add(item);
             }
         }
@@ -886,11 +884,11 @@ namespace Dev2.Studio.Dock
         {
             get
             {
-                return (T)this.GetValue(CollectionContainerFactory<T>.TargetCollectionProperty);
+                return (T)GetValue(TargetCollectionProperty);
             }
             set
             {
-                this.SetValue(CollectionContainerFactory<T>.TargetCollectionProperty, value);
+                SetValue(TargetCollectionProperty, value);
             }
         }
 
@@ -910,8 +908,9 @@ namespace Dev2.Studio.Dock
         protected override void OnItemInserted(DependencyObject container, object item, int index)
         {
             // add it to the target collection
-            T target = this.TargetCollection;
+            T target = TargetCollection;
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(null != target)
             {
                 Debug.Assert(index >= 0 && index <= target.Count);
@@ -930,8 +929,9 @@ namespace Dev2.Studio.Dock
         /// <param name="newIndex">The new index</param>
         protected override void OnItemMoved(DependencyObject container, object item, int oldIndex, int newIndex)
         {
-            T target = this.TargetCollection;
+            T target = TargetCollection;
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(null != target)
             {
                 int actualIndex = target.IndexOf(container);
@@ -950,8 +950,9 @@ namespace Dev2.Studio.Dock
         /// <param name="container">The element that has been removed</param>
         protected override void OnItemRemoved(DependencyObject container, object oldItem)
         {
-            T target = this.TargetCollection;
+            T target = TargetCollection;
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(null != target)
                 target.Remove(container);
         }
@@ -966,8 +967,9 @@ namespace Dev2.Studio.Dock
         /// <param name="index">The index in the source collection where the item exists</param>
         protected override void VerifyItemIndex(DependencyObject container, object item, int index)
         {
-            T target = this.TargetCollection;
+            T target = TargetCollection;
 
+            // ReSharper disable once CompareNonConstrainedGenericWithNull
             if(null != target)
             {
                 int oldIndex = target.IndexOf(item);

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Text;
-using Dev2.Data.Util;
+﻿using Dev2.Data.Util;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
+using System;
+using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
 {
 
@@ -18,15 +19,17 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
         /// <returns></returns>
         public static string SelectWizard(IResourceModel theModel)
         {
-            string result = "Dev2ServiceDetails"; // defaults to the service wizard
+            const string Result = "Dev2ServiceDetails"; // defaults to the service wizard
 
-            return result;
+            return Result;
         }
 
         /// <summary>
         /// Perform the translation between studio and server resouce types
         /// </summary>
         /// <param name="resourceType"></param>
+        /// <param name="serviceDef"></param>
+        /// <param name="category"></param>
         /// <returns></returns>
         public static string ConvertStudioToWizardType(string resourceType, string serviceDef, string category)
         {
@@ -44,19 +47,19 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
             {
                 result = "Plugin";
             }
-            else if(resourceType == "Service" && (serviceDef == null || serviceDef.IndexOf("Type=\"Plugin\"") > 0))
+            else if(resourceType == "Service" && (serviceDef == null || serviceDef.IndexOf("Type=\"Plugin\"", StringComparison.Ordinal) > 0))
             {
                 result = "Plugin";
             }
-            else if(resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"") < 0)
+            else if(resourceType == "Service" && serviceDef.IndexOf("Type=\"Plugin\"", StringComparison.Ordinal) < 0)
             {
                 result = "Database";
             }
-            else if(resourceType == "Source" && (serviceDef == null || serviceDef.IndexOf("AssemblyLocation=") > 0))
+            else if(resourceType == "Source" && (serviceDef == null || serviceDef.IndexOf("AssemblyLocation=", StringComparison.Ordinal) > 0))
             {
                 result = "Plugin";
             }
-            else if(resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=") < 0)
+            else if(resourceType == "Source" && serviceDef.IndexOf("AssemblyLocation=", StringComparison.Ordinal) < 0)
             {
                 result = "Database";
             }
@@ -79,12 +82,13 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
         /// <summary>
         /// Builds up the POST data for editing a resource
         /// </summary>
+        /// <param name="resourceType"></param>
         /// <param name="rm"></param>
         /// <returns></returns>
         public static string BuildStudioEditPayload(string resourceType, IResourceModel rm)
         {
             StringBuilder result = new StringBuilder();
-            string resType = string.Empty; 
+            string resType = string.Empty;
 
             // add service type
             result.Append(ResourceKeys.Dev2ServiceType);
@@ -129,7 +133,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
 
             string serviceDef = string.Empty; //rm.ServiceDefinition;
 
-            if(serviceDef.IndexOf(" SourceName=") > 0)
+            if(serviceDef.IndexOf(" SourceName=", StringComparison.Ordinal) > 0)
             {
                 // we have 
                 string sourceName = DataListUtil.ExtractAttribute(serviceDef, "Action", "SourceName");
@@ -152,7 +156,7 @@ namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys
                 result.Append("=");
                 result.Append("yes");
             }
-            else if(serviceDef.IndexOf("<Source") >= 0)
+            else if(serviceDef.IndexOf("<Source", StringComparison.Ordinal) >= 0)
             {
                 // we have a source to process 
                 if(resType == "Plugin")

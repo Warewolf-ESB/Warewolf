@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Dev2.InterfaceImplementors;
+﻿using Dev2.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class FileSystemIntellisenseProvider : IIntellisenseProvider
@@ -10,8 +11,6 @@ namespace Dev2.Studio.InterfaceImplementors
         #region Class Members
 
         List<IntellisenseProviderResult> _intellisenseResults;
-
-        IFileSystemQuery _fileSystemQuery;
 
         #endregion Class Members
 
@@ -22,7 +21,7 @@ namespace Dev2.Studio.InterfaceImplementors
             Optional = false;
             HandlesResultInsertion = true;
             _intellisenseResults = new List<IntellisenseProviderResult>();
-            _fileSystemQuery = new FileSystemQuery();
+            FileSystemQuery = new FileSystemQuery();
         }
 
         #endregion Constructors
@@ -96,18 +95,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         #endregion Properties
 
-
-
-        public IFileSystemQuery FileSystemQuery
-        {
-            get
-            {
-                return _fileSystemQuery;
-            }
-            set
-            {
-                _fileSystemQuery = value;
-            }
-        }
+        public IFileSystemQuery FileSystemQuery { get; set; }
     }
 }

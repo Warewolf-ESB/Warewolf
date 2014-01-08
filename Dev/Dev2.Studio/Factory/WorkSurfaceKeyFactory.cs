@@ -1,11 +1,11 @@
-﻿using System;
-using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory
 {
     /// <summary>
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID,Guid? environmentID = null)
+        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID, Guid? environmentID = null)
         {
             return new WorkSurfaceKey
             {
@@ -130,6 +130,6 @@ namespace Dev2.Studio.Factory
                 ServerID = resource.ServerID
             };
         }
-        
+
     }
 }

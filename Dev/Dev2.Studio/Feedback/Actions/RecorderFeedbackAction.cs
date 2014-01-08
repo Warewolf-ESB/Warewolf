@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
-using Dev2.Composition;
+﻿using Dev2.Composition;
 using Dev2.Studio.AppResources.Exceptions;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Utils;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows;
-using Dev2.Studio.Core.Utils;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Feedback.Actions
 {
     [Export(typeof(IFeedbackAction))]
@@ -31,7 +32,7 @@ namespace Dev2.Studio.Feedback.Actions
 
             FeedBackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
             FeedBackRecorder = ImportService.GetExportValue<IFeedBackRecorder>();
-            Popup = ImportService.GetExportValue<IPopupController>(); 
+            Popup = ImportService.GetExportValue<IPopupController>();
         }
         #endregion
 
@@ -99,10 +100,10 @@ namespace Dev2.Studio.Feedback.Actions
             try
             {
                 _outputPath = GetOuputPath();
-                MessageBoxResult result = Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress", MessageBoxButton.OK, MessageBoxImage.Information);
-                if (result == MessageBoxResult.None)
+                MessageBoxResult result = Popup.Show("Your actions are now being recorded. When you are ready to send your feedback please click 'Stop recording feedback' in the top right corner.", "Recording In Progress");
+                if(result == MessageBoxResult.None)
                 {
-                    if (onOncompleted != null)
+                    if(onOncompleted != null)
                     {
                         onOncompleted(null);
                     }
@@ -110,10 +111,10 @@ namespace Dev2.Studio.Feedback.Actions
                 }
                 FeedBackRecorder.StartRecording(_outputPath);
             }
-            catch (FeedbackRecordingInprogressException feedbackRecordingInprogressException)
+            catch(FeedbackRecordingInprogressException feedbackRecordingInprogressException)
             {
                 MessageBoxResult result = Popup.Show("A recording session is already in progress, would you like to try end it?", "Recording In Progress", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
-                if (result == MessageBoxResult.Yes)
+                if(result == MessageBoxResult.Yes)
                 {
                     FeedBackRecorder.KillAllRecordingTasks();
                     TryStartFeedback(onOncompleted);
@@ -124,29 +125,29 @@ namespace Dev2.Studio.Feedback.Actions
                 }
             }
             //2013.02.06: Ashley Lewis - Bug 8611
-            catch (FeedbackRecordingProcessFailedToStartException feedbackRecordingProcessFailedToStartException)
+            catch(FeedbackRecordingProcessFailedToStartException feedbackRecordingProcessFailedToStartException)
             {
                 MessageBoxResult result = Popup.Show("The recording session cannot start at this time, would you like to send a standard email feedback?", "Recording Not Started", MessageBoxButton.YesNoCancel, MessageBoxImage.Error);
-                if (result == MessageBoxResult.Yes)
+                if(result == MessageBoxResult.Yes)
                 {
                     new FeedbackInvoker().InvokeFeedback(Factory.FeedbackFactory.CreateEmailFeedbackAction(new Dictionary<string, string>(), ServerUtil.GetLocalhostServer()));
                     TryCancelFeedback();
                 }
                 else completedResult = feedbackRecordingProcessFailedToStartException;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                if (onOncompleted != null)
+                if(onOncompleted != null)
                 {
                     completedResult = e;
                 }
                 else
                 {
-                    throw e;
+                    throw;
                 }
             }
 
-            if (onOncompleted != null && completedResult != null)
+            if(onOncompleted != null && completedResult != null)
             {
                 onOncompleted(completedResult);
             }
@@ -161,36 +162,36 @@ namespace Dev2.Studio.Feedback.Actions
             {
                 FeedBackRecorder.StopRecording();
             }
-            catch (FeedbackRecordingNoProcessesExcpetion feedbackRecordingNoProcessesExcpetion)
+            catch(FeedbackRecordingNoProcessesExcpetion feedbackRecordingNoProcessesExcpetion)
             {
                 Popup.Show("A recorded feedback session was ended but wasn't running. Please try start another recorded feedback session.", "No Recorded Feedback Session", MessageBoxButton.OK, MessageBoxImage.Error);
-                if (_onCompleted != null)
+                if(_onCompleted != null)
                 {
                     _onCompleted(feedbackRecordingNoProcessesExcpetion);
                 }
                 return;
             }
-            catch (FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
+            catch(FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
             {
                 Popup.Show("A timeout occured waiting for the recorded feedback session to end. Please try finish the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
-                if (_onCompleted != null)
+                if(_onCompleted != null)
                 {
                     _onCompleted(feedbackRecordingTimeoutException);
                 }
                 return;
             }
-           
+
             var attachedFiles = new Dictionary<string, string>();
             attachedFiles.Add("RecordingLog", _outputPath);
             if(environmentModel != null)
             {
-                attachedFiles.Add("ServerLog", environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel));    
-            }            
+                attachedFiles.Add("ServerLog", environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel));
+            }
             attachedFiles.Add("StudioLog", FileHelper.GetStudioLogTempPath());
             IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachedFiles, environmentModel);
             //ImportService.SatisfyImports(emailFeedbackAction);
 
-            if (_onCompleted != null)
+            if(_onCompleted != null)
             {
                 _onCompleted(null);
             }
@@ -209,13 +210,13 @@ namespace Dev2.Studio.Feedback.Actions
             {
                 FeedBackRecorder.KillAllRecordingTasks();
             }
-            catch (FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
+            catch(FeedbackRecordingTimeoutException feedbackRecordingTimeoutException)
             {
                 Popup.Show("A timeout occured waiting for the recorded feedback session to end. Please try cancel the recorded feedback session again.", "Recorded Feedback Session Timeout", MessageBoxButton.OK, MessageBoxImage.Error);
                 completedResult = feedbackRecordingTimeoutException;
             }
 
-            if (_onCompleted != null)
+            if(_onCompleted != null)
             {
                 _onCompleted(completedResult);
             }
@@ -226,7 +227,7 @@ namespace Dev2.Studio.Feedback.Actions
         /// </summary>
         private string GetOuputPath()
         {
-            string path = Path.Combine(new string[]
+            string path = Path.Combine(new[]
             {
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 StringResources.App_Data_Directory,

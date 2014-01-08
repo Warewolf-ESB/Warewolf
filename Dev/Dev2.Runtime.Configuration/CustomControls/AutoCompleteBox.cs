@@ -47,7 +47,7 @@ namespace System.Windows.Controls
     [TemplateVisualState(Name = VisualStates.StateInvalidUnfocused, GroupName = VisualStates.GroupValidation)]
     [SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Large implementation keeps the components contained.")]
     [ContentProperty("ItemsSource")]
-    public partial class AutoCompleteBox : Control, IUpdateVisualState
+    public class AutoCompleteBox : Control, IUpdateVisualState
     {
         #region Template part and style names
 
@@ -65,7 +65,7 @@ namespace System.Windows.Controls
         /// Specifies the name of the Popup TemplatePart.
         /// </summary>
         private const string ElementPopup = "Popup";
-        
+
         /// <summary>
         /// The name for the text box part.
         /// </summary>
@@ -216,6 +216,7 @@ namespace System.Windows.Controls
         /// </summary>
         /// <param name="d">AutoCompleteBox that changed its MinimumPrefixLength.</param>
         /// <param name="e">Event arguments.</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "MinimumPrefixLength is the name of the actual dependency property.")]
         private static void OnMinimumPrefixLengthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -223,6 +224,7 @@ namespace System.Windows.Controls
 
             if(newValue < 0 && newValue != -1)
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentOutOfRangeException("MinimumPrefixLength");
             }
         }
@@ -274,7 +276,7 @@ namespace System.Windows.Controls
         {
             AutoCompleteBox source = d as AutoCompleteBox;
 
-            if(source._ignorePropertyChange)
+            if(source != null && source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
@@ -283,18 +285,22 @@ namespace System.Windows.Controls
             int newValue = (int)e.NewValue;
             if(newValue < 0)
             {
-                source._ignorePropertyChange = true;
+                if(source != null)
+                {
+                    source._ignorePropertyChange = true;
+                }
                 d.SetValue(e.Property, e.OldValue);
 
-                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, 
+                throw new ArgumentException(string.Format(CultureInfo.InvariantCulture,
+                    // ReSharper disable once NotResolvedInText
                     Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMinimumPopulateDelayPropertyChanged_InvalidValue, newValue), "value");
             }
 
             // Stop any existing timer
-            if(source._delayTimer != null)
+            if(source != null && source._delayTimer != null)
             {
                 source._delayTimer.Stop();
-                
+
                 if(newValue == 0)
                 {
                     source._delayTimer = null;
@@ -302,20 +308,20 @@ namespace System.Windows.Controls
             }
 
             // Create or clear a dispatcher timer instance
-            if(newValue > 0 && source._delayTimer == null)
+            if(source != null && (newValue > 0 && source._delayTimer == null))
             {
                 source._delayTimer = new DispatcherTimer();
                 source._delayTimer.Tick += source.PopulateDropDown;
             }
 
             // Set the new tick interval
-            if(newValue > 0 && source._delayTimer != null)
+            if(source != null && (newValue > 0 && source._delayTimer != null))
             {
                 source._delayTimer.Interval = TimeSpan.FromMilliseconds(newValue);
             }
         }
         #endregion public int MinimumPopulateDelay
-        
+
         #region public bool IsTextCompletionEnabled
         /// <summary>
         /// Gets or sets a value indicating whether the first possible match
@@ -498,24 +504,31 @@ namespace System.Windows.Controls
         private static void OnMaxDropDownHeightPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            if(source._ignorePropertyChange)
+            if(source != null && source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             double newValue = (double)e.NewValue;
-            
+
             // Revert to the old value if invalid (negative)
             if(newValue < 0)
             {
-                source._ignorePropertyChange = true;
-                source.SetValue(e.Property, e.OldValue);
+                if(source != null)
+                {
+                    source._ignorePropertyChange = true;
+                    source.SetValue(e.Property, e.OldValue);
+                }
 
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentException(string.Format(CultureInfo.InvariantCulture, Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnMaxDropDownHeightPropertyChanged_InvalidValue, e.NewValue), "value");
             }
 
-            source.OnMaxDropDownHeightChanged(newValue);
+            if(source != null)
+            {
+                source.OnMaxDropDownHeightChanged(newValue);
+            }
         }
         #endregion public double MaxDropDownHeight
 
@@ -559,7 +572,7 @@ namespace System.Windows.Controls
             AutoCompleteBox source = d as AutoCompleteBox;
 
             // Ignore the change if requested
-            if(source._ignorePropertyChange)
+            if(source != null && source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
@@ -567,17 +580,21 @@ namespace System.Windows.Controls
 
             bool oldValue = (bool)e.OldValue;
             bool newValue = (bool)e.NewValue;
-
-            if(newValue)
+            if(source != null)
             {
-                source.TextUpdated(source.Text, true);
-            }
-            else
-            {
-                source.ClosingDropDown(oldValue);
-            }
+                if(newValue)
+                {
 
-            source.UpdateVisualState(true);
+                    source.TextUpdated(source.Text, true);
+
+                }
+                else
+                {
+                    source.ClosingDropDown(oldValue);
+                }
+
+                source.UpdateVisualState(true);
+            }
         }
         #endregion public bool IsDropDownOpen
 
@@ -619,7 +636,10 @@ namespace System.Windows.Controls
         private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox autoComplete = d as AutoCompleteBox;
-            autoComplete.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
+            if(autoComplete != null)
+            {
+                autoComplete.OnItemsSourceChanged((IEnumerable)e.OldValue, (IEnumerable)e.NewValue);
+            }
         }
 
         #endregion public IEnumerable ItemsSource
@@ -637,7 +657,7 @@ namespace System.Windows.Controls
         /// </remarks>
         public object SelectedItem
         {
-            get { return GetValue(SelectedItemProperty) as object; }
+            get { return GetValue(SelectedItemProperty); }
             set { SetValue(SelectedItemProperty, value); }
         }
 
@@ -666,22 +686,25 @@ namespace System.Windows.Controls
         private static void OnSelectedItemPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
+            if(source != null)
+            {
+                if(source._ignorePropertyChange)
+                {
+                    source._ignorePropertyChange = false;
+                    return;
+                }
 
-            if(source._ignorePropertyChange)
-            {
-                source._ignorePropertyChange = false;
-                return;
+                // Update the text display
+                if(source._skipSelectedItemTextUpdate)
+                {
+                    source._skipSelectedItemTextUpdate = false;
+                }
+                else
+                {
+                    source.OnSelectedItemChanged(e.NewValue);
+                }
             }
 
-            // Update the text display
-            if(source._skipSelectedItemTextUpdate)
-            {
-                source._skipSelectedItemTextUpdate = false;
-            }
-            else
-            {
-                source.OnSelectedItemChanged(e.NewValue);
-            }
 
             // Fire the SelectionChanged event
             List<object> removed = new List<object>();
@@ -689,19 +712,22 @@ namespace System.Windows.Controls
             {
                 removed.Add(e.OldValue);
             }
-            
+
             List<object> added = new List<object>();
             if(e.NewValue != null)
             {
                 added.Add(e.NewValue);
             }
 
-            source.OnSelectionChanged(new SelectionChangedEventArgs(
+            if(source != null)
+            {
+                source.OnSelectionChanged(new SelectionChangedEventArgs(
 #if !SILVERLIGHT
-                SelectionChangedEvent,
+SelectionChangedEvent,
 #endif
-                removed,
-                added));
+ removed,
+                    added));
+            }
         }
 
         /// <summary>
@@ -770,7 +796,10 @@ namespace System.Windows.Controls
         private static void OnTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            source.TextUpdated((string)e.NewValue, false);
+            if(source != null)
+            {
+                source.TextUpdated((string)e.NewValue, false);
+            }
         }
 
         #endregion public string Text
@@ -830,14 +859,14 @@ namespace System.Windows.Controls
         private static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             AutoCompleteBox source = d as AutoCompleteBox;
-            if(source._ignorePropertyChange)
+            if(source != null && source._ignorePropertyChange)
             {
                 source._ignorePropertyChange = false;
                 return;
             }
 
             // Ensure the property is only written when expected
-            if(!source._allowWrite)
+            if(source != null && !source._allowWrite)
             {
                 // Reset the old value before it was incorrectly written
                 source._ignorePropertyChange = true;
@@ -901,7 +930,7 @@ namespace System.Windows.Controls
                 mode != AutoCompleteFilterMode.ContainsCaseSensitive &&
                 mode != AutoCompleteFilterMode.ContainsOrdinal &&
                 mode != AutoCompleteFilterMode.ContainsOrdinalCaseSensitive &&
-                mode != AutoCompleteFilterMode.Custom && 
+                mode != AutoCompleteFilterMode.Custom &&
                 mode != AutoCompleteFilterMode.Equals &&
                 mode != AutoCompleteFilterMode.EqualsCaseSensitive &&
                 mode != AutoCompleteFilterMode.EqualsOrdinal &&
@@ -912,14 +941,21 @@ namespace System.Windows.Controls
                 mode != AutoCompleteFilterMode.StartsWithOrdinal &&
                 mode != AutoCompleteFilterMode.StartsWithOrdinalCaseSensitive)
             {
-                source.SetValue(e.Property, e.OldValue);
+                if(source != null)
+                {
+                    source.SetValue(e.Property, e.OldValue);
+                }
 
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentException(Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnFilterModePropertyChanged_InvalidValue, "value");
             }
 
             // Sets the filter predicate for the new value
             AutoCompleteFilterMode newValue = (AutoCompleteFilterMode)e.NewValue;
-            source.TextFilter = AutoCompleteSearch.GetFilter(newValue);
+            if(source != null)
+            {
+                source.TextFilter = AutoCompleteSearch.GetFilter(newValue);
+            }
         }
         #endregion public AutoCompleteFilterMode FilterMode
 
@@ -968,16 +1004,22 @@ namespace System.Windows.Controls
         {
             AutoCompleteBox source = d as AutoCompleteBox;
             AutoCompleteFilterPredicate<object> value = e.NewValue as AutoCompleteFilterPredicate<object>;
-            
+
             // If null, revert to the "None" predicate
             if(value == null)
             {
-                source.FilterMode = AutoCompleteFilterMode.None;
+                if(source != null)
+                {
+                    source.FilterMode = AutoCompleteFilterMode.None;
+                }
             }
             else
             {
-                source.FilterMode = AutoCompleteFilterMode.Custom;
-                source.TextFilter = null;
+                if(source != null)
+                {
+                    source.FilterMode = AutoCompleteFilterMode.Custom;
+                    source.TextFilter = null;
+                }
             }
         }
         #endregion public AutoCompleteFilterPredicate ItemFilter
@@ -1078,8 +1120,8 @@ namespace System.Windows.Controls
         /// use with AutoCompleteBox or deriving from AutoCompleteBox to 
         /// create a custom control.
         /// </remarks>
-        protected internal ISelectionAdapter SelectionAdapter 
-        { 
+        protected internal ISelectionAdapter SelectionAdapter
+        {
             get { return _adapter; }
             set
             {
@@ -1406,7 +1448,7 @@ namespace System.Windows.Controls
 #endif
             if(DropDownPopup != null)
             {
-                DropDownPopup.Closed -= DropDownPopup_Closed;
+                DropDownPopup.Closed -= DropDownPopupClosed;
                 DropDownPopup.FocusChanged -= OnDropDownFocusChanged;
                 DropDownPopup.UpdateVisualStates -= OnDropDownPopupUpdateVisualStates;
                 DropDownPopup.BeforeOnApplyTemplate();
@@ -1420,15 +1462,14 @@ namespace System.Windows.Controls
             Popup popup = GetTemplateChild(ElementPopup) as Popup;
             if(popup != null)
             {
-                DropDownPopup = new PopupHelper(this, popup);
-                DropDownPopup.MaxDropDownHeight = MaxDropDownHeight;
+                DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
                 DropDownPopup.AfterOnApplyTemplate();
-                DropDownPopup.Closed += DropDownPopup_Closed;
+                DropDownPopup.Closed += DropDownPopupClosed;
                 DropDownPopup.FocusChanged += OnDropDownFocusChanged;
                 DropDownPopup.UpdateVisualStates += OnDropDownPopupUpdateVisualStates;
             }
             SelectionAdapter = GetSelectionAdapterPart();
-            TextBox = GetTemplateChild(AutoCompleteBox.ElementTextBox) as TextBox;
+            TextBox = GetTemplateChild(ElementTextBox) as TextBox;
 #if !SILVERLIGHT
             if(TextBox != null)
             {
@@ -1547,7 +1588,7 @@ namespace System.Windows.Controls
         /// <param name="newValue">The new value.</param>
         private void RaiseExpandCollapseAutomationEvent(bool oldValue, bool newValue)
         {
-            AutoCompleteBoxAutomationPeer peer = FrameworkElementAutomationPeer.FromElement(this) as AutoCompleteBoxAutomationPeer;
+            AutoCompleteBoxAutomationPeer peer = UIElementAutomationPeer.FromElement(this) as AutoCompleteBoxAutomationPeer;
             if(peer != null)
             {
                 peer.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
@@ -1572,7 +1613,7 @@ namespace System.Windows.Controls
         /// </summary>
         /// <param name="sender">The source object.</param>
         /// <param name="e">The event data.</param>
-        private void DropDownPopup_Closed(object sender, EventArgs e)
+        private void DropDownPopupClosed(object sender, EventArgs e)
         {
             // Force the drop down dependency property to be false.
             if(IsDropDownOpen)
@@ -1653,11 +1694,11 @@ namespace System.Windows.Controls
 #else
                 // For WPF, check if the element that has focus is within the control, as
                 // FocusManager.GetFocusedElement(this) will return null in such a case.
-                this.IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
+                IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
 #endif
             while(focused != null)
             {
-                if(object.ReferenceEquals(focused, this))
+                if(ReferenceEquals(focused, this))
                 {
                     return true;
                 }
@@ -1752,6 +1793,7 @@ namespace System.Windows.Controls
             if(selector != null)
             {
                 // Check if it is already an IItemsSelector
+                // ReSharper disable once SuspiciousTypeConversion.Global
                 adapter = selector as ISelectionAdapter;
                 if(adapter == null)
                 {
@@ -1761,6 +1803,7 @@ namespace System.Windows.Controls
             }
             if(adapter == null)
             {
+                // ReSharper disable once SuspiciousTypeConversion.Global
                 adapter = GetTemplateChild(ElementSelectionAdapter) as ISelectionAdapter;
             }
             return adapter;
@@ -2177,7 +2220,7 @@ namespace System.Windows.Controls
         /// When the long-running process has completed you call 
         /// PopulateComplete to indicate the drop-down is populated.
         /// </remarks>
-        public void PopulateComplete() 
+        public void PopulateComplete()
         {
             // Apply the search filter
             RefreshView();
@@ -2190,6 +2233,7 @@ namespace System.Windows.Controls
 #endif
             OnPopulated(populated);
 
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
@@ -2317,13 +2361,7 @@ namespace System.Windows.Controls
         {
             if(view != null && view.Count > 0)
             {
-                foreach(object o in view)
-                {
-                    if(predicate(searchText, FormatValue(o)))
-                    {
-                        return o;
-                    }
-                }
+                return view.FirstOrDefault(o => predicate(searchText, FormatValue(o)));
             }
 
             return null;
@@ -2364,8 +2402,8 @@ namespace System.Windows.Controls
             bool stringFiltering = TextFilter != null;
             bool objectFiltering = FilterMode == AutoCompleteFilterMode.Custom && TextFilter == null;
 
-            int view_index = 0;
-            int view_count = _view.Count;
+            int viewIndex = 0;
+            int viewCount = _view.Count;
             List<object> items = _items;
             foreach(object item in items)
             {
@@ -2375,44 +2413,44 @@ namespace System.Windows.Controls
                     inResults = stringFiltering ? TextFilter(text, FormatValue(item)) : ItemFilter(text, item);
                 }
 
-                if(view_count > view_index && inResults && _view[view_index] == item)
+                if(viewCount > viewIndex && inResults && _view[viewIndex] == item)
                 {
                     // Item is still in the view
-                    view_index++;
+                    viewIndex++;
                 }
                 else if(inResults)
                 {
                     // Insert the item
-                    if(view_count > view_index && _view[view_index] != item)
+                    if(viewCount > viewIndex && _view[viewIndex] != item)
                     {
                         // Replace item
                         // Unfortunately replacing via index throws a fatal 
                         // Cost: O(n) vs O(1)
-                        _view.RemoveAt(view_index);
-                        _view.Insert(view_index, item);
-                        view_index++;
+                        _view.RemoveAt(viewIndex);
+                        _view.Insert(viewIndex, item);
+                        viewIndex++;
                     }
                     else
                     {
                         // Add the item
-                        if(view_index == view_count)
+                        if(viewIndex == viewCount)
                         {
                             // Constant time is preferred (Add).
                             _view.Add(item);
                         }
                         else
                         {
-                            _view.Insert(view_index, item);
+                            _view.Insert(viewIndex, item);
                         }
-                        view_index++;
-                        view_count++;
+                        viewIndex++;
+                        viewCount++;
                     }
                 }
-                else if(view_count > view_index && _view[view_index] == item)
+                else if(viewCount > viewIndex && _view[viewIndex] == item)
                 {
                     // Remove the item
-                    _view.RemoveAt(view_index);
-                    view_count--;
+                    _view.RemoveAt(viewIndex);
+                    viewCount--;
                 }
             }
 
@@ -2445,9 +2483,7 @@ namespace System.Windows.Controls
             INotifyCollectionChanged newValueINotifyCollectionChanged = newValue as INotifyCollectionChanged;
             if(null != newValueINotifyCollectionChanged)
             {
-                _collectionChangedWeakEventListener = new WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs>(this);
-                _collectionChangedWeakEventListener.OnEventAction = (instance, source, eventArgs) => instance.ItemsSourceCollectionChanged(source, eventArgs);
-                _collectionChangedWeakEventListener.OnDetachAction = (weakEventListener) => newValueINotifyCollectionChanged.CollectionChanged -= weakEventListener.OnEvent;
+                _collectionChangedWeakEventListener = new WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs>(this) { OnEventAction = (instance, source, eventArgs) => instance.ItemsSourceCollectionChanged(eventArgs), OnDetachAction = weakEventListener => newValueINotifyCollectionChanged.CollectionChanged -= weakEventListener.OnEvent };
                 newValueINotifyCollectionChanged.CollectionChanged += _collectionChangedWeakEventListener.OnEvent;
             }
 
@@ -2456,6 +2492,7 @@ namespace System.Windows.Controls
 
             // Clear and set the view on the selection adapter
             ClearView();
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
             {
                 SelectionAdapter.ItemsSource = _view;
@@ -2469,9 +2506,8 @@ namespace System.Windows.Controls
         /// <summary>
         /// Method that handles the ObservableCollection.CollectionChanged event for the ItemsSource property.
         /// </summary>
-        /// <param name="sender">The object that raised the event.</param>
         /// <param name="e">The event data.</param>
-        private void ItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void ItemsSourceCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             // Update the cache
             if(e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
@@ -2490,18 +2526,21 @@ namespace System.Windows.Controls
             }
             if(e.Action == NotifyCollectionChangedAction.Replace && e.NewItems != null && e.OldItems != null)
             {
-                for(int index = 0; index < e.NewItems.Count; index++)
+                foreach(object t in e.NewItems)
                 {
-                    _items[e.NewStartingIndex] = e.NewItems[index];
+                    _items[e.NewStartingIndex] = t;
                 }
             }
 
             // Update the view
             if(e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
             {
-                for(int index = 0; index < e.OldItems.Count; index++)
+                if(e.OldItems != null)
                 {
-                    _view.Remove(e.OldItems[index]);
+                    foreach(object t in e.OldItems)
+                    {
+                        _view.Remove(t);
+                    }
                 }
             }
 
@@ -2514,7 +2553,7 @@ namespace System.Windows.Controls
                     _items = new List<object>(ItemsSource.Cast<object>().ToList());
                 }
             }
-            
+
             // Refresh the observable collection used in the selection adapter.
             RefreshView();
         }
@@ -2709,9 +2748,6 @@ namespace System.Windows.Controls
                 case Key.Enter:
                     OnAdapterSelectionComplete(this, new RoutedEventArgs());
                     e.Handled = true;
-                    break;
-
-                default:
                     break;
             }
         }

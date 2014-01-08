@@ -330,7 +330,6 @@
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\SettingsViewModel.cs" />
-    <Compile Include="Utils\HyperlinkUtility.cs" />
     <Compile Include="Utils\ResourceChangeHandler.cs" />
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
@@ -1274,8 +1273,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\ActivityViewModels\" />
-    <Folder Include="ViewModels\Configuration\" />
     <Folder Include="ViewModels\Web\" />
     <Folder Include="ViewModels\Wizards\" />
     <Folder Include="Views\Configuration\" />

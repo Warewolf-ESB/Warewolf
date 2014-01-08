@@ -1,31 +1,11 @@
-﻿using System;
+﻿using Dev2.Studio.Core.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class BlankIntellisenseProvider : IIntellisenseProvider
     {
-
-        #region Class Members
-
-        List<IIntellisenseResult> _intellisenseResults;
-
-        #endregion Class Members
-
-        #region Ctor
-
-        public BlankIntellisenseProvider()
-        {
-            _intellisenseResults = new List<IIntellisenseResult>();
-        }
-
-        #endregion Ctor
-
         #region Properties
 
         public bool HandlesResultInsertion { get; set; }
@@ -48,7 +28,6 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Dispose()
         {
-            _intellisenseResults = null;
         }
 
         #endregion Methods

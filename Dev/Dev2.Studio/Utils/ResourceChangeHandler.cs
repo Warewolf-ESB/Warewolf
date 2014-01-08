@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
-using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Utils;
 using Dev2.Studio.Views.ResourceManagement;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Utils
 {
@@ -22,7 +20,7 @@ namespace Dev2.Utils
             _eventPublisher = eventPublisher;
         }
 
-        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants,IResourceChangedDialog resourceChangedDialog = null)
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null)
         {
             if(resource == null)
             {

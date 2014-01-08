@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Microsoft.Windows.Controls.Ribbon;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using Microsoft.Windows.Controls.Ribbon;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.RibbonControl
 {
     public class Dev2RibbonApplicationMenu : RibbonApplicationMenu
@@ -25,20 +23,20 @@ namespace Dev2.Studio.RibbonControl
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            this.DropDownOpened += Dev2RibbonApplicationMenu_DropDownOpened;
+            DropDownOpened += Dev2RibbonApplicationMenuDropDownOpened;
         }
 
-        void Dev2RibbonApplicationMenu_DropDownOpened(object sender, EventArgs e)
+        void Dev2RibbonApplicationMenuDropDownOpened(object sender, EventArgs e)
         {
             DependencyObject popupObj = GetTemplateChild("PART_Popup");
             Popup panel = (Popup)popupObj;
-            if (panel != null)
+            if(panel != null)
             {
-                var width = panel.GetBindingExpression(Popup.WidthProperty);
+                var width = panel.GetBindingExpression(WidthProperty);
 
-                if (!ShowAuxilaryPanel && width == null)
+                if(!ShowAuxilaryPanel && width == null)
                 {
-                    ScrollViewer panelArea = (ScrollViewer)base.GetTemplateChild("PART_SubMenuScrollViewer");
+                    ScrollViewer panelArea = (ScrollViewer)GetTemplateChild("PART_SubMenuScrollViewer");
                     //DependencyObject auxPanel = base.GetTemplateChild("PART_AuxiliaryPaneContentPresenter");
 
                     //if (auxPanel != null)
@@ -61,13 +59,13 @@ namespace Dev2.Studio.RibbonControl
                         Mode = BindingMode.OneWay
                     };
 
-                    panel.SetBinding(Popup.WidthProperty, panelBindingWidth);
+                    panel.SetBinding(WidthProperty, panelBindingWidth);
                 }
-                else if (ShowAuxilaryPanel && width != null)
+                else if(ShowAuxilaryPanel && width != null)
                 {
-                    BindingOperations.ClearBinding(panel, Popup.WidthProperty);
+                    BindingOperations.ClearBinding(panel, WidthProperty);
                 }
-                
+
             }
         }
     }

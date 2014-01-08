@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataListViewModel : BaseViewModel, IDataListViewModel
@@ -144,7 +145,7 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _sortCommand ??
-                       (_sortCommand = new RelayCommand(method => SortItems(), (p) => CanSortItems));
+                       (_sortCommand = new RelayCommand(method => SortItems(), p => CanSortItems));
             }
         }
 
@@ -635,6 +636,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         void CheckDataListItemsForDuplicates(ObservableCollection<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.Name).ToList();
@@ -806,15 +808,7 @@ namespace Dev2.Studio.ViewModels.DataList
         /// </summary>
         private void SortRecset(bool ascending)
         {
-            IList<IDataListItemModel> newRecsetCollection;
-            if(ascending)
-            {
-                newRecsetCollection = RecsetCollection.OrderBy(c => c.DisplayName).ToList();
-            }
-            else
-            {
-                newRecsetCollection = RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
-            }
+            IList<IDataListItemModel> newRecsetCollection = @ascending ? RecsetCollection.OrderBy(c => c.DisplayName).ToList() : RecsetCollection.OrderByDescending(c => c.DisplayName).ToList();
             RecsetCollection.Clear();
             foreach(var item in newRecsetCollection.Where(c => !c.IsBlank))
             {
@@ -836,17 +830,17 @@ namespace Dev2.Studio.ViewModels.DataList
             if(!string.IsNullOrEmpty(Resource.DataList))
             {
                 ErrorResultTO errors;
-                IBinaryDataList binarnyDL = CreateBinaryDataListFromXmlData(Resource.DataList, out errors);
+                IBinaryDataList binarnyDl = CreateBinaryDataListFromXmlData(Resource.DataList, out errors);
                 if(!errors.HasErrors())
                 {
-                    ConvertBinaryDataListToListOfIDataListItemModels(binarnyDL, out errorString);
+                    ConvertBinaryDataListToListOfIDataListItemModels(binarnyDl, out errorString);
                 }
                 else
                 {
                     string errorMessage = errors.FetchErrors().Aggregate(string.Empty, (current, error) => current + error);
                     throw new Exception(errorMessage);
                 }
-                compiler.ForceDeleteDataListByID(binarnyDL.UID);
+                compiler.ForceDeleteDataListByID(binarnyDl.UID);
             }
             else
             {
@@ -1113,6 +1107,7 @@ namespace Dev2.Studio.ViewModels.DataList
                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
+                                // ReSharper disable once LoopCanBeConvertedToQuery
                                 foreach(var child in dataListItem.Children)
                                 {
                                     if(!(String.IsNullOrEmpty(child.Name)))
@@ -1130,6 +1125,7 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                         else
                         {
+                            // ReSharper disable once LoopCanBeConvertedToQuery
                             foreach(var child in dataListItem.Children)
                                 if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                                 {

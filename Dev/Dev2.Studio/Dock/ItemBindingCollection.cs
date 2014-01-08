@@ -1,19 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Dock
 {
-	/// <summary>
-	/// Collection of <see cref="ItemBinding"/> instances
-	/// </summary>
-	public class ItemBindingCollection : ObservableCollection<ItemBinding>
-	{
-		#region Constructor
-		/// <summary>
-		/// Initializes a new <see cref="ItemBindingCollection"/>
-		/// </summary>
-		public ItemBindingCollection()
-		{
-		}
-		#endregion //Constructor
-	}
+    /// <summary>
+    /// Collection of <see cref="ItemBinding"/> instances
+    /// </summary>
+    public class ItemBindingCollection : ObservableCollection<ItemBinding>
+    {
+    }
 }

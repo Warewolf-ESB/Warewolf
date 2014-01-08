@@ -1,33 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using Dev2.Studio.Core;
 using System.Reflection;
+using System.Windows;
 
-namespace Dev2.Studio.StartupResources {
-    public class Dev2SplashScreen {
-        public static SplashScreen splashScreen;
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.StartupResources
+{
+    public class Dev2SplashScreen
+    {
+        public static SplashScreen SplashScreen;
 
-        public static void SetSplashScreen(string location) {
-            splashScreen = new SplashScreen(Assembly.GetExecutingAssembly(), location);
+        public static void SetSplashScreen(string location)
+        {
+            SplashScreen = new SplashScreen(Assembly.GetExecutingAssembly(), location);
         }
 
-        public static void Show() {
-            if(splashScreen == null) {
+        public static void Show()
+        {
+            if(SplashScreen == null)
+            {
                 SetSplashScreen(StringResources.SplashImage);
             }
-            try {
-                splashScreen.Show(false);
-            }
-            catch(TypeInitializationException ex) {
-                throw ex;
+            if(SplashScreen != null)
+            {
+                SplashScreen.Show(false);
             }
         }
 
-        public static void Close(TimeSpan fadeoutTime) {
-            splashScreen.Close(fadeoutTime);
+        public static void Close(TimeSpan fadeoutTime)
+        {
+            SplashScreen.Close(fadeoutTime);
         }
 
 

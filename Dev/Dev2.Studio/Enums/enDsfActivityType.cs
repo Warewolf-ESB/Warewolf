@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Enums
 {
+    // ReSharper disable once InconsistentNaming
     public enum enDsfActivityType
     {
         All,

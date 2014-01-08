@@ -1,24 +1,27 @@
-﻿using System;
+﻿using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
+using System;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
 using System.Windows.Input;
-using System.ComponentModel.Composition;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Dev2.Studio.Core.ViewModels.Base;
 
-namespace Dev2.Studio.ViewModels.Administration {
-    
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.ViewModels.Administration
+{
+
     [Export(typeof(IDialogueViewModel))]
-    public class DialogueViewModel : IDialogueViewModel {
+    public class DialogueViewModel : IDialogueViewModel
+    {
 
         #region Members
 
         public ClosedOperationEventHandler OnOkClick;
         private ICommand _okClicked;
-        private ICommand _hyperLink ;
+        private ICommand _hyperLink;
         private ImageSource _imageSource;
         private string _description;
         private string _title;
@@ -28,20 +31,24 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #region Properties
 
-        public String Title {
+        public String Title
+        {
             get { return _title; }
         }
 
-        public ImageSource ImageSource {
+        public ImageSource ImageSource
+        {
             get { return _imageSource; }
         }
 
 
-        public string DescriptionTitleText {
+        public string DescriptionTitleText
+        {
             get { return _descriptionTitleText; }
         }
 
-        public String DescriptionText {
+        public String DescriptionText
+        {
             get { return _description; }
         }
 
@@ -53,7 +60,7 @@ namespace Dev2.Studio.ViewModels.Administration {
         {
             get
             {
-                if (_hyperLink == null)
+                if(_hyperLink == null)
                 {
                     _hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown());
                 }
@@ -61,14 +68,16 @@ namespace Dev2.Studio.ViewModels.Administration {
             }
         }
 
-        public ICommand OKCommand {
-            get {
-                    if(_okClicked == null)
-                    {
-                        _okClicked = new RelayCommand(p => { if(OnOkClick != null) OnOkClick(this, null); }, p => true);
-                    }
-                    return _okClicked;
+        public ICommand OKCommand
+        {
+            get
+            {
+                if(_okClicked == null)
+                {
+                    _okClicked = new RelayCommand(p => { if(OnOkClick != null) OnOkClick(this, null); }, p => true);
                 }
+                return _okClicked;
+            }
         }
 
         #endregion Properties
@@ -83,11 +92,12 @@ namespace Dev2.Studio.ViewModels.Administration {
             Process.Start(new Uri(Hyperlink).AbsoluteUri);
         }
 
-        public void SetupDialogue(string title, string description, string imageSourceuri, string DescriptionTitleText, string hyperlink = null, string linkText = null) {
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null)
+        {
             SetTitle(title);
             SetDescription(description);
             SetImage(imageSourceuri);
-            SetDescriptionTitleText(DescriptionTitleText);
+            SetDescriptionTitleText(descriptionTitleText);
             SetHyperlink(hyperlink, linkText);
         }
 
@@ -95,33 +105,43 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #region Private Methods
 
-        private void SetTitle(string title) {
-            if(string.IsNullOrEmpty(title)) {
+        private void SetTitle(string title)
+        {
+            if(string.IsNullOrEmpty(title))
+            {
                 _title = string.Empty;
             }
-            else {
+            else
+            {
                 _title = title;
             }
         }
 
-        private void SetDescription(string description) {
-            if(string.IsNullOrEmpty(description)) {
+        private void SetDescription(string description)
+        {
+            if(string.IsNullOrEmpty(description))
+            {
                 _description = string.Empty;
             }
-            else {
+            else
+            {
                 _description = description;
             }
         }
 
-        private void SetImage(string imageSource) {
-            if(string.IsNullOrEmpty(imageSource)) {
+        private void SetImage(string imageSource)
+        {
+            if(string.IsNullOrEmpty(imageSource))
+            {
                 _imageSource = null;
             }
-            else {
+            else
+            {
                 Uri imageUri;
                 bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out imageUri);
 
-                if(validUri) {
+                if(validUri)
+                {
 
                     // Once initialized, the image must be released so that it is usable by other resources
                     var btMap = new BitmapImage();
@@ -131,20 +151,24 @@ namespace Dev2.Studio.ViewModels.Administration {
                     btMap.EndInit();
                     _imageSource = btMap;
                 }
-                else {
+                else
+                {
                     throw new UriFormatException(String.Format("Uri :{0} was not in the correct format", imageSource));
                 }
             }
 
         }
 
-        
 
-        private void SetDescriptionTitleText(string text) {
-            if(string.IsNullOrEmpty(text)) {
+
+        private void SetDescriptionTitleText(string text)
+        {
+            if(string.IsNullOrEmpty(text))
+            {
                 _descriptionTitleText = string.Empty;
             }
-            else {
+            else
+            {
                 _descriptionTitleText = text;
             }
         }
@@ -163,7 +187,7 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #endregion Private Methods
 
-        #region Events 
+        #region Events
 
         //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
         //    add { this.OnOkClick += value; }
@@ -174,7 +198,8 @@ namespace Dev2.Studio.ViewModels.Administration {
 
         #region IDisposable Implementaton
 
-        public void Dispose() {
+        public void Dispose()
+        {
             _imageSource = null;
             _description = null;
             _descriptionTitleText = null;

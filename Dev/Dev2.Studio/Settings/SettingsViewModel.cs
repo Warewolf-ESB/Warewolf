@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Communication;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -18,6 +11,12 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Dev2.Settings
 {
@@ -318,7 +317,7 @@ namespace Dev2.Settings
             if(payload == null || payload.Message.Length == 0)
             {
                 ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsWriteService"));
-                throw new NullReferenceException("The Setting are null");               
+                throw new NullReferenceException("The Setting are null");
             }
 
             return payload.Message.ToString();
@@ -326,13 +325,17 @@ namespace Dev2.Settings
 
         string ReadSettings()
         {
-            var payload = CurrentEnvironment.ResourceRepository.ReadSettings("Settings", Settings.ToString(),CurrentEnvironment);
+            var payload = CurrentEnvironment.ResourceRepository.ReadSettings("Settings", Settings.ToString(), CurrentEnvironment);
             if(payload == null || payload.Message.Length == 0)
             {
                 ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsReadService"));
             }
 
-            return payload.Message.ToString();
+            if(payload != null)
+            {
+                return payload.Message.ToString();
+            }
+            return string.Empty;
         }
 
 

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.ViewModels.Help;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Feedback.Actions
 {
     [Export(typeof(IFeedbackAction))]
@@ -37,14 +36,14 @@ namespace Dev2.Studio.Feedback.Actions
 
         public void StartFeedback()
         {
-            if (CanProvideFeedback)
+            if(CanProvideFeedback)
                 DisplayFeedbackWindow();
         }
 
         public void DisplayFeedbackWindow()
         {
             var feedbackVm = new FeedbackViewModel(_attachmentPath);
-            if (string.IsNullOrEmpty(feedbackVm.ServerLogAttachmentPath) && _environmentModel != null)
+            if(string.IsNullOrEmpty(feedbackVm.ServerLogAttachmentPath) && _environmentModel != null)
             {
                 feedbackVm.ServerLogAttachmentPath = _environmentModel.ResourceRepository.GetServerLogTempPath(_environmentModel);
             }

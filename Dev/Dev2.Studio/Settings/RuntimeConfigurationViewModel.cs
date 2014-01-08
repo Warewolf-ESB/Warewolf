@@ -1,17 +1,6 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
-using Dev2.Network.Messaging;
-using Dev2.Network.Messaging.Messages;
 using Dev2.Services.Events;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -19,6 +8,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.WorkSurface;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace Dev2.Settings
 {
@@ -139,6 +136,7 @@ namespace Dev2.Settings
             {
                 return _saveSuccessfull;
             }
+            // ReSharper disable once UnusedMember.Local
             private set
             {
                 _saveSuccessfull = value;
@@ -151,9 +149,11 @@ namespace Dev2.Settings
         #region Private Properties
 
         private IRuntimeConfigurationAssemblyRepository RuntimeConfigurationAssemblyRepository { get; set; }
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         private string AssemblyHashCode { get; set; }
         private XElement ConfigurationXml { get; set; }
         private IPopupController Popup { get; set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion Private Properties
 
@@ -205,43 +205,7 @@ namespace Dev2.Settings
             try
             {
                 CurrentEnvironment = environment;
-
-                if(FetchRuntimeConfiguration(false))
-                {
-                    LoadUserControl();
-                }
-            }
-            finally
-            {
-                IsWorking = false;
-            }
-        }
-
-        public XElement Save(XElement configurationXML)
-        {
-            IsWorking = true;
-
-            XElement newConfig;
-
-            try
-            {
-                newConfig = SaveImpl(configurationXML, false);
-            }
-            finally
-            {
-                IsWorking = false;
-            }
-
-            return newConfig;
-        }
-
-        public void Save(XElement configurationXML, bool overwriteSettings)
-        {
-            IsWorking = true;
-
-            try
-            {
-                SaveImpl(configurationXML, overwriteSettings);
+                LoadUserControl();
             }
             finally
             {
@@ -304,12 +268,12 @@ namespace Dev2.Settings
             try
             {
                 // Create parameters
-                Func<XElement, XElement> saveCallback = Save;
                 System.Action cancelCallback = Cancel;
                 System.Action settingChangedCallback = () => { };
+                // ReSharper disable once RedundantArrayCreationExpression
                 object[] parameters = new object[]
                 {
-                    ConfigurationXml, saveCallback, cancelCallback, settingChangedCallback
+                    ConfigurationXml, cancelCallback, settingChangedCallback
                 };
 
                 InitializationRequested = true;
@@ -344,128 +308,6 @@ namespace Dev2.Settings
             {
                 ShowError(string.Format("Unable to locate entry point method '{0}.{1}' in runtime configuration assembly.", _configurationTypeLocation, _configurationEntrypointMethodName), e);
             }
-        }
-
-        private bool FetchRuntimeConfiguration(bool overwriteAssemblyIfExists)
-        {
-//            // Construct & send read message
-//            SettingsMessage settingsMessage = new SettingsMessage
-//            {
-//                Action = NetworkMessageAction.Read,
-//                AssemblyHashCode = "",
-//            };
-//
-//            // Send message
-//            INetworkMessage result;
-//            try
-//            {
-//                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
-//            }
-//            catch(Exception e)
-//            {
-//                ShowError("An error occured while sending a message to the server.", e);
-//                return false;
-//            }
-//
-//            if(result == null)
-//            {
-//                ShowError("No response was received while sending a message to the server.", null);
-//                return false;
-//            }
-//
-//            // Check for error result
-//            ErrorMessage errorMessage = result as ErrorMessage;
-//            if(errorMessage != null)
-//            {
-//                ShowError(errorMessage.Message, null);
-//                return false;
-//            }
-//
-//            // Check if result is unknown type
-//            SettingsMessage resultSettingsMessage = result as SettingsMessage;
-//            if(resultSettingsMessage == null)
-//            {
-//                ShowError("An unknown response was received from the server.", null);
-//                return false;
-//            }
-//
-//            // Set data
-//            AssemblyHashCode = resultSettingsMessage.AssemblyHashCode;
-//            ConfigurationXml = resultSettingsMessage.ConfigurationXml;
-//
-//            // If assembly not in repository add it
-//            if(overwriteAssemblyIfExists || !RuntimeConfigurationAssemblyRepository.AllHashes().Contains(resultSettingsMessage.AssemblyHashCode))
-//            {
-//                RuntimeConfigurationAssemblyRepository.Add(resultSettingsMessage.AssemblyHashCode, resultSettingsMessage.Assembly);
-//            }
-
-            return true;
-        }
-
-        private XElement SaveImpl(XElement configurationXML, bool overwriteSettings)
-        {
-//            // Construct write/overwrite message
-//            SettingsMessage settingsMessage = new SettingsMessage
-//            {
-//                Action = (overwriteSettings) ? NetworkMessageAction.Overwrite : NetworkMessageAction.Write,
-//                AssemblyHashCode = AssemblyHashCode,
-//                ConfigurationXml = configurationXML,
-//            };
-//
-//            // Send message
-//            INetworkMessage result;
-//            try
-//            {
-//                result = CurrentEnvironment.Connection.SendReceiveNetworkMessage(settingsMessage);
-//            }
-//            catch(Exception e)
-//            {
-//                ShowError("An error occured while sending a message to the server.", e);
-//                return null;
-//            }
-//
-//            // Check for error result
-//            ErrorMessage errorMessage = result as ErrorMessage;
-//            if(errorMessage != null)
-//            {
-//                ShowError(errorMessage.Message, null);
-//                return null;
-//            }
-//
-//            // Check if result is unknown type
-//            SettingsMessage resultSettingsMessage = result as SettingsMessage;
-//            if(resultSettingsMessage == null)
-//            {
-//                Popup.Show("An unknown response was received from the server, please try save again.", "Unknown Response", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-//                return null;
-//            }
-//
-//            // Deal with version conflict
-//            if(resultSettingsMessage.Result == NetworkMessageResult.VersionConflict)
-//            {
-//                MessageBoxResult overwriteResult = Popup.Show("The settings on the server are newer than the ones you are saving, would you like to overwrite the server settings.", "Newer Settings", MessageBoxButton.YesNo, MessageBoxImage.Question);
-//
-//                switch(overwriteResult)
-//                {
-//                    case MessageBoxResult.Yes:
-//                        Save(configurationXML, true);
-//                        break;
-//                    default:
-//                        Cancel();
-//                        break;
-//                }
-//                return null;
-//            }
-//
-//            if(resultSettingsMessage.Result == NetworkMessageResult.Unknown)
-//            {
-//                Popup.Show("An unknown result was received from the server, please try save again.", "Unknown Result", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-//                return null;
-//            }
-//
-//            //Publish settings save cancel message
-//            return resultSettingsMessage.ConfigurationXml;
-            return null;
         }
 
         private void ShowError(string errorMessage, Exception innerException)

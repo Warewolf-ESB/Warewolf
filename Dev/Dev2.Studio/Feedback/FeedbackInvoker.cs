@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Feedback
 {
     [Export(typeof(IFeedbackInvoker))]
@@ -16,7 +17,7 @@ namespace Dev2.Studio.Feedback
 
         protected void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
@@ -66,26 +67,26 @@ namespace Dev2.Studio.Feedback
         public void InvokeFeedback(IFeedbackAction emailFeedbackAction, IAsyncFeedbackAction recordedFeedbackAction)
         {
             // The person clicked the Feedback button
-            if (emailFeedbackAction == null)
+            if(emailFeedbackAction == null)
             {
                 throw new ArgumentNullException("emailFeedbackAction");
             }
 
-            if (recordedFeedbackAction == null)
+            if(recordedFeedbackAction == null)
             {
                 throw new ArgumentNullException("recordedFeedbackAction");
             }
 
             IFeedbackAction actionToInvoke = null;
 
-            if (recordedFeedbackAction.CanProvideFeedback)
+            if(recordedFeedbackAction.CanProvideFeedback)
             {
                 IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
-                if (asyncFeedback != null) // If a recording session is already in progress, ask the user if he wants to stop it.
+                if(asyncFeedback != null) // If a recording session is already in progress, ask the user if he wants to stop it.
                 {
 
                     MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
+                    if(result == MessageBoxResult.Yes)
                     {
                         asyncFeedback.FinishFeedBack();
                     }
@@ -94,11 +95,11 @@ namespace Dev2.Studio.Feedback
                 {
                     MessageBoxResult result = Popup.Show("The ability to give feedback by recording steps is available on your system - Would you like to use it?", "Recorded Feedback", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
-                    if (result == MessageBoxResult.Yes)
+                    if(result == MessageBoxResult.Yes)
                     {
                         actionToInvoke = recordedFeedbackAction;
                     }
-                    else if (result == MessageBoxResult.No)
+                    else if(result == MessageBoxResult.No)
                     {
                         actionToInvoke = emailFeedbackAction;
                     }
@@ -109,7 +110,7 @@ namespace Dev2.Studio.Feedback
                 actionToInvoke = emailFeedbackAction;
             }
 
-            if (actionToInvoke == null)
+            if(actionToInvoke == null)
             {
                 return;
             }
@@ -123,24 +124,18 @@ namespace Dev2.Studio.Feedback
 
         private void InvokeFeedbackImpl(IFeedbackAction feedbackAction)
         {
-            if (feedbackAction == null)
+            if(feedbackAction == null)
             {
                 throw new ArgumentNullException("feedbackAction");
             }
 
-            if (!feedbackAction.CanProvideFeedback)
+            if(!feedbackAction.CanProvideFeedback)
             {
                 Popup.Show("Unable to provide feedback at this time.", "Feedback Unavailable", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            string feedbackType = feedbackAction.ToString();
-            if (feedbackType == null)
-            {
-                feedbackType = "Moq.IAsyncFeedbackActionProxy";
-            }
-            feedbackType = feedbackType.Remove(0, feedbackType.LastIndexOf(".", StringComparison.Ordinal) + 1);
-            if (!EnsureNoFeedbackSessionsInProgress(feedbackType))
+            if(!EnsureNoFeedbackSessionsInProgress())
             {
                 return;
             }
@@ -148,21 +143,21 @@ namespace Dev2.Studio.Feedback
             InvokeAction(feedbackAction);
         }
 
-        private bool EnsureNoFeedbackSessionsInProgress(string feedbackType)
+        private bool EnsureNoFeedbackSessionsInProgress()
         {
-            if (CurrentAction == null)
+            if(CurrentAction == null)
             {
                 return true;
             }
 
             MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to cancel it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Error);
-            if (result == MessageBoxResult.No)
+            if(result == MessageBoxResult.No)
             {
                 return false;
             }
 
             IAsyncFeedbackAction asyncFeedback = CurrentAction as IAsyncFeedbackAction;
-            if (asyncFeedback != null)
+            if(asyncFeedback != null)
             {
                 asyncFeedback.CancelFeedback();
             }
@@ -173,7 +168,7 @@ namespace Dev2.Studio.Feedback
         {
             IAsyncFeedbackAction asyncFeedbackAction = feedbackAction as IAsyncFeedbackAction;
 
-            if (asyncFeedbackAction == null)
+            if(asyncFeedbackAction == null)
             {
                 CurrentAction = feedbackAction;
                 feedbackAction.StartFeedback();

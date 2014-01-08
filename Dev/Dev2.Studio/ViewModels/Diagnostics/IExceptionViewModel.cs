@@ -12,7 +12,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         string StudioLogTempPath { get; set; }
         IWindowManager WindowNavigation { get; set; }
         IFeedbackInvoker FeedbackInvoker { get; set; }
-        BindableCollection<ExceptionUIModel> Exception { get; set; }
+        BindableCollection<ExceptionUiModel> Exception { get; set; }
         string StackTrace { get; set; }
         void Show();
         void SendReport();

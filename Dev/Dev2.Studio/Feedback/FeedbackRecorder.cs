@@ -19,16 +19,17 @@
 // /output            :Store output of record session in given path.
 // /stopevent        :Event to signal after output files are generated.
 
+using Dev2.Studio.AppResources.Exceptions;
+using Dev2.Studio.Controller;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
-using Dev2.Studio.AppResources.Exceptions;
-using System;
-using System.ComponentModel.Composition;
-using System.IO;
-using Dev2.Studio.Controller;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Feedback
 {
     [Export(typeof(IFeedBackRecorder))]
@@ -36,7 +37,7 @@ namespace Dev2.Studio.Feedback
     {
         #region Class Members
 
-        private static DateTime LastRecordingStartDateTimeStamp;
+        private static DateTime _lastRecordingStartDateTimeStamp;
 
         private const string Executable = "psr.exe";
         private const string StartParameters = "/start /gui 0 /output \"{0}\"";
@@ -63,7 +64,7 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.ArgumentNullException">fileExistsFunction</exception>
         public FeedbackRecorder(Func<string, bool> fileExistsFunction)
         {
-            if (fileExistsFunction == null)
+            if(fileExistsFunction == null)
             {
                 throw new ArgumentNullException("fileExistsFunction");
             }
@@ -116,12 +117,12 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.InvalidOperationException">Can't start the feedback recorder because one is already running.</exception>
         public void StartRecording(string outputpath)
         {
-            if (outputpath == null)
+            if(outputpath == null)
             {
                 throw new ArgumentNullException("outputpath");
             }
 
-            if (CheckIfProcessIsRunning())
+            if(CheckIfProcessIsRunning())
             {
                 throw new FeedbackRecordingInprogressException("Can't start the feedback recorder because one is already running.");
             }
@@ -130,7 +131,7 @@ namespace Dev2.Studio.Feedback
             EnsurePathIsvalid();
             StartProcess();
 
-            if (!CheckIfProcessIsRunning()) //2013.02.06: Ashley Lewis - Bug 8611
+            if(!CheckIfProcessIsRunning()) //2013.02.06: Ashley Lewis - Bug 8611
             {
                 throw new FeedbackRecordingProcessFailedToStartException("Feedback recorder is unable to start at this time.");
             }
@@ -141,7 +142,7 @@ namespace Dev2.Studio.Feedback
         /// </summary>
         public void StopRecording()
         {
-            if (!CheckIfProcessIsRunning())
+            if(!CheckIfProcessIsRunning())
             {
                 return;
             }
@@ -175,7 +176,7 @@ namespace Dev2.Studio.Feedback
             };
 
             processController.Start();
-            LastRecordingStartDateTimeStamp = DateTime.Now;
+            _lastRecordingStartDateTimeStamp = DateTime.Now;
             RunningProcesses.Add(processController);
         }
 
@@ -193,7 +194,7 @@ namespace Dev2.Studio.Feedback
 
             };
 
-            var stopRecordingProcess = new Process {StartInfo = startInfo};
+            var stopRecordingProcess = new Process { StartInfo = startInfo };
 
             //
             // This check is to prevent stop from being called to soon after pse.exe has been started.
@@ -202,7 +203,7 @@ namespace Dev2.Studio.Feedback
             // It isn't very pretty but psr.exe doesn't provide a mechanism to check if it has finished initializing, 
             // and there is no standard in .net to tell if a process that has been started is 'ready'.
             //
-            if ((DateTime.Now - LastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
+            if((DateTime.Now - _lastRecordingStartDateTimeStamp).TotalMilliseconds < 500)
             {
                 Thread.Sleep(500);
             }
@@ -211,11 +212,11 @@ namespace Dev2.Studio.Feedback
             {
                 stopRecordingProcess.Start();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Console.WriteLine(@"Start Info : " + startInfo);
                 Console.WriteLine(@"Stacktrace : " + e.StackTrace);
-                throw e;
+                throw;
             }
 
             RunningProcesses.Add(new ProcessController(stopRecordingProcess));
@@ -234,22 +235,22 @@ namespace Dev2.Studio.Feedback
             FileInfo path = new FileInfo(OutputPath);
 
             string extension = Path.GetExtension(OutputPath);
-            if (string.Compare(extension, ".zip", StringComparison.OrdinalIgnoreCase) != 0 && string.Compare(extension, ".xml", StringComparison.OrdinalIgnoreCase) != 0)
+            if(string.Compare(extension, ".zip", StringComparison.OrdinalIgnoreCase) != 0 && string.Compare(extension, ".xml", StringComparison.OrdinalIgnoreCase) != 0)
             {
                 throw new InvalidOperationException("The output path for a recording can only be to a 'xml' or 'zip' file.");
             }
 
-            if (path.Exists)
+            if(path.Exists)
             {
                 throw new IOException("File specified in the output path already exists.");
             }
 
-            if (path.Directory == null)
+            if(path.Directory == null)
             {
                 throw new IOException("Output path is invalid.");
             }
 
-            if (!path.Directory.Exists)
+            if(!path.Directory.Exists)
             {
                 path.Directory.Create();
             }
@@ -271,12 +272,12 @@ namespace Dev2.Studio.Feedback
         /// <exception cref="System.Exception">Stop recording timed out. This occurs when the recorder requests the 'Problem Step Recorder' to stop but it doesn't exit with in 10 seconds. This is usually caused by calling 'StopRecording()' to soon after 'StartRecording()'</exception>
         private void WaitForProcessesToEnd(ProcessController[] processes)
         {
-            foreach (ProcessController process in processes)
+            foreach(ProcessController process in processes)
             {
-                if (!process.UtilityProcess.HasExited)
+                if(!process.UtilityProcess.HasExited)
                 {
                     process.UtilityProcess.WaitForExit(10000);
-                    if (!process.UtilityProcess.HasExited)
+                    if(!process.UtilityProcess.HasExited)
                     {
                         try
                         {

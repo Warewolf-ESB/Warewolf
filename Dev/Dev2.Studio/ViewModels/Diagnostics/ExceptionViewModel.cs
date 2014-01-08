@@ -20,7 +20,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     public sealed class ExceptionViewModel : SimpleBaseViewModel, IExceptionViewModel
     {
         #region private fields
-        private BindableCollection<ExceptionUIModel> _exception;
+        private BindableCollection<ExceptionUiModel> _exception;
         private string _stackTrace;
 
         #endregion
@@ -59,11 +59,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>jurie.smit</author>
         /// <date>2013/01/15</date>
-        public BindableCollection<ExceptionUIModel> Exception
+        public BindableCollection<ExceptionUiModel> Exception
         {
             get
             {
-                return _exception ?? (_exception = new BindableCollection<ExceptionUIModel>());
+                return _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
             }
             set
             {

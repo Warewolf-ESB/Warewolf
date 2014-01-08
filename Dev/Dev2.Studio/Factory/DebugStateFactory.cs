@@ -2,6 +2,7 @@
 using Dev2.Diagnostics;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory
 {
     public static class DebugStateFactory
