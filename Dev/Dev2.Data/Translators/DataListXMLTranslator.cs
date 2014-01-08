@@ -5,7 +5,6 @@ using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Enums;
-using Dev2.Data.Binary_Objects;
 using Dev2.Data.Translators;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -22,9 +21,9 @@ namespace Dev2.Server.DataList.Translators
     /// </summary>
     internal sealed class DataListXMLTranslator : IDataListTranslator
     {
-        private static readonly string _rootTag = "DataList";
-        private DataListFormat _format;
-        private Encoding _encoding;
+        const string RootTag = "DataList";
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
 
 
         public DataListFormat Format { get { return _format; } }
@@ -50,23 +49,21 @@ namespace Dev2.Server.DataList.Translators
 
             TranslatorUtils tu = new TranslatorUtils();
 
-            StringBuilder result = new StringBuilder("<" + _rootTag + ">");
+            StringBuilder result = new StringBuilder("<" + RootTag + ">");
             errors = new ErrorResultTO();
-            string error = string.Empty;
 
-            IList<string> itemKeys = payload.FetchAllKeys();
+            var itemKeys = payload.FetchAllKeys();
 
             foreach(string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry entry;
+                string error;
                 if(payload.TryGetEntry(key, out entry, out error))
                 {
 
                     if(entry.IsRecordset)
                     {
-                        IIndexIterator idxItr = entry.FetchRecordsetIndexes();
-
-                        int i;
+                        var idxItr = entry.FetchRecordsetIndexes();
 
                         while(idxItr.HasMore() && !entry.IsEmpty())
                         {
@@ -74,7 +71,7 @@ namespace Dev2.Server.DataList.Translators
                             while(idxItr.HasMore())
                             {
 
-                                i = idxItr.FetchNextIndex();
+                                int i = idxItr.FetchNextIndex();
 
                                 IList<IBinaryDataListItem> rowData = entry.FetchRecordAt(i, out error);
                                 errors.AddError(error);
@@ -98,16 +95,7 @@ namespace Dev2.Server.DataList.Translators
                                     else
                                     {
                                         // deferred read, just print the location
-                                        if(!string.IsNullOrEmpty(col.TheValue))
-                                        {
-                                            result.Append(col.FetchDeferredLocation());
-                                        }
-                                        else
-                                        {
-                                            result.Append(string.Empty);
-                                        }
-
-
+                                        result.Append(!string.IsNullOrEmpty(col.TheValue) ? col.FetchDeferredLocation() : string.Empty);
                                     }
                                     result.Append("</");
                                     result.Append(fName);
@@ -133,14 +121,7 @@ namespace Dev2.Server.DataList.Translators
                             if(!val.IsDeferredRead)
                             {
                                 // Dev2System.FormView is our html region, pass it by ;)
-                                if(!entry.IsManagmentServicePayload)
-                                {
-                                    result.Append(tu.CleanForEmit(val.TheValue));
-                                }
-                                else
-                                {
-                                    result.Append(val.TheValue); // avoid breaking WF Xaml
-                                }
+                                result.Append(!entry.IsManagmentServicePayload ? tu.CleanForEmit(val.TheValue) : val.TheValue);
                             }
                             else
                             {
@@ -156,7 +137,7 @@ namespace Dev2.Server.DataList.Translators
 
             }
 
-            result.Append("</" + _rootTag + ">");
+            result.Append("</" + RootTag + ">");
 
             DataListTranslatedPayloadTO tmp = new DataListTranslatedPayloadTO(result.ToString());
 
@@ -205,7 +186,6 @@ namespace Dev2.Server.DataList.Translators
                         }
 
                         //// Transfer System Tags
-                        IBinaryDataListEntry sysEntry;
                         for(int i = 0; i < TranslationConstants.systemTags.Length; i++)
                         {
                             string key = TranslationConstants.systemTags.GetValue(i).ToString();
@@ -215,7 +195,8 @@ namespace Dev2.Server.DataList.Translators
                             // try system namespace tags ;)
                             if(n == null)
                             {
-                                query = String.Concat("//" + DataListUtil.BuildSystemTagForDataList(key, false));
+                                var values = "//" + DataListUtil.BuildSystemTagForDataList(key, false);
+                                query = values;
                                 n = xDoc.SelectSingleNode(query);
                             }
 
@@ -223,6 +204,7 @@ namespace Dev2.Server.DataList.Translators
                             {
                                 string bkey = DataListUtil.BuildSystemTagForDataList(key, false);
                                 string error;
+                                IBinaryDataListEntry sysEntry;
                                 if(result.TryGetEntry(bkey, out sysEntry, out error))
                                 {
                                     sysEntry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(n.InnerXml, bkey), out error);
@@ -273,20 +255,17 @@ namespace Dev2.Server.DataList.Translators
                             var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
                             // process recordset
                             var nl = c.ChildNodes;
-                            if(nl != null)
+                            foreach(XmlNode subc in nl)
                             {
-                                foreach(XmlNode subc in nl)
-                                {
-                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
+                                entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
 
-                                    if(!string.IsNullOrEmpty(error))
-                                    {
-                                        errors.AddError(error);
-                                    }
+                                if(!string.IsNullOrEmpty(error))
+                                {
+                                    errors.AddError(error);
                                 }
-                                // update this recordset index
-                                indexCache[c.Name] = ++idx;
                             }
+                            // update this recordset index
+                            indexCache[c.Name] = ++idx;
                         }
                         else
                         {

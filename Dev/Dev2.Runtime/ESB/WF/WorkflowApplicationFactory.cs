@@ -67,7 +67,8 @@ namespace Dev2.Runtime.ESB.WF
         /// <param name="bookmarkName">Name of the bookmark.</param>
         /// <param name="isDebug">if set to <c>true</c> [is debug].</param>
         /// <returns></returns>
-        private WorkflowApplication InitEntryPoint(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug)
+        // ReSharper disable once UnusedParameter.Local // ignored as not sure how this method is invoked and what the knock on effect maybe
+        private WorkflowApplication InitEntryPoint(Activity workflowActivity, IDSFDataObject dataTransferObject, IEnumerable<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug)
         {
             dataTransferObject.WorkspaceID = workspace.ID;
 
@@ -144,7 +145,7 @@ namespace Dev2.Runtime.ESB.WF
             {
                 AllErrors = new ErrorResultTO();
             }
-            IExecutionToken exeToken = new ExecutionToken() { IsUserCanceled = false };
+            IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
 
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
             WorkflowApplication wfApp = InitEntryPoint(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, isDebug);
@@ -219,7 +220,8 @@ namespace Dev2.Runtime.ESB.WF
 
                     Interlocked.Decrement(ref Balance);
                     dataTransferObject = run.DataTransferObject.Clone();
-                    DispatchDebugState(run.DataTransferObject, StateType.End, _runTime);
+                    var wfappUtils = new WfApplicationUtils();
+                    wfappUtils.DispatchDebugState(run.DataTransferObject, StateType.End, AllErrors, _runTime);
                     // avoid memory leak ;)
                     run.Dispose();
                 }
@@ -232,56 +234,6 @@ namespace Dev2.Runtime.ESB.WF
             return dataTransferObject;
         }
 
-        private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? workflowStartTime = null)
-        {
-            if(dataObject != null)
-            {
-                Guid parentInstanceID;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
-                var debugState = new DebugState
-                    {
-                        ID = dataObject.DataListID,
-                        ParentID = parentInstanceID,
-                        WorkspaceID = dataObject.WorkspaceID,
-                        StateType = stateType,
-                        StartTime = workflowStartTime ?? DateTime.Now,
-                        EndTime = DateTime.Now,
-                        ActivityType = ActivityType.Workflow,
-                        DisplayName = dataObject.ServiceName,
-                        IsSimulation = dataObject.IsOnDemandSimulation,
-                        ServerID = dataObject.ServerID,
-                        OriginatingResourceID = dataObject.ResourceID,
-                        OriginalInstanceID = dataObject.OriginalInstanceID,
-                        Server = string.Empty,
-                        Version = string.Empty,
-                        SessionID = dataObject.DebugSessionID,
-                        EnvironmentID = dataObject.EnvironmentID,
-                        ClientID = dataObject.ClientID,
-                        Name = GetType().Name,
-                        HasError = AllErrors.HasErrors(),
-                        ErrorMessage = AllErrors.MakeDisplayReady()
-                    };
-
-                if(stateType == StateType.End)
-                {
-                    debugState.NumberOfSteps = dataObject.NumberOfSteps;
-                }
-
-                if(stateType == StateType.Start)
-                {
-                    debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
-                    debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
-                }
-
-                if(dataObject.IsDebugMode())
-                {
-                    DebugDispatcher.Instance.Write(debugState);
-                }
-            }
-        }
-
-
         private sealed class WorkflowApplicationRun : IExecutableService, IDisposable
         {
             #region Instance Fields
@@ -289,18 +241,18 @@ namespace Dev2.Runtime.ESB.WF
             private WorkflowApplicationFactory _owner;
             private WorkflowApplication _instance;
             private IWorkspace _workspace;
-            private bool _isDebug;
+            private readonly bool _isDebug;
             private Guid _parentWorkflowInstanceID;
             private Guid _currentInstanceID;
-            private IList<object> _executionExtensions;
+            private readonly IList<object> _executionExtensions;
             private ManualResetEventSlim _waitHandle;
             private IDSFDataObject _result;
-            private IExecutionToken _executionToken;
+            private readonly IExecutionToken _executionToken;
             #endregion
 
             #region Public Properties
             public IDSFDataObject DataTransferObject { get { return _result; } }
-            public ErrorResultTO AllErrors { get; private set; }
+            ErrorResultTO AllErrors { get; set; }
             private IList<IExecutableService> _associatedServices;
             private int _previousNumberOfSteps;
 
@@ -336,65 +288,18 @@ namespace Dev2.Runtime.ESB.WF
                 get { return _associatedServices ?? (_associatedServices = new List<IExecutableService>()); }
             }
 
+
             public void Run()
             {
                 ID = DataTransferObject.ResourceID;
                 WorkspaceID = DataTransferObject.WorkspaceID;
                 ExecutableServiceRepository.Instance.Add(this);
-                DispatchDebugState(DataTransferObject, StateType.Start);
+                var wfappUtils = new WfApplicationUtils();
+                wfappUtils.DispatchDebugState(DataTransferObject, StateType.Start, AllErrors);
                 _previousNumberOfSteps = DataTransferObject.NumberOfSteps;
                 DataTransferObject.NumberOfSteps = 0;
                 _instance.Run();
 
-            }
-
-            private void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, DateTime? workflowStartTime = null)
-            {
-                if(dataObject != null)
-                {
-                    Guid parentInstanceID;
-                    Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
-                    var debugState = new DebugState
-                        {
-                            ID = dataObject.DataListID,
-                            ParentID = parentInstanceID,
-                            WorkspaceID = dataObject.WorkspaceID,
-                            StateType = stateType,
-                            StartTime = workflowStartTime ?? DateTime.Now,
-                            EndTime = DateTime.Now,
-                            ActivityType = ActivityType.Workflow,
-                            DisplayName = dataObject.ServiceName,
-                            IsSimulation = dataObject.IsOnDemandSimulation,
-                            ServerID = dataObject.ServerID,
-                            OriginatingResourceID = dataObject.ResourceID,
-                            OriginalInstanceID = dataObject.OriginalInstanceID,
-                            Server = string.Empty,
-                            Version = string.Empty,
-                            SessionID = dataObject.DebugSessionID,
-                            EnvironmentID = dataObject.EnvironmentID,
-                            ClientID = dataObject.ClientID,
-                            Name = GetType().Name,
-                            HasError = AllErrors.HasErrors(),
-                            ErrorMessage = AllErrors.MakeDisplayReady()
-                        };
-
-                    if(stateType == StateType.End)
-                    {
-                        debugState.NumberOfSteps = dataObject.NumberOfSteps;
-                    }
-
-                    if(stateType == StateType.Start)
-                    {
-                        debugState.ExecutionOrigin = dataObject.ExecutionOrigin;
-                        debugState.ExecutionOriginDescription = dataObject.ExecutionOriginDescription;
-                    }
-
-                    if(dataObject.IsDebugMode())
-                    {
-                        DebugDispatcher.Instance.Write(debugState);
-                    }
-                }
             }
 
             public void Terminate()
@@ -480,8 +385,6 @@ namespace Dev2.Runtime.ESB.WF
 
                         var parentServiceNameStr = string.IsNullOrEmpty(_result.ParentServiceName) ? string.Empty : _result.ParentServiceName;
 
-                        PooledServiceActivity wfActivity = null;
-
                         if(!string.IsNullOrEmpty(parentServiceNameStr) && Guid.TryParse(parentId.ToString(), out _parentWorkflowInstanceID))
                         {
                             if(_parentWorkflowInstanceID != _currentInstanceID)
@@ -500,11 +403,11 @@ namespace Dev2.Runtime.ESB.WF
                                         if(_result.WorkflowResumeable)
                                         {
                                             var serviceAction = actionSet.First();
-                                            wfActivity = serviceAction.PopActivity();
+                                            PooledServiceActivity wfActivity = serviceAction.PopActivity();
 
                                             try
                                             {
-                                                ErrorResultTO invokeErrors = new ErrorResultTO();
+                                                ErrorResultTO invokeErrors;
                                                 _result = _owner.InvokeWorkflow(wfActivity.Value, _result, _executionExtensions, _parentWorkflowInstanceID, _workspace, "dsfResumption", out invokeErrors);
                                                 // attach any execution errors
                                                 if(AllErrors != null)
@@ -535,7 +438,6 @@ namespace Dev2.Runtime.ESB.WF
                     {
                         if(_waitHandle != null) _waitHandle.Set();
                         ExecutableServiceRepository.Instance.Remove(this);
-                        //DispatchDebugState(DataTransferObject, StateType.End, _runTime);
                         if(DataTransferObject != null) DataTransferObject.NumberOfSteps = _previousNumberOfSteps;
                     }
                     catch(Exception e)
@@ -602,11 +504,14 @@ namespace Dev2.Runtime.ESB.WF
 
             private void Dispose(bool disposing)
             {
-                _owner = null;
-                _instance = null;
-                _workspace = null;
-                _result = null;
-                _waitHandle = null;
+                if(disposing)
+                {
+                    _owner = null;
+                    _instance = null;
+                    _workspace = null;
+                    _result = null;
+                    _waitHandle = null;
+                }
             }
             #endregion
         }
