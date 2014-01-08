@@ -91,7 +91,7 @@
   </this:Process.Metadata>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
-  <Sequence DisplayName="Unit and Integration Test Run" sap2010:WorkflowViewState.IdRef="Sequence_48">
+  <Sequence DisplayName="Unit, Integration and UI Test Run" sap2010:WorkflowViewState.IdRef="Sequence_48">
     <Sequence.Variables>
       <Variable x:TypeArguments="mtbc:IBuildDetail" Name="BuildDetail" />
       <Variable x:TypeArguments="x:String" Name="BuildDirectory" />
