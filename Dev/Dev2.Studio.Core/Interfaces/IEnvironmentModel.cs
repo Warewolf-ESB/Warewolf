@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentModel : IEquatable<IEnvironmentModel>

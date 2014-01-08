@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.CustomControls.Converters
 {
     public class BoolToVisibilityConverter : IValueConverter
@@ -19,12 +20,12 @@ namespace Dev2.CustomControls.Converters
         {
             bool? boolValue = value as bool?;
 
-            if (boolValue == null)
+            if(boolValue == null)
             {
                 return FalseValue;
             }
 
-            if (boolValue.GetValueOrDefault())
+            if(boolValue.GetValueOrDefault())
             {
                 return TrueValue;
             }

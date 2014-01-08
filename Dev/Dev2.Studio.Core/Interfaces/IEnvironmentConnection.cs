@@ -8,6 +8,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentConnection

@@ -1,7 +1,8 @@
-﻿using Dev2.Services.Events;
+﻿using System;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Services
 {
     public class DesignerManagementService : IDesignerManagementService
@@ -55,8 +56,7 @@ namespace Dev2.Studio.Core.Activities.Services
         #region Class Members
 
         readonly IContextualResourceModel _rootModel;
-        private IResourceRepository _resourceRepository;
-        private bool disposed;
+        private bool _disposed;
 
         #endregion Class Members
 
@@ -76,7 +76,6 @@ namespace Dev2.Studio.Core.Activities.Services
             //VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
 
             _rootModel = rootModel;
-            _resourceRepository = resourceRepository;
 
             EventPublishers.Aggregator.Subscribe(this);
         }
@@ -133,13 +132,12 @@ namespace Dev2.Studio.Core.Activities.Services
         protected virtual void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!disposed)
+            if(!_disposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
                 if(disposing)
                 {
-                    _resourceRepository = null;
                     EventPublishers.Aggregator.Unsubscribe(this);
                 }
 
@@ -149,7 +147,7 @@ namespace Dev2.Studio.Core.Activities.Services
                 // only the following code is executed.
 
                 // Note disposing has been done.
-                disposed = true;
+                _disposed = true;
             }
         }
 

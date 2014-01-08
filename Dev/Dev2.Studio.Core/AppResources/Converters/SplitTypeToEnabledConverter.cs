@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     [ValueConversion(typeof(string), typeof(bool))]

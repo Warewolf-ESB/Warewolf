@@ -4,6 +4,7 @@ using System.Activities.Presentation.Model;
 using System.Globalization;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class ModelItemToActivityConverter : IValueConverter

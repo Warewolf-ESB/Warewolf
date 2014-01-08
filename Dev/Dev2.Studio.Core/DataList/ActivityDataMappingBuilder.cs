@@ -1,4 +1,7 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -7,9 +10,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.DataList
 {
@@ -17,13 +17,13 @@ namespace Dev2.DataList
     /// Used to perform fuzzy matching of sorts ;)
     /// NOTE : Commented out code for future extention on this piece
     /// </summary>
-    class FuzzyMatchVO
+    class FuzzyMatchVo
     {
-        internal IDictionary<string, string> _recordsetColumnsToName;
+        internal IDictionary<string, string> RecordsetColumnsToName;
 
-        internal FuzzyMatchVO(IDictionary<string, string> matches)
+        internal FuzzyMatchVo(IDictionary<string, string> matches)
         {
-            _recordsetColumnsToName = matches;
+            RecordsetColumnsToName = matches;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Dev2.DataList
         {
             string result;
 
-            _recordsetColumnsToName.TryGetValue(token, out result);
+            RecordsetColumnsToName.TryGetValue(token, out result);
 
             return result;
         }
@@ -129,8 +129,8 @@ namespace Dev2.DataList
                 {
                     IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
 
-                    string inputs = string.Empty;
-                    string outputs = string.Empty;
+                    string inputs;
+                    string outputs;
 
                     // handle workflows differently ;)
                     if(IsWorkflow)
@@ -160,9 +160,6 @@ namespace Dev2.DataList
         /// </summary>
         public MappingViewModelTO Generate()
         {
-
-            MappingViewModelTO result = null;
-
             var outputParser = DataListFactory.CreateOutputParser();
             var inputParser = DataListFactory.CreateInputParser();
 
@@ -170,7 +167,7 @@ namespace Dev2.DataList
 
             var outputList = GenerateMapping(SavedOutputMapping, ActivityOutputDefinitions, true, outputParser);
 
-            result = new MappingViewModelTO(inputList, outputList);
+            MappingViewModelTO result = new MappingViewModelTO(inputList, outputList);
 
             // and set the data to save?!
             if(string.IsNullOrEmpty(SavedInputMapping))
@@ -267,15 +264,14 @@ namespace Dev2.DataList
         /// <param name="masterView">The master view.</param>
         /// <param name="existingView">The existing view.</param>
         /// <returns></returns>
-        private IList<IInputOutputViewModel> ReconcileExistingAndMasterView(IList<IInputOutputViewModel> masterView, IList<IInputOutputViewModel> existingView)
+        private IList<IInputOutputViewModel> ReconcileExistingAndMasterView(IList<IInputOutputViewModel> masterView, IEnumerable<IInputOutputViewModel> existingView)
         {
-            IList<IInputOutputViewModel> result = null;
-
             var equalityCompareImpl = new InputOutputViewModelEqualityComparer();
 
             var intersectionResult = existingView.Intersect(masterView, equalityCompareImpl);
 
-            foreach(var intersectionRowItem in intersectionResult)
+            IEnumerable<IInputOutputViewModel> inputOutputViewModels = intersectionResult as IList<IInputOutputViewModel> ?? intersectionResult.ToList();
+            foreach(var intersectionRowItem in inputOutputViewModels)
             {
                 //  Find a match in master list and tranfer properties ;)
                 var match = masterView.FirstOrDefault(c => c.DisplayName == intersectionRowItem.DisplayName);
@@ -289,7 +285,7 @@ namespace Dev2.DataList
 
 
             // ordering maters ;)
-            result = intersectionResult.Union(masterView, equalityCompareImpl).ToList();
+            IList<IInputOutputViewModel> result = inputOutputViewModels.Union(masterView, equalityCompareImpl).ToList();
 
             return result;
         }
@@ -303,7 +299,7 @@ namespace Dev2.DataList
         /// <param name="isOutputMapping">if set to <c>true</c> [is output mapping].</param>
         /// <param name="fuzzyMatch">The fuzzy match.</param>
         /// <returns></returns>
-        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser, bool autoAddBrackets, bool isOutputMapping, FuzzyMatchVO fuzzyMatch = null)
+        private IList<IInputOutputViewModel> CreateMappingList(string mappingDefinitions, IDev2LanguageParser parser, bool autoAddBrackets, bool isOutputMapping, FuzzyMatchVo fuzzyMatch = null)
         {
             IList<IInputOutputViewModel> result = new List<IInputOutputViewModel>();
             IList<IDev2Definition> concreteDefinitions = parser.ParseAndAllowBlanks(mappingDefinitions);
@@ -338,14 +334,7 @@ namespace Dev2.DataList
                             else
                             {
                                 // we have no match, use the current mapping value ;)
-                                if(!IsWorkflow)
-                                {
-                                    masterRecordsetName = DataListUtil.ExtractRecordsetNameFromValue(injectValue);
-                                }
-                                else
-                                {
-                                    masterRecordsetName = def.RecordSetName;
-                                }
+                                masterRecordsetName = !IsWorkflow ? DataListUtil.ExtractRecordsetNameFromValue(injectValue) : def.RecordSetName;
                             }
 
 
@@ -356,19 +345,10 @@ namespace Dev2.DataList
                         {
                             if(def.IsRecordSet)
                             {
-
-                                string recordsetName = def.RecordSetName;
                                 if(fuzzyMatch != null)
                                 {
-                                    recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                                    if(!String.IsNullOrEmpty(recordsetName))
-                                    {
-                                        masterRecordsetName = recordsetName;
-                                    }
-                                    else
-                                    {
-                                        masterRecordsetName = def.RecordSetName;
-                                    }
+                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    masterRecordsetName = !String.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
                                 }
                                 else
                                 {
@@ -379,16 +359,8 @@ namespace Dev2.DataList
                             }
                             else
                             {
-                                if(!IsWorkflow)
-                                {
-                                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(injectValue);
-                                }
-                                else
-                                {
-                                    injectValue = DataListUtil.AddBracketsToValueIfNotExist(def.Name);
-                                }
+                                injectValue = DataListUtil.AddBracketsToValueIfNotExist(!IsWorkflow ? injectValue : def.Name);
                             }
-
                         }
                     }
                 }
@@ -412,15 +384,7 @@ namespace Dev2.DataList
                                 if(string.IsNullOrEmpty(masterRecordsetName))
                                 {
                                     string recordsetName = fuzzyMatch.FetchMatch(def.Name);
-                                    if(!string.IsNullOrEmpty(recordsetName))
-                                    {
-                                        masterRecordsetName = recordsetName;
-                                    }
-                                    else
-                                    {
-                                        // we have no match, use the current mapping value ;)
-                                        masterRecordsetName = def.RecordSetName;
-                                    }
+                                    masterRecordsetName = !string.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
                                 }
 
                                 injectValue = DataListUtil.ComposeIntoUserVisibleRecordset(masterRecordsetName,
@@ -490,9 +454,9 @@ namespace Dev2.DataList
         /// Generates the match fragments from data list.
         /// </summary>
         /// <returns></returns>
-        private FuzzyMatchVO GenerateMatchFragmentsFromDataList()
+        private FuzzyMatchVo GenerateMatchFragmentsFromDataList()
         {
-            FuzzyMatchVO result = null;
+            FuzzyMatchVo result = null;
 
             if(!string.IsNullOrEmpty(DataList))
             {
@@ -518,7 +482,7 @@ namespace Dev2.DataList
                     }
                 }
 
-                result = new FuzzyMatchVO(tmp);
+                result = new FuzzyMatchVo(tmp);
 
             }
 

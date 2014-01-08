@@ -1,5 +1,8 @@
-namespace Dev2.Studio.Core.Interfaces {
-    public interface IOperatorType {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface IOperatorType
+    {
         string OperatorName { get; set; }
         string FriendlyName { get; set; }
         string OperatorSymbol { get; set; }

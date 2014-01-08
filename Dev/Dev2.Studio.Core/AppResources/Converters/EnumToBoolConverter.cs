@@ -1,9 +1,11 @@
-﻿using Dev2.Common;
-using System;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Dev2.Common;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumToBoolConverter : DependencyObject, IValueConverter
@@ -33,31 +35,31 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         #endregion Properties
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if(value == null)
             {
                 return NullValue;
             }
 
-            if (value is string)
+            if(value is string)
             {
-                return TrueEnumValues.Any(e => 
+                return TrueEnumValues.Any(e =>
                     {
                         object tempEnumValue = Dev2EnumConverter.GetEnumFromStringDiscription(value.ToString(), e.GetType());
-                        return Enum.Equals(e, tempEnumValue);
+                        return Equals(e, tempEnumValue);
                     });
             }
 
-            if (!value.GetType().IsEnum)
+            if(!value.GetType().IsEnum)
             {
                 return Binding.DoNothing;
             }
 
-            return TrueEnumValues.Any(e => Enum.Equals(e, value));
+            return TrueEnumValues.Any(e => Equals(e, value));
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Binding.DoNothing;
         }

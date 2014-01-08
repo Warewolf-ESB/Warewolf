@@ -1,16 +1,17 @@
 ﻿using Dev2.Studio.Core.Interfaces;
 
-namespace Dev2.Studio.Core.Factories 
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Factories
 {
     public static class WebActivityFactory
     {
-        internal static IWebActivity CreateWebActivity() 
+        internal static IWebActivity CreateWebActivity()
         {
             IWebActivity webActivity = new WebActivity();
             return webActivity;
         }
 
-        public static IWebActivity CreateWebActivity(object webActivityWrappingObject) 
+        public static IWebActivity CreateWebActivity(object webActivityWrappingObject)
         {
             IWebActivity activity = CreateWebActivity();
             activity.WebActivityObject = webActivityWrappingObject;
@@ -23,7 +24,7 @@ namespace Dev2.Studio.Core.Factories
             activity.WebActivityObject = webActivityWrappingObject;
             activity.ResourceModel = resourceModel;
             activity.ServiceName = serviceName;
-            return activity;            
+            return activity;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Windows;
 using Dev2.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public delegate void NavigateRequestedEventHandler(string uri);

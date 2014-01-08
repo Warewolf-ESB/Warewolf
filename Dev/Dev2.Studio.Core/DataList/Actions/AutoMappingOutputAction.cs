@@ -1,10 +1,11 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System.Linq;
+using Dev2.Data.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList.Actions
 {
     public class AutoMappingOutputAction : AbstractAction, IAutoMappingOutputAction
@@ -13,13 +14,10 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
         readonly IDataMappingViewModel _beforeAutoMapping;
         readonly IDataMappingViewModel _copyOfBeforeAutoMapping;
 
-        IWebActivity _activity;
-
         public AutoMappingOutputAction(IDataMappingViewModel beforeAutoMapping, IWebActivity activity)
         {
             _beforeAutoMapping = beforeAutoMapping;
-            _activity = activity;
-            _copyOfBeforeAutoMapping = new DataMappingViewModel(_activity);
+            _copyOfBeforeAutoMapping = new DataMappingViewModel(activity);
 
 
         }
@@ -40,7 +38,7 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
 
         public IInputOutputViewModel LoadOutputAutoMapping(IInputOutputViewModel item)
         {
-            string _value = string.Empty;
+            string value = string.Empty;
             if(item.Value == string.Empty)
             {
                 IDataListItemModel recset = DataListSingleton.ActiveDataList.RecsetCollection.FirstOrDefault(x => x.Name == item.RecordSetName);
@@ -49,12 +47,12 @@ namespace Dev2.Studio.ViewModels.DataList.Actions
                     var val = recset.Children.FirstOrDefault(x => x.DisplayName == item.DisplayName);
                     if(val != null)
                     {
-                        _value = val.DisplayName;
+                        value = val.DisplayName;
                     }
 
-                    if(_value != null)
+                    if(value != null)
                     {
-                        item.Value = _value;
+                        item.Value = value;
                     }
                 }
                 else

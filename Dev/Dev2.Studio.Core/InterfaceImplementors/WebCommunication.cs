@@ -1,10 +1,11 @@
-﻿using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.IO;
 using System.Net;
 using System.Text;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
     [Export(typeof(IWebCommunication))]
@@ -27,11 +28,14 @@ namespace Dev2.Studio.Core
                         string contentType = response.ContentType;
 
                         Stream responseStream = response.GetResponseStream();
-                        StreamReader streamReader = new StreamReader(responseStream);
-                        string content = streamReader.ReadToEnd();
+                        if(responseStream != null)
+                        {
+                            StreamReader streamReader = new StreamReader(responseStream);
+                            string content = streamReader.ReadToEnd();
 
-                        return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
-                            content);
+                            return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
+                                content);
+                        }
                     }
                 }
             }
@@ -61,11 +65,14 @@ namespace Dev2.Studio.Core
                         string contentType = response.ContentType;
 
                         Stream responseStream = response.GetResponseStream();
-                        StreamReader streamReader = new StreamReader(responseStream);
-                        string content = streamReader.ReadToEnd();
+                        if(responseStream != null)
+                        {
+                            StreamReader streamReader = new StreamReader(responseStream);
+                            string content = streamReader.ReadToEnd();
 
-                        return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
-                            content);
+                            return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
+                                content);
+                        }
                     }
                 }
             }

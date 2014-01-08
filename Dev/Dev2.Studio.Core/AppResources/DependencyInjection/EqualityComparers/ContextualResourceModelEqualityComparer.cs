@@ -1,15 +1,13 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 {
     public class ContexttualResourceModelEqualityComparer : IEqualityComparer<IContextualResourceModel>
     {
+        // ReSharper disable once InconsistentNaming
         private static readonly Lazy<ContexttualResourceModelEqualityComparer> _current
             = new Lazy<ContexttualResourceModelEqualityComparer>(() => new ContexttualResourceModelEqualityComparer());
 
@@ -25,10 +23,10 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
         public bool Equals(IContextualResourceModel x, IContextualResourceModel y)
         {
             //Check whether the compared objects reference the same data.
-            if (ReferenceEquals(x, y)) return true;
+            if(ReferenceEquals(x, y)) return true;
 
             //Check whether any of the compared objects is null.
-            if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
+            if(ReferenceEquals(x, null) || ReferenceEquals(y, null))
                 return false;
 
             //Check whether the products' properties are equal.
@@ -38,7 +36,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
         public int GetHashCode(IContextualResourceModel obj)
         {
             //Check whether the object is null
-            if (ReferenceEquals(obj, null)) return 0;
+            if(ReferenceEquals(obj, null)) return 0;
 
             //Get hash code for the Name field if it is not null.
             int hashProductName = obj.ResourceName == null ? 0 : obj.ResourceName.GetHashCode();

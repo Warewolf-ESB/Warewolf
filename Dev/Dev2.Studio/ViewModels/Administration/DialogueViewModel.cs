@@ -1,13 +1,13 @@
-﻿using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
-using System;
+﻿using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Administration
@@ -68,7 +68,7 @@ namespace Dev2.Studio.ViewModels.Administration
             }
         }
 
-        public ICommand OKCommand
+        public ICommand OkCommand
         {
             get
             {

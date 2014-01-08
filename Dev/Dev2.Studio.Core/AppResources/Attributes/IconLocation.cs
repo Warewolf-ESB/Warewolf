@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Attributes
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]

@@ -1,5 +1,8 @@
-namespace Dev2.Studio.Core.Interfaces {
-    public interface ITagCloudItemModel {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface ITagCloudItemModel
+    {
         string Tag { get; set; }
         bool IsSelected { get; set; }
         string TagLabel { get; }

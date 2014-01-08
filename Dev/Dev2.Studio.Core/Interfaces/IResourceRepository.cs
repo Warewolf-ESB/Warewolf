@@ -1,19 +1,20 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Text;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceRepository : IDisposable
     {
-        List<IResourceModel> ReloadResource(Guid resourceID, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXAML);
+        List<IResourceModel> ReloadResource(Guid resourceID, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
         // ReSharper disable once InconsistentNaming
         void Rename(string resourceID, string newName);
@@ -33,7 +34,7 @@ namespace Dev2.Studio.Core.Interfaces
         void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType);
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
-        void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDTO dto, IEventAggregator eventPublisher);
+        void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);

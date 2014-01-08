@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Activities.Tracking;
 using System.Activities;
+using System.Activities.Tracking;
+using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Workflow
 {
-	public class CustomTrackingParticipant : TrackingParticipant {
+    public class CustomTrackingParticipant : TrackingParticipant
+    {
         #region Properties
         public Dictionary<string, Activity> ActivityIdToWorkflowElementMap { get; set; }
         #endregion
@@ -15,22 +17,28 @@ namespace Dev2.Studio.Core.AppResources.Workflow
         #endregion
 
         #region Protected Methods
-        protected void OnTrackingRecordReceived(TrackingRecord record, TimeSpan timeout) {
+        protected void OnTrackingRecordReceived(TrackingRecord record, TimeSpan timeout)
+        {
             ActivityStateRecord activityStateRecord = record as ActivityStateRecord;
-            if (TrackingRecordReceived != null) {
-                if (activityStateRecord != null && !activityStateRecord.Activity.TypeName.Contains("System.Activities.Expressions")) {
-                    if (ActivityIdToWorkflowElementMap.ContainsKey(activityStateRecord.Activity.Id)) {
+            if(TrackingRecordReceived != null)
+            {
+                if(activityStateRecord != null && !activityStateRecord.Activity.TypeName.Contains("System.Activities.Expressions"))
+                {
+                    if(ActivityIdToWorkflowElementMap.ContainsKey(activityStateRecord.Activity.Id))
+                    {
                         TrackingRecordReceived(this, new CustomTrackingEventArgs(record, timeout, ActivityIdToWorkflowElementMap[activityStateRecord.Activity.Id]));
                     }
                 }
             }
-            else {
+            else
+            {
                 TrackingRecordReceived(this, new CustomTrackingEventArgs(record, timeout, null));
             }
         }
 
         #region TrackingParticipant Member
-        protected override void Track(TrackingRecord record, TimeSpan timeout) {
+        protected override void Track(TrackingRecord record, TimeSpan timeout)
+        {
             OnTrackingRecordReceived(record, timeout);
         }
         #endregion

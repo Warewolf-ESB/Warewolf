@@ -1,10 +1,11 @@
-﻿using Caliburn.Micro;
-using Dev2.Data.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Caliburn.Micro;
+using Dev2.Data.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
     public interface IDataListViewModel : IScreen, IChild, IDisposable

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     // BUG 9798 - 2013.06.25 - TWR : added

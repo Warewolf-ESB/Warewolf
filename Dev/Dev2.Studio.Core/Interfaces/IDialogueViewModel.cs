@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     // Sashen Naidoo - 29-08-2012 - PBI 5037
@@ -16,7 +17,7 @@ namespace Dev2.Studio.Core.Interfaces
         String Hyperlink { get; }
         string HyperlinkText { get; }
         Visibility HyperlinkVisibility { get; }
-        ICommand OKCommand { get; }
+        ICommand OkCommand { get; }
         //event ClosedOperationEventHandler OnOkClick;
         void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null);
 

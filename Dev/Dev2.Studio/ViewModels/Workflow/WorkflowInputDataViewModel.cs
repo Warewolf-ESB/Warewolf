@@ -1,4 +1,12 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Threading;
+using System.Windows.Input;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -12,14 +20,6 @@ using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.ViewModels.Workflow;
 using Dev2.ViewModels.WorkSurface;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Windows.Input;
-using System.Xml.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow

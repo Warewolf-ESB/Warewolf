@@ -4,11 +4,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
-    using Dev2.DataList.Contract;
     using System;
     using System.Collections.Generic;
+    using Dev2.DataList.Contract;
 
 
     /// <summary>
@@ -25,16 +26,16 @@ namespace Dev2.Studio.Core.Interfaces
 
     public sealed class IntellisenseProviderResult
     {
-        private IIntellisenseProvider _provider;
-        private string _name;
-        private string _description;
-        private string _dropdownDescription;
-        private bool _isError;
-        private bool _isPopup;
-        private int _startIndex;
-        private int _endIndex;
-        private string[] _arguments;
-        private string[] _argumentDescriptions;
+        private readonly IIntellisenseProvider _provider;
+        private readonly string _name;
+        private readonly string _description;
+        private readonly string _dropdownDescription;
+        private readonly bool _isError;
+        private readonly bool _isPopup;
+        private readonly int _startIndex;
+        private readonly int _endIndex;
+        private readonly string[] _arguments;
+        private readonly string[] _argumentDescriptions;
 
         public IIntellisenseProvider Provider { get { return _provider; } }
         public string Name { get { return _name; } }
@@ -103,34 +104,15 @@ namespace Dev2.Studio.Core.Interfaces
 
     public sealed class IntellisenseProviderContext
     {
-        private string _inputText;
-        private string _textOnPopup;
-        private int _caretPositionOnPopup;
-        private int _caretPosition;
-        private enIntellisensePartType _filterType;
-        private IntellisenseDesiredResultSet _desiredResultSet;
-        private object _state;
-        private bool _isInCalculateMode;
-        private object _textBox;
-        public string InputText { get { return _inputText; } set { _inputText = value; } }
-        public string TextOnPopup { get { return _textOnPopup; } set { _textOnPopup = value; } }
-        public int CaretPosition
-        {
-            get
-            {
-                return _caretPosition;
-            }
-            set
-            {
-                _caretPosition = value;
-            }
-        }
-        public int CaretPositionOnPopup { get { return _caretPositionOnPopup; } set { _caretPositionOnPopup = value; } }
-        public enIntellisensePartType FilterType { get { return _filterType; } set { _filterType = value; } }
-        public IntellisenseDesiredResultSet DesiredResultSet { get { return _desiredResultSet; } set { _desiredResultSet = value; } }
-        public object State { get { return _state; } set { _state = value; } }
-        public bool IsInCalculateMode { get { return _isInCalculateMode; } set { _isInCalculateMode = value; } }
-        public object TextBox { get { return _textBox; } set { _textBox = value; } }
+        public string InputText { get; set; }
+        public string TextOnPopup { get; set; }
+        public int CaretPosition { get; set; }
+        public int CaretPositionOnPopup { get; set; }
+        public enIntellisensePartType FilterType { get; set; }
+        public IntellisenseDesiredResultSet DesiredResultSet { get; set; }
+        public object State { get; set; }
+        public bool IsInCalculateMode { get; set; }
+        public object TextBox { get; set; }
     }
 
     public enum IntellisenseDesiredResultSet

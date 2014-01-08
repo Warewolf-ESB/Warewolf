@@ -2,8 +2,10 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Interfaces;
 
-namespace Dev2.Studio.Core.Interfaces {
-    public interface IWebsiteEditorViewModel : IPropertyEditorWizard 
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface IWebsiteEditorViewModel : IPropertyEditorWizard
     {
         IUserMessageProvider UserMessageProvider { get; set; }
         bool IsValidMarkup { get; set; }
@@ -19,7 +21,7 @@ namespace Dev2.Studio.Core.Interfaces {
         string Url { get; }
         string WizardUrl { get; }
         string ResourceName { get; }
-        string XMLConfiguration { get; set; }
+        string XmlConfiguration { get; set; }
         IWebActivity WebActivity { get; }
         IResourceModel ResourceModel { get; }
         string Html { get; set; }

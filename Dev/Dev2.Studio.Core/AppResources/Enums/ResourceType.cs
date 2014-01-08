@@ -1,7 +1,8 @@
-﻿using Dev2.Studio.Core.AppResources.Attributes;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Dev2.Studio.Core.AppResources.Attributes;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Enums
 {
     public enum ResourceType
@@ -42,18 +43,18 @@ namespace Dev2.Studio.Core.AppResources.Enums
             switch(resourceType)
             {
                 case ResourceType.WorkflowService:
-                    return Enums.WorkSurfaceContext.Workflow;
+                    return WorkSurfaceContext.Workflow;
                 case ResourceType.Service:
-                    return Enums.WorkSurfaceContext.Service;
+                    return WorkSurfaceContext.Service;
                 case ResourceType.Source:
-                    return Enums.WorkSurfaceContext.SourceManager;
+                    return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
-                    return Enums.WorkSurfaceContext.Unknown;
+                    return WorkSurfaceContext.Unknown;
                 case ResourceType.Website:
-                    return Enums.WorkSurfaceContext.Website;
+                    return WorkSurfaceContext.Website;
                 case ResourceType.HumanInterfaceProcess:
-                    return Enums.WorkSurfaceContext.Webpage;
-                default: return Enums.WorkSurfaceContext.Unknown;
+                    return WorkSurfaceContext.Webpage;
+                default: return WorkSurfaceContext.Unknown;
             }
         }
 

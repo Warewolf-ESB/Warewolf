@@ -1,9 +1,10 @@
-﻿using Dev2.Common;
-using Dev2.Common.ExtMethods;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumDiscriptionToStringConverter : IValueConverter

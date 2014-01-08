@@ -1,8 +1,11 @@
 using System.Text;
 
-namespace Dev2.Studio.Core.Interfaces {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
 
-    public interface IDesignerViewModel {
+    public interface IDesignerViewModel
+    {
 
         IEnvironmentModel EnvironmentModel { get; }
         StringBuilder ServiceDefinition { get; set; }

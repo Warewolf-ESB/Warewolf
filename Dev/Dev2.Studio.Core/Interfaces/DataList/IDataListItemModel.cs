@@ -1,6 +1,7 @@
-﻿using Dev2.Data.Binary_Objects;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using Dev2.Data.Binary_Objects;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces.DataList
 {
     public interface IDataListItemModel

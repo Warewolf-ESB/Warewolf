@@ -6,6 +6,7 @@ using Dev2.Providers.Errors;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceModel : IWorkSurfaceObject

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.InterfaceImplementors
 {
     /// <summary>
     /// A deploy DTO.
     /// </summary>
-    public class DeployDTO : IDeployDTO
+    public class DeployDto : IDeployDto
     {
         #region ResourceModels
 

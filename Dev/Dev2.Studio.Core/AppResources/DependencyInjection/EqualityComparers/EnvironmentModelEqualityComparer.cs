@@ -1,11 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Dev2.Studio.Core.Interfaces;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 {
     public class EnvironmentModelEqualityComparer : IEqualityComparer<IEnvironmentModel>
@@ -36,9 +33,9 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
         public bool Equals(IEnvironmentModel x, object y)
         {
             var environment = y as IEnvironmentModel;
-            if (environment == null) return false;
-            if (x == null) return false;
-            if (environment.ID == x.ID) return true; 
+            if(environment == null) return false;
+            if(x == null) return false;
+            if(environment.ID == x.ID) return true;
             if(environment.Connection.AppServerUri == null || x.Connection.AppServerUri == null) return false;
 
             return x.Connection.AppServerUri.AbsoluteUri == environment.Connection.AppServerUri.AbsoluteUri;

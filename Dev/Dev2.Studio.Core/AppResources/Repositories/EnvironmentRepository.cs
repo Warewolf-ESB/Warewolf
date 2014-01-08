@@ -1,17 +1,18 @@
-﻿using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
-using Dev2.Network;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Dev2.Common.Common;
+using Dev2.Data.ServiceModel;
+using Dev2.DynamicServices;
+using Dev2.Network;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -19,11 +20,10 @@ namespace Dev2.Studio.Core
     public class EnvironmentRepository : IEnvironmentRepository
     {
         static readonly List<IEnvironmentModel> EmptyList = new List<IEnvironmentModel>();
-        static readonly int DefaultWebServerPort = Int32.Parse(StringResources.Default_WebServer_Port);
 
-        static readonly object _fileLock = new Object();
-        static readonly object _restoreLock = new Object();
-        protected readonly List<IEnvironmentModel> _environments;
+        static readonly object FileLock = new Object();
+        static readonly object RestoreLock = new Object();
+        protected readonly List<IEnvironmentModel> Environments;
         private bool _isDisposed;
 
         #region Singleton Instance
@@ -84,7 +84,7 @@ namespace Dev2.Studio.Core
                 throw new ArgumentNullException("source");
             }
             Source = source;
-            _environments = new List<IEnvironmentModel> { Source };
+            Environments = new List<IEnvironmentModel> { Source };
         }
 
         //For Testing Only!!!!!!!
@@ -106,11 +106,11 @@ namespace Dev2.Studio.Core
 
         public void Clear()
         {
-            foreach(var environment in _environments)
+            foreach(var environment in Environments)
             {
                 environment.Disconnect();
             }
-            _environments.Clear();
+            Environments.Clear();
         }
 
         #endregion
@@ -120,19 +120,19 @@ namespace Dev2.Studio.Core
         public virtual ICollection<IEnvironmentModel> All()
         {
             LoadInternal();
-            return _environments;
+            return Environments;
         }
 
         public ICollection<IEnvironmentModel> Find(Expression<Func<IEnvironmentModel, bool>> expression)
         {
             LoadInternal();
-            return expression == null ? EmptyList : _environments.AsQueryable().Where(expression).ToList();
+            return expression == null ? EmptyList : Environments.AsQueryable().Where(expression).ToList();
         }
 
         public IEnvironmentModel FindSingle(Expression<Func<IEnvironmentModel, bool>> expression)
         {
             LoadInternal();
-            return expression == null ? null : _environments.AsQueryable().FirstOrDefault(expression);
+            return expression == null ? null : Environments.AsQueryable().FirstOrDefault(expression);
         }
 
         public void Load()
@@ -222,7 +222,7 @@ namespace Dev2.Studio.Core
 
         public virtual IList<Guid> ReadSession()
         {
-            lock(_fileLock)
+            lock(FileLock)
             {
                 var path = GetEnvironmentsFilePath();
 
@@ -245,7 +245,7 @@ namespace Dev2.Studio.Core
 
         public virtual void WriteSession(IEnumerable<Guid> environmentGuids)
         {
-            lock(_fileLock)
+            lock(FileLock)
             {
                 var xml = new XElement("Environments");
                 if(environmentGuids != null)
@@ -272,7 +272,7 @@ namespace Dev2.Studio.Core
             if(server != null)
             {
                 Guid id = server.ID;
-                environment = _environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Name);
+                environment = Environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Name);
             }
             return environment;
         }
@@ -294,7 +294,7 @@ namespace Dev2.Studio.Core
         #region LoadInternal
         protected virtual void LoadInternal()
         {
-            lock(_restoreLock)
+            lock(RestoreLock)
             {
                 if(IsLoaded)
                 {
@@ -304,17 +304,17 @@ namespace Dev2.Studio.Core
                 var environments = LookupEnvironments(Source);
 
                 // Don't just clear and add, environments may be connected!!!
-                foreach(var newEnv in environments.Where(newEnv => !_environments.Contains(newEnv)))
+                foreach(var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
                 {
-                    _environments.Add(newEnv);
+                    Environments.Add(newEnv);
                 }
 
 
-                var toBeRemoved = _environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
+                var toBeRemoved = Environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
                 foreach(var environment in toBeRemoved)
                 {
                     environment.Disconnect();
-                    _environments.Remove(environment);
+                    Environments.Remove(environment);
                 }
 
                 IsLoaded = true;
@@ -327,27 +327,27 @@ namespace Dev2.Studio.Core
 
         protected virtual void AddInternal(IEnvironmentModel environment)
         {
-            var index = _environments.IndexOf(environment);
+            var index = Environments.IndexOf(environment);
 
             if(index == -1)
             {
-                _environments.Add(environment);
+                Environments.Add(environment);
             }
             else
             {
-                _environments.RemoveAt(index);
-                _environments.Add(environment);
+                Environments.RemoveAt(index);
+                Environments.Add(environment);
             }
             RaiseItemAdded();
         }
 
         protected virtual bool RemoveInternal(IEnvironmentModel environment)
         {
-            var index = _environments.IndexOf(environment);
+            var index = Environments.IndexOf(environment);
             if(index != -1)
             {
                 environment.Disconnect();
-                _environments.RemoveAt(index);
+                Environments.RemoveAt(index);
                 return true;
             }
             return false;
@@ -400,8 +400,6 @@ namespace Dev2.Studio.Core
                 foreach(var env in servers)
                 {
                     var payload = env.WorkflowXaml;
-                    Uri appServerUri;
-                    int webServerPort;
 
                     if(payload != null)
                     {
@@ -409,7 +407,7 @@ namespace Dev2.Studio.Core
 
                         // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
                         XElement xe = XElement.Parse(payload.ToString());
-                        var conStr = xe.AttributeSafe("ConnectionString", false);
+                        var conStr = xe.AttributeSafe("ConnectionString");
                         Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
 
                         string tmp;
@@ -418,6 +416,7 @@ namespace Dev2.Studio.Core
                             continue;
                         }
 
+                        Uri appServerUri;
                         try
                         {
                             appServerUri = new Uri(tmp);
@@ -431,6 +430,7 @@ namespace Dev2.Studio.Core
                         {
                             continue;
                         }
+                        int webServerPort;
                         if(!int.TryParse(tmp, out webServerPort))
                         {
                             continue;
@@ -448,12 +448,7 @@ namespace Dev2.Studio.Core
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
                 if(servers != null)
                 {
-                    foreach(var env in servers)
-                    {
-                        var uri = new Uri(env.Address);
-                        var environment = CreateEnvironmentModel(env.ResourceID, uri, env.ResourceName);
-                        result.Add(environment);
-                    }
+                    result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env.ResourceID, uri, env.ResourceName));
                 }
             }
 
@@ -528,9 +523,9 @@ namespace Dev2.Studio.Core
                 return string.Empty;
             }
 
-            const string toLookFor = "AppServerUri";
-            var appServerUriIdx = connectionstring.IndexOf(toLookFor, StringComparison.Ordinal);
-            var length = toLookFor.Length;
+            const string TOLookFor = "AppServerUri";
+            var appServerUriIdx = connectionstring.IndexOf(TOLookFor, StringComparison.Ordinal);
+            var length = TOLookFor.Length;
             var substring = connectionstring.Substring(appServerUriIdx + length + 1);
             var indexofDelimiter = substring.IndexOf(';');
             var uri = substring.Substring(0, indexofDelimiter);

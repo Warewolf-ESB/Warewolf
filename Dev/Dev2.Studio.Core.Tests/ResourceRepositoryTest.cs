@@ -1742,7 +1742,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
-            IDeployDTO dto = new DeployDTO { ResourceModels = deployModels };
+            IDeployDto dto = new DeployDto { ResourceModels = deployModels };
 
             //------------Execute Test---------------------------
             _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
@@ -1797,7 +1797,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
-            IDeployDTO dto = new DeployDTO { ResourceModels = deployModels };
+            IDeployDto dto = new DeployDto { ResourceModels = deployModels };
 
             //------------Execute Test---------------------------
             _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);

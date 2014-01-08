@@ -4,6 +4,7 @@ using System.Windows;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
     [ComVisible(true)]
@@ -46,7 +47,7 @@ namespace Dev2.Studio.Core
                 InvokeActionAsync(() => PropertyEditorViewModel.Save(value, closeBrowserWindow));
             }
         }
-        
+
         public void OpenPropertyEditor()
         {
             if(PropertyEditorViewModel != null)

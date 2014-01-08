@@ -1,21 +1,27 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System.ComponentModel.Composition;
+﻿using System.ComponentModel.Composition;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using Dev2.Studio.Core.Interfaces;
 
-namespace Dev2.Studio.Core {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core
+{
     [Export(typeof(IFilePersistenceProvider))]
-    public class FilePersistenceProvider : IFilePersistenceProvider {
-        public void Write(string containerName, string data) {
+    public class FilePersistenceProvider : IFilePersistenceProvider
+    {
+        public void Write(string containerName, string data)
+        {
             File.WriteAllText(containerName, data);
         }
 
-        public void Delete(string containerName) {
+        public void Delete(string containerName)
+        {
             File.Delete(containerName);
         }
 
-        public string Read(string containerName) {
+        public string Read(string containerName)
+        {
             return File.ReadAllText(containerName);
         }
 
@@ -36,10 +42,10 @@ namespace Dev2.Studio.Core {
         {
             var type = typeof(T);
 
-            using (var reader = new StringReader(xml))
+            using(var reader = new StringReader(xml))
             {
                 var s = new XmlSerializer(type);
-                return (T) s.Deserialize(reader);
+                return (T)s.Deserialize(reader);
             }
         }
     }

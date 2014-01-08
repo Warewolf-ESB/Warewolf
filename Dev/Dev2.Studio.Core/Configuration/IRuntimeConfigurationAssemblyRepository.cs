@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Controls;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Configuration
 {
     public interface IRuntimeConfigurationAssemblyRepository

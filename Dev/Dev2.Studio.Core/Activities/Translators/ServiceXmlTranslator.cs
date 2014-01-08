@@ -4,15 +4,11 @@ using Dev2.Studio.Core.Activities.Interfaces;
 using Dev2.Studio.Core.Activities.TO;
 using Dev2.Studio.Core.Activities.Utils;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.Translators
 {
     public class ServiceXmlTranslator : IServiceXmlTranslator
     {
-        public ServiceXmlTranslator()
-        {
-
-        }
-
         public ActivityViewModelTO GetActivityViewModelTO(ModelItem modelItem)
         {
             ActivityViewModelTO result = new ActivityViewModelTO();

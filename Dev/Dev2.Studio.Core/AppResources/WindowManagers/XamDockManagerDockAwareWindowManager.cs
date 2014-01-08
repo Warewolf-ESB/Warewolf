@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
 {
     [Export(typeof(IDockAwareWindowManager))]
@@ -30,12 +31,12 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             pane.Panes.Add(dockableWindow);
             //If this is a new dockable location (there are no split panes for it)
             //we need to add it to the XamDockManager
-            if (pane.Parent == null)
+            if(pane.Parent == null)
             {
                 DockManager.Panes.Add(pane);
             }
 
-            if (selectWhenShown)
+            if(selectWhenShown)
             {
                 dockableWindow.Activate();
             }
@@ -51,7 +52,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             pane.Panes.Add(dockableWindow);
             DockManager.Panes.Add(pane);
 
-            if (selectWhenShown)
+            if(selectWhenShown)
             {
                 dockableWindow.Activate();
             }
@@ -64,7 +65,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
 
             host.Items.Add(dockableWindow);
 
-            if (selectWhenShown)
+            if(selectWhenShown)
             {
                 dockableWindow.Activate();
             }
@@ -77,28 +78,29 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
 
         private static ContentPane CreateDockable(object rootModel, object context)
         {
-            var view = EnsureDockWindow(rootModel, ViewLocator.LocateForModel(rootModel, null, context));
+            var view = EnsureDockWindow(ViewLocator.LocateForModel(rootModel, null, context));
             ViewModelBinder.Bind(rootModel, view, context);
 
             var haveDisplayName = rootModel as IHaveDisplayName;
-            if (haveDisplayName != null && !ConventionManager.HasBinding(view, HeaderedContentControl.HeaderProperty))
+            if(haveDisplayName != null && !ConventionManager.HasBinding(view, HeaderedContentControl.HeaderProperty))
             {
                 Binding binding = new Binding("DisplayName") { Mode = BindingMode.TwoWay };
                 view.SetBinding(HeaderedContentControl.HeaderProperty, binding);
             }
 
+            // ReSharper disable once ObjectCreationAsStatement
             new DockableWindowConductor(rootModel, view);
 
             return view;
         }
 
-        private static ContentPane EnsureDockWindow(object viewModel, object view)
+        private static ContentPane EnsureDockWindow(object view)
         {
             var window = view as ContentPane;
 
-            if (window == null)
+            if(window == null)
             {
-                window = new ContentPane()
+                window = new ContentPane
                 {
                     CloseAction = PaneCloseAction.RemovePane,
                     Content = view as UIElement
@@ -118,6 +120,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         private Window GetParentWindow(Window window)
         {
             Window parentWindow = _window ?? (Application.Current != null ? Application.Current.MainWindow : null);
+            // ReSharper disable once PossibleUnintendedReferenceComparison
             return parentWindow != window ? parentWindow : null;
         }
 
@@ -131,15 +134,15 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
         {
             XamDockManager dockSite = _dockManager;
 
-            if (dockSite == null)
+            if(dockSite == null)
             {
                 Window parentWindow = GetParentWindow(window);
 
-                if (parentWindow != null)
+                if(parentWindow != null)
                     dockSite = parentWindow.FindChild<XamDockManager>();
             }
 
-            if (dockSite == null)
+            if(dockSite == null)
                 throw new InvalidOperationException("Unable to retrieve a docking manager");
 
             return dockSite;
@@ -147,12 +150,12 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
 
         private static class XamDockManagerHelper
         {
-            public static PaneLocation GetSplitPaneLocation(SplitPane pane)
+            static PaneLocation GetSplitPaneLocation(SplitPane pane)
             {
                 return XamDockManager.GetPaneLocation(pane);
             }
 
-            public static SplitPane FindSplitPaneWithLocation(XamDockManager dockManager, PaneLocation location)
+            static SplitPane FindSplitPaneWithLocation(XamDockManager dockManager, PaneLocation location)
             {
                 return dockManager.Panes.FirstOrDefault(p => GetSplitPaneLocation(p) == location);
             }
@@ -162,11 +165,11 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
                 return FindSplitPaneWithLocationOrCreate(dockManager, location.ToPaneLocation());
             }
 
-            public static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, PaneLocation location)
+            static SplitPane FindSplitPaneWithLocationOrCreate(XamDockManager dockManager, PaneLocation location)
             {
                 SplitPane pane = FindSplitPaneWithLocation(dockManager, location);
 
-                if (pane != null)
+                if(pane != null)
                     return pane;
 
                 pane = new SplitPane();
@@ -179,7 +182,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             {
                 TabGroupPane tabs;
 
-                dockManager.TryFindChild<TabGroupPane>(out tabs);
+                dockManager.TryFindChild(out tabs);
 
                 return tabs;
             }
@@ -229,18 +232,18 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
                 _view = view;
 
                 var activatable = viewModel as IActivate;
-                if (activatable != null)
+                if(activatable != null)
                     activatable.Activate();
 
                 var deactivatable = viewModel as IDeactivate;
-                if (deactivatable != null)
+                if(deactivatable != null)
                 {
                     _view.Closed += OnClosed;
                     deactivatable.Deactivated += OnDeactivated;
                 }
 
                 var guard = viewModel as IGuardClose;
-                if (guard != null)
+                if(guard != null)
                     view.Closing += OnClosing;
             }
 
@@ -254,7 +257,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
                 _view.Closed -= OnClosed;
                 _view.Closing -= OnClosing;
 
-                if (_isDeactivatingFromViewModel)
+                if(_isDeactivatingFromViewModel)
                     return;
 
                 var deactivatable = (IDeactivate)_viewModel;
@@ -273,7 +276,7 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             {
                 ((IDeactivate)_viewModel).Deactivated -= OnDeactivated;
 
-                if (!e.WasClosed || _isDeactivatingFromView)
+                if(!e.WasClosed || _isDeactivatingFromView)
                     return;
 
                 _isDeactivatingFromViewModel = true;
@@ -292,36 +295,25 @@ namespace Dev2.Studio.Core.AppResources.WindowManagers
             {
                 var guard = (IGuardClose)_viewModel;
 
-                if (_isClosing)
+                if(_isClosing)
                 {
                     _isClosing = false;
                     return;
                 }
 
-                bool runningAsync = false, shouldEnd = false;
+                bool shouldEnd = false;
 
-                bool async = false;
-                guard.CanClose(canClose =>
+                guard.CanClose(canClose => Execute.OnUIThread(() =>
                 {
-                    Execute.OnUIThread(() =>
-                    {
-                        if (async && canClose)
-                        {
-                            _isClosing = true;
+                    e.Cancel = !canClose;
 
-                            _view.ExecuteCommand(ContentPaneCommands.Close);
-                        }
-                        else
-                            e.Cancel = !canClose;
+                    shouldEnd = true;
+                }));
 
-                        shouldEnd = true;
-                    });
-                });
-
-                if (shouldEnd)
+                if(shouldEnd)
                     return;
 
-                runningAsync = e.Cancel = true;
+                e.Cancel = true;
             }
         }
     }

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Dev2.Studio.Core.AppResources.ExtensionMethods {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.AppResources.ExtensionMethods
+{
     public static class EnumerableExtensionMethods
     {
         /// <summary>
@@ -12,11 +14,14 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods {
         /// </param>
         /// <returns>The maximum value or null.</returns>
         public static T? MaxOrNullable<T>(this IEnumerable<T> that)
-            where T : struct, IComparable {
-            if (!that.Any()) {
+            where T : struct, IComparable
+        {
+            IEnumerable<T> enumerable = that as IList<T> ?? that.ToList();
+            if(!enumerable.Any())
+            {
                 return null;
             }
-            return that.Max();
+            return enumerable.Max();
         }
 
         /// <summary>
@@ -26,11 +31,14 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods {
         /// </param>
         /// <returns>The minimum value or null.</returns>
         public static T? MinOrNullable<T>(this IEnumerable<T> that)
-            where T : struct, IComparable {
-            if (!that.Any()) {
+            where T : struct, IComparable
+        {
+            IEnumerable<T> enumerable = that as IList<T> ?? that.ToList();
+            if(!enumerable.Any())
+            {
                 return null;
             }
-            return that.Min();
+            return enumerable.Min();
         }
     }
 }

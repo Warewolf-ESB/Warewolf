@@ -1,9 +1,13 @@
-﻿namespace Dev2.Studio.Core.AppResources.EventArgs {
-    public class DomainControllerUncontactableEventArgs : System.EventArgs {
+﻿// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.AppResources.EventArgs
+{
+    public class DomainControllerUncontactableEventArgs : System.EventArgs
+    {
         public string Domain { get; set; }
 
-        public DomainControllerUncontactableEventArgs(string domain) {
-            this.Domain = domain;
+        public DomainControllerUncontactableEventArgs(string domain)
+        {
+            Domain = domain;
         }
     }
 }

@@ -1,6 +1,7 @@
-﻿using Infragistics.Windows.DockManager;
-using System;
+﻿using System;
+using Infragistics.Windows.DockManager;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
     public static class PaneLocationEnum

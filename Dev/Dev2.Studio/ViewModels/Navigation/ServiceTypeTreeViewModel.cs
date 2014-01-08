@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -7,9 +10,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -19,7 +19,7 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public sealed class ServiceTypeTreeViewModel : AbstractTreeViewModel
+    public class ServiceTypeTreeViewModel : AbstractTreeViewModel
     {
         #region private fields
 
@@ -34,6 +34,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             : base(eventPublisher, parent)
         {
             ResourceType = resourceCategory;
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             IsExpanded = true;
             if(parent != null)
             {

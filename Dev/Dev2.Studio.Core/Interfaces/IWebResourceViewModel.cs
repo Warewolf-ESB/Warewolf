@@ -1,8 +1,11 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace Dev2.Studio.Core.Interfaces {
-    public interface IWebResourceViewModel {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface IWebResourceViewModel
+    {
         string Name { get; set; }
         bool IsFolder { get; set; }
         string Uri { get; set; }

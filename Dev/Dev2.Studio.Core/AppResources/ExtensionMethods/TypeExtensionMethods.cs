@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
     public static class TypeExtensionMethods

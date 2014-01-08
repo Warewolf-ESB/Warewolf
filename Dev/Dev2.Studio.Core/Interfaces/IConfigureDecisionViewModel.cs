@@ -3,8 +3,11 @@ using System.Windows.Input;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Models;
 
-namespace Dev2.Studio.Core.Interfaces {
-    public interface IConfigureDecisionViewModel {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
+    public interface IConfigureDecisionViewModel
+    {
         event OperatorTypeEventHandler OnExpressionBuilt;
         event EventHandler OnUserClose;
         dynamic DecisionTypes { get; }

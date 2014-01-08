@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     // BUG 9798 - 2013.06.25 - TWR : modified to handle both internal and external

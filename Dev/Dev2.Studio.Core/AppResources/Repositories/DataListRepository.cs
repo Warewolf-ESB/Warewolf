@@ -1,30 +1,35 @@
-﻿using Dev2.Studio.Core.Interfaces.DataList;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Dev2.Studio.Core.Interfaces.DataList;
 
-namespace Dev2.Studio.Core.AppResources.Repositories 
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.AppResources.Repositories
 {
     [Export(typeof(IFrameworkRepository<IDataListViewModel>))]
-    public class DataListRepository : IFrameworkRepository<IDataListViewModel> 
+    public class DataListRepository : IFrameworkRepository<IDataListViewModel>
     {
         private readonly List<IDataListViewModel> _dataListViewModels;
         private bool _isDisposed;
 
-        public DataListRepository() {
+        public DataListRepository()
+        {
             _dataListViewModels = new List<IDataListViewModel>();
         }
 
-        public ICollection<IDataListViewModel> All() {
+        public ICollection<IDataListViewModel> All()
+        {
             return _dataListViewModels;
         }
 
-        public ICollection<IDataListViewModel> Find(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression) {
+        public ICollection<IDataListViewModel> Find(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression)
+        {
             throw new NotImplementedException();
         }
 
-        public IDataListViewModel FindSingle(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression) {
+        public IDataListViewModel FindSingle(System.Linq.Expressions.Expression<Func<IDataListViewModel, bool>> expression)
+        {
             throw new NotImplementedException();
         }
 
@@ -32,29 +37,34 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         protected void OnItemAdded()
         {
-            if (ItemAdded != null)
+            if(ItemAdded != null)
             {
                 ItemAdded(this, new System.EventArgs());
             }
         }
 
-        public void Load() {
+        public void Load()
+        {
             throw new InvalidOperationException("This repository does not require loading. It is intended to be added to at runtime");
         }
 
-        public void Remove(ICollection<IDataListViewModel> instanceObjs) {
-            instanceObjs.ToList().ForEach(datalist=> _dataListViewModels.Remove(datalist) );
+        public void Remove(ICollection<IDataListViewModel> instanceObjs)
+        {
+            instanceObjs.ToList().ForEach(datalist => _dataListViewModels.Remove(datalist));
         }
 
-        public void Remove(IDataListViewModel instanceObj) {
+        public void Remove(IDataListViewModel instanceObj)
+        {
             _dataListViewModels.Remove(instanceObj);
         }
 
-        public void Save(ICollection<IDataListViewModel> instanceObjs) {
+        public void Save(ICollection<IDataListViewModel> instanceObjs)
+        {
             instanceObjs.ToList().ForEach(datalist => _dataListViewModels.Add(datalist));
         }
 
-        public string Save(IDataListViewModel instanceObj) {
+        public string Save(IDataListViewModel instanceObj)
+        {
             _dataListViewModels.Add(instanceObj);
             return "Saved";
         }

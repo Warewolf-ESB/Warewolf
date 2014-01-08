@@ -1,8 +1,9 @@
-﻿using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Behaviors
 {
     public class PreventHorizontalScrollWhenFocusedTreeViewItemBehavior : Behavior<UIElement>

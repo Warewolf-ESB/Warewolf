@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Providers.Logs;
@@ -36,14 +44,6 @@ using Dev2.Threading;
 using Dev2.ViewModels.WorkSurface;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable once CheckNamespace
@@ -445,6 +445,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             ShowStartPage();
         }
 
@@ -741,7 +742,7 @@ namespace Dev2.Studio.ViewModels
 
         #region Public Methods
 
-        public void ShowStartPage()
+        public virtual void ShowStartPage()
         {
             _asyncWorker.Start(() =>
             {
@@ -1130,8 +1131,13 @@ namespace Dev2.Studio.ViewModels
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
 
-            foreach(IWorkspaceItem item in WorkspaceItemRepository.Instance.WorkspaceItems)
+            // ReSharper disable once ForCanBeConvertedToForeach
+            for(int i = 0; i < WorkspaceItemRepository.Instance.WorkspaceItems.Count; i++)
             {
+                //
+                // Get the environment for the workspace item
+                //
+                IWorkspaceItem item = WorkspaceItemRepository.Instance.WorkspaceItems[i];
                 IEnvironmentModel environment = null;
                 foreach(var env in EnvironmentRepository.All())
                 {
@@ -1154,15 +1160,14 @@ namespace Dev2.Studio.ViewModels
                 {
                     if(environment.ResourceRepository != null)
                     {
-                        IWorkspaceItem item1 = item;
                         var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
                         {
                             var sameEnv = true;
-                            if(item1.EnvironmentID != Guid.Empty)
+                            if(item.EnvironmentID != Guid.Empty)
                             {
-                                sameEnv = item1.EnvironmentID == environment.ID;
+                                sameEnv = item.EnvironmentID == environment.ID;
                             }
-                            return rm.ResourceName == item1.ServiceName && sameEnv;
+                            return rm.ResourceName == item.ServiceName && sameEnv;
                         }) as IContextualResourceModel;
 
                         if(resource == null)

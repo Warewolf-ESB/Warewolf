@@ -1,9 +1,10 @@
-﻿using Dev2.Data.Util;
+﻿using System;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Network;
-using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources
 {
     /// <summary>

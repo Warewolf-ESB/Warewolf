@@ -7,6 +7,7 @@ namespace Dev2.AppResources.DependencyInjection.EqualityComparers
     {
         #region Class Members
 
+        // ReSharper disable once InconsistentNaming
         private static readonly ServerEqualityComparer _current = new ServerEqualityComparer();
 
         #endregion Class Members
@@ -15,7 +16,7 @@ namespace Dev2.AppResources.DependencyInjection.EqualityComparers
 
         public bool Equals(IEnvironmentModel x, IEnvironmentModel y)
         {
-            if (x == null || y == null) return false;
+            if(x == null || y == null) return false;
             return x.Connection.AppServerUri == y.Connection.AppServerUri;
         }
 

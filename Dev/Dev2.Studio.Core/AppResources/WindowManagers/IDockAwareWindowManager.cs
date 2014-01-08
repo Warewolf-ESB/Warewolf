@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Infragistics.Windows.DockManager;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
 {
     public interface IDockAwareWindowManager : IWindowManager

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Data;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class EnumCollection : Collection<Enum>
@@ -41,7 +42,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            if(VisibleEnumValues.Any(e => Enum.Equals(e, value)))
+            if(VisibleEnumValues.Any(e => Equals(e, value)))
             {
                 return Visibility.Visible;
             }

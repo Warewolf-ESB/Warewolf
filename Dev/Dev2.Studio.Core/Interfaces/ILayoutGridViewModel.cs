@@ -1,9 +1,10 @@
-using Dev2.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface ILayoutGridViewModel
@@ -44,7 +45,7 @@ namespace Dev2.Studio.Core.Interfaces
         void RemoveColumn(int col);
         void RemoveRow(int row);
         void SetActiveCell(ILayoutObjectViewModel cell);
-        void AddNewUIElement(ILayoutObjectViewModel targetCell, string webPartServiceName, string iconPath);
+        void AddNewUiElement(ILayoutObjectViewModel targetCell, string webPartServiceName, string iconPath);
         void Move(ILayoutObjectViewModel sourceCell, ILayoutObjectViewModel targetCell);
         void BindXmlConfigurationToGrid();
         void Cut();

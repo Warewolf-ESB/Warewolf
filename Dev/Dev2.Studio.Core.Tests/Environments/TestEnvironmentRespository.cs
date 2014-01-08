@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.Environments
 
         public void AddMockEnvironment(IEnvironmentModel environmentToAdd)
         {
-            _environments.Add(environmentToAdd);
+            Environments.Add(environmentToAdd);
         }
     }
 }

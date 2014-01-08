@@ -2,6 +2,7 @@
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories
 {
     public static class ServiceDebugInfoModelFactory

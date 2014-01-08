@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Expression
 {
     public abstract class ExpressionVisitor
@@ -10,7 +11,7 @@ namespace Dev2.Studio.Core.AppResources.Expression
         public virtual System.Linq.Expressions.Expression Visit(System.Linq.Expressions.Expression exp)
         {
             if(exp == null)
-                return exp;
+                return null;
             switch(exp.NodeType)
             {
                 case ExpressionType.Negate:

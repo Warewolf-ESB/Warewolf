@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     // BUG 9798 - 2013.06.25 - TWR : modified to handle internal

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Helpers
 {
     public static class RetryUtility
@@ -16,7 +17,7 @@ namespace Dev2.Studio.Core.Helpers
                 catch
                 {
                     if(numRetries <= 0) throw;  // improved to avoid silent failure
-                    else Thread.Sleep(retryTimeout);
+                    Thread.Sleep(retryTimeout);
                 }
             } while(numRetries-- > 0);
         }

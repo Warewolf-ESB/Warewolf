@@ -234,7 +234,6 @@
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="CustomControls\CachingContentHost.cs" />
-    <Compile Include="DataList\Actions\AutoMappingInputAction.cs" />
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
     <Compile Include="DataList\DataListViewModel.cs" />
@@ -257,6 +256,7 @@
     <Compile Include="InterfaceImplementors\DeployService.cs" />
     <Compile Include="InterfaceImplementors\Dev2ConfigurationProvider.cs" />
     <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
+    <Compile Include="Interfaces\IDataMappingViewModel.cs" />
     <Compile Include="Interfaces\IDirectoryPersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\DirectoryPersistenceProvider.cs" />
     <Compile Include="InterfaceImplementors\ServerProvider.cs" />
@@ -274,7 +274,6 @@
     <Compile Include="InterfaceImplementors\WebCommunicationResponse.cs" />
     <Compile Include="Interfaces\DataList\IDataListViewModel.cs" />
     <Compile Include="Interfaces\IDataMappingOutputs.cs" />
-    <Compile Include="Interfaces\IDataMappingViewModel.cs" />
     <Compile Include="Interfaces\IEnvironmentConnection.cs" />
     <Compile Include="Interfaces\IEnvironmentRepository.cs" />
     <Compile Include="Interfaces\IIntellisenseProvider.cs" />
@@ -452,7 +451,6 @@
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
-    <Compile Include="Interfaces\IAutoMappingInputAction.cs" />
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
@@ -568,10 +566,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AppResources\UserInterfaceBuilder\" />
-    <Folder Include="Core\" />
     <Folder Include="Network\Channels\" />
-    <Folder Include="Studio\Core\AppResources\Converters\" />
     <Folder Include="ViewModels\DataListShowMissing\" />
     <Folder Include="ViewModels\DataMapping\" />
     <Folder Include="ViewModels\Deploy\" />

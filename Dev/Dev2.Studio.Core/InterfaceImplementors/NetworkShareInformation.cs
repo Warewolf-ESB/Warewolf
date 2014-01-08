@@ -14,8 +14,8 @@ namespace Dev2.InterfaceImplementors
     public enum ShareType
     {
         Disk,
-        Device ,
-        IPC,
+        Device,
+        Ipc,
         Special = -2147483648
     }
 
@@ -38,12 +38,12 @@ namespace Dev2.InterfaceImplementors
 
         #region Constructor
 
-       
+
         public Share(string server, string netName, ShareType shareType)
         {
             if(ShareType.Special == shareType && "IPC$" == netName)
             {
-                shareType |= ShareType.IPC;
+                shareType |= ShareType.Ipc;
             }
 
             _shareServer = server;
@@ -64,7 +64,7 @@ namespace Dev2.InterfaceImplementors
                     return false;
                 }
 
-                if(0 != (_sharpType & ShareType.IPC))
+                if(0 != (_sharpType & ShareType.Ipc))
                 {
                     return false;
                 }
@@ -82,8 +82,8 @@ namespace Dev2.InterfaceImplementors
 
         public override string ToString()
         {
-            return string.Format(@"\\{0}\{1}", string.IsNullOrEmpty(_shareServer) 
-                    ? Environment.MachineName 
+            return string.Format(@"\\{0}\{1}", string.IsNullOrEmpty(_shareServer)
+                    ? Environment.MachineName
                     : _shareServer, _networkName);
         }
     }
@@ -130,7 +130,7 @@ namespace Dev2.InterfaceImplementors
 
         #region Enumerate shares
 
-        static void EnumerateSharesNT(string server, ShareCollection shares)
+        static void EnumerateSharesNt(string server, ShareCollection shares)
         {
             int level = 2;
             int hResume = 0;
@@ -182,7 +182,7 @@ namespace Dev2.InterfaceImplementors
 
         protected static void EnumerateShares(string server, ShareCollection shares)
         {
-            EnumerateSharesNT(server, shares);
+            EnumerateSharesNt(server, shares);
         }
 
         #endregion
@@ -222,12 +222,12 @@ namespace Dev2.InterfaceImplementors
         struct ShareInfo1
         {
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string NetName;
+            public readonly string NetName;
 
-            public ShareType ShareType;
+            public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Remark;
+            public readonly string Remark;
         }
 
         /// <summary>Share information, NT, level 2</summary>
@@ -238,22 +238,22 @@ namespace Dev2.InterfaceImplementors
         struct ShareInfo2
         {
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string NetName;
+            public readonly string NetName;
 
-            public ShareType ShareType;
-
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public string Remark;
-
-            public int Permissions;
-            public int MaxUsers;
-            public int CurrentUsers;
+            public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Path;
+            public readonly string Remark;
+
+            readonly int Permissions;
+            readonly int MaxUsers;
+            readonly int CurrentUsers;
 
             [MarshalAs(UnmanagedType.LPWStr)]
-            public string Password;
+            public readonly string Path;
+
+            [MarshalAs(UnmanagedType.LPWStr)]
+            readonly string Password;
         }
 
         #endregion

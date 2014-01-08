@@ -1,12 +1,13 @@
-﻿using System.Windows.Controls;
-using Dev2.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Controls;
+using Dev2.Common;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Configuration
 {
     /// <summary>
@@ -66,7 +67,7 @@ namespace Dev2.Studio.Core.Configuration
 
         public UserControl GetUserControlForAssembly(string hash)
         {
-            if (UserControlCache.ContainsKey(hash))
+            if(UserControlCache.ContainsKey(hash))
             {
                 return UserControlCache[hash];
             }
@@ -77,14 +78,14 @@ namespace Dev2.Studio.Core.Configuration
         public Assembly Load(string hash)
         {
             // Check hash isn't empty
-            if (string.IsNullOrWhiteSpace(hash))
+            if(string.IsNullOrWhiteSpace(hash))
             {
                 throw new ArgumentException("Hash can't be empty");
             }
 
             // Check assembly cache before hitting teh file system
             Assembly assembly;
-            if (AssemblyCache.TryGetValue(hash, out assembly))
+            if(AssemblyCache.TryGetValue(hash, out assembly))
             {
                 return assembly;
             }
@@ -93,7 +94,7 @@ namespace Dev2.Studio.Core.Configuration
             string assemblyPath = GetAssemblyPath(hash);
 
             // Check file exists before trying to read it
-            if (!File.Exists(assemblyPath))
+            if(!File.Exists(assemblyPath))
             {
                 throw new IOException(string.Format("Assembly for hash '{0}' doesn't exist.", hash));
             }
@@ -113,7 +114,7 @@ namespace Dev2.Studio.Core.Configuration
         public void Add(string hash, byte[] assemblyData)
         {
             // Check hash isn't empty
-            if (string.IsNullOrWhiteSpace(hash))
+            if(string.IsNullOrWhiteSpace(hash))
             {
                 throw new ArgumentException("Hash can't be empty");
             }
@@ -123,7 +124,7 @@ namespace Dev2.Studio.Core.Configuration
 
             // Ensure directory exists
             Exception ex;
-            if (!TryEnsureDirecoryExists(Path.GetDirectoryName(assemblyPath), out ex))
+            if(!TryEnsureDirecoryExists(Path.GetDirectoryName(assemblyPath), out ex))
             {
                 throw new IOException("Unable to create the assembly directory.", ex);
             }
@@ -147,14 +148,14 @@ namespace Dev2.Studio.Core.Configuration
             RepositoryPath = repositoryPath;
 
             // Check path isn't empty
-            if (string.IsNullOrWhiteSpace(RepositoryPath))
+            if(string.IsNullOrWhiteSpace(RepositoryPath))
             {
                 throw new IOException("Invalid repository path.");
             }
 
             // Ensure directory exists
             Exception ex;
-            if (!TryEnsureDirecoryExists(RepositoryPath, out ex))
+            if(!TryEnsureDirecoryExists(RepositoryPath, out ex))
             {
                 throw new IOException("Unable to create the repository directory.", ex);
             }

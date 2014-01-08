@@ -6,14 +6,15 @@ using System.Text;
 using Dev2.Providers.Logs;
 using Ionic.Zip;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Helpers
 {
     public static class FileHelper
     {
         // Used to migrate Dev2 -> Warewolf 
-        private const string NewPath = @"Warewolf\";   
+        private const string NewPath = @"Warewolf\";
         private const string OldPath = @"Dev2\";
-        
+
 
         /// <summary>
         /// Gets the ouput path.
@@ -44,7 +45,7 @@ namespace Dev2.Studio.Core.Helpers
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
-            using (var writer = new StreamWriter(fs, Encoding.UTF8))
+            using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
                 Logger.TraceInfo("Writing a text file");
                 writer.Write(outputTxt);
@@ -132,7 +133,7 @@ namespace Dev2.Studio.Core.Helpers
         public static string GetStudioLogTempPath()
         {
             var studioLog = CustomTextWriter.LoggingFileName;
-            
+
             if(File.Exists(studioLog))
             {
 
@@ -154,13 +155,17 @@ namespace Dev2.Studio.Core.Helpers
             CreateTextFile(fileContent, uniqueOutputPath);
             string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-            using(var zip = new ZipFile())
+            if(sourceDirectoryName != null)
             {
-                zip.AddFile(uniqueOutputPath, ".");
-                zip.Save(destinationArchiveFileName);
+                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+                using(var zip = new ZipFile())
+                {
+                    zip.AddFile(uniqueOutputPath, ".");
+                    zip.Save(destinationArchiveFileName);
+                }
+                return destinationArchiveFileName;
             }
-            return destinationArchiveFileName;
+            return null;
         }
 
         public static string CreateATemporaryFile(string fileContent, string uniqueOutputPath)
@@ -168,26 +173,30 @@ namespace Dev2.Studio.Core.Helpers
             CreateTextFile(fileContent, uniqueOutputPath);
             string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-            using(var zip = new ZipFile())
+            if(sourceDirectoryName != null)
             {
-                zip.AddFile(uniqueOutputPath, ".");
-                zip.Save(destinationArchiveFileName);
+                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+                using(var zip = new ZipFile())
+                {
+                    zip.AddFile(uniqueOutputPath, ".");
+                    zip.Save(destinationArchiveFileName);
+                }
+                return destinationArchiveFileName;
             }
-            return destinationArchiveFileName;
+            return null;
         }
 
         public static string GetDebugItemTempFilePath(string uri)
         {
             Logger.TraceInfo();
 
-            if (String.IsNullOrEmpty(uri))
+            if(String.IsNullOrEmpty(uri))
             {
                 Logger.TraceInfo("Uri is empty, an exception is thrown");
                 throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
 
-            using (var client = new WebClient{Credentials = CredentialCache.DefaultCredentials})
+            using(var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
             {
                 string serverLogData = client.UploadString(uri, "");
                 string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
@@ -200,17 +209,17 @@ namespace Dev2.Studio.Core.Helpers
         public static void MigrateTempData(string rootPath)
         {
 
-            string FullNewPath = Path.Combine(rootPath, NewPath);
-            string FullOldPath = Path.Combine(rootPath, OldPath);
+            string fullNewPath = Path.Combine(rootPath, NewPath);
+            string fullOldPath = Path.Combine(rootPath, OldPath);
 
-            if (!Directory.Exists(FullOldPath))
+            if(!Directory.Exists(fullOldPath))
             {
                 return;//no old data to migrate
             }
 
-            if (!Directory.Exists(FullNewPath))
+            if(!Directory.Exists(fullNewPath))
             {
-                Directory.Move(FullOldPath, FullNewPath);
+                Directory.Move(fullOldPath, fullNewPath);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Dev2.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Diagnostics
 {
     public class DebugWriter : IDebugWriter

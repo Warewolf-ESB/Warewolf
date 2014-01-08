@@ -2,12 +2,13 @@
 using System.Globalization;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class StringToAutomationIdConverter : IValueConverter
     {
-        private readonly string _autoIdPrefix = "UI_";
-        private readonly string _autoIdSufix = "_AutoID";
+        const string AutoIdPrefix = "UI_";
+        const string AutoIdSufix = "_AutoID";
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -15,7 +16,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             if(!string.IsNullOrEmpty(s))
             {
-                return string.Concat(_autoIdPrefix, s, _autoIdSufix);
+                return string.Concat(AutoIdPrefix, s, AutoIdSufix);
             }
             return s;
 

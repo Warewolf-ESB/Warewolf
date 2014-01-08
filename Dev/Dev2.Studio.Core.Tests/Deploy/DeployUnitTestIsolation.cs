@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
-using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
@@ -58,7 +58,7 @@ namespace Dev2.Core.Tests.Deploy
             //Setup Servers
             resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Verifiable();
             resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
-                                       It.IsAny<IDeployDTO>(), It.IsAny<IEventAggregator>())).Verifiable();
+                                       It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
 
             resRepo.Setup(c => c.All()).Returns(new List<IResourceModel>());
             resRepo2.Setup(c => c.All()).Returns(new List<IResourceModel>());
@@ -111,7 +111,7 @@ namespace Dev2.Core.Tests.Deploy
             resRepo.Verify(
                 sender =>
                 sender.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
-                                       It.IsAny<IDeployDTO>(), It.IsAny<IEventAggregator>()));
+                                       It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>()));
         }
 
         #endregion

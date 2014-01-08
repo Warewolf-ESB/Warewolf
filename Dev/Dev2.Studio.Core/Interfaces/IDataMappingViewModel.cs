@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Data.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IDataMappingViewModel
@@ -18,8 +19,8 @@ namespace Dev2.Studio.Core.Interfaces
         void CopyFrom(IDataMappingViewModel copyObj);
         void InputLostFocusTextBox(string text);
         void OutputLostFocusTextBox(string text);
-        void InputTextBoxGotFocus(IInputOutputViewModel Selected);
-        void OutputTextBoxGotFocus(IInputOutputViewModel Selected);
+        void InputTextBoxGotFocus(IInputOutputViewModel selected);
+        void OutputTextBoxGotFocus(IInputOutputViewModel selected);
         string GetInputString(IList<IInputOutputViewModel> inputData);
         string GetOutputString(IList<IInputOutputViewModel> outputData);
     }

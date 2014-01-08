@@ -1,4 +1,5 @@
 ﻿
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Activities.TO
 {
     public class ActivityViewModelTO
@@ -14,11 +15,5 @@ namespace Dev2.Studio.Core.Activities.TO
         public bool HasWizard { get; set; }
 
         public bool HasHelpPage { get; set; }
-
-        public ActivityViewModelTO()
-        {
-
-        }
-
     }
 }

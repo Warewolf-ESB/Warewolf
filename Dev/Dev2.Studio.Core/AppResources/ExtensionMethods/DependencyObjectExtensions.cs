@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 {
     public static class DependencyObjectExtensions
@@ -13,16 +14,16 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             List<DependencyObject> descendents = new List<DependencyObject>();
 
-            if (dependencyObject == null)
+            if(dependencyObject == null)
             {
                 return descendents;
             }
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
             {
                 descendents.Add(VisualTreeHelper.GetChild(dependencyObject, i));
             }
 
-            foreach (DependencyObject descendent in descendents.ToList())
+            foreach(DependencyObject descendent in descendents.ToList())
             {
                 descendents.AddRange(GetDescendents(descendent));
             }
@@ -32,21 +33,21 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
         public static DependencyObject GetChildByType(DependencyObject source, Type type)
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(source, i);
 
-                if (child.GetType() == type)
+                if(child.GetType() == type)
                 {
                     return child;
                 }
             }
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
+            for(int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(source, i);
                 DependencyObject nestedchild = GetChildByType(child, type);
-                if (nestedchild != null)
+                if(nestedchild != null)
                 {
                     return nestedchild;
                 }
@@ -59,11 +60,11 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             DependencyObject parent = VisualTreeHelper.GetParent(source);
 
-            if (parent == null) return null;
+            if(parent == null) return null;
 
             return parent.GetType() == type ? parent : GetParentByType(parent, type);
-        } 
-        
+        }
+
         /// <summary>
         /// Find the first child of the specified type (the child must exist)
         /// by walking down the logical/visual trees
@@ -92,7 +93,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         public static T FindChild<T>(this DependencyObject parent, Func<T, bool> predicate)
             where T : DependencyObject
         {
-            return parent.FindChildren<T>(predicate).First();
+            return parent.FindChildren(predicate).First();
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         public static bool TryFindChild<T>(this DependencyObject parent, out T foundChild)
             where T : DependencyObject
         {
-            return parent.TryFindChild<T>(child => true, out foundChild);
+            return parent.TryFindChild(child => true, out foundChild);
         }
 
         /// <summary>
@@ -120,11 +121,12 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
             where T : DependencyObject
         {
             foundChild = null;
-            var results = parent.FindChildren<T>(predicate);
-            if (results.Count() == 0)
+            var results = parent.FindChildren(predicate);
+            IEnumerable<T> enumerable = results as IList<T> ?? results.ToList();
+            if(!enumerable.Any())
                 return false;
 
-            foundChild = results.First();
+            foundChild = enumerable.First();
             return true;
         }
 
@@ -142,26 +144,25 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             var children = new List<DependencyObject>();
 
-            if ((parent is Visual) || (parent is Visual3D))
+            if((parent is Visual) || (parent is Visual3D))
             {
                 var visualChildrenCount = VisualTreeHelper.GetChildrenCount(parent);
-                for (int childIndex = 0; childIndex < visualChildrenCount; childIndex++)
+                for(int childIndex = 0; childIndex < visualChildrenCount; childIndex++)
                     children.Add(VisualTreeHelper.GetChild(parent, childIndex));
             }
-            foreach (var logicalChild in LogicalTreeHelper.GetChildren(parent).OfType<DependencyObject>())
-                if (!children.Contains(logicalChild))
+            foreach(var logicalChild in LogicalTreeHelper.GetChildren(parent).OfType<DependencyObject>())
+                if(!children.Contains(logicalChild))
                     children.Add(logicalChild);
 
-            foreach (var child in children)
+            foreach(var child in children)
             {
                 var typedChild = child as T;
-                if ((typedChild != null) && predicate.Invoke(typedChild))
+                if((typedChild != null) && predicate.Invoke(typedChild))
                     yield return typedChild;
 
-                foreach (var foundDescendant in FindChildren(child, predicate))
+                foreach(var foundDescendant in FindChildren(child, predicate))
                     yield return foundDescendant;
             }
-            yield break;
         }
     }
 }

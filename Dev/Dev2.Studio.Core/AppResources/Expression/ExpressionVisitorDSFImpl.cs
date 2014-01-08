@@ -1,45 +1,47 @@
 ﻿using System;
-using System.Text;
 using System.Linq.Expressions;
+using System.Text;
 
-namespace Dev2.Studio.Core.AppResources.Expression {
-    public class ExpressionVisitorDSFImpl : ExpressionVisitor {
-        StringBuilder sb;
-        string currentMember = string.Empty;
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.AppResources.Expression
+{
+    public class ExpressionVisitorDsfImpl : ExpressionVisitor
+    {
+        StringBuilder _sb;
 
-        public ExpressionVisitorDSFImpl() {
-        }
-
-        public string Translate(System.Linq.Expressions.Expression expression, string serviceName) {
-            sb = new StringBuilder();
-            sb.Append("<xml>");
-            sb.Append("<Service>");
-            sb.Append(serviceName);
-            sb.Append("</Service>");
+        public string Translate(System.Linq.Expressions.Expression expression, string serviceName)
+        {
+            _sb = new StringBuilder();
+            _sb.Append("<xml>");
+            _sb.Append("<Service>");
+            _sb.Append(serviceName);
+            _sb.Append("</Service>");
             expression = ExpressionEvaluator.PartialEval(expression);
-            this.Visit(expression);
-            sb.Append("/></xml>");
-            return sb.ToString();
+            Visit(expression);
+            _sb.Append("/></xml>");
+            return _sb.ToString();
         }
 
-        protected override System.Linq.Expressions.Expression VisitConstant(ConstantExpression c) {
-            switch (Type.GetTypeCode(c.Value.GetType())) {
+        protected override System.Linq.Expressions.Expression VisitConstant(ConstantExpression c)
+        {
+            switch(Type.GetTypeCode(c.Value.GetType()))
+            {
                 case TypeCode.Boolean:
-                sb.Append(((bool)c.Value) ? "Value=\"True\"" : " Value=\"False\"");
-                break;
+                    _sb.Append(((bool)c.Value) ? "Value=\"True\"" : " Value=\"False\"");
+                    break;
                 case TypeCode.String:
-                sb.Append(" Value=\"");
-                sb.Append(c.Value);
-                sb.Append("\"");
-                break;
+                    _sb.Append(" Value=\"");
+                    _sb.Append(c.Value);
+                    _sb.Append("\"");
+                    break;
                 case TypeCode.Object:
-                throw new NotSupportedException(string.Format("The constant for '{0}' is not supported", c.Value));
+                    throw new NotSupportedException(string.Format("The constant for '{0}' is not supported", c.Value));
                 default:
-                sb.Append(c.Value);
-                break;
+                    _sb.Append(c.Value);
+                    break;
             }
 
-            
+
 
             //if (!string.IsNullOrEmpty(currentMember)) {
             //    sb.Append("</");
@@ -51,48 +53,51 @@ namespace Dev2.Studio.Core.AppResources.Expression {
             return c;
         }
 
-        protected override System.Linq.Expressions.Expression VisitBinary(BinaryExpression b) {
-            this.Visit(b.Left);
-            switch (b.NodeType) {
+        protected override System.Linq.Expressions.Expression VisitBinary(BinaryExpression b)
+        {
+            Visit(b.Left);
+            switch(b.NodeType)
+            {
                 case ExpressionType.AndAlso:
                 case ExpressionType.And:
-                    sb.Append(" NextOperand=\"And\"/>");
-                break;
+                    _sb.Append(" NextOperand=\"And\"/>");
+                    break;
                 case ExpressionType.OrElse:
                 case ExpressionType.Or:
-                    sb.Append(" NextOperand=\"Or\"/>");
-                break;
+                    _sb.Append(" NextOperand=\"Or\"/>");
+                    break;
                 case ExpressionType.Equal:
-                    sb.Append(" Operand=\"Equal\"");
-                break;
+                    _sb.Append(" Operand=\"Equal\"");
+                    break;
                 case ExpressionType.NotEqual:
-                    sb.Append(" Operand=\"NotEqual\"");
-                break;
+                    _sb.Append(" Operand=\"NotEqual\"");
+                    break;
                 case ExpressionType.LessThan:
-                    sb.Append(" Operand=\"LessThan\"");
-                break;
+                    _sb.Append(" Operand=\"LessThan\"");
+                    break;
                 case ExpressionType.LessThanOrEqual:
-                    sb.Append(" Operand=\"LessThanOrEqualTo\"");
-                break;
+                    _sb.Append(" Operand=\"LessThanOrEqualTo\"");
+                    break;
                 case ExpressionType.GreaterThan:
-                    sb.Append(" Operand=\"\"GreaterThan\"");
-                break;
+                    _sb.Append(" Operand=\"\"GreaterThan\"");
+                    break;
                 case ExpressionType.GreaterThanOrEqual:
-                    sb.Append(" Operand=\"GreaterThanOrEqualTo\"");
-                break;
+                    _sb.Append(" Operand=\"GreaterThanOrEqualTo\"");
+                    break;
                 default:
-                throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported", b.NodeType));
+                    throw new NotSupportedException(string.Format("The binary operator '{0}' is not supported", b.NodeType));
             }
-            this.Visit(b.Right);
+            Visit(b.Right);
             return b;
         }
 
-        protected override System.Linq.Expressions.Expression VisitMemberAccess(MemberExpression m) {
-            if (m.Expression != null && m.Expression.NodeType == ExpressionType.Parameter) {
-                sb.Append("<SearchCondition PropertyName=\"");
-                sb.Append(m.Member.Name);
-                sb.Append("\"");
-                currentMember = m.Member.Name;
+        protected override System.Linq.Expressions.Expression VisitMemberAccess(MemberExpression m)
+        {
+            if(m.Expression != null && m.Expression.NodeType == ExpressionType.Parameter)
+            {
+                _sb.Append("<SearchCondition PropertyName=\"");
+                _sb.Append(m.Member.Name);
+                _sb.Append("\"");
                 return m;
             }
             throw new NotSupportedException(string.Format("The member '{0}' is not supported", m.Member.Name));

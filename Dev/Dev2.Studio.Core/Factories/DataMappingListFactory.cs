@@ -1,6 +1,7 @@
-﻿using Dev2.DataList.Contract;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Dev2.DataList.Contract;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories
 {
     public static class DataMappingListFactory

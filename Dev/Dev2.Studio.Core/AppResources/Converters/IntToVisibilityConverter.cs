@@ -1,12 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class IntToVisibilityConverter : IValueConverter

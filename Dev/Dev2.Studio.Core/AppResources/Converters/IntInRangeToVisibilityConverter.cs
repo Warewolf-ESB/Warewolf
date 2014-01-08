@@ -1,12 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class IntInRangeToVisibilityConverter : IMultiValueConverter
@@ -22,12 +19,12 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             var value = (int)values[0];
             var min = 0;
-            if (values[1] is int)
+            if(values[1] is int)
             {
                 min = (int)values[1];
             }
             var max = int.MaxValue;
-            if (values[2] is int)
+            if(values[2] is int)
             {
                 max = (int)values[2];
             }

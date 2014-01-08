@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using Dev2.Studio.Core.AppResources.Attributes;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Enums
 {
     public enum WorkSurfaceContext

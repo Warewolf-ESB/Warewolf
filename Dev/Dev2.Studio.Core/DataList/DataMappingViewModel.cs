@@ -1,16 +1,17 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Windows.Input;
+using Dev2.Data.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
@@ -18,10 +19,11 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Locals
 
         private IWebActivity _activity;
+        // ReSharper disable once InconsistentNaming
         public bool _isInitialLoad = false;
         RelayCommand _undo;
         RelayCommand _redo;
-        ActionManager _actionManager;
+        readonly ActionManager _actionManager;
         private string _activityName;
         private string _xmlOutput;
 
@@ -164,11 +166,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(_undo == null)
-                {
-                    _undo = new RelayCommand(c => Undo());
-                }
-                return _undo;
+                return _undo ?? (_undo = new RelayCommand(c => Undo()));
             }
         }
 
@@ -176,11 +174,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if(_redo == null)
-                {
-                    _redo = new RelayCommand(c => Redo());
-                }
-                return _redo;
+                return _redo ?? (_redo = new RelayCommand(c => Redo()));
             }
         }
 
@@ -309,13 +303,13 @@ namespace Dev2.Studio.ViewModels.DataList
             CreateXmlOutput(Outputs, Inputs);
         }
 
-        public void InputTextBoxGotFocus(IInputOutputViewModel Selected)
+        public void InputTextBoxGotFocus(IInputOutputViewModel selected)
         {
-            CurrentlySelectedInput = Selected;
+            CurrentlySelectedInput = selected;
             CreateXmlOutput(Outputs, Inputs);
         }
 
-        public void OutputTextBoxGotFocus(IInputOutputViewModel Selected)
+        public void OutputTextBoxGotFocus(IInputOutputViewModel selected)
         {
             //CurrentlySelectedOutput = Selected;
             CreateXmlOutput(Outputs, Inputs);

@@ -1,8 +1,9 @@
-﻿using Dev2.Data.Enums;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Data;
+using Dev2.Data.Enums;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     [ValueConversion(typeof(enForEachType), typeof(Visibility))]

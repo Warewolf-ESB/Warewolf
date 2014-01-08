@@ -529,7 +529,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             //
             // Deploy the resources
             //
-            var deployDto = new DeployDTO { ResourceModels = resourcesToDeploy };
+            var deployDto = new DeployDto { ResourceModels = resourcesToDeploy };
 
             try
             {

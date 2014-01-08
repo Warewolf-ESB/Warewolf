@@ -6,14 +6,14 @@ using System.Linq;
 
 namespace Dev2.InterfaceImplementors
 {
-    public class FileSystemQuery:IFileSystemQuery
+    public class FileSystemQuery : IFileSystemQuery
     {
         [NonSerialized]
         List<string> _queryCollection;
 
         List<string> _computerNameCache = new List<string>();
         DateTime _gotComputerNamesLast;
-        readonly TimeSpan _networkQueryTime  = new TimeSpan(0,0,15,0);
+        readonly TimeSpan _networkQueryTime = new TimeSpan(0, 0, 15, 0);
 
         public List<string> QueryCollection
         {
@@ -32,8 +32,8 @@ namespace Dev2.InterfaceImplementors
             var directorySeparatorChar = Path.DirectorySeparatorChar;
 
             var queryCollection = new List<string>();
-            queryCollection = (searchPath ?? string.Empty).Length <= 1 
-                              ? new List<string>(Directory.GetLogicalDrives()) 
+            queryCollection = (searchPath ?? string.Empty).Length <= 1
+                              ? new List<string>(Directory.GetLogicalDrives())
                               : SearchForFileAndFolders(searchPath, queryCollection, directorySeparatorChar);
             QueryCollection = queryCollection;
         }
@@ -54,9 +54,9 @@ namespace Dev2.InterfaceImplementors
 
         List<string> GetComputerNamesOnNetwork(string searchPath, List<string> queryCollection)
         {
-            if (searchPath != null && searchPath.Contains("\\"))
+            if(searchPath != null && searchPath.Contains("\\"))
             {
-                if (_computerNameCache.Count == 0 || DateTime.Now.Subtract(_gotComputerNamesLast) > _networkQueryTime)
+                if(_computerNameCache.Count == 0 || DateTime.Now.Subtract(_gotComputerNamesLast) > _networkQueryTime)
                 {
                     _computerNameCache = FindNetworkComputers();
                     _gotComputerNamesLast = DateTime.Now;
@@ -85,7 +85,7 @@ namespace Dev2.InterfaceImplementors
             {
                 GetSharesInformationFromSpecifiedServer(sFileServer, queryCollection);
             }
-            else if(queryCollection.Count==0)
+            else if(queryCollection.Count == 0)
             {
                 queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
             }
@@ -96,18 +96,18 @@ namespace Dev2.InterfaceImplementors
         {
             var fileServer = searchPath.Substring(2, searchPath.Length - 3);
             var c = searchPath[searchPath.Length - 1];
-            bool bQueryUncShares =false;
+            bool bQueryUncShares = false;
             if(searchPath[0] == '\\' && searchPath[1] == '\\' && c == '\\' && !fileServer.Contains("\\"))
             {
                 bQueryUncShares = true;
                 sFileServer = fileServer;
             }
-            else if (searchPath[0] == '\\' && searchPath[1] == '\\' && c != '\\' && !fileServer.Contains("\\"))
+            else if(searchPath[0] == '\\' && searchPath[1] == '\\' && c != '\\' && !fileServer.Contains("\\"))
             {
                 fileServer = searchPath.Substring(2);
                 if(_computerNameCache.Count == 0)
                 {
-                    GetComputerNamesOnNetwork("\\",queryCollection);
+                    GetComputerNamesOnNetwork("\\", queryCollection);
                 }
                 queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
             }
@@ -162,15 +162,7 @@ namespace Dev2.InterfaceImplementors
             {
                 string parentDir = searchPath.Substring(0, lastIndexOfDirSepChar + 1);
                 string searchPattern = "*" + searchPath.Substring(lastIndexOfDirSepChar + 1) + "*";
-                if (Directory.Exists(parentDir))
-                {
-                    queryCollection = new List<string>(Directory.GetFileSystemEntries(parentDir, searchPattern));
-                }
-                else
-                {
-                    // just avoid throwing it ;)
-                    queryCollection = new List<string>(); 
-                }
+                queryCollection = Directory.Exists(parentDir) ? new List<string>(Directory.GetFileSystemEntries(parentDir, searchPattern)) : new List<string>();
             }
             return queryCollection;
         }
@@ -181,7 +173,7 @@ namespace Dev2.InterfaceImplementors
             return (from DirectoryEntry dom in root.Children
                     from DirectoryEntry entry in dom.Children
                     where entry.SchemaClassName == "Computer"
-                    select @"\\"+entry.Name).ToList();
+                    select @"\\" + entry.Name).ToList();
         }
 
         bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
@@ -204,15 +196,15 @@ namespace Dev2.InterfaceImplementors
                 return false;
             }
 
-            int IEnvironmentModel;
+            int environmentModel;
             int iShare;
 
-            if((IEnvironmentModel = sInPath.IndexOf(CPathDel, 2)) == -1)
+            if((environmentModel = sInPath.IndexOf(CPathDel, 2)) == -1)
             {
                 return false;
             }
 
-            if((iShare = sInPath.IndexOf(CPathDel, IEnvironmentModel + 1)) == -1)
+            if((iShare = sInPath.IndexOf(CPathDel, environmentModel + 1)) == -1)
             {
                 if(Directory.Exists(sInPath))
                 {

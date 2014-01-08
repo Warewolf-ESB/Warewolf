@@ -1,12 +1,13 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     [Export(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
@@ -14,7 +15,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     {
         #region Class Members
 
-        private Dictionary<UserInterfaceLayoutModel, string> _userInterfaceLayoutModels;
+        private readonly Dictionary<UserInterfaceLayoutModel, string> _userInterfaceLayoutModels;
         public event EventHandler ItemAdded;
         private bool _isDisposed;
 
@@ -145,7 +146,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Private Methods
 
-        private string[] GetLayoutFiles()
+        private IEnumerable<string> GetLayoutFiles()
         {
             string path = GetLayoutDirectory();
             if(!Directory.Exists(path))
@@ -174,9 +175,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             if(FilePersistenceProvider != null)
             {
-                userInterfaceLayoutModel = new UserInterfaceLayoutModel();
-                userInterfaceLayoutModel.LayoutName = Path.GetFileNameWithoutExtension(file);
-                userInterfaceLayoutModel.MainViewDockingData = FilePersistenceProvider.Read(file);
+                userInterfaceLayoutModel = new UserInterfaceLayoutModel
+                {
+                    LayoutName = Path.GetFileNameWithoutExtension(file),
+                    MainViewDockingData = FilePersistenceProvider.Read(file)
+                };
             }
             return userInterfaceLayoutModel;
         }

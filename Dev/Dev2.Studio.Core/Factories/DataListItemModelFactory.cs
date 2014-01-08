@@ -1,22 +1,13 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System;
+using Dev2.Data.Binary_Objects;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
-using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Factories
 {
     public static class DataListItemModelFactory
     {
-        //public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel)
-        //{
-        //    return new DataListItemModel(dataListViewModel);
-        //}
-
-        //public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, bool isRoot)
-        //{
-        //    return new DataListItemModel(dataListViewModel) { IsRoot = isRoot };
-        //}
-
         public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, IDataListItemModel parent)
         {
             return CreateDataListItemViewModel(dataListViewModel, string.Empty, string.Empty, parent, true);
@@ -27,6 +18,7 @@ namespace Dev2.Studio.Core.Factories
             return CreateDataListItemViewModel(dataListViewModel, name, description, parent, true);
         }
 
+        // ReSharper disable once MethodOverloadWithOptionalParameter
         public static IDataListItemModel CreateDataListItemViewModel(IDataListViewModel dataListViewModel, string name, string description, IDataListItemModel parent, bool isEditable = true, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None)
         {
             IDataListItemModel dataListModel = CreateDataListModel(name);

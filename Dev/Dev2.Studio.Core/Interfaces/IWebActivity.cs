@@ -1,14 +1,18 @@
 ﻿using System;
 using Dev2.Studio.Core.Models;
 
-namespace Dev2.Studio.Core.Interfaces {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Interfaces
+{
 
-    public interface IWebActivity : IWorkSurfaceObject {
+    public interface IWebActivity : IWorkSurfaceObject
+    {
         object WebActivityObject { get; set; }
         IContextualResourceModel ResourceModel { get; set; }
         string WebsiteServiceName { get; set; }
         string MetaTags { get; set; }
         string FormEncodingType { get; set; }
+        // ReSharper disable once InconsistentNaming
         string XMLConfiguration { get; set; }
         string Html { get; set; }
         string ServiceName { get; set; }

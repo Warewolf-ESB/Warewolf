@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     /// <summary>

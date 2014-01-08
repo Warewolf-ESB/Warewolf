@@ -1,6 +1,7 @@
-﻿using Dev2.Communication;
-using System;
+﻿using System;
+using Dev2.Communication;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IContextualResourceModel : IResourceModel

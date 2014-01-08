@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class NullToVisibilityConverter : IValueConverter
@@ -27,7 +28,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if(value == null)
             {
                 return NullVisibilityValue;
             }

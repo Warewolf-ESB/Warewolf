@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using Caliburn.Micro;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.CustomControls
 {
     public class CachingContentHost : ContentControl
@@ -34,14 +35,14 @@ namespace Dev2.Studio.Core.CustomControls
 
         private UIElement EnsureItem(object source)
         {
-            if (source == null)
+            if(source == null)
             {
                 return null;
             }
 
             var view = GetView(source);
 
-            if (!_contentGrid.Children.Contains(view))
+            if(!_contentGrid.Children.Contains(view))
             {
                 SubscribeDeactivation(source);
                 _contentGrid.Children.Add(view);
@@ -64,26 +65,26 @@ namespace Dev2.Studio.Core.CustomControls
         private void SubscribeDeactivation(object source)
         {
             var sourceScreen = source as IScreen;
-            if (sourceScreen != null)
+            if(sourceScreen != null)
             {
-                sourceScreen.Deactivated += SourceScreen_Deactivated;
+                sourceScreen.Deactivated += SourceScreenDeactivated;
             }
         }
 
-        private void SourceScreen_Deactivated(object sender, DeactivationEventArgs e)
+        private void SourceScreenDeactivated(object sender, DeactivationEventArgs e)
         {
-            if (!e.WasClosed)
+            if(!e.WasClosed)
             {
                 return;
             }
 
             var sourceScreen = sender as IScreen;
-            if (sourceScreen == null)
+            if(sourceScreen == null)
             {
                 return;
             }
 
-            sourceScreen.Deactivated -= SourceScreen_Deactivated;
+            sourceScreen.Deactivated -= SourceScreenDeactivated;
             var view = GetView(sourceScreen);
             _contentGrid.Children.Remove(view);
         }
@@ -95,7 +96,7 @@ namespace Dev2.Studio.Core.CustomControls
 
         private static void SendToBack(UIElement control)
         {
-            if (control != null)
+            if(control != null)
             {
                 control.Visibility = Visibility.Collapsed;
             }

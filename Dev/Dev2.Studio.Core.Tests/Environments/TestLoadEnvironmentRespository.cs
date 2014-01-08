@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests.Environments
             {
                 foreach (var environment in environments)
                 {
-                    _environments.Add(environment);
+                    Environments.Add(environment);
                 }
             }
         }
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.Environments
 
         public override System.Collections.Generic.ICollection<IEnvironmentModel> All()
         {
-            return _environments;
+            return Environments;
         }
     }
 

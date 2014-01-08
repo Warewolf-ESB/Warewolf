@@ -1,6 +1,7 @@
 ﻿using Dev2.Studio.Core.Interfaces;
 using Moq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
     class TestResourceRepository : ResourceRepository
@@ -18,7 +19,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void AddMockResource(IResourceModel mockRes)
         {
-            _resourceModels.Add(mockRes);
+            ResourceModels.Add(mockRes);
         }
 
         public int LoadResourcesHitCount { get; private set; }

@@ -3,6 +3,7 @@ using System.Net;
 using CefSharp;
 using Dev2.Studio.Core.Helpers;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     // PBI 9644 - 2013.06.21 - TWR: added   

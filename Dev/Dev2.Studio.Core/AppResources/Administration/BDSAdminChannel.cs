@@ -1,8 +1,9 @@
 ﻿using Dev2.Providers.Logs;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Administration
 {
-    public class BDSAdminChannel : IFrameworkDuplexCallbackChannel, IApplicationMessage
+    public class BdsAdminChannel : IFrameworkDuplexCallbackChannel, IApplicationMessage
     {
         #region IFrameworkDuplexCallbackChannel Members
 

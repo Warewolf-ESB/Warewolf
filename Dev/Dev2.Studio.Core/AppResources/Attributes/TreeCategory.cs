@@ -1,9 +1,10 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Attributes
 {
     [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
-    public sealed class TreeCategory  : Attribute
+    public sealed class TreeCategory : Attribute
     {
         public TreeCategory(string value)
         {

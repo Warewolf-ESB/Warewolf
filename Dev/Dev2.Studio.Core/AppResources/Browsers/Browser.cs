@@ -1,9 +1,10 @@
-﻿using CefSharp;
+﻿using System;
+using System.ComponentModel;
+using CefSharp;
 using CefSharp.Wpf;
 using Dev2.Studio.Core.Interfaces;
-using System;
-using System.ComponentModel;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Browsers
 {
     public static class Browser
@@ -21,24 +22,24 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         // completes before the instance variable can be accessed. Lastly, this approach uses a sync root 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile WebPropertyEditorScriptableClass TheCallbackHandler;
+        static volatile WebPropertyEditorScriptableClass _theCallbackHandler;
         static readonly object TheCallbackHandlerSyncRoot = new Object();
 
         public static WebPropertyEditorScriptableClass CallbackHandler
         {
             get
             {
-                if(TheCallbackHandler == null)
+                if(_theCallbackHandler == null)
                 {
                     lock(TheCallbackHandlerSyncRoot)
                     {
-                        if(TheCallbackHandler == null)
+                        if(_theCallbackHandler == null)
                         {
-                            TheCallbackHandler = new WebPropertyEditorScriptableClass();
+                            _theCallbackHandler = new WebPropertyEditorScriptableClass();
                         }
                     }
                 }
-                return TheCallbackHandler;
+                return _theCallbackHandler;
             }
         }
 
@@ -48,10 +49,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public static void Startup()
         {
-            var settings = new Settings
-            {
-                // CachePath = FileHelper.GetFullPath(StringResources.BrowserCacheFolder)
-            };
+            var settings = new Settings();
 
             if(CEF.Initialize(settings))
             {

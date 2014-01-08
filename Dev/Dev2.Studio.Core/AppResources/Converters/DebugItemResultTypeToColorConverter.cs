@@ -1,9 +1,10 @@
-﻿using Dev2.Diagnostics;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Dev2.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class DebugItemResultTypeToColorConverter : IValueConverter

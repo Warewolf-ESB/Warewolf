@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Account
 {
     // Sashen : 24-01-2013 : This class is used to facilitate User Account information supplied to the server for authentication
@@ -32,12 +33,12 @@ namespace Dev2.Studio.Core.Account
         #region Members
 
         private string _userName;
-        private string _password;
+        private readonly string _password;
 
         // Sashen: 24-01:2013 - This is only hardcoded because the server allows for it,
         // please change when we introduce a security module on the server.
 
-        private const string _hardPassword = "asd";
+        private const string HardPassword = "asd";
 
         #endregion Members
 
@@ -48,7 +49,7 @@ namespace Dev2.Studio.Core.Account
         public UserAccountProvider()
         {
             _userName = Guid.NewGuid().ToString();
-            _password = _hardPassword;
+            _password = HardPassword;
         }
 
         // Sashen: 24-01-2013 : The constructor takes the user Name and Password and merely sets these values that can be retrieved from the
@@ -56,6 +57,7 @@ namespace Dev2.Studio.Core.Account
         public UserAccountProvider(string userName, string password)
         {
             if(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("User Name or password must not be null");
             _userName = userName;
             _password = password;

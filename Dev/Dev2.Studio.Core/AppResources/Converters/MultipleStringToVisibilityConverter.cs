@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class MultipleStringToVisilityValueConverter : IMultiValueConverter
@@ -24,7 +25,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             values.ToList().ForEach(o =>
             {
                 var s = o as string;
-                if (s != null) strings.Add(s);
+                if(s != null) strings.Add(s);
             });
 
             bool invert;
@@ -33,7 +34,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
             var result = strings.Any(string.IsNullOrEmpty) ? Visibility.Collapsed : Visibility.Visible;
 
-            if (invert)
+            if(invert)
             {
                 return result == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
             }

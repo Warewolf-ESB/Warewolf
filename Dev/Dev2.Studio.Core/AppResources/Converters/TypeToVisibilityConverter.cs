@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class TypeToVisibilityConverter : IValueConverter
@@ -19,7 +20,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null || value.GetType() != Type)
+            if(value == null || value.GetType() != Type)
             {
                 return MismatchVisibilityValue;
             }

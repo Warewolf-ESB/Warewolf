@@ -1,11 +1,13 @@
 ﻿using Dev2.Diagnostics;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Messages
 {
     public class DebugWriterWriteMessage : IMessage
     {
         public DebugWriterWriteMessage()
         {
+
         }
 
         /// <summary>
@@ -15,6 +17,8 @@ namespace Dev2.Studio.Core.Messages
         {
             DebugState = debugState;
         }
+
+
 
         public IDebugState DebugState { get; set; }
     }

@@ -14,7 +14,8 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for DeployServiceTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DeployServiceTest
     {
 
@@ -53,7 +54,7 @@ namespace Dev2.Core.Tests
 
         void Run()
         {
-           // ImportService.CurrentContext = CompositionInitializer.InitDeployServiceTest();
+            // ImportService.CurrentContext = CompositionInitializer.InitDeployServiceTest();
 
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
@@ -65,7 +66,7 @@ namespace Dev2.Core.Tests
             envMock.Setup(e => e.ResourceRepository.DeployResource(It.IsAny<IResourceModel>())).Verifiable();
             envMock.Setup(e => e.IsConnected).Returns(true);
 
-            var dtoMock = new Mock<IDeployDTO>();
+            var dtoMock = new Mock<IDeployDto>();
             dtoMock.Setup(d => d.ResourceModels).Returns(CreateModels(envMock.Object));
 
             var ds = new DeployService();
