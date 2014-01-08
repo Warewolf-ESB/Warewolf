@@ -39,8 +39,8 @@ namespace TestPackBuilder
 
             var toScanFor = BuildSearchExtention(fileExtentionToScanFor);
             var result = new StringBuilder("<Methods>");
-            
-            if (!recusiveScan)
+
+            if(!recusiveScan)
             {
                 result.Append(ScanDirectoryForFiles(directoryToScan, toScanFor, testAnnotationSearchString));
             }
@@ -55,8 +55,8 @@ namespace TestPackBuilder
                 {
                     directories.RemoveAt(0);
                 }
-                
-                while (dir != null)
+
+                while(dir != null)
                 {
                     result.Append(ScanDirectoryForFiles(dir, toScanFor, testAnnotationSearchString));
                     // now scan this directory for more directories ;)
@@ -65,7 +65,7 @@ namespace TestPackBuilder
                     directories.AddRange(subDirectories);
 
                     dir = directories.FirstOrDefault();
-                    if (dir != null)
+                    if(dir != null)
                     {
                         directories.RemoveAt(0);
                     }
@@ -73,6 +73,9 @@ namespace TestPackBuilder
             }
 
             result.Append("</Methods>");
+
+
+            File.WriteAllText(@"c:\foo\scan.txt", result.ToString());
 
             return result.ToString();
         }
@@ -114,7 +117,7 @@ namespace TestPackBuilder
 
         private string ProcessFile(string contents, string testAnnotationSearchString)
         {
-            var idx = -1;
+            int idx;
             var result = new StringBuilder();
             var nameEnd = 0;
 
