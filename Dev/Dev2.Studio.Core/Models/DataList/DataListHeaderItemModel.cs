@@ -1,4 +1,5 @@
 ﻿
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListHeaderItemModel : BaseDataListItemModel

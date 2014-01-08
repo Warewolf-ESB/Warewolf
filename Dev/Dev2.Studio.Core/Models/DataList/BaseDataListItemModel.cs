@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces.DataList;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
     public abstract class BaseDataListItemModel : PropertyChangedBase

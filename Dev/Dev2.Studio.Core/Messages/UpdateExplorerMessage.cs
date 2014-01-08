@@ -1,6 +1,7 @@
-﻿namespace Dev2.Studio.Core.Messages
+﻿// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core.Messages
 {
-    public class UpdateExplorerMessage:IMessage
+    public class UpdateExplorerMessage : IMessage
     {
         public bool Update { get; set; }
 

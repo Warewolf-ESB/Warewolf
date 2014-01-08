@@ -1,7 +1,8 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public abstract class DecisionType : IDecisionType
@@ -9,15 +10,18 @@ namespace Dev2.Studio.Core.Models
 
 
         #region Constructors
+        // ReSharper disable once PublicConstructorInAbstractClass
         public DecisionType()
         {
 
         }
 
+        // ReSharper disable once PublicConstructorInAbstractClass
         public DecisionType(string decisionTypeName)
             : this()
         {
-            this.DecisionTypeName = decisionTypeName;
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            DecisionTypeName = decisionTypeName;
 
 
             OperatorTypes = new List<OperatorType> { 
@@ -60,9 +64,11 @@ namespace Dev2.Studio.Core.Models
             get
             {
                 var operations = OperatorTypes.Where(c => c.Selected);
-                if (operations.Count() >= 1)
+                IEnumerable<OperatorType> operatorTypes = operations as IList<OperatorType> ?? operations.ToList();
+                if(operatorTypes.Any())
                 {
-                    return operations.FirstOrDefault().IsValid;
+                    OperatorType operatorType = operatorTypes.FirstOrDefault();
+                    return operatorType != null && operatorType.IsValid;
                 }
                 return false;
             }
@@ -72,22 +78,26 @@ namespace Dev2.Studio.Core.Models
         public virtual string GetExpression()
         {
             var operations = OperatorTypes.Where(c => c.Selected);
-            if (operations.Count() >= 1)
+            IEnumerable<OperatorType> operatorTypes = operations as IList<OperatorType> ?? operations.ToList();
+            if(operatorTypes.Any())
             {
-                var operation = operations.FirstOrDefault();
-                return BuildStringExpression(operation.OperatorName, this.StringDecorator, operation.Expression, operation.OperatorSymbol, operation.Value, operation.EndValue);
-
+                var operation = operatorTypes.FirstOrDefault();
+                if(operation != null)
+                {
+                    return BuildStringExpression(operation.OperatorName, StringDecorator, operation.Expression, operation.OperatorSymbol, operation.Value, operation.EndValue);
+                }
             }
             else
             {
                 return string.Empty;
             }
+            return null;
         }
 
         public string BuildStringExpression(string functionName, string decorator, string expression, string op, object value, object endvalue)
         {
 
-            if (endvalue != null)
+            if(endvalue != null)
             {
                 return string.Format(op, functionName, expression, value == null ? string.Empty : value.ToString(), decorator, endvalue == null ? string.Empty : endvalue.ToString());
             }

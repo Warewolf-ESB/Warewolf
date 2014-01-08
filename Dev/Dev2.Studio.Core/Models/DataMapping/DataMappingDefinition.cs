@@ -1,40 +1,18 @@
 ﻿using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public class DataMappingDefinition : IDataMappingOutputs
     {
-        private string _name;
-        private string _mapsTo;
-
         public DataMappingDefinition(string name, string mapsTo)
         {
             Name = name;
             MapsTo = mapsTo;
         }
 
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
-        }
+        public string Name { get; set; }
 
-        public string MapsTo
-        {
-            get
-            {
-                return _mapsTo;
-            }
-            set
-            {
-                _mapsTo = value;
-            }
-        }
+        public string MapsTo { get; set; }
     }
 }

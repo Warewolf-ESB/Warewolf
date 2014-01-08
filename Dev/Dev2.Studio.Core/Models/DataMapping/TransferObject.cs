@@ -1,20 +1,21 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core.Interfaces.DataList;
-using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public class TransferObject
     {
 
-        public IList<IDev2Definition> outputScalarList { get; set; }
-        public IList<IDev2Definition> inputScalarList { get; set; }
-        public IRecordSetCollection outputRecSet { get; set; }
-        public IRecordSetCollection inputRecSet { get; set; }
-        public List<IDataListItemModel> dataList { get; set; }
-        public List<IDataListItemModel> dataObjectNames { get; set; }
-        public IList<IInputOutputViewModel> displayOutputData { get; set; }
-        public IList<IInputOutputViewModel> displayInputData { get; set; }
+        public IList<IDev2Definition> OutputScalarList { get; set; }
+        public IList<IDev2Definition> InputScalarList { get; set; }
+        public IRecordSetCollection OutputRecSet { get; set; }
+        public IRecordSetCollection InputRecSet { get; set; }
+        public List<IDataListItemModel> DataList { get; set; }
+        public List<IDataListItemModel> DataObjectNames { get; set; }
+        public IList<IInputOutputViewModel> DisplayOutputData { get; set; }
+        public IList<IInputOutputViewModel> DisplayInputData { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Dev2.Data.Binary_Objects;
+﻿using System;
+using System.Xml;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.Studio.Core.Interfaces.DataList;
-using System;
-using System.Xml;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListItemModel : BaseDataListItemModel, IDataListItemModel
