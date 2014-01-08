@@ -84,10 +84,13 @@
             </mtbwa:InvokeProcess.OutputDataReceived>
           </mtbwa:InvokeProcess>
         </If.Then>
+        <If.Else>
+          <mtbwa:WriteBuildWarning Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="Send report is disabled for this build definition." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_2" />
+        </If.Else>
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBkBkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDWw4CAQEwBTCzAQIBJTEFMb0BAgEjMgVZGAIBAjChATCwAQIBJjEwMWICASQysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBHDQHQx0CARdEB1cMAgEMWAdYmQICAQkzrwEzywQCAR4zYTOmAQIBHTQmNNQBAgEZNIMCNK0CAgEYRBVEIwIBDUYLVSECAQ9YfliyAQIBC0YqRv0BAgERRqECRsMCAgEQ</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbBwBkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDXg4CAQEwBTCzAQIBKDEFMb0BAgEmMgVcGAIBAjChATCwAQIBKTEwMWICAScysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBHzQHQx0CARpEB1oMAgEMWwdbmQICAQkzrwEzywQCASEzYTOmAQIBIDQmNNQBAgEcNIMCNK0CAgEbRBVEIwIBDUYLVSECARJYC1jOAgIBD1t+W7IBAgELRipG/QECARRGoQJGwwICARNYfVixAQIBEVgvWHQCARA=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -96,6 +99,7 @@
       <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="464,264" />
       <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="200,264" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,412" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="486,964" />
