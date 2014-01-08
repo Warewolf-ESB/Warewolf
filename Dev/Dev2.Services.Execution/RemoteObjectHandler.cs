@@ -58,66 +58,12 @@ namespace Dev2.Services.Execution
         public string InterrogatePlugin(string assemblyLocation, string assemblyName, string method, string args)
         {
             // Travis.Frisinger : 31-08-2012 - Change this method to intelligently find a method signature
-            string result = "";
+            string result;
             try
             {
-
-                IList<Dev2TypeConversion> convertedArgs = null;
-                ObjectHandle objHAndle = null;
-                object loadedAssembly;
-                Assembly asm = null;
-
-
-                if (args != string.Empty)
-                {
-                    convertedArgs = ConvertXMLToConcrete(args);
-                }
-                if (assemblyLocation.StartsWith("GAC:"))
-                {
-                    asm = Assembly.Load(assemblyLocation);
-
-                    assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
-                    Type t = Type.GetType(assemblyName);
-                    loadedAssembly = Activator.CreateInstance(t);
-                    
-                }
-                else
-                {
-                    asm = Assembly.LoadFrom(assemblyLocation);
-                    objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    loadedAssembly = objHAndle.Unwrap();
-                }
-
-                // load deps ;)
-                LoadDepencencies(asm, assemblyLocation);
-
                 // the way this is invoked so as to consider the arg order and type
-                MethodInfo methodToRun = null;
-                object pluginResult = null;
 
-                if(convertedArgs.Count == 0)
-                {
-                    methodToRun = loadedAssembly.GetType().GetMethod(method);
-                    pluginResult = methodToRun.Invoke(loadedAssembly, null);
-                }
-                else
-                {
-                    Type[] targs = new Type[convertedArgs.Count];
-                    object[] invokeArgs = new object[convertedArgs.Count];
-                    // build the args array now ;)
-                    int pos = 0;
-                    foreach(Dev2TypeConversion tc in convertedArgs)
-                    {
-                        targs[pos] = tc.FetchType();
-                        invokeArgs[pos] = Convert.ChangeType((object)tc.FetchVal(), (Type)tc.FetchType());
-                        pos++;
-                    }
-
-                    // find method with correct signature ;)
-                    methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
-                    pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
-
-                }
+                var pluginResult = GetPluginResult(assemblyLocation, assemblyName, method, args);
 
                 IOutputDescription ouputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                 IDataSourceShape dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
@@ -140,6 +86,79 @@ namespace Dev2.Services.Execution
             return result;
         }
 
+        object GetPluginResult(string assemblyLocation, string assemblyName, string method, string args)
+        {
+            object loadedAssembly = null;
+            IList<Dev2TypeConversion> convertedArgs = null;
+            if(args != string.Empty)
+            {
+                convertedArgs = ConvertXMLToConcrete(args);
+            }
+            var asm = LoadAssembly(ref assemblyLocation, assemblyName, ref loadedAssembly);
+
+            // load deps ;)
+            LoadDepencencies(asm, assemblyLocation);
+
+            MethodInfo methodToRun;
+            object pluginResult = null;
+
+            if(convertedArgs != null && convertedArgs.Count == 0)
+            {
+                if(loadedAssembly != null)
+                {
+                    methodToRun = loadedAssembly.GetType().GetMethod(method);
+                    pluginResult = methodToRun.Invoke(loadedAssembly, null);
+                }
+            }
+            else
+            {
+                if(convertedArgs != null)
+                {
+                    Type[] targs = new Type[convertedArgs.Count];
+                    object[] invokeArgs = new object[convertedArgs.Count];
+                    // build the args array now ;)
+                    int pos = 0;
+                    foreach(Dev2TypeConversion tc in convertedArgs)
+                    {
+                        targs[pos] = tc.FetchType();
+                        invokeArgs[pos] = Convert.ChangeType(tc.FetchVal(), tc.FetchType());
+                        pos++;
+                    }
+
+                    // find method with correct signature ;)
+                    if(loadedAssembly != null)
+                    {
+                        methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
+                        pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
+                    }
+                }
+            }
+            return pluginResult;
+        }
+
+        static Assembly LoadAssembly(ref string assemblyLocation, string assemblyName, ref object loadedAssembly)
+        {
+            Assembly asm;
+            if(assemblyLocation.StartsWith("GAC:"))
+            {
+                asm = Assembly.Load(assemblyLocation);
+
+                assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
+                Type t = Type.GetType(assemblyName);
+                if(t != null)
+                {
+                    loadedAssembly = Activator.CreateInstance(t);
+                }
+            }
+            else
+            {
+                asm = Assembly.LoadFrom(assemblyLocation);
+                ObjectHandle objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
+                loadedAssembly = objHAndle.Unwrap();
+            }
+            return asm;
+        }
+
         /// <summary>
         /// Invoke a plugin and return its results
         /// </summary>
@@ -156,66 +175,7 @@ namespace Dev2.Services.Execution
 
             try
             {
-                Assembly asm = null;
-                IList<Dev2TypeConversion> convertedArgs = null;
-                object loadedAssembly;
-
-                if(args != string.Empty)
-                {
-                    convertedArgs = ConvertXMLToConcrete(args);
-                }
-
-                if(assemblyLocation.StartsWith("GAC:"))
-                {
-                    assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
-
-                    asm = Assembly.Load(assemblyLocation);
-
-                    var t = Type.GetType(assemblyName);
-                    loadedAssembly = Activator.CreateInstance(t);
-                }
-                else
-                {
-                    asm = Assembly.LoadFrom(assemblyLocation);
-
-                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    loadedAssembly = objHAndle.Unwrap(); 
-                }
-
-                // load deps ;)
-                LoadDepencencies(asm, assemblyLocation);
-
-                // the way this is invoked so as to consider the arg order and type
-                MethodInfo methodToRun;
-                object pluginResult = null;
-
-                if(convertedArgs != null && convertedArgs.Count == 0)
-                {
-                    methodToRun = loadedAssembly.GetType().GetMethod(method);
-                    pluginResult = methodToRun.Invoke(loadedAssembly, null);
-                }
-                else
-                {
-                    if (convertedArgs != null)
-                    {
-                        var targs = new Type[convertedArgs.Count];
-                        var invokeArgs = new object[convertedArgs.Count];
-
-                        // build the args array now ;)
-                        var pos = 0;
-                        foreach(var tc in convertedArgs)
-                        {
-                            targs[pos] = tc.FetchType();
-                            invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
-                            pos++;
-                        }
-
-                        // find method with correct signature ;)
-                        methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
-                        pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
-                    }
-                }
-
+                var pluginResult = Run(assemblyLocation, assemblyName, method, args);
                 result = FormatResult(pluginResult, outputDescription);
             }
             catch(Exception ex)
@@ -228,8 +188,8 @@ namespace Dev2.Services.Execution
             }
 
             return result;
-        }  
-        
+        }
+
         /// <summary>
         /// Invoke a plugin and return its results
         /// </summary>
@@ -246,66 +206,7 @@ namespace Dev2.Services.Execution
 
             try
             {
-                Assembly asm = null;
-                IList<Dev2TypeConversion> convertedArgs = null;
-                object loadedAssembly;
-
-                if(args != string.Empty)
-                {
-                    convertedArgs = ConvertXMLToConcrete(args);
-                }
-
-                if(assemblyLocation.StartsWith("GAC:"))
-                {
-                    assemblyLocation = assemblyLocation.Remove(0, "GAC:".Length);
-
-                    asm = Assembly.Load(assemblyLocation);
-
-                    var t = Type.GetType(assemblyName);
-                    loadedAssembly = Activator.CreateInstance(t);
-                }
-                else
-                {
-                    asm = Assembly.LoadFrom(assemblyLocation);
-
-                    var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    loadedAssembly = objHAndle.Unwrap(); 
-                }
-
-                // load deps ;)
-                LoadDepencencies(asm, assemblyLocation);
-
-                // the way this is invoked so as to consider the arg order and type
-                MethodInfo methodToRun;
-                object pluginResult = null;
-
-                if(convertedArgs != null && convertedArgs.Count == 0)
-                {
-                    methodToRun = loadedAssembly.GetType().GetMethod(method);
-                    pluginResult = methodToRun.Invoke(loadedAssembly, null);
-                }
-                else
-                {
-                    if (convertedArgs != null)
-                    {
-                        var targs = new Type[convertedArgs.Count];
-                        var invokeArgs = new object[convertedArgs.Count];
-
-                        // build the args array now ;)
-                        var pos = 0;
-                        foreach(var tc in convertedArgs)
-                        {
-                            targs[pos] = tc.FetchType();
-                            invokeArgs[pos] = AdjustType(tc.FetchVal(), tc.FetchType());
-                            pos++;
-                        }
-
-                        // find method with correct signature ;)
-                        methodToRun = loadedAssembly.GetType().GetMethod(method, targs);
-                        pluginResult = methodToRun.Invoke(loadedAssembly, invokeArgs);
-                    }
-                }
-
+                var pluginResult = Run(assemblyLocation, assemblyName, method, args);
                 result = FormatResult(pluginResult, outputDescription);
             }
             catch(Exception ex)
@@ -318,6 +219,14 @@ namespace Dev2.Services.Execution
             return result;
         }
 
+        object Run(string assemblyLocation, string assemblyName, string method, string args)
+        {
+
+            // the way this is invoked so as to consider the arg order and type
+            object pluginResult = GetPluginResult(assemblyLocation, assemblyName, method, args);
+            return pluginResult;
+        }
+
         //2013.06.12: Ashley Lewis for bug 9618 - small refacter
         public static string FormatResult(object result, string outputDescription)
         {
@@ -325,32 +234,19 @@ namespace Dev2.Services.Execution
 
             var outputDescriptionSerializationService = OutputDescriptionSerializationServiceFactory.CreateOutputDescriptionSerializationService();
             var outputDescriptionInstance = outputDescriptionSerializationService.Deserialize(od);
+            return FormatResult(result, outputDescriptionInstance);
+        }
 
-            if (outputDescriptionInstance != null)
-            {
-                var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescriptionInstance);
-                // BUG 9618 - 2013.06.12 - TWR: fix for void return types
-                return outputFormatter.Format(result ?? string.Empty).ToString();
-            }
-                // BUG 9619 - 2013.06.05 - TWR - Added
-            else
-            {
-                var errorResult = new XElement("Error");
-                errorResult.Add("Output format in service action is invalid");
-                return errorResult.ToString();
-            }
-        } 
-        
         public static string FormatResult(object result, IOutputDescription outputDescription)
         {
 
-            if (outputDescription != null)
+            if(outputDescription != null)
             {
                 var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(outputDescription);
                 // BUG 9618 - 2013.06.12 - TWR: fix for void return types
                 return outputFormatter.Format(result ?? string.Empty).ToString();
             }
-                // BUG 9619 - 2013.06.05 - TWR - Added
+            // BUG 9619 - 2013.06.05 - TWR - Added
             var errorResult = new XElement("Error");
             errorResult.Add("Output format in service action is invalid");
             return errorResult.ToString();
@@ -367,11 +263,11 @@ namespace Dev2.Services.Execution
         private void LoadDepencencies(Assembly asm, string assemblyLocation)
         {
             // load depencencies ;)
-            if (asm != null)
+            if(asm != null)
             {
                 var toLoadAsm = asm.GetReferencedAssemblies();
 
-                foreach (var toLoad in toLoadAsm)
+                foreach(var toLoad in toLoadAsm)
                 {
                     // TODO : Detect GAC or File System Load ;)
                     Assembly.Load(toLoad);
@@ -381,33 +277,6 @@ namespace Dev2.Services.Execution
             {
                 throw new Exception("Could not locate Assembly [ " + assemblyLocation + " ]");
             }
-        }
-
-        /// <summary>
-        /// Change the argument type for invoke
-        /// </summary>
-        /// <param name="val"></param>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        private object AdjustType(string val, Type t)
-        {
-            object result = null;
-
-            if(val != GlobalConstants.NullPluginValue)
-            {
-                result = Convert.ChangeType(val, t);
-            }
-            else
-            {
-                // check if type is nullable, else return default value
-                if(t.IsValueType) // ref type == nullable, value type != nullable
-                {
-                    // create a default value
-                    result = Activator.CreateInstance(t);
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -437,28 +306,31 @@ namespace Dev2.Services.Execution
 
                 // //Args/Args/Arg"
                 XmlNodeList nl = xDoc.SelectNodes("//Args/Arg");
-                foreach(XmlNode n in nl)
+                if(nl != null)
                 {
-                    XmlNodeList cnl = n.ChildNodes;
-                    Type t = null;
-                    string val = string.Empty;
-
-                    foreach(XmlNode cn in cnl)
+                    foreach(XmlNode n in nl)
                     {
-                        if(cn.Name == "TypeOf")
-                        {
-                            t = CreateType(cn.InnerText);
-                        }
-                        else if(cn.Name == "Value")
-                        {
-                            val = cn.InnerXml;
-                        }
-                    }
+                        XmlNodeList cnl = n.ChildNodes;
+                        Type t = null;
+                        string val = string.Empty;
 
-                    // add to the list
-                    if(t != null)
-                    {
-                        result.Add(new Dev2TypeConversion(t, val));
+                        foreach(XmlNode cn in cnl)
+                        {
+                            if(cn.Name == "TypeOf")
+                            {
+                                t = CreateType(cn.InnerText);
+                            }
+                            else if(cn.Name == "Value")
+                            {
+                                val = cn.InnerXml;
+                            }
+                        }
+
+                        // add to the list
+                        if(t != null)
+                        {
+                            result.Add(new Dev2TypeConversion(t, val));
+                        }
                     }
                 }
             }
@@ -480,7 +352,7 @@ namespace Dev2.Services.Execution
         {
             // Travis.Frisinger : 31-08-2012
 
-            Type result = typeof(object); // default to string
+            Type result; // default to string
 
             type = type.Replace(Environment.NewLine, "");
             type = type.ToLower().Trim();
