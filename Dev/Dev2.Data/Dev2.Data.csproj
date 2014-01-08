@@ -367,7 +367,6 @@
     <Compile Include="Translators\DataListDataTableTranslator.cs" />
     <Compile Include="Translators\EmitionTypes.cs" />
     <Compile Include="Translators\StudioDebugTranslator.cs" />
-    <Compile Include="Translators\DataListXMLTranslatorDebug.cs" />
     <Compile Include="Translators\DataListXMLTranslatorWithOutSystemTags.cs" />
     <Compile Include="Translators\StudioDataListXMLTranslator.cs" />
     <Compile Include="Translators\DataListBinaryTranslator.cs" />
