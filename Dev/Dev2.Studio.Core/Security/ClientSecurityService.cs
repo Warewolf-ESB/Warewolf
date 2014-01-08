@@ -23,7 +23,7 @@ namespace Dev2.Security
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
 
-            CommunicationController communicationController = new CommunicationController()
+            CommunicationController communicationController = new CommunicationController
             {
                 ServiceName = "SecurityReadService"
             };

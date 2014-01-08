@@ -1,6 +1,7 @@
 ﻿using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public class ServiceDebugInfoModel : IServiceDebugInfoModel

@@ -1,10 +1,10 @@
-﻿using Dev2.Providers.Logs;
-using System;
+﻿using System;
 using System.Collections;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+using Dev2.Providers.Logs;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication.Mapi
 {
     #region Public MapiMailMessage Class
@@ -22,10 +22,6 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
         private class MapiFileDescriptor
         {
-            public int position = 0;
-            public string path = null;
-            public string name = null;
-            public IntPtr type = IntPtr.Zero;
         }
 
         #endregion Private MapiFileDescriptor Class
@@ -35,7 +31,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// <summary>
         /// Specifies the valid RecipientTypes for a Recipient.
         /// </summary>
-        public enum RecipientType : int
+        public enum RecipientType
         {
             /// <summary>
             /// Recipient will be in the TO list.
@@ -45,11 +41,13 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             /// <summary>
             /// Recipient will be in the CC list.
             /// </summary>
+            // ReSharper disable once InconsistentNaming
             CC = 2,
 
             /// <summary>
             /// Recipient will be in the BCC list.
             /// </summary>
+            // ReSharper disable once InconsistentNaming
             BCC = 3
         };
 
@@ -59,9 +57,9 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
 
         private string _subject;
         private string _body;
-        private RecipientCollection _recipientCollection;
-        private ArrayList _files;
-        private ManualResetEvent _manualResetEvent;
+        private readonly RecipientCollection _recipientCollection;
+        private readonly ArrayList _files;
+        private readonly ManualResetEvent _manualResetEvent;
 
         #endregion Member Variables
 
@@ -144,8 +142,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         public void ShowDialog()
         {
             // Create the mail message in an STA thread
-            var t = new Thread(new ThreadStart(_ShowMail));
-            t.IsBackground = true;
+            var t = new Thread(ShowMail) { IsBackground = true };
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
 
@@ -161,9 +158,9 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// <summary>
         /// Sends the mail message.
         /// </summary>
-        private void _ShowMail(object ignore)
+        private void ShowMail()
         {
-            var message = new MAPIHelperInterop.MapiMessage();
+            var message = new MapiHelperInterop.MapiMessage();
 
             using(RecipientCollection.InteropRecipientCollection interopRecipients
                 = _recipientCollection.GetInteropRepresentation())
@@ -179,16 +176,16 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 if(_files.Count > 0)
                 {
                     // Add attachments
-                    message.Files = _AllocAttachments(out message.FileCount);
+                    message.Files = AllocAttachments(out message.FileCount);
                 }
 
                 // Signal the creating thread (make the remaining code async)
                 _manualResetEvent.Set();
 
-                const int MAPI_DIALOG = 0x8;
+                const int MapiDialog = 0x8;
                 //const int MAPI_LOGON_UI = 0x1;
-                const int SUCCESS_SUCCESS = 0;
-                int error = MAPIHelperInterop.MAPISendMail(IntPtr.Zero, IntPtr.Zero, message, MAPI_DIALOG, 0);
+                const int SuccessSuccess = 0;
+                int error = MapiHelperInterop.MAPISendMail(IntPtr.Zero, IntPtr.Zero, message, MapiDialog, 0);
 
                 if(_files.Count > 0)
                 {
@@ -197,7 +194,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 }
 
                 // Check for error
-                if(error != SUCCESS_SUCCESS)
+                if(error != SuccessSuccess)
                 {
                     _LogErrorMapi(error);
                 }
@@ -208,7 +205,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// Deallocates the files in a message.
         /// </summary>
         /// <param name="message">The message to deallocate the files from.</param>
-        private void _DeallocFiles(MAPIHelperInterop.MapiMessage message)
+        private void _DeallocFiles(MapiHelperInterop.MapiMessage message)
         {
             if(message.Files != IntPtr.Zero)
             {
@@ -233,7 +230,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// </summary>
         /// <param name="fileCount"></param>
         /// <returns></returns>
-        private IntPtr _AllocAttachments(out int fileCount)
+        private IntPtr AllocAttachments(out int fileCount)
         {
             fileCount = 0;
             if(_files == null)
@@ -250,13 +247,10 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             IntPtr ptra = Marshal.AllocHGlobal(_files.Count * asize);
 
             MapiFileDescriptor mfd = new MapiFileDescriptor();
-            mfd.position = -1;
             int runptr = (int)ptra;
+            // ReSharper disable once ForCanBeConvertedToForeach
             for(int i = 0; i < _files.Count; i++)
             {
-                string path = _files[i] as string;
-                mfd.name = Path.GetFileName(path);
-                mfd.path = path;
                 Marshal.StructureToPtr(mfd, (IntPtr)runptr, false);
                 runptr += asize;
             }
@@ -265,130 +259,122 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             return ptra;
         }
 
-        /// <summary>
-        /// Sends the mail message.
-        /// </summary>
-        private void _ShowMail()
-        {
-            _ShowMail(null);
-        }
-
 
         /// <summary>
         /// Logs any Mapi errors.
         /// </summary>
         private void _LogErrorMapi(int errorCode)
         {
-            const int MAPI_USER_ABORT = 1;
-            const int MAPI_E_FAILURE = 2;
-            const int MAPI_E_LOGIN_FAILURE = 3;
-            const int MAPI_E_DISK_FULL = 4;
-            const int MAPI_E_INSUFFICIENT_MEMORY = 5;
-            const int MAPI_E_BLK_TOO_SMALL = 6;
-            const int MAPI_E_TOO_MANY_SESSIONS = 8;
-            const int MAPI_E_TOO_MANY_FILES = 9;
-            const int MAPI_E_TOO_MANY_RECIPIENTS = 10;
-            const int MAPI_E_ATTACHMENT_NOT_FOUND = 11;
-            const int MAPI_E_ATTACHMENT_OPEN_FAILURE = 12;
-            const int MAPI_E_ATTACHMENT_WRITE_FAILURE = 13;
-            const int MAPI_E_UNKNOWN_RECIPIENT = 14;
-            const int MAPI_E_BAD_RECIPTYPE = 15;
-            const int MAPI_E_NO_MESSAGES = 16;
-            const int MAPI_E_INVALID_MESSAGE = 17;
-            const int MAPI_E_TEXT_TOO_LARGE = 18;
-            const int MAPI_E_INVALID_SESSION = 19;
-            const int MAPI_E_TYPE_NOT_SUPPORTED = 20;
-            const int MAPI_E_AMBIGUOUS_RECIPIENT = 21;
-            const int MAPI_E_MESSAGE_IN_USE = 22;
-            const int MAPI_E_NETWORK_FAILURE = 23;
-            const int MAPI_E_INVALID_EDITFIELDS = 24;
-            const int MAPI_E_INVALID_RECIPS = 25;
-            const int MAPI_E_NOT_SUPPORTED = 26;
-            const int MAPI_E_NO_LIBRARY = 999;
-            const int MAPI_E_INVALID_PARAMETER = 998;
+            const int MapiUserAbort = 1;
+            const int MapiEFailure = 2;
+            const int MapiELoginFailure = 3;
+            const int MapiEDiskFull = 4;
+            const int MapiEInsufficientMemory = 5;
+            const int MapiEBlkTooSmall = 6;
+            const int MapiETooManySessions = 8;
+            const int MapiETooManyFiles = 9;
+            const int MapiETooManyRecipients = 10;
+            const int MapiEAttachmentNotFound = 11;
+            const int MapiEAttachmentOpenFailure = 12;
+            const int MapiEAttachmentWriteFailure = 13;
+            const int MapiEUnknownRecipient = 14;
+            const int MapiEBadReciptype = 15;
+            const int MapiENoMessages = 16;
+            const int MapiEInvalidMessage = 17;
+            const int MapiETextTooLarge = 18;
+            const int MapiEInvalidSession = 19;
+            const int MapiETypeNotSupported = 20;
+            const int MapiEAmbiguousRecipient = 21;
+            const int MapiEMessageInUse = 22;
+            const int MapiENetworkFailure = 23;
+            const int MapiEInvalidEditfields = 24;
+            const int MapiEInvalidRecips = 25;
+            const int MapiENotSupported = 26;
+            const int MapiENoLibrary = 999;
+            const int MapiEInvalidParameter = 998;
 
             string error = string.Empty;
             switch(errorCode)
             {
-                case MAPI_USER_ABORT:
+                case MapiUserAbort:
                     error = "User Aborted.";
                     break;
-                case MAPI_E_FAILURE:
+                case MapiEFailure:
                     error = "MAPI Failure.";
                     break;
-                case MAPI_E_LOGIN_FAILURE:
+                case MapiELoginFailure:
                     error = "Login Failure.";
                     break;
-                case MAPI_E_DISK_FULL:
+                case MapiEDiskFull:
                     error = "MAPI Disk full.";
                     break;
-                case MAPI_E_INSUFFICIENT_MEMORY:
+                case MapiEInsufficientMemory:
                     error = "MAPI Insufficient memory.";
                     break;
-                case MAPI_E_BLK_TOO_SMALL:
+                case MapiEBlkTooSmall:
                     error = "MAPI Block too small.";
                     break;
-                case MAPI_E_TOO_MANY_SESSIONS:
+                case MapiETooManySessions:
                     error = "MAPI Too many sessions.";
                     break;
-                case MAPI_E_TOO_MANY_FILES:
+                case MapiETooManyFiles:
                     error = "MAPI too many files.";
                     break;
-                case MAPI_E_TOO_MANY_RECIPIENTS:
+                case MapiETooManyRecipients:
                     error = "MAPI too many recipients.";
                     break;
-                case MAPI_E_ATTACHMENT_NOT_FOUND:
+                case MapiEAttachmentNotFound:
                     error = "MAPI Attachment not found.";
                     break;
-                case MAPI_E_ATTACHMENT_OPEN_FAILURE:
+                case MapiEAttachmentOpenFailure:
                     error = "MAPI Attachment open failure.";
                     break;
-                case MAPI_E_ATTACHMENT_WRITE_FAILURE:
+                case MapiEAttachmentWriteFailure:
                     error = "MAPI Attachment Write Failure.";
                     break;
-                case MAPI_E_UNKNOWN_RECIPIENT:
+                case MapiEUnknownRecipient:
                     error = "MAPI Unknown recipient.";
                     break;
-                case MAPI_E_BAD_RECIPTYPE:
+                case MapiEBadReciptype:
                     error = "MAPI Bad recipient type.";
                     break;
-                case MAPI_E_NO_MESSAGES:
+                case MapiENoMessages:
                     error = "MAPI No messages.";
                     break;
-                case MAPI_E_INVALID_MESSAGE:
+                case MapiEInvalidMessage:
                     error = "MAPI Invalid message.";
                     break;
-                case MAPI_E_TEXT_TOO_LARGE:
+                case MapiETextTooLarge:
                     error = "MAPI Text too large.";
                     break;
-                case MAPI_E_INVALID_SESSION:
+                case MapiEInvalidSession:
                     error = "MAPI Invalid session.";
                     break;
-                case MAPI_E_TYPE_NOT_SUPPORTED:
+                case MapiETypeNotSupported:
                     error = "MAPI Type not supported.";
                     break;
-                case MAPI_E_AMBIGUOUS_RECIPIENT:
+                case MapiEAmbiguousRecipient:
                     error = "MAPI Ambiguous recipient.";
                     break;
-                case MAPI_E_MESSAGE_IN_USE:
+                case MapiEMessageInUse:
                     error = "MAPI Message in use.";
                     break;
-                case MAPI_E_NETWORK_FAILURE:
+                case MapiENetworkFailure:
                     error = "MAPI Network failure.";
                     break;
-                case MAPI_E_INVALID_EDITFIELDS:
+                case MapiEInvalidEditfields:
                     error = "MAPI Invalid edit fields.";
                     break;
-                case MAPI_E_INVALID_RECIPS:
+                case MapiEInvalidRecips:
                     error = "MAPI Invalid Recipients.";
                     break;
-                case MAPI_E_NOT_SUPPORTED:
+                case MapiENotSupported:
                     error = "MAPI Not supported.";
                     break;
-                case MAPI_E_NO_LIBRARY:
+                case MapiENoLibrary:
                     error = "MAPI No Library.";
                     break;
-                case MAPI_E_INVALID_PARAMETER:
+                case MapiEInvalidParameter:
                     error = "MAPI Invalid parameter.";
                     break;
             }
@@ -402,14 +388,14 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// <summary>
         /// Internal class for calling MAPI APIs
         /// </summary>
-        internal class MAPIHelperInterop
+        internal class MapiHelperInterop
         {
             #region Constructors
 
             /// <summary>
             /// Private constructor.
             /// </summary>
-            private MAPIHelperInterop()
+            private MapiHelperInterop()
             {
                 // Intenationally blank
             }
@@ -418,7 +404,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
 
             #region Constants
 
-            public const int MAPI_LOGON_UI = 0x1;
+            public const int MapiLogonUi = 0x1;
 
             #endregion Constants
 
@@ -542,9 +528,9 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
         /// Returns an interop representation of a recepient.
         /// </summary>
         /// <returns></returns>
-        internal MapiMailMessage.MAPIHelperInterop.MapiRecipDesc GetInteropRepresentation()
+        internal MapiMailMessage.MapiHelperInterop.MapiRecipDesc GetInteropRepresentation()
         {
-            MapiMailMessage.MAPIHelperInterop.MapiRecipDesc interop = new MapiMailMessage.MAPIHelperInterop.MapiRecipDesc();
+            MapiMailMessage.MapiHelperInterop.MapiRecipDesc interop = new MapiMailMessage.MapiHelperInterop.MapiRecipDesc();
 
             if(DisplayName == null)
             {
@@ -658,14 +644,14 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
                 }
 
                 // allocate enough memory to hold all recipients
-                int size = Marshal.SizeOf(typeof(MapiMailMessage.MAPIHelperInterop.MapiRecipDesc));
+                int size = Marshal.SizeOf(typeof(MapiMailMessage.MapiHelperInterop.MapiRecipDesc));
                 _handle = Marshal.AllocHGlobal(_count * size);
 
                 // place all interop recipients into the memory just allocated
                 int ptr = (int)_handle;
                 foreach(Recipient native in outer)
                 {
-                    MapiMailMessage.MAPIHelperInterop.MapiRecipDesc interop = native.GetInteropRepresentation();
+                    MapiMailMessage.MapiHelperInterop.MapiRecipDesc interop = native.GetInteropRepresentation();
 
                     // stick it in the memory block
                     Marshal.StructureToPtr(interop, (IntPtr)ptr, false);
@@ -693,7 +679,7 @@ namespace Dev2.Studio.Core.Services.Communication.Mapi
             {
                 if(_handle != IntPtr.Zero)
                 {
-                    Type type = typeof(MapiMailMessage.MAPIHelperInterop.MapiRecipDesc);
+                    Type type = typeof(MapiMailMessage.MapiHelperInterop.MapiRecipDesc);
                     int size = Marshal.SizeOf(type);
 
                     // destroy all the structures in the memory area

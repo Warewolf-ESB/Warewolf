@@ -1,8 +1,9 @@
-﻿using Dev2.Communication;
+﻿using System.Collections.Generic;
+using Dev2.Communication;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
-using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Workspaces
 {
     public interface IWorkspaceItemRepository

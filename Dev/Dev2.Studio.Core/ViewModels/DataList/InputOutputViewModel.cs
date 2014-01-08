@@ -1,22 +1,18 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable
     {
-
-        private bool _isSelected;
-        private string _name;
         private string _value;
         private string _mapsTo;
-        private string _defaultValue;
         private bool _required;
-        private string _recordSetName;
         bool _isNew;
         bool _requiredMissing;
         string _typeName;
@@ -69,29 +65,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-            set
-            {
-                _isSelected = value;
-            }
-        }
+        public bool IsSelected { get; set; }
 
-        public string Name
-        {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-            }
-        }
+        public string Name { get; set; }
 
         public string DisplayDefaultValue
         {
@@ -159,18 +135,7 @@ namespace Dev2.Studio.ViewModels.DataList
         //    }
         //}
 
-
-        public string DefaultValue
-        {
-            get
-            {
-                return _defaultValue;
-            }
-            set
-            {
-                _defaultValue = value;
-            }
-        }
+        public string DefaultValue { get; set; }
 
         public bool Required
         {
@@ -188,17 +153,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public string RecordSetName
-        {
-            get
-            {
-                return _recordSetName;
-            }
-            set
-            {
-                _recordSetName = value;
-            }
-        }
+        public string RecordSetName { get; set; }
         public bool EmptyToNull { get; private set; }
 
         public bool IsMapsToFocused
@@ -248,10 +203,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
             if(RecordSetName == string.Empty)
             {
+                // ReSharper disable once DoNotCallOverridableMethodsInConstructor
                 DisplayName = Name;
             }
             else
             {
+                // ReSharper disable once DoNotCallOverridableMethodsInConstructor
                 DisplayName = RecordSetName + "(*)." + Name;
             }
         }
@@ -269,7 +226,8 @@ namespace Dev2.Studio.ViewModels.DataList
         public object Clone()
         {
 
-            IObjectCloner<IDataListItemModel> cloner = new ObjectCloner<IDataListItemModel>();
+            // ReSharper disable once ObjectCreationAsStatement
+            new ObjectCloner<IDataListItemModel>();
             IInputOutputViewModel result = new InputOutputViewModel(Name, Value, MapsTo, DefaultValue, Required, RecordSetName, EmptyToNull);
 
             return result;

@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Parsing.Intellisense;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Interfaces;
@@ -8,11 +13,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Parsing.Intellisense;
-using System.Windows;
 
 namespace Dev2.Utils
 {
@@ -71,6 +71,7 @@ namespace Dev2.Utils
                 {
                     nodes[0].CollectNodes(allNodes);
 
+                    // ReSharper disable once ForCanBeConvertedToForeach
                     for(int i = 0; i < allNodes.Count; i++)
                     {
                         if(allNodes[i] is DatalistRecordSetNode)
@@ -130,6 +131,7 @@ namespace Dev2.Utils
                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
+                                // ReSharper disable once LoopCanBeConvertedToQuery
                                 foreach(var child in dataListItem.Children)
                                 {
                                     if(!(String.IsNullOrEmpty(child.Name)))
@@ -147,6 +149,7 @@ namespace Dev2.Utils
                         }
                         else
                         {
+                            // ReSharper disable once LoopCanBeConvertedToQuery
                             foreach(var child in dataListItem.Children)
                                 if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                                 {
@@ -249,11 +252,11 @@ namespace Dev2.Utils
             }
         }
 
-        private static string GetExampleName(string ActivityName)
+        private static string GetExampleName(string activityName)
         {
             return ResolveExampleResource
                 .ResourceManager
-                .GetString(ActivityName);
+                .GetString(activityName);
         }
     }
 }

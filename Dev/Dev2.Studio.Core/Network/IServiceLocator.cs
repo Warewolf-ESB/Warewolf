@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Network
 {
     public interface IServiceLocator

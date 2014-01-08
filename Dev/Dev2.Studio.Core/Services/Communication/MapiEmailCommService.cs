@@ -1,7 +1,8 @@
-﻿using Dev2.Providers.Logs;
+﻿using System;
+using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Services.Communication.Mapi;
-using System;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication
 {
     /// <summary>

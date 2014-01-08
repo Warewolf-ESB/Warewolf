@@ -1,8 +1,9 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System.Collections.Generic;
+using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Studio.ViewModels.DataList;
-using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory
 {
     public static class InputOutputViewModelFactory
@@ -25,24 +26,26 @@ namespace Dev2.Studio.Factory
 
         public static IList<IInputOutputViewModel> CreateListToDisplayOutputs(IList<IDev2Definition> outputList)
         {
-            IList<IInputOutputViewModel> _displayOutputData = new List<IInputOutputViewModel>();
+            IList<IInputOutputViewModel> displayOutputData = new List<IInputOutputViewModel>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(IDev2Definition otp in outputList)
             {
                 IInputOutputViewModel inputOutputViewModel = CreateInputOutputViewModel(otp.Name, otp.RawValue, otp.MapsTo, otp.DefaultValue, otp.IsRequired, otp.RecordSetName);
-                _displayOutputData.Add(inputOutputViewModel);
+                displayOutputData.Add(inputOutputViewModel);
             }
-            return _displayOutputData;
+            return displayOutputData;
         }
 
         public static IList<IInputOutputViewModel> CreateListToDisplayInputs(IList<IDev2Definition> inputList)
         {
-            IList<IInputOutputViewModel> _displayInputData = new List<IInputOutputViewModel>();
+            IList<IInputOutputViewModel> displayInputData = new List<IInputOutputViewModel>();
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach(IDev2Definition itp in inputList)
             {
                 IInputOutputViewModel inputOutputViewModel = CreateInputOutputViewModel(itp.Name, itp.RawValue, itp.RawValue, itp.DefaultValue, itp.IsRequired, itp.RecordSetName, itp.EmptyToNull);
-                _displayInputData.Add(inputOutputViewModel);
+                displayInputData.Add(inputOutputViewModel);
             }
-            return _displayInputData;
+            return displayInputData;
         }
     }
 }

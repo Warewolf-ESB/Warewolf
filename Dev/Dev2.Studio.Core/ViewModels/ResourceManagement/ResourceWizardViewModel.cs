@@ -16,14 +16,14 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels
 {
     public class ResourceWizardViewModel : SimpleBaseViewModel, IPropertyEditorWizard
     {
         #region Class Members
 
-        private IContextualResourceModel _resource;
-        private string _wizardFeedback;
+        private readonly IContextualResourceModel _resource;
         readonly IEventAggregator _eventPublisher;
 
         #endregion Class Members
@@ -63,17 +63,7 @@ namespace Dev2.Studio.Core.ViewModels
         /// <summary>
         /// Stores the feedback from the wizard
         /// </summary>
-        public string WizardFeedback
-        {
-            get
-            {
-                return _wizardFeedback;
-            }
-            private set
-            {
-                _wizardFeedback = value;
-            }
-        }
+        public string WizardFeedback { get; private set; }
 
         #endregion
 
@@ -95,13 +85,41 @@ namespace Dev2.Studio.Core.ViewModels
         {
             XElement feedback = XElement.Parse(WizardFeedback);
 
-            _resource.ResourceName = feedback.Element("ResourceName").Value;
-            _resource.ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), feedback.Element("ResourceType").Value);
-            _resource.Category = feedback.Element("Category").Value;
-            _resource.Comment = feedback.Element("Comment").Value;
-            _resource.Tags = feedback.Element("Tags").Value;
-            _resource.HelpLink = feedback.Element("HelpLink").Value;
-            _resource.UpdateIconPath(feedback.Element("IconPath").Value);
+            XElement xElement = feedback.Element("ResourceName");
+            if(xElement != null)
+            {
+                _resource.ResourceName = xElement.Value;
+            }
+            XElement element = feedback.Element("ResourceType");
+            if(element != null)
+            {
+                _resource.ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), element.Value);
+            }
+            XElement xElement1 = feedback.Element("Category");
+            if(xElement1 != null)
+            {
+                _resource.Category = xElement1.Value;
+            }
+            XElement element1 = feedback.Element("Comment");
+            if(element1 != null)
+            {
+                _resource.Comment = element1.Value;
+            }
+            XElement xElement2 = feedback.Element("Tags");
+            if(xElement2 != null)
+            {
+                _resource.Tags = xElement2.Value;
+            }
+            XElement element2 = feedback.Element("HelpLink");
+            if(element2 != null)
+            {
+                _resource.HelpLink = element2.Value;
+            }
+            XElement xElement3 = feedback.Element("IconPath");
+            if(xElement3 != null)
+            {
+                _resource.UpdateIconPath(xElement3.Value);
+            }
         }
 
         #endregion Private Methods
@@ -268,7 +286,7 @@ namespace Dev2.Studio.Core.ViewModels
         public void Dev2ReloadResource(Guid resourceID, string resourceType)
         {
             ResourceType parsedResourceType;
-            if(Enum.TryParse<ResourceType>(resourceType, out parsedResourceType) &&
+            if(Enum.TryParse(resourceType, out parsedResourceType) &&
                 _resource != null && _resource.Environment != null && _resource.Environment.ResourceRepository != null)
             {
                 //

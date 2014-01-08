@@ -1,8 +1,9 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     [Export(typeof(ITagCloudItemModel))]
@@ -17,7 +18,7 @@ namespace Dev2.Studio.Core.Models
 
         public string Tag { get; set; }
 
-        private bool _isSelected = false;
+        private bool _isSelected;
         public bool IsSelected
         {
             get

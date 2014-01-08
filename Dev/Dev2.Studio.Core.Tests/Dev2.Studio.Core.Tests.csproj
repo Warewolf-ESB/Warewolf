@@ -304,12 +304,6 @@
     <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
     <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfActivityWizCallbackTests.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfBaseConvertActivityWizCallbackHandlerTests.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfBaseWizCallbackTests.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfCaseConvertActivityWizCallbackHandlerTests.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfDataSplitActivityWizCallbackHandlerTests.cs" />
-    <Compile Include="WizardTests\WizardCallbackHandlerTests\DsfMultiAssignActivityWizCallbackTests.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />
@@ -413,6 +407,7 @@
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

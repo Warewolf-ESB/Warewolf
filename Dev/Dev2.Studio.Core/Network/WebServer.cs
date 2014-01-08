@@ -5,12 +5,14 @@ using System.Net.Sockets;
 using System.Text;
 using Dev2.Studio.Core.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Network
 {
     #region WebServerMethod
 
     public enum WebServerMethod
     {
+        // ReSharper disable once InconsistentNaming
         POST,
         GET
     }
@@ -97,14 +99,14 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData, bool isXML)
+        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData, bool isXml)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;
             }
             var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.ResourceName);
-            if(isXML)
+            if(isXml)
             {
                 relativeUrl += "DataList=" + xmlData;
             }

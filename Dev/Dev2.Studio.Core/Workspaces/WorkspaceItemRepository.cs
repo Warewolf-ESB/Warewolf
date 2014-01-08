@@ -10,7 +10,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 
 namespace Dev2.Workspaces
-{   
+{
     public class WorkspaceItemRepository : IWorkspaceItemRepository
     {
         #region Singleton Instance
@@ -31,11 +31,11 @@ namespace Dev2.Workspaces
         {
             get
             {
-                if (_instance == null)
+                if(_instance == null)
                 {
-                    lock (SyncRoot)
+                    lock(SyncRoot)
                     {
-                        if (_instance == null)
+                        if(_instance == null)
                         {
                             _instance = new WorkspaceItemRepository();
                         }
@@ -97,7 +97,7 @@ namespace Dev2.Workspaces
             }
         }
 
-        
+
 
         #endregion
 
@@ -139,11 +139,14 @@ namespace Dev2.Workspaces
             if(!File.Exists(RepositoryPath))
             {
                 FileInfo fileInfo = new FileInfo(RepositoryPath);
-                string finalDirectoryPath = fileInfo.Directory.FullName;
-
-                if(!Directory.Exists(finalDirectoryPath))
+                if(fileInfo.Directory != null)
                 {
-                    Directory.CreateDirectory(finalDirectoryPath);
+                    string finalDirectoryPath = fileInfo.Directory.FullName;
+
+                    if(!Directory.Exists(finalDirectoryPath))
+                    {
+                        Directory.CreateDirectory(finalDirectoryPath);
+                    }
                 }
             }
             File.WriteAllText(RepositoryPath, root.ToString());
@@ -167,7 +170,7 @@ namespace Dev2.Workspaces
             }
 
             var context = model.Environment.Connection;
-            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID,model.Environment.ID,model.ID)
+            WorkspaceItems.Add(new WorkspaceItem(context.WorkspaceID, context.ServerID, model.Environment.ID, model.ID)
             {
                 ServiceName = model.ResourceName,
                 IsWorkflowSaved = model.IsWorkflowSaved,
@@ -177,7 +180,7 @@ namespace Dev2.Workspaces
                         : WorkspaceItem.ServiceServiceType,
             });
             Write();
-            model.OnResourceSaved +=UpdateWorkspaceItemIsWorkflowSaved;
+            model.OnResourceSaved += UpdateWorkspaceItemIsWorkflowSaved;
         }
 
         #endregion
@@ -186,13 +189,13 @@ namespace Dev2.Workspaces
 
         public void UpdateWorkspaceItemIsWorkflowSaved(IContextualResourceModel resourceModel)
         {
-            if (resourceModel == null)
+            if(resourceModel == null)
             {
                 throw new ArgumentNullException("resourceModel");
             }
             var workspaceItem = WorkspaceItems.FirstOrDefault(wi => wi.ID == resourceModel.ID && wi.EnvironmentID == resourceModel.Environment.ID);
 
-            if (workspaceItem == null)
+            if(workspaceItem == null)
             {
                 return;
             }
@@ -210,7 +213,7 @@ namespace Dev2.Workspaces
 
             if(workspaceItem == null)
             {
-                var msg = new ExecuteMessage {HasError = false};
+                var msg = new ExecuteMessage { HasError = false };
                 msg.SetMessage(string.Empty);
                 return msg;
             }
@@ -218,10 +221,10 @@ namespace Dev2.Workspaces
 
             workspaceItem.Action = WorkspaceItemAction.Commit;
 
-            var comsController = new CommunicationController() { ServiceName = "UpdateWorkspaceItemService" };
+            var comsController = new CommunicationController { ServiceName = "UpdateWorkspaceItemService" };
             comsController.AddPayloadArgument("Roles", String.Join(",", "Test"));
             var xml = workspaceItem.ToXml();
-           
+
             comsController.AddPayloadArgument("ItemXml", xml.ToString(SaveOptions.DisableFormatting));
             comsController.AddPayloadArgument("IsLocalSave", isLocalSave.ToString());
 

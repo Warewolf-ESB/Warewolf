@@ -2,41 +2,42 @@
 using Caliburn.Micro;
 using Dev2.Composition;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
         where T : IScreen
     {
-        protected readonly IEventAggregator _eventPublisher;
+        protected readonly IEventAggregator EventPublisher;
         private bool _disposed;
 
         protected BaseConductor(IEventAggregator eventPublisher)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
-            _eventPublisher.Subscribe(this);
+            EventPublisher = eventPublisher;
+            EventPublisher.Subscribe(this);
 
             ImportService.TrySatisfyImports(this);
         }
 
         protected virtual void Dispose(bool disposing)
-        {        
-            if (!this._disposed)
+        {
+            if(!_disposed)
             {
-                if (disposing)
+                if(disposing)
                 {
                     // If we have any managed, IDisposable resources, Dispose of them here.
-                    _eventPublisher.Unsubscribe(this);
+                    EventPublisher.Unsubscribe(this);
                 }
 
             }
             // Mark us as disposed, to prevent multiple calls to dispose from having an effect, 
-            this._disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
         {
-            this.Dispose(true);
+            Dispose(true);
         }
     }
 }

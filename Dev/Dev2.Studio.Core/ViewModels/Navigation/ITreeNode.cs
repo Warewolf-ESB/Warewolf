@@ -1,14 +1,11 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 
-#endregion
-
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Navigation
 {
     /// <summary>

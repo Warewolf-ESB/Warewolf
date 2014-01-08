@@ -461,30 +461,6 @@
     <Compile Include="ViewModels\UserInterfaceBuilder\WebResourceViewModel.cs" />
     <Compile Include="ViewModels\Wizards\DataListChangeNotificationViewModel.cs" />
     <Compile Include="Interfaces\IConfigureDecisionViewModel.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfBaseConvertActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfBaseWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfCalculateActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfCaseConvertActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfCountRecordsetActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfDataSplitActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfDateTimeActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfDateTimeDifferenceActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfFileReadWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfFileWriteWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfFindRecordsActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfFolderReadWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfForEachWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfMultiAssignActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfNumberFormatActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfPathCopyWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfPathCreateWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfPathDeleteWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfPathMoveWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfPathRenameWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfSortRecordsActivityWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfUnzipWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\DsfZipWizCallback.cs" />
-    <Compile Include="Wizards\CallBackHandlers\GeneralSettingsWizCallback.cs" />
     <Compile Include="Wizards\Interfaces\IActivityGeneralSettingsWizardCallbackHandler.cs" />
     <Compile Include="Wizards\Interfaces\IActivitySettingsWizardCallbackHandler.cs" />
     <Compile Include="Wizards\Interfaces\IActivitySpecificSettingsWizardCallbackHandler.cs" />
@@ -558,13 +534,7 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Network\Channels\" />
-    <Folder Include="ViewModels\DataListShowMissing\" />
-    <Folder Include="ViewModels\DataMapping\" />
-    <Folder Include="ViewModels\Deploy\" />
-    <Folder Include="ViewModels\Workflow\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

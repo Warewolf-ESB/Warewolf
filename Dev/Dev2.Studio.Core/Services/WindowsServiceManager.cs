@@ -1,9 +1,10 @@
-﻿using Dev2.Common;
-using System;
+﻿using System;
 using System.ComponentModel.Composition;
 using System.ServiceProcess;
 using System.Threading;
+using Dev2.Common;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services
 {
     [Export(typeof(IWindowsServiceManager))]
@@ -18,11 +19,11 @@ namespace Dev2.Studio.Core.Services
             try
             {
                 ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
-                if (controller.Status == ServiceControllerStatus.Running)
+                if(controller.Status == ServiceControllerStatus.Running)
                 {
                 }
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 result = false;
             }
@@ -39,7 +40,7 @@ namespace Dev2.Studio.Core.Services
                 ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
                 result = controller.Status == ServiceControllerStatus.Running;
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 result = false;
             }
@@ -54,12 +55,12 @@ namespace Dev2.Studio.Core.Services
             try
             {
                 ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
-                if (controller.Status != ServiceControllerStatus.Running)
+                if(controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
                     int pollCount = 0;
                     controller.Refresh();
-                    while (controller.Status != ServiceControllerStatus.Running || pollCount > 60)
+                    while(controller.Status != ServiceControllerStatus.Running || pollCount > 60)
                     {
                         controller.Refresh();
                         pollCount++;
@@ -67,7 +68,7 @@ namespace Dev2.Studio.Core.Services
                     }
                 }
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 result = false;
             }
@@ -82,12 +83,12 @@ namespace Dev2.Studio.Core.Services
             try
             {
                 ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
-                if (controller.Status == ServiceControllerStatus.Running)
+                if(controller.Status == ServiceControllerStatus.Running)
                 {
                     controller.Stop();
                     int pollCount = 0;
                     controller.Refresh();
-                    while (controller.Status == ServiceControllerStatus.Running || pollCount > 60)
+                    while(controller.Status == ServiceControllerStatus.Running || pollCount > 60)
                     {
                         controller.Refresh();
                         pollCount++;
@@ -95,7 +96,7 @@ namespace Dev2.Studio.Core.Services
                     }
                 }
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 result = false;
             }

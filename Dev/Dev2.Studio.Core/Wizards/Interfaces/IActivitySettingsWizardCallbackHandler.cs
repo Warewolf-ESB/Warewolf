@@ -1,7 +1,8 @@
-﻿using Dev2.DataList.Contract;
-using System;
+﻿using System;
 using System.Activities.Presentation.Model;
+using Dev2.DataList.Contract;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Wizards.Interfaces
 {
     public interface IActivitySettingsWizardCallbackHandler : IWizardCallbackHandler

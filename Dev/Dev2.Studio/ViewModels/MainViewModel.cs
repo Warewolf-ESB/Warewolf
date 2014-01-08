@@ -327,7 +327,7 @@ namespace Dev2.Studio.ViewModels
                        (_resetLayoutCommand = new RelayCommand(param =>
                        {
                            Logger.TraceInfo("Publish message of type - " + typeof(ResetLayoutMessage));
-                           _eventPublisher.Publish(
+                           EventPublisher.Publish(
                                new ResetLayoutMessage(param as FrameworkElement));
                        },
             param => true));
@@ -498,7 +498,7 @@ namespace Dev2.Studio.ViewModels
             ActiveEnvironment = message.EnvironmentModel;
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
             Logger.TraceInfo("Publish message of type - " + typeof(UpdateActiveEnvironmentMessage));
-            _eventPublisher.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
+            EventPublisher.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
         }
 
         public void Handle(SettingsSaveCancelMessage message)
@@ -574,7 +574,7 @@ namespace Dev2.Studio.ViewModels
                 Logger.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
                 if(abstractTreeViewModel != null)
                 {
-                    _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
+                    EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
                 }
             }
             else
@@ -584,7 +584,7 @@ namespace Dev2.Studio.ViewModels
             Logger.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
             if(abstractTreeViewModel != null)
             {
-                _eventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
+                EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
             }
         }
 
@@ -601,7 +601,7 @@ namespace Dev2.Studio.ViewModels
             if(ActiveItem != null && ActiveItem.Environment != null)
             {
                 Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                _eventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
+                EventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
             }
         }
 
@@ -656,7 +656,7 @@ namespace Dev2.Studio.ViewModels
                 case MessageBoxResult.Yes:
                     workflowVm.ResourceModel.Commit();
                     Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
-                    _eventPublisher.Publish(new SaveResourceMessage(workflowVm.ResourceModel, false, false));
+                    EventPublisher.Publish(new SaveResourceMessage(workflowVm.ResourceModel, false, false));
                     return true;
                 case MessageBoxResult.No:
                     // We need to remove it ;)
@@ -1077,7 +1077,7 @@ namespace Dev2.Studio.ViewModels
 
                 DeleteContext(contextualModel);
                 Logger.TraceInfo("Publish message of type - " + typeof(RemoveNavigationResourceMessage));
-                _eventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
+                EventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
 
                 if(contextualModel.Environment.ResourceRepository.DeleteResource(contextualModel).HasError)
                 {
@@ -1097,7 +1097,7 @@ namespace Dev2.Studio.ViewModels
                             if(environment != null)
                             {
                                 Logger.TraceInfo("Publish message of type - " + typeof(EnvironmentDeletedMessage));
-                                _eventPublisher.Publish(new EnvironmentDeletedMessage(environment));
+                                EventPublisher.Publish(new EnvironmentDeletedMessage(environment));
                                 EnvironmentRepository.Remove(environment);
                             }
                         }
@@ -1220,7 +1220,7 @@ namespace Dev2.Studio.ViewModels
                 if(input is IContextualResourceModel)
                 {
                     Logger.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
-                    _eventPublisher.Publish(
+                    EventPublisher.Publish(
                         new SelectItemInDeployMessage((input as IContextualResourceModel).DisplayName,
                             (input as IContextualResourceModel).Environment));
                 }
@@ -1422,7 +1422,7 @@ namespace Dev2.Studio.ViewModels
                                     Items.Remove(context);
                                     workflowVm.Dispose();
                                     Logger.TraceInfo("Publish message of type - " + typeof(TabClosedMessage));
-                                    _eventPublisher.Publish(new TabClosedMessage(context));
+                                    EventPublisher.Publish(new TabClosedMessage(context));
                                     if(e != null)
                                     {
                                         e.Cancel = true;

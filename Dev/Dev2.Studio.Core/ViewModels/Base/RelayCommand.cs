@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class RelayCommand : ICommand
@@ -10,8 +11,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         public RelayCommand(Action<object> handlingMethod, Predicate<object> canHandingMethodExecute)
         {
-            if (handlingMethod == null)
+            if(handlingMethod == null)
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("HandingMethod");
             }
 
@@ -25,7 +27,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
-            return _canHandlingMethodExecute == null ? true : _canHandlingMethodExecute(parameter);
+            return _canHandlingMethodExecute == null || _canHandlingMethodExecute(parameter);
         }
 
         public event EventHandler CanExecuteChanged
@@ -46,8 +48,8 @@ namespace Dev2.Studio.Core.ViewModels.Base
     {
         #region Fields
 
-        readonly Action<T> _execute = null;
-        readonly Predicate<T> _canExecute = null;
+        readonly Action<T> _execute;
+        readonly Predicate<T> _canExecute;
 
         #endregion // Fields
 
@@ -65,7 +67,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            if (execute == null)
+            if(execute == null)
                 throw new ArgumentNullException("execute");
 
             _execute = execute;
@@ -78,7 +80,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute((T)parameter);
+            return _canExecute == null || _canExecute((T)parameter);
         }
 
         public event EventHandler CanExecuteChanged

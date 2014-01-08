@@ -1,11 +1,14 @@
-﻿using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.ViewModels.Base;
 
-namespace Dev2.Studio.Core {
-    public class WebResourceViewModel : SimpleBaseViewModel, IWebResourceViewModel {
+// ReSharper disable once CheckNamespace
+namespace Dev2.Studio.Core
+{
+    public class WebResourceViewModel : SimpleBaseViewModel, IWebResourceViewModel
+    {
         #region Locals
         private readonly ObservableCollection<IWebResourceViewModel> _children;
         RelayCommand _copyCommand;
@@ -22,28 +25,35 @@ namespace Dev2.Studio.Core {
 
         private bool _isSelected;
 
-        public bool IsSelected {
-            get {
+        public bool IsSelected
+        {
+            get
+            {
                 return _isSelected;
             }
-            set {
+            set
+            {
                 _isSelected = value;
                 base.OnPropertyChanged("IsSelected");
             }
         }
 
         private bool _isExpanded;
-        public bool IsExpanded {
-            get {
+        public bool IsExpanded
+        {
+            get
+            {
                 return _isExpanded;
             }
-            set {
+            set
+            {
                 _isExpanded = value;
                 base.OnPropertyChanged("IsExpanded");
             }
         }
 
-        public ObservableCollection<IWebResourceViewModel> Children {
+        public ObservableCollection<IWebResourceViewModel> Children
+        {
             get { return _children; }
         }
 
@@ -59,28 +69,31 @@ namespace Dev2.Studio.Core {
         #endregion
 
         #region Commands
-        public ICommand CopyCommand {
-            get {
-                if (_copyCommand == null) {
-                    _copyCommand = new RelayCommand(c => Copy());
-                }
-                return _copyCommand;
+        public ICommand CopyCommand
+        {
+            get
+            {
+                return _copyCommand ?? (_copyCommand = new RelayCommand(c => Copy()));
             }
         }
         #endregion
 
         #region Public Methods
-        public void AddChild(IWebResourceViewModel d) {
+        public void AddChild(IWebResourceViewModel d)
+        {
             _children.Add(d);
         }
-        public void SetParent(IWebResourceViewModel parent) {
+        public void SetParent(IWebResourceViewModel parent)
+        {
             Parent = parent;
         }
         #endregion
 
         #region Private Methods
-        private void Copy() {
-            if (!string.IsNullOrEmpty(Name)) {
+        private void Copy()
+        {
+            if(!string.IsNullOrEmpty(Name))
+            {
                 Clipboard.SetText(Name);
             }
         }

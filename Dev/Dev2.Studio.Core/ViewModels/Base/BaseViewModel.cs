@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.Composition;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public enum ViewModelDialogResults
@@ -16,7 +17,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-        IEventAggregator _eventPublisher;
+        readonly IEventAggregator _eventPublisher;
 
         #region Constructor
 
@@ -26,6 +27,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
 
+            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             SatisfyImports();
         }
 

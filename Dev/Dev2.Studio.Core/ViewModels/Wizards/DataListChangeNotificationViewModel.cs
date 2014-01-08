@@ -1,9 +1,10 @@
-﻿using Dev2.Studio.Core.ViewModels.Base;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.Studio.Core.ViewModels.Base;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Wizards
 {
     public class DataListChangeNotificationViewModel : SimpleBaseViewModel
@@ -12,7 +13,7 @@ namespace Dev2.Studio.Core.ViewModels.Wizards
 
         #region Constructor
 
-        public DataListChangeNotificationViewModel(string message, IList<string> addedItems, IList<string> removedItems)
+        public DataListChangeNotificationViewModel(string message, IEnumerable<string> addedItems, IEnumerable<string> removedItems)
         {
             Message = message;
 
@@ -34,17 +35,8 @@ namespace Dev2.Studio.Core.ViewModels.Wizards
         {
             get
             {
-                if(_okCommand == null)
-                {
-                    _okCommand = new RelayCommand(param =>
-                    {
-                        RequestClose(ViewModelDialogResults.Okay);
-                    });
-                }
-
-                return _okCommand;
+                return _okCommand ?? (_okCommand = new RelayCommand(param => RequestClose(ViewModelDialogResults.Okay)));
             }
-
         }
 
         #endregion Properties

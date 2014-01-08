@@ -1,8 +1,9 @@
-﻿using Dev2.Composition;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Dev2.Composition;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Network
 {
     [Export(typeof(IServiceLocator))]
@@ -162,7 +163,6 @@ namespace Dev2.Studio.Core.Network
             Uri staticEndpoint;
             if(!StaticEndpoints.TryGetValue(key, out staticEndpoint))
             {
-                staticEndpoint = null;
             }
 
             return staticEndpoint;
@@ -204,13 +204,13 @@ namespace Dev2.Studio.Core.Network
             Func<T, Uri> endpointGenerationStrategy = untypedEnpointGenerationStrategy as Func<T, Uri>;
             if(endpointGenerationStrategy == null)
             {
-                throw new Exception("The endpoint generation strategy registered for '" + key + "' was registered as '" + untypedEnpointGenerationStrategy.GetType().ToString() + "' but the caller expected a type of '" + typeof(Func<T, Uri>).ToString() + "'.");
+                throw new Exception("The endpoint generation strategy registered for '" + key + "' was registered as '" + untypedEnpointGenerationStrategy.GetType() + "' but the caller expected a type of '" + typeof(Func<T, Uri>) + "'.");
             }
 
             //
             // Run the generation strategy
             //
-            Uri endpoint = null;
+            Uri endpoint;
             try
             {
                 endpoint = endpointGenerationStrategy(arg);

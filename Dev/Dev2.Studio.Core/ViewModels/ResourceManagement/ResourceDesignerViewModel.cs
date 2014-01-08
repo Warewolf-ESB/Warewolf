@@ -4,13 +4,14 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels
 {
     public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IDesignerViewModel
     {
         #region Class Members
 
-        private IEnvironmentModel _environmentModel = null;
+        private readonly IEnvironmentModel _environmentModel;
         private IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
@@ -39,7 +40,7 @@ namespace Dev2.Studio.Core.ViewModels
         {
             get
             {
-                if (_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
+                if(_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
                 {
                     _contexttualResourceModel.WorkflowXaml = DefaultDefinition();
                 }

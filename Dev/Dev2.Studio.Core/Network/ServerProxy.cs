@@ -1,4 +1,11 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Network;
+using System.Text;
+using System.Threading.Tasks;
+using System.Timers;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
@@ -13,13 +20,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Network;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -41,8 +41,7 @@ namespace Dev2.Network
             AppServerUri = new Uri(serverUri);
             WebServerUri = new Uri(serverUri.Replace("/dsf", ""));
 
-            HubConnection = new HubConnection(serverUri);
-            HubConnection.Credentials = CredentialCache.DefaultNetworkCredentials;
+            HubConnection = new HubConnection(serverUri) { Credentials = CredentialCache.DefaultNetworkCredentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -238,8 +237,10 @@ namespace Dev2.Network
             ServerEvents.PublishObject(obj);
         }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public Guid ServerID { get; private set; }
         public Guid WorkspaceID { get; private set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Local
         public IDebugWriter DebugWriter { get; private set; }
         public Uri AppServerUri { get; private set; }
         public Uri WebServerUri { get; private set; }
@@ -293,8 +294,7 @@ namespace Dev2.Network
             List<Envelope> mailToSend = new List<Envelope>();
             for(int i = 0; i < rounds; i++)
             {
-                var envelope = new Envelope { PartID = i };
-                envelope.Type = typeof(Envelope);
+                var envelope = new Envelope { PartID = i, Type = typeof(Envelope) };
 
                 var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
                 if(len > (payload.Length - startIdx))

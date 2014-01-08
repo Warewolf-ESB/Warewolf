@@ -8,14 +8,13 @@ using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Wizards
 {
-    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler<DsfActivity>))]
+    [Export(typeof(IActivitySpecificSettingsWizardCallbackHandler))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class DsfActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler<DsfActivity>
+    public class DsfActivityWizCallback : IActivitySpecificSettingsWizardCallbackHandler
     {
         #region Fields
 

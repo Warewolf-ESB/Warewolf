@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core
 {
 
@@ -17,27 +18,26 @@ namespace Dev2.Studio.Core
     public class OptomizedObservableCollection<T> : ObservableCollection<T>
     {
 
-        public bool suppressOnCollectionChanged;
+        public bool SuppressOnCollectionChanged;
 
         public OptomizedObservableCollection()
-            : base()
         {
-            this.suppressOnCollectionChanged = false;
+            SuppressOnCollectionChanged = false;
         }
         public void AddRange(IList<T> items)
         {
-            if (null == items)
+            if(null == items)
             {
                 throw new ArgumentNullException("items");
             }
 
 
-            if (items.Count > 0)
+            if(items.Count > 0)
             {
                 try
                 {
-                    suppressOnCollectionChanged = true;
-                    foreach (var item in items)
+                    SuppressOnCollectionChanged = true;
+                    foreach(var item in items)
                     {
                         Add(item);
                     }
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Core
                 }
                 finally
                 {
-                    suppressOnCollectionChanged = false;
+                    SuppressOnCollectionChanged = false;
                     OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this));
                 }
             }
@@ -53,19 +53,21 @@ namespace Dev2.Studio.Core
 
         public void RemoveRange(IEnumerable<T> itemsToRemove)
         {
-            if (null == itemsToRemove)
+            if(null == itemsToRemove)
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("items");
             }
 
-            if (itemsToRemove.Any())
+            IEnumerable<T> toRemove = itemsToRemove as IList<T> ?? itemsToRemove.ToList();
+            if(toRemove.Any())
             {
                 try
                 {
-                    suppressOnCollectionChanged = true;
-                    List<T> listOfT = itemsToRemove.ToList();
+                    SuppressOnCollectionChanged = true;
+                    List<T> listOfT = toRemove.ToList();
 
-                    foreach (var item in listOfT)
+                    foreach(var item in listOfT)
                     {
                         Remove(item);
                     }
@@ -73,7 +75,7 @@ namespace Dev2.Studio.Core
                 }
                 finally
                 {
-                    suppressOnCollectionChanged = false;
+                    SuppressOnCollectionChanged = false;
                     //OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this));
                 }
             }
@@ -81,15 +83,10 @@ namespace Dev2.Studio.Core
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-            if (!suppressOnCollectionChanged)
+            if(!SuppressOnCollectionChanged)
             {
                 base.OnCollectionChanged(e);
             }
-        }
-
-        protected override void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
         }
     }
 }

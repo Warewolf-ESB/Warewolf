@@ -1,4 +1,5 @@
 ﻿
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication
 {
     /// <summary>
@@ -9,7 +10,7 @@ namespace Dev2.Studio.Core.Services.Communication
     public class EmailCommMessage : ICommMessage
     {
         public string To { get; set; }
-        public string CC { get; set; }
+        public string Cc { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
         public string AttachmentLocation { get; set; }

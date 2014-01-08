@@ -1,13 +1,14 @@
 ﻿using System;
 using Caliburn.Micro;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public abstract class SimpleBaseViewModel : Screen, IDisposable
     {
         #region Class Members
 
-        private bool _closeRequested = false;
+        private bool _closeRequested;
         private ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
 
         private bool _isDisposed;
@@ -48,7 +49,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         /// </summary>
         protected virtual void OnDispose()
         {
-            if (_validationController != null)
+            if(_validationController != null)
             {
                 _validationController.Dispose();
             }

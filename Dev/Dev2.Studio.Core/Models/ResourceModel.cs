@@ -23,6 +23,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Action = System.Action;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
@@ -50,7 +51,6 @@ namespace Dev2.Studio.Core.Models
         private string _unitTestTargetWorkflowService;
         private StringBuilder _workflowXaml;
         private Version _version;
-        private bool _isNewWorkflow;
         bool _isPluginService;
         bool _isWorkflowSaved;
         Guid _id;
@@ -139,6 +139,7 @@ namespace Dev2.Studio.Core.Models
                     _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange("Environment");
+                // ReSharper disable once NotResolvedInText
                 NotifyOfPropertyChange("CanExecute");
             }
         }
@@ -208,7 +209,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = "Please enter a name for this resource")]
+        [Required(ErrorMessage = @"Please enter a name for this resource")]
         public string ResourceName
         {
             get { return _resourceName; }
@@ -291,7 +292,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = "Please enter a Category for this resource")]
+        [Required(ErrorMessage = @"Please enter a Category for this resource")]
         public string Category
         {
             get { return _category; }
@@ -312,7 +313,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = "Please enter the Comment for this resource")]
+        [Required(ErrorMessage = @"Please enter the Comment for this resource")]
         public string Comment
         {
             get { return _comment; }
@@ -349,7 +350,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool HasErrors
         {
-            get { return validationErrors.Count > 0; }
+            get { return ValidationErrors.Count > 0; }
         }
 
         public string DataTags
@@ -362,7 +363,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = "Please enter a valid help link")]
+        [Required(ErrorMessage = @"Please enter a valid help link")]
         public string HelpLink
         {
             get { return _helpLink; }
@@ -383,7 +384,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = "Please select the roles that are allowed to author this workflow")]
+        [Required(ErrorMessage = @"Please select the roles that are allowed to author this workflow")]
         public string AuthorRoles
         {
             get { return _authorRoles; }
@@ -394,18 +395,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public bool IsNewWorkflow
-        {
-            get
-            {
-                return _isNewWorkflow;
-            }
-            set
-            {
-                _isNewWorkflow = value;
-
-            }
-        }
+        public bool IsNewWorkflow { get; set; }
 
         public string ServerResourceType { get; set; }
         public event Action<IContextualResourceModel> OnResourceSaved;
@@ -471,11 +461,7 @@ namespace Dev2.Studio.Core.Models
 
         public void RemoveError(IErrorInfo error)
         {
-            var theError = Errors.FirstOrDefault(info => info.Equals(error));
-            if(theError == null)
-            {
-                theError = Errors.FirstOrDefault(info => info.ErrorType == error.ErrorType && info.FixType == error.FixType);
-            }
+            var theError = Errors.FirstOrDefault(info => info.Equals(error)) ?? Errors.FirstOrDefault(info => info.ErrorType == error.ErrorType && info.FixType == error.FixType);
             if(theError != null)
             {
                 _fixedErrors.Add(theError);
@@ -526,9 +512,9 @@ namespace Dev2.Studio.Core.Models
             Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
-            if (resourceModel.Errors != null)
+            if(resourceModel.Errors != null)
             {
-                foreach (var error in resourceModel.Errors)
+                foreach(var error in resourceModel.Errors)
                 {
                     _errors.Add(error);
                 }
@@ -553,7 +539,7 @@ namespace Dev2.Studio.Core.Models
 
                 var xaml = WorkflowXaml;
 
-                if (xaml == null || xaml.Length == 0)
+                if(xaml == null || xaml.Length == 0)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     xaml = msg.Message;
@@ -580,14 +566,13 @@ namespace Dev2.Studio.Core.Models
                         new XAttribute("Name", "InvokeWorkflow"),
                         new XAttribute("Type", "Workflow"),
                         new XElement("XamlDefinition", xaml)),
-                        new XElement("ErrorMessages", WriteErrors() ?? null)
+                        new XElement("ErrorMessages", WriteErrors())
                     );
 
                 // save to the string builder ;)
 
-                XmlWriterSettings xws = new XmlWriterSettings();
-                xws.OmitXmlDeclaration = true;
-                using (XmlWriter xwriter = XmlWriter.Create(result, xws))
+                XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
+                using(XmlWriter xwriter = XmlWriter.Create(result, xws))
                 {
                     service.Save(xwriter);
                 }
@@ -597,15 +582,15 @@ namespace Dev2.Studio.Core.Models
                 result = WorkflowXaml;
 
                 // when null fetch the XAML ;)
-                if (result == null)
+                if(result == null)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
                     result = msg.Message;
                 }
 
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
-                var startNode = result.IndexOf("<Category>", 0,true) + "<Category>".Length;
-                var endNode = result.IndexOf("</Category>", 0,true);
+                var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
+                var endNode = result.IndexOf("</Category>", 0, true);
                 if(endNode > startNode)
                 {
                     var len = (endNode - startNode) + 11;
@@ -638,7 +623,7 @@ namespace Dev2.Studio.Core.Models
                 xElement.Add(new XCData(errorInfo.FixData));
                 errorElements.Add(xElement);
             }
-            
+
             return errorElements;
         }
         #endregion Methods
@@ -687,7 +672,7 @@ namespace Dev2.Studio.Core.Models
 
                 if(columnName == "IconPath")
                 {
-                    Uri testUri = null;
+                    Uri testUri;
                     if(!Uri.TryCreate(IconPath, UriKind.Absolute, out testUri) && !string.IsNullOrEmpty(IconPath))
                     {
                         errMsg = "Icon Path Does Not Exist or is not valid";
@@ -699,7 +684,7 @@ namespace Dev2.Studio.Core.Models
 
                 if(columnName == "HelpLink")
                 {
-                    Uri testUri = null;
+                    Uri testUri;
                     if(!Uri.TryCreate(HelpLink, UriKind.Absolute, out testUri))
                     {
                         errMsg = "The help link is not in a valid format";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Utils
 {
     /// <summary>
@@ -33,7 +34,7 @@ namespace Dev2.Studio.Core.Utils
         public bool Remove(string nameToRemove)
         {
             bool result = false;
-            if (Contains(nameToRemove))
+            if(Contains(nameToRemove))
             {
                 _workflowNamesHashSet.Remove(nameToRemove);
                 result = true;
@@ -51,8 +52,8 @@ namespace Dev2.Studio.Core.Utils
 
             int counter = 1;
             string fullName = StringResources.NewWorkflowBaseName + " " + counter;
-            
-            while (Contains(fullName))
+
+            while(Contains(fullName))
             {
                 counter++;
                 fullName = newWorkflowBaseName + " " + counter;
@@ -80,7 +81,7 @@ namespace Dev2.Studio.Core.Utils
         public bool Add(string newWorkflowName)
         {
             // only add the one's that matter ;)
-            if (newWorkflowName.IndexOf(StringResources.NewWorkflowBaseName, StringComparison.Ordinal) == 0)
+            if(newWorkflowName.IndexOf(StringResources.NewWorkflowBaseName, StringComparison.Ordinal) == 0)
             {
                 _workflowNamesHashSet.Add(newWorkflowName);
 
@@ -98,7 +99,7 @@ namespace Dev2.Studio.Core.Utils
         {
             get
             {
-                if (_instance == null)
+                if(_instance == null)
                 {
                     _instance = new NewWorkflowNames();
                 }

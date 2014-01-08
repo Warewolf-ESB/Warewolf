@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication.Mapi
 {
     public interface IMailMessage

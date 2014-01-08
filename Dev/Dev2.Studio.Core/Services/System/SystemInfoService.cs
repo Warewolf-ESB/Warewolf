@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.System
 {
     /// <summary>
@@ -46,15 +47,15 @@ namespace Dev2.Studio.Core.Services.System
         {
             get
             {
-                if (_edition != null)
+                if(_edition != null)
                     return _edition;  //***** RETURN *****//
 
                 var edition = String.Empty;
 
                 var osVersion = Environment.OSVersion;
-                var osVersionInfo = new OSVERSIONINFOEX {dwOSVersionInfoSize = Marshal.SizeOf(typeof (OSVERSIONINFOEX))};
+                var osVersionInfo = new Osversioninfoex { dwOSVersionInfoSize = Marshal.SizeOf(typeof(Osversioninfoex)) };
 
-                if (GetVersionEx(ref osVersionInfo))
+                if(GetVersionEx(ref osVersionInfo))
                 {
                     int majorVersion = osVersion.Version.Major;
                     int minorVersion = osVersion.Version.Minor;
@@ -62,27 +63,27 @@ namespace Dev2.Studio.Core.Services.System
                     short suiteMask = osVersionInfo.wSuiteMask;
 
                     #region VERSION 4
-                    if (majorVersion == 4)
+                    if(majorVersion == 4)
                     {
-                        if (productType == VER_NT_WORKSTATION)
+                        if(productType == VerNtWorkstation)
                         {
                             // Windows NT 4.0 Workstation
                             edition = "Workstation";
                         }
-                        else if (productType == VER_NT_SERVER)
+                        else if(productType == VerNtServer)
                         {
-                            edition = (suiteMask & VER_SUITE_ENTERPRISE) != 0 ? 
+                            edition = (suiteMask & VerSuiteEnterprise) != 0 ?
                                 "Enterprise Server" : "Standard Server";
                         }
                     }
                     #endregion VERSION 4
 
                     #region VERSION 5
-                    else if (majorVersion == 5)
+                    else if(majorVersion == 5)
                     {
-                        if (productType == VER_NT_WORKSTATION)
+                        if(productType == VerNtWorkstation)
                         {
-                            if ((suiteMask & VER_SUITE_PERSONAL) != 0)
+                            if((suiteMask & VerSuitePersonal) != 0)
                             {
                                 // Windows XP Home Edition
                                 edition = "Home";
@@ -90,20 +91,20 @@ namespace Dev2.Studio.Core.Services.System
                             else
                             {
                                 // Windows XP / Windows 2000 Professional
-                                edition = GetSystemMetrics(86) == 0 ? "Professional" 
+                                edition = GetSystemMetrics(86) == 0 ? "Professional"
                                     : "Tablet Edition";
                             }
                         }
-                        else if (productType == VER_NT_SERVER)
+                        else if(productType == VerNtServer)
                         {
-                            if (minorVersion == 0)
+                            if(minorVersion == 0)
                             {
-                                if ((suiteMask & VER_SUITE_DATACENTER) != 0)
+                                if((suiteMask & VerSuiteDatacenter) != 0)
                                 {
                                     // Windows 2000 Datacenter Server
                                     edition = "Datacenter Server";
                                 }
-                                else if ((suiteMask & VER_SUITE_ENTERPRISE) != 0)
+                                else if((suiteMask & VerSuiteEnterprise) != 0)
                                 {
                                     // Windows 2000 Advanced Server
                                     edition = "Advanced Server";
@@ -116,17 +117,17 @@ namespace Dev2.Studio.Core.Services.System
                             }
                             else
                             {
-                                if ((suiteMask & VER_SUITE_DATACENTER) != 0)
+                                if((suiteMask & VerSuiteDatacenter) != 0)
                                 {
                                     // Windows Server 2003 Datacenter Edition
                                     edition = "Datacenter";
                                 }
-                                else if ((suiteMask & VER_SUITE_ENTERPRISE) != 0)
+                                else if((suiteMask & VerSuiteEnterprise) != 0)
                                 {
                                     // Windows Server 2003 Enterprise Edition
                                     edition = "Enterprise";
                                 }
-                                else if ((suiteMask & VER_SUITE_BLADE) != 0)
+                                else if((suiteMask & VerSuiteBlade) != 0)
                                 {
                                     // Windows Server 2003 Web Edition
                                     edition = "Web Edition";
@@ -142,127 +143,127 @@ namespace Dev2.Studio.Core.Services.System
                     #endregion VERSION 5
 
                     #region VERSION 6
-                    else if (majorVersion == 6)
+                    else if(majorVersion == 6)
                     {
                         int ed;
-                        if (GetProductInfo(majorVersion, minorVersion,
+                        if(GetProductInfo(majorVersion, minorVersion,
                             osVersionInfo.wServicePackMajor, osVersionInfo.wServicePackMinor,
                             out ed))
                         {
-                            switch (ed)
+                            switch(ed)
                             {
-                                case PRODUCT_BUSINESS:
+                                case ProductBusiness:
                                     edition = "Business";
                                     break;
-                                case PRODUCT_BUSINESS_N:
+                                case ProductBusinessN:
                                     edition = "Business N";
                                     break;
-                                case PRODUCT_CLUSTER_SERVER:
+                                case ProductClusterServer:
                                     edition = "HPC Edition";
                                     break;
-                                case PRODUCT_DATACENTER_SERVER:
+                                case ProductDatacenterServer:
                                     edition = "Datacenter Server";
                                     break;
-                                case PRODUCT_DATACENTER_SERVER_CORE:
+                                case ProductDatacenterServerCore:
                                     edition = "Datacenter Server (core installation)";
                                     break;
-                                case PRODUCT_ENTERPRISE:
+                                case ProductEnterprise:
                                     edition = "Enterprise";
                                     break;
-                                case PRODUCT_ENTERPRISE_N:
+                                case ProductEnterpriseN:
                                     edition = "Enterprise N";
                                     break;
-                                case PRODUCT_ENTERPRISE_SERVER:
+                                case ProductEnterpriseServer:
                                     edition = "Enterprise Server";
                                     break;
-                                case PRODUCT_ENTERPRISE_SERVER_CORE:
+                                case ProductEnterpriseServerCore:
                                     edition = "Enterprise Server (core installation)";
                                     break;
-                                case PRODUCT_ENTERPRISE_SERVER_CORE_V:
+                                case ProductEnterpriseServerCoreV:
                                     edition = "Enterprise Server without Hyper-V (core installation)";
                                     break;
-                                case PRODUCT_ENTERPRISE_SERVER_IA64:
+                                case ProductEnterpriseServerIa64:
                                     edition = "Enterprise Server for Itanium-based Systems";
                                     break;
-                                case PRODUCT_ENTERPRISE_SERVER_V:
+                                case ProductEnterpriseServerV:
                                     edition = "Enterprise Server without Hyper-V";
                                     break;
-                                case PRODUCT_HOME_BASIC:
+                                case ProductHomeBasic:
                                     edition = "Home Basic";
                                     break;
-                                case PRODUCT_HOME_BASIC_N:
+                                case ProductHomeBasicN:
                                     edition = "Home Basic N";
                                     break;
-                                case PRODUCT_HOME_PREMIUM:
+                                case ProductHomePremium:
                                     edition = "Home Premium";
                                     break;
-                                case PRODUCT_HOME_PREMIUM_N:
+                                case ProductHomePremiumN:
                                     edition = "Home Premium N";
                                     break;
-                                case PRODUCT_HYPERV:
+                                case ProductHyperv:
                                     edition = "Microsoft Hyper-V Server";
                                     break;
-                                case PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT:
+                                case ProductMediumbusinessServerManagement:
                                     edition = "Windows Essential Business Management Server";
                                     break;
-                                case PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING:
+                                case ProductMediumbusinessServerMessaging:
                                     edition = "Windows Essential Business Messaging Server";
                                     break;
-                                case PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY:
+                                case ProductMediumbusinessServerSecurity:
                                     edition = "Windows Essential Business Security Server";
                                     break;
-                                case PRODUCT_SERVER_FOR_SMALLBUSINESS:
+                                case ProductServerForSmallbusiness:
                                     edition = "Windows Essential Server Solutions";
                                     break;
-                                case PRODUCT_SERVER_FOR_SMALLBUSINESS_V:
+                                case ProductServerForSmallbusinessV:
                                     edition = "Windows Essential Server Solutions without Hyper-V";
                                     break;
-                                case PRODUCT_SMALLBUSINESS_SERVER:
+                                case ProductSmallbusinessServer:
                                     edition = "Windows Small Business Server";
                                     break;
-                                case PRODUCT_STANDARD_SERVER:
+                                case ProductStandardServer:
                                     edition = "Standard Server";
                                     break;
-                                case PRODUCT_STANDARD_SERVER_CORE:
+                                case ProductStandardServerCore:
                                     edition = "Standard Server (core installation)";
                                     break;
-                                case PRODUCT_STANDARD_SERVER_CORE_V:
+                                case ProductStandardServerCoreV:
                                     edition = "Standard Server without Hyper-V (core installation)";
                                     break;
-                                case PRODUCT_STANDARD_SERVER_V:
+                                case ProductStandardServerV:
                                     edition = "Standard Server without Hyper-V";
                                     break;
-                                case PRODUCT_STARTER:
+                                case ProductStarter:
                                     edition = "Starter";
                                     break;
-                                case PRODUCT_STORAGE_ENTERPRISE_SERVER:
+                                case ProductStorageEnterpriseServer:
                                     edition = "Enterprise Storage Server";
                                     break;
-                                case PRODUCT_STORAGE_EXPRESS_SERVER:
+                                case ProductStorageExpressServer:
                                     edition = "Express Storage Server";
                                     break;
-                                case PRODUCT_STORAGE_STANDARD_SERVER:
+                                case ProductStorageStandardServer:
                                     edition = "Standard Storage Server";
                                     break;
-                                case PRODUCT_STORAGE_WORKGROUP_SERVER:
+                                case ProductStorageWorkgroupServer:
                                     edition = "Workgroup Storage Server";
                                     break;
-                                case PRODUCT_UNDEFINED:
+                                case ProductUndefined:
                                     edition = "Unknown product";
                                     break;
-                                case PRODUCT_ULTIMATE:
+                                case ProductUltimate:
                                     edition = "Ultimate";
                                     break;
-                                case PRODUCT_ULTIMATE_N:
+                                case ProductUltimateN:
                                     edition = "Ultimate N";
                                     break;
-                                case PRODUCT_WEB_SERVER:
+                                case ProductWebServer:
                                     edition = "Web Server";
                                     break;
-                                case PRODUCT_WEB_SERVER_CORE:
+                                case ProductWebServerCore:
                                     edition = "Web Server (core installation)";
                                     break;
-                                case PRODUCT_PROFESSIONAL:
+                                case ProductProfessional:
                                     edition = "Professional";
                                     break;
                             }
@@ -288,40 +289,36 @@ namespace Dev2.Studio.Core.Services.System
         {
             get
             {
-                if (_name != null)
+                if(_name != null)
                     return _name;  //***** RETURN *****//
 
                 string name = "unknown";
 
                 OperatingSystem osVersion = Environment.OSVersion;
-                OSVERSIONINFOEX osVersionInfo = new OSVERSIONINFOEX();
-                osVersionInfo.dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX));
+                Osversioninfoex osVersionInfo = new Osversioninfoex { dwOSVersionInfoSize = Marshal.SizeOf(typeof(Osversioninfoex)) };
 
-                if (GetVersionEx(ref osVersionInfo))
+                if(GetVersionEx(ref osVersionInfo))
                 {
                     int majorVersion = osVersion.Version.Major;
                     int minorVersion = osVersion.Version.Minor;
 
-                    switch (osVersion.Platform)
+                    switch(osVersion.Platform)
                     {
                         case PlatformID.Win32Windows:
                             {
-                                if (majorVersion == 4)
+                                if(majorVersion == 4)
                                 {
                                     string csdVersion = osVersionInfo.szCSDVersion;
-                                    switch (minorVersion)
+                                    switch(minorVersion)
                                     {
                                         case 0:
-                                            if (csdVersion == "B" || csdVersion == "C")
+                                            if(csdVersion == "B" || csdVersion == "C")
                                                 name = "Windows 95 OSR2";
                                             else
                                                 name = "Windows 95";
                                             break;
                                         case 10:
-                                            if (csdVersion == "A")
-                                                name = "Windows 98 Second Edition";
-                                            else
-                                                name = "Windows 98";
+                                            name = csdVersion == "A" ? "Windows 98 Second Edition" : "Windows 98";
                                             break;
                                         case 90:
                                             name = "Windows Me";
@@ -335,13 +332,13 @@ namespace Dev2.Studio.Core.Services.System
                             {
                                 byte productType = osVersionInfo.wProductType;
 
-                                switch (majorVersion)
+                                switch(majorVersion)
                                 {
                                     case 3:
                                         name = "Windows NT 3.51";
                                         break;
                                     case 4:
-                                        switch (productType)
+                                        switch(productType)
                                         {
                                             case 1:
                                                 name = "Windows NT 4.0";
@@ -352,7 +349,7 @@ namespace Dev2.Studio.Core.Services.System
                                         }
                                         break;
                                     case 5:
-                                        switch (minorVersion)
+                                        switch(minorVersion)
                                         {
                                             case 0:
                                                 name = "Windows 2000";
@@ -361,19 +358,16 @@ namespace Dev2.Studio.Core.Services.System
                                                 name = "Windows XP";
                                                 break;
                                             case 2:
-                                                if (productType == VER_NT_WORKSTATION)
-                                                    name = "Windows XP"; // handles XP 64-bit
-                                                else
-                                                    name = "Windows Server 2003";
+                                                name = productType == VerNtWorkstation ? "Windows XP" : "Windows Server 2003";
                                                 break;
                                         }
                                         break;
                                     case 6:
-                                        switch (minorVersion)
+                                        switch(minorVersion)
                                         {
                                             case 0:
 
-                                                switch (productType)
+                                                switch(productType)
                                                 {
                                                     case 1:
                                                         name = "Windows Vista";
@@ -384,7 +378,7 @@ namespace Dev2.Studio.Core.Services.System
                                                 }
                                                 break;
                                             case 1:
-                                                switch (productType)
+                                                switch(productType)
                                                 {
                                                     case 1:
                                                         name = "Windows 7";
@@ -425,83 +419,77 @@ namespace Dev2.Studio.Core.Services.System
 
         #region VERSION
         [DllImport("kernel32.dll")]
-        private static extern bool GetVersionEx(ref OSVERSIONINFOEX osVersionInfo);
+        private static extern bool GetVersionEx(ref Osversioninfoex osVersionInfo);
         #endregion VERSION
         #endregion GET
 
         #region OSVERSIONINFOEX
         [StructLayout(LayoutKind.Sequential)]
-        private struct OSVERSIONINFOEX
+        private struct Osversioninfoex
         {
             public int dwOSVersionInfoSize;
-            public int dwMajorVersion;
-            public int dwMinorVersion;
-            public int dwBuildNumber;
-            public int dwPlatformId;
+            readonly int dwMajorVersion;
+            readonly int dwMinorVersion;
+            readonly int dwBuildNumber;
+            readonly int dwPlatformId;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-            public string szCSDVersion;
-            public short wServicePackMajor;
-            public short wServicePackMinor;
-            public short wSuiteMask;
-            public byte wProductType;
-            public byte wReserved;
+            public readonly string szCSDVersion;
+            public readonly short wServicePackMajor;
+            public readonly short wServicePackMinor;
+            public readonly short wSuiteMask;
+            public readonly byte wProductType;
+            readonly byte wReserved;
         }
         #endregion OSVERSIONINFOEX
 
         #region PRODUCT
-        private const int PRODUCT_PROFESSIONAL = 0x00000030;
-        private const int PRODUCT_UNDEFINED = 0x00000000;
-        private const int PRODUCT_ULTIMATE = 0x00000001;
-        private const int PRODUCT_HOME_BASIC = 0x00000002;
-        private const int PRODUCT_HOME_PREMIUM = 0x00000003;
-        private const int PRODUCT_ENTERPRISE = 0x00000004;
-        private const int PRODUCT_HOME_BASIC_N = 0x00000005;
-        private const int PRODUCT_BUSINESS = 0x00000006;
-        private const int PRODUCT_STANDARD_SERVER = 0x00000007;
-        private const int PRODUCT_DATACENTER_SERVER = 0x00000008;
-        private const int PRODUCT_SMALLBUSINESS_SERVER = 0x00000009;
-        private const int PRODUCT_ENTERPRISE_SERVER = 0x0000000A;
-        private const int PRODUCT_STARTER = 0x0000000B;
-        private const int PRODUCT_DATACENTER_SERVER_CORE = 0x0000000C;
-        private const int PRODUCT_STANDARD_SERVER_CORE = 0x0000000D;
-        private const int PRODUCT_ENTERPRISE_SERVER_CORE = 0x0000000E;
-        private const int PRODUCT_ENTERPRISE_SERVER_IA64 = 0x0000000F;
-        private const int PRODUCT_BUSINESS_N = 0x00000010;
-        private const int PRODUCT_WEB_SERVER = 0x00000011;
-        private const int PRODUCT_CLUSTER_SERVER = 0x00000012;
-        private const int PRODUCT_HOME_SERVER = 0x00000013;
-        private const int PRODUCT_STORAGE_EXPRESS_SERVER = 0x00000014;
-        private const int PRODUCT_STORAGE_STANDARD_SERVER = 0x00000015;
-        private const int PRODUCT_STORAGE_WORKGROUP_SERVER = 0x00000016;
-        private const int PRODUCT_STORAGE_ENTERPRISE_SERVER = 0x00000017;
-        private const int PRODUCT_SERVER_FOR_SMALLBUSINESS = 0x00000018;
-        private const int PRODUCT_SMALLBUSINESS_SERVER_PREMIUM = 0x00000019;
-        private const int PRODUCT_HOME_PREMIUM_N = 0x0000001A;
-        private const int PRODUCT_ENTERPRISE_N = 0x0000001B;
-        private const int PRODUCT_ULTIMATE_N = 0x0000001C;
-        private const int PRODUCT_WEB_SERVER_CORE = 0x0000001D;
-        private const int PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT = 0x0000001E;
-        private const int PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY = 0x0000001F;
-        private const int PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING = 0x00000020;
-        private const int PRODUCT_SERVER_FOR_SMALLBUSINESS_V = 0x00000023;
-        private const int PRODUCT_STANDARD_SERVER_V = 0x00000024;
-        private const int PRODUCT_ENTERPRISE_SERVER_V = 0x00000026;
-        private const int PRODUCT_STANDARD_SERVER_CORE_V = 0x00000028;
-        private const int PRODUCT_ENTERPRISE_SERVER_CORE_V = 0x00000029;
-        private const int PRODUCT_HYPERV = 0x0000002A;
+        private const int ProductProfessional = 0x00000030;
+        private const int ProductUndefined = 0x00000000;
+        private const int ProductUltimate = 0x00000001;
+        private const int ProductHomeBasic = 0x00000002;
+        private const int ProductHomePremium = 0x00000003;
+        private const int ProductEnterprise = 0x00000004;
+        private const int ProductHomeBasicN = 0x00000005;
+        private const int ProductBusiness = 0x00000006;
+        private const int ProductStandardServer = 0x00000007;
+        private const int ProductDatacenterServer = 0x00000008;
+        private const int ProductSmallbusinessServer = 0x00000009;
+        private const int ProductEnterpriseServer = 0x0000000A;
+        private const int ProductStarter = 0x0000000B;
+        private const int ProductDatacenterServerCore = 0x0000000C;
+        private const int ProductStandardServerCore = 0x0000000D;
+        private const int ProductEnterpriseServerCore = 0x0000000E;
+        private const int ProductEnterpriseServerIa64 = 0x0000000F;
+        private const int ProductBusinessN = 0x00000010;
+        private const int ProductWebServer = 0x00000011;
+        private const int ProductClusterServer = 0x00000012;
+        private const int ProductStorageExpressServer = 0x00000014;
+        private const int ProductStorageStandardServer = 0x00000015;
+        private const int ProductStorageWorkgroupServer = 0x00000016;
+        private const int ProductStorageEnterpriseServer = 0x00000017;
+        private const int ProductServerForSmallbusiness = 0x00000018;
+        private const int ProductHomePremiumN = 0x0000001A;
+        private const int ProductEnterpriseN = 0x0000001B;
+        private const int ProductUltimateN = 0x0000001C;
+        private const int ProductWebServerCore = 0x0000001D;
+        private const int ProductMediumbusinessServerManagement = 0x0000001E;
+        private const int ProductMediumbusinessServerSecurity = 0x0000001F;
+        private const int ProductMediumbusinessServerMessaging = 0x00000020;
+        private const int ProductServerForSmallbusinessV = 0x00000023;
+        private const int ProductStandardServerV = 0x00000024;
+        private const int ProductEnterpriseServerV = 0x00000026;
+        private const int ProductStandardServerCoreV = 0x00000028;
+        private const int ProductEnterpriseServerCoreV = 0x00000029;
+        private const int ProductHyperv = 0x0000002A;
         #endregion PRODUCT
 
         #region VERSIONS
-        private const int VER_NT_WORKSTATION = 1;
-        private const int VER_NT_DOMAIN_CONTROLLER = 2;
-        private const int VER_NT_SERVER = 3;
-        private const int VER_SUITE_SMALLBUSINESS = 1;
-        private const int VER_SUITE_ENTERPRISE = 2;
-        private const int VER_SUITE_TERMINAL = 16;
-        private const int VER_SUITE_DATACENTER = 128;
-        private const int VER_SUITE_SINGLEUSERTS = 256;
-        private const int VER_SUITE_PERSONAL = 512;
-        private const int VER_SUITE_BLADE = 1024;
+        private const int VerNtWorkstation = 1;
+        private const int VerNtServer = 3;
+        private const int VerSuiteEnterprise = 2;
+        private const int VerSuiteDatacenter = 128;
+        private const int VerSuitePersonal = 512;
+        private const int VerSuiteBlade = 1024;
         #endregion VERSIONS
         #endregion PINVOKE
 
@@ -514,11 +502,9 @@ namespace Dev2.Studio.Core.Services.System
             get
             {
                 string servicePack = String.Empty;
-                OSVERSIONINFOEX osVersionInfo = new OSVERSIONINFOEX();
+                Osversioninfoex osVersionInfo = new Osversioninfoex { dwOSVersionInfoSize = Marshal.SizeOf(typeof(Osversioninfoex)) };
 
-                osVersionInfo.dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX));
-
-                if (GetVersionEx(ref osVersionInfo))
+                if(GetVersionEx(ref osVersionInfo))
                 {
                     servicePack = osVersionInfo.szCSDVersion;
                 }

@@ -1,6 +1,7 @@
-﻿using Dev2.Studio.Core.Wizards.Interfaces;
-using System;
+﻿using System;
+using Dev2.Studio.Core.Wizards.Interfaces;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Wizards
 {
     public class WizardInvocationTO
