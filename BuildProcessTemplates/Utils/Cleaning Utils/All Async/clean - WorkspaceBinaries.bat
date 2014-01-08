@@ -1,6 +1,5 @@
-REM  Clean ENV Directory
+REM  Clean workspace binaries directory
 
-@echo off
 call :cleanDIR
 goto :eof
 
