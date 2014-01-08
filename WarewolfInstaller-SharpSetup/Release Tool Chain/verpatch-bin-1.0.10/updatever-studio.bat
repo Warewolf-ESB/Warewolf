@@ -1,14 +1,6 @@
 
-call :updateEXE
-call :updateDLL
-goto :eof
+set ver=%1%
 
-:updateEXE
-
-./verpatch "Warewolf Studio.exe" %1%
-
-
-:updateDLL
+verpatch "Warewolf Server.exe" %ver%
 rem Do whatever you want here over the files of this subdir, for example:
-for %%f in (Dev2*.dll) do verpatch %%f %1%
-exit /b
+for %%f in (Dev2*.dll) do verpatch %%f %ver%
