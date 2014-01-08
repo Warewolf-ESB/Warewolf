@@ -24,7 +24,7 @@ namespace WaitForBuild
         public static int Main(string[] args)
         {
 
-            if (args.Length == 3)
+            if(args.Length == 3)
             {
                 try
                 {
@@ -36,7 +36,7 @@ namespace WaitForBuild
                     TeamFoundationServer tfs = TeamFoundationServerFactory.GetServer(server);
                     IBuildServer buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
 
-                    if (tmp.IndexOf(",", StringComparison.Ordinal) < 0)
+                    if(tmp.IndexOf(",", StringComparison.Ordinal) < 0)
                     {
                         Int32.TryParse(args[2].Trim(), out id);
 
@@ -47,12 +47,12 @@ namespace WaitForBuild
                         do
                         {
                             Thread.Sleep(1000);
-                        } while (bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
+                        } while(bsw.Status != QueueStatus.Completed && bsw.Status != QueueStatus.Canceled);
 
                         bsw.Disconnect();
 
                         // ensure both the build and test passed ;)
-                        if (bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
+                        if(bsw.Build.CompilationStatus == BuildPhaseStatus.Succeeded && bsw.Build.TestStatus == BuildPhaseStatus.Succeeded)
                         {
                             return 0; // success ;)
                         }
@@ -70,9 +70,9 @@ namespace WaitForBuild
                         int pos = 0;
 
                         // build collection
-                        foreach (var val in ids)
+                        foreach(var val in ids)
                         {
-                            if (Int32.TryParse(val, out id))
+                            if(Int32.TryParse(val, out id))
                             {
                                 vals[pos] = id;
                                 pos++;
@@ -85,9 +85,9 @@ namespace WaitForBuild
                         int returnStatus = 0;
 
                         // process collection ;)
-                        foreach (var pid in vals)
+                        foreach(var pid in vals)
                         {
-                            if (pid > 0)
+                            if(pid > 0)
                             {
                                 watchers[pos] = new BuildStatusWatcher(pid);
 
@@ -100,14 +100,14 @@ namespace WaitForBuild
                         do
                         {
                             Thread.Sleep(5000);
-                        } while (!IsCollectionFinished(watchers));
+                        } while(!IsCollectionFinished(watchers));
 
                         // check statuses ;)
-                        foreach (var v in watchers)
+                        foreach(var v in watchers)
                         {
                             v.Disconnect();
                             // ensure both the build and test passed ;)
-                            if (v.Build.CompilationStatus == BuildPhaseStatus.Succeeded &&
+                            if(v.Build.CompilationStatus == BuildPhaseStatus.Succeeded &&
                                 v.Build.TestStatus == BuildPhaseStatus.Succeeded)
                             {
                                 returnStatus += 0; // success ;)
@@ -119,14 +119,14 @@ namespace WaitForBuild
                         }
 
                         return returnStatus;
-                            
-                        
+
+
                     }
 
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    File.WriteAllText(LogFile(), DateTime.Now + " :: Execution Errors { " + e.Message + " }");
+                    File.WriteAllText(LogFile(), DateTime.Now + " :: Execution Errors { " + e.Message + " } with arg 0 { " + args[0] + " } arg 1 { " + args[1] + " } arg 2 { " + args[2] + " }");
                     return 3; // exception failure ;(
                 }
             }
@@ -149,11 +149,11 @@ namespace WaitForBuild
         {
             bool result = true;
 
-            foreach (var v in col)
+            foreach(var v in col)
             {
-                if (v != null)
+                if(v != null)
                 {
-                    if (v.Status != QueueStatus.Completed && v.Status != QueueStatus.Canceled)
+                    if(v.Status != QueueStatus.Completed && v.Status != QueueStatus.Canceled)
                     {
                         result = false;
                     }
@@ -196,7 +196,7 @@ namespace WaitForBuild
 
             public void Connect(IBuildServer buildServer, string tfsProject)
             {
-               
+
                 _queuedBuildsView = buildServer.CreateQueuedBuildsView(tfsProject);
                 _queuedBuildsView.StatusChanged += QueuedBuildsViewStatusChanged;
                 _queuedBuildsView.Connect(5000, null);
@@ -210,7 +210,7 @@ namespace WaitForBuild
             private void QueuedBuildsViewStatusChanged(object sender, StatusChangedEventArgs e)
             {
                 var queuedBuild = _queuedBuildsView.QueuedBuilds.FirstOrDefault(x => x.Id == _queueBuildId);
-                if (queuedBuild != null)
+                if(queuedBuild != null)
                 {
                     _status = queuedBuild.Status;
                     _build = queuedBuild.Build;
@@ -219,7 +219,7 @@ namespace WaitForBuild
                 {
                     _nullHits++;
 
-                    if (_nullHits == _timeoutNullHits)
+                    if(_nullHits == _timeoutNullHits)
                     {
                         _status = QueueStatus.Canceled;
                     }
