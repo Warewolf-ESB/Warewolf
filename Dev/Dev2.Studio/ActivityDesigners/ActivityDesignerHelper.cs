@@ -89,7 +89,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDatabaseActivity), typeof(ServiceDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
-                { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) },
                 { typeof(DsfWebPageActivity), typeof(DsfWebPageActivityDesigner) },
                 { typeof(DsfWebSiteActivity), typeof(DsfWebSiteActivityDesigner) },
                 { typeof(DsfFindRecordsActivity), typeof(DsfFindRecordsActivityDesigner) },

@@ -194,9 +194,6 @@
     <Compile Include="ActivityDesigners\DsfAssertActivityDesigner.xaml.cs">
       <DependentUpon>DsfAssertActivityDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ActivityDesigners\DsfAssignActivityDesigner.xaml.cs">
-      <DependentUpon>DsfAssignActivityDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ActivityDesigners\DsfFileForEachActivityDesigner.xaml.cs">
       <DependentUpon>DsfFileForEachActivityDesigner.xaml</DependentUpon>
     </Compile>
@@ -423,7 +420,6 @@
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdorner.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnectionAdornerDecorator.cs" />
     <Compile Include="AppResources\DependencyVisualization\NodeConnector.cs" />
-    <Compile Include="AppResources\DsfActivityComparers\DsfActivityDataListComparer.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingInprogressException.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingNoProcessesExcpetion.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingTimeoutException.cs" />
@@ -571,10 +567,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ActivityDesigners\DsfAssertActivityDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ActivityDesigners\DsfAssignActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

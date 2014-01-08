@@ -1,4 +1,19 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Communication;
@@ -25,21 +40,6 @@ using Dev2.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using System;
-using System.Activities;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -2774,7 +2774,6 @@ namespace Dev2.Core.Tests.Workflows
             {
                 { typeof(DsfActivity), typeof(Dev2.Activities.Designers2.Service.ServiceDesigner) },
                 { typeof(DsfMultiAssignActivity), typeof(Dev2.Activities.Designers2.MultiAssign.MultiAssignDesigner) }, 
-                { typeof(DsfAssignActivity), typeof(DsfAssignActivityDesigner) }, 
                 { typeof(DsfForEachActivity), typeof(ForeachDesigner) }, 
                 { typeof(DsfCountRecordsetActivity), typeof(Dev2.Activities.Designers2.CountRecords.CountRecordsDesigner) }
             };
