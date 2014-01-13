@@ -166,17 +166,6 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             {
                 new Tuple<string, string, AssertType>(WebServerTest, WebServerTestExpectedXml, AssertType.Equals)
             });
-
-            ////------------Setup for test--------------------------
-            //string postData = String.Format("{0}{1}", ServicesHttpsUri, "Bug9139");
-            ////------------Execute Test---------------------------
-            //bool wasHTTPS;
-            //string responseData = TestHelper.PostDataToWebserver(postData, out wasHTTPS);
-
-            ////------------Assert Results-------------------------
-            //var expected = "<DataList><result>PASS</result></DataList>";
-            //Assert.IsTrue(wasHTTPS);
-            //Assert.AreEqual(expected, responseData, "Expected [ " + expected + "] but got [ " + responseData + " ]");
         }
 
         [TestMethod]
