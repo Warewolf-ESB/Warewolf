@@ -176,7 +176,6 @@
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
-    <Compile Include="Custom Dev2 Controls\NavigationViewTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
@@ -267,7 +266,6 @@
     <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\CategoryTreeViewModelMock.cs" />
-    <Compile Include="Views\Global\ToolboxUserControlTests.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -402,6 +400,7 @@
   <ItemGroup>
     <Folder Include="Account\NewFolder1\" />
     <Folder Include="Diagnostics\Debug\" />
+    <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />
   </ItemGroup>
   <ItemGroup>

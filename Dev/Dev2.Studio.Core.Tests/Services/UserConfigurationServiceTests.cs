@@ -67,32 +67,7 @@ namespace Dev2.Core.Tests.Services
             Assert.IsNotNull(service.Help.IsCollapsed, "Help IsCollapsed property was not initialized by constructor.");
         }
 
-        [TestMethod]
-        [TestCategory("UserConfigurationService_Persistence")]
-        [Description("UserConfigurationService must read/write it's properties to/from disk correctly.")]
-        [Owner("Trevor Williams-Ros")]
-        [Ignore] // Not used
-        public void UserConfigurationService_UnitTest_PersistenceWrite_CanRead()
-        {
-            var filePath = Path.Combine(_testDir, Guid.NewGuid() + ".config");
-            var service = new UserConfigurationService(filePath);
-
-            var type1 = typeof(DsfActivity);
-            var type2 = typeof(DsfAssignActivity);
-
-            service.Help.IsCollapsed[type1] = true;
-            service.Help.IsCollapsed[type2] = true;
-
-            service.Write();
-
-            service = ConfigurationService.Read<UserConfigurationService>(filePath);
-            var actual1 = service.Help.IsCollapsed[type1];
-            var actual2 = service.Help.IsCollapsed[type2];
-
-            Assert.IsTrue(actual1, "UserConfigurationService did not read/write Help.IsCollapsed correctly.");
-            Assert.IsTrue(actual2, "UserConfigurationService did not read/write Help.IsCollapsed correctly.");
-        }
-
+      
         [TestMethod]
         [TestCategory("UserConfigurationService_Persistence")]
         [Description("UserConfigurationService must read/write it's properties to/from disk correctly.")]

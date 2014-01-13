@@ -178,7 +178,7 @@ namespace Dev2.Core.Tests.Workflows
             var recsetModel = new DataListItemModel("RecSet");
             dataListViewModel.RecsetCollection.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new DataListItemModel("f1", parent: recsetModel));
-            string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
+            const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = model.GetDecisionElements(expression, dataListViewModel);
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
@@ -237,134 +237,10 @@ namespace Dev2.Core.Tests.Workflows
             Assert.IsTrue(wf.NotifyItemSelected(page) == false);
         }
 
-        //2013.02.11: Ashley Lewis - Bug 6413
-        [TestMethod]
-        [Ignore] // Weird Test not sure what it does
-        public void ParserCorrectlyIdentifyingDatalistRegions()
-        {
-            // Create a blank workflow
-            // Left side: [[leftVal]]
-            // Right side: [[rightVal1]][[rightVal2]]
-            // AddRemove should end off with 3 items
-
-            const string b = @"<Activity mc:Ignorable=""sads sap"" x:Class=""yayacake""
- xmlns=""http://schemas.microsoft.com/netfx/2009/xaml/activities""
- xmlns:av=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
- xmlns:ddd=""clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data""
- xmlns:mc=""http://schemas.openxmlformats.org/markup-compatibility/2006""
- xmlns:mva=""clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities""
- xmlns:s=""clr-namespace:System;assembly=mscorlib""
- xmlns:sads=""http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger""
- xmlns:sap=""http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation""
- xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib""
- xmlns:uaba=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities""
- xmlns:uf=""clr-namespace:Unlimited.Framework;assembly=Dev2.Core""
- xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
-  <x:Members>
-    <x:Property Name=""AmbientDataList"" Type=""InOutArgument(scg:List(x:String))"" />
-    <x:Property Name=""ParentWorkflowInstanceId"" Type=""InOutArgument(s:Guid)"" />
-    <x:Property Name=""ParentServiceName"" Type=""InOutArgument(x:String)"" />
-  </x:Members>
-  <sap:VirtualizedContainerService.HintSize>654,676</sap:VirtualizedContainerService.HintSize>
-  <mva:VisualBasic.Settings>Assembly references and imported namespaces for internal implementation</mva:VisualBasic.Settings>
-  <Flowchart DisplayName=""yayacake"" sap:VirtualizedContainerService.HintSize=""614,636"">
-    <Flowchart.Variables>
-      <Variable x:TypeArguments=""scg:List(x:String)"" Name=""InstructionList"" />
-      <Variable x:TypeArguments=""x:String"" Name=""LastResult"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""HasError"" />
-      <Variable x:TypeArguments=""x:String"" Name=""ExplicitDataList"" />
-      <Variable x:TypeArguments=""x:Boolean"" Name=""IsValid"" />
-      <Variable x:TypeArguments=""uf:UnlimitedObject"" Name=""d"" />
-      <Variable x:TypeArguments=""uaba:Util"" Name=""t"" />
-      <Variable x:TypeArguments=""ddd:Dev2DataListDecisionHandler"" Name=""Dev2DecisionHandler"" />
-    </Flowchart.Variables>
-    <sap:WorkflowViewStateService.ViewState>
-      <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-        <x:Boolean x:Key=""IsExpanded"">False</x:Boolean>
-        <av:Point x:Key=""ShapeLocation"">270,2.5</av:Point>
-        <av:Size x:Key=""ShapeSize"">60,75</av:Size>
-        <av:PointCollection x:Key=""ConnectorLocation"">300,77.5 300,107.5 310,107.5 310,174</av:PointCollection>
-      </scg:Dictionary>
-    </sap:WorkflowViewStateService.ViewState>
-    <Flowchart.StartNode>
-      <FlowStep x:Name=""__ReferenceID0"">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-            <av:Point x:Key=""ShapeLocation"">182,174</av:Point>
-            <av:Size x:Key=""ShapeSize"">256,92</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-        <uaba:DsfMultiAssignActivity Compiler=""{x:Null}"" CurrentResult=""{x:Null}"" DataObject=""{x:Null}"" ExplicitDataList=""{x:Null}"" InputMapping=""{x:Null}"" InputTransformation=""{x:Null}"" OnResumeKeepList=""{x:Null}"" OutputMapping=""{x:Null}"" ParentServiceName=""{x:Null}"" ParentWorkflowInstanceId=""{x:Null}"" ResultTransformation=""{x:Null}"" ScenarioID=""{x:Null}"" ScopingObject=""{x:Null}"" ServiceHost=""{x:Null}"" SimulationOutput=""{x:Null}"" Add=""False"" CreateBookmark=""False"" DatabindRecursive=""False"" DisplayName=""Assign (1)"" HasError=""[HasError]"" sap:VirtualizedContainerService.HintSize=""256,92"" InstructionList=""[InstructionList]"" IsSimulationEnabled=""False"" IsUIStep=""False"" IsValid=""[IsValid]"" IsWorkflow=""False"" OnResumeClearAmbientDataList=""False"" OnResumeClearTags=""FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"" SimulationMode=""OnDemand"" UniqueID=""951ec686-05a2-4549-8b15-c613614d1a12"" UpdateAllOccurrences=""False"">
-          <uaba:DsfMultiAssignActivity.AmbientDataList>
-            <InOutArgument x:TypeArguments=""scg:List(x:String)"" />
-          </uaba:DsfMultiAssignActivity.AmbientDataList>
-          <uaba:DsfMultiAssignActivity.FieldsCollection>
-            <scg:List x:TypeArguments=""uaba:ActivityDTO"" Capacity=""4"">
-              <uaba:ActivityDTO FieldName=""[[leftVal]]"" FieldValue=""[[rightVal1]][[rightVal2]]"" IndexNumber=""1"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable1]]"">
-                <uaba:ActivityDTO.OutList>
-                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />
-                </uaba:ActivityDTO.OutList>
-              </uaba:ActivityDTO>
-              <uaba:ActivityDTO FieldName="""" FieldValue="""" IndexNumber=""2"" WatermarkTextValue=""Value"" WatermarkTextVariable=""[[Variable2]]"">
-                <uaba:ActivityDTO.OutList>
-                  <scg:List x:TypeArguments=""x:String"" Capacity=""0"" />
-                </uaba:ActivityDTO.OutList>
-              </uaba:ActivityDTO>
-            </scg:List>
-          </uaba:DsfMultiAssignActivity.FieldsCollection>
-          <sap:WorkflowViewStateService.ViewState>
-            <scg:Dictionary x:TypeArguments=""x:String, x:Object"">
-              <x:Boolean x:Key=""IsExpanded"">True</x:Boolean>
-            </scg:Dictionary>
-          </sap:WorkflowViewStateService.ViewState>
-        </uaba:DsfMultiAssignActivity>
-      </FlowStep>
-    </Flowchart.StartNode>
-    <x:Reference>__ReferenceID0</x:Reference>
-  </Flowchart>
-</Activity>";
-
-            int itemCount = GetAddRemoveDataListItemsCount(b);
-
-            Assert.AreEqual(3, itemCount);
-        }
-
 
         #endregion NotifyItemSelected Tests
 
         #region Internal Test Methods
-
-        int GetAddRemoveDataListItemsCount(string xamlInput)
-        {
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-
-            //Requires Specific XAML
-            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(new StringBuilder(xamlInput));
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            mockDataListViewModel.Setup(dlvm => dlvm.Resource).Returns(mockResourceModel.Object);
-
-            var DataListItems = new OptomizedObservableCollection<IDataListItemModel>();
-            var DataListItem = new Mock<IDataListItemModel>();
-            var secondDataListItem = new Mock<IDataListItemModel>();
-            DataListItem.Setup(list => list.Name).Returns("result");
-            DataListItem.Setup(list => list.Description).Returns("result desciption");
-            DataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-            secondDataListItem.Setup(list => list.Name).Returns("testing");
-            secondDataListItem.Setup(list => list.Description).Returns("testing description");
-            secondDataListItem.Setup(list => list.Children).Returns(new OptomizedObservableCollection<IDataListItemModel>());
-
-            DataListItems.Add(DataListItem.Object);
-            DataListItems.Add(secondDataListItem.Object);
-
-            DataListSingleton.SetDataList(mockDataListViewModel.Object);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            mockDataListViewModel.Setup(dlvm => dlvm.DataList).Returns(DataListItems);
-            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object);
-            workflowDesigner.PopUp = mockPopUp.Object;
-            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
-            return workflowDesigner.WorkflowVerifiedDataParts.Count;
-        }
 
         StringBuilder WorkflowXAMLForTest()
         {
@@ -1101,7 +977,7 @@ namespace Dev2.Core.Tests.Workflows
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
 
-            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false, null);
+            var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             //var designerAttributes = new Dictionary<Type, Type>();
             //workflowDesigner.InitializeDesigner(designerAttributes);
 
@@ -1127,11 +1003,11 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNull_ExpectWorkflowXamlFetch()
         {
-            var thread = new Thread(() =>
+            new Thread(() =>
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
-                repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage() { Message = null });
+                repo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage { Message = null });
                 var env = EnviromentRepositoryTest.CreateMockEnvironment();
                 env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -1164,7 +1040,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlValid_ExpectWorkflowXamlFetch()
         {
-            var thread = new Thread(() =>
+            new Thread(() =>
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
@@ -1208,12 +1084,11 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             //------------Setup for test--------------------------
-            var thread = new Thread(() =>
+            new Thread(() =>
                 {
                     #region Large Xaml
 
-                    var largeXaml =
-                        "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains. But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection:";
+                    const string largeXaml = "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains. But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure? On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection:";
 
                     #endregion
 
@@ -1236,8 +1111,7 @@ namespace Dev2.Core.Tests.Workflows
                     crm.Setup(r => r.Environment).Returns(env.Object);
                     crm.Setup(r => r.ResourceName).Returns("Test");
 
-                    //var wh = new WorkflowHelper();
-                    WorkflowHelper wh = null;
+                    var wh = new WorkflowHelper();
 
                     //------------Execute Test---------------------------
                     var wfd = CreateWorkflowDesignerViewModel(crm.Object, wh, true, largeXaml);
@@ -1250,10 +1124,6 @@ namespace Dev2.Core.Tests.Workflows
                     var error = wfd.Designer.IsInErrorState();
                     wfd.Dispose();
 
-                    var size = result.Length;
-
-                    size += 0;
-
                     Assert.AreEqual(largeXaml, result);
                     // error state due to malformed designer text fetched ;)
                     Assert.IsTrue(error);
@@ -1265,7 +1135,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
         {
-            var thread = new Thread(() =>
+            new Thread(() =>
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
@@ -1385,7 +1255,7 @@ namespace Dev2.Core.Tests.Workflows
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
-            var viewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
+            new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
                 null, null,
                 new Mock<IPopupController>().Object, false);
 
@@ -1604,7 +1474,7 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             //Execute
-            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, false);
+            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object);
             wfd.SetDataObject(treeVM);
             wfd.TestModelServiceModelChanged(args.Object);
 
@@ -1669,7 +1539,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
+            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
             #endregion
@@ -1683,8 +1553,8 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new Mock<IEventAggregator>();
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
-            var expectedMessage = new ConfigureDecisionExpressionMessage()
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
+            var expectedMessage = new ConfigureDecisionExpressionMessage
             {
                 ModelItem = source.Object,
                 EnvironmentModel = crm.Object.Environment,
@@ -1758,7 +1628,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem>() { source.Object });
+            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
             #endregion
@@ -1777,9 +1647,9 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false);
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
 
-            var expectedMessage = new ConfigureSwitchExpressionMessage()
+            var expectedMessage = new ConfigureSwitchExpressionMessage
             {
                 ModelItem = source.Object,
                 EnvironmentModel = crm.Object.Environment,
@@ -1856,7 +1726,14 @@ namespace Dev2.Core.Tests.Workflows
             wd.Dispose();
 
             //Assert Unique ID has changed
-            Assert.AreNotEqual(notExpected, (actual.Content.ComputedValue as IDev2Activity).UniqueID, "Activity ID not changed");
+            Assert.IsNotNull(actual);
+            Assert.IsNotNull(actual.Content);
+            if(actual.Content != null)
+            {
+                IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
+                Assert.IsNotNull(dev2Activity);
+                Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
+            }
         }
 
         #region TestModelServiceModelChangedNextReference
@@ -1903,7 +1780,7 @@ namespace Dev2.Core.Tests.Workflows
             var args = new Mock<ModelChangedEventArgs>();
             args.Setup(m => m.ModelChangeInfo).Returns(info.Object);
 
-            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, false);
+            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object);
 
             foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
@@ -1926,7 +1803,6 @@ namespace Dev2.Core.Tests.Workflows
 
         [TestMethod]
         [Description("When the model changes we mark the resource as unsaved")]
-        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             #region Setup viewModel
@@ -1937,12 +1813,12 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("TestXaml"));
-            resourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
@@ -1989,72 +1865,7 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
-        [Description("When the xaml changes after undo changes we mark the resource as unsaved")]
-        [Ignore]
-        public void WorkflowDesignerViewModel_UnitTest_UndoWithXAMLSame_ExpectMarksResourceIsWorkflowSavedTrue()
-        {
-            #region Setup viewModel
-            var workflow = new ActivityBuilder();
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
-
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("TestXaml"));
-            resourceModel.SetupProperty(model => model.IsWorkflowSaved);
-            resourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
-
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
-
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
-
-            #endregion
-
-            #region setup Mock ModelItem
-
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
-
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-            prop.Setup(p => p.ComputedValue).Returns(testAct);
-            properties.Add("Action", prop);
-
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
-
-            var source = new Mock<ModelItem>();
-            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
-
-            #endregion
-
-            #region setup mock to change properties
-
-            //mock item adding - this is obsolote functionality but not refactored due to overhead
-            var args = new Mock<ModelChangedEventArgs>();
-#pragma warning disable 618
-            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
-#pragma warning restore 618
-
-            #endregion
-
-            //Execute
-            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder());
-            viewModel.TestWorkflowDesignerModelChanged();
-
-            viewModel.Dispose();
-
-            //Verify
-            Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
-        }
-
-        [TestMethod]
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
-        [Ignore]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             var workflow = new ActivityBuilder();
@@ -2067,14 +1878,15 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("TestXaml"));
             resourceModel.SetupProperty(model => model.IsWorkflowSaved);
-            resourceModel.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlServiceDefinition));
+            StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+            resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
 
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -2310,7 +2122,8 @@ namespace Dev2.Core.Tests.Workflows
             viewModel.Handle(new EditActivityMessage(modelItem.Object, parentEnvironmentID, mockedEnvironmentRepository.Object));
 
             // Assert Result
-            Assert.IsTrue((actual.Body as BinaryExpression).Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
+            var binaryExpression = actual.Body as BinaryExpression;
+            Assert.IsTrue(binaryExpression != null && binaryExpression.Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -2343,7 +2156,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -2386,7 +2199,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -2409,7 +2222,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemNotFound_SelectsFlowchart()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(Flowchart), selectsModelItem: false);
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, typeof(Flowchart), false);
         }
 
         [TestMethod]
@@ -2417,7 +2230,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionItemFound_SelectsModelItem()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(TestActivity));
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, typeof(TestActivity));
         }
 
         [TestMethod]
@@ -2425,7 +2238,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_SingleSelectionDecisionOrSwitchItemFound_SelectsDecisionOrSwitch()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.Single, selectedActivityType: typeof(FlowDecision));
+            Verify_DebugSelectionChanged(ActivitySelectionType.Single, typeof(FlowDecision));
         }
 
         [TestMethod]
@@ -2433,7 +2246,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_AddSelection_SelectsItems()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.Add, selectedActivityType: typeof(TestActivity));
+            Verify_DebugSelectionChanged(ActivitySelectionType.Add, typeof(TestActivity));
         }
 
         [TestMethod]
@@ -2441,7 +2254,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_RemoveSelection_SelectsItems()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.Remove, selectedActivityType: typeof(TestActivity));
+            Verify_DebugSelectionChanged(ActivitySelectionType.Remove, typeof(TestActivity));
         }
 
         [TestMethod]
@@ -2449,7 +2262,7 @@ namespace Dev2.Core.Tests.Workflows
         [Owner("Trevor Williams-Ros")]
         public void WorkflowDesignerViewModel_DebugSelectionChanged_ClearSelection_DeselectsItems()
         {
-            Verify_DebugSelectionChanged(ActivitySelectionType.None, selectedActivityType: typeof(TestActivity));
+            Verify_DebugSelectionChanged(ActivitySelectionType.None, typeof(TestActivity));
         }
 
         static void Verify_DebugSelectionChanged(ActivitySelectionType selectionType, Type selectedActivityType, bool selectsModelItem = true)
@@ -2502,7 +2315,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, false);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
@@ -2768,7 +2581,7 @@ namespace Dev2.Core.Tests.Workflows
 
         static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher = null)
         {
-            var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false, null);
+            var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
             var designerAttributes = new Dictionary<Type, Type>
             {

@@ -280,7 +280,6 @@ namespace Dev2.Core.Tests
 
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
-        [Ignore]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedNotLoadsWorkspaceItemsWithSameEnvID()
         {
             var workspaceID = Guid.NewGuid();
@@ -306,6 +305,7 @@ namespace Dev2.Core.Tests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.All()).Returns(new List<IResourceModel>(new[] { resourceModel.Object }));
             resourceRepo.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Verifiable();
+            resourceRepo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
 
             var envConn = new Mock<IEnvironmentConnection>();
             envConn.Setup(conn => conn.WorkspaceID).Returns(workspaceID);
@@ -795,7 +795,7 @@ namespace Dev2.Core.Tests
 
         void CreateResourceRepo()
         {
-            var msg = new ExecuteMessage {HasError = false};
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("");
             _environmentModel = CreateMockEnvironment();
             _resourceRepo = new Mock<IResourceRepository>();
@@ -822,15 +822,15 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Returns(
                     () =>
+                    {
+                        if(cnt == 0)
                         {
-                            if (cnt == 0)
-                            {
-                                cnt++;
-                                return new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
-                            }
-
-                            return new StringBuilder(JsonConvert.SerializeObject(new ExecuteMessage()));
+                            cnt++;
+                            return new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", sources)));
                         }
+
+                        return new StringBuilder(JsonConvert.SerializeObject(new ExecuteMessage()));
+                    }
                 );
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             return connection;
@@ -881,10 +881,10 @@ namespace Dev2.Core.Tests
         {
             PopupController.Setup(c => c.Show()).Verifiable();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-            _resourceRepo.Setup(c=>c.HasDependencies(_firstResource.Object)).Returns(false).Verifiable();            
+            _resourceRepo.Setup(c => c.HasDependencies(_firstResource.Object)).Returns(false).Verifiable();
             var succesResponse = new ExecuteMessage();
-            
-            succesResponse.SetMessage(@"<DataList>Success</DataList>");         
+
+            succesResponse.SetMessage(@"<DataList>Success</DataList>");
             _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(succesResponse);
         }
 
@@ -1556,7 +1556,7 @@ namespace Dev2.Core.Tests
         {
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(() => new List<IWorkspaceItem>());
-            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Returns(new ExecuteMessage()).Verifiable();             
+            wsiRepo.Setup(r => r.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.Is<bool>(b => b))).Returns(new ExecuteMessage()).Verifiable();
             SetupImportServiceForPersistenceTests(wsiRepo);
 
             var resourceID = Guid.NewGuid();
@@ -1799,7 +1799,7 @@ namespace Dev2.Core.Tests
 
         public static ExecuteMessage MakeMsg(string msg)
         {
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
             return result;
         }
