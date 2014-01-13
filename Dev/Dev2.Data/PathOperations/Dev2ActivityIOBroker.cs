@@ -11,7 +11,9 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Extension;
 using Ionic.Zip;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// PBI : 1172
@@ -35,20 +37,18 @@ namespace Dev2.PathOperations
                     bytes = new byte[s.Length];
                     s.Position = 0;
                     s.Read(bytes, 0, (int)s.Length);
-                    s.Close();
-                    s.Dispose();
                 }
 
                 return Encoding.UTF8.GetString(bytes);
             }
 
-            // Travis.Frisinger - 01.02.2013 : Bug 8579
+                // Travis.Frisinger - 01.02.2013 : Bug 8579
             // If we want to defer the read of data, just return the file name ;)
 
-            // Serialize to binary and return 
-            BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
-            return bdlUtil.SerializeDeferredItem(path);
-        }
+                // Serialize to binary and return 
+                BinaryDataListUtil bdlUtil = new BinaryDataListUtil();
+                return bdlUtil.SerializeDeferredItem(path);
+            }
 
         public Stream GetRaw(IActivityIOOperationsEndPoint path)
         {
@@ -57,9 +57,7 @@ namespace Dev2.PathOperations
 
         public string PutRaw(IActivityIOOperationsEndPoint dst, Dev2PutRawOperationTO args)
         {
-
-            Stream s;
-            string result = resultOk;
+            string result = resultOk; 
 
             // directory put?
             // wild char put?
@@ -70,12 +68,10 @@ namespace Dev2.PathOperations
                 switch(args.WriteType)
                 {
                     case WriteType.AppendBottom:
-                        using(s = dst.Get(dst.IOPath))
+                        using(Stream s = dst.Get(dst.IOPath))
                         {
                             File.WriteAllBytes(tmp, s.ToByteArray());
                             File.AppendAllText(tmp, args.FileContents);
-                            s.Close();
-                            s.Dispose();
                         }
                         break;
                     case WriteType.AppendTop:
@@ -101,16 +97,18 @@ namespace Dev2.PathOperations
                 if(File.Exists(dst.IOPath.Path))
                 {
 
-                    string tmp = CreateTmpFile();
+                    string tmp = CreateTmpFile();                    
                     switch(args.WriteType)
                     {
                         case WriteType.AppendBottom:
-                            File.WriteAllText(tmp, File.ReadAllText(dst.IOPath.Path));
-                            File.AppendAllText(tmp, args.FileContents);
+                            File.AppendAllText(dst.IOPath.Path, args.FileContents);
+                            result = resultOk;
                             break;
                         case WriteType.AppendTop:
                             File.WriteAllText(tmp, args.FileContents);
                             AppendToTemp(dst.Get(dst.IOPath), tmp);
+                            result = MoveTmpFileToDestination(dst, tmp, result);
+                            RemoveTmpFile(tmp);
                             break;
                         default:
                             if(IsBase64(args.FileContents))
@@ -122,11 +120,10 @@ namespace Dev2.PathOperations
                             {
                                 File.WriteAllText(tmp, args.FileContents);
                             }
-                            break;
-                    }
                     result = MoveTmpFileToDestination(dst, tmp, result);
-
                     RemoveTmpFile(tmp);
+                            break;
+                }
                 }
                 else
                 {
@@ -145,7 +142,7 @@ namespace Dev2.PathOperations
                         File.WriteAllText(dst.IOPath.Path, args.FileContents);
                     }
                 }
-            }
+            }                       
 
             return result;
         }
@@ -157,7 +154,7 @@ namespace Dev2.PathOperations
             {
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
 
-                //MO : 22-05-2012 : If the file doesnt exisit then create the file
+                //MO : 22-05-2012 : If the file doesnt exist then create the file
                 if(!dst.PathExist(dst.IOPath))
                 {
                     CreateEndPoint(dst, newArgs, true);
@@ -166,8 +163,6 @@ namespace Dev2.PathOperations
                 {
                     result = resultBad;
                 }
-                s.Close();
-                s.Dispose();
             }
             return result;
         }
@@ -217,7 +212,7 @@ namespace Dev2.PathOperations
 
         public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
-            ValidateEndPoint(dst, args, createToFile);
+            ValidateEndPoint(dst, args);
             return CreateEndPoint(dst, args, createToFile);
         }
 
@@ -285,7 +280,7 @@ namespace Dev2.PathOperations
         {
             return ValidateUnzipSourceDestinationFileOperation(src, dst, args, () =>
                 {
-                    ZipFile zip = null;
+                    ZipFile zip;
                     string tempFile = "";
 
                     if(src.RequiresLocalTmpStorage())
@@ -417,7 +412,7 @@ namespace Dev2.PathOperations
             {
                 result = resultBad;
             }
-            else if(dst.PathIs(dst.IOPath) == enPathType.File && createToFile && ok)
+            else if(dst.PathIs(dst.IOPath) == enPathType.File && createToFile)
             {
                 if(!CreateFile(dst, args))
                 {
@@ -543,7 +538,7 @@ namespace Dev2.PathOperations
                                                Dev2CRUDOperationTO args)
         {
             ValidateSourceAndDestinationContents(src, dst, args);
-
+           
             if(args.DoRecursiveCopy)
             {
                 try
@@ -1208,7 +1203,7 @@ namespace Dev2.PathOperations
             {
                 if(!Path.IsPathRooted(dst.IOPath.Path) && IsNotFTPTypePath(dst.IOPath) && IsUncFileTypePath(dst.IOPath))
                 {
-
+                   
                     string lastPart = sourceParts.Last();
 
                     dst.IOPath.Path =
@@ -1233,7 +1228,7 @@ namespace Dev2.PathOperations
             }
         }
 
-        private void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, Dev2CRUDOperationTO args, bool createFile)
+        private void ValidateEndPoint(IActivityIOOperationsEndPoint endPoint, Dev2CRUDOperationTO args)
         {
             if(endPoint.IOPath.Path.Trim().Length == 0)
             {

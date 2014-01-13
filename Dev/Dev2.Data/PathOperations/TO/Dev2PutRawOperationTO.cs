@@ -1,11 +1,13 @@
-﻿namespace Dev2.PathOperations {
+﻿namespace Dev2.PathOperations
+{
     /// <summary>
     /// PBI : 1172
     /// Status : New
     /// Purpose : To provide a TO for RawPut operations
     /// </summary>
-    public class Dev2PutRawOperationTO {
-        
+    public class Dev2PutRawOperationTO
+    {
+
         public Dev2PutRawOperationTO(WriteType writeType, string contents)
         {
             WriteType = writeType;
@@ -13,12 +15,13 @@
         }
 
         public WriteType WriteType { get; set; }
-     
-        public string FileContents {
+
+        public string FileContents
+        {
             get;
             set;
         }
 
-       
+
     }
 }
