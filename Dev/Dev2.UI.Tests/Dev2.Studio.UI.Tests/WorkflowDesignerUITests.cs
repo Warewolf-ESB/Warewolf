@@ -321,7 +321,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         public void OpeningDependancyWindowTwiceKeepsItOpen()
         {
-            // The workflow so we have a second tab
+            // The workflow so we have a second tab 
             ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
 
             // Open the Dependancy Window twice
