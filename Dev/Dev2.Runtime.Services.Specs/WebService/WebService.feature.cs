@@ -94,17 +94,19 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute webservice which returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Webservice_ExecutingJsonWithPrimitiveArrays_10641")]
         public virtual void ExecuteWebserviceWhichReturnsAPrimitiveArray()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute webservice which returns a primitive array", new string[] {
+                        "ignore",
                         "Webservice_ExecutingJsonWithPrimitiveArrays_10641"});
-#line 14
-this.ScenarioSetup(scenarioInfo);
 #line 15
+this.ScenarioSetup(scenarioInfo);
+#line 16
  testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
                     "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 16
+#line 17
  testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -127,7 +129,7 @@ this.ScenarioSetup(scenarioInfo);
                         "-3.7056689197085",
                         "40.4459880197085",
                         "-3.7083668802915"});
-#line 17
+#line 18
  testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();

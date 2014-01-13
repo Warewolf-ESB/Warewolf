@@ -10,6 +10,7 @@ Scenario: A webservice that returns a primitive array
 	When the mapping is generated
 	Then the mapping should contain the primitive array
 
+@ignore
 @Webservice_ExecutingJsonWithPrimitiveArrays_10641
 Scenario: Execute webservice which returns a primitive array
 	Given I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sensor=true&amp;address=address
