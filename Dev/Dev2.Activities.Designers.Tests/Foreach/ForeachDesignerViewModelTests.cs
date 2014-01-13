@@ -1,14 +1,15 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Dev2.Data.Enums;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Foreach
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ForeachDesignerViewModelTests
     {
         [TestMethod]

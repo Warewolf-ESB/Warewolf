@@ -9,7 +9,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 {
     // OnSearchTypeChanged moved from FindRecordsTO tests
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaTests
     {
         [TestMethod]
@@ -190,7 +191,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.ModelItemCollection);
-            Assert.AreEqual("ResultsCollection", viewModel.CollectionName);            
+            Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
         }
 

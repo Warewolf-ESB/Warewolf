@@ -10,7 +10,8 @@ using Moq.Protected;
 
 namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class GetWebRequestViewModelTests
     {
         [TestMethod]
@@ -25,14 +26,14 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
             url.SetupProperty(p => p.ComputedValue, null);
             properties.Add("Url", url);
             propertyCollection.Protected().Setup<ModelProperty>("Find", "Url", true).Returns(url.Object);
-            
+
             var modelItemMock = new Mock<ModelItem>();
             modelItemMock.Setup(s => s.Properties).Returns(propertyCollection.Object);
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
             Assert.IsNotNull(sut.PreviewViewModel);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("GetWebRequestDesignerViewModel_UrlSet")]
@@ -197,7 +198,7 @@ namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 
             var sut = new GetWebRequestDesignerViewModel(modelItemMock.Object);
 
-            sut.WebInvoke = (m, u,h ) => { return "Was Called"; };
+            sut.WebInvoke = (m, u, h) => { return "Was Called"; };
 
             sut.PreviewViewModel.PreviewCommand.Execute(null);
 

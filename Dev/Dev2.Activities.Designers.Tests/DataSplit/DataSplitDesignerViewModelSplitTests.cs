@@ -1,5 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.DataSplit;
@@ -9,7 +8,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DataSplit
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataSplitDesignerViewModelSplitTests
     {
         [TestMethod]
@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual(6, viewModel.ItemsList.Count);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DataSplitDesignerViewModel_Constructor")]
