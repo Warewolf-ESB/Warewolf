@@ -6,7 +6,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Activities
 {
     [TestClass]
-    [Ignore]
     public class Dev2ActivityIOBrokerTestCases
     {
         private static string _zipFile = "";
