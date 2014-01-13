@@ -35,8 +35,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(CurrDl
                          , CurrDl
                          , "Sunday, July 23 78 15:30"
-                         , "dW', 'MM' 'DD' 'yy' '24h':'min"
-                         , "yyyy/mm/DD 12h:min am/pm"
+                         , "dW', 'MM' 'dd' 'yy' '24h':'min"
+                         , "yyyy/mm/dd 12h:min am/pm"
                          , ""
                          , 0
                          , "[[MyTestResult]]");
@@ -62,8 +62,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2012/11/27 04:12:41 PM"
-                         , "yyyy/mm/DD 12h:min:ss am/pm"
-                         , "yyyy/mm/DD 12h:min:ss am/pm"
+                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/mm/dd 12h:min:ss am/pm"
                          , "Hours"
                          , 10
                          , "[[MyTestResult]]");
@@ -119,8 +119,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DateTimeDifferenceDataListShape
                          , ActivityStrings.DateTimeDifferenceDataListWithData
                          , "[[recset1(*).f1]]"
-                         , "DD/mm/yyyy"
-                         , "DD/mm/yyyy"
+                         , "dd/mm/yyyy"
+                         , "dd/mm/yyyy"
                          , "Years"
                          , 2
                          , "[[resCol(*).res]]");
@@ -148,8 +148,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2013/02/07 08:38:56.953 PM"
-                         , "yyyy/mm/DD 12h:min:ss.sp am/pm"
-                         , "yyyy/mm/DD 12h:min:ss.sp am/pm"
+                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
+                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
                          , "Split Secs"
                          , 327
                          , "[[MyTestResult]]");
@@ -174,8 +174,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/DD 12h:min:ss.sp am/pm Era "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/DD 12h:min:ss.sp am/pm Era "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
                          , "Years"
                          , 327
                          , "[[MyTestResult]]");
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DateTime_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
             //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/DD", OutputFormat = "yyyy/mm/DD", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
+            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -294,7 +294,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DateTime_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/DD", OutputFormat = "yyyy/mm/DD", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
+            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;

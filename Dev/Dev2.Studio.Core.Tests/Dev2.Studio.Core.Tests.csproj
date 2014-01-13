@@ -178,7 +178,6 @@
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
-    <Compile Include="Custom Dev2 Controls\Dev2FilterBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="Custom Dev2 Controls\NavigationViewTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
@@ -208,7 +207,6 @@
     <Compile Include="Diagnostics\FileHelperTests.cs" />
     <Compile Include="Diagnostics\MockExceptionHandler.cs" />
     <Compile Include="DragDropHelpersTests.cs" />
-    <Compile Include="DsfActivityDropUtilsTests.cs" />
     <Compile Include="Enums\enTestObjectBehaviourChangeType.cs" />
     <Compile Include="Environments\EnviromentRepositoryTest.cs">
       <SubType>Code</SubType>
