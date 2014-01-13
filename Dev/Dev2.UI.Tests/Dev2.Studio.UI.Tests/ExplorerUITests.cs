@@ -37,12 +37,11 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
-
             const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
             const string oldResourceName = "OldResourceName";
             ExplorerUIMap.ClearExplorerSearchText();
             ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
-            Playback.Wait(7000);
+            Playback.Wait(4000);
             ExplorerUIMap.RightClickRenameProject("localhost", "WORKFLOWS", "Unassigned", oldResourceName);
             Playback.Wait(2000);
             SendKeys.SendWait("New-Test-Resource-With-Dashes{ENTER}");
@@ -50,7 +49,15 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText(newTestResourceWithDashes);
             Playback.Wait(3000);
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
-            
+            Playback.Wait(2000);
+            //Rename the resource back to the original name
+            ExplorerUIMap.RightClickRenameProject("localhost", "WORKFLOWS", "Unassigned", newTestResourceWithDashes);
+            Playback.Wait(2000);
+            SendKeys.SendWait("OldResourceName{ENTER}");
+            ExplorerUIMap.ClearExplorerSearchText();
+            ExplorerUIMap.EnterExplorerSearchText(oldResourceName);
+            Playback.Wait(3000);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "Unassigned", oldResourceName);
         }
     }
 }

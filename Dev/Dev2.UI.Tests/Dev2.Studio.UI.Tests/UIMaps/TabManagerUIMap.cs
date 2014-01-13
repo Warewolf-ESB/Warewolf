@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
     public partial class TabManagerUIMap : UIMapBase
@@ -24,9 +25,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             UITestControl tab = _tabManager.Tabs[_tabManager.SelectedIndex];
             UITestControlCollection tabChildren = tab.GetChildren();
             string selectedTabName = string.Empty;
-            foreach (var tabChild in tabChildren)
+            foreach(var tabChild in tabChildren)
             {
-                if (tabChild.ClassName == "Uia.TextBlock")
+                if(tabChild.ClassName == "Uia.TextBlock")
                 {
                     selectedTabName = tabChild.FriendlyName;
                     break;
@@ -70,7 +71,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public int GetTabCount()
         {
             var tabManager = GetManager();
-            if (tabManager != null)
+            if(tabManager != null)
             {
                 var tabs = tabManager.GetChildren();
                 return tabs.Count;
@@ -83,7 +84,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             // Trav Changes ;)
             var closeBtn = theTab.GetChildren().FirstOrDefault(child => child.GetProperty("AutomationID").ToString() == "closeBtn");
 
-            if (closeBtn != null)
+            if(closeBtn != null)
             {
                 Thread.Sleep(50);
                 //Playback.Wait(50);
@@ -97,24 +98,24 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public bool CloseTab(string tabName)
         {
-            const int totalTimeOut = 10;
+            const int TotalTimeOut = 10;
             UITestControl control = FindTabByName(tabName);
             UITestControl close = null;
-            foreach (var child in control.GetChildren())
+            foreach(var child in control.GetChildren())
             {
-                if (child.GetProperty("AutomationID").ToString() == "closeBtn")
+                if(child.GetProperty("AutomationID").ToString() == "closeBtn")
                 {
                     close = child;
                     break;
                 }
             }
-            var point = new Point();
+            Point point;
             var timeout = 0;
-            while(close != null && (!close.TryGetClickablePoint(out point) && timeout < totalTimeOut))
+            while(close != null && (!close.TryGetClickablePoint(out point) && timeout < TotalTimeOut))
             {
                 timeout++;
             }
-            if(close != null && timeout < totalTimeOut)
+            if(close != null && timeout < TotalTimeOut)
             {
                 Mouse.Click(close);
                 return true;
@@ -142,16 +143,17 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 // fetch the darn thing once ;)
                 var tabManager = GetManager();
 
-                if (tabManager != null)
+                if(tabManager != null)
                 {
                     var tabs = tabManager.GetChildren();
 
-                    foreach (var tab in tabs)
+                    foreach(var tab in tabs)
                     {
                         CloseTab_Click_No(tab);
                     }
                 }
             }
+            // ReSharper disable once EmptyGeneralCatchClause
             catch
             {
                 // just do it ;)
@@ -173,15 +175,15 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             bool willHaveDialog = WillTabHaveSaveDialog(theTab);
 
-            if (CloseTab(theTab))
+            if(CloseTab(theTab))
             {
                 // Only if we expect a save dialog should we search for it ;)
-                if (willHaveDialog)
+                if(willHaveDialog)
                 {
                     try
                     {
                         UITestControlCollection saveDialogButtons = GetWorkflowNotSavedButtons();
-                        if (saveDialogButtons.Count > 0)
+                        if(saveDialogButtons.Count > 0)
                         {
                             UITestControl theBtn = saveDialogButtons[1];
                             Point p = new Point(theBtn.Left + 25, theBtn.Top + 15);
@@ -191,7 +193,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                             return true;
                         }
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         return true;
                         //This is empty because if the pop cant be found then the tab must just close;)
@@ -213,9 +215,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         public bool WillTabHaveSaveDialog(UITestControl theTab)
         {
             Playback.Wait(200);
-            var tabNameControl = theTab.GetChildren().FirstOrDefault(c=>c.ClassName == "Uia.TextBlock");
+            var tabNameControl = theTab.GetChildren().FirstOrDefault(c => c.ClassName == "Uia.TextBlock");
 
-            if (tabNameControl != null && tabNameControl.FriendlyName.EndsWith("*"))
+            if(tabNameControl != null && tabNameControl.FriendlyName.EndsWith("*"))
             {
                 return true;
             }
@@ -241,7 +243,12 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             var tabMgr = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
             var idx = tabMgr.SelectedIndex;
 
-            if (idx >= tabMgr.Tabs.Count)
+            if(idx == -1)
+            {
+                throw new Exception("The selected tab index was -1");
+            }
+
+            if(idx >= tabMgr.Tabs.Count)
             {
                 Playback.Wait(10000);
             }

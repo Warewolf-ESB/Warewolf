@@ -1,11 +1,11 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Web;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
-using System;
-using System.Web;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs
@@ -242,10 +242,6 @@ namespace Dev2.Studio.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null, bool addToTabManager = true)
         {
-            if(resourceID == null)
-            {
-                throw new ArgumentNullException("resourceID");
-            }
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EnvironmentRepository.Instance, resourceModel), "WorkflowService");
         }
 

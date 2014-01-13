@@ -58,41 +58,14 @@ namespace Dev2.Studio.UI.Tests
 
             #region Scroll All Items Into View
 
-            var cnt = allTools.Count;
-            var scrolledTop = false;
-            var scolledBottom = false;
+            var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
+            //Look low
+            Mouse.StartDragging(scrollBar);
+            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
 
-            for (int i = 0; i < cnt; i++)
-            {
-                var child = allTools[i];
-                //Some of the tools on the design surface are out of view, look for them...
-                if(child.BoundingRectangle.Y > 800)
-                {
-                    //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                    WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top < 200 && !scrolledTop)
-                    {
-                        //Look low
-                        Mouse.StartDragging(scrollBar);
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollDown(theTab));
-                        scrolledTop = true;
-                    }
-                }
-                else
-                {
-                    //might already be scrolled
-                    var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetScrollBar(theTab);
-                    WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top > 200 && !scolledBottom)
-                    {
-                        //Look high
-                        Mouse.StartDragging(scrollBar);
-                        Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
-                        scolledBottom = true;
-                    }
-                }
-            }
+            //Look high
+            Mouse.StartDragging(scrollBar);
+            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollUp(theTab));
 
             #endregion
 
@@ -103,7 +76,7 @@ namespace Dev2.Studio.UI.Tests
 
             foreach(var child in toolCollection)
             {
-                if (child.ControlType == "Custom" &&
+                if(child.ControlType == "Custom" &&
                     child.ClassName != "Uia.ConnectorWithoutStartDot" &&
                     child.ClassName != "Uia.StartSymbol" &&
                     child.ClassName != "Uia.UserControl" &&
@@ -156,7 +129,7 @@ namespace Dev2.Studio.UI.Tests
                                                 .Where(t => toolsWithLargeView.Contains(t.FriendlyName))
                                                 .ToList();
 
-            foreach (var child in toolsWithLargeViews)
+            foreach(var child in toolsWithLargeViews)
             {
                 //Some of the tools on the design surface are out of view, look for them...
                 WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
@@ -165,7 +138,7 @@ namespace Dev2.Studio.UI.Tests
                 Playback.Wait(2500);
 
                 var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
-                if (toggleButton == null)
+                if(toggleButton == null)
                 {
                     Assert.Fail("Could not find open large view button [ " + child.ClassName + " ]");
                 }
@@ -173,8 +146,8 @@ namespace Dev2.Studio.UI.Tests
                 Mouse.Click(toggleButton);
                 Playback.Wait(2500);
 
-                toggleButton =  WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
-                if (toggleButton == null)
+                toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
+                if(toggleButton == null)
                 {
                     Assert.Fail("Could not find close large view button for [ " + child.ClassName + " ]");
                 }
@@ -213,10 +186,10 @@ namespace Dev2.Studio.UI.Tests
                                                 .Where(t => gridedToolsWithComboboxes.Contains(t.FriendlyName))
                                                 .ToList();
 
-            foreach (var tool in toolsWithLargeViews)
+            foreach(var tool in toolsWithLargeViews)
             {
                 //Some of the tools on the design surface are out of view, look for them...
-                if (tool.BoundingRectangle.Y > 800)
+                if(tool.BoundingRectangle.Y > 800)
                 {
                     //might already be scrolled
                     var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
