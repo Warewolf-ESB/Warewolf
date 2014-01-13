@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             //------------Execute Test---------------------------
             string actual = TestHelper.PostDataToWebserver(webserverURI).Unescape();
             //------------Assert Results-------------------------
-            var expected = string.Format("Added WorkflowService 'BlankWorkflow'");
+            var expected = string.Format("Updated WorkflowService 'BlankWorkflow'");
             StringAssert.Contains(actual,expected);
             webserverURI = ServerSettings.WebserverURI + @"FindResourceService?ResourceName=BlankWorkflow&ResourceType=WorkflowService";
             string fromServer = TestHelper.PostDataToWebserver(webserverURI);            

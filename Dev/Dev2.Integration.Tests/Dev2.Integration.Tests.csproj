@@ -381,9 +381,9 @@
     </None>
     <None Include="packages.config" />
     <None Include="Resources\DeleteWorkflowTest.xml" />
-    <None Include="TestData\Test.zip">
+    <EmbeddedResource Include="TestData\Test.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ConsoleAppToTestExecuteCommandLineActivity\ConsoleAppToTestExecuteCommandLineActivity.csproj">

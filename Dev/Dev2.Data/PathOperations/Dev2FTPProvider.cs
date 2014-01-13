@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -288,8 +289,9 @@ namespace Dev2.Data.PathOperations {
                             result = payload.Length;
                             sftp.Close();
                         }
-                        catch(Exception)
+                        catch(Exception ex)
                         {
+                            Debug.Write(ex);
                             sftp.Close();
                             throw new Exception("File was not created");
                         }

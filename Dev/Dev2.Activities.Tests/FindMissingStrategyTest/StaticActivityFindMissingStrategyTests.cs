@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
@@ -12,17 +12,11 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for StaticActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class StaticActivityFindMissingStrategyTests
     {
-        public StaticActivityFindMissingStrategyTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        private TestContext _testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -32,11 +26,11 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         {
             get
             {
-                return testContextInstance;
+                return _testContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                _testContextInstance = value;
             }
         }
 
@@ -377,7 +371,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         #endregion
-        
+
         #region PathDelete Activity Tests
 
         [TestMethod]

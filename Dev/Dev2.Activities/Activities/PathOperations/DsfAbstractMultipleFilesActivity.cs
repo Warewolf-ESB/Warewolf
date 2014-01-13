@@ -24,9 +24,12 @@ namespace Dev2.Activities.PathOperations
         {
             InputPath = string.Empty;
             OutputPath = string.Empty;
+            Overwrite = false;
             DestinationPassword = string.Empty;
             DestinationUsername = string.Empty;
         }
+
+        protected IDev2IteratorCollection ColItr;
 
         protected override IList<OutputTO> ExecuteConcreteAction(NativeActivityContext context,
                                                                  out ErrorResultTO allErrors)
@@ -38,44 +41,49 @@ namespace Dev2.Activities.PathOperations
             allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
-            IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+            ColItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
             //get all the possible paths for all the string variables
             IBinaryDataListEntry inputPathEntry = compiler.Evaluate(executionId, enActionType.User, InputPath, false,
                                                                     out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator inputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputPathEntry);
-            colItr.AddIterator(inputItr);
+            ColItr.AddIterator(inputItr);
 
             IBinaryDataListEntry outputPathEntry = compiler.Evaluate(executionId, enActionType.User, OutputPath, false,
                                                                      out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator outputItr = Dev2ValueObjectFactory.CreateEvaluateIterator(outputPathEntry);
-            colItr.AddIterator(outputItr);
+            ColItr.AddIterator(outputItr);
 
             IBinaryDataListEntry usernameEntry = compiler.Evaluate(executionId, enActionType.User, Username, false,
                                                                    out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator unameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(usernameEntry);
-            colItr.AddIterator(unameItr);
+            ColItr.AddIterator(unameItr);
 
             IBinaryDataListEntry passwordEntry = compiler.Evaluate(executionId, enActionType.User, Password, false,
                                                                    out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
-            colItr.AddIterator(passItr);
+            ColItr.AddIterator(passItr);
 
-            IBinaryDataListEntry DestinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
+            IBinaryDataListEntry destinationUsernameEntry = compiler.Evaluate(executionId, enActionType.User, DestinationUsername, false,
                                                                   out errors);
             allErrors.MergeErrors(errors);
-            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(DestinationUsernameEntry);
-            colItr.AddIterator(desunameItr);
+            IDev2DataListEvaluateIterator desunameItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationUsernameEntry);
+            ColItr.AddIterator(desunameItr);
 
             IBinaryDataListEntry destinationPasswordEntry = compiler.Evaluate(executionId, enActionType.User, DestinationPassword, false,
                                                                    out errors);
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator despassItr = Dev2ValueObjectFactory.CreateEvaluateIterator(destinationPasswordEntry);
-            colItr.AddIterator(despassItr);
+            ColItr.AddIterator(despassItr);
+
+            var iteratorsErrors = new List<ErrorResultTO>();
+            AddItemsToIterator(executionId, compiler, iteratorsErrors);
+            ErrorResultTO to = allErrors;
+            iteratorsErrors.ForEach(to.MergeErrors);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
@@ -84,31 +92,30 @@ namespace Dev2.Activities.PathOperations
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemDestinationUsernamePassword(executionId, DestinationUsernameEntry, DestinationPassword, DestinationUsername);
+                AddDebugInputItemDestinationUsernamePassword(executionId, destinationUsernameEntry, DestinationPassword, DestinationUsername);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItems(executionId);
             }
 
-            while (colItr.HasMoreData())
+            while (ColItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = GetOperationBroker();
 
-                Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
-
                 try
                 {
-                    IActivityIOPath src = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
-                                                                                 colItr.FetchNextRow(unameItr).TheValue,
-                                                                                 colItr.FetchNextRow(passItr).TheValue,
+                    IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(inputItr).TheValue,
+                                                                                 ColItr.FetchNextRow(unameItr).TheValue,
+                                                                                 ColItr.FetchNextRow(passItr).TheValue,
                                                                                  true);
 
-                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(outputItr).TheValue,
-                                                                                     colItr.FetchNextRow(desunameItr).TheValue,
-                                                                                     colItr.FetchNextRow(despassItr).TheValue,
+                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(outputItr).TheValue,
+                                                                                     ColItr.FetchNextRow(desunameItr).TheValue,
+                                                                                     ColItr.FetchNextRow(despassItr).TheValue,
                                                                                      true);
 
                     IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint, opTO);
+                    var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch (Exception e)
@@ -122,7 +129,15 @@ namespace Dev2.Activities.PathOperations
 
         }
 
-        protected abstract string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint, Dev2CRUDOperationTO opTO);
+        protected virtual void AddItemsToIterator(Guid executionId, IDataListCompiler compiler, List<ErrorResultTO> errors)
+        {
+        }
+
+        protected virtual void AddDebugInputItems(Guid executionId)
+        {
+        }
+
+        protected abstract string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint);
 
         public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
 

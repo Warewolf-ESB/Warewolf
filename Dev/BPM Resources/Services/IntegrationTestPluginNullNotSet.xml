@@ -1,1 +1,60 @@
-<Service Name="IntegrationTestPluginNullNotSet" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" ResourceType="PluginService"><Actions><Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceName="testingPluginSrc" SourceMethod="SampleSend"><Inputs><Input Name="host" Source="host" DefaultValue="smtp.domain.local" EmptyToNull="false" NativeType="String"></Input><Input Name="port" Source="port" DefaultValue="25" EmptyToNull="false" NativeType="Int"></Input><Input Name="from" Source="from" EmptyToNull="false" NativeType="String"></Input><Input Name="to" Source="to" EmptyToNull="false" NativeType="String"></Input><Input Name="subject" Source="subject" EmptyToNull="false" NativeType="String"></Input><Input Name="body" Source="body" EmptyToNull="false" NativeType="String"></Input></Inputs><Outputs><Output Name="result" MapsTo="result" Value="[[result]]" /></Outputs><OutputDescription><![CDATA[<Dev2XMLResult>  <InterrogationResult>    <z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">      <d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">        <d2p1:anyType i:type="d1p1:DataSourceShape">          <d1p1:Paths>            <d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath">              <ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</ActualPath>              <DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</DisplayPath>              <OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" >[[result]]</OutputExpression>              <SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Email sent to a from a</SampleData>            </d2p1:anyType>          </d1p1:Paths>        </d2p1:anyType>      </d1p1:DataSourceShapes>      <d1p1:Format>ShapedXML</d1p1:Format>    </z:anyType>  </InterrogationResult>  <JSON /></Dev2XMLResult>]]></OutputDescription></Action></Actions><AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles><Comment></Comment><Category>ML-Testing</Category><Tags></Tags><HelpLink></HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><BizRule /><WorkflowActivityDef /><Source /><XamlDefinition /><DisplayName>Service</DisplayName><DataList /><TypeOf>Plugin</TypeOf><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>GkOP0NPPu/YxflieY6P6In1pNxQ=</DigestValue></Reference></SignedInfo><SignatureValue>RcbmZ0ywCppmqeQeUQivjPFEmQL4lY0ij7pil912+6HMw5QRr4+ZPQsFRaFXcM+UYbLDKX7uecetw41Vl5Deo1O53yRdQ3WM+iIhftmGnnHhKXFwnOI/hDArBtTJKxxLxjLam/qEyJ8l8QpsyHrepzdZcNNLQoSGKJe1z50mG1c=</SignatureValue></Signature></Service>
+
+<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bb045c79-5da3-430f-ab8a-7fdc0080f5b3" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
+      <Inputs>
+        <Input Name="host" Source="host" EmptyToNull="false" DefaultValue="" NativeType="System.String">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="port" Source="port" EmptyToNull="false" DefaultValue="" NativeType="System.Int32">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="from" Source="from" EmptyToNull="false" DefaultValue="" NativeType="System.String">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="to" Source="to" EmptyToNull="false" DefaultValue="" NativeType="System.String">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="subject" Source="subject" EmptyToNull="false" DefaultValue="" NativeType="System.String">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="body" Source="body" EmptyToNull="false" DefaultValue="" NativeType="System.String">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="result" Name="result" MapsTo="result" Value="[[result]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">result</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[result]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Email sent to a from a</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Plugin</TypeOf>
+  <DisplayName>IntegrationTestPluginNullNotSet</DisplayName>
+  <Category>ML-Testing</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>KbDF2/0f5XWoLTb9oQsVyZiOLrM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>LzLSTL7GPUI47llYpvS9ToICXVroi2qqmofNSL/D83PDjSxdgxS5MEz2u8ZnrwyGZFN1/ZJ9IGiwZFlv4CPFUUqB50nLw/hXgwTYjjqgMj8uqrOKLndJSDqqNq3uCNP9b4pjNVqdO9se53S3ayFNNp0HxPuBIVqvviytjuqBl/8=</SignatureValue>
+  </Signature>
+</Service>

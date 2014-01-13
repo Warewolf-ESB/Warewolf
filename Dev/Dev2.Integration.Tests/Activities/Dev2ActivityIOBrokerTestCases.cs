@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,7 +14,20 @@ namespace Dev2.Integration.Tests.Activities
         [ClassInitialize]
         public static void Initializer(TestContext context)
         {
-            _zipFile = Path.Combine(context.TestDeploymentDir, "Test.zip");
+            const string ResourceName = "Dev2.Integration.Tests.TestData.Test.zip";
+            string FileName = Path.GetTempPath() + "\\9999.zip";
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(ResourceName))
+            {
+                if(stream != null)
+                {
+                    byte[] buf = new byte[stream.Length];  
+                    stream.Read(buf, 0, buf.Length);
+                    File.WriteAllBytes(FileName, buf);
+                }
+            }
+
+            _zipFile = FileName;
         }
 
         #region Delete Tests

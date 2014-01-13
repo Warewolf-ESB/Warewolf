@@ -43,6 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
+            IList<OutputTO> outputs;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -58,12 +59,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(context, out errors);
+                    outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
 
                     if(outputs.Count > 0)
                     {
-                        int iterationCount = 0;
                         foreach(OutputTO output in outputs)
                         {
                             if(output.OutputStrings.Count > 0)
@@ -81,11 +81,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                             foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                             {
+
                                                 toUpsert.Add(region, value);
                                             }
                                         }
-
-                                        iterationCount++;
                                     }
 
                                 }
@@ -222,7 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
@@ -232,7 +231,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
 
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -247,12 +246,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
 
-            if(!string.IsNullOrWhiteSpace(labelText))
+            if (!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
+            }           
 
-            if(valueEntry != null)
+            if (valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
@@ -264,12 +263,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             DebugItem itemToAdd = new DebugItem();
 
-            if(!string.IsNullOrWhiteSpace(labelText))
+            if (!string.IsNullOrWhiteSpace(labelText))
             {
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
             }
 
-            if(valueEntry != null)
+            if (valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Output));
             }
