@@ -11450,8 +11450,8 @@ namespace Dev2.Integration.Tests.Activities
             }
 
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                isDirectory ? directory : fileWithPath, string.Empty, null,
-                true));
+                    isDirectory ? directory : fileWithPath, string.Empty, null,
+                    true));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
@@ -11460,11 +11460,11 @@ namespace Dev2.Integration.Tests.Activities
         {
             string ftpSite = ParserStrings.PathOperations_FTP_Auth + "PUT_DATA/";
             string fileWithPath = PathIOTestingUtils.CreateFileFTP(ftpSite, ParserStrings.PathOperations_Correct_Username,
-                                                                   ParserStrings.PathOperations_Correct_Password, false, file,
-                                                                   data, createDirectory, testFile);
+                                                            ParserStrings.PathOperations_Correct_Password, false, file,
+                                                            data, createDirectory, testFile);
             string path = (isDirectory && !string.IsNullOrEmpty(file)) ? fileWithPath.Replace(file, "") : fileWithPath;
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                path, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password));
+                    path, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
@@ -11473,11 +11473,11 @@ namespace Dev2.Integration.Tests.Activities
         {
             string ftpSite = ParserStrings.PathOperations_SFTP_Path + "/";
             string fileWithPath = PathIOTestingUtils.CreateFilesFTP(ftpSite, ParserStrings.PathOperations_SFTP_Username,
-                                                                    ParserStrings.PathOperations_SFTP_Password, true, file,
-                                                                    data, createDirectory, testFile);
+                                                            ParserStrings.PathOperations_SFTP_Password, true, file,
+                                                            data, createDirectory, testFile);
             string path = (isDirectory && !string.IsNullOrEmpty(file)) ? fileWithPath.Replace(file, "") : fileWithPath;
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password));
+                    path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
@@ -11494,7 +11494,7 @@ namespace Dev2.Integration.Tests.Activities
             }
 
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                isDirectory ? directory : fileWithPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password));
+                    isDirectory ? directory : fileWithPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
