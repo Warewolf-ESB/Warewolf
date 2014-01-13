@@ -153,7 +153,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             StudioWindow.WaitForControlReady(1000);
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
-            if (!WizardsUIMap.TryWaitForWizard(10000))
+            if(!WizardsUIMap.TryWaitForWizard(10000))
             {
                 Assert.Fail("New web service shortcut key doesnt work");
             }
@@ -229,7 +229,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             getDecision.WaitForControlEnabled();
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
-            if (getDecisionText != null)
+            if(getDecisionText != null)
             {
                 var displayValue = getDecisionText.Text;
 
@@ -282,27 +282,27 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.Wait(5000);
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
-            Playback.Wait(100);
+            Playback.Wait(1000);
             _decisionWizardUiMap.SelectMenuItem(15);
             //Assert intellisense works
-            Playback.Wait(100);
+            Playback.Wait(1000);
             _decisionWizardUiMap.SendTabs(11);
-            Playback.Wait(100);
+            Playback.Wait(1000);
 
             //First field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
             _decisionWizardUiMap.SendTabs(2);
-            Playback.Wait(100);
+            Playback.Wait(1000);
 
             //Second field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
             _decisionWizardUiMap.SendTabs(1);
-            Playback.Wait(100);
+            Playback.Wait(1000);
 
             //Third field
             _decisionWizardUiMap.GetFirstIntellisense("[[V");
             _decisionWizardUiMap.SendTabs(6);
-            Playback.Wait(100);
+            Playback.Wait(1000);
             SendKeys.SendWait("{ENTER}");
 
             // Assert Decision Title Updates Correctly
@@ -400,7 +400,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", newPoint);
             WizardsUIMap.WaitForWizard();
-            Playback.Wait(2000);
+            Playback.Wait(3000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
 
@@ -429,7 +429,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         #endregion
 
         #region Server Wizard
-          
+
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
@@ -442,8 +442,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.Wait(2500);
             SendKeys.SendWait("{ESC}");
             Playback.Wait(100);
-        } 
-        
+        }
+
         #endregion
     }
 }

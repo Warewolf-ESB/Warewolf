@@ -45,7 +45,7 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         #region Test Methods
-       
+
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -87,7 +87,7 @@ namespace Dev2.Studio.UI.Tests
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
             var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
             Mouse.Click(databaseName, new Point(5, 5));
@@ -96,11 +96,11 @@ namespace Dev2.Studio.UI.Tests
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
-            Playback.Wait(1000);
+            Playback.Wait(2000);
             Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
-            Playback.Wait(1000);
+            Playback.Wait(2000);
 
             //Open the large view
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DsfSqlBulkInsertActivity");
@@ -113,7 +113,7 @@ namespace Dev2.Studio.UI.Tests
             }
 
             Mouse.Click(toggleButton);
-            Playback.Wait(1000);
+            Playback.Wait(2000);
 
             //Enter a few mappings
 
@@ -123,7 +123,7 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("^a^xrecord().id{TAB}");
             SendKeys.SendWait("^a^xrecord().name{TAB}");
             SendKeys.SendWait("^a^xrecord().mail{TAB}");
-            Playback.Wait(1000);
+            Playback.Wait(2000);
 
             var batchSize = GetControlById("UI__BatchSize_AutoID", theTab);
             Mouse.Click(batchSize, new Point(5, 5));
@@ -140,7 +140,7 @@ namespace Dev2.Studio.UI.Tests
             var done = GetControlById("DoneButton", theTab);
             Mouse.Click(done, new Point(5, 5));
 
-            Playback.Wait(500);
+            Playback.Wait(1000);
 
             var batchErrorMessage = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Batch size must be a number");
             Mouse.Move(new Point(batchErrorMessage.GetChildren()[0].BoundingRectangle.X + 5, batchErrorMessage.GetChildren()[0].BoundingRectangle.Y + 5));

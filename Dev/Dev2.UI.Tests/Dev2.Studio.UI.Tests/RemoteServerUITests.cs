@@ -287,16 +287,16 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickFirstAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
             DatabaseServiceWizardUIMap.ClickOK();
-            Playback.Wait(200);
+            Playback.Wait(2000);
             //Change it back
             OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
             Playback.Wait(2000);
             actionName = DatabaseServiceWizardUIMap.GetActionName();
             DatabaseServiceWizardUIMap.ClickSecondAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
-            Playback.Wait(100);
+            Playback.Wait(1000);
             DatabaseServiceWizardUIMap.ClickOK();
-            Playback.Wait(200);
+            Playback.Wait(2000);
             //Assert remote db service changed its action
             Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
         }
@@ -371,29 +371,29 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
             Playback.Wait(4500);
             path = PluginSourceMap.GetAssemblyPathText();
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{BACK}");
-            Playback.Wait(100);
+            Playback.Wait(1000);
             Keyboard.SendKeys("{TAB}{ENTER}");
             SaveDialogUIMap.ClickSave();
 
