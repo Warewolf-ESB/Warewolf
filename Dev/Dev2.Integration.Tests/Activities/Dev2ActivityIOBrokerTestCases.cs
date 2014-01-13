@@ -11180,7 +11180,7 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2FTPProvider_Timeout_ShouldTimeoutTimely()
         {
             //------------Setup for test--------------------------
-            string ftpSite = "sftp://192.168.104.34";
+            const string ftpSite = "sftp://192.168.104.34";
             IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(ftpSite, ParserStrings.PathOperations_SFTP_Username,
                                                                                             ParserStrings.PathOperations_SFTP_Password);
             IActivityIOOperationsEndPoint FTPPro =
@@ -11268,7 +11268,9 @@ namespace Dev2.Integration.Tests.Activities
             {
                 source.EndPoint.Delete(source.EndPoint.IOPath);
             }
-            catch(Exception)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
             }
@@ -11280,7 +11282,9 @@ namespace Dev2.Integration.Tests.Activities
             {
                 destination.EndPoint.Delete(destination.EndPoint.IOPath);
             }
-            catch(Exception)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
             }
         }
@@ -11428,11 +11432,8 @@ namespace Dev2.Integration.Tests.Activities
 
         private dynamic CreateLocalEndPoint(string file, string data, bool createDirectory, string testFile, bool isDirectory = false)
         {
-            IActivityIOOperationsEndPoint dstEndPoint = null;
-            string fileWithPath;
-
             string directory = Path.GetTempPath() + Guid.NewGuid();
-            fileWithPath = Path.Combine(directory, file);
+            string fileWithPath = Path.Combine(directory, file);
 
             if(createDirectory)
             {
@@ -11448,55 +11449,43 @@ namespace Dev2.Integration.Tests.Activities
                 }
             }
 
-            dstEndPoint =
-                ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                    isDirectory ? directory : fileWithPath, string.Empty, null,
-                    true));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                isDirectory ? directory : fileWithPath, string.Empty, null,
+                true));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
 
         private dynamic CreateFtpEndPoint(string file, string data, bool createDirectory, string testFile, bool isDirectory = false)
         {
-            IActivityIOOperationsEndPoint dstEndPoint = null;
-            string fileWithPath = string.Empty;
-
             string ftpSite = ParserStrings.PathOperations_FTP_Auth + "PUT_DATA/";
-            fileWithPath = PathIOTestingUtils.CreateFileFTP(ftpSite, ParserStrings.PathOperations_Correct_Username,
-                                                            ParserStrings.PathOperations_Correct_Password, false, file,
-                                                            data, createDirectory, testFile);
+            string fileWithPath = PathIOTestingUtils.CreateFileFTP(ftpSite, ParserStrings.PathOperations_Correct_Username,
+                                                                   ParserStrings.PathOperations_Correct_Password, false, file,
+                                                                   data, createDirectory, testFile);
             string path = (isDirectory && !string.IsNullOrEmpty(file)) ? fileWithPath.Replace(file, "") : fileWithPath;
-            dstEndPoint =
-                ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                    path, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                path, ParserStrings.PathOperations_Correct_Username, ParserStrings.PathOperations_Correct_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
 
         private dynamic CreatesFtpEndPoint(string file, string data, bool createDirectory, string testFile, bool isDirectory = false)
         {
-            IActivityIOOperationsEndPoint dstEndPoint = null;
-            string fileWithPath = string.Empty;
-
             string ftpSite = ParserStrings.PathOperations_SFTP_Path + "/";
-            fileWithPath = PathIOTestingUtils.CreateFilesFTP(ftpSite, ParserStrings.PathOperations_SFTP_Username,
-                                                            ParserStrings.PathOperations_SFTP_Password, true, file,
-                                                            data, createDirectory, testFile);
+            string fileWithPath = PathIOTestingUtils.CreateFilesFTP(ftpSite, ParserStrings.PathOperations_SFTP_Username,
+                                                                    ParserStrings.PathOperations_SFTP_Password, true, file,
+                                                                    data, createDirectory, testFile);
             string path = (isDirectory && !string.IsNullOrEmpty(file)) ? fileWithPath.Replace(file, "") : fileWithPath;
-            dstEndPoint =
-                ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                    path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                path, ParserStrings.PathOperations_SFTP_Username, ParserStrings.PathOperations_SFTP_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
 
         private dynamic CreateUncEndPoint(string file, string data, bool createDirectory, string testFile, bool isDirectory = false)
         {
-            IActivityIOOperationsEndPoint dstEndPoint = null;
-            string fileWithPath = string.Empty;
-
             string directory = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid();
-            fileWithPath = Path.Combine(directory, file);
+            string fileWithPath = Path.Combine(directory, file);
 
             if(createDirectory)
             {
@@ -11504,9 +11493,8 @@ namespace Dev2.Integration.Tests.Activities
                 PathIOTestingUtils.CreateAuthedUNCPath(fileWithPath, data, false, testFile);
             }
 
-            dstEndPoint =
-                ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
-                    isDirectory ? directory : fileWithPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password));
+            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(
+                isDirectory ? directory : fileWithPath, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password));
 
             return new { EndPoint = dstEndPoint, FilePath = fileWithPath };
         }
