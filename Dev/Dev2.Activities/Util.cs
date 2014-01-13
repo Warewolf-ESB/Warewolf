@@ -10,13 +10,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public static bool ValueIsNumber(string value)
         {
-            double val = 0;
+            double val;
             return double.TryParse(value, out val);
         }
 
         public static bool ValueIsDate(string value)
         {
-            DateTime date = DateTime.MinValue;
+            DateTime date;
             return DateTime.TryParse(value, out date);
         }
 
@@ -49,11 +49,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(ValueIsNumber(comparisonValue.ToString()))
                 {
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
                     return double.Parse(value) == double.Parse(comparisonValue.ToString());
+                    // ReSharper restore CompareOfFloatsByEqualityOperator
                 }
             }
 
-
+            
             return string.Equals(value, comparisonValue.ToString(), StringComparison.CurrentCultureIgnoreCase);
         }
 
@@ -81,7 +83,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(ValueIsNumber(comparisonValue.ToString()))
                 {
+                    // ReSharper disable CompareOfFloatsByEqualityOperator
                     return double.Parse(value) != double.Parse(comparisonValue.ToString());
+                    // ReSharper restore CompareOfFloatsByEqualityOperator
                 }
             }
 
@@ -244,7 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         return DateTime.Parse(value) >= DateTime.Parse(comparisonValueStart.ToString())
                             && DateTime.Parse(value) <= DateTime.Parse(comparisonValueEnd.ToString());
                     }
-
+                    
                 }
             }
 
