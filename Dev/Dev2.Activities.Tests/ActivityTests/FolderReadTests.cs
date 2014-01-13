@@ -8,15 +8,17 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+// ReSharper disable once InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class FolderReadTests : BaseActivityUnitTest{
-   
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class FolderReadTests : BaseActivityUnitTest
+    {
+
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -27,6 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Get Input/Output Tests
 
         [TestMethod]
+
         public void FolderReadActivity_GetInputs_Expected_Four_Input()
         {
             DsfFolderRead testAct = new DsfFolderRead();
@@ -38,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(7,res);
+            Assert.AreEqual(7, res);
         }
 
         [TestMethod]
@@ -53,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,res);
+            Assert.AreEqual(1, res);
         }
 
         #endregion Get Input/Output Tests
@@ -70,17 +73,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         // ReSharper restore InconsistentNaming
         {
             List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2\\Dev2.txt"));           
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2\\Dev2.txt"));
 
             List<string> directoryNames = new List<string>();
-            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2"));            
+            directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "Dev2"));
 
-            foreach (string directoryName in directoryNames)
+            foreach(string directoryName in directoryNames)
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -132,11 +135,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Directory.CreateDirectory(directoryName);
             }
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
-            
+
 
             string dataListWithData;
             string dataListShape;
@@ -162,11 +165,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);   
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         //2013.06.28: Ashley Lewis for bug 9708 - debug output for readfolder into a blank indexed recordset
-        [TestMethod][Ignore]
+        [TestMethod]
         public void FolderReadWithBlankIndexedRecordsetExpectedFolderRead()
         {
             var tempPath = TestContext.TestRunDirectory;
@@ -193,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var getNextRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(outRes[0].ResultsList[6].Value);
             Assert.IsTrue(int.Parse(getRecsetIndex) < int.Parse(getNextRecsetIndex), "Recset indices don't increase as read folder reads into a recordset with a blank index");
             Assert.AreEqual("[[Recset(*).field]]", outRes[0].ResultsList[3].GroupName);
-        } 
+        }
 
         [TestMethod]
         public void FolderReadWithFileNameExpectedFolderReadWithNoResult()
@@ -218,8 +221,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(1,outRes.Count);
-        } 
+            Assert.AreEqual(1, outRes.Count);
+        }
 
         #endregion
 

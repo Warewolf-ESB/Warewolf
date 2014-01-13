@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
@@ -6,16 +8,15 @@ using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -30,18 +31,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
         {
-            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(currDL
-                         , currDL
+            const string CurrDl = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(CurrDl
+                         , CurrDl
                          , "Sunday, July 23 78 15:30"
-                         , "dW', 'MM' 'dd' 'yy' '24h':'min"
-                         , "yyyy/mm/dd 12h:min am/pm"
+                         , "dW', 'MM' 'DD' 'yy' '24h':'min"
+                         , "yyyy/mm/DD 12h:min am/pm"
                          , ""
                          , 0
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "1978/07/23 03:30 PM";
+            const string Expected = "1978/07/23 03:30 PM";
 
             string actual;
             string error;
@@ -50,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(Expected, actual);
 
         }
 
@@ -61,8 +62,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2012/11/27 04:12:41 PM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/mm/DD 12h:min:ss am/pm"
+                         , "yyyy/mm/DD 12h:min:ss am/pm"
                          , "Hours"
                          , 10
                          , "[[MyTestResult]]");
@@ -82,7 +83,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Ignore]
         public void DateTime_RecordSetData_Expected_EachRecordSetAppendedWithChangedDateTime()
         {
             const string currDL = @"<root><MyDateRecordSet><Date></Date></MyDateRecordSet></root>";
@@ -97,17 +97,20 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "[[MyDateRecordSet().Date]]");
 
             IDSFDataObject result = ExecuteProcess();
-            //DateTime date = DateTime.Parse("2012/11/27 04:12:41 PM");
-            //DateTime expected = date.AddHours(10.00);
-            //string reallyExpected = string.Format("{0:yyyy/mm/dd hh:mm:ss}", expected);
+            DateTime firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
+            string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
+            string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
             IList<IBinaryDataListItem> actual;
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "MyDateRecordSet", "Date", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-
+            var firstResult = actual[2].TheValue;
+            var secondResult = actual[3].TheValue;
             // Assert to a result please
-            Assert.IsTrue(true);
+            Assert.AreEqual(firstDateTimeExpected, firstResult);
+            Assert.AreEqual(secondDateTimeExpected, secondResult);
         }
 
         [TestMethod]
@@ -116,8 +119,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DateTimeDifferenceDataListShape
                          , ActivityStrings.DateTimeDifferenceDataListWithData
                          , "[[recset1(*).f1]]"
-                         , "dd/mm/yyyy"
-                         , "dd/mm/yyyy"
+                         , "DD/mm/yyyy"
+                         , "DD/mm/yyyy"
                          , "Years"
                          , 2
                          , "[[resCol(*).res]]");
@@ -145,8 +148,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2013/02/07 08:38:56.953 PM"
-                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
-                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
+                         , "yyyy/mm/DD 12h:min:ss.sp am/pm"
+                         , "yyyy/mm/DD 12h:min:ss.sp am/pm"
                          , "Split Secs"
                          , 327
                          , "[[MyTestResult]]");
@@ -171,8 +174,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D. "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
-                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/DD 12h:min:ss.sp am/pm Era "
+                         , "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/DD 12h:min:ss.sp am/pm Era "
                          , "Years"
                          , 327
                          , "[[MyTestResult]]");
@@ -190,12 +193,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]        
-        [Owner("Massimo Guerrera")]        
+        [TestCategory("DateTimeUnitTest")]
+        [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
         // ReSharper restore InconsistentNaming
-        {           
+        {
             DateTime now = DateTime.Now;
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
@@ -208,24 +211,24 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();            
+            IDSFDataObject result = ExecuteProcess();
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);            
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
             DateTime actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
-            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");            
+            Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
         }
 
         [TestMethod]
-        [TestCategory("DateTimeUnitTest")]        
+        [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
         // ReSharper disable InconsistentNaming
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
         // ReSharper restore InconsistentNaming
-        {            
+        {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
                          , currDL
@@ -240,18 +243,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);                     
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
             if(actual == "0")
             {
                 Thread.Sleep(10);
 
                 result = ExecuteProcess();
-         
+
                 GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
-                
-                Assert.IsTrue(actual !=  "0");
+
+                Assert.IsTrue(actual != "0");
             }
-            Assert.IsTrue(actual != "0");                        
+            Assert.IsTrue(actual != "0");
         }
 
         #endregion DateTime Tests
@@ -265,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DateTime_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
         {
             //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
+            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/DD", OutputFormat = "yyyy/mm/DD", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -291,12 +294,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DateTime_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
         {
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
+            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/DD", OutputFormat = "yyyy/mm/DD", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -317,27 +320,27 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DateTimeActivity_GetInputs_Expected_Five_Input()
         {
-            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "dd-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "dd-mm-yyyy", Result = "[[result]]" };
+            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
 
             IBinaryDataList inputs = testAct.GetInputs();
 
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(5,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(5, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
         public void DateTimeActivity_GetOutputs_Expected_One_Output()
         {
-            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "dd-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "dd-mm-yyyy", Result = "[[result]]" };
+            DsfDateTimeActivity testAct = new DsfDateTimeActivity { DateTime = "27-10-2012", InputFormat = "DD-mm-yyyy", TimeModifierType = "Days", TimeModifierAmount = 5, TimeModifierAmountDisplay = "5", OutputFormat = "DD-mm-yyyy", Result = "[[result]]" };
 
             IBinaryDataList outputs = testAct.GetOutputs();
 
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests

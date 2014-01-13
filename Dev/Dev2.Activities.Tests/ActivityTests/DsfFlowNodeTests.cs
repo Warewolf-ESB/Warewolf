@@ -18,7 +18,7 @@ using Microsoft.CSharp.Activities;
 using Microsoft.VisualBasic.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -193,12 +193,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Dev2DataListDecisionHandler_ExecuteDecisionStack")]
-        [Ignore] // This needs to stay ignored till we tackle the difference between the DataMerge and Assign having different new line implementations
         public void Dev2DataListDecisionHandler_ExecuteDecisionStack_SlashInVariable_CanDeserialize()
         {
 
-            CurrentDl = "<ADL><resul><t/></resul></ADL>";
-            TestData = @"<root><down>1\n2\n3\n4\n</down><resul><t>1234</t></resul><resul><t>1234</t></resul><resul><t>1/2\3/4\</t></resul><resul><t>1\r\n2\r\n3\r\n4\r\n</t></resul><resul><t>1 2   3   4   5   </t></resul></root>";
+            CurrentDl = "<ADL><down/><resul><t/></resul></ADL>";
+            TestData = @"<root><down>1\n2\n3\n4\n</down><resul><t>1234</t></resul><resul><t>1234</t></resul><resul><t>1/2\3/4\</t></resul><resul><t>1\n2\n3\n4\n</t></resul><resul><t>1 2   3   4   5   </t></resul></root>";
             ErrorResultTO errors;
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
