@@ -1,15 +1,16 @@
 ﻿using System.Activities.Presentation.Model;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Designers.Tests.Random
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RandomDesignerViewModelTests
     {
         [TestMethod]
@@ -54,7 +55,7 @@ namespace Dev2.Activities.Designers.Tests.Random
             //------------Setup for test--------------------------
             var modelItem = CreateModelItem();
             var viewModel = new TestRandomDesignerViewModel(modelItem);
-            
+
             //------------Execute Test---------------------------
             viewModel.SelectedRandomType = "GUID";
 
