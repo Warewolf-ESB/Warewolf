@@ -98,10 +98,10 @@ namespace Dev2.Studio.UI.Tests
 
             const string TextToSearchWith = "Find Records";
             OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            OpenMenuItem("View in Browser");
+            SendKeys.SendWait("{F7}");
             Playback.Wait(5000);
             //assert error dialog not showing
-            var child = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var child = StudioWindow.GetChildren()[0];
             if(child != null)
             {
                 Assert.IsNotInstanceOfType(child.GetChildren()[0], typeof(Window));
