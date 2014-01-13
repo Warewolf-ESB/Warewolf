@@ -1,14 +1,14 @@
-﻿using Dev2.Diagnostics;
-using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Diagnostics;
-using Dev2.Studio.ViewModels;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Diagnostics;
+using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Diagnostics;
+using Dev2.Studio.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio
@@ -19,6 +19,9 @@ namespace Dev2.Studio
     public partial class App : IApp
     {
         MainViewModel _mainViewModel;
+        //This is ignored because when starting the studio twice the second one crashes without this line
+        // ReSharper disable once RedundantDefaultFieldInitializer
+        private Mutex _processGuard = null;
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
 
@@ -54,6 +57,7 @@ namespace Dev2.Studio
 
             if(createdNew)
             {
+                _processGuard = localprocessGuard;
             }
             else
             {
