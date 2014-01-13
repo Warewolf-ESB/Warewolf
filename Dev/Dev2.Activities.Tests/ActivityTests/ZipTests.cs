@@ -209,7 +209,7 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.AreEqual(9, inRes.Count);
             Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual("File or Folder", inRes[0].ResultsList[0].Value);
+            Assert.AreEqual("Input Path", inRes[0].ResultsList[0].Value);
             Assert.AreEqual("[[FileNames(1).Name]]", inRes[0].ResultsList[1].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[2].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[0].ResultsList[3].Value));
@@ -221,7 +221,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
             Assert.AreEqual("Password", inRes[2].ResultsList[0].Value);
             Assert.AreEqual(7, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual("Destination", inRes[3].ResultsList[0].Value);
+            Assert.AreEqual("Output Path", inRes[3].ResultsList[0].Value);
             Assert.AreEqual("[[ZipNames(1).Zips]]", inRes[3].ResultsList[1].Value);
             Assert.AreEqual("=", inRes[3].ResultsList[2].Value);
             Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[3].Value));
