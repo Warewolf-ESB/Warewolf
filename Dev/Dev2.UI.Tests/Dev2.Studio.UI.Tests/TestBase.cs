@@ -486,7 +486,7 @@ namespace Dev2.CodedUI.Tests
         {
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
             Playback.Wait(500);
-            var dialogPrompt = DockManagerUIMap.UIBusinessDesignStudioWindow.GetChildren()[0];
+            var dialogPrompt = StudioWindow.GetChildren()[0];
             if (dialogPrompt.GetType() != typeof (WpfWindow))
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
