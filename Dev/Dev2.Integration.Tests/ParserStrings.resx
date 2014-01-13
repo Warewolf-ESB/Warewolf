@@ -1081,7 +1081,7 @@
     <value>snickers</value>
   </data>
   <data name="PathOperations_SFTP_Path" xml:space="preserve">
-    <value>sftp://192.168.104.34</value>
+    <value>sftp://192.168.104.34/home/dsl</value>
   </data>
   <data name="PathOperations_SFTP_Username" xml:space="preserve">
     <value>dsl</value>
