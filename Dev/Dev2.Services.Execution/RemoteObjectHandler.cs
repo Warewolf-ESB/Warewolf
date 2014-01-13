@@ -120,8 +120,14 @@ namespace Dev2.Services.Execution
                     int pos = 0;
                     foreach(Dev2TypeConversion tc in convertedArgs)
                     {
-                        targs[pos] = tc.FetchType();
-                        invokeArgs[pos] = Convert.ChangeType(tc.FetchVal(), tc.FetchType());
+                        var conversionType = tc.FetchType();
+                        var fetchVal = tc.FetchVal();
+                        if(!conversionType.IsValueType && fetchVal == GlobalConstants.NullPluginValue)
+                        {
+                            fetchVal = null;
+                        }
+                        targs[pos] = conversionType;
+                        invokeArgs[pos] = Convert.ChangeType(fetchVal, conversionType);
                         pos++;
                     }
 
