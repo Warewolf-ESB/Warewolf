@@ -71,7 +71,7 @@ namespace TestPackBuilder
                     testPackStrings[pos] += test.TestName + Environment.NewLine;
                     if(testPackDLLS[pos].IndexOf(test.TestDLLName, StringComparison.Ordinal) < 0)
                     {
-                        testPackDLLS[pos] += test.TestDLLName + ",";
+                        testPackDLLS[pos] += test.TestDLLName + Environment.NewLine;
                     }
                     pos++;
                     if(pos >= totalTestPacks)
@@ -81,13 +81,11 @@ namespace TestPackBuilder
                 }
             }
 
+            // dump dll names to file
             for(int i = 0; i < totalTestPacks; i++)
             {
-                int len = testPackDLLS[i].Length;
-                len -= 1;
-                File.WriteAllText(files[i] + ".dlls", testPackDLLS[i].Substring(0, len));
+                File.WriteAllText(files[i] + ".dlls", testPackDLLS[i]);
             }
-
 
             // dump to file
             for(int i = 0; i < totalTestPacks; i++)
@@ -171,14 +169,7 @@ namespace TestPackBuilder
                 }
 
                 // Now process to ID test dlls ;)
-                List<string> magicalTestDirs = new List<string>();
-                foreach(var theDir in directories)
-                {
-                    if(theDir.EndsWith(".Tests") || theDir.EndsWith(".Specs") || theDir.EndsWith(".Test"))
-                    {
-                        magicalTestDirs.Add(theDir);
-                    }
-                }
+                List<string> magicalTestDirs = directories.Where(theDir => theDir.EndsWith(".Tests") || theDir.EndsWith(".Specs") || theDir.EndsWith(".Test")).ToList();
 
                 while(dir != null)
                 {
