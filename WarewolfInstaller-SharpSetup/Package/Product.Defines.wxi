@@ -3,8 +3,8 @@
   <!-- TODO : when releasing please change AppProductCode and adjust AppVersion information ;) -->
   <?define AppCode = "Warewolf" ?>
   <!-- http://www.guidgenerator.com/online-guid-generator.aspx -->
-    
-  <?define AppProductCode = "{858B79B4-ED1D-49E0-B22D-B0BBAE25503B}" ?>
+   <!-- ALWAYS UPDATE PRODUCT CODE -->
+  <?define AppProductCode = "{FA3554FE-E6BE-4BCD-A260-879CD7F1CBB6}" ?>
   <?define AppUpgradeCode = "{b395a097-b71a-4850-a5d5-93f402586bd0}" ?>
   <?define AppVersionMajor = "0" ?>
   <?define AppVersionMinor = "3" ?>
