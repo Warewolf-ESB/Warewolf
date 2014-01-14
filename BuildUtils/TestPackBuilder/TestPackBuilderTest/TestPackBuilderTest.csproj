@@ -59,6 +59,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TestPackBuilderExe\TestPackBuilderExe.csproj">
+      <Project>{94c9579d-41af-4068-b221-b3eb57f2b0ec}</Project>
+      <Name>TestPackBuilderExe</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestPackBuilder\TestPackBuilder.csproj">
       <Project>{6ABFED9F-E857-4917-AABC-FEF82161A677}</Project>
       <Name>TestPackBuilder</Name>
