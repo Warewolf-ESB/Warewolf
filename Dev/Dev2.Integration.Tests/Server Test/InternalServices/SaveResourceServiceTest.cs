@@ -18,24 +18,23 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         ///</summary>
         public TestContext TestContext
         {
-            get; set;
+            get;
+            set;
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SaveResource_SaveResource")]
+        [TestCategory("SaveResource_HasNoID")]
         public void SaveResource_WhenHasNoIDPassed_SavesToWorkspace()
         {
             //------------Setup for test--------------------------
-            string service = "<Payload><Roles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,DEV2 Limited Internet Access</Roles><ResourceXml>"+BlankService+"</ResourceXml></Payload>";
+            string service = "<Payload><Roles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,DEV2 Limited Internet Access</Roles><ResourceXml>" + BlankService + "</ResourceXml></Payload>";
             var webserverURI = ServerSettings.WebserverURI + "SaveResourceService?" + service;
             //------------Execute Test---------------------------
-            string actual = TestHelper.PostDataToWebserver(webserverURI).Unescape();
+            TestHelper.PostDataToWebserver(webserverURI).Unescape();
             //------------Assert Results-------------------------
-            var expected = string.Format("Updated WorkflowService 'BlankWorkflow'");
-            StringAssert.Contains(actual,expected);
             webserverURI = ServerSettings.WebserverURI + @"FindResourceService?ResourceName=BlankWorkflow&ResourceType=WorkflowService";
-            string fromServer = TestHelper.PostDataToWebserver(webserverURI);            
+            string fromServer = TestHelper.PostDataToWebserver(webserverURI);
             Assert.IsFalse(string.IsNullOrEmpty(fromServer));
         }
     }
