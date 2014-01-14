@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Integration.Tests.Activities
 {
     [TestClass]
-    [Ignore]
     public class Dev2ActivityIOBrokerTestCases
     {
         private static string _zipFile = "";
@@ -15,7 +14,7 @@ namespace Dev2.Integration.Tests.Activities
         public static void Initializer(TestContext context)
         {
             const string ResourceName = "Dev2.Integration.Tests.TestData.Test.zip";
-            string FileName = Path.GetTempPath() + "\\9999.zip";
+            string fileName = Path.GetTempPath() + "\\9999.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
             using (Stream stream = assembly.GetManifestResourceStream(ResourceName))
             {
@@ -23,11 +22,11 @@ namespace Dev2.Integration.Tests.Activities
                 {
                     byte[] buf = new byte[stream.Length];  
                     stream.Read(buf, 0, buf.Length);
-                    File.WriteAllBytes(FileName, buf);
+                    File.WriteAllBytes(fileName, buf);
                 }
             }
 
-            _zipFile = FileName;
+            _zipFile = fileName;
         }
 
         #region Delete Tests
@@ -6207,25 +6206,7 @@ namespace Dev2.Integration.Tests.Activities
                                         .Copy(sourceEndPoint, destinationEndPoint, copyTo);
             });
         }
-
-
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("Dev2ActivityIOBroker_CreateEndPoint")]
-        //public void Dev2ActivityIOBroker_CreateEndPoint_DestinationIsDirectoryEndsWithASlash_ReturnStatusIsSuccessful()
-        //{
-        //    //------------Setup for test--------------------------
-        //    string destinationDirectory = Path.GetTempPath() + Guid.NewGuid();
-        //    destinationDirectory = destinationDirectory + "\\";
-        //    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(destinationDirectory, string.Empty, null, true));
-        //    var crudOps = new Dev2CRUDOperationTO(false);
-        //    //------------Execute Test---------------------------
-        //    var result = ActivityIOFactory.CreateOperationsBroker().CreateEndPoint(dstEndPoint, crudOps, false);
-        //    //------------Assert Results-------------------------
-        //    Assert.AreEqual("Success", result);
-        //    Assert.IsTrue(Directory.Exists(destinationDirectory));
-        //}
-
+        
         #endregion
 
         #region Move Tests
@@ -11195,7 +11176,7 @@ namespace Dev2.Integration.Tests.Activities
         public void Dev2FTPProvider_Timeout_ShouldTimeoutTimely()
         {
             //------------Setup for test--------------------------
-            const string ftpSite = "sftp://192.168.104.34";
+            string ftpSite = ParserStrings.PathOperations_SFTP_Path + "/";
             IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(ftpSite, ParserStrings.PathOperations_SFTP_Username,
                                                                                             ParserStrings.PathOperations_SFTP_Password);
             IActivityIOOperationsEndPoint FTPPro =

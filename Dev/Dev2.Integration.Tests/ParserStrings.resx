@@ -1078,12 +1078,12 @@
 		&lt;/Inputs&gt;</value>
   </data>
   <data name="PathOperations_SFTP_Password" xml:space="preserve">
-    <value>snickers</value>
+    <value>Q/ulw&amp;]</value>
   </data>
   <data name="PathOperations_SFTP_Path" xml:space="preserve">
-    <value>sftp://192.168.104.34/home/dsl</value>
+    <value>sftp://sftp.theunlimited.co.za</value>
   </data>
   <data name="PathOperations_SFTP_Username" xml:space="preserve">
-    <value>dsl</value>
+    <value>dev2</value>
   </data>
 </root>

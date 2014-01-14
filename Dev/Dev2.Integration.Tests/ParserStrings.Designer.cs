@@ -654,7 +654,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to snickers.
+        ///   Looks up a localized string similar to Q/ulw&amp;].
         /// </summary>
         internal static string PathOperations_SFTP_Password {
             get {
@@ -663,7 +663,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sftp://192.168.104.34/home/dsl.
+        ///   Looks up a localized string similar to sftp://sftp.theunlimited.co.za.
         /// </summary>
         internal static string PathOperations_SFTP_Path {
             get {
@@ -672,7 +672,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to dsl.
+        ///   Looks up a localized string similar to dev2.
         /// </summary>
         internal static string PathOperations_SFTP_Username {
             get {
