@@ -47,7 +47,6 @@ namespace TestPackBuilder
             CreateTestPackDirectory(destDir);
             var files = CreateTestPackFiles(totalTestPacks, destDir);
 
-
             // get test
             var tests = RecursivelyScanDirectory(dirToScan, ".cs", "[TestMethod]");
             tests.Sort();
@@ -70,7 +69,10 @@ namespace TestPackBuilder
                     }
 
                     testPackStrings[pos] += test.TestName + Environment.NewLine;
-                    testPackDLLS[pos] += test.TestDLLName + ",";
+                    if(testPackDLLS[pos].IndexOf(test.TestDLLName, StringComparison.Ordinal) < 0)
+                    {
+                        testPackDLLS[pos] += test.TestDLLName + ",";
+                    }
                     pos++;
                     if(pos >= totalTestPacks)
                     {
@@ -81,10 +83,9 @@ namespace TestPackBuilder
 
             for(int i = 0; i < totalTestPacks; i++)
             {
-                foreach(var source in testPackDLLS.Select(c => c).Distinct())
-                {
-                    File.AppendAllText(files[i] + ".dlls", source);
-                }
+                int len = testPackDLLS[i].Length;
+                len -= 1;
+                File.WriteAllText(files[i] + ".dlls", testPackDLLS[i].Substring(0, len));
             }
 
 
@@ -223,6 +224,11 @@ namespace TestPackBuilder
                     else
                     {
                         result = Path.GetFileName(dir) + ".dll";
+                        // force a conversion for UI test ;(
+                        if(result == "Dev2.UI.Tests.dll")
+                        {
+                            result = "Dev2.Studio.UI.Tests.dll";
+                        }
                         _dirToDll[dir] = result;
                     }
                 }
