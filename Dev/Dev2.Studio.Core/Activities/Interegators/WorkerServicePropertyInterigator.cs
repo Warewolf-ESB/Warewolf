@@ -43,12 +43,6 @@ namespace Dev2.Studio.Core.Activities.Interegators
                                         activity.FriendlySourceName = attr.Value;
                                     }
 
-                                    attr = node.Attributes["Type"];
-                                    if(attr != null)
-                                    {
-                                        activity.Type = attr.Value;
-                                    }
-
                                     attr = node.Attributes["SourceMethod"];
                                     if(attr != null)
                                     {
@@ -60,6 +54,7 @@ namespace Dev2.Studio.Core.Activities.Interegators
                     }
                 }
             }
+            activity.Type = resource.ServerResourceType;
         }
     }
 }

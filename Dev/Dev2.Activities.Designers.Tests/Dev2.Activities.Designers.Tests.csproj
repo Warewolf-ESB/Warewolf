@@ -154,6 +154,7 @@
     <Compile Include="SqlBulkInsert\SqlBulkInsertDesignerViewModelTests.cs" />
     <Compile Include="Unzip\UnzipDesignerViewModelTests.cs" />
     <Compile Include="Unzip\TestUnzipDesignerViewModel.cs" />
+    <Compile Include="UtilTests\ActivityTypeToActionTypeConverterTests.cs" />
     <Compile Include="UtilTests\ForEachDesignerUtilsTests.cs" />
     <Compile Include="WriteFile\WriteFileDesignerViewModelTests.cs" />
     <Compile Include="WriteFile\TestWriteFileDesignerViewModel.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -41,6 +42,87 @@ namespace Dev2.Core.Tests.Factories
 
             Assert.AreEqual(expectedResourceID, actualResourceID, "DsfActivityFactory did not assign the resource ID.");
             Assert.AreEqual(expectedEnvironmentID, actualEnvironmentID, "DsfActivityFactory did not assign the environment ID.");
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
+        public void DsfActivityFactory_CreateDsfActivity_NullWorkflowXamlServerResourceTypeWebService_TypeIsWebService()
+        {
+            //------------Setup for test--------------------------
+            var expectedResourceID = Guid.NewGuid();
+            var expectedEnvironmentID = Guid.NewGuid();
+
+            var activity = new DsfActivity();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            model.Setup(m => m.ID).Returns(expectedResourceID);
+            model.Setup(m => m.Environment).Returns(environment.Object);
+            model.Setup(m => m.ServerResourceType).Returns("WebService");
+
+            //------------Execute Test---------------------------
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("WebService", ((Literal<string>)(activity.Type.Expression)).Value);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
+        public void DsfActivityFactory_CreateDsfActivity_NullWorkflowXamlServerResourceTypeDbService_TypeIsDbService()
+        {
+            //------------Setup for test--------------------------
+            var expectedResourceID = Guid.NewGuid();
+            var expectedEnvironmentID = Guid.NewGuid();
+
+            var activity = new DsfActivity();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            model.Setup(m => m.ID).Returns(expectedResourceID);
+            model.Setup(m => m.Environment).Returns(environment.Object);
+            model.Setup(m => m.ServerResourceType).Returns("DbService");
+
+            //------------Execute Test---------------------------
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("DbService", ((Literal<string>)(activity.Type.Expression)).Value);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DsfActivityFactory_CreateDsfActivity")]
+        public void DsfActivityFactory_CreateDsfActivity_NullWorkflowXamlServerResourceTypePluginService_TypeIsPluginService()
+        {
+            //------------Setup for test--------------------------
+            var expectedResourceID = Guid.NewGuid();
+            var expectedEnvironmentID = Guid.NewGuid();
+
+            var activity = new DsfActivity();
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(expectedEnvironmentID);
+
+            var model = new Mock<IContextualResourceModel>();
+            model.Setup(m => m.ResourceType).Returns(ResourceType.Service);
+            model.Setup(m => m.ID).Returns(expectedResourceID);
+            model.Setup(m => m.Environment).Returns(environment.Object);
+            model.Setup(m => m.ServerResourceType).Returns("PluginService");
+
+            //------------Execute Test---------------------------
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("PluginService", ((Literal<string>)(activity.Type.Expression)).Value);
         }
 
         [TestMethod]

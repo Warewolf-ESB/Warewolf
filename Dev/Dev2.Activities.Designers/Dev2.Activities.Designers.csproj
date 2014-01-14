@@ -503,6 +503,7 @@
     </Compile>
     <Compile Include="Designers2\Core\QuickVariableInput\QuickVariableInputViewModel.cs" />
     <Compile Include="Utils\ActivityDesignerLanuageNotationConverter.cs" />
+    <Compile Include="Utils\ActivityTypeToActionTypeConverter.cs" />
     <Compile Include="Utils\ForeachActivityDesignerUtils.cs" />
     <EmbeddedResource Include="Designers2\Core\Help\HelpTextResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Utils;
 using Dev2.Communication;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
@@ -20,7 +21,6 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -229,7 +229,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void SetInputs()
         {
-            if (DataMappingViewModel != null)
+            if(DataMappingViewModel != null)
             {
                 InputMapping = DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs);
             }
@@ -237,7 +237,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void SetOuputs()
         {
-            if (DataMappingViewModel != null)
+            if(DataMappingViewModel != null)
             {
                 OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
             }
@@ -375,8 +375,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeImageSource()
         {
-            DynamicServices.enActionType actionType;
-            Enum.TryParse(Type, true, out actionType);
+            DynamicServices.enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
             ImageSource = GetIconPath(actionType);
         }
 
@@ -516,18 +515,18 @@ namespace Dev2.Activities.Designers2.Service
             var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
             if(reqiredMappingChanged != null)
             {
-                if (reqiredMappingChanged.FixData != null)
+                if(reqiredMappingChanged.FixData != null)
                 {
                     var xElement = XElement.Parse(reqiredMappingChanged.FixData);
                     var inputOutputViewModels = DeserializeMappings(true, xElement);
 
-                    foreach (var input in inputOutputViewModels)
+                    foreach(var input in inputOutputViewModels)
                     {
                         var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == input.Name);
-                        if (inputOutputViewModel != null)
+                        if(inputOutputViewModel != null)
                         {
                             inputOutputViewModel.Required = input.Required;
-                            if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                            if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
                             {
                                 keepError = true;
                             }
@@ -626,13 +625,13 @@ namespace Dev2.Activities.Designers2.Service
                     var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
 
                     DataMappingViewModel.Inputs.Clear();
-                    foreach (var input in inputs)
+                    foreach(var input in inputs)
                     {
                         DataMappingViewModel.Inputs.Add(input);
                     }
 
                     DataMappingViewModel.Outputs.Clear();
-                    foreach (var output in outputs)
+                    foreach(var output in outputs)
                     {
                         DataMappingViewModel.Outputs.Add(output);
                     }
@@ -640,26 +639,26 @@ namespace Dev2.Activities.Designers2.Service
                     SetOuputs();
                     RemoveWorstError(WorstDesignError);
                     UpdateWorstError();
-                    
-                break;
+
+                    break;
 
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
                     var inputOutputViewModels = DeserializeMappings(true, XElement.Parse(WorstDesignError.FixData));
-                        foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    {
+                        var actualViewModel =
+                        DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
+                        if(actualViewModel != null)
                         {
-                            var actualViewModel =
-                            DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == inputOutputViewModel.Name);
-                            if (actualViewModel != null)
+                            if(actualViewModel.Value == string.Empty)
                             {
-                                if (actualViewModel.Value == string.Empty)
-                                {
-                                    actualViewModel.RequiredMissing = true;
-                                }
+                                actualViewModel.RequiredMissing = true;
                             }
                         }
-                    
-                break;
+                    }
+
+                    break;
             }
         }
 
@@ -724,8 +723,8 @@ namespace Dev2.Activities.Designers2.Service
                 DesignValidationErrors.Add(NoError);
                 if(!RootModel.HasErrors)
                 {
-                RootModel.IsValid = true;
-            }
+                    RootModel.IsValid = true;
+                }
             }
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };
