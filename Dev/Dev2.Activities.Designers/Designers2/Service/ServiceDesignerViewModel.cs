@@ -64,6 +64,7 @@ namespace Dev2.Activities.Designers2.Service
 
             _eventPublisher = eventPublisher;
 
+            ShowExampleWorkflowLink = false;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
             FixErrorsCommand = new RelayCommand(o => FixErrors());

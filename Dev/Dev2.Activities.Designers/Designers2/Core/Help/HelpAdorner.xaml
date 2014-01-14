@@ -9,6 +9,11 @@
                          d:DesignHeight="300"
                          d:DesignWidth="300"
                          d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
+    
+    <adorners:AdornerControl.Resources>
+        <ResourceDictionary x:Name="TheResources"
+                            Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
+    </adorners:AdornerControl.Resources>
  
     <Border Style="{StaticResource HelpAdornerBorderStyle}">
 
@@ -35,7 +40,8 @@
                        Text="{Binding HelpText}"
                        VerticalAlignment="Top"
                        TextWrapping="WrapWithOverflow"></TextBlock>
-            <TextBlock Grid.Row="2">
+            <TextBlock Grid.Row="2"
+                       Visibility="{Binding ShowExampleWorkflowLink,Converter={StaticResource BoolToVisibilityConverter}}">
                 <Hyperlink Command="{Binding ShowItemHelpCommand}">View Sample Workflow</Hyperlink>
             </TextBlock>
         </Grid>

@@ -48,6 +48,7 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem.PropertyChanged += OnModelItemPropertyChanged;
             VerifyArgument.IsNotNull("showExampleWorkflow", showExampleWorkflow);
 
+            ShowExampleWorkflowLink = true;
             IsValid = true;
             IsClosed = true;
             ShowItemHelpCommand = new RelayCommand(o => showExampleWorkflow(modelItem.ItemType), o => true);
@@ -84,6 +85,8 @@ namespace Dev2.Activities.Designers2.Core
         public ICommand ShowErrorsToggleCommand { get; private set; }
 
         public ICommand OpenErrorsLinkCommand { get; private set; }
+
+        public bool ShowExampleWorkflowLink { get; set; }
 
         public ObservableCollection<ActivityDesignerToggle> TitleBarToggles { get { return _titleBarToggles; } }
 
@@ -148,7 +151,7 @@ namespace Dev2.Activities.Designers2.Core
         static void OnShowHelp(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var vm = d as ActivityDesignerViewModel;
-          
+
             if(vm != null && (bool)e.NewValue)
             {
                 if(vm._setInitialFocus != null)
@@ -161,7 +164,7 @@ namespace Dev2.Activities.Designers2.Core
         public string HelpText
         {
             get { return (string)GetValue(HelpTextProperty); }
-            set { base.SetValue(HelpTextProperty, value); }
+            set { SetValue(HelpTextProperty, value); }
         }
 
         public static readonly DependencyProperty HelpTextProperty =
@@ -253,7 +256,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
         }
-        
+
         protected void AddTitleBarHelpToggle()
         {
             var toggle = ActivityDesignerToggle.Create(
