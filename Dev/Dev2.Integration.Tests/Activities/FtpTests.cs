@@ -1,7 +1,7 @@
-﻿using Dev2.PathOperations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Dev2.PathOperations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Activities
@@ -21,12 +21,12 @@ namespace Dev2.Integration.Tests.Activities
 
             try
             {
-                IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
+                FTPPro.ListDirectory(path);
                 Assert.Fail();
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
 
         }
@@ -38,7 +38,8 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> tmp = FTPPro.ListDirectory(path);
 
-            Assert.IsTrue(tmp.Count == 3);
+
+            Assert.IsTrue(tmp.Count >= 3);
         }
 
         [TestMethod]
