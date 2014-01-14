@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
@@ -16,7 +14,8 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebSourcesTests
     {
         const string TestMethod = "GetCitiesByCountry";
@@ -26,74 +25,74 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Ignored test methods
 
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void WebSourcesExecuteWithPostExpectedReturnsResult()
-        {
-            var source = CreateWebSource();
-            try
-            {
-                ErrorResultTO errors;
-                var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName, false, out errors);
-                Assert.IsNotNull(result);
-            }
-            finally
-            {
-                source.Dispose();
-            }
-        }
+        //[TestMethod]
+        //[Ignore]
+        //// Ignore because this test may flicker but here for manual testing!
+        //public void WebSourcesExecuteWithPostExpectedReturnsResult()
+        //{
+        //    var source = CreateWebSource();
+        //    try
+        //    {
+        //        ErrorResultTO errors;
+        //        var result = WebSources.Execute(source, WebRequestMethod.Post, "/" + TestMethod, "CountryName=" + CountryName, false, out errors);
+        //        Assert.IsNotNull(result);
+        //    }
+        //    finally
+        //    {
+        //        source.Dispose();
+        //    }
+        //}
 
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void WebSourcesTestWithValidArgsExpectedValidValidationResult()
-        {
-            var source = CreateWebSource();
-            source.Address = source.Address;
-            source.DefaultQuery = TestDefaultQuery;
+        //[TestMethod]
+        //[Ignore]
+        //// Ignore because this test may flicker but here for manual testing!
+        //public void WebSourcesTestWithValidArgsExpectedValidValidationResult()
+        //{
+        //    var source = CreateWebSource();
+        //    source.Address = source.Address;
+        //    source.DefaultQuery = TestDefaultQuery;
 
-            var handler = new WebSources();
-            var result = handler.Test(source.ToString(), Guid.Empty, Guid.Empty);
-            Assert.IsTrue(result.IsValid, result.ErrorMessage);
-        }
+        //    var handler = new WebSources();
+        //    var result = handler.Test(source.ToString(), Guid.Empty, Guid.Empty);
+        //    Assert.IsTrue(result.IsValid, result.ErrorMessage);
+        //}
 
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void WebSourcesTestWithInvalidCredentialsExpectedInvalidValidationResult()
-        {
-            var source = new WebSource
-            {
-                Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
-                AuthenticationType = AuthenticationType.Anonymous
-            }.ToString();
+        //[TestMethod]
+        //[Ignore]
+        //// Ignore because this test may flicker but here for manual testing!
+        //public void WebSourcesTestWithInvalidCredentialsExpectedInvalidValidationResult()
+        //{
+        //    var source = new WebSource
+        //    {
+        //        Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
+        //        AuthenticationType = AuthenticationType.Anonymous
+        //    }.ToString();
 
-            var handler = new WebSources();
-            var result = handler.Test(source, Guid.Empty, Guid.Empty);
-            Assert.IsFalse(result.IsValid, result.ErrorMessage);
-            Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", result.ErrorMessage.Trim());
-        }
+        //    var handler = new WebSources();
+        //    var result = handler.Test(source, Guid.Empty, Guid.Empty);
+        //    Assert.IsFalse(result.IsValid, result.ErrorMessage);
+        //    Assert.AreEqual("The remote server returned an error: (401) Unauthorized.", result.ErrorMessage.Trim());
+        //}
 
 
-        [TestMethod]
-        [Ignore]
-        // Ignore because this test may flicker but here for manual testing!
-        public void WebSourcesTestWithValidCredentialsExpectedReturnsResult()
-        {
-            var source = new WebSource
-            {
-                Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
-                AuthenticationType = AuthenticationType.User,
-                UserName = "dev2test",
-                Password = "Password1"
-            }.ToString();
+        //[TestMethod]
+        //[Ignore]
+        //// Ignore because this test may flicker but here for manual testing!
+        //public void WebSourcesTestWithValidCredentialsExpectedReturnsResult()
+        //{
+        //    var source = new WebSource
+        //    {
+        //        Address = "https://rsaklfsvrsbspdc.dev2.local/ews/services.wsdl",
+        //        AuthenticationType = AuthenticationType.User,
+        //        UserName = "dev2test",
+        //        Password = "Password1"
+        //    }.ToString();
 
-            var handler = new WebSources();
-            var result = handler.Test(source, Guid.Empty, Guid.Empty);
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result.IsValid);
-        }
+        //    var handler = new WebSources();
+        //    var result = handler.Test(source, Guid.Empty, Guid.Empty);
+        //    Assert.IsNotNull(result);
+        //    Assert.IsTrue(result.IsValid);
+        //}
 
         #endregion
 
@@ -173,12 +172,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
             {
                 try
                 {
-                    if (Directory.Exists(workspacePath))
+                    if(Directory.Exists(workspacePath))
                     {
                         DirectoryHelper.CleanUp(workspacePath);
                     }
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                 }
             }
