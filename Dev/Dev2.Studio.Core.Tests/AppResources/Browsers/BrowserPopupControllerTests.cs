@@ -6,7 +6,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BrowserPopupControllerTests
     {
         #region ShowPopup
@@ -20,7 +21,6 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         }
 
         [TestMethod]
-        [Ignore]
         public void InternalBrowserPopupControllerShowPopupExpectedReturnsFalse()
         {
             var controller = new InternalBrowserPopupController();

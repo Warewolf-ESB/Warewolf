@@ -7,7 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Helpers
 {
     // PBI 9512 - 2013.06.07 - TWR: added
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class LatestWebGetterTests
     {
         [TestMethod]
@@ -27,14 +28,13 @@ namespace Dev2.Core.Tests.Helpers
         }
 
         [TestMethod]
-        [Ignore] // Not stable ;)
         public void LatestWebGetterWithValidArgsExpectedReplacesFileContent()
         {
             var path = Path.Combine(Path.GetTempPath(), string.Concat(Guid.NewGuid().ToString(), ".txt"));
 
             //var path = Path.Combine(_testDir, Path.GetRandomFileName());
 
-            if (File.Exists(path))
+            if(File.Exists(path))
             {
                 File.Delete(path);
             }
@@ -42,7 +42,7 @@ namespace Dev2.Core.Tests.Helpers
             Assert.IsFalse(File.Exists(path));
 
             var getter = new LatestWebGetter();
-            getter.GetLatest("http://www.google.co.za", path);
+            getter.GetLatest("http://rsaklfsvrwrwbld:1234/services/Ping", path);
 
             Assert.IsTrue(File.Exists(path), "Could not create  [ " + path + " ]");
         }

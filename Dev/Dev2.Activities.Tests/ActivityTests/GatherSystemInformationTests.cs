@@ -20,8 +20,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    //[Ignore] //Does not work on server
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class GatherSystemInformationTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-       
+
         [TestMethod]
         public void GatherSystemInformationWhereGetSystemInformationHelperNullExpectConcreateImplementation()
         {
@@ -39,18 +39,18 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var getSystemInformation = activity.GetSystemInformation;
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(getSystemInformation,typeof(GetSystemInformationHelper));
+            Assert.IsInstanceOfType(getSystemInformation, typeof(GetSystemInformationHelper));
         }
 
         [TestMethod]
         public void GatherSystemInformationWhereConstructedExpectIsICollectionActivity()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             var activity = GetGatherSystemInformationActivity();
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(activity,typeof(ICollectionActivity));
+            Assert.IsInstanceOfType(activity, typeof(ICollectionActivity));
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var systemInfo = activity.GetSystemInformation;
             //------------Assert Results-------------------------
-            Assert.AreEqual(getSystemInformation,systemInfo);
+            Assert.AreEqual(getSystemInformation, systemInfo);
             Assert.IsNotInstanceOfType(systemInfo, typeof(GetSystemInformationHelper));
         }
 
@@ -79,9 +79,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.OperatingSystem);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,operatingSystemInformation);
+            Assert.AreEqual(expectedValue, operatingSystemInformation);
         }
-        
+
         [TestMethod]
         public void GatherSystemInformationWhereGetServicePackInformationExpectOSDetails()
         {
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.ServicePack);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,operatingSystemInformation);
+            Assert.AreEqual(expectedValue, operatingSystemInformation);
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var operatingSystemInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.OSBitValue);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,operatingSystemInformation);
+            Assert.AreEqual(expectedValue, operatingSystemInformation);
         }
 
         [TestMethod]
@@ -127,8 +127,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(result.Millisecond > 0);
             }
             Assert.IsTrue(result.Millisecond > 0);
-        } 
-        
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDateTimeFormatInformationExpectDateTimeInformation()
         {
@@ -140,7 +140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DateTimeFormat);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,dateTimeInformation);
+            Assert.AreEqual(expectedValue, dateTimeInformation);
         }
 
         [TestMethod]
@@ -154,9 +154,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var diskInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DiskAvailable);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,diskInformation);
-        } 
-        
+            Assert.AreEqual(expectedValue, diskInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDiskSpaceTotalInformationInformationExpectDiskInformation()
         {
@@ -168,7 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var diskInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DiskTotal);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,diskInformation);
+            Assert.AreEqual(expectedValue, diskInformation);
         }
 
         [TestMethod]
@@ -182,9 +182,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryAvailable);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,memoryInformation);
-        }  
-        
+            Assert.AreEqual(expectedValue, memoryInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetMemoryTotalInformationExpectMemoryInformation()
         {
@@ -196,9 +196,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryTotal);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,memoryInformation);
-        } 
-        
+            Assert.AreEqual(expectedValue, memoryInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUAvailableInformationExpectProcessorInformation()
         {
@@ -210,9 +210,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var processorInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.CPUAvailable);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,processorInformation);
-        } 
-        
+            Assert.AreEqual(expectedValue, processorInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUTotalInformationExpectProcessorInformation()
         {
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var processorInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.CPUTotal);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,processorInformation);
+            Assert.AreEqual(expectedValue, processorInformation);
         }
 
         [TestMethod]
@@ -238,7 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var languageInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.Language);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,languageInformation);
+            Assert.AreEqual(expectedValue, languageInformation);
         }
 
         [TestMethod]
@@ -252,7 +252,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var languageInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.Region);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,languageInformation);
+            Assert.AreEqual(expectedValue, languageInformation);
         }
 
         [TestMethod]
@@ -266,7 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var userRolesInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.UserRoles);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,userRolesInformation);
+            Assert.AreEqual(expectedValue, userRolesInformation);
         }
 
         [TestMethod]
@@ -280,9 +280,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.UserName);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,userNameInformation);
-        } 
-        
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetDomainInformationExpectDomainInformation()
         {
@@ -294,9 +294,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.Domain);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,userNameInformation);
-        } 
-        
+            Assert.AreEqual(expectedValue, userNameInformation);
+        }
+
         [TestMethod]
         public void GatherSystemInformationWhereGetNumberOfWareWolfAgentsInformationExpectNumberOfWareWolfAgentsInformation()
         {
@@ -308,9 +308,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var numWareWolfAgents = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.NumberOfWarewolfAgents);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedValue,numWareWolfAgents);
-        }       
-        
+            Assert.AreEqual(expectedValue, numWareWolfAgents);
+        }
+
         [TestMethod]
         public void GetFindMissingTypeExpectDataGridActivityType()
         {
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var findMissingType = activity.GetFindMissingType();
             //------------Assert Results-------------------------
-            Assert.AreEqual(enFindMissingType.DataGridActivity,findMissingType);
+            Assert.AreEqual(enFindMissingType.DataGridActivity, findMissingType);
         }
 
         [TestMethod]
@@ -347,7 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(ExpectedValue,actual);
+            Assert.AreEqual(ExpectedValue, actual);
         }
 
         [TestMethod]
@@ -356,7 +356,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.UserName, "[[recset1().field1]]", 1) };
             var mock = new Mock<IGetSystemInformation>();
             const string expectedValue = "IAMUSER";
-            var expected = new List<string> { "Some Other Value",expectedValue };
+            var expected = new List<string> { "Some Other Value", expectedValue };
             mock.Setup(information => information.GetUserNameInformation()).Returns(expectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             activity.SystemInformationCollection = systemInformationCollection;
@@ -381,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-        
+
         [TestMethod]
         public void GatherSystemInformationWithStarNotationWhereExecuteExpectCorrectResultsWithRecordsetOverwrite()
         {
@@ -472,7 +472,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
             Assert.AreEqual("1", fetchResultsList[0].Value);
-            
+
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[1].Type);
             Assert.AreEqual("[[testVar]]", fetchResultsList[1].Value);
 
@@ -506,7 +506,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var collectionCount = activity.GetCollectionCount();
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,collectionCount);
+            Assert.AreEqual(2, collectionCount);
         }
 
         [TestMethod]
@@ -525,9 +525,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-            activity.AddListToCollection(new[]{"[[Var1]]"}, false,modelItem);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
             //------------Assert Results-------------------------
-            Assert.AreEqual(4,activity.SystemInformationCollection.Count);
+            Assert.AreEqual(4, activity.SystemInformationCollection.Count);
         }
 
         [TestMethod]
@@ -542,11 +542,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-            activity.AddListToCollection(new[]{"[[Var1]]"}, false,modelItem);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,activity.SystemInformationCollection.Count);
+            Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
-        
+
         [TestMethod]
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
@@ -563,9 +563,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.SystemInformationCollection = systemInformationCollection;
             var modelItem = TestModelItemUtil.CreateModelItem(activity);
             //------------Execute Test---------------------------
-            activity.AddListToCollection(new[]{"[[Var1]]"}, true,modelItem);
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
             //------------Assert Results-------------------------
-            Assert.AreEqual(2,activity.SystemInformationCollection.Count);
+            Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
 
         // ReSharper disable InconsistentNaming
@@ -697,7 +697,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             DsfGatherSystemInformationActivity activity;
 
-            if(mock!=null)
+            if(mock != null)
             {
                 var getSystemInformation = mock.Object;
                 activity = GetGatherSystemInformationActivity();
@@ -705,9 +705,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                activity = GetGatherSystemInformationActivity();                
-            }            
-            
+                activity = GetGatherSystemInformationActivity();
+            }
+
             return activity;
         }
 

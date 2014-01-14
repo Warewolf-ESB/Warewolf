@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Net;
 using System.Windows;
 using Dev2.CustomControls.Progress;
 using Dev2.Studio.Core.Helpers;
@@ -9,7 +8,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Helpers
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class VersionCheckerTests
     {
         [TestMethod]
@@ -34,21 +34,21 @@ namespace Dev2.Core.Tests.Helpers
             Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
         }
 
-        [TestMethod]
-        [Ignore] // This is ignored as it needs to call out to the web. This needs to move into a nightly regression pack
-        public void VersionCheckerStartPageUriExpectedChecksOnlineForLatestVersion()
-        {
-            Version expected;
-            using(var client = new WebClient())
-            {
-                var version = client.DownloadString(StringResources.Warewolf_Version);
-                expected = new Version(version);
-            }
-            var checker = new VersionChecker();
-            var actual = checker.Latest;
+        //[TestMethod]
+        //[Ignore] // This is ignored as it needs to call out to the web. This needs to move into a nightly regression pack
+        //public void VersionCheckerStartPageUriExpectedChecksOnlineForLatestVersion()
+        //{
+        //    Version expected;
+        //    using(var client = new WebClient())
+        //    {
+        //        var version = client.DownloadString(StringResources.Warewolf_Version);
+        //        expected = new Version(version);
+        //    }
+        //    var checker = new VersionChecker();
+        //    var actual = checker.Latest;
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         #region IsLastest Tests
 

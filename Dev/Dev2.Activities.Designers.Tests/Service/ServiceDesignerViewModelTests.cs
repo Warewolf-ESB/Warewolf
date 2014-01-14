@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -21,14 +22,15 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Service
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServiceDesignerViewModelTests
     {
         #region CTOR
@@ -76,12 +78,12 @@ namespace Dev2.Activities.Designers.Tests.Service
             new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
-            
+
             // No exception it passed ;)
         }
 
 
-        
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -90,8 +92,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeStoredProc", expectedImageSource: "DatabaseService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeWebService", expectedImageSource: "WebService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Plugin", expectedImageSource: "PluginService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri:"");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri:"x");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri: "");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri: "x");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "RemoteService", expectedImageSource: "RemoteWarewolf-32");
 
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "BizRule", expectedImageSource: "ToolService-32");
@@ -240,8 +242,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.ShowLarge);
             Assert.IsFalse(IsItemDragged.Instance.IsDragged);
-        }     
-        
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -598,7 +600,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
 
             // No exception, all is good ;)
-           
+
         }
 
 
@@ -714,12 +716,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = xml };
-            IErrorInfo[] resourceErrors = { worstError,new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml }, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml } };
+            IErrorInfo[] resourceErrors = { worstError, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml }, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml } };
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, resourceErrors);
             vm.RootModel.AddError(resourceErrors[0]);
             vm.RootModel.AddError(resourceErrors[1]);
             //-----------------------------Assert Preconditions----------------------------------------------------------------------------
-            Assert.AreEqual(3,vm.RootModel.Errors.Count);
+            Assert.AreEqual(3, vm.RootModel.Errors.Count);
             //-----------------------------Execute-----------------------------------------------------------------------------------------
             vm.DesignValidationErrors.RemoveAt(2);
             vm.DesignValidationErrors.RemoveAt(1);
@@ -826,7 +828,6 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_DesignValidationService")]
         [Description("Activity must receive memo's that match it's instance ID (unique ID).")]
         [Owner("Trevor Williams-Ros")]
-        //[Ignore] // Not valid for now - ServiceDesignerViewModel is never alive to receive events!
         // ReSharper disable InconsistentNaming
         public void ServiceDesignerViewModel_DesignValidation_ForThisActivity_Received()
         // ReSharper restore InconsistentNaming
@@ -1022,7 +1023,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             model.Setup(m => m.ID).Returns(resourceID);
             model.Setup(m => m.Environment).Returns(environment.Object);
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
-            model.Setup(m => m.HasErrors).Returns(()=>model.Object.Errors.Count>0);
+            model.Setup(m => m.HasErrors).Returns(() => model.Object.Errors.Count > 0);
             model.SetupProperty(m => m.IsValid);
             model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2;
@@ -6,8 +8,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -17,7 +17,8 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -115,19 +116,19 @@ namespace ActivityUnitTests.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , ""
-                         ,""
                          , ""
-                         , "Seconds"                       
+                         , ""
+                         , "Seconds"
                          , "[[MyTestResult]]");
 
             IDSFDataObject result = ExecuteProcess();
 
             string actual;
             string error;
-            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);           
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
 
-            Assert.AreEqual("0",actual);
-        }       
+            Assert.AreEqual("0", actual);
+        }
 
         #endregion Positive Test Cases
 
@@ -149,7 +150,7 @@ namespace ActivityUnitTests.ActivityTests
 
             var res = Compiler.HasErrors(result.DataListID);
             DataListRemoval(result.DataListID);
-            
+
             Assert.IsTrue(res);
         }
 
@@ -199,66 +200,6 @@ namespace ActivityUnitTests.ActivityTests
 
             Assert.IsTrue(res);
         }
-
-        //[TestMethod]
-        //[Ignore]
-        //Because hugs said so.
-        //public void Blank_Input1_Expected_NoError()
-        //{
-        //    var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
-        //    IDSFDataObject result;
-        //    using(ShimsContext.Create())
-        //    {
-        //        System.Fakes.ShimDateTime.NowGet = () => dateTime;
-        //        SetupArguments(
-        //            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-        //            , ActivityStrings.DateTimeDiff_DataListShape
-        //            , ""
-        //            , "2012/10/01 07:15:50 AM"
-        //            , "yyyy/mm/dd 12h:min:ss am/pm"
-        //            , "Days"
-        //            , "[[Result]]"
-        //            );
-
-        //        result = ExecuteProcess();
-        //    }
-        //    string expected = "0";
-        //    string actual = string.Empty;
-        //    string error = string.Empty;
-        //    GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
-
-        //    Assert.AreEqual(expected, actual);
-        //}
-
-        //[TestMethod]
-        //[Ignore]
-        //Because hugs said so.
-        //public void Blank_Input2_Expected_Error()
-        //{
-        //    var dateTime = new DateTime(2012, 10, 01, 7, 15, 50);
-        //    IDSFDataObject result;
-        //    using(ShimsContext.Create())
-        //    {
-        //        System.Fakes.ShimDateTime.NowGet = () => dateTime;
-        //        SetupArguments(
-        //            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
-        //            , ActivityStrings.DateTimeDiff_DataListShape
-        //            , "2012/10/01 07:15:50 AM"
-        //            , ""
-        //            , "yyyy/mm/dd 12h:min:ss am/pm"
-        //            , "Days"
-        //            , "[[Result]]"
-        //            );
-
-        //        result = ExecuteProcess();
-        //    }
-        //    string expected = "0";
-        //    string actual = string.Empty;
-        //    string error = string.Empty;
-        //    GetScalarValueFromDataList(result.DataListID, "Result", out actual, out error);
-
-        //    Assert.AreEqual(expected, actual);
-        //}
 
         [TestMethod]
         public void ErrorHandeling_Expected_ErrorTags()
@@ -352,7 +293,7 @@ namespace ActivityUnitTests.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(4,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(4, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -365,7 +306,7 @@ namespace ActivityUnitTests.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests

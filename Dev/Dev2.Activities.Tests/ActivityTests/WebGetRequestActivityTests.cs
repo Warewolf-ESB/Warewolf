@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -18,8 +19,8 @@ namespace ActivityUnitTests.ActivityTest
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    //[Ignore] //Does not work on server
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebGetRequestActivityTests : BaseActivityUnitTest
     {
         private TestContext _testContextInstance;
@@ -87,7 +88,7 @@ namespace ActivityUnitTests.ActivityTest
             //------------Execute Test---------------------------
             var actual = activity.WebRequestInvoker;
             //------------Assert Results-------------------------
-            Assert.AreEqual(webRequestInvoker,actual);
+            Assert.AreEqual(webRequestInvoker, actual);
             Assert.IsNotInstanceOfType(actual, typeof(WebRequestInvoker));
         }
 
@@ -150,7 +151,7 @@ namespace ActivityUnitTests.ActivityTest
             StringAssert.Contains(errorString, message);
         }
 
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WebGetRequestActivity_Errors")]
@@ -239,7 +240,7 @@ namespace ActivityUnitTests.ActivityTest
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
-            Assert.AreEqual(expectedResult,actual);
+            Assert.AreEqual(expectedResult, actual);
         }
 
         [TestMethod]
@@ -263,7 +264,7 @@ namespace ActivityUnitTests.ActivityTest
             {
                 Action = activity
             };
-            TestData = string.Format("<root><Urls><U1>{0}</U1></Urls><Urls><U1>{1}</U1></Urls><Urls><U1>{2}</U1></Urls></root>", url1,url2,url3);
+            TestData = string.Format("<root><Urls><U1>{0}</U1></Urls><Urls><U1>{1}</U1></Urls><Urls><U1>{2}</U1></Urls></root>", url1, url2, url3);
             CurrentDl = "<ADL><Res><R1></R1></Res><Urls><U1></U1></Urls></ADL>";
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
@@ -273,9 +274,9 @@ namespace ActivityUnitTests.ActivityTest
             GetRecordSetFieldValueFromDataList(result.DataListID, "Res", "R1", out actual, out error);
             mock.Verify(sender => sender.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>()), Times.Exactly(3));
             List<IBinaryDataListItem> resultData = actual.ToList();
-            Assert.AreEqual(3,resultData.Count);
+            Assert.AreEqual(3, resultData.Count);
             Assert.AreEqual("Request Made 1", resultData[0].TheValue);
-            Assert.AreEqual("Res(1).R1",resultData[0].DisplayValue);
+            Assert.AreEqual("Res(1).R1", resultData[0].DisplayValue);
             Assert.AreEqual("Request Made 2", resultData[1].TheValue);
             Assert.AreEqual("Res(2).R1", resultData[1].DisplayValue);
             Assert.AreEqual("Request Made 3", resultData[2].TheValue);
@@ -299,7 +300,7 @@ namespace ActivityUnitTests.ActivityTest
             activity.Method = "GET";
             activity.Url = "[[Urls(*).U1]]";
             activity.Result = "[[Res(*).R1]]";
-            TestData = string.Format("<root><Urls><U1>{0}</U1></Urls><Urls><U1>{1}</U1></Urls><Urls><U1>{2}</U1></Urls></root>", url1,url2,url3);
+            TestData = string.Format("<root><Urls><U1>{0}</U1></Urls><Urls><U1>{1}</U1></Urls><Urls><U1>{2}</U1></Urls></root>", url1, url2, url3);
             CurrentDl = "<ADL><Res><R1></R1></Res><Urls><U1></U1></Urls></ADL>";
             //------------Execute Test---------------------------
             List<DebugItem> inRes;
@@ -307,16 +308,16 @@ namespace ActivityUnitTests.ActivityTest
             CheckActivityDebugInputOutput(activity, CurrentDl,
                TestData, out inRes, out outRes);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,inRes.Count);
+            Assert.AreEqual(1, inRes.Count);
             DebugItem inputDebugItem = inRes[0];
             List<DebugItemResult> debugInputItemResults = inputDebugItem.ResultsList;
-            Assert.AreEqual(10,debugInputItemResults.Count);
-            Assert.AreEqual("URL To Execute",debugInputItemResults[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,debugInputItemResults[0].Type);
-            Assert.AreEqual("[[Urls(1).U1]]",debugInputItemResults[1].Value);
+            Assert.AreEqual(10, debugInputItemResults.Count);
+            Assert.AreEqual("URL To Execute", debugInputItemResults[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugInputItemResults[0].Type);
+            Assert.AreEqual("[[Urls(1).U1]]", debugInputItemResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputItemResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputItemResults[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputItemResults[2].Type);            
+            Assert.AreEqual(DebugItemResultType.Label, debugInputItemResults[2].Type);
             Assert.AreEqual(url1, debugInputItemResults[3].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputItemResults[3].Type);
 
@@ -334,11 +335,11 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(url3, debugInputItemResults[9].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugInputItemResults[9].Type);
 
-            Assert.AreEqual(3,outRes.Count);
+            Assert.AreEqual(3, outRes.Count);
             List<DebugItemResult> debugOutResults = outRes[0].ResultsList;
-            Assert.AreEqual(4,debugOutResults.Count);
-            Assert.AreEqual("1",debugOutResults[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,debugOutResults[0].Type);
+            Assert.AreEqual(4, debugOutResults.Count);
+            Assert.AreEqual("1", debugOutResults[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, debugOutResults[0].Type);
             Assert.AreEqual("[[Res(1).R1]]", debugOutResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutResults[2].Value);
@@ -355,8 +356,8 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutResults[2].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutResults[2].Type);
             Assert.AreEqual("", debugOutResults[3].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type); 
-            
+            Assert.AreEqual(DebugItemResultType.Value, debugOutResults[3].Type);
+
             debugOutResults = outRes[2].ResultsList;
             Assert.AreEqual(4, debugOutResults.Count);
             Assert.AreEqual("3", debugOutResults[0].Value);

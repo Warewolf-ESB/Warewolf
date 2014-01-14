@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
         #region Refresh Test Variables
 
         Mock<IEnvironmentModel> reMockEnvironmentModel;
-        Mock<IEnvironmentModel> reMockEnvironmentModel1;                
+        Mock<IEnvironmentModel> reMockEnvironmentModel1;
         Mock<IResourceRepository> reMockResourceRepository;
 
         #endregion
@@ -247,10 +247,10 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateResourceMessage_WhenNewCategory_Expects_CategoryAdded()
         {
-            ITreeNode updatedCategory = null;            
+            ITreeNode updatedCategory = null;
 
             Init(false, true);
-            ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);            
+            ITreeNode serviceTypeVM = vm.Root.FindChild(ResourceType.WorkflowService);
 
             mockResourceModel.Setup(r => r.Category).Returns("Testing5");
 
@@ -435,7 +435,7 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
             environment.Setup(env => env.Connection).Returns(mockConnection.Object);
-            new EnvironmentTreeViewModel(eventAggregator, vm.Root, environment.Object,AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            new EnvironmentTreeViewModel(eventAggregator, vm.Root, environment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(res => res.Category).Returns("Expected Category");
             newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
@@ -1499,42 +1499,42 @@ namespace Dev2.Core.Tests
         #endregion
 
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("NavigationViewModel_UpdateResource")]
-        [Ignore]
-        public void NavigationViewModel_UpdateResource_ServiceTypeFound_TreeViewModelItemWithActivityFullName()
-        {
-            //------------Setup for test--------------------------
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("NavigationViewModel_UpdateResource")]
+        //[Ignore]
+        //public void NavigationViewModel_UpdateResource_ServiceTypeFound_TreeViewModelItemWithActivityFullName()
+        //{
+        //    //------------Setup for test--------------------------
 
-            var eventPublisher = new Mock<IEventAggregator>();
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+        //    var eventPublisher = new Mock<IEventAggregator>();
+        //    var environmentRepository = new Mock<IEnvironmentRepository>();
+        //    var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
-            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+        //    var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
 
-            var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.Connection.Alias).Returns("Expected Environment");
-            env.Setup(e => e.Connection.AppServerUri).Returns(new Uri("http://10.0.0.1"));
-            env.Setup(e => e.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+        //    var env = new Mock<IEnvironmentModel>();
+        //    env.Setup(e => e.Connection.Alias).Returns("Expected Environment");
+        //    env.Setup(e => e.Connection.AppServerUri).Returns(new Uri("http://10.0.0.1"));
+        //    env.Setup(e => e.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(res => res.Category).Returns("Expected Category");
-            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
-            newResource.Setup(res => res.Environment).Returns(env.Object);
+        //    var newResource = new Mock<IContextualResourceModel>();
+        //    newResource.Setup(res => res.Category).Returns("Expected Category");
+        //    newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
+        //    newResource.Setup(res => res.Environment).Returns(env.Object);
 
-            //nvm.Root.Children.Add(new CategoryTreeViewModel("Workflows", ResourceType.WorkflowService, nvm.Root));
+        //    //nvm.Root.Children.Add(new CategoryTreeViewModel("Workflows", ResourceType.WorkflowService, nvm.Root));
 
-            new EnvironmentTreeViewModel(eventPublisher.Object, vm.Root, env.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+        //    new EnvironmentTreeViewModel(eventPublisher.Object, vm.Root, env.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
 
-            //------------Execute Test---------------------------
-            nvm.UpdateResource(newResource.Object);
+        //    //------------Execute Test---------------------------
+        //    nvm.UpdateResource(newResource.Object);
 
-            //------------Assert Results-------------------------
-            var workflowsNode = nvm.Root.Children[0];
-            var categoryNode = workflowsNode.Children[0];
-            var resourceNode = (ResourceTreeViewModel)categoryNode.Children[0];
-            Assert.IsNotNull(resourceNode.ActivityFullName);
-        }
+        //    //------------Assert Results-------------------------
+        //    var workflowsNode = nvm.Root.Children[0];
+        //    var categoryNode = workflowsNode.Children[0];
+        //    var resourceNode = (ResourceTreeViewModel)categoryNode.Children[0];
+        //    Assert.IsNotNull(resourceNode.ActivityFullName);
+        //}
     }
 }

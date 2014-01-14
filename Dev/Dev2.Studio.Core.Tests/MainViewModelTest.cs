@@ -94,15 +94,15 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(_mainViewModel.SettingsCommand.CanExecute(null));
         }
 
-        [TestMethod]
-        [Ignore] //Settings not implemented at the moment
-        public void SettingsCommandCreatesSettingsWorkSurfaceContext()
-        {
-            CreateFullExportsAndVm();
-            _mainViewModel.SettingsCommand.Execute(null);
-            var ctx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(ctx.WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Settings);
-        }
+        //[TestMethod]
+        //[Ignore] //Settings not implemented at the moment
+        //public void SettingsCommandCreatesSettingsWorkSurfaceContext()
+        //{
+        //    CreateFullExportsAndVm();
+        //    _mainViewModel.SettingsCommand.Execute(null);
+        //    var ctx = _mainViewModel.ActiveItem;
+        //    Assert.IsTrue(ctx.WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Settings);
+        //}
 
         #region Constructor
 
@@ -980,25 +980,25 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
         }
 
-        [TestMethod]
-        [Ignore] // Settings not implemented at the moment
-        public void SettingsSaveCancelMessageExpectsPreviousContextActive()
-        {
-            CreateFullExportsAndVm();
-            var datalistchannelmock = new Mock<INetworkDataListChannel>();
-            datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-            _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-            _mainViewModel.SettingsCommand.Execute(null);
+        //[TestMethod]
+        //[Ignore] // Settings not implemented at the moment
+        //public void SettingsSaveCancelMessageExpectsPreviousContextActive()
+        //{
+        //    CreateFullExportsAndVm();
+        //    var datalistchannelmock = new Mock<INetworkDataListChannel>();
+        //    datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
+        //    _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
+        //    _mainViewModel.SettingsCommand.Execute(null);
 
-            var notActiveCtx = _mainViewModel.Items[0];
-            _mainViewModel.ActivateItem(notActiveCtx);
+        //    var notActiveCtx = _mainViewModel.Items[0];
+        //    _mainViewModel.ActivateItem(notActiveCtx);
 
-            var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
-            _mainViewModel.Handle(msg);
+        //    var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
+        //    _mainViewModel.Handle(msg);
 
-            var activeCtx = _mainViewModel.ActiveItem;
-            Assert.IsTrue(activeCtx.Equals(notActiveCtx));
-        }
+        //    var activeCtx = _mainViewModel.ActiveItem;
+        //    Assert.IsTrue(activeCtx.Equals(notActiveCtx));
+        //}
 
         [TestMethod]
         public void NewResourceCommandExpectsWebControllerDisplayDialogue()
@@ -1113,35 +1113,35 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
         }
 
-        [TestMethod]
-        [Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
-        //check this test again after navigation tree binds to resource catalog
-        public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
-        {
-            CreateFullExportsAndVm();
-            SetupForDelete();
+        //[TestMethod]
+        //[Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
+        ////check this test again after navigation tree binds to resource catalog
+        //public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
+        //{
+        //    CreateFullExportsAndVm();
+        //    SetupForDelete();
 
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => MakeMsg("<Result>Failure</Result>"));
+        //    _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => MakeMsg("<Result>Failure</Result>"));
 
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-        }
+        //    var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
+        //    _mainViewModel.Handle(msg);
+        //    _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+        //}
 
-        [TestMethod]
-        [Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
-        //check this test again after navigation tree binds to resource catalog
-        public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
-        {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var response = MakeMsg("<DataList>Invalid</DataList>");
-            _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
+        //[TestMethod]
+        //[Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
+        ////check this test again after navigation tree binds to resource catalog
+        //public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
+        //{
+        //    CreateFullExportsAndVm();
+        //    SetupForDelete();
+        //    var response = MakeMsg("<DataList>Invalid</DataList>");
+        //    _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
 
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-        }
+        //    var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
+        //    _mainViewModel.Handle(msg);
+        //    _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
+        //}
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()

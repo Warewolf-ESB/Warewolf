@@ -226,41 +226,41 @@ OS version : ");
             popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
        }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("FeedbackViewModel_GetDefaultMailClient")]
-        [Ignore]//testing environments need outlook installed
-        public void FeedbackViewModel_GetDefaultMailClient_OutlookIsInstalled_MailClientIsOutlook()
-        {
-            var mockSysInfo = new Mock<ISystemInfoService>();
-            mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("FeedbackViewModel_GetDefaultMailClient")]
+        //[Ignore]//testing environments need outlook installed
+        //public void FeedbackViewModel_GetDefaultMailClient_OutlookIsInstalled_MailClientIsOutlook()
+        //{
+        //    var mockSysInfo = new Mock<ISystemInfoService>();
+        //    mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+        //    ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
-            var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
+        //    var mockCommService = new Mock<ICommService<EmailCommMessage>>();
+        //    mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
-            var attacheFiles = new Dictionary<string, string>
-            {
-                { "RecordingLog", "RecordingLog.log" },
-                { "ServerLog", "ServerLog.log" },
-                { "StudioLog", "StudioLog.log" }
-            };
+        //    var attacheFiles = new Dictionary<string, string>
+        //    {
+        //        { "RecordingLog", "RecordingLog.log" },
+        //        { "ServerLog", "ServerLog.log" },
+        //        { "StudioLog", "StudioLog.log" }
+        //    };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+        //    var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
 
-            var popupController = new Mock<IBrowserPopupController>();
-            popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
-            feedbackViewModel.BrowserPopupController = popupController.Object;
-            var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
-            object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
+        //    var popupController = new Mock<IBrowserPopupController>();
+        //    popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
+        //    feedbackViewModel.BrowserPopupController = popupController.Object;
+        //    var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
+        //    object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
            
-            //Assert that the outlook is the default mail client only if its installed on the machine
-            if(isOutlookInstalled)
-            {
-                Assert.AreEqual("Microsoft Outlook", mailClient);
-            }
-        }
+        //    //Assert that the outlook is the default mail client only if its installed on the machine
+        //    if(isOutlookInstalled)
+        //    {
+        //        Assert.AreEqual("Microsoft Outlook", mailClient);
+        //    }
+        //}
 
         [TestMethod]
         public void FeedbackViewModelSendWithValidCommWithRecordingAttachmentExpectedSendMethodInvokedWithAttachment()
