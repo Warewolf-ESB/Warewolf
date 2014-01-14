@@ -12,12 +12,14 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// PBI : 1172
     /// Status : New
-    /// Prupose : To provide an activity that can write a file and its contents via FTP, FTPS and file system
+    /// Purpose : To provide an activity that can write a file and its contents via FTP, FTPS and file system
     /// </summary>
     public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite
     {
@@ -36,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = dataObject.DataListID;
             IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
@@ -63,7 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if(dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
 
@@ -102,7 +104,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return outputs;
-
         }
 
         WriteType GetCorrectWriteType()
@@ -127,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="DsfFileWrite" /> is append.
         /// </summary>
-        [Inputs("Append")]
+        [Inputs("Append")]        
         public bool Append
         {
             get;

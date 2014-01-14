@@ -9,14 +9,14 @@ namespace Dev2.Common.ExtMethods
     /// </summary>
     public static class StringExtension
     {
-        private static Regex _isAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
-        private static Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
-        private static Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static Regex _isBinary = new Regex("^[01]+$");
+        private static readonly Regex _isAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
+        private static readonly Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
+        private static readonly Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex _isBinary = new Regex("^[01]+$");
         public static Regex IsValidCategoryname = new Regex(@"[^a-zA-Z0-9._\s-]+$");
         public static Regex IsValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+$");
-        static Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
-        static Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
+        static readonly Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
+        static readonly Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
         public static string Escape(this string unescaped)
         {
@@ -40,7 +40,12 @@ namespace Dev2.Common.ExtMethods
                 doc.LoadXml(xml);
 
             }
-            return doc.DocumentElement.InnerText;
+            if(doc.DocumentElement != null)
+            {
+                return doc.DocumentElement.InnerText;
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
@@ -52,14 +57,12 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlpha(this string payload)
         {
-            bool result = false;
-
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return false;
             }
 
-            result = _isAlphaRegex.IsMatch(payload);
+            bool result = _isAlphaRegex.IsMatch(payload);
 
             return result;
         }
@@ -141,14 +144,12 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsEmail(this string payload)
         {
-            bool result = false;
-
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return false;
             }
 
-            result = _isEmailRegex.IsMatch(payload);
+            bool result = _isEmailRegex.IsMatch(payload);
 
             return result;
         }
@@ -178,10 +179,14 @@ namespace Dev2.Common.ExtMethods
             bool result = false;
             try
             {
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
                 Convert.FromBase64String(payload);
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
                 result = true;
             }
-            catch (Exception)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // if error is thrown we know it is not a valid base64 string
             }
@@ -201,7 +206,7 @@ namespace Dev2.Common.ExtMethods
 
             bool result = (_isHex1.IsMatch(payload) || _isHex2.IsMatch(payload));
 
-            if ((payload.Length % 2) != 0)
+            if((payload.Length % 2) != 0)
             {
                 result = false;
             }
@@ -247,7 +252,7 @@ namespace Dev2.Common.ExtMethods
             const string accellerator = "_";            // This is the default WPF accellerator symbol - used to be & in WinForms
 
             // If it already contains an accellerator, do nothing
-            if (input.Contains(accellerator)) return input;
+            if(input.Contains(accellerator)) return input;
 
             return accellerator + input;
         }

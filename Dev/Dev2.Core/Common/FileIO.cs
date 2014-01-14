@@ -55,7 +55,7 @@ namespace Dev2
         public string Delete(Uri path, string userName = "", string password = "")
         {
             dynamic returnData = new UnlimitedObject();
-            CreateProvider(path);
+            CreateProvider();
 
             try
             {
@@ -130,7 +130,7 @@ namespace Dev2
         public string Move(Uri sourcePath, Uri destinationPath, string userName = "", string password = "")
         {
             dynamic returnData = new UnlimitedObject();
-            CreateProvider(sourcePath);
+            CreateProvider();
 
             try
             {
@@ -179,7 +179,7 @@ namespace Dev2
         public string Copy(Uri sourcePath, Uri destinationPath, bool overWrite, string userName = "", string password = "")
         {
             dynamic returnData = new UnlimitedObject();
-            CreateProvider(sourcePath);
+            CreateProvider();
 
             try
             {
@@ -229,7 +229,7 @@ namespace Dev2
         public string CreateFileFromBase64String(string base64FileData, Uri destinationPath, string userName, string password)
         {
             dynamic returnData = new UnlimitedObject();
-            CreateProvider(destinationPath);
+            CreateProvider();
             try
             {
                 byte[] fileData = Convert.FromBase64String(base64FileData);
@@ -288,7 +288,7 @@ namespace Dev2
         public string GetFileInBase64String(Uri sourceFilePath, string userName, string password)
         {
             dynamic returnData = new UnlimitedObject();
-            CreateProvider(sourceFilePath);
+            CreateProvider();
             try
             {
                 var fileStream = _ioProvider.Get(sourceFilePath, userName, password);
@@ -305,7 +305,7 @@ namespace Dev2
         public Stream Get(string filePath, string userName = "", string password = "")
         {
             var fileUri = new Uri(filePath);
-            CreateProvider(fileUri);
+            CreateProvider();
             return _ioProvider.Get(fileUri, userName, password);
         }
         #endregion
@@ -314,7 +314,7 @@ namespace Dev2
 
         public string GetFilePathsFromDirectory(Uri directory, string userName, string password)
         {
-            CreateProvider(directory);
+            CreateProvider();
             dynamic returnData = new UnlimitedObject();
 
             try
@@ -414,16 +414,9 @@ namespace Dev2
         }
 
         #endregion
-        private void CreateProvider(Uri path)
+        private void CreateProvider()
         {
-            if(path.Scheme.Equals("ftp", StringComparison.CurrentCultureIgnoreCase) || path.Scheme.Equals("ftps", StringComparison.CurrentCultureIgnoreCase))
-            {
-                _ioProvider = new FTP();
-            }
-            else
-            {
-                _ioProvider = new FileSystem();
-            }
+            _ioProvider = new FileSystem();
         }
 
         #region Permissions

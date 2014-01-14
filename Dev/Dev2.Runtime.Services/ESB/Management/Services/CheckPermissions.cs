@@ -18,17 +18,26 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var result = new StringBuilder();
 
-            string username;
-            string path;
-            string password;
+            string username = string.Empty;
+            string path = string.Empty;
+            string password = string.Empty;
 
             StringBuilder tmp;
             values.TryGetValue("Username", out tmp);
-            username = tmp.ToString();
-            values.TryGetValue("Password", out tmp);
-            password = tmp.ToString();
-            values.TryGetValue("FilePath", out tmp);
-            path = tmp.ToString();
+            if(tmp != null)
+            {
+                username = tmp.ToString();
+                values.TryGetValue("Password", out tmp);
+                if(tmp != null)
+                {
+                    password = tmp.ToString();
+                    values.TryGetValue("FilePath", out tmp);
+                    if(tmp != null)
+                    {
+                        path = tmp.ToString();
+                    }
+                }
+            }
 
             if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(path))
             {

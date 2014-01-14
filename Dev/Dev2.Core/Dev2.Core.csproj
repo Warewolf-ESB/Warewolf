@@ -233,7 +233,6 @@
     <Compile Include="Common\FileIO.cs" />
     <Compile Include="InterfaceImplementors\DsfDataObject.cs" />
     <Compile Include="InterfaceImplementors\FileSystem.cs" />
-    <Compile Include="InterfaceImplementors\FTP.cs" />
     <Compile Include="Interfaces\DataListMergeFrequency.cs" />
     <Compile Include="Interfaces\IDSFDataObject.cs" />
     <Compile Include="Interfaces\IEsbChannel.cs" />

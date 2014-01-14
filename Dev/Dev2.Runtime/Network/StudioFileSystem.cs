@@ -55,9 +55,9 @@ namespace Dev2.DynamicServices
 
             List<string> actualEnsuredDirectories = new List<string>();
 
-            for(int i = 0; i < sourceDirectories.Count; i++)
+            foreach(string t in sourceDirectories)
             {
-                string currentDir = sourceDirectories[i];
+                string currentDir = t;
                 if(String.IsNullOrEmpty(currentDir)) continue;
 
                 try
@@ -98,7 +98,7 @@ namespace Dev2.DynamicServices
         public string GetRelativePath(string relativePath)
         {
             if(_rootDirectory == null) return relativePath;
-            string tempPath = "";
+            string tempPath;
 
             try
             {
@@ -106,7 +106,7 @@ namespace Dev2.DynamicServices
 
                 if(String.IsNullOrEmpty(tempPath))
                 {
-                    string fileName = null;
+                    string fileName;
 
                     try
                     {
@@ -119,7 +119,10 @@ namespace Dev2.DynamicServices
                     }
 
                     if(String.IsNullOrEmpty(fileName)) fileName = Path.GetDirectoryName(relativePath);
-                    tempPath = Path.Combine(_ensuredDirectories[1], fileName);
+                    if(fileName != null)
+                    {
+                        tempPath = Path.Combine(_ensuredDirectories[1], fileName);
+                    }
                 }
             }
             catch(Exception ex)
@@ -157,7 +160,8 @@ namespace Dev2.DynamicServices
 
                 if((isFile ? File.Exists(path) : Directory.Exists(path)))
                     return path;
-                else if(!isFile)
+
+                if(!isFile)
                     return null;
 
                 path = Path.GetFileName(path);
@@ -175,9 +179,12 @@ namespace Dev2.DynamicServices
 
                 string fileName = path;
 
-                for(int i = 0; i < _ensuredDirectories.Length; i++)
+                foreach(string t in _ensuredDirectories)
                 {
-                    path = Path.Combine(_ensuredDirectories[i], fileName);
+                    if(fileName != null)
+                    {
+                        path = Path.Combine(t, fileName);
+                    }
                     if(File.Exists(path)) return path;
                 }
 
@@ -189,7 +196,9 @@ namespace Dev2.DynamicServices
                 path = null;
             }
 
+            // ReSharper disable ExpressionIsAlwaysNull
             return path;
+            // ReSharper restore ExpressionIsAlwaysNull
         }
         #endregion
 

@@ -1,8 +1,8 @@
-﻿using Dev2.Common.ExtMethods;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Data.Operations
 {
@@ -17,7 +17,7 @@ namespace Dev2.Data.Operations
             int startIdx;
             #region Set the enums according to the strings
 
-            switch (firstOccurrence)
+            switch(firstOccurrence)
             {
                 case "First Occurrence":
                     occurrence = enIndexFinderOccurrence.FirstOccurrence;
@@ -32,7 +32,7 @@ namespace Dev2.Data.Operations
                     break;
             }
 
-            switch (direction)
+            switch(direction)
             {
                 case "Left to Right":
                     dir = enIndexFinderDirection.LeftToRight;
@@ -44,7 +44,7 @@ namespace Dev2.Data.Operations
             }
 
             startIndex = !string.IsNullOrWhiteSpace(startIndex) ? startIndex : "0";
-            if (!int.TryParse(startIndex, out startIdx))
+            if(!int.TryParse(startIndex, out startIdx))
             {
                 throw new Exception("The start index specified was not a number.");
             }
@@ -56,10 +56,10 @@ namespace Dev2.Data.Operations
 
         public IEnumerable<int> FindIndex(string stringToSearchIn, enIndexFinderOccurrence occurrence, string charsToSearchFor, enIndexFinderDirection direction, bool matchCase, int startIndex)
         {
-            IEnumerable<int> result = new []{-1};
-            
+            IEnumerable<int> result = new[] { -1 };
 
-            if (!string.IsNullOrEmpty(stringToSearchIn) && !string.IsNullOrEmpty(charsToSearchFor))
+
+            if(!string.IsNullOrEmpty(stringToSearchIn) && !string.IsNullOrEmpty(charsToSearchFor))
             {
                 #region Calculate the index according to what the user enterd
 
@@ -67,7 +67,7 @@ namespace Dev2.Data.Operations
                 int firstIndex = stringToSearchIn.IndexOf(charsToSearchFor, startIndex, comparisonType);
                 int lastIndex = stringToSearchIn.LastIndexOf(charsToSearchFor, stringToSearchIn.Length - 1, comparisonType);
 
-                if (direction == enIndexFinderDirection.RightToLeft)
+                if(direction == enIndexFinderDirection.RightToLeft)
                 {
                     result = RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
                                                     comparisonType);
@@ -90,44 +90,44 @@ namespace Dev2.Data.Operations
         private IEnumerable<int> RightToLeftIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
             int index = -1;
-            IEnumerable<int> result = new int[0];
-            switch (occurrence)
+            IEnumerable<int> result;
+            switch(occurrence)
             {
                 case enIndexFinderOccurrence.FirstOccurrence:
-                    if (lastIndex != -1)
+                    if(lastIndex != -1)
                     {
                         index = stringToSearchIn.Length - lastIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
-                break;
+                    break;
 
                 case enIndexFinderOccurrence.LastOccurrence:
-                    if (firstIndex != -1)
+                    if(firstIndex != -1)
                     {
                         index = stringToSearchIn.Length - firstIndex - (charsToSearchFor.Length - 1);
                     }
                     result = new[] { index };
-                break;
+                    break;
 
                 case enIndexFinderOccurrence.AllOccurrences:
                     List<int> foundIndexes = new List<int>();
                     stringToSearchIn = stringToSearchIn.ReverseString();
                     int currentIndex = firstIndex;
-                    while (currentIndex != -1 && currentIndex != stringToSearchIn.Length)
+                    while(currentIndex != -1 && currentIndex != stringToSearchIn.Length)
                     {
                         currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex, comparisonType);
-                        if (currentIndex != -1)
+                        if(currentIndex != -1)
                         {
                             currentIndex++;
                             foundIndexes.Add(currentIndex);
                         }
                     }
                     result = foundIndexes.ToArray();
-                break;
+                    break;
 
                 default:
                     throw new Exception("Error In Dev2IndexFinder");
-                
+
             }
             return result;
         }
@@ -135,11 +135,11 @@ namespace Dev2.Data.Operations
         private IEnumerable<int> LeftToRightIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
             int index = -1;
-            IEnumerable<int> result = new int[0];
-            switch (occurrence)
+            IEnumerable<int> result;
+            switch(occurrence)
             {
                 case enIndexFinderOccurrence.FirstOccurrence:
-                    if (firstIndex != -1)
+                    if(firstIndex != -1)
                     {
                         index = firstIndex + 1;
                     }
@@ -147,7 +147,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 case enIndexFinderOccurrence.LastOccurrence:
-                    if (lastIndex != -1)
+                    if(lastIndex != -1)
                     {
                         index = lastIndex + 1;
                     }
@@ -155,16 +155,16 @@ namespace Dev2.Data.Operations
                     break;
 
                 case enIndexFinderOccurrence.AllOccurrences:
-                    List<int> foundIndexes = new List<int>();
-                    if (firstIndex != -1)
+                    List<int> foundIndexes;
+                    if(firstIndex != -1)
                     {
                         foundIndexes = new List<int> { firstIndex + 1 };
                         int currentIndex = firstIndex;
-                        while (currentIndex != -1)
+                        while(currentIndex != -1)
                         {
 
                             currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex + 1, comparisonType);
-                            if (currentIndex != -1)
+                            if(currentIndex != -1)
                             {
                                 foundIndexes.Add(currentIndex + 1);
                             }
@@ -174,13 +174,13 @@ namespace Dev2.Data.Operations
                     {
                         foundIndexes = new List<int> { firstIndex };
                     }
-                    
+
                     result = foundIndexes.ToArray();
-                break;
+                    break;
 
                 default:
                     throw new Exception("Error In Dev2IndexFinder");
-                
+
             }
             return result;
         }

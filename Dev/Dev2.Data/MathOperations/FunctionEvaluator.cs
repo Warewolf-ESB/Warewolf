@@ -1,13 +1,13 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Parsing.Intellisense;
+using System.Text;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Parsing;
-using System.Parsing.Intellisense;
-using System.Text;
 
 namespace Dev2.MathOperations
 {
@@ -15,7 +15,7 @@ namespace Dev2.MathOperations
     {
 
         #region Private Members
-        private IDev2CalculationManager _manager;
+        private readonly IDev2CalculationManager _manager;
 
         #endregion Private Members
 
@@ -61,7 +61,7 @@ namespace Dev2.MathOperations
 
             if(builder.EventLog.HasEventLogs)
             {
-                IList<string> err = EvaluateEventLogs(builder.EventLog.GetEventLogs(), expression);
+                IEnumerable<string> err = EvaluateEventLogs(expression);
 
                 foreach(string e in err)
                 {
@@ -84,8 +84,8 @@ namespace Dev2.MathOperations
                 do
                 {
                     if(startedIteration)
-                        for(int i = 0; i < allNodes.Count; i++)
-                            allNodes[i].EvaluatedValue = null;
+                        foreach(Node t in allNodes)
+                            t.EvaluatedValue = null;
 
                     for(int i = allNodes.Count - 1; i >= 0; i--)
                     {
@@ -111,8 +111,8 @@ namespace Dev2.MathOperations
                             // this way we fetch the correct field with the data...
                             IBinaryDataListEntry e = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
                             allErrors.MergeErrors(errors);
-                            string error = string.Empty;
-                            refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue; ;
+                            string error;
+                            refNode.EvaluatedValue = e.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
                             allErrors.AddError(error);
 
                             if(pendingIterationRecordSet)
@@ -121,7 +121,7 @@ namespace Dev2.MathOperations
 
                                 if(refNode.NestedIdentifier != null)
                                 {
-                                    allErrors.AddError("An error occured while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
+                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Iteration operator can not be used with nested recordset identifiers.");
                                     break;
                                 }
 
@@ -148,18 +148,18 @@ namespace Dev2.MathOperations
                             DatalistReferenceNode refNode = allNodes[i] as DatalistReferenceNode;
                             IBinaryDataListEntry entry = compiler.Evaluate(curDLID, enActionType.User, refNode.GetRepresentationForEvaluation(), false, out errors);
                             allErrors.MergeErrors(errors);
-                            string error = string.Empty;
 
                             if(entry.IsRecordset)
                             {
+                                string error;
                                 refNode.EvaluatedValue = entry.TryFetchLastIndexedRecordsetUpsertPayload(out error).TheValue;
-                                var testParse = new double();
+                                double testParse;
                                 if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
                             }
                             else
                             {
                                 refNode.EvaluatedValue = entry.FetchScalar().TheValue;
-                                var testParse = new double();
+                                double testParse;
                                 if(!Double.TryParse(refNode.EvaluatedValue, out testParse)) refNode.EvaluatedValue = String.Concat("\"", refNode.EvaluatedValue, "\"");//Bug 6438
                             }
                         }
@@ -169,13 +169,13 @@ namespace Dev2.MathOperations
 
                             if(!(biNode.Left is DatalistRecordSetFieldNode))
                             {
-                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
+                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
                                 break;
                             }
 
                             if(!(biNode.Right is DatalistRecordSetFieldNode))
                             {
-                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator can only be used with record set fields.");
+                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator can only be used with record set fields.");
                                 break;
                             }
 
@@ -187,7 +187,7 @@ namespace Dev2.MathOperations
 
                             if(!String.Equals(evaluateFieldLeft, evaluateFieldRight, StringComparison.Ordinal))
                             {
-                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record set fields.");
+                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record set fields.");
                                 break;
                             }
 
@@ -198,13 +198,13 @@ namespace Dev2.MathOperations
 
                             if(!String.Equals(evaluateRecordLeft, evaluateRecordRight, StringComparison.Ordinal))
                             {
-                                allErrors.AddError("An error occured while parsing { " + expression + " } Range operator must be used with the same record sets.");
+                                allErrors.AddError("An error occurred while parsing { " + expression + " } Range operator must be used with the same record sets.");
                                 break;
                             }
 
                             int totalRecords = 0;
                             IBinaryDataList bdl = compiler.FetchBinaryDataList(curDLID, out errors);
-                            string error = string.Empty;
+                            string error;
                             IBinaryDataListEntry entry;
                             if(bdl.TryGetEntry(evaluateRecordLeft, out entry, out error))
                             {
@@ -216,14 +216,14 @@ namespace Dev2.MathOperations
                             string rawParamRight = fieldRight.RecordSet.Parameter.GetEvaluatedValue();
                             rawParamRight = rawParamRight.Length == 2 ? "" : rawParamRight.Substring(1, rawParamRight.Length - 2);
 
-                            int startIndex = 0;
-                            int endIndex = 0;
+                            int startIndex;
+                            int endIndex;
 
                             if(!String.IsNullOrEmpty(rawParamLeft))
                             {
                                 if(!Int32.TryParse(rawParamLeft, out startIndex) || startIndex <= 0)
                                 {
-                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
                                     break;
                                 }
                             }
@@ -236,13 +236,13 @@ namespace Dev2.MathOperations
                             {
                                 if(!Int32.TryParse(rawParamRight, out endIndex) || endIndex <= 0)
                                 {
-                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
+                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset index must be a positive whole number that is greater than zero.");
                                     break;
                                 }
 
                                 if(endIndex > totalRecords)
                                 {
-                                    allErrors.AddError("An error occured while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
+                                    allErrors.AddError("An error occurred while parsing { " + expression + " } Recordset end index must be a positive whole number that is less than the number of entries in the recordset.");
                                     break;
                                 }
                             }
@@ -307,19 +307,19 @@ namespace Dev2.MathOperations
 
             public string GetEvaluatedValue(Node node)
             {
-                return _index.ToString();
+                return _index.ToString(CultureInfo.InvariantCulture);
             }
 
             public string GetRepresentationForEvaluation(Node node)
             {
-                return _index.ToString();
+                return _index.ToString(CultureInfo.InvariantCulture);
             }
         }
 
-        private IList<string> EvaluateEventLogs(ParseEventLogEntry[] parseEventLogEntry, string expression)
+        private IEnumerable<string> EvaluateEventLogs(string expression)
         {
             IList<string> result = new List<string>();
-            result.Add("An error occured while parsing { " + expression + " } It appears to be malformed");
+            result.Add("An error occurred while parsing { " + expression + " } It appears to be malformed");
             return result;
         }
 
@@ -327,8 +327,6 @@ namespace Dev2.MathOperations
         /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
         //  If something goes wrong during the execution, the error field will be populated and the method will
         //  return false.
-        /// <summary>
-        /// Tries the evaluate function.
         /// </summary>
         /// <param name="expressionTO">The expression automatic.</param>
         /// <param name="evaluation">The evaluation.</param>
@@ -347,7 +345,6 @@ namespace Dev2.MathOperations
                     CalculationValue calcVal = _manager.CalculateFormula(expressionTO.Function);
                     evaluation = calcVal.GetResolvedValue().ToString();
                     isSuccessfulEvaluation = true;
-                    calcVal = null;
                 }
                 catch(Exception ex)
                 {
@@ -417,28 +414,25 @@ namespace Dev2.MathOperations
             else
             {
                 error = "Nothing to Evaluate";
-                evaluationState = false;
             }
 
             return evaluationState;
         }
 
-
-        /// <summary>
-        /// This is to cater for range operations 
         // It expects a List of Type To (either strings or any type of object that is IComparable).
         // And evaluates the whole list against the expression.
+        /// <summary>
+        /// This is to cater for range operations 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <param name="expression"></param>
-        /// <param name="evalution"></param>
+        /// <param name="evaluation"></param>
         /// <param name="error"></param>
         /// <returns></returns>
-
         public bool TryEvaluateFunction<T>(List<T> value, string expression, out string evaluation, out string error) where T : IConvertible
         {
-            bool evaluationState = false;
+            bool evaluationState;
             string evalString = string.Concat(expression, "(");
             evaluation = string.Empty;
             error = string.Empty;
@@ -449,15 +443,8 @@ namespace Dev2.MathOperations
             }
             else if(!string.IsNullOrEmpty(expression))
             {
-                foreach(T val in value)
-                {
-                    string eval = val.ToString();
-                    if(!string.IsNullOrEmpty(eval))
-                    {
-                        evalString += string.Concat(eval, ",");
-                    }
-                }
-                evalString = evalString.Remove(evalString.LastIndexOf(","), 1);
+                evalString = value.Select(val => val.ToString(CultureInfo.InvariantCulture)).Where(eval => !string.IsNullOrEmpty(eval)).Aggregate(evalString, (current, eval) => current + string.Concat(eval, ","));
+                evalString = evalString.Remove(evalString.LastIndexOf(",", StringComparison.Ordinal), 1);
                 evalString = string.Concat(evalString, ")");
                 try
                 {
@@ -485,7 +472,7 @@ namespace Dev2.MathOperations
 
         public bool TryEvaluateAtomicFunction(string expression, out string evaluation, out string error)
         {
-            bool evaluationState = false;
+            bool evaluationState;
             error = String.Empty;
             evaluation = String.Empty;
             if(!(String.IsNullOrEmpty(expression)))
@@ -517,9 +504,9 @@ namespace Dev2.MathOperations
         #region Private Methods
         private string InternalEval(string res)
         {
-            string calcResult = string.Empty;
-            string error = string.Empty;
-            string result = string.Empty;
+            string calcResult;
+            string error;
+            string result;
 
             TryEvaluateFunction(res, out calcResult, out error);
 

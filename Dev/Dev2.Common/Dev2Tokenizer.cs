@@ -19,35 +19,35 @@ namespace Dev2.Common
         private int _startIdx;
         private bool _hasMoreOps;
 
-        private bool _useEnumerator;
+        private readonly bool _useEnumerator;
 
         private bool _disposing;
 
         internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
         {
             // only build if we are using a non-single token op set ;)
-            
+
             _ops = ops;
             _isReversed = reversed;
             _useEnumerator = CanUseEnumerator();
             _masterLen = candiateString.Length;
 
-            // we need the char array :( - non optomized
+            // we need the char array :( - non optimized
             if(!_useEnumerator)
             {
                 _tokenParts = candiateString.ToCharArray();
             }
             else
             {
-                _charEnumerator = candiateString.GetEnumerator();    
+                _charEnumerator = candiateString.GetEnumerator();
             }
-            
+
 
             _opPointer = 0;
             _hasMoreOps = true;
-            
 
-            if (!_isReversed)
+
+            if(!_isReversed)
             {
                 _startIdx = 0;
             }
@@ -72,7 +72,7 @@ namespace Dev2.Common
             if(_ops != null)
             {
                 // are all the ops token based?!
-                if(_ops.Count( op=> op.CanUseEnumerator(_isReversed)) == _ops.Count)
+                if(_ops.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count)
                 {
                     result = true;
                 }
@@ -88,7 +88,7 @@ namespace Dev2.Common
         {
             _opPointer++;
 
-            if (_opPointer >= _ops.Count)
+            if(_opPointer >= _ops.Count)
             {
                 _opPointer = 0;
             }
@@ -100,7 +100,7 @@ namespace Dev2.Common
         /// <param name="newOffSet">The new off set.</param>
         private void MoveStartIndex(int newOffSet)
         {
-            if (!_isReversed)
+            if(!_isReversed)
             {
                 _startIdx += newOffSet;
             }
@@ -156,7 +156,9 @@ namespace Dev2.Common
                         result.Append(_charEnumerator.Current);
                     }
                 }
-                catch (Exception)
+                // ReSharper disable EmptyGeneralCatchClause
+                catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // _charEnumerator will return null reference exception when done ;)
                 }
@@ -182,12 +184,12 @@ namespace Dev2.Common
         }
 
         /// <summary>
-        /// Nexts the token.
+        /// Next the token.
         /// </summary>
         /// <returns></returns>
         public string NextToken()
         {
-            string result = string.Empty;
+            string result;
 
             try
             {
@@ -209,7 +211,9 @@ namespace Dev2.Common
             catch
             {
                 // error, return remaining portion of the string
+                // ReSharper disable RedundantAssignment
                 result = RemainderToString();
+                // ReSharper restore RedundantAssignment
                 throw;
             }
 
@@ -224,9 +228,9 @@ namespace Dev2.Common
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposing)
+            if(!_disposing)
             {
-                if (disposing)
+                if(disposing)
                 {
                     _charEnumerator.Dispose();
                 }

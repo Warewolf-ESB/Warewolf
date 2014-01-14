@@ -9,6 +9,7 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.PathOperations.Interfaces;
 using Microsoft.Win32.SafeHandles;
 
 namespace Dev2.PathOperations
@@ -50,11 +51,6 @@ namespace Dev2.PathOperations
         //This parameter causes LogonUser to create a primary token. 
         const int LOGON32_LOGON_INTERACTIVE = 2;
 
-        // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
-        // Make sure to replace Uri with IActivity references
-
-        public Dev2FileSystemProvider() { }
-
         public IActivityIOPath IOPath
         {
             get;
@@ -64,7 +60,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public Stream Get(IActivityIOPath path)
         {
-            Stream result = null;
+            Stream result;
 
             if(!RequiresAuth(path))
             {
@@ -79,11 +75,11 @@ namespace Dev2.PathOperations
             }
             else
             {
-                // handle UNC path
-                SafeTokenHandle safeTokenHandle;
-
                 try
                 {
+                    // handle UNC path
+                    SafeTokenHandle safeTokenHandle;
+
                     string user = ExtractUserName(path);
                     string domain = ExtractDomain(path);
                     bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
@@ -135,7 +131,7 @@ namespace Dev2.PathOperations
                     dst = ActivityIOFactory.CreatePathFromString(WhereToPut + "\\" + dst.Path, dst.Username, dst.Password);
                 }
             }
-            
+
             int result = -1;
 
             if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
@@ -147,11 +143,10 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-
                     try
                     {
+                        // handle UNC path
+                        SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
@@ -212,18 +207,13 @@ namespace Dev2.PathOperations
                         DirectoryHelper.CleanUp(src.Path);
                         result = true;
                     }
-                    else
-                    {
-                        result = false;
-                    }
                 }
                 else
                 {
-                    // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-
                     try
                     {
+                        // handle UNC path
+                        SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                         if(loginOk)
@@ -283,11 +273,10 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-
                     try
                     {
+                        // handle unc
+                        SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
@@ -336,7 +325,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
         {
-            return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders); 
+            return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
         }
 
         public string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
@@ -347,7 +336,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
         {
-            bool result = false;
+            bool result;
 
             if(!RequiresAuth(dst))
             {
@@ -362,11 +351,11 @@ namespace Dev2.PathOperations
             }
             else
             {
-                // handle UNC path
-                SafeTokenHandle safeTokenHandle;
 
                 try
                 {
+                    // handle UNC path
+                    SafeTokenHandle safeTokenHandle;
                     bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
@@ -432,11 +421,10 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
-
                     try
                     {
+                        // handle UNC path
+                        SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
 
@@ -484,13 +472,12 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    // handle UNC path
-                    SafeTokenHandle safeTokenHandle;
 
                     try
                     {
+                        // handle UNC path
+                        SafeTokenHandle safeTokenHandle;
                         bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
 
                         if(loginOk)
                         {
@@ -589,7 +576,7 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {
-            return ListDirectoriesAccordingToType(src, ReadTypes.Folders);    
+            return ListDirectoriesAccordingToType(src, ReadTypes.Folders);
         }
 
         /// <summary>
@@ -598,7 +585,7 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
         {
-            return ListDirectoriesAccordingToType(src,ReadTypes.Files);            
+            return ListDirectoriesAccordingToType(src, ReadTypes.Files);
         }
 
         #region Private Methods
@@ -610,11 +597,11 @@ namespace Dev2.PathOperations
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
         public extern static bool CloseHandle(IntPtr handle);
 
-        private string ExtractUserName(IActivityIOPath path)
+        private string ExtractUserName(IPathAuth path)
         {
             string result = string.Empty;
 
-            int idx = path.Username.IndexOf("\\");
+            int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
             if(idx > 0)
             {
@@ -626,9 +613,13 @@ namespace Dev2.PathOperations
 
         private string ExtractDomain(IActivityIOPath path)
         {
+            if(path == null)
+            {
+                throw new ArgumentNullException("path");
+            }
             string result = string.Empty;
 
-            int idx = path.Username.IndexOf("\\");
+            int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
             if(idx > 0)
             {
@@ -640,9 +631,7 @@ namespace Dev2.PathOperations
 
         private bool FileExist(IActivityIOPath path)
         {
-            bool result = false;
-
-            result = File.Exists(path.Path);
+            bool result = File.Exists(path.Path);
 
             return result;
         }
@@ -655,18 +644,12 @@ namespace Dev2.PathOperations
 
         private bool RequiresAuth(IActivityIOPath path)
         {
-
-            bool result = false;
-
-            if(path.Username != string.Empty)
-            {
-                result = true;
-            }
+            bool result = path.Username != string.Empty;
 
             return result;
         }
 
-        private IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src,ReadTypes type)
+        private IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
         {
             IList<IActivityIOPath> result = new List<IActivityIOPath>();
 
@@ -682,13 +665,13 @@ namespace Dev2.PathOperations
                 try
                 {
 
-                    IEnumerable<string> dirs = null;
+                    IEnumerable<string> dirs;
 
                     if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
                     {
                         if(Directory.Exists(path))
                         {
-                            dirs = GetDirectoriesForType(path,string.Empty,type);
+                            dirs = GetDirectoriesForType(path, string.Empty, type);
                         }
                         else
                         {
@@ -697,11 +680,11 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        // we have a wildchar path ;)
+                        // we have a wild-char path ;)
                         string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
                         string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
-                        dirs = GetDirectoriesForType(baseDir, pattern,type);
+                        dirs = GetDirectoriesForType(baseDir, pattern, type);
                     }
 
                     if(dirs != null)
@@ -719,11 +702,11 @@ namespace Dev2.PathOperations
             }
             else
             {
-                // handle UNC path
-                SafeTokenHandle safeTokenHandle;
 
                 try
                 {
+                    // handle UNC path
+                    SafeTokenHandle safeTokenHandle;
                     bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
 
                     if(loginOk)
@@ -739,19 +722,19 @@ namespace Dev2.PathOperations
                                 try
                                 {
 
-                                    IEnumerable<string> dirs = null;
+                                    IEnumerable<string> dirs;
 
                                     if(!Dev2ActivityIOPathUtils.IsStarWildCard(path))
                                     {
-                                        dirs = GetDirectoriesForType(path,string.Empty,type);
+                                        dirs = GetDirectoriesForType(path, string.Empty, type);
                                     }
                                     else
                                     {
-                                        // we have a wildchar path ;)
+                                        // we have a wild-char path ;)
                                         string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
                                         string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
-                                        dirs = GetDirectoriesForType(baseDir, pattern,type);
+                                        dirs = GetDirectoriesForType(baseDir, pattern, type);
                                     }
 
                                     if(dirs != null)
@@ -788,16 +771,16 @@ namespace Dev2.PathOperations
 
             }
 
-            return result;   
+            return result;
         }
 
-        private IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
-        {            
+        private static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
+        {
             if(type == ReadTypes.Files)
             {
                 if(string.IsNullOrEmpty(pattern))
                 {
-                    return Directory.EnumerateFiles(path);    
+                    return Directory.EnumerateFiles(path);
                 }
                 return Directory.EnumerateFiles(path, pattern);
             }
@@ -814,7 +797,7 @@ namespace Dev2.PathOperations
             {
                 return Directory.EnumerateFileSystemEntries(path);
             }
-            return Directory.EnumerateFileSystemEntries(path, pattern);            
+            return Directory.EnumerateFileSystemEntries(path, pattern);
         }
 
         #endregion

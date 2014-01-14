@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Dev2.Converters.DateAndTime.Interfaces;
 
 namespace Dev2.Converters.DateAndTime
@@ -8,7 +9,7 @@ namespace Dev2.Converters.DateAndTime
     {
         #region Class Members
 
-        private static Dictionary<string, Func<DateTime, DateTime, double>> _outputFormats = new Dictionary<string, Func<DateTime, DateTime, double>>();
+        private static readonly Dictionary<string, Func<DateTime, DateTime, double>> _outputFormats = new Dictionary<string, Func<DateTime, DateTime, double>>();
         private DateTime _input1;
         private DateTime _input2;
 
@@ -34,17 +35,14 @@ namespace Dev2.Converters.DateAndTime
         public bool TryCompare(IDateTimeDiffTO dateTimeDiffTO, out string result, out string error)
         {
             //local variable declarations
-            bool noErrorOccured = true;
             result = "";
-            error = "";
-            //Creation of praser to get the DateTime Objects
+            //Creation of parser to get the DateTime Objects
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
             IDateTimeResultTO tmpRes;
-            Func<DateTime, DateTime, double> returnedFunc;
 
             //try create the first DateTime object
-            noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTO.Input1, dateTimeDiffTO.InputFormat, out tmpRes, out error);
-            if (noErrorOccured)
+            bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTO.Input1, dateTimeDiffTO.InputFormat, out tmpRes, out error);
+            if(noErrorOccured)
             {
                 //Set the first DateTime object
                 _input1 = tmpRes.ToDateTime();
@@ -53,21 +51,22 @@ namespace Dev2.Converters.DateAndTime
 
             }
 
-            if (noErrorOccured)
+            if(noErrorOccured)
             {
                 //Set the first DateTime object
-                _input2 = tmpRes.ToDateTime(); 
+                _input2 = tmpRes.ToDateTime();
 
                 //Try get the function according to what the OutputType is
+                Func<DateTime, DateTime, double> returnedFunc;
                 noErrorOccured = _outputFormats.TryGetValue(dateTimeDiffTO.OutputType, out returnedFunc);
 
-                if (returnedFunc != null && noErrorOccured)
+                if(returnedFunc != null)
                 {
                     //Invoke the function the return the difference
                     double tmpAmount = returnedFunc.Invoke(_input1, _input2);
                     //Splits the double that is returned into a whole number and to a string
                     var wholeValue = Convert.ToInt64(Math.Floor(tmpAmount));
-                    result = wholeValue.ToString();
+                    result = wholeValue.ToString(CultureInfo.InvariantCulture);
                 }
             }
             return noErrorOccured;
@@ -81,7 +80,7 @@ namespace Dev2.Converters.DateAndTime
         /// Creates a list of all valid Output Formats
         /// </summary>
         private static void CreateOutputFormatTypes()
-        {    
+        {
             _outputFormats.Add("Years", ReturnYears);
             _outputFormats.Add("Months", ReturnMonths);
             _outputFormats.Add("Days", ReturnDays);
@@ -106,23 +105,23 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnYears(DateTime input1, DateTime input2)
         {
             int result = 0;
-            if (input2.Year != input1.Year)
+            if(input2.Year != input1.Year)
             {
                 result = input2.Year - input1.Year;
-                input1 = input1.AddYears(result);                
-                if (input2 < input1)
+                input1 = input1.AddYears(result);
+                if(input2 < input1)
                 {
-                    if (result < 0)
+                    if(result < 0)
                     {
                         result++;
                     }
-                    else if (result > 0)
+                    else if(result > 0)
                     {
                         result--;
                     }
                 }
             }
-            return (double)result;
+            return result;
         }
 
         /// <summary>
@@ -133,26 +132,25 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnMonths(DateTime input1, DateTime input2)
         {
-            int result = 0;
             int tmpYears = input2.Year - input1.Year;
 
-            result = input2.Month - input1.Month;
+            int result = input2.Month - input1.Month;
             input1 = input1.AddMonths(result);
-            input1 = input1.AddYears(tmpYears);            
-            if (input2 < input1)
+            input1 = input1.AddYears(tmpYears);
+            if(input2 < input1)
             {
-                if (result < 0)
+                if(result < 0)
                 {
                     result++;
                 }
-                else if (result > 0)
+                else if(result > 0)
                 {
                     result--;
                 }
             }
 
             result = (result) + (12 * (tmpYears));
-            return (double)result;
+            return result;
         }
 
         /// <summary>
@@ -164,8 +162,7 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnDays(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = _timeDiff.TotalDays;
+            double result = _timeDiff.TotalDays;
             return result;
         }
 
@@ -178,8 +175,7 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnWeeks(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = (_timeDiff.TotalDays / 7);
+            double result = (_timeDiff.TotalDays / 7);
             return result;
         }
 
@@ -192,8 +188,7 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnHours(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = _timeDiff.TotalHours;
+            double result = _timeDiff.TotalHours;
             return result;
         }
 
@@ -206,8 +201,7 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnMinutes(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = _timeDiff.TotalMinutes;
+            double result = _timeDiff.TotalMinutes;
             return result;
         }
 
@@ -220,8 +214,7 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnSeconds(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = _timeDiff.TotalSeconds;
+            double result = _timeDiff.TotalSeconds;
             return result;
         }
 
@@ -234,12 +227,9 @@ namespace Dev2.Converters.DateAndTime
         private static double ReturnSplitSeconds(DateTime input1, DateTime input2)
         {
             TimeSpan _timeDiff = input2 - input1;
-            double result = 0;
-            result = _timeDiff.TotalMilliseconds;
+            double result = _timeDiff.TotalMilliseconds;
             return result;
         }
-
-
 
         #endregion OutputFormat Methods
 

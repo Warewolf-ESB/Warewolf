@@ -18,7 +18,7 @@ namespace Dev2.Session
 
         #region Static Conts
         private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
+        const string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
         private string _debugPersistPath;
         private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
@@ -37,7 +37,7 @@ namespace Dev2.Session
         /// <returns></returns>
         public DebugTO InitDebugSession(DebugTO to)
         {
-            DebugTO tmp = null;
+            DebugTO tmp;
 
             to.Error = string.Empty;
 
@@ -124,7 +124,7 @@ namespace Dev2.Session
                 else
                 {
                     // no longer relavent, remove it
-                    DebugTO tmp = null;
+                    DebugTO tmp;
 
                     if(_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                     {
@@ -137,12 +137,11 @@ namespace Dev2.Session
                 // build the list
                 foreach(string key in _debugPersistSettings.Keys)
                 {
-                    DebugTO tmp = null;
+                    DebugTO tmp;
 
                     if(key.Length > 0 && _debugPersistSettings.TryGetValue(key, out tmp))
                     {
-                        SaveDebugTO that;
-                        that = tmp.CopyToSaveDebugTO();
+                        SaveDebugTO that = tmp.CopyToSaveDebugTO();
                         settingList.Add(that);
                     }
                 }
@@ -162,7 +161,6 @@ namespace Dev2.Session
         {
             string result = string.Empty;
             error = string.Empty;
-            ErrorResultTO errors = new ErrorResultTO();
 
             var compiler = DataListFactory.CreateDataListCompiler();
 
@@ -173,6 +171,7 @@ namespace Dev2.Session
                 {
                     bf.Serialize(ms, datalist);
 
+                    ErrorResultTO errors;
                     Guid pushID = compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
 
                     if(errors.HasErrors())

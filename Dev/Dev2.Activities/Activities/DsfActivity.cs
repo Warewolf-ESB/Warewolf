@@ -19,12 +19,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class DsfActivity : DsfActivityAbstract<bool>
     {
-        #region Const
-
-        private const string _invokeSP = "InvokeStoredProc";
-
-        #endregion
-
         #region Fields
         private InArgument<string> _iconPath = string.Empty;
         string _previousInstanceID;
@@ -32,7 +26,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Constructors
         public DsfActivity()
-            : base()
         {
         }
 
@@ -68,7 +61,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The friendly name of the source.
         /// </value>
+        // ReSharper disable ConvertToAutoProperty
         public InArgument<string> FriendlySourceName
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -80,7 +75,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        // ReSharper disable ConvertToAutoProperty
         public InArgument<Guid> EnvironmentID
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -138,7 +135,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The service URI.
         /// </value>
+        // ReSharper disable ConvertToAutoProperty
         public string ServiceUri
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -189,10 +188,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
@@ -201,8 +202,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
 
-            /// ???? Why is this here....
-            context.Properties.ToObservableCollection(); 
+            // ???? Why is this here....
+            context.Properties.ToObservableCollection();
 
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -226,13 +227,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                    if(ServiceServer != Guid.Empty)
-                    {
-                        // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
-                        dataObject.RemoteInvokerID = ServiceServer.ToString();
-                    }
+                if(ServiceServer != Guid.Empty)
+                {
+                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                    dataObject.RemoteInvokerID = ServiceServer.ToString();
+                }
 
-                    dataObject.RemoteServiceType = context.GetValue(Type);
+                dataObject.RemoteServiceType = context.GetValue(Type);
 
                 if(dataObject.IsDebugMode())
                 {
@@ -272,10 +273,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913
-                        if (datalistID != GlobalConstants.NullDataListID)
+                        if(datalistID != GlobalConstants.NullDataListID)
                         {
                             // do we need to flag this as a remote workflow? ;)
-                            if (dataObject.IsRemoteWorkflow)
+                            if(dataObject.IsRemoteWorkflow)
                             {
                                 // set remote execution target shape ;)
                                 var shape = compiler.ShapeDev2DefinitionsToDataList(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
@@ -287,7 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                             dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-                            dataObject.ResourceID = ResourceID.Expression==null?Guid.Empty:Guid.Parse(ResourceID.Expression.ToString());
+                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
 
                             // Execute Request
                             ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors);
@@ -307,8 +308,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
-                    }
                 }
+            }
             finally
             {
                 dataObject.ResourceID = oldResourceID;
@@ -355,7 +356,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             ServerLogger.LogMessage("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
-            
+
             var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
 
             ServerLogger.LogMessage("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
@@ -384,7 +385,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void ScrubDataList(IDataListCompiler compiler, Guid executionID, string workflowID, out ErrorResultTO invokeErrors)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             invokeErrors = new ErrorResultTO();
             // Strip System Tags
 
@@ -404,82 +405,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             invokeErrors.MergeErrors(errors);
         }
 
-        /// <summary>
-        /// Fetches the max iterations.
-        /// </summary>
-        /// <param name="compiler">The compiler.</param>
-        /// <param name="executionID">The execution ID.</param>
-        /// <param name="allErrors">All errors.</param>
-        /// <returns></returns>
-        private int FetchMaxIterations(IDataListCompiler compiler, Guid executionID, out ErrorResultTO allErrors)
-        {
-            // Break the inputs apart into individual segments for use
-            IDev2LanguageParser ilp = DataListFactory.CreateInputParser();
-            int itTotal = 1;
-
-            allErrors = new ErrorResultTO();
-            ErrorResultTO tmpErrors;
-
-            IList<IDev2Definition> defs = ilp.Parse(InputMapping);
-
-            IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out tmpErrors);
-            allErrors.MergeErrors(tmpErrors);
-            bool foundRS = false;
-
-            foreach(IDev2Definition d in defs)
-            {
-                if(d.RawValue != null)
-                {
-                    var idxType = DataListUtil.GetRecordsetIndexType(d.RawValue);
-                    if(idxType == enRecordsetIndexType.Star)
-                    {
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(d.RawValue);
-                        if(!string.IsNullOrEmpty(rs))
-                        {
-                            // find the total number of entries ;)
-                            IBinaryDataListEntry entry;
-                            string error;
-                            if(bdl.TryGetEntry(rs, out entry, out error))
-                            {
-                                if(entry != null)
-                                {
-                                    foundRS = true;
-                                    int tmpItrCnt = entry.FetchAppendRecordsetIndex();
-                                    // set max iterations ;)
-                                    if(tmpItrCnt > itTotal)
-                                    {
-                                        itTotal = tmpItrCnt;
-                                    }
-                                }
-                                else
-                                {
-                                    allErrors.AddError("Fatal Error : Null entry returned for [ " + rs + " ]");
-                                }
-                            }
-
-                            allErrors.AddError(error);
-                        }
-                    }
-                }
-            }
-
-            // force all scalars mappings to execute once ;)
-            if(!foundRS)
-            {
-                itTotal = 2;
-            }
-
-            return itTotal;
-        }
-
-        
         #endregion
 
         #region Overridden ActivityAbstact Methods
 
         public override IBinaryDataList GetInputs()
         {
-            IBinaryDataList result = null;
+            IBinaryDataList result;
             ErrorResultTO errors;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -509,7 +441,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IBinaryDataList GetOutputs()
         {
-            IBinaryDataList result = null;
+            IBinaryDataList result;
             ErrorResultTO errors;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -565,7 +497,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     displayName = dev2Definition.RecordSetName + "(*)." + dev2Definition.Name;
                 }
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
                 DebugItem itemToAdd = new DebugItem();
@@ -593,18 +525,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<DebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
-                ErrorResultTO errors = new ErrorResultTO();
+                ErrorResultTO errors;
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
                 if(tmpEntry != null)
                 {
-                DebugItem itemToAdd = new DebugItem();
+                    DebugItem itemToAdd = new DebugItem();
 
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
 
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
-                results.Add(itemToAdd);
-            }
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
+                    results.Add(itemToAdd);
+                }
                 else
                 {
                     if(errors.HasErrors())

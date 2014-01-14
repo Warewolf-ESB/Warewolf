@@ -1,4 +1,10 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Data.Factories;
 using Dev2.Data.Operations;
@@ -9,12 +15,6 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
-using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -78,10 +78,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
+// ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+// ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -341,7 +343,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            string recordsetName = "MergeCollection";
+            const string recordsetName = "MergeCollection";
             result.TryCreateScalarValue(Result, "Result", out error);
             result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("MergeType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
             foreach(DataMergeDTO item in MergeCollection)

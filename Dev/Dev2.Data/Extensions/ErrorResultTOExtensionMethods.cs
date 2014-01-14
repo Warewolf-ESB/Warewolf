@@ -5,11 +5,11 @@ namespace Dev2.DataList.Contract.Extensions
 {
     public static class ErrorResultTOExtensionMethods
     {
-        private static BinaryFormatter _binaryFormatter = new BinaryFormatter();
+        private static readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
 
         public static byte[] ToByteArray(this ErrorResultTO errors)
         {
-            byte[] result = null;
+            byte[] result;
             using(MemoryStream ms = new MemoryStream())
             {
                 _binaryFormatter.Serialize(ms, errors);
@@ -23,7 +23,7 @@ namespace Dev2.DataList.Contract.Extensions
 
         public static ErrorResultTO FromByteArray(byte[] errorsData)
         {
-            ErrorResultTO result = null;
+            ErrorResultTO result;
 
             using(MemoryStream ms = new MemoryStream(errorsData))
             {

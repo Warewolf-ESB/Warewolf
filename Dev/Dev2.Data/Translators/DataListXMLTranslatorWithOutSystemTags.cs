@@ -17,10 +17,10 @@ namespace Dev2.Data.Translators
 {
     internal sealed class DataListXMLTranslatorWithOutSystemTags : IDataListTranslator
     {
-        private static readonly string _rootTag = "DataList";
-        private DataListFormat _format;
-        private Encoding _encoding;
-        TranslatorUtils _tu;
+        const string _rootTag = "DataList";
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
+        readonly TranslatorUtils _tu;
 
         public DataListFormat Format { get { return _format; } }
         public Encoding TextEncoding { get { return _encoding; } }
@@ -43,13 +43,13 @@ namespace Dev2.Data.Translators
 
             StringBuilder result = new StringBuilder("<" + _rootTag + ">");
             errors = new ErrorResultTO();
-            string error = string.Empty;
 
             IList<string> itemKeys = payload.FetchAllUserKeys();
 
             foreach(string key in itemKeys)
             {
-                IBinaryDataListEntry entry = null;
+                IBinaryDataListEntry entry;
+                string error;
                 if(payload.TryGetEntry(key, out entry, out error))
                 {
 
@@ -113,27 +113,12 @@ namespace Dev2.Data.Translators
             return tmp;
         }
 
-        void PopulateXmlValue(StringBuilder result, string fName, IBinaryDataListItem col)
-        {
-            result.Append("<");
-            result.Append(fName);
-            result.Append(">");
-            result.Append(_tu.FullCleanForEmit(col.TheValue));
-            result.Append("</");
-            result.Append(fName);
-            result.Append(">");
-        }
-
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
-            string error;
 
             IBinaryDataList result = null;
-
-            ErrorResultTO invokeErrors;
-
 
             // build shape
             if(targetShape == null)
@@ -142,6 +127,7 @@ namespace Dev2.Data.Translators
             }
             else
             {
+                ErrorResultTO invokeErrors;
                 result = _tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
@@ -150,7 +136,7 @@ namespace Dev2.Data.Translators
                 {
                     try
                     {
-                        string toLoad = DataListUtil.StripCrap(payload); // clean up the rubish ;)
+                        string toLoad = DataListUtil.StripCrap(payload); // clean up the rubbish ;)
                         XmlDocument xDoc = new XmlDocument();
                         try
                         {
@@ -170,13 +156,12 @@ namespace Dev2.Data.Translators
                                 XmlNodeList children = xDoc.DocumentElement.ChildNodes;
 
                                 IDictionary<string, int> indexCache = new Dictionary<string, int>();
-                                IBinaryDataListEntry entry = null;
+                                IBinaryDataListEntry entry;
 
+                                string error;
                                 if(children.Count > 0 && !DataListUtil.IsMSXmlBugNode(children[0].Name))
                                 {
                                     #region Process children
-
-                                    int idx = 1; // recset index
 
                                     // spin through each element in the XML
                                     foreach(XmlNode c in children)
@@ -204,7 +189,8 @@ namespace Dev2.Data.Translators
                                             if(entry.IsRecordset)
                                             {
                                                 // fetch recordset index
-                                                int fetchIdx = 0;
+                                                int fetchIdx;
+                                                int idx; // recset index
                                                 if(indexCache.TryGetValue(c.Name, out fetchIdx))
                                                 {
                                                     idx = fetchIdx;
@@ -215,21 +201,17 @@ namespace Dev2.Data.Translators
                                                 }
                                                 // process recordset
                                                 XmlNodeList nl = c.ChildNodes;
-                                                if(nl != null)
+                                                foreach(XmlNode subc in nl)
                                                 {
-                                                    foreach(XmlNode subc in nl)
+                                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
+
+                                                    if(!string.IsNullOrEmpty(error))
                                                     {
-                                                        entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, (idx + "")), idx, out error);
-
-                                                        if(!string.IsNullOrEmpty(error))
-                                                        {
-                                                            errors.AddError(error);
-                                                        }
+                                                        errors.AddError(error);
                                                     }
-                                                    // update this recordset index
-                                                    indexCache[c.Name] = ++idx;
                                                 }
-
+                                                // update this recordset index
+                                                indexCache[c.Name] = ++idx;
                                             }
                                             else
                                             {
@@ -243,7 +225,6 @@ namespace Dev2.Data.Translators
                                         else
                                         {
                                             errors.AddError(error);
-                                            entry = null;
                                         }
                                     }
 
@@ -352,8 +333,6 @@ namespace Dev2.Data.Translators
 
                     if(entry.IsRecordset)
                     {
-                        int cnt = entry.FetchLastRecordsetIndex();
-
                         var idxItr = entry.FetchRecordsetIndexes();
 
                         while(idxItr.HasMore())
@@ -371,7 +350,8 @@ namespace Dev2.Data.Translators
 
                             foreach(IBinaryDataListItem col in rowData)
                             {
-                                if(tmpEntry.Columns.Any((c => c.ColumnName == col.FieldName)))
+                                IBinaryDataListItem col1 = col;
+                                if(tmpEntry.Columns.Any((c => c.ColumnName == col1.FieldName)))
                                 {
                                     string fName = col.FieldName;
 

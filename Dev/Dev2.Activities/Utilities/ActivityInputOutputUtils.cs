@@ -22,17 +22,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         /// <returns></returns>
         public static IBinaryDataList GetSimpleInputs(object obj)
         {
-            string error = string.Empty;
             IBinaryDataList binaryDL = Dev2BinaryDataListFactory.CreateDataList();
             Type sourceType = obj.GetType();
-            foreach (PropertyInfo pi in sourceType.GetProperties())
+            foreach(PropertyInfo pi in sourceType.GetProperties())
             {
                 List<Inputs> listOfInputs = pi.GetCustomAttributes(typeof(Inputs), true).OfType<Inputs>().ToList();
-                if (listOfInputs.Count > 0)
+                if(listOfInputs.Count > 0)
                 {
-                    if (binaryDL.TryCreateScalarTemplate(string.Empty, listOfInputs[0].UserVisibleName, "", true, out error))
+                    string error;
+                    if(binaryDL.TryCreateScalarTemplate(string.Empty, listOfInputs[0].UserVisibleName, "", true, out error))
                     {
-                        binaryDL.TryCreateScalarValue(pi.GetValue(obj, null)!=null? pi.GetValue(obj, null).ToString() : string.Empty, listOfInputs[0].UserVisibleName, out error);
+                        binaryDL.TryCreateScalarValue(pi.GetValue(obj, null) != null ? pi.GetValue(obj, null).ToString() : string.Empty, listOfInputs[0].UserVisibleName, out error);
                     }
                 }
             }
@@ -46,15 +46,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         /// <returns></returns>
         public static IBinaryDataList GetSimpleOutputs(object obj)
         {
-            string error = string.Empty;
             IBinaryDataList binaryDL = Dev2BinaryDataListFactory.CreateDataList();
             Type sourceType = obj.GetType();
-            foreach (PropertyInfo pi in sourceType.GetProperties())
+            foreach(PropertyInfo pi in sourceType.GetProperties())
             {
                 List<Outputs> listOfInputs = pi.GetCustomAttributes(typeof(Outputs), true).OfType<Outputs>().ToList();
-                if (listOfInputs.Count > 0)
+                if(listOfInputs.Count > 0)
                 {
-                    if (binaryDL.TryCreateScalarTemplate(string.Empty, listOfInputs[0].UserVisibleName, "", true, out error))
+                    string error;
+                    if(binaryDL.TryCreateScalarTemplate(string.Empty, listOfInputs[0].UserVisibleName, "", true, out error))
                     {
                         binaryDL.TryCreateScalarValue(pi.GetValue(obj, null).ToString(), listOfInputs[0].UserVisibleName, out error);
                     }
@@ -79,22 +79,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         /// </summary>
         /// <param name="obj">The obj to set outputs for.</param>
         /// <param name="datalistID">The datalistID.</param>
+        /// <param name="compiler"></param>
         public static void SetValues<T>(ModelItem obj, Guid datalistID, IDataListCompiler compiler) where T : IActivityPropertyAttribute
         {
-            string _dataListValue = string.Empty;
             Type sourceType = obj.ItemType;
-            foreach (PropertyInfo pi in sourceType.GetProperties())
+            foreach(PropertyInfo pi in sourceType.GetProperties())
             {
                 List<T> listOfInputs = pi.GetCustomAttributes(typeof(T), true).OfType<T>().ToList();
-                if (listOfInputs.Count > 0)
+                if(listOfInputs.Count > 0)
                 {
-                    _dataListValue = GetValueFromDataList(listOfInputs[0].UserVisibleName, datalistID, compiler);
+                    string dataListValue = GetValueFromDataList(listOfInputs[0].UserVisibleName, datalistID, compiler);
 
                     ModelProperty mp = obj.Properties.Find(pi.Name);
-                    Type t = mp.PropertyType;
-                    if (mp != null)
+                    if(mp != null)
                     {
-                        mp.SetValue(Convert.ChangeType(_dataListValue, t));
+                        Type t = mp.PropertyType;
+                        mp.SetValue(Convert.ChangeType(dataListValue, t));
                     }
                 }
             }
@@ -111,15 +111,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         /// <returns></returns>
         public static IBinaryDataList GetGeneralSettings(object obj)
         {
-            string error = string.Empty;
             IBinaryDataList binaryDL = Dev2BinaryDataListFactory.CreateDataList();
             Type sourceType = obj.GetType();
-            foreach (PropertyInfo pi in sourceType.GetProperties())
+            foreach(PropertyInfo pi in sourceType.GetProperties())
             {
                 List<GeneralSettings> listOfGeneralSettings = pi.GetCustomAttributes(typeof(GeneralSettings), true).OfType<GeneralSettings>().ToList();
-                if (listOfGeneralSettings.Count > 0)
+                if(listOfGeneralSettings.Count > 0)
                 {
-                    if (binaryDL.TryCreateScalarTemplate(string.Empty, listOfGeneralSettings[0].UserVisibleName, "", true, out error))
+                    string error;
+                    if(binaryDL.TryCreateScalarTemplate(string.Empty, listOfGeneralSettings[0].UserVisibleName, "", true, out error))
                     {
                         binaryDL.TryCreateScalarValue(pi.GetValue(obj, null).ToString(), listOfGeneralSettings[0].UserVisibleName, out error);
                     }
@@ -138,23 +138,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Utilities
         /// Gets a value from data list for a expression.
         /// </summary>
         /// <param name="expression">The expression to find the value for.</param>
-        /// <param name="datalist">The ID of the datalist that the value must be extracted from.</param>       
+        /// <param name="datalistID">The datalist unique identifier.</param>
+        /// <param name="compiler">The compiler.</param>
+        /// <returns></returns>
+        /// <exception cref="System.Exception"></exception>
         private static string GetValueFromDataList(string expression, Guid datalistID, IDataListCompiler compiler)
         {
-            string result = string.Empty;
             expression = DataListUtil.AddBracketsToValueIfNotExist(expression);
-            ErrorResultTO errors;          
+            ErrorResultTO errors;
 
             IBinaryDataListEntry returnedEntry = compiler.Evaluate(datalistID, enActionType.User, expression, false, out errors);
-            if (returnedEntry == null)
+            if(returnedEntry == null)
             {
                 throw new Exception(errors.MakeUserReady());
             }
-            else
-            {
-                IBinaryDataListItem item = returnedEntry.FetchScalar();
-                result = item.TheValue;
-            }
+
+            IBinaryDataListItem item = returnedEntry.FetchScalar();
+            string result = item.TheValue;
             return result;
         }
 

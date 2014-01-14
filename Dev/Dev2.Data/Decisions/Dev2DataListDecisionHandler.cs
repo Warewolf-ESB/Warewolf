@@ -1,13 +1,13 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
-using System;
-using System.Collections.Generic;
-using System.Data;
 
 namespace Dev2.Data.Decision
 {
@@ -20,14 +20,8 @@ namespace Dev2.Data.Decision
         {
             get
             {
-                if(_inst == null)
-                {
-                    _inst = new Dev2DataListDecisionHandler();
-                }
-
-                return _inst;
+                return _inst ?? (_inst = new Dev2DataListDecisionHandler());
             }
-
         }
 
         /// <summary>
@@ -38,7 +32,7 @@ namespace Dev2.Data.Decision
         /// <returns></returns>
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid dlID = FetchDataListID(oldAmbientData);
             IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlID, out errors);
             if(errors.HasErrors())
@@ -178,15 +172,14 @@ namespace Dev2.Data.Decision
         /// <returns></returns>
         private Dev2DecisionStack EvaluateRegion(string payload, Guid dlID)
         {
-            ErrorResultTO errors;
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
-                //2013.05.06: Ashley Lewis for PBI 9460 - handle recordsets with stars in their index by resolving them
+                //2013.05.06: Ashley Lewis for PBI 9460 - handle record-sets with stars in their index by resolving them
                 var dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
                 {
-                    var effectedCols = new bool[] { false, false, false };
+                    var effectedCols = new[] { false, false, false };
                     //Find decisions that mention record sets with starred indexes
                     var invalidDecisions = new List<Dev2Decision>();
                     for(int i = 0; i < dds.TotalDecisions; i++)
@@ -232,6 +225,7 @@ namespace Dev2.Data.Decision
                     //Remove those record sets and replace them with a new decision for each resolved value
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
+                        ErrorResultTO errors;
                         dds = ResolveAllRecords(dlID, dds, decision, effectedCols, out errors);
                     }
                 }
@@ -245,7 +239,7 @@ namespace Dev2.Data.Decision
         {
             if(!String.IsNullOrEmpty(decisionColumn))
             {
-                IBinaryDataListItem binaryDataListItem = null;
+                IBinaryDataListItem binaryDataListItem;
                 ErrorResultTO errors;
                 IBinaryDataListEntry entry = _compiler.Evaluate(dlID, enActionType.User, decisionColumn, false, out errors);
                 if(entry.IsRecordset)
@@ -296,7 +290,7 @@ namespace Dev2.Data.Decision
             {
                 return stack.TheStack[stackIndex].Col1;
             }
-            else if(columnIndex == 2)
+            if(columnIndex == 2)
             {
                 return stack.TheStack[stackIndex].Col2;
             }
@@ -306,6 +300,10 @@ namespace Dev2.Data.Decision
 
         Dev2DecisionStack ResolveAllRecords(Guid id, Dev2DecisionStack stack, Dev2Decision decision, bool[] effectedCols, out ErrorResultTO errors)
         {
+            if(effectedCols == null)
+            {
+                throw new ArgumentNullException("effectedCols");
+            }
             int stackIndex = stack.TheStack.IndexOf(decision);
             stack.TheStack.Remove(decision);
             errors = new ErrorResultTO();
@@ -319,11 +317,7 @@ namespace Dev2.Data.Decision
 
                 while(colItr.HasMoreData())
                 {
-                    var newDecision = new Dev2Decision();
-                    newDecision.Col1 = colItr.FetchNextRow(col1Iterator).TheValue;
-                    newDecision.Col2 = decision.Col2;
-                    newDecision.Col3 = decision.Col3;
-                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    var newDecision = new Dev2Decision { Col1 = colItr.FetchNextRow(col1Iterator).TheValue, Col2 = decision.Col2, Col3 = decision.Col3, EvaluationFn = decision.EvaluationFn };
                     stack.TheStack.Insert(reStackIndex++, newDecision);
                 }
             }
@@ -337,11 +331,7 @@ namespace Dev2.Data.Decision
 
                 while(colItr.HasMoreData())
                 {
-                    var newDecision = new Dev2Decision();
-                    newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
-                    newDecision.Col2 = colItr.FetchNextRow(col2Iterator).TheValue;
-                    newDecision.Col3 = decision.Col3;
-                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    var newDecision = new Dev2Decision { Col1 = FetchStackValue(stack, reStackIndex, 1), Col2 = colItr.FetchNextRow(col2Iterator).TheValue, Col3 = decision.Col3, EvaluationFn = decision.EvaluationFn };
                     if(effectedCols[0])
                     {
                         // ensure we have the correct indexing ;)
@@ -370,11 +360,7 @@ namespace Dev2.Data.Decision
 
                 while(colItr.HasMoreData())
                 {
-                    var newDecision = new Dev2Decision();
-                    newDecision.Col1 = FetchStackValue(stack, reStackIndex, 1);
-                    newDecision.Col2 = FetchStackValue(stack, reStackIndex, 2);
-                    newDecision.Col3 = colItr.FetchNextRow(col3Iterator).TheValue;
-                    newDecision.EvaluationFn = decision.EvaluationFn;
+                    var newDecision = new Dev2Decision { Col1 = FetchStackValue(stack, reStackIndex, 1), Col2 = FetchStackValue(stack, reStackIndex, 2), Col3 = colItr.FetchNextRow(col3Iterator).TheValue, EvaluationFn = decision.EvaluationFn };
                     if(effectedCols[0] || effectedCols[1])
                     {
                         // ensure we have the correct indexing ;)
