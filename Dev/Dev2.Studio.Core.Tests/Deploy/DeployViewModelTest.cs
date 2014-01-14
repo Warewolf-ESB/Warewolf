@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
@@ -16,14 +15,14 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
-using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable once CheckNamespace
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -33,19 +32,18 @@ namespace Dev2.Core.Tests
         #region Class Members
 
         private static ImportServiceContext _okayContext;
-        private static ImportServiceContext _cancelContext;
         private static Mock<IWindowManager> _windowManager;
 
         #endregion Class Members
 
         #region Initialization
 
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyTestClassInitialize(TestContext testContext)
         {
             _windowManager = new Mock<IWindowManager>();
             _okayContext = CompositionInitializer.DeployViewModelOkayTest(_windowManager);
-            _cancelContext = CompositionInitializer.DeployViewModelCancelTest();
+            CompositionInitializer.DeployViewModelCancelTest();
         }
 
         #endregion Initialization
@@ -55,7 +53,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeployViewModelConnectWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            // BUG 9276 : TWR : 2013.04.19
             ImportService.CurrentContext = _okayContext;
 
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -110,7 +107,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeployViewModelDeployWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            // BUG 9276 : TWR : 2013.04.19
             ImportService.CurrentContext = _okayContext;
 
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -146,10 +142,7 @@ namespace Dev2.Core.Tests
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ITreeNode>())).Returns(true);
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object);
-
-            deployViewModel.SelectedSourceServer = s1;
-            deployViewModel.SelectedDestinationServer = s2;
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
 
             Assert.IsTrue(source.Object.IsConnected);
             Assert.IsTrue(s1.IsConnected);
@@ -333,11 +326,11 @@ namespace Dev2.Core.Tests
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
             secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
-            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel>() { server.Object, secondServer.Object });
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object, false, enDsfActivityType.All);
+            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object);
             var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
             {
                 IsExpanded = false
@@ -374,9 +367,7 @@ namespace Dev2.Core.Tests
         [Description("DeployViewModel CanDeploy must be false if server is disconnected.")]
         [TestCategory("DeployViewModel_CanDeploy")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
         public void DeployViewModel_UnitTest_CanDeployToDisconnectedServer_ReturnsFalse()
-        // ReSharper restore InconsistentNaming
         {
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
@@ -421,7 +412,7 @@ namespace Dev2.Core.Tests
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
 
-            var deployItemCount = 1;
+            int deployItemCount;
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
