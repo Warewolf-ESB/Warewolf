@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Activities
             const string ResourceName = "Dev2.Integration.Tests.TestData.Test.zip";
             string fileName = Path.GetTempPath() + "\\9999.zip";
             Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(ResourceName))
+            using(Stream stream = assembly.GetManifestResourceStream(ResourceName))
             {
                 if(stream != null)
                 {
@@ -6206,7 +6206,7 @@ namespace Dev2.Integration.Tests.Activities
                                         .Copy(sourceEndPoint, destinationEndPoint, copyTo);
             });
         }
-        
+
         #endregion
 
         #region Move Tests
