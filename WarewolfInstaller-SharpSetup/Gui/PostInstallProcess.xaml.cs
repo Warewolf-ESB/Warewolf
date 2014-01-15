@@ -18,8 +18,8 @@ namespace Gui
     public partial class PostInstallProcess
     {
 
-        private bool _serviceInstalled = false;
-        private bool _serviceInstallException = false;
+        private bool _serviceInstalled;
+        private bool _serviceInstallException;
 
         public PostInstallProcess()
         {
@@ -41,9 +41,9 @@ namespace Gui
 
             try
             {
-                if (File.Exists(oldConfig))
+                if(File.Exists(oldConfig))
                 {
-                    if (File.Exists(newConfig))
+                    if(File.Exists(newConfig))
                     {
                         var newLoc = newConfig + ".new";
                         File.Move(newConfig, newLoc);
@@ -52,12 +52,14 @@ namespace Gui
                     File.Move(oldConfig, newConfig);
                 }
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Just making sure ;)
             }
 
-          
+
         }
 
         /// <summary>
@@ -121,54 +123,34 @@ namespace Gui
         }
 
         /// <summary>
-        /// Installs the service.
+        /// Starts the service.
         /// </summary>
-        /// <param name="installRoot">The install root.</param>
-        private void InstallService(string installRoot)
+        private void StartService(string serverInstallLocation)
         {
-            // Gain access to warewolf exe location ;)
-            var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
-
-            // TODO : Remove after r 0.2.13.1
-            try
-            {
-                // Perform any post install custom operation ;)
-                CustomOperation();
-            }
-            catch (Exception) { }
-
             try
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-                ProcessStartInfo psi = new ProcessStartInfo();
-
-                psi.FileName = serverInstallLocation;
-                psi.Arguments = "-i"; // install flag
-                psi.WindowStyle = ProcessWindowStyle.Hidden;
-                psi.UseShellExecute = true;
+                ProcessStartInfo psi = new ProcessStartInfo { FileName = serverInstallLocation, Arguments = "-i", WindowStyle = ProcessWindowStyle.Hidden, UseShellExecute = true };
 
                 Process p = Process.Start(psi);
 
-                // Fails to work correctly
-                //p.WaitForExit(10000); // wait up to 10 seconds for process exit ;)
-
                 int cnt = 0;
-                while (cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited)
+                while(cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited)
                 {
                     Thread.Sleep(1000);
                     cnt++;
                 }
 
                 // now try and start the service ;)
-                if (sc.Status == ServiceControllerStatus.Stopped)
+                if(sc.Status == ServiceControllerStatus.Stopped)
                 {
                     sc.Start();
                     // wait start ;)
                     sc.WaitForStatus(ServiceControllerStatus.Running,
                                      TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
 
-                    if (sc.Status == ServiceControllerStatus.Running)
+                    if(sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
                     }
@@ -176,10 +158,10 @@ namespace Gui
                     {
                         // wait a bit more ;)
                         cnt = 0;
-                        while (cnt < InstallVariables.DefaultWaitInSeconds && !_serviceInstalled)
+                        while(cnt < InstallVariables.DefaultWaitInSeconds && !_serviceInstalled)
                         {
                             Thread.Sleep(1000);
-                            if (sc.Status == ServiceControllerStatus.Running)
+                            if(sc.Status == ServiceControllerStatus.Running)
                             {
                                 _serviceInstalled = true;
                             }
@@ -187,7 +169,7 @@ namespace Gui
                         }
                     }
                 }
-                else if (sc.Status == ServiceControllerStatus.Running)
+                else if(sc.Status == ServiceControllerStatus.Running)
                 {
                     _serviceInstalled = true;
                 }
@@ -197,7 +179,7 @@ namespace Gui
                     sc.WaitForStatus(ServiceControllerStatus.Running,
                                      TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
 
-                    if (sc.Status == ServiceControllerStatus.Running)
+                    if(sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
                     }
@@ -205,7 +187,7 @@ namespace Gui
 
                 sc.Dispose();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 try
                 {
@@ -214,7 +196,7 @@ namespace Gui
                     sc.Start();
                     sc.WaitForStatus(ServiceControllerStatus.Running,
                                      TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
-                    if (sc.Status == ServiceControllerStatus.Running)
+                    if(sc.Status == ServiceControllerStatus.Running)
                     {
                         _serviceInstalled = true;
                     }
@@ -232,44 +214,97 @@ namespace Gui
 
                 MessageBox.Show(e.Message);
             }
+        }
 
-            // We need to stop and restart the server - V 0.2.15.2 ;)
+        /// <summary>
+        /// Restarts the service.
+        /// </summary>
+        private void RestartService()
+        {
+            ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
+
+            if(sc.Status == ServiceControllerStatus.Running)
             {
-                ServiceController sc = new ServiceController(InstallVariables.ServerService);
+                sc.Stop();
+                sc.WaitForStatus(ServiceControllerStatus.Stopped,
+                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
 
-                if (sc.Status == ServiceControllerStatus.Running)
-                {
-                    sc.Stop();
-                    sc.WaitForStatus(ServiceControllerStatus.Stopped,
-                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
-
-                }
-
-                try
-                {
-                   
-                    // maybe it is already installed, just try and start it ;)
-                    sc.Start();
-                    sc.WaitForStatus(ServiceControllerStatus.Running,
-                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
-                    if (sc.Status == ServiceControllerStatus.Running)
-                    {
-                        _serviceInstalled = true;
-                    }
-                    else
-                    {
-                        _serviceInstallException = true;
-                    }
-                    sc.Dispose();
-                }
-                catch(Exception e2)
-                {
-                    _serviceInstallException = true;
-                    MessageBox.Show(e2.Message);
-                }
             }
 
+            try
+            {
+
+                // maybe it is already installed, just try and start it ;)
+                sc.Start();
+                sc.WaitForStatus(ServiceControllerStatus.Running,
+                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                if(sc.Status == ServiceControllerStatus.Running)
+                {
+                    _serviceInstalled = true;
+                }
+                else
+                {
+                    _serviceInstallException = true;
+                }
+                sc.Dispose();
+            }
+            catch(Exception e2)
+            {
+                _serviceInstallException = true;
+                MessageBox.Show(e2.Message);
+            }
+        }
+
+        /// <summary>
+        /// Installs the service.
+        /// </summary>
+        /// <param name="installRoot">The install root.</param>
+        private void InstallService(string installRoot)
+        {
+            // Gain access to warewolf exe location ;)
+            var serverInstallLocation = Path.Combine(installRoot, "Server", InstallVariables.ServerService + ".exe");
+
+            // TODO : Remove after r 0.2.13.1
+            try
+            {
+                // Perform any post install custom operation ;)
+                CustomOperation();
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception) { }
+            // ReSharper restore EmptyGeneralCatchClause
+
+            // We need to stop and restart the server - V 0.2.15.2 ;)
+            StartService(serverInstallLocation);
+            RestartService();
+
+            // clean up any log files and junk ;)
+            CleanupOperation(serverInstallLocation);
+
+        }
+
+        /// <summary>
+        /// Cleanups the operation.
+        /// </summary>
+        private void CleanupOperation(string installLocation)
+        {
+            // two install log files
+            var path = Path.Combine(installLocation, "Warewolf Server.InstallLog");
+            var path2 = Path.Combine(installLocation, "Warewolf Server.InstallState");
+
+            var paths = new[] { path, path2 };
+
+            foreach(var p in paths)
+            {
+                try
+                {
+                    File.Delete(p);
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch { }
+                // ReSharper restore EmptyGeneralCatchClause
+            }
 
         }
 
@@ -278,32 +313,32 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
-        private void PostInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+        private void PostInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
 
             CanGoNext = false;
             postInstallStatusImg.Visibility = Visibility.Hidden;
             btnRerun.Visibility = Visibility.Hidden;
             // Setup a cancel action ;)
-            Cancel += delegate(object o, ChangeStepRoutedEventArgs args)
-            {
-                SetCleanupMessage();
-                var trans = new PreUnInstallProcess();
-                
-                if (!trans.Rollback())
-                {
-                    ShowCancelError();
-                }
-                else
-                {
-                    // Now uninstall?!
-                    MsiConnection.Instance.Uninstall();
-                    SetSuccessMessasge("Rollback complete");
-                }
-            };
-            // attempts to install service ;)
+            Cancel += delegate
+                    {
+                        SetCleanupMessage();
+                        var trans = new PreUnInstallProcess();
 
-            if (!string.IsNullOrEmpty(InstallVariables.InstallRoot))
+                        if(!trans.Rollback())
+                        {
+                            ShowCancelError();
+                        }
+                        else
+                        {
+                            // Now uninstall?!
+                            MsiConnection.Instance.Uninstall();
+                            SetSuccessMessasge("Rollback complete");
+                        }
+                    };
+
+            // attempts to install service ;)
+            if(!string.IsNullOrEmpty(InstallVariables.InstallRoot))
             {
 
                 // Get the BackgroundWorker that raised this event.
@@ -316,25 +351,27 @@ namespace Gui
                 worker.RunWorkerCompleted += delegate
                 {
 
-                    if (_serviceInstalled && !_serviceInstallException)
+                    if(_serviceInstalled && !_serviceInstallException)
                     {
                         SetSuccessMessasge("Started server service");
                     }
-                    else if (!_serviceInstalled && _serviceInstallException)
+                    else if(!_serviceInstalled && _serviceInstallException)
                     {
                         SetFailureMessage("Cannot install server as service");
                     }
-                    else if (!_serviceInstalled && !_serviceInstallException)
+                    else if(!_serviceInstalled && !_serviceInstallException)
                     {
                         SetFailureMessage("Cannot start server service");
                     }
+
+                    InstallVariables.IsInstallMode = true;
                 };
 
                 try
                 {
                     worker.RunWorkerAsync();
                 }
-                catch (Exception e1)
+                catch(Exception e1)
                 {
                     MessageBox.Show(e1.Message);
                 }

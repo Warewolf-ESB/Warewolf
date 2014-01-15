@@ -11,7 +11,7 @@ namespace Gui
     /// </summary>
     public partial class InstallationStep
     {
-        InstallationMode mode;
+        readonly InstallationMode mode;
         public InstallationStep(InstallationMode mode)
         {
             InitializeComponent();
@@ -28,6 +28,8 @@ namespace Gui
             try
             {
                 var instLoc = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
+
+                InstallVariables.InstallRoot = instLoc;
 
                 if(mode == InstallationMode.Uninstall)
                 {
@@ -62,17 +64,6 @@ namespace Gui
                 else if(mode == InstallationMode.Install)
                 {
                     PrerequisiteManager.Instance.Install();
-
-                    try
-                    {
-                        InstallVariables.InstallRoot = MsiConnection.Instance.GetProperty("INSTALLLOCATION");
-                    }
-                    catch
-                    {
-                        // Best effort to fetch product code, if not present we have big issues ;(
-                        MessageBox.Show("Cannot locate product code to continue install.");
-                        Wizard.Finish();
-                    }
 
                     try
                     {
@@ -119,7 +110,7 @@ namespace Gui
             }
         }
 
-       
+
         /// <summary>
         /// Cleans up what the installer needs to be removed ;)
         /// </summary>
@@ -151,9 +142,9 @@ namespace Gui
                     catch
                     {
                         // best effort ;)
-                    } 
+                    }
                 }
-            }   
+            }
         }
 
         /// <summary>
@@ -220,7 +211,7 @@ namespace Gui
         /// <returns></returns>
         private bool IsSSLCert(string file)
         {
-            if (file.IndexOf(".cer", StringComparison.Ordinal) >= 0
+            if(file.IndexOf(".cer", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".crt", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".der", StringComparison.Ordinal) >= 0
                 && file.IndexOf(".csr", StringComparison.Ordinal) >= 0

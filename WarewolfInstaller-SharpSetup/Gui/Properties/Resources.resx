@@ -253,4 +253,10 @@
   <data name="WAREWOLF_EULA_EN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourcefiles\warewolf_eula_en.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="FinishStep_Start_Studio_Text" xml:space="preserve">
+    <value>Start Warewolf Studio</value>
+  </data>
+  <data name="PreUninstall_Remove_All_Text" xml:space="preserve">
+    <value>Full Uninstall - Remove Warewolf Directory</value>
+  </data>
 </root>

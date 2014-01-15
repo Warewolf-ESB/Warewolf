@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<prerequisite xmlns="http://sharpsetup.eu/schemas/prerequisite/2011">
+  <type>
+    <assembly>vcredist</assembly>
+    <class>SharpSetup.Prerequisites.Standard.VCRedistributablePrerequisite</class>
+  </type>
+  <prerequisiteObject>
+    <Version>VCRedist2008SP1</Version>
+</prerequisiteObject>
+  <files />
+</prerequisite>

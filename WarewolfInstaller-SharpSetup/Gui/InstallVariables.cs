@@ -1,7 +1,7 @@
 ﻿namespace Gui
 {
     /// <summary>
-    /// Temproal Variables for the Installer ;)
+    /// Temporal Variables for the Installer ;)
     /// </summary>
     public class InstallVariables
     {
@@ -28,5 +28,29 @@
         /// The install root.
         /// </value>
         public static string InstallRoot { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [start studio configuration exit].
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if [start studio configuration exit]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool StartStudioOnExit { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [is install mode].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [is install mode]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool IsInstallMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [remove all items].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [remove all items]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool RemoveAllItems { get; set; }
     }
 }

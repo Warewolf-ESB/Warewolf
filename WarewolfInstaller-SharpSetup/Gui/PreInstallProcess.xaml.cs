@@ -1,7 +1,5 @@
 using System;
-using System.Diagnostics;
 using System.ServiceProcess;
-using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using SharpSetup.UI.Wpf.Base;
@@ -38,7 +36,7 @@ namespace Gui
         }
 
         /// <summary>
-        /// Sets the success messasge.
+        /// Sets the success message.
         /// </summary>
         /// <param name="msg">The MSG.</param>
         private void SetSuccessMessasge(string msg)
@@ -64,14 +62,7 @@ namespace Gui
         /// </summary>
         private void SetFailureMessage(string msg = null)
         {
-            if (msg == null)
-            {
-                PreInstallMsg.Text = "Cannot stop server instance";
-            }
-            else
-            {
-                PreInstallMsg.Text = msg;
-            }
+            PreInstallMsg.Text = msg ?? "Cannot stop server instance";
             preInstallStatusImg.Source =
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
                                         UriKind.RelativeOrAbsolute));
@@ -93,20 +84,20 @@ namespace Gui
         /// </summary>
         private void OpenPorts()
         {
-            var args = new[] {"http add urlacl url={http://*:3142}/  user=\\Everyone","http add urlacl url={https://*:3143}/ user=\\Everyone"};
+            var args = new[] { "http add urlacl url={http://*:3142}/  user=\\Everyone", "http add urlacl url={https://*:3143}/ user=\\Everyone" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
-                foreach (var arg in args)
+                foreach(var arg in args)
                 {
                     bool invoke = ProcessHost.Invoke(null, "netsh.exe", arg);
                     if(!invoke)
                     {
                         SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
-                    } 
+                    }
                 }
-                
+
             }
             catch(Exception e)
             {
@@ -119,24 +110,24 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
-        public void PreInstallStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
+        public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-            
+
             // Setup a cancel action ;)
             Cancel += OnCancel;
-            
+
             try
             {
                 // Open the required ports ;)
                 OpenPorts();
 
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
-                if (sc.Status == ServiceControllerStatus.Running)
+                if(sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
                     sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-install process has finished.
-                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    if(sc.Status == ServiceControllerStatus.Stopped)
                     {
                         SetSuccessMessasge("Server instance stopped");
                     }
@@ -145,7 +136,7 @@ namespace Gui
                         SetFailureMessage();
                     }
                 }
-                else if (sc.Status == ServiceControllerStatus.Stopped)
+                else if(sc.Status == ServiceControllerStatus.Stopped)
                 {
                     SetSuccessMessasge("Server instance stopped");
                 }
@@ -155,10 +146,10 @@ namespace Gui
                 }
                 sc.Dispose();
             }
-            catch (InvalidOperationException ioe)
+            catch(InvalidOperationException ioe)
             {
                 // magic string stating that service is not present ;)
-                if (ioe.Message.IndexOf(InstallVariables.ServerService+" was not found on computer", StringComparison.Ordinal) > 0)
+                if(ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer", StringComparison.Ordinal) > 0)
                 {
                     SetSuccessMessasge("Scan for server services complete");
                 }
@@ -166,9 +157,9 @@ namespace Gui
                 {
                     SetFailureMessage();
                 }
-                    
+
             }
-            catch (Exception)
+            catch(Exception)
             {
                 // Service not present ;)
                 SetSuccessMessasge("Scan for server services complete");
@@ -184,7 +175,7 @@ namespace Gui
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
                 // Attempt to re-start the service ;)
-                if (sc.Status != ServiceControllerStatus.Running)
+                if(sc.Status != ServiceControllerStatus.Running)
                 {
                     try
                     {
@@ -193,7 +184,7 @@ namespace Gui
                         sc.WaitForStatus(ServiceControllerStatus.Running,
                                          TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         ShowCancelError();
                     }
@@ -201,7 +192,7 @@ namespace Gui
 
                 try
                 {
-                    if (sc.Status != ServiceControllerStatus.Running)
+                    if(sc.Status != ServiceControllerStatus.Running)
                     {
                         ShowCancelError();
                     }
@@ -210,10 +201,10 @@ namespace Gui
                         SetSuccessMessasge("Rollback completed");
                     }
                 }
-                catch (InvalidOperationException ioe)
+                catch(InvalidOperationException ioe)
                 {
                     // magic string stating that service is not present ;)
-                    if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",
+                    if(ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",
                                             StringComparison.Ordinal) < 0)
                     {
                         ShowCancelError();
@@ -224,7 +215,7 @@ namespace Gui
                     }
 
                 }
-                catch (Exception)
+                catch(Exception)
                 {
                     // service not present ;)
                     SetSuccessMessasge("Rollback completed");
@@ -232,7 +223,7 @@ namespace Gui
 
                 sc.Dispose();
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 MessageBox.Show(e.Message);
             }

@@ -4,7 +4,7 @@ namespace Gui
 {
     public static class ProcessHost
     {
-        public static bool Invoke(string workingDir, string fileName, string args)
+        public static bool Invoke(string workingDir, string fileName, string args, bool waitForExit = true)
         {
             var invoked = true;
 
@@ -29,9 +29,11 @@ namespace Gui
 
             if(p.Start())
             {
-                // wait up to 10 seconds for exit ;)
-                p.WaitForExit(10000);
-
+                if(waitForExit)
+                {
+                    // wait up to 10 seconds for exit ;)
+                    p.WaitForExit(10000);
+                }
             }
             else
             {

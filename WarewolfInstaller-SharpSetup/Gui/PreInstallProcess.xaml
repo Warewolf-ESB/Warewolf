@@ -22,9 +22,10 @@
                     <Image Visibility="Visible" Source="pack://application:,,,/Resourcefiles/tick.png" Name="preInstallStatusImg" Margin="0,0,0,161" Width="16" RenderTransformOrigin="1.651,2.784"/>
                 </StackPanel>
                 <Button x:Name="btnRerun" Content="Try Again" Padding="16,2,16,2" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Height="26" Visibility="Visible" Width="287" Click="BtnRerun_OnClick" />
+                
                 <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
             </StackPanel>
-
+            
         </DockPanel>
     </Border>
 </ss:ModernInfoStep>

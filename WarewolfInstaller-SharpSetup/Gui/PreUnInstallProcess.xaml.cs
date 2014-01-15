@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace Gui
@@ -26,17 +25,17 @@ namespace Gui
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-                if (sc.Status == ServiceControllerStatus.Running)
+                if(sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
                     sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-uninstall process has finished.
-                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    if(sc.Status == ServiceControllerStatus.Stopped)
                     {
                         RemoveService();
                     }
                 }
-                else if (sc.Status == ServiceControllerStatus.Stopped)
+                else if(sc.Status == ServiceControllerStatus.Stopped)
                 {
                     RemoveService();
                 }
@@ -64,7 +63,7 @@ namespace Gui
             {
                 ServiceInstaller installer = new ServiceInstaller();
                 InstallContext context = new InstallContext("<<log file path>>", null);
-                installer.Context = context; 
+                installer.Context = context;
                 installer.ServiceName = InstallVariables.ServerService;
                 // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
@@ -78,11 +77,11 @@ namespace Gui
                 ClosePorts();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch (Exception)
+            catch(Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
-                
+
             }
         }
 
@@ -119,7 +118,7 @@ namespace Gui
             CanGoNext = true;
         }
 
-       
+
 
         /// <summary>
         /// Sets the failure message.
@@ -156,12 +155,12 @@ namespace Gui
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
-                if (sc.Status == ServiceControllerStatus.Running)
+                if(sc.Status == ServiceControllerStatus.Running)
                 {
                     sc.Stop();
                     sc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
                     // The pre-uninstall process has finished.
-                    if (sc.Status == ServiceControllerStatus.Stopped)
+                    if(sc.Status == ServiceControllerStatus.Stopped)
                     {
 
                         btnRerun.Visibility = Visibility.Hidden;
@@ -169,14 +168,15 @@ namespace Gui
 
                         // Get the BackgroundWorker that raised this event.
                         BackgroundWorker worker = new BackgroundWorker();
-                        worker.DoWork += delegate {
-                            
+                        worker.DoWork += delegate
+                        {
+
                             RemoveService();
                         };
 
                         worker.RunWorkerCompleted += delegate
                         {
-                            if (_serviceRemoved)
+                            if(_serviceRemoved)
                             {
                                 SetSuccessMessasge("Server instance removed");
                             }
@@ -186,29 +186,30 @@ namespace Gui
                             }
                         };
 
-                        worker.RunWorkerAsync();                           
+                        worker.RunWorkerAsync();
                     }
                     else
                     {
                         SetFailureMessage();
                     }
                 }
-                else if (sc.Status == ServiceControllerStatus.Stopped)
+                else if(sc.Status == ServiceControllerStatus.Stopped)
                 {
 
                     BackgroundWorker worker = new BackgroundWorker();
-                    
+
                     btnRerun.Visibility = Visibility.Hidden;
                     preUnInstallStatusImg.Visibility = Visibility.Hidden;
 
-                    worker.DoWork += delegate {
-                        
+                    worker.DoWork += delegate
+                    {
+
                         RemoveService();
                     };
 
                     worker.RunWorkerCompleted += delegate
                     {
-                        if (_serviceRemoved)
+                        if(_serviceRemoved)
                         {
                             SetSuccessMessasge("Server instance removed");
                         }
@@ -226,22 +227,27 @@ namespace Gui
                 }
                 sc.Dispose();
             }
-            catch (InvalidOperationException ioe)
+            catch(InvalidOperationException ioe)
             {
                 // magic string stating that service is not present ;)
-                if (ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer",StringComparison.Ordinal) > 0)
+                if(ioe.Message.IndexOf(InstallVariables.ServerService + " was not found on computer", StringComparison.Ordinal) > 0)
                 {
                     SetSuccessMessasge("Scan for server services complete");
                 }
                 else
                 {
                     SetFailureMessage();
-                }   
+                }
             }
-            catch (Exception)
+            catch(Exception)
             {
                 SetFailureMessage();
             }
+        }
+
+        void BtnRemoveAllTraces(object sender, RoutedEventArgs e)
+        {
+            InstallVariables.RemoveAllItems = !(InstallVariables.RemoveAllItems);
         }
     }
 }

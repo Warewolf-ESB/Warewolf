@@ -6,11 +6,6 @@
     ShutdownMode="OnLastWindowClose"
     >
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/PresentationFramework.Aero;V3.0.0.0;31bf3856ad364e35;component/Themes/aero.normalcolor.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/SharpSetup.Wpf;component/Themes/generic.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        
     </Application.Resources>
 </Application>

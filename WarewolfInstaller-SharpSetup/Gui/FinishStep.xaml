@@ -14,7 +14,8 @@
     <Border Margin="10,0,0,0">
         <DockPanel HorizontalAlignment="Stretch">
             <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="60" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.FinishStep_Title}" />
-            <TextBlock TextWrapping="NoWrap" DockPanel.Dock="Bottom" Text="{x:Static props:Resources.FinishStep_MessageBottom}" />
+            <TextBlock TextWrapping="NoWrap" DockPanel.Dock="Bottom" Text="{x:Static props:Resources.FinishStep_MessageBottom}" Visibility="Hidden" Name="tbFinish"/>
+            <CheckBox DockPanel.Dock="Bottom" IsChecked="true" Content="{x:Static props:Resources.FinishStep_Start_Studio_Text}" Margin="0,0,0,5" Click="BtnExitWithStart" Visibility="Visible" Name="cbStartStudio"/>
             <TextBlock TextWrapping="Wrap" Text="{x:Static props:Resources.FinishStep_MessageMain}" />
         </DockPanel>
     </Border>
