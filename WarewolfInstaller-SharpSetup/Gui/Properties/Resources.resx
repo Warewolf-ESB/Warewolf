@@ -259,4 +259,7 @@
   <data name="PreUninstall_Remove_All_Text" xml:space="preserve">
     <value>Full Uninstall - Remove Warewolf Directory</value>
   </data>
+  <data name="PreInstall_InstallShortcuts" xml:space="preserve">
+    <value>Create Desktop and Start Menu Shortcuts</value>
+  </data>
 </root>

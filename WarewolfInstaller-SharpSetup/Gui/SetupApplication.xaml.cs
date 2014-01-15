@@ -16,7 +16,7 @@ namespace Gui
 
             SetupHelper.Initialize(e.Args);
             SetupHelper.Install += SetupHelper_Install;
-            SetupHelper.StartInstallation();    
+            SetupHelper.StartInstallation();
 
             //if (slientMode)
             //{
@@ -24,7 +24,7 @@ namespace Gui
             //}
             //else
             //{
-               
+
             //}
         }
 

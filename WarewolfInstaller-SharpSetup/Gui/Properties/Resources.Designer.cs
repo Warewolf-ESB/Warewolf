@@ -331,6 +331,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Desktop and Start Menu Shortcuts.
+        /// </summary>
+        public static string PreInstall_InstallShortcuts {
+            get {
+                return ResourceManager.GetString("PreInstall_InstallShortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press Finish to exit installer..
         /// </summary>
         public static string PreInstallProcess_MessageBottom {

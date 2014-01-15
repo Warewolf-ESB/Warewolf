@@ -15,6 +15,8 @@ namespace Gui
         public PreInstallProcess()
         {
             InitializeComponent();
+            // enable shortcut install
+            InstallVariables.InstallShortcuts = true;
         }
 
         /// <summary>
@@ -95,9 +97,9 @@ namespace Gui
                     if(!invoke)
                     {
                         SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
-                    } 
+                    }
                 }
-                
+
             }
             catch(Exception e)
             {
@@ -112,10 +114,10 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-            
+
             // Setup a cancel action ;)
             Cancel += OnCancel;
-            
+
             try
             {
                 // Open the required ports ;)
@@ -157,7 +159,7 @@ namespace Gui
                 {
                     SetFailureMessage();
                 }
-                    
+
             }
             catch(Exception)
             {
@@ -228,6 +230,11 @@ namespace Gui
                 MessageBox.Show(e.Message);
             }
 
+        }
+
+        void BtnInstallShortcuts(object sender, RoutedEventArgs e)
+        {
+            InstallVariables.InstallShortcuts = !(InstallVariables.InstallShortcuts);
         }
     }
 }

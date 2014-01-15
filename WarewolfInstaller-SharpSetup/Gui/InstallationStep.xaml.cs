@@ -75,7 +75,7 @@ namespace Gui
                     }
 
                     // set the shortcut variable ;)
-                    MsiConnection.Instance.SetProperty("INSTALLDESKTOPSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
+                    MsiConnection.Instance.SetProperty("INSTALLSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
 
                     // start the install process ;)
                     MsiConnection.Instance.Install();

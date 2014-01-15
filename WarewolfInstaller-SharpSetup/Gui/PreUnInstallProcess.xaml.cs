@@ -4,6 +4,7 @@ using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using SharpSetup.Base;
 
 namespace Gui
 {
@@ -17,6 +18,15 @@ namespace Gui
         public PreUnInstallProcess()
         {
             InitializeComponent();
+
+            // In upgrade mode - Disable
+            if(InstallVariables.IsInstallMode)
+            {
+                cbRemoveItAll.Visibility = Visibility.Hidden;
+
+                // set the shortcut variable ;)
+                MsiConnection.Instance.SetProperty("INSTALLSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
+            }
         }
 
         public bool Rollback()
@@ -63,7 +73,7 @@ namespace Gui
             {
                 ServiceInstaller installer = new ServiceInstaller();
                 InstallContext context = new InstallContext("<<log file path>>", null);
-                installer.Context = context; 
+                installer.Context = context;
                 installer.ServiceName = InstallVariables.ServerService;
                 // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
@@ -81,7 +91,7 @@ namespace Gui
             // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
-                
+
             }
         }
 
@@ -118,7 +128,7 @@ namespace Gui
             CanGoNext = true;
         }
 
-       
+
 
         /// <summary>
         /// Sets the failure message.
@@ -170,7 +180,7 @@ namespace Gui
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.DoWork += delegate
                         {
-                            
+
                             RemoveService();
                         };
 
@@ -186,7 +196,7 @@ namespace Gui
                             }
                         };
 
-                        worker.RunWorkerAsync();                           
+                        worker.RunWorkerAsync();
                     }
                     else
                     {
@@ -197,13 +207,13 @@ namespace Gui
                 {
 
                     BackgroundWorker worker = new BackgroundWorker();
-                    
+
                     btnRerun.Visibility = Visibility.Hidden;
                     preUnInstallStatusImg.Visibility = Visibility.Hidden;
 
                     worker.DoWork += delegate
                     {
-                        
+
                         RemoveService();
                     };
 
@@ -237,7 +247,7 @@ namespace Gui
                 else
                 {
                     SetFailureMessage();
-                }   
+                }
             }
             catch(Exception)
             {
