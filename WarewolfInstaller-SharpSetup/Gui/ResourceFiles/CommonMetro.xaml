@@ -53,7 +53,7 @@
     
     <system:Double x:Key="HeaderFontSize">18</system:Double>
     <system:Double x:Key="DefaultFontSize">12</system:Double>
-    <FontFamily x:Key="DefaultFontFamily">Consolas</FontFamily>
+    <FontFamily x:Key="DefaultFontFamily">Monaco</FontFamily>
     <FontWeight x:Key="DefaultFontWeight">Normal</FontWeight>
     <SolidColorBrush x:Key="WorkflowBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
     <SolidColorBrush x:Key="WorkflowSelectedBorderBrush" Color="{StaticResource WarewolfOrange}" />

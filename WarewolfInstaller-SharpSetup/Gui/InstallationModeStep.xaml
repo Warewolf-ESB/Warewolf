@@ -13,9 +13,9 @@
     Style ="{StaticResource {x:Type ss:ModernInfoStep}}"
     >
     <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
-        <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="60" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.InstallationModeStep_Title}" />
-        <TextBlock TextWrapping="Wrap" DockPanel.Dock="Top" Margin="0,0,0,20" Text="{x:Static props:Resources.InstallationModeStep_MessageMain}" />
-        <TextBlock TextWrapping="NoWrap" DockPanel.Dock="Bottom" Text="{x:Static props:Resources.InstallationModeStep_MessageBottom}" />
+        <TextBlock Style="{StaticResource TextBlockStyle}" FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="60" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.InstallationModeStep_Title}" />
+        <TextBlock Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap" DockPanel.Dock="Top" Margin="0,0,0,20" Text="{x:Static props:Resources.InstallationModeStep_MessageMain}" />
+        <TextBlock Style="{StaticResource TextBlockStyle}" TextWrapping="NoWrap" DockPanel.Dock="Bottom" Text="{x:Static props:Resources.InstallationModeStep_MessageBottom}" />
         <ss:InstallationModeSelector Name="imsModes" Margin="30,10,10,10" />
         <Label/>
     </DockPanel>
