@@ -88,7 +88,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InfoStepDataContext.cs" />
+    <Compile Include="Utility\InfoStepDataContext.cs" />
     <Compile Include="PreUnInstallProcess.xaml.cs">
       <DependentUpon>PreUnInstallProcess.xaml</DependentUpon>
     </Compile>
@@ -110,14 +110,14 @@
     <Compile Include="InstallationStep.xaml.cs">
       <DependentUpon>InstallationStep.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InstallVariables.cs" />
+    <Compile Include="Utility\InstallVariables.cs" />
     <Compile Include="LicenseStep.xaml.cs">
       <DependentUpon>LicenseStep.xaml</DependentUpon>
     </Compile>
     <Compile Include="PreInstallProcess.xaml.cs">
       <DependentUpon>PreInstallProcess.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProcessHost.cs" />
+    <Compile Include="Utility\ProcessHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,7 +137,7 @@
     <Compile Include="SetupWizard.xaml.cs">
       <DependentUpon>SetupWizard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WarewolfCommand.cs" />
+    <Compile Include="Utility\WarewolfCommand.cs" />
     <Compile Include="WelcomeStep.xaml.cs">
       <DependentUpon>WelcomeStep.xaml</DependentUpon>
     </Compile>
