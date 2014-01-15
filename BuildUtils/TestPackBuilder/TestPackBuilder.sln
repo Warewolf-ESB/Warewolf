@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackBuilderTest", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPackBuilderExe", "TestPackBuilderExe\TestPackBuilderExe.csproj", "{94C9579D-41AF-4068-B221-B3EB57F2B0EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNameToIdHashTest", "TestNameToIdHashTest\TestNameToIdHashTest.csproj", "{F6CB1F8A-8D1A-4088-9C4F-D4FD6B8F0EEE}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 5
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -22,6 +24,9 @@ Global
 		SccProjectUniqueName3 = TestPackBuilderExe\\TestPackBuilderExe.csproj
 		SccProjectName3 = TestPackBuilderExe
 		SccLocalPath3 = TestPackBuilderExe
+		SccProjectUniqueName4 = TestNameToIdHashTest\\TestNameToIdHashTest.csproj
+		SccProjectName4 = TestNameToIdHashTest
+		SccLocalPath4 = TestNameToIdHashTest
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +45,10 @@ Global
 		{94C9579D-41AF-4068-B221-B3EB57F2B0EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94C9579D-41AF-4068-B221-B3EB57F2B0EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94C9579D-41AF-4068-B221-B3EB57F2B0EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6CB1F8A-8D1A-4088-9C4F-D4FD6B8F0EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6CB1F8A-8D1A-4088-9C4F-D4FD6B8F0EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6CB1F8A-8D1A-4088-9C4F-D4FD6B8F0EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6CB1F8A-8D1A-4088-9C4F-D4FD6B8F0EEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
