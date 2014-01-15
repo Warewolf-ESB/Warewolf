@@ -43,9 +43,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime", "Dev2.Runtime\Dev2.Runtime.csproj", "{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 22
+		SccNumberOfProjects = 23
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -112,6 +114,9 @@ Global
 		SccProjectUniqueName21 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
 		SccProjectName21 = Dev2.Services.Execution
 		SccLocalPath21 = Dev2.Services.Execution
+		SccProjectUniqueName22 = Dev2.Runtime\\Dev2.Runtime.csproj
+		SccProjectName22 = Dev2.Runtime
+		SccLocalPath22 = Dev2.Runtime
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -386,6 +391,20 @@ Global
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x64.ActiveCfg = Release|Any CPU
 		{019A92B9-9209-4930-BC96-381CB8B1C0EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x64.ActiveCfg = Debug|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x64.Build.0 = Debug|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x64.ActiveCfg = Release|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x64.Build.0 = Release|x64
+		{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

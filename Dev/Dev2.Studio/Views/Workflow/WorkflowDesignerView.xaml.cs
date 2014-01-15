@@ -19,7 +19,6 @@ namespace Dev2.Studio.Views.Workflow
         }
 
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
-        //TODO Also extract this to some kind of method - AllowDrop and take it out of this codebehind so it can be tested.
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
