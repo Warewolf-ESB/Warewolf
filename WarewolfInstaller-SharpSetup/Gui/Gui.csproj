@@ -231,9 +231,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="app.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ResourceFiles\Images\InstallationStep.png" />
   </ItemGroup>
   <ItemGroup>

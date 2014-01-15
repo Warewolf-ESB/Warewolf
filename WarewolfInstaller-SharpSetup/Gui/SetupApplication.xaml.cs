@@ -69,7 +69,7 @@ namespace Gui
                 PerformInstallerExitActions();
 
                 // set the Webs folder ACL
-                SetWebsACL();
+                //SetWebsACL();
 
             };
         }
@@ -152,7 +152,7 @@ namespace Gui
                     }
                     catch(Exception e)
                     {
-                        MessageBox.Show("An error occured while exiting the installer. " + Environment.NewLine + e.Message);
+                        MessageBox.Show("An error occurred while exiting the installer. " + Environment.NewLine + e.Message);
                     }
                 }
             }
