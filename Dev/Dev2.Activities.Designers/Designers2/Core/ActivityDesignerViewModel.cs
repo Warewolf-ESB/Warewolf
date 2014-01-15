@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem.PropertyChanged += OnModelItemPropertyChanged;
             VerifyArgument.IsNotNull("showExampleWorkflow", showExampleWorkflow);
 
-            ShowExampleWorkflowLink = true;
+            ShowExampleWorkflowLink = Visibility.Visible;
             IsValid = true;
             IsClosed = true;
             ShowItemHelpCommand = new RelayCommand(o => showExampleWorkflow(modelItem.ItemType), o => true);
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public ICommand OpenErrorsLinkCommand { get; private set; }
 
-        public bool ShowExampleWorkflowLink { get; set; }
+        public Visibility ShowExampleWorkflowLink { get; set; }
 
         public ObservableCollection<ActivityDesignerToggle> TitleBarToggles { get { return _titleBarToggles; } }
 

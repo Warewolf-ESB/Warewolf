@@ -41,7 +41,7 @@
                        VerticalAlignment="Top"
                        TextWrapping="WrapWithOverflow"></TextBlock>
             <TextBlock Grid.Row="2"
-                       Visibility="{Binding ShowExampleWorkflowLink,Converter={StaticResource BoolToVisibilityConverter}}">
+                       Visibility="{Binding ShowExampleWorkflowLink}">
                 <Hyperlink Command="{Binding ShowItemHelpCommand}">View Sample Workflow</Hyperlink>
             </TextBlock>
         </Grid>
