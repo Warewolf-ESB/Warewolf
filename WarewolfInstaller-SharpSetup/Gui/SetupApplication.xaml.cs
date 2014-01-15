@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Input;
 using SharpSetup.Base;
 
 namespace Gui
@@ -15,15 +16,22 @@ namespace Gui
 
             SetupHelper.Initialize(e.Args);
             SetupHelper.Install += SetupHelper_Install;
-            SetupHelper.StartInstallation();
+            SetupHelper.StartInstallation();    
+
             //if (slientMode)
             //{
             //    SetupHelper.SilentInstall += new EventHandler<EventArgs>(SetupHelper_SilentInstall);
             //}
             //else
             //{
-
+               
             //}
+        }
+
+        void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Begin dragging the window 
+            MainWindow.DragMove();
         }
 
         /// <summary>
@@ -46,6 +54,8 @@ namespace Gui
         void SetupHelper_Install(object sender, EventArgs e)
         {
             MainWindow = new SetupWizard();
+            MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
+            MainWindow.WindowStyle = WindowStyle.None;
             MainWindow.Show();
 
             // Hi-jack the exit event to start the studio ;)
@@ -97,5 +107,8 @@ namespace Gui
                 }
             };
         }
+
+
+
     }
 }

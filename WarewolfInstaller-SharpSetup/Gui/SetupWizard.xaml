@@ -4,5 +4,6 @@
     xmlns:ss="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
     xmlns:props="clr-namespace:Gui.Properties"
     Title="{x:Static props:Resources.SetupWizard_Title}"
+                 Style="{StaticResource {x:Type ss:ModernWizard}}"
     >
 </ss:ModernWizard>

@@ -31,8 +31,8 @@ namespace Gui
             {
                 if(waitForExit)
                 {
-                    // wait up to 10 seconds for exit ;)
-                    p.WaitForExit(10000);
+                // wait up to 10 seconds for exit ;)
+                p.WaitForExit(10000);
                 }
             }
             else

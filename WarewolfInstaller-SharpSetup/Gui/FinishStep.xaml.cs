@@ -16,7 +16,7 @@ namespace Gui
             {
                 cbStartStudio.Visibility = Visibility.Hidden;
                 tbFinish.Visibility = Visibility.Visible;
-            }
+        }
             else
             {
                 cbStartStudio.Visibility = Visibility.Visible;

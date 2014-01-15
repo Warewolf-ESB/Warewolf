@@ -44,7 +44,7 @@ namespace Gui
             PreInstallMsg.Text = msg;
             preInstallStatusImg.Visibility = Visibility.Visible;
             preInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
             btnRerun.Visibility = Visibility.Collapsed;
         }
@@ -64,7 +64,7 @@ namespace Gui
         {
             PreInstallMsg.Text = msg ?? "Cannot stop server instance";
             preInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
                                         UriKind.RelativeOrAbsolute));
             preInstallStatusImg.Visibility = Visibility.Visible;
             CanGoNext = false;
@@ -95,9 +95,9 @@ namespace Gui
                     if(!invoke)
                     {
                         SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
-                    }
+                    } 
                 }
-
+                
             }
             catch(Exception e)
             {
@@ -112,10 +112,10 @@ namespace Gui
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
         public void PreInstallStep_Entered(object sender, ChangeStepRoutedEventArgs e)
         {
-
+            
             // Setup a cancel action ;)
             Cancel += OnCancel;
-
+            
             try
             {
                 // Open the required ports ;)
@@ -157,7 +157,7 @@ namespace Gui
                 {
                     SetFailureMessage();
                 }
-
+                    
             }
             catch(Exception)
             {

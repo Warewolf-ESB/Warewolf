@@ -59,7 +59,7 @@ namespace Gui
                 // Just making sure ;)
             }
 
-
+          
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace Gui
             PostInstallMsg.Text = msg;
             postInstallStatusImg.Visibility = Visibility.Visible;
             postInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
             CanGoNext = true;
             btnRerun.Visibility = Visibility.Hidden;
@@ -126,7 +126,7 @@ namespace Gui
         /// Starts the service.
         /// </summary>
         private void StartService(string serverInstallLocation)
-        {
+            {
             try
             {
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
@@ -220,41 +220,41 @@ namespace Gui
         /// Restarts the service.
         /// </summary>
         private void RestartService()
-        {
-            ServiceController sc = new ServiceController(InstallVariables.ServerService);
+            {
+                ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
 
             if(sc.Status == ServiceControllerStatus.Running)
-            {
-                sc.Stop();
-                sc.WaitForStatus(ServiceControllerStatus.Stopped,
-                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
-
-            }
-
-            try
-            {
-
-                // maybe it is already installed, just try and start it ;)
-                sc.Start();
-                sc.WaitForStatus(ServiceControllerStatus.Running,
-                                 TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
-                if(sc.Status == ServiceControllerStatus.Running)
                 {
-                    _serviceInstalled = true;
+                    sc.Stop();
+                    sc.WaitForStatus(ServiceControllerStatus.Stopped,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds)); // wait ;)
+
                 }
-                else
+
+                try
+                {
+                   
+                    // maybe it is already installed, just try and start it ;)
+                    sc.Start();
+                    sc.WaitForStatus(ServiceControllerStatus.Running,
+                                     TimeSpan.FromSeconds(InstallVariables.DefaultWaitInSeconds));
+                if(sc.Status == ServiceControllerStatus.Running)
+                    {
+                        _serviceInstalled = true;
+                    }
+                    else
+                    {
+                        _serviceInstallException = true;
+                    }
+                    sc.Dispose();
+                }
+                catch(Exception e2)
                 {
                     _serviceInstallException = true;
+                    MessageBox.Show(e2.Message);
                 }
-                sc.Dispose();
             }
-            catch(Exception e2)
-            {
-                _serviceInstallException = true;
-                MessageBox.Show(e2.Message);
-            }
-        }
 
         /// <summary>
         /// Installs the service.
@@ -321,21 +321,21 @@ namespace Gui
             btnRerun.Visibility = Visibility.Hidden;
             // Setup a cancel action ;)
             Cancel += delegate
-                    {
-                        SetCleanupMessage();
-                        var trans = new PreUnInstallProcess();
-
+            {
+                SetCleanupMessage();
+                var trans = new PreUnInstallProcess();
+                
                         if(!trans.Rollback())
-                        {
-                            ShowCancelError();
-                        }
-                        else
-                        {
-                            // Now uninstall?!
-                            MsiConnection.Instance.Uninstall();
-                            SetSuccessMessasge("Rollback complete");
-                        }
-                    };
+                {
+                    ShowCancelError();
+                }
+                else
+                {
+                    // Now uninstall?!
+                    MsiConnection.Instance.Uninstall();
+                    SetSuccessMessasge("Rollback complete");
+                }
+            };
 
             // attempts to install service ;)
             if(!string.IsNullOrEmpty(InstallVariables.InstallRoot))

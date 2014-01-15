@@ -63,7 +63,7 @@ namespace Gui
             {
                 ServiceInstaller installer = new ServiceInstaller();
                 InstallContext context = new InstallContext("<<log file path>>", null);
-                installer.Context = context;
+                installer.Context = context; 
                 installer.ServiceName = InstallVariables.ServerService;
                 // ReSharper disable AssignNullToNotNullAttribute
                 installer.Uninstall(null);
@@ -81,7 +81,7 @@ namespace Gui
             // ReSharper restore EmptyGeneralCatchClause
             {
                 // just being safe ;)
-
+                
             }
         }
 
@@ -113,12 +113,12 @@ namespace Gui
             preUnInstallStatusImg.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
             preUnInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/tick.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
             CanGoNext = true;
         }
 
-
+       
 
         /// <summary>
         /// Sets the failure message.
@@ -127,7 +127,7 @@ namespace Gui
         {
             PreUnInstallMsg.Text = "Cannot remove server instance";
             preUnInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
                                         UriKind.RelativeOrAbsolute));
             preUnInstallStatusImg.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Visible;
@@ -170,7 +170,7 @@ namespace Gui
                         BackgroundWorker worker = new BackgroundWorker();
                         worker.DoWork += delegate
                         {
-
+                            
                             RemoveService();
                         };
 
@@ -186,7 +186,7 @@ namespace Gui
                             }
                         };
 
-                        worker.RunWorkerAsync();
+                        worker.RunWorkerAsync();                           
                     }
                     else
                     {
@@ -197,13 +197,13 @@ namespace Gui
                 {
 
                     BackgroundWorker worker = new BackgroundWorker();
-
+                    
                     btnRerun.Visibility = Visibility.Hidden;
                     preUnInstallStatusImg.Visibility = Visibility.Hidden;
 
                     worker.DoWork += delegate
                     {
-
+                        
                         RemoveService();
                     };
 
@@ -237,7 +237,7 @@ namespace Gui
                 else
                 {
                     SetFailureMessage();
-                }
+                }   
             }
             catch(Exception)
             {

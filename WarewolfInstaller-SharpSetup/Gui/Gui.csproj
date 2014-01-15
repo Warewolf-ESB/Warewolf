@@ -191,6 +191,26 @@
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResourceFiles\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceFiles\ButtonBrushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceFiles\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceFiles\CommonMetro.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceFiles\WarewolfGeneric.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SetupWizard.xaml">
       <SubType>UserControl</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,7 +224,7 @@
     <Resource Include="app.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ResourceFiles\InstallationStep.png" />
+    <Resource Include="ResourceFiles\Images\InstallationStep.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -224,16 +244,25 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ResourceFiles\tick.png" />
+    <Resource Include="ResourceFiles\Images\tick.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ResourceFiles\cross.png" />
+    <Resource Include="ResourceFiles\Images\cross.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ResourceFiles\wait.gif" />
+    <Resource Include="ResourceFiles\Images\wait.gif" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Warewolf.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="ResourceFiles\Images\resources_install_highres.png" />
+    <Resource Include="ResourceFiles\Images\resources_leftbanner.png" />
+    <Resource Include="ResourceFiles\Images\resources_menu_all.png" />
+    <Resource Include="ResourceFiles\Images\resources_menu_none.png" />
+    <Resource Include="ResourceFiles\Images\resources_menu_one.png" />
+    <Resource Include="ResourceFiles\Images\resources_noinstall_highres.png" />
+    <Resource Include="ResourceFiles\Images\resources_partinstall_highres.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

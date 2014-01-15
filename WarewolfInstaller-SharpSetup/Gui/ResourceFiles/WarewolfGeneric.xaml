@@ -1,0 +1,877 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
+                    xmlns:p="clr-namespace:SharpSetup.UI.Wpf.Properties;assembly=SharpSetup.Wpf">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CommonMetro.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/ButtonBrushes.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="ButtonStyle"
+           TargetType="Button">
+        <Setter Property="Foreground"
+                Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="3,1,3,1" />
+        <Setter Property="Height"
+                Value="24" />
+        <Setter Property="Margin"
+                Value="2" />
+        <Setter Property="MinHeight"
+                Value="24" />
+        <Setter Property="MinWidth"
+                Value="24" />
+        <Setter Property="FontWeight"
+                Value="Bold" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource ButtonHoverBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                       Storyboard.TargetProperty="Stroke">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource ButtonHoverBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                       Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource ButtonPressedBackgroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Bd"
+                                                                       Storyboard.TargetProperty="Stroke">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource ButtonPressedBorderBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetProperty="Foreground"
+                                                                       Storyboard.TargetName="ContentControl">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource LightForegroundBrush}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                       Storyboard.TargetName="DisabledVisualElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+                                                                       Storyboard.TargetName="FocusedVisualElement">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Rectangle x:Name="Bd"
+                                   Fill="{StaticResource ButtonBackgroundBrush}"
+                                   Stroke="{StaticResource ButtonBorderBrush}"
+                                   StrokeThickness="1" />
+                        <ContentControl x:Name="ContentControl"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        IsTabStop="False"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        Margin="{TemplateBinding Padding}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter x:Name="contentPresenter" />
+                        </ContentControl>
+                        <Rectangle x:Name="FocusedVisualElement"
+                                   Stroke="{StaticResource ButtonPressedBorderBrush}"
+                                   Visibility="Collapsed"
+                                   StrokeThickness="1" />
+                        <Rectangle x:Name="DisabledVisualElement"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Visibility="Collapsed" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    
+    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Validation.ErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <AdornedElementPlaceholder></AdornedElementPlaceholder>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError"
+                     Value="True">
+                <Setter Property="TextElement.Foreground"
+                        Value="{StaticResource ValidationErrorElement}"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type controls:ModernWizard}"
+           x:Uid="Style_1"
+           TargetType="{x:Type controls:ModernWizard}">
+        <Style.Resources>
+            <ResourceDictionary>
+                <controls:GenericBooleanToVisibilityConverter x:Key="boolToVisibility"
+                                                              True="Visible"
+                                                              False="Hidden" />
+                <controls:GenericBooleanToVisibilityConverter x:Key="invertedBoolToVisibility"
+                                                              True="Hidden"
+                                                              False="Visible" />
+            </ResourceDictionary>
+        </Style.Resources>
+        <Setter Property="Control.Background"
+                Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="FrameworkElement.Width"
+                Value="502" />
+        <Setter Property="FrameworkElement.Height"
+                Value="389" />
+        <Setter Property="Window.ResizeMode"
+                Value="NoResize" />
+        <Setter x:Uid="Setter_1"
+                Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate x:Uid="ControlTemplate_1"
+                                 TargetType="{x:Type controls:ModernWizard}">
+                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
+                            BorderThickness="{TemplateBinding Control.BorderThickness}"
+                            Background="{TemplateBinding Control.Background}">
+                        <DockPanel x:Uid="DockPanel_1">
+                            <Grid x:Uid="Grid_1"
+                                  Margin="8"
+                                  DockPanel.Dock="Bottom"
+                                  Grid.IsSharedSizeScope="True"
+                                  Height="28">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition x:Uid="ColumnDefinition_1"
+                                                      SharedSizeGroup="EqualButtons" />
+                                    <ColumnDefinition x:Uid="ColumnDefinition_2"
+                                                      SharedSizeGroup="EqualButtons" />
+                                    <ColumnDefinition x:Uid="ColumnDefinition_2"
+                                                      Width="20" />
+                                    <ColumnDefinition x:Uid="ColumnDefinition_3"
+                                                      SharedSizeGroup="EqualButtons" />
+                                </Grid.ColumnDefinitions>
+                                <Button Style="{StaticResource ButtonStyle}"
+                                        Name="btnBack"
+                                        x:Uid="btnBack"
+                                        Content="Back"
+                                        Margin="10,2,0,0"
+                                        Grid.Column="1"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.MoveBack" />
+                                <Button Style="{StaticResource ButtonStyle}"
+                                        Name="btnNext"
+                                        x:Uid="btnNext"
+                                        Content="Next"
+                                        Margin="10,2,2,0"
+                                        Grid.Column="2"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.MoveNext"
+                                        IsDefault="True"
+                                        Visibility="{Binding IsEnabled,ElementName=btnFinish,Converter={StaticResource invertedBoolToVisibility}}" />
+                                <Button Style="{StaticResource ButtonStyle}"
+                                        Name="btnFinish"
+                                        x:Uid="btnFinish"
+                                        Content="Finish"
+                                        Margin="10,2,2,0"
+                                        Grid.Column="2"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.Finish"
+                                        IsDefault="True"
+                                        Visibility="{Binding IsEnabled,ElementName=btnFinish,Converter={StaticResource boolToVisibility}}" />
+                                <Button Style="{StaticResource ButtonStyle}"
+                                        Name="btnCancel"
+                                        x:Uid="btnCancel"
+                                        Content="Cancel"
+                                        Margin="10,2,2,0"
+                                        Grid.Column="4"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.Cancel"
+                                        Visibility="{Binding IsEnabled,ElementName=btnFinish,Converter={StaticResource invertedBoolToVisibility}}" />
+                            </Grid>
+                            <Border HorizontalAlignment="Stretch"
+                                    Height="1"
+                                    DockPanel.Dock="Bottom"
+                                    Background="#C1C3C5"
+                                    SnapsToDevicePixels="True" />
+                            <Border HorizontalAlignment="Stretch"
+                                    Height="1"
+                                    DockPanel.Dock="Bottom"
+                                    Background="#F3700D"
+                                    SnapsToDevicePixels="True" />
+                            <ContentPresenter x:Uid="ContentPresenter_1" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>     
+
+    <Style x:Key="{x:Type controls:ModernFilesInUseDialog}"
+           TargetType="{x:Type controls:ModernFilesInUseDialog}">
+        <Setter Property="Control.Background"
+                Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="FrameworkElement.Width"
+                Value="353" />
+        <Setter Property="FrameworkElement.Height"
+                Value="263" />
+        <Setter Property="Window.ResizeMode"
+                Value="NoResize" />
+        <Setter Property="Window.Title"
+                Value="{x:Static p:Resources.ModernFilesInUseDialog_Title}" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ModernFilesInUseDialog}">
+                    <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
+                            BorderThickness="{TemplateBinding Control.BorderThickness}"
+                            Background="{TemplateBinding Control.Background}">
+                        <DockPanel Margin="10">
+                            <TextBlock DockPanel.Dock="Top"
+                                       Text="{TemplateBinding controls:ModernFilesInUseDialog.Message}"
+                                       Margin="0"
+                                       Padding="0"
+                                       TextWrapping="Wrap" />
+                            <Grid DockPanel.Dock="Bottom"
+                                  Margin="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0"
+                                        Style="{StaticResource ButtonStyle}"
+                                        Content="{x:Static p:Resources.ModernFilesInUseDialog_Retry}"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.Retry" />
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource ButtonStyle}"
+                                        Content="{x:Static p:Resources.ModernFilesInUseDialog_Ignore}"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.Ignore" />
+                                <Button Grid.Column="4"
+                                        Style="{StaticResource ButtonStyle}"
+                                        Content="{x:Static p:Resources.ModernFilesInUseDialog_Cancel}"
+                                        Padding="16,2,16,2"
+                                        Command="controls:CommandLibrary.Cancel" />
+                            </Grid>
+                            <ListBox Margin="0,10,0,10"
+                                     ItemsSource="{TemplateBinding controls:ModernFilesInUseDialog.ApplicationList}" />
+                        </DockPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:ModernInfoStep}"
+           TargetType="{x:Type controls:ModernInfoStep}">
+        <Setter Property="Page.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ModernInfoStep}">
+                    <Border>
+                        <Border.Background>
+                            <LinearGradientBrush>
+                                <GradientStop Color="#7F7F7F"
+                                              Offset="0.0" />
+                                <GradientStop Color="White"
+                                              Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid HorizontalAlignment="Stretch"
+                              Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>                            
+                            <ContentPresenter Grid.Column="0"></ContentPresenter>
+                            <Image Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   Height="80"
+                                   Width="80"
+                                   Source="/Gui;component/Warewolf.ico"></Image>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:ModernActionStep}"
+           TargetType="{x:Type controls:ModernActionStep}">
+        <Setter Property="Page.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
+                    <DockPanel>
+                        <Label Background="#FFFFFFFF"
+                               DockPanel.Dock="Top"
+                               BorderThickness="0"
+                               Height="62">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="{TemplateBinding Page.Title}"
+                                       Background="#00FFFFFF"
+                                       FontWeight="Bold"
+                                       Margin="10,4,10,0"
+                                       Padding="0" />
+                                <Label Background="#00FFFFFF"
+                                       Margin="30,5,10,0"
+                                       Padding="0">
+                                    <TextBlock TextWrapping="Wrap"
+                                               Text="{TemplateBinding controls:ModernActionStep.Subtitle}" />
+                                </Label>
+                            </StackPanel>
+                        </Label>
+                        <Border HorizontalAlignment="Stretch"
+                                Height="1"
+                                DockPanel.Dock="Top"
+                                Background="#FFA9A9A9"
+                                SnapsToDevicePixels="True" />
+                        <Border HorizontalAlignment="Stretch"
+                                Height="1"
+                                DockPanel.Dock="Top"
+                                Background="#FFFFFFFF"
+                                SnapsToDevicePixels="True" />
+                        <Border Padding="10">
+                            <ContentPresenter />
+                        </Border>
+                    </DockPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:InstallationProgressBar}"
+           TargetType="{x:Type controls:InstallationProgressBar}"
+           BasedOn="{StaticResource {x:Type ProgressBar}}" />
+
+    <Style x:Key="{x:Type controls:InstallationProgressLabel}"
+           TargetType="{x:Type controls:InstallationProgressLabel}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:InstallationProgressLabel}">
+                    <StackPanel>
+                        <Label Content="{TemplateBinding controls:InstallationProgressLabel.MainText}"
+                               Margin="0,0,0,5"
+                               Padding="0" />
+                        <Label Content="{TemplateBinding controls:InstallationProgressLabel.DetailText}"
+                               Margin="0,0,0,0"
+                               Padding="0" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:DestinationPath}"
+           TargetType="{x:Type controls:DestinationPath}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:DestinationPath}">
+                    <DockPanel>
+                        <Button Name="PART_ChangeButton"
+                                Style="{StaticResource ButtonStyle}"
+                                Content="{x:Static p:Resources.DestinationPath_ChangeButton_Text}"
+                                DockPanel.Dock="Right"
+                                Margin="10,0,0,0"
+                                Padding="8,2,8,2" />
+                        <TextBox Name="textBox"
+                                 VerticalAlignment="Center"
+                                 Padding="2"
+                                 Text="{Binding RelativeSource={RelativeSource TemplatedParent},Path=SelectedPath,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                    </DockPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="controls:DestinationPath.IsValid"
+                                 Value="False">
+                            <Setter TargetName="textBox"
+                                    Property="Control.Background"
+                                    Value="#FFFFE4E1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:SimpleDiskCostBox}"
+           TargetType="{x:Type controls:SimpleDiskCostBox}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:SimpleDiskCostBox}">
+                    <GroupBox Header="{x:Static p:Resources.SimpleDiskCostBox_Header}">
+                        <Grid>
+                            <ItemsPresenter />
+                        </Grid>
+                    </GroupBox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsControl.ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <DockPanel>
+                        <Label DockPanel.Dock="Right"
+                               Content="{Binding Value}" />
+                        <Label Content="{Binding Description}" />
+                    </DockPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="featureTreeNodeImageStyle"
+           TargetType="{x:Type Image}" />
+
+    <Style x:Key="featureTreeNodeStackPanelStyle"
+           TargetType="{x:Type StackPanel}" />
+
+    <ContextMenu x:Key="featureTreeContextMenu"
+                 Padding="0">
+        <FrameworkElement.Resources>
+            <ResourceDictionary>
+                <controls:GenericBooleanToVisibilityConverter x:Key="boolToVisibility"
+                                                              True="Visible"
+                                                              False="Collapsed" />
+            </ResourceDictionary>
+        </FrameworkElement.Resources>
+        <MenuItem Command="controls:CommandLibrary.InstallOne"
+                  Visibility="{Binding Path=IsEnabled,RelativeSource={RelativeSource Self},Converter={StaticResource boolToVisibility}}">
+            <MenuItem.Icon>
+                <Image Source="/Gui;component/ResourceFiles/Images/resources_menu_none.png"
+                       Width="24"
+                       SnapsToDevicePixels="True"
+                       Margin="2" />
+            </MenuItem.Icon>
+            <HeaderedItemsControl.Header>
+                <TextBlock Margin="4,2,2,4"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type MenuItem}},Path=Command.Text}" />
+            </HeaderedItemsControl.Header>
+        </MenuItem>
+        <MenuItem Command="controls:CommandLibrary.InstallAll"
+                  Visibility="{Binding Path=IsEnabled,RelativeSource={RelativeSource Self},Converter={StaticResource boolToVisibility}}">
+            <MenuItem.Icon>
+                <Image Source="/Gui;component/ResourceFiles/Images/resources_menu_all.png"
+                       Width="24"
+                       SnapsToDevicePixels="True"
+                       Margin="2" />
+            </MenuItem.Icon>
+            <HeaderedItemsControl.Header>
+                <TextBlock Margin="4,2,2,4"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type MenuItem}},Path=Command.Text}" />
+            </HeaderedItemsControl.Header>
+        </MenuItem>
+        <Separator>
+            <UIElement.Visibility>
+                <MultiBinding Converter="{StaticResource boolToVisibility}"
+                              ConverterParameter="_0 _1 or _2 and">
+                    <Binding Mode="OneWay"
+                             Path="Items[0].IsEnabled"
+                             RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type ContextMenu}}" />
+                    <Binding Mode="OneWay"
+                             Path="Items[1].IsEnabled"
+                             RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type ContextMenu}}" />
+                    <Binding Mode="OneWay"
+                             Path="Items[3].IsEnabled"
+                             RelativeSource="{RelativeSource FindAncestor,AncestorType={x:Type ContextMenu}}" />
+                </MultiBinding>
+            </UIElement.Visibility>
+        </Separator>
+        <MenuItem Command="controls:CommandLibrary.InstallNone"
+                  Visibility="{Binding Path=IsEnabled,RelativeSource={RelativeSource Self},Converter={StaticResource boolToVisibility}}">
+            <MenuItem.Icon>
+                <Image Source="/Gui;component/ResourceFiles/Images/resources_menu_none.png"
+                       Width="24"
+                       SnapsToDevicePixels="True"
+                       Margin="2" />
+            </MenuItem.Icon>
+            <HeaderedItemsControl.Header>
+                <TextBlock Margin="4,2,2,4"
+                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type MenuItem}},Path=Command.Text}" />
+            </HeaderedItemsControl.Header>
+        </MenuItem>
+    </ContextMenu>
+
+    <HierarchicalDataTemplate x:Key="featureTreeItemTemplate"
+                              ItemsSource="{Binding Nodes}">
+        <StackPanel Orientation="Horizontal"
+                    SnapsToDevicePixels="True"
+                    Margin="0"
+                    Style="{DynamicResource featureTreeNodeStackPanelStyle}">
+            <Image Width="32"
+                   Style="{DynamicResource featureTreeNodeImageStyle}"
+                   ContextMenu="{DynamicResource featureTreeContextMenu}"
+                   Margin="0 0 5 0"
+                   Source="{Binding ImageLocation}" />
+            <TextBlock Name="textblock"
+                       Margin="0"
+                       Padding="2"
+                       VerticalAlignment="Center"
+                       Background="{x:Static SystemColors.WindowBrush}"
+                       Foreground="{x:Static SystemColors.WindowTextBrush}"
+                       Text="{Binding Title}" />
+        </StackPanel>
+        <DataTemplate.Triggers>
+            <DataTrigger Value="True"
+                         Binding="{Binding Path=IsSelected,RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type TreeViewItem}}}">
+                <Setter TargetName="textblock"
+                        Value="{x:Static SystemColors.HighlightBrush}"
+                        Property="TextBlock.Background" />
+                <Setter TargetName="textblock"
+                        Value="{x:Static SystemColors.HighlightTextBrush}"
+                        Property="TextBlock.Foreground" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </HierarchicalDataTemplate>
+
+    <Style x:Key="{x:Type controls:FeatureTree}"
+           TargetType="{x:Type controls:FeatureTree}"
+           BasedOn="{StaticResource {x:Type TreeView}}">
+        <Style.Resources>
+            <ResourceDictionary>
+                <Style TargetType="{x:Type TreeViewItem}">
+                    <Setter Property="TreeViewItem.IsSelected"
+                            Value="{Binding Path=IsSelected,Mode=TwoWay}" />
+                    <Setter Property="Control.Padding"
+                            Value="0" />
+                    <Setter Property="FrameworkElement.Margin"
+                            Value="0" />
+                    <Setter Property="FrameworkElement.ContextMenu"
+                            Value="{DynamicResource featureTreeContextMenu}" />
+                </Style>
+                <SolidColorBrush x:Key="TransparentSolidColorBrush"
+                                 Color="Transparent" />
+            </ResourceDictionary>
+        </Style.Resources>
+        <Setter Property="ItemsControl.ItemsSource"
+                Value="{Binding}" />
+        <Setter Property="ItemsControl.ItemTemplate"
+                Value="{DynamicResource featureTreeItemTemplate}" />
+    </Style>
+
+    <Style x:Key="prerequisiteListItemContainerStyle"
+           TargetType="{x:Type ListViewItem}">
+        <Setter Property="FrameworkElement.Margin"
+                Value="0" />
+        <Setter Property="Control.Padding"
+                Value="0" />
+        <Setter Property="Control.BorderBrush"
+                Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="Control.BorderThickness"
+                Value="0,0,0,1" />
+        <Setter Property="Control.HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="Control.HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="Control.VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="UIElement.Focusable"
+                Value="False" />
+    </Style>
+
+    <Style x:Key="prerequisiteListScrollViewerStyle"
+           TargetType="{x:Type ScrollViewer}">
+        <Setter Property="UIElement.Focusable"
+                Value="False" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Hidden" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid SnapsToDevicePixels="True"
+                          Background="{TemplateBinding Control.Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <DockPanel Margin="{TemplateBinding Control.Padding}">
+                            <ScrollViewer Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          DockPanel.Dock="Top">
+                                <GridViewHeaderRowPresenter Name="viewHeaderRowPresenter"
+                                                            Margin="0"
+                                                            SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}">
+                                    <GridViewRowPresenterBase.Columns>
+                                        <Binding Path="TemplatedParent.View.Columns"
+                                                 RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </GridViewRowPresenterBase.Columns>
+                                </GridViewHeaderRowPresenter>
+                            </ScrollViewer>
+                            <ScrollContentPresenter Name="PART_ScrollContentPresenter"
+                                                    SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"
+                                                    ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                                    KeyboardNavigation.DirectionalNavigation="Local"
+                                                    CanContentScroll="{TemplateBinding ScrollViewer.CanContentScroll}">
+                                <ContentPresenter.Content>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <ContentControl Grid.Column="0"
+                                                        Grid.Row="0"
+                                                        Content="{TemplateBinding ContentControl.Content}" />
+                                        <ItemsControl Grid.Column="0"
+                                                      Grid.Row="0"
+                                                      Margin="1,0,0,0"
+                                                      ItemsSource="{Binding Path=TemplatedParent.View.Columns,RelativeSource={RelativeSource TemplatedParent}}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border BorderThickness="0,0,1,0"
+                                                            BorderBrush="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+                                                            Width="{Binding Path=ActualWidth}" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </Grid>
+                                </ContentPresenter.Content>
+                            </ScrollContentPresenter>
+                        </DockPanel>
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                                   Cursor="Arrow"
+                                   Grid.Row="1"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableWidth}"
+                                   Minimum="0.0"
+                                   Orientation="Horizontal"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportWidth}"
+                                   Value="{Binding Path=HorizontalOffset,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" />
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                                   Cursor="Arrow"
+                                   Grid.Column="1"
+                                   Maximum="{TemplateBinding ScrollViewer.ScrollableHeight}"
+                                   Minimum="0.0"
+                                   Orientation="Vertical"
+                                   ViewportSize="{TemplateBinding ScrollViewer.ViewportHeight}"
+                                   Value="{Binding Path=VerticalOffset,Mode=OneWay,RelativeSource={RelativeSource TemplatedParent}}" />
+                        <DockPanel Grid.Column="1"
+                                   Grid.Row="1"
+                                   LastChildFill="False"
+                                   Background="{Binding Path=Background,ElementName=PART_VerticalScrollBar}">
+                            <Rectangle Visibility="{TemplateBinding ScrollViewer.ComputedVerticalScrollBarVisibility}"
+                                       Width="1"
+                                       Fill="#FFFFFFFF"
+                                       DockPanel.Dock="Left" />
+                            <Rectangle Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}"
+                                       Height="1"
+                                       Fill="#FFFFFFFF"
+                                       DockPanel.Dock="Top" />
+                        </DockPanel>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <controls:PrerequisiteCheckStatusToImageConverter x:Key="prerequisiteCheckStatusToImageConverter" />
+
+    <GridView x:Key="prerequisiteListGridView"
+              AllowsColumnReorder="False">
+        <GridViewColumn controls:PrerequisiteListLayoutManager.Width="50">
+            <GridViewColumnHeader Content="{x:Static p:Resources.PrerequisiteList_Header_Image}" />
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <Image Stretch="None"
+                           SnapsToDevicePixels="True"
+                           Margin="4"
+                           Source="{Binding Path=Status,Converter={StaticResource prerequisiteCheckStatusToImageConverter}}" />
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+        <GridViewColumn controls:PrerequisiteListLayoutManager.Width="*1">
+            <GridViewColumnHeader Content="{x:Static p:Resources.PrerequisiteList_Header_Rule}" />
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock TextWrapping="Wrap"
+                               Margin="4"
+                               Text="{Binding Title}" />
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+        <GridViewColumn controls:PrerequisiteListLayoutManager.Width="100">
+            <GridViewColumnHeader Content="{x:Static p:Resources.PrerequisiteList_Header_Result}" />
+            <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                    <TextBlock TextWrapping="Wrap"
+                               Foreground="#FF00008B"
+                               Margin="4">
+            <Hyperlink>
+              <TextBlock Text="{Binding Path=StatusLink}" />
+            </Hyperlink>
+          </TextBlock>
+                </DataTemplate>
+            </GridViewColumn.CellTemplate>
+        </GridViewColumn>
+    </GridView>
+
+    <Style x:Key="{x:Type controls:PrerequisiteList}"
+           TargetType="{x:Type controls:PrerequisiteList}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:PrerequisiteList}">
+                    <ListView controls:PrerequisiteListLayoutManager.Enabled="True"
+                              Padding="0"
+                              ItemContainerStyle="{DynamicResource prerequisiteListItemContainerStyle}"
+                              View="{DynamicResource prerequisiteListGridView}"
+                              ItemsSource="{Binding}">
+                        <FrameworkElement.Resources>
+                            <ResourceDictionary>
+                                <Style BasedOn="{StaticResource prerequisiteListScrollViewerStyle}"
+                                       TargetType="{x:Type ScrollViewer}">
+                                </Style>
+                            </ResourceDictionary>
+                        </FrameworkElement.Resources>
+                    </ListView>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SimpleListBoxItemStyle"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ContentPresenter />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type controls:InstallationModeSelector}"
+           TargetType="{x:Type controls:InstallationModeSelector}">
+        <Setter Property="ItemsControl.ItemContainerStyle"
+                Value="{StaticResource SimpleListBoxItemStyle}" />
+        <Setter Property="Selector.IsSynchronizedWithCurrentItem"
+                Value="True" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:InstallationModeSelector}">
+                    <StackPanel>
+                        <ItemsPresenter />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsControl.ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <RadioButton Height="25"
+                                 FontWeight="Bold"
+                                 IsTabStop="False"
+                                 Focusable="False"
+                                 Content="{Binding}"
+                                 IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected,Mode=TwoWay}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="installationTypeListItemContainerStyle"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="UIElement.SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="FrameworkElement.OverridesDefaultStyle"
+                Value="True" />
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:InstallationTypeListItem}">
+                    <StackPanel Orientation="Vertical">
+                        <RadioButton IsTabStop="False"
+                                     GroupName=""
+                                     FontWeight="Bold"
+                                     Margin="30,10,10,0"
+                                     Content="{TemplateBinding controls:InstallationTypeListItem.Title}"
+                                     IsChecked="{Binding IsSelected,RelativeSource={RelativeSource TemplatedParent}}" />
+                        <TextBlock Text="{TemplateBinding controls:InstallationTypeListItem.Description}"
+                                   Margin="70,0,10,5"
+                                   TextWrapping="Wrap" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ItemsPanelTemplate x:Key="installationTypeListItemsPanel">
+        <UniformGrid VerticalAlignment="Top"
+                     Rows="{Binding Path=Items.Count,RelativeSource={RelativeSource AncestorType=controls:InstallationTypeList}}" />
+    </ItemsPanelTemplate>
+
+    <Style x:Key="{x:Type controls:InstallationTypeList}"
+           TargetType="{x:Type controls:InstallationTypeList}"
+           BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="Control.BorderThickness"
+                Value="0" />
+        <Setter Property="Control.HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+                Value="Disabled" />
+        <Setter Property="Control.Background"
+                Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+        <Setter Property="ItemsControl.ItemContainerStyle"
+                Value="{DynamicResource installationTypeListItemContainerStyle}" />
+        <Setter Property="ItemsControl.ItemsPanel"
+                Value="{DynamicResource installationTypeListItemsPanel}" />
+    </Style>
+
+</ResourceDictionary>

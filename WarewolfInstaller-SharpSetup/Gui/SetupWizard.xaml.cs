@@ -26,7 +26,7 @@ namespace Gui
                 return new InstallationModeCollection(SetupHelper.InstallationModeFromCommandLine);
             }
 
-            return modes;
+                return modes;
         }
 
         public override void LifecycleAction(string type, object argument)
@@ -67,7 +67,7 @@ namespace Gui
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Uninstall:
                         // Set install mode variable ;)
                         InstallVariables.IsInstallMode = false;
@@ -75,7 +75,7 @@ namespace Gui
                         AddStep(new PreUnInstallProcess());
                         AddStep(new InstallationStep(InstallationMode.Uninstall));
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Upgrade:
                         AddStep(new LicenseStep());
                         AddStep(new PreUnInstallProcess());
@@ -83,17 +83,17 @@ namespace Gui
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     case InstallationMode.Reinstall:
                         AddStep(new LicenseStep());
-                        AddStep(new PreInstallProcess());
+                        AddStep(new PreInstallProcess()); 
                         AddStep(new InstallationStep(InstallationMode.Install));
                         AddStep(new PostInstallProcess());
                         AddStep(new FinishStep());
-                        break;
+                    break;
                     default:
                         MessageBox.Show("Mode not supported: " + (InstallationMode)argument);
-                        break;
+                    break;
                 }
             }
             else
