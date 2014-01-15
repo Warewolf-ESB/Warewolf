@@ -48,7 +48,13 @@ namespace TestPackBuilder
             var files = CreateTestPackFiles(totalTestPacks, destDir);
 
             // get test
-            var tests = RecursivelyScanDirectory(dirToScan, ".cs", "[TestMethod]");
+            var testAttributes = new[] { "[TestMethod]", "[Given(" };
+            List<TestPackTO> tests = new List<TestPackTO>();
+            foreach(var testAttribute in testAttributes)
+            {
+                var tmp = RecursivelyScanDirectory(dirToScan, ".cs", testAttribute);
+                tests.AddRange(tmp);
+            }
             tests.Sort();
             var testPackStrings = new List<string>(totalTestPacks);
             var testPackDLLS = new List<string>(totalTestPacks);
