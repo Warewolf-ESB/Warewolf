@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using SharpSetup.Base;
 
 namespace Gui
@@ -16,7 +17,7 @@ namespace Gui
 
             SetupHelper.Initialize(e.Args);
             SetupHelper.Install += SetupHelper_Install;
-            SetupHelper.StartInstallation();
+            SetupHelper.StartInstallation();    
 
             //if (slientMode)
             //{
@@ -24,7 +25,7 @@ namespace Gui
             //}
             //else
             //{
-
+               
             //}
         }
 
@@ -56,6 +57,8 @@ namespace Gui
             MainWindow = new SetupWizard();
             MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
             MainWindow.WindowStyle = WindowStyle.None;
+            MainWindow.AllowsTransparency = true;
+            MainWindow.Background = new SolidColorBrush(Colors.Transparent);
             MainWindow.Show();
 
             // Hi-jack the exit event to start the studio ;)

@@ -124,19 +124,29 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="LabelStyle" TargetType="{x:Type Label}">
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+
+    <Style x:Key="LabelStyle"
+           TargetType="{x:Type Label}">
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="Foreground"
+                Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="IsTabStop"
+                Value="False" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
     </Style>
-    
-    <Style x:Key="TextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Style x:Key="TextBlockStyle"
+           TargetType="TextBlock">
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
@@ -169,9 +179,9 @@
         <Setter Property="Control.Background"
                 Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
         <Setter Property="FrameworkElement.Width"
-                Value="502" />
+                Value="522" />
         <Setter Property="FrameworkElement.Height"
-                Value="389" />
+                Value="409" />
         <Setter Property="Window.ResizeMode"
                 Value="NoResize" />
         <Setter x:Uid="Setter_1"
@@ -180,8 +190,17 @@
                 <ControlTemplate x:Uid="ControlTemplate_1"
                                  TargetType="{x:Type controls:ModernWizard}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
+                            Width="502"
+                            Height="389"
+                            CornerRadius="15"
                             BorderThickness="{TemplateBinding Control.BorderThickness}"
-                            Background="{TemplateBinding Control.Background}">
+                            Background="LightGray">
+                        <Border.Effect>
+                            <DropShadowEffect Color="Black"
+                                              Direction="270"
+                                              BlurRadius="10"
+                                              ShadowDepth="3" />
+                        </Border.Effect>
                         <DockPanel x:Uid="DockPanel_1">
                             <Grid x:Uid="Grid_1"
                                   Margin="8"
@@ -253,7 +272,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>     
+    </Style>
 
     <Style x:Key="{x:Type controls:ModernFilesInUseDialog}"
            TargetType="{x:Type controls:ModernFilesInUseDialog}">
@@ -314,11 +333,11 @@
     </Style>
 
     <Style x:Key="{x:Type controls:ModernInfoStep}"
-           TargetType="{x:Type controls:ModernInfoStep}">
+           TargetType="{x:Type controls:StepBase}">
         <Setter Property="Page.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernInfoStep}">
-                    <Border>
+                    <Border CornerRadius="15,15,0,0">
                         <Border.Background>
                             <LinearGradientBrush>
                                 <GradientStop Color="#7F7F7F"
@@ -332,7 +351,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="80" />
-                            </Grid.ColumnDefinitions>                            
+                            </Grid.ColumnDefinitions>
                             <ContentPresenter Grid.Column="0"></ContentPresenter>
                             <Image Grid.Column="1"
                                    HorizontalAlignment="Right"

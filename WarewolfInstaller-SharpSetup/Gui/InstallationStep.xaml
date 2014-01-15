@@ -13,10 +13,11 @@
     Subtitle="{x:Static props:Resources.InstallationStep_Subtitle}"
     Entered="InstallationStep_Entered"
     StepType="TransitionaryOnetime"
+    Style="{StaticResource {x:Type ss:ModernInfoStep}}"
     >
     <StackPanel>
         <DockPanel Margin="0, 10, 0, 20">
-            <Image Source="/Gui;component/ResourceFiles/InstallationStep.png" SnapsToDevicePixels="True" DockPanel.Dock="Left" Stretch="None" Margin="10" />
+            <Image Source="/Gui;component/ResourceFiles/Images/InstallationStep.png" SnapsToDevicePixels="True" DockPanel.Dock="Left" Stretch="None" Margin="10" />
             <TextBlock Margin="10" TextWrapping="Wrap" Text="{x:Static props:Resources.InstallationStep_MessageMain}" />
         </DockPanel>
         <ss:InstallationProgressLabel Margin="0,10,0,10" />

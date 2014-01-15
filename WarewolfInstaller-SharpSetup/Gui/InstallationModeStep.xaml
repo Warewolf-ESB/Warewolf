@@ -10,6 +10,7 @@
     d:DesignHeight="360" 
     d:DesignWidth="500"
     MoveNext="InstallationModeStep_MoveNext"
+    Style ="{StaticResource {x:Type ss:ModernInfoStep}}"
     >
     <DockPanel HorizontalAlignment="Stretch" Margin="10,0,0,0">
         <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="60" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.InstallationModeStep_Title}" />

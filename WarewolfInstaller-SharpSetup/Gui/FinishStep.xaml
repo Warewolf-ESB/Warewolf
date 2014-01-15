@@ -10,6 +10,7 @@
     d:DesignHeight="360" 
     d:DesignWidth="500"
     StepType="Last"
+    Style="{StaticResource {x:Type ss:ModernInfoStep}}"
     >
     <Border Margin="10,0,0,0">
         <DockPanel HorizontalAlignment="Stretch">

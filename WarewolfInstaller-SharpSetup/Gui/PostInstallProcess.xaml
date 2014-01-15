@@ -12,6 +12,7 @@
     Title="{x:Static props:Resources.PostInstallProcess_Title}"
     Entered="PostInstallStep_Entered"
     CanGoNext="True"
+    Style="{StaticResource {x:Type ss:ModernInfoStep}}"
     >
     <Border Margin="10,0,0,27">
         <DockPanel HorizontalAlignment="Stretch" Margin="0,0,0,-26">
