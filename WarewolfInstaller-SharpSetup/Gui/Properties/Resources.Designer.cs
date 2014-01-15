@@ -340,6 +340,16 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Warewolf collects anonymous stats on usage.
+        ///No personally identifiable information will be sent..
+        /// </summary>
+        public static string PreInstall_StatsCollection_Msg {
+            get {
+                return ResourceManager.GetString("PreInstall_StatsCollection_Msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press Finish to exit installer..
         /// </summary>
         public static string PreInstallProcess_MessageBottom {

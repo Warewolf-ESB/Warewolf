@@ -262,4 +262,8 @@
   <data name="PreInstall_InstallShortcuts" xml:space="preserve">
     <value>Create Desktop and Start Menu Shortcuts</value>
   </data>
+  <data name="PreInstall_StatsCollection_Msg" xml:space="preserve">
+    <value>Warewolf collects anonymous stats on usage.
+No personally identifiable information will be sent.</value>
+  </data>
 </root>

@@ -925,7 +925,7 @@
                 <Condition>INSTALLSHORTCUT = 1</Condition>
                 <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />
             </Component>
-            <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FA_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F810}">
+            <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FA_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F811}">
                 <File Id="fil7C751B4021A48678ACD04F89200E9E4F_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
                 <Condition>INSTALLSHORTCUT = 1</Condition>
                 <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />

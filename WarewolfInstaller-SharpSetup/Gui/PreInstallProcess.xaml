@@ -18,12 +18,17 @@
         <DockPanel HorizontalAlignment="Stretch" Margin="0,0,0,-26">
             <StackPanel>
                 <TextBlock FontSize="14" FontWeight="Bold" DockPanel.Dock="Top" Height="53" Margin="0,10,0,10" TextWrapping="Wrap" Text="{x:Static props:Resources.PreInstallProcess_Title}" />
-                <StackPanel Orientation="Horizontal" Height="177">
+                <StackPanel Orientation="Horizontal" Height="150">
                     <TextBlock FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Name="PreInstallMsg" TextWrapping="Wrap" Text="{x:Static props:Resources.PreInstallProcess_MessageMain}" Width="269" Height="25" />
-                    <Image Visibility="Visible" Source="pack://application:,,,/Resourcefiles/Images/tick.png" Name="preInstallStatusImg" Margin="0,0,0,161" Width="16" RenderTransformOrigin="1.651,2.784"/>
+                    <Image Visibility="Visible" Source="pack://application:,,,/Resourcefiles/Images/tick.png" Name="preInstallStatusImg" Margin="0,0,0,135" Width="16" RenderTransformOrigin="1.651,2.784"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Height="60" Width="400">
+                    <TextBlock FontSize="10" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="StatsCollectionMessasge" TextWrapping="Wrap" Text="{x:Static props:Resources.PreInstall_StatsCollection_Msg}" Width="298"
+                               Height="32"
+                               Margin="0,18,0,10" />
                 </StackPanel>
                 <CheckBox VerticalAlignment="Bottom" IsChecked="true" Content="{x:Static props:Resources.PreInstall_InstallShortcuts}" Margin="0,0,0,5" Click="BtnInstallShortcuts" Visibility="Visible" Name="cbInstallShortcuts"/>
-                <Button x:Name="btnRerun" Content="Try Again" Padding="16,2,16,2" VerticalAlignment="Bottom" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Height="26" Visibility="Visible" Width="287" Click="BtnRerun_OnClick" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="btnRerun" Content="Try Again" Padding="16,2,16,2" VerticalAlignment="Center" HorizontalAlignment="Left" VerticalContentAlignment="Stretch" Height="16" Visibility="Visible" Width="287" Click="BtnRerun_OnClick" />
                 <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
             </StackPanel>
             

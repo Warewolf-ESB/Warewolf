@@ -17,7 +17,7 @@ namespace Gui
 
             SetupHelper.Initialize(e.Args);
             SetupHelper.Install += SetupHelper_Install;
-            SetupHelper.StartInstallation();    
+            SetupHelper.StartInstallation();
 
             //if (slientMode)
             //{
@@ -25,7 +25,7 @@ namespace Gui
             //}
             //else
             //{
-               
+
             //}
         }
 
@@ -82,10 +82,7 @@ namespace Gui
                         {
                             MessageBox.Show("An error occurred while starting the studio." + Environment.NewLine + e1.Message);
                         }
-                    }
-                    else
-                    {
-                        MessageBox.Show("An error occurred while starting the studio." + Environment.NewLine + "Cannot locate studio executable!");
+
                     }
 
                 }
