@@ -13,7 +13,7 @@
     Subtitle="{x:Static props:Resources.InstallationStep_Subtitle}"
     Entered="InstallationStep_Entered"
     StepType="TransitionaryOnetime"
-    Style="{StaticResource {x:Type ss:ModernActionStep}}"
+    Style="{StaticResource InstallationStepStyle}"
     >
     <StackPanel>
         <DockPanel Margin="0, 10, 0, 20">

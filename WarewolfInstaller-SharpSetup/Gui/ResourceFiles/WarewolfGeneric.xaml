@@ -520,6 +520,57 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="InstallationStepStyle"
+           TargetType="{x:Type controls:ModernActionStep}">
+        <Setter Property="Page.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
+                    <Border CornerRadius="15,15,0,0">
+                        <Border.Background>
+                            <LinearGradientBrush>
+                                <GradientStop Color="#7F7F7F"
+                                              Offset="0.0" />
+                                <GradientStop Color="White"
+                                              Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid HorizontalAlignment="Stretch"
+                              Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Grid.Column="0"></ContentPresenter>                                                        
+                                <Image Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                   VerticalAlignment="Top"
+                                   Source="/Gui;component/Warewolf.ico">
+                                <Image.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Height"
+                                                Value="70"></Setter>
+                                        <Setter Property="Width"
+                                                Value="70"></Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Height"
+                                                        Value="80"></Setter>
+                                                <Setter Property="Width"
+                                                        Value="80"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Resources>
+                            </Image>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="{x:Type controls:ModernInfoStep}"
            TargetType="{x:Type controls:StepBase}">
@@ -577,46 +628,40 @@
         <Setter Property="Page.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
-                    <Border CornerRadius="15,15,0,0">
-                        <Border.Background>
-                            <LinearGradientBrush>
-                                <GradientStop Color="#7F7F7F"
-                                              Offset="0.0" />
-                                <GradientStop Color="White"
-                                              Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Grid HorizontalAlignment="Stretch"
-                              Margin="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="80" />
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"></ContentPresenter>                                                        
-                                <Image Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                   VerticalAlignment="Top"
-                                   Source="/Gui;component/Warewolf.ico">
-                                <Image.Resources>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Height"
-                                                Value="70"></Setter>
-                                        <Setter Property="Width"
-                                                Value="70"></Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-                                                <Setter Property="Height"
-                                                        Value="80"></Setter>
-                                                <Setter Property="Width"
-                                                        Value="80"></Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Resources>
-                            </Image>
-                        </Grid>
-                    </Border>
+                    <DockPanel>
+                        <Border BorderThickness="5"
+                                BorderBrush="#C1C3C5"
+                                CornerRadius="15,15,0,0">
+                            <Grid Background="Transparent"
+                                  DockPanel.Dock="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="55" />
+                                    <RowDefinition Height="1" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Row="0">
+                                    <Label Content="{TemplateBinding Page.Title}"
+                                           Height="30"
+                                           Background="#C1C3C5"
+                                           FontWeight="Bold" />
+                                    <Label Background="#C1C3C5"
+                                           Height="25">
+                                        <TextBlock TextWrapping="Wrap"
+                                                   Text="{TemplateBinding controls:ModernActionStep.Subtitle}" />
+                                    </Label>
+                                </StackPanel>
+                                <Rectangle Grid.Row="1"
+                                           Fill="#F3700D"
+                                           Margin="-5,0,-5,0"></Rectangle>
+                                <Border Grid.Row="2"
+                                        Padding="10"
+                                        Background="#C1C3C5">
+                                    <ContentPresenter />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DockPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

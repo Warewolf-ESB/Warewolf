@@ -15,6 +15,7 @@ namespace Gui
             this.mode = mode;
             InitializeComponent();
             lblMode.Text = Properties.Resources.ResourceManager.GetString("WelcomeStepGreeting" + mode) ?? lblMode.Text;
+            
         }
 
         private void WelcomeStep_MoveNext(object sender, ChangeStepRoutedEventArgs e)
