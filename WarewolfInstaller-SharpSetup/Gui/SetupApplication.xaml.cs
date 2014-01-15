@@ -67,7 +67,8 @@ namespace Gui
             {
                 // do any install, uninstall actions
                 PerformInstallerExitActions();
-                // set the ACL
+
+                // set the Webs folder ACL
                 SetWebsACL();
 
             };
