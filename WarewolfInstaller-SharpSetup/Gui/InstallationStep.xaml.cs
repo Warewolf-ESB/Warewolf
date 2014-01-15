@@ -74,6 +74,9 @@ namespace Gui
                         MessageBox.Show("Installation failed: " + e1.Message);
                     }
 
+                    // set the shortcut variable ;)
+                    MsiConnection.Instance.SetProperty("INSTALLDESKTOPSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
+
                     // start the install process ;)
                     MsiConnection.Instance.Install();
 

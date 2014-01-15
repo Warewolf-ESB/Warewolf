@@ -20,6 +20,7 @@
       <Directory Id="CommonAppDataFolder">
         <Directory Id="UninstallDir" Name="$(var.AppProductCode)">
           <Component Id="UninstallerExe" Guid="{8c1bfd98-7719-43aa-8941-dcc0f5733354}">
+            <Condition>INSTALLSHORTCUT</Condition>
             <File Id="UninstallerExeFile" Name="Uninstaller.exe" Source="$(var.OutDir)\Gui.exe" Vital="yes" KeyPath="yes">
               <Shortcut Id="UninstallerExeShortcut" Directory="ProgramMenuDir" Name="!(loc.SHORTCUT.UNINSTALLER.NAME)" WorkingDirectory="INSTALLDIR" Icon="icon.ico" IconIndex="0" Advertise="yes" Arguments="!(loc.CULTURE)" />
             </File>

@@ -52,5 +52,13 @@
         ///   <c>true</c> if [remove all items]; otherwise, <c>false</c>.
         /// </value>
         public static bool RemoveAllItems { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [install shortcuts].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [install shortcuts]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool InstallShortcuts { get; set; }
     }
 }
