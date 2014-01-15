@@ -17,7 +17,7 @@ namespace TestPackBuilderTest
 
             var dirs = Directory.GetFiles(dir);
 
-            //Directory.Delete(dir, true);
+            Directory.Delete(dir, true);
 
             // number of testpacks * 2 gives total number of files
             Assert.AreEqual(20, dirs.Length);

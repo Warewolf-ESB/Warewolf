@@ -37,9 +37,8 @@ namespace TestPackBuilder
     /// </summary>
     public class TestScanner
     {
-        private const string _signatureStart = "public void";
-        private const string _signatureEnd = "(";
-
+        private string _signatureStart = "public void";
+        const string _signatureEnd = "(";
 
         public string GenerateTestPacks(string dirToScan, int totalTestPacks, string destDir)
         {
@@ -48,12 +47,22 @@ namespace TestPackBuilder
             var files = CreateTestPackFiles(totalTestPacks, destDir);
 
             // get test
-            var testAttributes = new[] { "[TestMethod]", "[Given(" };
+            var testAttributes = new[] { "[TestMethod]", "[Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]" };
+            // public virtual void
             List<TestPackTO> tests = new List<TestPackTO>();
+            bool switchSignature = false;
             foreach(var testAttribute in testAttributes)
             {
+                if(switchSignature)
+                {
+                    _signatureStart = "public virtual void";
+                }
+
                 var tmp = RecursivelyScanDirectory(dirToScan, ".cs", testAttribute);
                 tests.AddRange(tmp);
+
+                // after first pass we need to swap the signature because spec flow does not generate public void ;(
+                switchSignature = true;
             }
             tests.Sort();
             var testPackStrings = new List<string>(totalTestPacks);
