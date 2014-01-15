@@ -6,6 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CommonMetro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/ButtonBrushes.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CheckBoxMetroBrushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="ButtonStyle"
@@ -161,6 +162,193 @@
                         Value="{StaticResource ValidationErrorElement}"></Setter>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CheckBoxStyle"
+           TargetType="CheckBox">
+        <Setter Property="Foreground"
+                Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Left" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="Padding"
+                Value="3,0,0,0" />
+        <Setter Property="MinHeight"
+                Value="21" />
+        <Setter Property="MinWidth"
+                Value="21" />
+        <!--<Setter Property="Height" Value="20"/>
+        <Setter Property="Width" Value="20"/>-->
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="hover" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="pressed" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To=".55"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="contentPresenter" />
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="disabled" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="checkBox" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="IndeterminateCheck" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="focused" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ValidationStates">
+                                <VisualState x:Name="Valid" />
+                                <VisualState x:Name="InvalidUnfocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="invalidUnfocused" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="InvalidFocused">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         Storyboard.TargetName="invalidFocused" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="24" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Rectangle Fill="{StaticResource TransparentBrush}" />
+                        <Rectangle x:Name="normal"
+                                   Opacity="1"
+                                   Stroke="{StaticResource CheckBoxBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxBackgroundlBrush}"
+                                   Width="15"
+                                   Height="15" />
+                        <Rectangle x:Name="hover"
+                                   Stroke="{StaticResource CheckBoxHoverBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxHoverBackgroundBrush}"
+                                   Opacity="0"
+                                   Width="15"
+                                   Height="15" />
+                        <Rectangle x:Name="pressed"
+                                   Opacity="0"
+                                   Stroke="{StaticResource CheckBoxPressedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxPressedBackgroundBrush}"
+                                   Width="15"
+                                   Height="15" />
+                        <Rectangle x:Name="focused"
+                                   Opacity="0"
+                                   Stroke="{StaticResource CheckBoxFocusedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxFocusedBackgroundBrush}"
+                                   Width="15"
+                                   Height="15" />
+                        <Rectangle x:Name="invalidUnfocused"
+                                   Opacity="0"
+                                   Stroke="{StaticResource CheckBoxInvalidUnfocusedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxInvalidUnfocusedBackgroundBrush}"
+                                   Width="15"
+                                   Height="15" />
+                        <Rectangle x:Name="invalidFocused"
+                                   Opacity="0"
+                                   Stroke="{StaticResource CheckBoxInvalidFocusedBorderBrush}"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource CheckBoxInvalidFocusedBackgroundBrush}"
+                                   Width="15"
+                                   Height="15" />
+                        <Path x:Name="checkBox"
+                              Height="10"
+                              Width="12"
+                              Stretch="Fill"
+                              Opacity="0"
+                              Data="M 1145.607177734375,430 C1145.607177734375,430 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1141.449951171875,435.0772705078125 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1139.232177734375,433.0999755859375 1138,434.5538330078125 1138,434.5538330078125 1138,434.5538330078125 1141.482177734375,438 1141.482177734375,438 1141.482177734375,438 1141.96875,437.9375 1141.96875,437.9375 1141.96875,437.9375 1147,431.34619140625 1147,431.34619140625 1147,431.34619140625 1145.607177734375,430 1145.607177734375,430 z"
+                              Fill="{StaticResource CheckBoxCheckBackgroundBrush}"
+                              UseLayoutRounding="False" />
+                        <Rectangle x:Name="IndeterminateCheck"
+                                   Fill="{StaticResource CheckBoxIndeterminateCheckBackgroundBrush}"
+                                   Height="3"
+                                   Width="8"
+                                   Opacity="0" />
+                        <Rectangle x:Name="disabled"
+                                   Opacity="0"
+                                   StrokeThickness="1"
+                                   Fill="{StaticResource DisabledVisualElement}"
+                                   Width="15"
+                                   Height="15" />
+                        <ContentPresenter x:Name="contentPresenter"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Content="{TemplateBinding Content}"
+                                          Grid.Column="1"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="{x:Type controls:ModernWizard}"
@@ -356,9 +544,25 @@
                             <Image Grid.Column="1"
                                    HorizontalAlignment="Right"
                                    VerticalAlignment="Top"
-                                   Height="80"
-                                   Width="80"
-                                   Source="/Gui;component/Warewolf.ico"></Image>
+                                   Source="/Gui;component/Warewolf.ico">
+                                <Image.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Height"
+                                                Value="70"></Setter>
+                                        <Setter Property="Width"
+                                                Value="70"></Setter>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver"
+                                                     Value="True">
+                                                <Setter Property="Height"
+                                                        Value="80"></Setter>
+                                                <Setter Property="Width"
+                                                        Value="80"></Setter>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Resources>
+                            </Image>
                         </Grid>
                     </Border>
                 </ControlTemplate>
@@ -373,36 +577,37 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
                     <DockPanel>
-                        <Label Background="#FFFFFFFF"
-                               DockPanel.Dock="Top"
-                               BorderThickness="0"
-                               Height="62">
-                            <StackPanel Orientation="Vertical">
-                                <Label Content="{TemplateBinding Page.Title}"
-                                       Background="#00FFFFFF"
-                                       FontWeight="Bold"
-                                       Margin="10,4,10,0"
-                                       Padding="0" />
-                                <Label Background="#00FFFFFF"
-                                       Margin="30,5,10,0"
-                                       Padding="0">
-                                    <TextBlock TextWrapping="Wrap"
-                                               Text="{TemplateBinding controls:ModernActionStep.Subtitle}" />
-                                </Label>
-                            </StackPanel>
-                        </Label>
-                        <Border HorizontalAlignment="Stretch"
-                                Height="1"
-                                DockPanel.Dock="Top"
-                                Background="#FFA9A9A9"
-                                SnapsToDevicePixels="True" />
-                        <Border HorizontalAlignment="Stretch"
-                                Height="1"
-                                DockPanel.Dock="Top"
-                                Background="#FFFFFFFF"
-                                SnapsToDevicePixels="True" />
-                        <Border Padding="10">
-                            <ContentPresenter />
+                        <Border BorderThickness="5"
+                                BorderBrush="#C1C3C5"
+                                CornerRadius="15,15,0,0">
+                            <Grid Background="Transparent"
+                                  DockPanel.Dock="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="55" />
+                                    <RowDefinition Height="1" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Vertical"
+                                            Grid.Row="0">
+                                    <Label Content="{TemplateBinding Page.Title}"
+                                           Height="30"
+                                           Background="#C1C3C5"
+                                           FontWeight="Bold" />
+                                    <Label Background="#C1C3C5"
+                                           Height="25">
+                                        <TextBlock TextWrapping="Wrap"
+                                                   Text="{TemplateBinding controls:ModernActionStep.Subtitle}" />
+                                    </Label>
+                                </StackPanel>
+                                <Rectangle Grid.Row="1"
+                                           Fill="#F3700D"
+                                           Margin="-5,0,-5,0"></Rectangle>
+                                <Border Grid.Row="2"
+                                        Padding="10"
+                                        Background="#C1C3C5">
+                                    <ContentPresenter />
+                                </Border>
+                            </Grid>
                         </Border>
                     </DockPanel>
                 </ControlTemplate>

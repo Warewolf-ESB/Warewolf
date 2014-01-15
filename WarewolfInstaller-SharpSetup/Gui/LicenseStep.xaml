@@ -12,9 +12,10 @@
     Title="{x:Static props:Resources.LicenseStep_Title}"
     Subtitle="{x:Static props:Resources.LicenseStep_Subtitle}"
     CanGoNext="False"
+    Style="{StaticResource {x:Type ss:ModernActionStep}}"
     >
     <DockPanel>
-        <CheckBox 
+        <CheckBox Style="{StaticResource CheckBoxStyle}"
             Name="cbAccept" 
             IsChecked="{Binding CanGoNext, RelativeSource={RelativeSource FindAncestor, AncestorType=ss:ModernActionStep}}" 
             DockPanel.Dock="Bottom" 
