@@ -133,20 +133,27 @@ namespace Gui
 
                 if(Directory.Exists(websPath))
                 {
-                    var acl = File.GetAccessControl(websPath);
+                    try
+                    {
+                        var acl = File.GetAccessControl(websPath);
 
-                    // give installer full access ;)
-                    acl.AddAccessRule(new FileSystemAccessRule("TrustedInstaller", FileSystemRights.FullControl, AccessControlType.Allow));
+                        // give installer full access ;)
+                        acl.AddAccessRule(new FileSystemAccessRule("TrustedInstaller", FileSystemRights.FullControl, AccessControlType.Allow));
 
-                    // Deny everyone ;)
-                    acl.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.CreateFiles, AccessControlType.Deny));
-                    acl.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.CreateDirectories, AccessControlType.Deny));
+                        // deny everyone ;)
+                        acl.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.CreateFiles, AccessControlType.Deny));
+                        acl.AddAccessRule(new FileSystemAccessRule("Everyone", FileSystemRights.CreateDirectories, AccessControlType.Deny));
 
-                    // allow local service account
-                    acl.AddAccessRule(new FileSystemAccessRule(@"LocalSystem", FileSystemRights.FullControl, AccessControlType.Allow));
+                        // allow local service account
+                        acl.AddAccessRule(new FileSystemAccessRule(@"LocalSystem", FileSystemRights.FullControl, AccessControlType.Allow));
 
-                    // set the ACL
-                    File.SetAccessControl(websPath, acl);
+                        // set the ACL
+                        File.SetAccessControl(websPath, acl);
+                    }
+                    catch(Exception e)
+                    {
+                        MessageBox.Show("An error occured while exiting the installer. " + Environment.NewLine + e.Message);
+                    }
                 }
             }
         }
