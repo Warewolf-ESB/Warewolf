@@ -22,10 +22,20 @@ namespace Dev2.Providers.Logs
 
         public static void Error(Exception exception, [CallerMemberName] string methodName = null)
         {
-            string exceptionMessage =  JsonConvert.SerializeObject(exception);
-            WriteEntry(exceptionMessage, "EXCEPTION", null,  methodName);
+            var completeExceptionStackTrace = new StringBuilder();
+            if(exception != null)
+            {
+                completeExceptionStackTrace.AppendLine(JsonConvert.SerializeObject(exception));
+                while(exception.InnerException != null)
+                {
+                    exception = exception.InnerException;
+                    completeExceptionStackTrace.AppendLine(JsonConvert.SerializeObject(exception));
+                }
+            }
+            var exceptionMessage = completeExceptionStackTrace.ToString();
+            WriteEntry(exceptionMessage, "EXCEPTION", null, methodName);
         }
-        
+
         public static void Error(Exception exception)
         {
             var completeExceptionStackTrace = new StringBuilder();
@@ -35,8 +45,8 @@ namespace Dev2.Providers.Logs
                 exception = exception.InnerException;
                 AppendException(exception, completeExceptionStackTrace);
             }
-            var exceptionMessage =  completeExceptionStackTrace.ToString();
-            WriteEntry(exceptionMessage, "EXCEPTION", null,"");
+            var exceptionMessage = completeExceptionStackTrace.ToString();
+            WriteEntry(exceptionMessage, "EXCEPTION", null, "");
         }
 
         static void AppendException(Exception exception, StringBuilder completeExceptionStackTrace)

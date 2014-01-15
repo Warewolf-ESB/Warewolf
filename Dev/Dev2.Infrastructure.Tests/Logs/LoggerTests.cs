@@ -293,7 +293,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             Logger.Error((Exception)null, null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : null");
+            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 

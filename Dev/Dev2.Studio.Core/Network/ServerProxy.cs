@@ -227,7 +227,7 @@ namespace Dev2.Network
 
         void OnHubConnectionError(Exception exception)
         {
-            this.LogError(exception.Message);
+            Logger.Error(exception);
         }
 
         void OnMemoReceived(string objString)
