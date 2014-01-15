@@ -25,7 +25,11 @@
         <RichTextBox 
             Name="rtbLicense" 
             Margin="0,5,0,15" 
+            BorderBrush="#7F7F7F"     
+            SelectionBrush="#7F7F7F"
             IsReadOnly="True"
+            FontFamily="{StaticResource DefaultFontFamily}"
+            Background="#D4D5D6"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             />
     </DockPanel>

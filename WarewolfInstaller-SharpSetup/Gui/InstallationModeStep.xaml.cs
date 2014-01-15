@@ -7,13 +7,14 @@ namespace Gui
     /// </summary>
     public partial class InstallationModeStep
     {
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+        // ReSharper disable ParameterTypeCanBeEnumerable.Local
         public InstallationModeStep(InstallationModeCollection installationModes)
-// ReSharper restore ParameterTypeCanBeEnumerable.Local
+        // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             InitializeComponent();
             imsModes.ItemsSource = installationModes;
             imsModes.Loaded += (s, e) => { imsModes.Focus(); };
+            DataContext = new InfoStepDataContext();
         }
 
         private void InstallationModeStep_MoveNext(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)

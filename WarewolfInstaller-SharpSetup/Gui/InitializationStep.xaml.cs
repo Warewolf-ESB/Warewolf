@@ -1,5 +1,5 @@
-using System.Windows;
 using System.IO;
+using System.Windows;
 using SharpSetup.Base;
 
 namespace Gui
@@ -17,14 +17,15 @@ namespace Gui
         private void InitializationStep_Entered(object sender, RoutedEventArgs e)
         {
             var mainMsiFile = Properties.Resources.MainMsiFile;
-            if (File.Exists(PublicResources.SerializedStateFile))
+            if(File.Exists(PublicResources.SerializedStateFile))
                 MsiConnection.Instance.OpenFromFile(PublicResources.SerializedStateFile);
-            else if (File.Exists(mainMsiFile))
+            else if(File.Exists(mainMsiFile))
                 MsiConnection.Instance.Open(mainMsiFile, true);
             else
                 MsiConnection.Instance.Open(SetupHelper.GetProductGuidFromPath(), true);
             Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
             Wizard.NextStep();
+            DataContext = new InfoStepDataContext();
         }
     }
 }

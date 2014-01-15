@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
                     xmlns:p="clr-namespace:SharpSetup.UI.Wpf.Properties;assembly=SharpSetup.Wpf"
-                    xmlns:commands="clr-namespace:Gui">
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CommonMetro.xaml" />
@@ -520,7 +520,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="InstallationStepStyle"
            TargetType="{x:Type controls:ModernActionStep}">
         <Setter Property="Page.Template">
@@ -541,28 +541,53 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"></ContentPresenter>                                                        
-                                <Image Grid.Column="1"
-                                    HorizontalAlignment="Right"
+                            <ContentPresenter Grid.Column="0"></ContentPresenter>
+                            <Image Grid.Column="1"
+                                   x:Name="WarewolfIcon"
+                                   Height="70"
+                                   Width="70"
+                                   HorizontalAlignment="Right"
                                    VerticalAlignment="Top"
                                    Source="/Gui;component/Warewolf.ico">
-                                <Image.Resources>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Height"
-                                                Value="70"></Setter>
-                                        <Setter Property="Width"
-                                                Value="70"></Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-                                                <Setter Property="Height"
-                                                        Value="80"></Setter>
-                                                <Setter Property="Width"
-                                                        Value="80"></Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Resources>
+                                <Image.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="70"
+                                                                 To="80"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                 From="70"
+                                                                 To="80"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="80"
+                                                                 To="70"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                 From="80"
+                                                                 To="70"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Image.Triggers>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding WarewolfIconCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>                                
                             </Image>
                         </Grid>
                     </Border>
@@ -592,28 +617,53 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"></ContentPresenter>                                                        
-                                <Image Grid.Column="1"
-                                    HorizontalAlignment="Right"
+                            <ContentPresenter Grid.Column="0"></ContentPresenter>
+                            <Image Grid.Column="1"
+                                   Height="70"
+                                   Width="70"
+                                   x:Name="WarewolfIcon"
+                                   HorizontalAlignment="Right"
                                    VerticalAlignment="Top"
                                    Source="/Gui;component/Warewolf.ico">
-                                <Image.Resources>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Height"
-                                                Value="70"></Setter>
-                                        <Setter Property="Width"
-                                                Value="70"></Setter>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver"
-                                                     Value="True">
-                                                <Setter Property="Height"
-                                                        Value="80"></Setter>
-                                                <Setter Property="Width"
-                                                        Value="80"></Setter>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Resources>
+                                <Image.Triggers>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="70"
+                                                                 To="80"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                 From="70"
+                                                                 To="80"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Width"
+                                                                 From="80"
+                                                                 To="70"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                                <DoubleAnimation Storyboard.TargetProperty="Height"
+                                                                 From="80"
+                                                                 To="70"
+                                                                 AutoReverse="False"
+                                                                 Duration="0:0:0.2"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Image.Triggers>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown">
+                                        <i:InvokeCommandAction Command="{Binding WarewolfIconCommand}"></i:InvokeCommandAction>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>                                
                             </Image>
                         </Grid>
                     </Border>

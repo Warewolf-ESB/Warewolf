@@ -24,6 +24,7 @@ namespace Gui
         public PostInstallProcess()
         {
             InitializeComponent();
+            DataContext = new InfoStepDataContext();
         }
 
         /// <summary>

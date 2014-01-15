@@ -88,6 +88,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InfoStepDataContext.cs" />
     <Compile Include="PreUnInstallProcess.xaml.cs">
       <DependentUpon>PreUnInstallProcess.xaml</DependentUpon>
     </Compile>
@@ -136,6 +137,7 @@
     <Compile Include="SetupWizard.xaml.cs">
       <DependentUpon>SetupWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WarewolfCommand.cs" />
     <Compile Include="WelcomeStep.xaml.cs">
       <DependentUpon>WelcomeStep.xaml</DependentUpon>
     </Compile>

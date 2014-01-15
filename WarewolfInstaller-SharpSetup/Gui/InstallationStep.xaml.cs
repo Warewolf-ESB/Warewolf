@@ -16,6 +16,7 @@ namespace Gui
         {
             InitializeComponent();
             this.mode = mode;
+            DataContext = new InfoStepDataContext();
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace Gui
             InitializeComponent();
             // enable shortcut install
             InstallVariables.InstallShortcuts = true;
+            DataContext = new InfoStepDataContext();
         }
 
         /// <summary>
