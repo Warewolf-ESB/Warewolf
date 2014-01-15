@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Activities.Expressions;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Activities.Interegators;
@@ -26,13 +27,13 @@ namespace Dev2.Core.Tests.Activities
             var resource = new ResourceModel(env.Object, evtAg);
 
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
-            
+
             //------------Execute Test---------------------------
             WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.IsNull(activity.Type);
+            Assert.IsNull(((Literal<string>)(activity.Type.Expression)).Value);
             Assert.IsNull(activity.FriendlySourceName);
             Assert.IsNull(activity.ActionName);
         }
@@ -47,7 +48,7 @@ namespace Dev2.Core.Tests.Activities
             Mock<IEnvironmentModel> env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<Action SourceName=\"TheSource\" Type=\"TheType\" SourceMethod=\"SourceMethod\"></Action>") };
-
+            resource.ServerResourceType = "TheType";
             var activity = new DsfActivity("FriendlyName", String.Empty, "ServiceName", string.Empty, string.Empty, string.Empty);
 
             //------------Execute Test---------------------------
@@ -55,7 +56,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.AreEqual("TheType",activity.Type.Expression.ToString());
+            Assert.AreEqual("TheType", ((Literal<string>)(activity.Type.Expression)).Value);
             Assert.AreEqual("TheSource", activity.FriendlySourceName.Expression.ToString());
             Assert.AreEqual("SourceMethod", activity.ActionName.Expression.ToString());
         }
@@ -78,7 +79,7 @@ namespace Dev2.Core.Tests.Activities
 
             //------------Assert Results-------------------------
             Assert.IsFalse(activity.IsWorkflow);
-            Assert.IsNull(activity.Type);
+            Assert.IsNull(((Literal<string>)(activity.Type.Expression)).Value);
             Assert.IsNull(activity.FriendlySourceName);
             Assert.IsNull(activity.ActionName);
         }
