@@ -19,6 +19,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
+using Dev2.ViewModels.Deploy;
+using Dev2.Views.Deploy;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -30,7 +32,7 @@ namespace Dev2.Studio.ViewModels.Deploy
     {
         #region Class Members
 
-        private IDeployStatsCalculator _deployStatsCalculator;
+        public IDeployStatsCalculator _deployStatsCalculator { get; set; }
 
         private IEnvironmentModelProvider _serverProvider;
 
@@ -49,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
-
+       
         private string _initialItemDisplayName;
         private IEnvironmentModel _initialItemEnvironment;
         private bool _isDeploying;
@@ -361,8 +363,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void CalculateStats()
         {
             DeploySuccessfull = false;
-
             var items = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
+            _deployStatsCalculator.ConflictingResources = new List<Tuple<string, string>>();
             _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
             _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
             NotifyOfPropertyChange(() => CanDeploy);
@@ -419,6 +421,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void SetupCommands()
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
+
             SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies);
             SourceServerChangedCommand = new RelayCommand(s =>
             {
@@ -510,45 +513,66 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
+            if (_deployStatsCalculator != null 
+                && _deployStatsCalculator.ConflictingResources != null 
+                && _deployStatsCalculator.ConflictingResources.Count > 0)
+            {
+                var deployDialogViewModel = new DeployDialogViewModel(_deployStatsCalculator.ConflictingResources);
+                ShowDialog(deployDialogViewModel);
+                if (deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
+                {
+                    return;
+                }
+            }
 
             //
             //Get the resources to deploy
             //
-            var resourcesToDeploy = Source.Root.GetChildren
-                (_deployStatsCalculator.SelectForDeployPredicate)
-                                          .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
-                                          .Select(n => n.DataContext as IResourceModel).ToList();
-
-            var deployResourceRepo = SourceEnvironment.ResourceRepository;
-
-            if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+            if(_deployStatsCalculator != null)
             {
-                return;
-            }
+                var resourcesToDeploy = Source.Root.GetChildren
+                    (_deployStatsCalculator.SelectForDeployPredicate)
+                                              .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
+                                              .Select(n => n.DataContext as IResourceModel).ToList();
 
-            //
-            // Deploy the resources
-            //
-            var deployDto = new DeployDto { ResourceModels = resourcesToDeploy };
+                var deployResourceRepo = SourceEnvironment.ResourceRepository;
 
-            try
-            {
-                IsDeploying = true;
-
-                deployResourceRepo.DeployResources(SourceEnvironment, TargetEnvironment, deployDto, EventPublisher);
+                if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+                {
+                    return;
+                }
 
                 //
-                // Reload the environments resources & update explorer
+                // Deploy the resources
                 //
-                LoadDestinationEnvironment(SelectedDestinationServer);
+                var deployDto = new DeployDto { ResourceModels = resourcesToDeploy };
 
-                DeploySuccessfull = true;
-            }
-            finally
-            {
-                IsDeploying = false;
+                try
+                {
+                    IsDeploying = true;
+
+                    deployResourceRepo.DeployResources(SourceEnvironment, TargetEnvironment, deployDto, EventPublisher);
+
+                    //
+                    // Reload the environments resources & update explorer
+                    //
+                    LoadDestinationEnvironment(SelectedDestinationServer);
+
+                    DeploySuccessfull = true;
+                }
+                finally
+                {
+                    IsDeploying = false;
+                }
             }
         }
+
+        public Action<object> ShowDialog = (deployDialogViewModel) =>
+            {
+                var dialog = new DeployViewDialog();
+                dialog.DataContext = deployDialogViewModel;
+                dialog.ShowDialog();
+            };
 
         /// <summary>
         /// Loads an environment for the source navigation manager

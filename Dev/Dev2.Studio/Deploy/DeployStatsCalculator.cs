@@ -19,6 +19,13 @@ namespace Dev2.Studio.Deploy
 {
     public class DeployStatsCalculator : IDeployStatsCalculator
     {
+        public List<Tuple<string, string>> ConflictingResources { get; set; }
+
+        public DeployStatsCalculator()
+        {
+            ConflictingResources = new List<Tuple<string, string>>();
+        }
+
         /// <summary>
         ///     Calculates the stastics from navigation item view models
         /// </summary>
@@ -29,11 +36,11 @@ namespace Dev2.Studio.Deploy
             deployItemCount = 0;
             var predicateCounts = new Dictionary<string, int>();
 
-            foreach(var predicate in predicates)
+            foreach (var predicate in predicates)
             {
                 var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicate.Key);
 
-                if(deployStatsTO == null)
+                if (deployStatsTO == null)
                 {
                     deployStatsTO = new DeployStatsTO(predicate.Key, "");
                     stats.Add(deployStatsTO);
@@ -42,22 +49,22 @@ namespace Dev2.Studio.Deploy
                 predicateCounts.Add(predicate.Key, 0);
             }
 
-            foreach(var treeNode in items)
+            foreach (var treeNode in items)
             {
                 var item = (AbstractTreeViewModel)treeNode;
-                foreach(var predicate in predicates)
+                foreach (var predicate in predicates)
                 {
-                    if(!predicate.Value(item)) continue;
+                    if (!predicate.Value(item)) continue;
 
                     predicateCounts[predicate.Key]++;
                     break;
                 }
             }
 
-            foreach(var predicateCount in predicateCounts)
+            foreach (var predicateCount in predicateCounts)
             {
                 var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicateCount.Key);
-                if(deployStatsTO != null)
+                if (deployStatsTO != null)
                 {
                     deployStatsTO.Description = predicateCount.Value.ToString(CultureInfo.InvariantCulture);
                     deployItemCount += predicateCount.Value;
@@ -73,7 +80,7 @@ namespace Dev2.Studio.Deploy
                                                                   List<string> exclusionCategories)
         {
             var vm = node as ResourceTreeViewModel;
-            if(vm == null
+            if (vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
@@ -91,7 +98,7 @@ namespace Dev2.Studio.Deploy
         public bool SelectForDeployPredicate(ITreeNode node)
         {
             var vm = node as ResourceTreeViewModel;
-            if(vm == null
+            if (vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
@@ -105,16 +112,37 @@ namespace Dev2.Studio.Deploy
                                                    IEnvironmentModel targetEnvironment)
         {
             var vm = node as ResourceTreeViewModel;
-            if(vm == null
+            if (vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
-            return vm.DataContext != null &&
-                   targetEnvironment != null && targetEnvironment.ResourceRepository != null &&
-                   targetEnvironment.ResourceRepository.All()
+
+            if (vm.DataContext == null
+                || targetEnvironment == null
+                || targetEnvironment.ResourceRepository == null) return false;
+
+            var conflictingItems = targetEnvironment.ResourceRepository.All()
+                                    .Where(r => ResourceModelEqualityComparer
+                                    .Current.Equals(r, vm.DataContext))
+                                    .Select(r => new Tuple<string, string>(r.ResourceName, vm.DataContext.ResourceName))
+                                    .ToList();
+
+            conflictingItems.ForEach(AddConflictingResources);
+
+            return targetEnvironment.ResourceRepository.All()
                                     .Any(r =>
                                          ResourceModelEqualityComparer
                                              .Current.Equals(r, vm.DataContext));
+        }
+
+        /// <summary>
+        ///     Add items that are found to be in conflicts
+        /// </summary>
+        /// <param name="resourceInConflict"></param>
+        void AddConflictingResources(Tuple<string, string> resourceInConflict)
+        {
+            if (ConflictingResources.Any(c => c.Item1 == resourceInConflict.Item1)) return;
+            ConflictingResources.Add(new Tuple<string, string>(resourceInConflict.Item1, resourceInConflict.Item2));
         }
 
         /// <summary>
@@ -123,7 +151,7 @@ namespace Dev2.Studio.Deploy
         public bool DeploySummaryPredicateNew(ITreeNode node, IEnvironmentModel targetEnvironment)
         {
             var vm = node as ResourceTreeViewModel;
-            if(vm == null
+            if (vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 

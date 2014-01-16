@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
@@ -15,6 +11,10 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
@@ -29,11 +29,11 @@ namespace Dev2.Core.Tests
         CategoryTreeViewModel _categoryVm;
         ServiceTypeTreeViewModel _serviceTypeVm;
         EnvironmentTreeViewModel _environmentVm;
-
+        ImportServiceContext _importContext;
         #region Class Members
 
         static readonly DeployStatsCalculator DeployStatsCalculator = new DeployStatsCalculator();
-        static ImportServiceContext _importContext;
+
 
         #endregion Class Members
 
@@ -41,11 +41,11 @@ namespace Dev2.Core.Tests
 
         void Setup()
         {
-            _importContext = CompositionInitializer.DeployViewModelOkayTest();
+            _importContext = new Mock<ImportServiceContext>().Object;
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
             var serverEvents = new Mock<IEventPublisher>().Object;
-            
+
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
             _mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(serverEvents);
 
@@ -404,7 +404,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
             _resourceVm.IsChecked = true;
-            ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
+            ResourceTreeViewModel vm = _resourceVm;
 
             vm.DataContext = resourceModel.Object;
 
@@ -414,6 +414,7 @@ namespace Dev2.Core.Tests
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(DeployStatsCalculator.ConflictingResources.Count > 0);
         }
 
         [TestMethod]
@@ -425,7 +426,7 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
             _resourceVm.IsChecked = true;
-            ResourceTreeViewModel vm = _resourceVm as ResourceTreeViewModel;
+            ResourceTreeViewModel vm = _resourceVm;
 
             vm.DataContext = resourceModel.Object;
 

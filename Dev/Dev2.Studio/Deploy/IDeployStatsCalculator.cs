@@ -12,6 +12,11 @@ namespace Dev2.Studio.Deploy
     public interface IDeployStatsCalculator
     {
         /// <summary>
+        /// List of resources in conflict ITEM1 : source and ITEM2 : destination
+        /// </summary>
+        List<Tuple<string, string>> ConflictingResources { get; set; }
+
+        /// <summary>
         ///     Calculates the stastics from navigation item view models
         /// </summary>
         void CalculateStats(IEnumerable<ITreeNode> items,

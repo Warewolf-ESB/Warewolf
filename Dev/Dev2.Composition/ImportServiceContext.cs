@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dev2.Composition
 {
-    public sealed class ImportServiceContext
+    public class ImportServiceContext
     {
         private object _value;
         private int _hash;
