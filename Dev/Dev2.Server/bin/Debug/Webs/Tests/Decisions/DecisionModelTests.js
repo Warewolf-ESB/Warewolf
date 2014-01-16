@@ -19,6 +19,17 @@ test("ConstructorWithNoParamsExpectedDecisionStackInitialized", function () {
     equal(model.data.TheStack().length, 0, "Did Decision Stack Initialize");
 });
 
+test("DecisionTypeChangedClearsText", function () {
+
+    var model = new DecisionViewModel();
+    
+    var decision = { Col1: ko.observable("TextStuff"), Col2: ko.observable("TextStuff"), Col3: ko.observable("TextStuff"), PopulatedColumnCnt: ko.observable(3), EvaluationFn: ko.observable("IsNumeric") };
+    model.rowChanged(decision, null);   
+    equal(decision.Col2(), "", "Col2 is not empty");
+    equal(decision.Col3(), "", "Col3 is not empty");
+    equal(decision.PopulatedColumnCnt(), 1, "PopulationColumnCnt is wrong");
+});
+
 test("ConstructorWithNoParamsExpectedDecisionStackInitializedWithCorrectOrderOfDecisionFunctions", function () {
 
     var model = new DecisionViewModel();

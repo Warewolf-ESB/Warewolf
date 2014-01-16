@@ -103,11 +103,28 @@ function DecisionViewModel() {
         // find function element to use ;)
         var cnt = ko.utils.arrayFirst(self.data.decisionFunctions(), function (item) {
             return elm.EvaluationFn() === item.optionValue;
-        });
+        });        
         elm.PopulatedColumnCnt(cnt.columnCount);
-
+        if(cnt.columnCount == 0) {
+            elm.Col1("");
+            elm.Col2("");
+            elm.Col3("");
+        }
+        else if (cnt.columnCount == 1) {
+            elm.Col2("");
+            elm.Col3("");
+        }
+        else if (cnt.columnCount == 2) {
+            elm.Col3("");
+        }
+  
         // apply jquery-ui themes
-        $("input[type=submit], a, button").button();
+        //Trev said this is fine, its for testing
+        var selector = $("input[type=submit], a, button");
+        if(selector.button != undefined)
+        {
+            selector.button();    
+        }        
     };
 
     self.toggleMode = function () {
