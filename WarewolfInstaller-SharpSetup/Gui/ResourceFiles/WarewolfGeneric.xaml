@@ -2,18 +2,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
                     xmlns:p="clr-namespace:SharpSetup.UI.Wpf.Properties;assembly=SharpSetup.Wpf"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:converters="clr-namespace:Gui.ResourceFiles.Converters">
-
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CommonMetro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/ButtonBrushes.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CheckBoxMetroBrushes.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/TextBoxMetroBrushes.xaml"/>
-        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/PasswordBoxMetroBrushes.xaml"/>        
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/TextBoxMetroBrushes.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/PasswordBoxMetroBrushes.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
     <Style x:Key="ButtonStyle"
            TargetType="Button">
@@ -356,18 +354,29 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="TextBoxStyle" TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
-        <Setter Property="Height" Value="24"/>
-        <Setter Property="Padding" Value="3,1,3,1" />
-        <Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+
+    <Style x:Key="TextBoxStyle"
+           TargetType="TextBox">
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Foreground"
+                Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Background"
+                Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height"
+                Value="24" />
+        <Setter Property="Padding"
+                Value="3,1,3,1" />
+        <Setter Property="SelectionBrush"
+                Value="{StaticResource TextBoxFocusedBrush}" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -377,34 +386,52 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBorderBrush}" />
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetProperty="BorderBrush"
+                                                                       Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource TextBoxHoverBorderBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TextBoxHoverBackgroundBrush}" />
+                                        <ObjectAnimationUsingKeyFrames Duration="0"
+                                                                       Storyboard.TargetProperty="Background"
+                                                                       Storyboard.TargetName="Border">
+                                            <DiscreteObjectKeyFrame KeyTime="0"
+                                                                    Value="{StaticResource TextBoxHoverBackgroundBrush}" />
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="DisabledVisualElement" />
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="DisabledVisualElement" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="ReadOnly">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ReadOnlyVisualElement" />
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="ReadOnlyVisualElement" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualElement" />
+                                        <DoubleAnimation Duration="0"
+                                                         To="1"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="FocusVisualElement" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unfocused">
                                     <Storyboard>
-                                        <DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="FocusVisualElement" />
+                                        <DoubleAnimation Duration="0"
+                                                         To="0"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         Storyboard.TargetName="FocusVisualElement" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -412,7 +439,8 @@
                                 <VisualState x:Name="Valid" />
                                 <VisualState x:Name="InvalidUnfocused">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="ValidationErrorElement">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="ValidationErrorElement">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
@@ -423,14 +451,16 @@
                                 </VisualState>
                                 <VisualState x:Name="InvalidFocused">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="ValidationErrorElement">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
+                                                                       Storyboard.TargetName="ValidationErrorElement">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <Visibility>Visible</Visibility>
                                                 </DiscreteObjectKeyFrame.Value>
                                             </DiscreteObjectKeyFrame>
                                         </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen" Storyboard.TargetName="validationTooltip">
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsOpen"
+                                                                       Storyboard.TargetName="validationTooltip">
                                             <DiscreteObjectKeyFrame KeyTime="0">
                                                 <DiscreteObjectKeyFrame.Value>
                                                     <system:Boolean>True</system:Boolean>
@@ -441,27 +471,49 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" Opacity="1">
+                        <Border x:Name="Border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                Opacity="1">
                             <Grid>
-                                <Border x:Name="ReadOnlyVisualElement" Background="{StaticResource TextBoxReadOnlyBackgroundBrush}" Opacity="0" />
-                                <ScrollViewer x:Name="PART_ContentHost" 
+                                <Border x:Name="ReadOnlyVisualElement"
+                                        Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
+                                        Opacity="0" />
+                                <ScrollViewer x:Name="PART_ContentHost"
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              BorderThickness="0" 
-                                              IsTabStop="False" Padding="{TemplateBinding Padding}" />
+                                              BorderThickness="0"
+                                              IsTabStop="False"
+                                              Padding="{TemplateBinding Padding}" />
                             </Grid>
                         </Border>
-                        <Border x:Name="DisabledVisualElement" BorderBrush="{StaticResource DisabledVisualElement}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource DisabledVisualElement}" IsHitTestVisible="False" Opacity="0" />
-                        <Border x:Name="FocusVisualElement" BorderBrush="{StaticResource TextBoxFocusedBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsHitTestVisible="False" Opacity="0" />
-                        <Border x:Name="ValidationErrorElement" BorderBrush="{StaticResource ValidationErrorElement}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed">
+                        <Border x:Name="DisabledVisualElement"
+                                BorderBrush="{StaticResource DisabledVisualElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{StaticResource DisabledVisualElement}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="FocusVisualElement"
+                                BorderBrush="{StaticResource TextBoxFocusedBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="ValidationErrorElement"
+                                BorderBrush="{StaticResource ValidationErrorElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Visibility="Collapsed">
                             <ToolTipService.ToolTip>
-                                <ToolTip x:Name="validationTooltip" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" Placement="Right" PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}" Template="{StaticResource ValidationToolTipTemplate}">
+                                <ToolTip x:Name="validationTooltip"
+                                         DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Placement="Right"
+                                         PlacementTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                                         Template="{StaticResource ValidationToolTipTemplate}">
                                     <ToolTip.Triggers>
                                         <EventTrigger RoutedEvent="Canvas.Loaded">
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="validationTooltip">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible"
+                                                                                   Storyboard.TargetName="validationTooltip">
                                                         <DiscreteObjectKeyFrame KeyTime="0">
                                                             <DiscreteObjectKeyFrame.Value>
                                                                 <system:Boolean>true</system:Boolean>
@@ -480,53 +532,95 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <Style x:Key="PasswordBoxStyle" TargetType="{x:Type PasswordBox}">
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{StaticResource PasswordBoxForegroundBrush}" />
-        <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
-        <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource TextBoxBorderBrush}" />
-        <Setter Property="Height" Value="24"/>
-        <Setter Property="Padding" Value="3,1,3,1" />
-        <Setter Property="Margin" Value="0,0,1,0" />
-        <Setter Property="SelectionBrush" Value="{StaticResource TextBoxFocusedBrush}" />
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="PasswordChar" Value="●" />
-        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
-        <Setter Property="AllowDrop" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
-        <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
-        <Setter Property="FlowDirection" Value="LeftToRight" />
+
+    <Style x:Key="PasswordBoxStyle"
+           TargetType="{x:Type PasswordBox}">
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Foreground"
+                Value="{StaticResource PasswordBoxForegroundBrush}" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFontFamily}" />
+        <Setter Property="Background"
+                Value="{StaticResource TextBoxBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource TextBoxBorderBrush}" />
+        <Setter Property="Height"
+                Value="24" />
+        <Setter Property="Padding"
+                Value="3,1,3,1" />
+        <Setter Property="Margin"
+                Value="0,0,1,0" />
+        <Setter Property="SelectionBrush"
+                Value="{StaticResource TextBoxFocusedBrush}" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+        <Setter Property="PasswordChar"
+                Value="●" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="AllowDrop"
+                Value="true" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="ScrollViewer.PanningMode"
+                Value="VerticalFirst" />
+        <Setter Property="Stylus.IsFlicksEnabled"
+                Value="False" />
+        <Setter Property="FlowDirection"
+                Value="LeftToRight" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type PasswordBox}">
                     <Grid>
-                        <Border Background="{TemplateBinding Background}" x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" />
-                        <Border x:Name="DisabledVisualElement" BorderBrush="{StaticResource DisabledVisualElement}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource DisabledVisualElement}" IsHitTestVisible="False" Opacity="0" />
-                        <Border x:Name="ReadOnlyVisualElement" Background="{StaticResource TextBoxReadOnlyBackgroundBrush}" Opacity="0" />
+                        <Border Background="{TemplateBinding Background}"
+                                x:Name="Bd"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+                        <Border x:Name="DisabledVisualElement"
+                                BorderBrush="{StaticResource DisabledVisualElement}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{StaticResource DisabledVisualElement}"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
+                        <Border x:Name="ReadOnlyVisualElement"
+                                Background="{StaticResource TextBoxReadOnlyBackgroundBrush}"
+                                Opacity="0" />
                         <Border>
                             <ScrollViewer x:Name="PART_ContentHost" />
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="1" TargetName="DisabledVisualElement" />
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter Property="Opacity"
+                                    Value="1"
+                                    TargetName="DisabledVisualElement" />
                         </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource TextBoxHoverBorderBrush}" TargetName="Bd" />
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="BorderBrush"
+                                    Value="{StaticResource TextBoxHoverBorderBrush}"
+                                    TargetName="Bd" />
                         </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource TextBoxFocusedBrush}" TargetName="Bd" />
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter Property="BorderBrush"
+                                    Value="{StaticResource TextBoxFocusedBrush}"
+                                    TargetName="Bd" />
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsReadOnly, RelativeSource={RelativeSource Self}}" Value="True" />
-                                <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="True" />
+                                <Condition Binding="{Binding IsReadOnly, RelativeSource={RelativeSource Self}}"
+                                           Value="True" />
+                                <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}"
+                                           Value="True" />
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="Opacity" Value="1" TargetName="ReadOnlyVisualElement" />
+                            <Setter Property="Opacity"
+                                    Value="1"
+                                    TargetName="ReadOnlyVisualElement" />
                         </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -765,11 +859,6 @@
                                         </BeginStoryboard>
                                     </EventTrigger>
                                 </Image.Triggers>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseDown">
-                                        <i:InvokeCommandAction Command="{Binding WarewolfIconCommand}"></i:InvokeCommandAction>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>                                
                             </Image>
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Bottom"
@@ -845,13 +934,9 @@
                                                                  Duration="0:0:0.2"></DoubleAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </EventTrigger>
+                                    </EventTrigger>                                  
                                 </Image.Triggers>
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseDown">
-                                        <i:InvokeCommandAction Command="{Binding WarewolfIconCommand}"></i:InvokeCommandAction>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>                                
+                                
                             </Image>
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Bottom"
@@ -1001,7 +1086,7 @@
             <ResourceDictionary>
                 <controls:GenericBooleanToVisibilityConverter x:Key="boolToVisibility"
                                                               True="Visible"
-                                                              False="Collapsed" />                
+                                                              False="Collapsed" />
             </ResourceDictionary>
         </FrameworkElement.Resources>
         <MenuItem Command="controls:CommandLibrary.InstallOne"
