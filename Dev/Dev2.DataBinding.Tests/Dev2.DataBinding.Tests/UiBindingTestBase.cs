@@ -23,6 +23,11 @@ namespace Dev2.DataBinding.Tests
             }
         }
 
+        /// <summary>
+        /// Gets the bindings.
+        /// </summary>
+        /// <param name="sqlBulkInsertDesigner">The SQL bulk insert designer.</param>
+        /// <returns></returns>
         protected List<Binding> GetBindings(UIElement sqlBulkInsertDesigner)
         {
             var window = new Window();
@@ -35,6 +40,11 @@ namespace Dev2.DataBinding.Tests
             return bindingList;
         }
 
+        /// <summary>
+        /// Gets the bindings recursive.
+        /// </summary>
+        /// <param name="dObj">The command object.</param>
+        /// <param name="bindingList">The binding list.</param>
         void GetBindingsRecursive(DependencyObject dObj, List<Binding> bindingList)
         {
             bindingList.AddRange(DependencyObjectHelper.GetBindingObjects(dObj));
