@@ -89,12 +89,11 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         public void ServiceDesignerViewModel_Constructor_ImageSource_InitializedCorrectlyForType()
         {
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeStoredProc", expectedImageSource: "DatabaseService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeWebService", expectedImageSource: "WebService-32");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Plugin", expectedImageSource: "PluginService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "DbService", expectedImageSource: "DatabaseService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "WebService", expectedImageSource: "WebService-32");
+            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "PluginService", expectedImageSource: "PluginService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "Workflow-32", serviceUri: "");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "Workflow", expectedImageSource: "RemoteWarewolf-32", serviceUri: "x");
-            Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "RemoteService", expectedImageSource: "RemoteWarewolf-32");
 
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "BizRule", expectedImageSource: "ToolService-32");
             Verify_Constructor_ImageSource_InitializedCorrectlyForType(type: "InvokeDynamicService", expectedImageSource: "ToolService-32");
