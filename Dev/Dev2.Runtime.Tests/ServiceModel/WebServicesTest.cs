@@ -10,6 +10,7 @@ using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.27 - TWR - Created
@@ -17,6 +18,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [ExcludeFromCodeCoverage]
     public class WebServicesTest
     {
+        string _requestResponse;
 
         [TestMethod]
         public void WebServicesTestWithValidArgsAndEmptyResponseExpectedExecutesRequestAndFetchesRecordset()
@@ -47,7 +49,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             // BUG 9626 - 2013.06.11 - TWR: RecordsetListHelper.ToRecordsetList returns correct number of recordsets now
             Assert.AreEqual(1, result.Recordsets.Count);
-            Assert.AreEqual("", result.Recordsets[0].Name);            
+            Assert.AreEqual("", result.Recordsets[0].Name);
         }
 
         #region CTOR
@@ -56,14 +58,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            var services = new WebServices(null, null);
+            new WebServices(null, null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullWebExectueExpectedThrowsArgumentNullException()
         {
-            var services = new WebServices(new Mock<IResourceCatalog>().Object, null);
+            new WebServices(new Mock<IResourceCatalog>().Object, null);
         }
 
         #endregion
@@ -75,7 +77,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebServicesDeserializeServiceWithNullJsonExpectedThrowsArgumentNullException()
         {
             var services = new WebServicesMock();
-            var result = services.DeserializeService(null);
+            services.DeserializeService(null);
         }
 
         [TestMethod]
@@ -185,7 +187,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
             var services = new WebServicesMock();
-            var result = services.FetchRecordset(service, false);
+            services.FetchRecordset(service, false);
             //------------Assert Results-------------------------
             Assert.IsFalse(services.FetchRecordsetAddFields);
         }
@@ -210,7 +212,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
             var services = new WebServicesMock();
-            var result = services.FetchRecordset(service, true);
+            services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
         }
@@ -222,7 +224,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var service = CreateDummyWebService();
             //------------Execute Test---------------------------
             var services = new WebServicesMock();
-            var result = services.FetchRecordset(service, true);
+            services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, services.FetchRecordsetHitCount);
         }
@@ -256,6 +258,29 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var result = services.FetchRecordset(service, true);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Execute")]
+        public void Services_Execute_WhenHasJsonPath_ShouldReturnValid()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.JsonPath = "$.results[*]";
+            _requestResponse = "{\"results\" : [{\"address_components\": [{\"long_name\" :\"Address:\",\"short_name\" :\"Address:\",\"types\" : [\"point_of_interest\",\"establishment\" ]}]}],\"status\" : \"OK\"}";
+            service.RequestResponse = _requestResponse;
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            WebServices.ExecuteRequest(service, false, out errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.RequestResponse);
+        }
+
+        string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
+        {
+            errors = new ErrorResultTO();
+            return _requestResponse;
         }
 
         [TestMethod]

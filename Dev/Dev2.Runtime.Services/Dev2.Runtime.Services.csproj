@@ -254,6 +254,10 @@
       <Project>{FF3115B2-370E-4E40-99C5-7D239BC28679}</Project>
       <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
+      <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
+      <Name>Dev2.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

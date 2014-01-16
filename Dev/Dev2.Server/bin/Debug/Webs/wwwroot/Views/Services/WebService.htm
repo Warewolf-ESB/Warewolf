@@ -73,6 +73,7 @@
                                 <div style="float: left;">
                                     <h4 style="margin-bottom: 2px">6. Response
                                     <button title="Paste Response" style="margin: -9px 0px 0px 5px; padding: 2px 2px 0px 2px;" tabindex="80" type="button" name="addResponseButton" id="addResponseButton" data-bind="click: addResponse, jEnable: isTestEnabled"></button>
+                                    <button title="Apply Path" style="margin: -9px 0px 0px 5px; padding: 2px 2px 0px 2px;" tabindex="80" type="button" name="addPathButton" id="addPathButton" data-bind="click: addPath, jEnable: isTestEnabled"></button>
                                     </h4>
 
                                     <div class="scrollable-y box-border" style="height: 303px; width: 275px;">
@@ -87,6 +88,10 @@
             </div>
             <div id="addResponseDialog" title="Paste your response here">
                 <textarea class="action-inspector" style="width: 554px;" data-bind="value: data.requestResponse, valueUpdate: 'afterkeydown'"></textarea>
+            </div> 
+            <div id="addPathDialog" title="Apply JSON Path to response">
+                <textarea class="action-inspector" style="width: 300px;" data-bind="value: data.requestResponse, valueUpdate: 'afterkeydown'"></textarea>
+                <textarea class="action-inspector" style="width: 200px;" data-bind="value: data.jsonPath, valueUpdate: 'afterkeydown'"></textarea>
             </div>
 
             <div id="tabs-2" style="padding: 10px; margin: 0 auto;">

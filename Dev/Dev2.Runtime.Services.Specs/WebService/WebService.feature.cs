@@ -14,19 +14,19 @@
 namespace Dev2.Runtime.Services.Specs.WebService
 {
     using TechTalk.SpecFlow;
-
-
+    
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class WebServiceFeature
     {
-
+        
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-
+        
 #line 1 "WebService.feature"
 #line hidden
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
@@ -35,40 +35,40 @@ namespace Dev2.Runtime.Services.Specs.WebService
                     " a service which can retrieve webservice data for use", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if(((TechTalk.SpecFlow.FeatureContext.Current != null)
+            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "WebService")))
             {
                 Dev2.Runtime.Services.Specs.WebService.WebServiceFeature.FeatureSetup(null);
             }
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-
+        
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-
+        
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("A webservice that returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
@@ -78,19 +78,19 @@ namespace Dev2.Runtime.Services.Specs.WebService
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A webservice that returns a primitive array", new string[] {
                         "Webservice_MappingJsonWithPrimitiveArrays_10641"});
 #line 7
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 8
-            testRunner.Given("I have a webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
-            testRunner.And("the webservice returns JSON with a primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the webservice returns JSON with a primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-            testRunner.When("the mapping is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the mapping is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
-            testRunner.Then("the mapping should contain the primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the mapping should contain the primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute webservice which returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
@@ -102,12 +102,12 @@ namespace Dev2.Runtime.Services.Specs.WebService
                         "ignore",
                         "Webservice_ExecutingJsonWithPrimitiveArrays_10641"});
 #line 15
-            this.ScenarioSetup(scenarioInfo);
+this.ScenarioSetup(scenarioInfo);
 #line 16
-            testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
-                               "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
+                    "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
-            testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "formatted_address",
@@ -130,9 +130,48 @@ namespace Dev2.Runtime.Services.Specs.WebService
                         "40.4459880197085",
                         "-3.7083668802915"});
 #line 18
-            testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
+ testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
+        }
+        
+        public virtual void ApplyJsonPathToPayload(string responseFile, string path, string mapping, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Apply JsonPath to payload", exampleTags);
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+ testRunner.Given(string.Format("I have a webservice with \'{0}\' as a response", responseFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.When(string.Format("I apply \'{0}\' to the response", path), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 26
+ testRunner.Then(string.Format("the mapping should be \'{0}\'", mapping), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Apply JsonPath to payload")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "simple json.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:response file", "simple json.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "$.store.book[*]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:mapping", "UnnamedArrayData().category")]
+        public virtual void ApplyJsonPathToPayload_SimpleJson_Txt()
+        {
+            this.ApplyJsonPathToPayload("simple json.txt", "$.store.book[*]", "UnnamedArrayData().category", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Apply JsonPath to payload")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "LargeWebServicePayLoad.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:response file", "LargeWebServicePayLoad.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:path", "$.return.markets[*]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:mapping", "UnnamedArrayData().recenttrades().id")]
+        public virtual void ApplyJsonPathToPayload_LargeWebServicePayLoad_Txt()
+        {
+            this.ApplyJsonPathToPayload("LargeWebServicePayLoad.txt", "$.return.markets[*]", "UnnamedArrayData().recenttrades().id", ((string[])(null)));
         }
     }
 }

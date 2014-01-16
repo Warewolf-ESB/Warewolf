@@ -5,8 +5,10 @@ using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.DynamicServices;
+using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
@@ -27,6 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string RequestResponse { get; set; }
 
         public RecordsetList Recordsets { get; set; }
+        public string JsonPath { get; set; }
 
         #endregion
 
@@ -52,6 +55,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
 
             RequestUrl = action.AttributeSafe("RequestUrl");
+            JsonPath = action.AttributeSafe("JsonPath");
             WebRequestMethod requestMethod;
             RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : WebRequestMethod.Get;
             RequestHeaders = action.ElementSafe("RequestHeaders");
@@ -71,6 +75,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = CreateXml(enActionType.InvokeWebService, Source, Recordsets,
                 new XAttribute("RequestUrl", RequestUrl ?? string.Empty),
                 new XAttribute("RequestMethod", RequestMethod.ToString()),
+                new XAttribute("JsonPath", JsonPath),
                 new XElement("RequestHeaders", new XCData(RequestHeaders ?? string.Empty)),
                 new XElement("RequestBody", new XCData(RequestBody ?? string.Empty))
                 );
@@ -167,5 +172,24 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
+
+        public void ApplyPath()
+        {
+            if(String.IsNullOrEmpty(RequestResponse) || String.IsNullOrEmpty(JsonPath))
+            {
+                return;
+            }
+            try
+            {
+                var json = JObject.Parse(RequestResponse);
+                var context = new JsonPathContext { ValueSystem = new JsonNetValueSystem() };
+                var values = context.SelectNodes(json, JsonPath).Select(node => node.Value);
+                var newResponseValue = JsonConvert.SerializeObject(values);
+                RequestResponse = newResponseValue;
+            }
+            catch(JsonException)
+            {
+            }
+        }
     }
 }

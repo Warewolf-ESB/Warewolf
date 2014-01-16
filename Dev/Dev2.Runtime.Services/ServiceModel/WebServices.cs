@@ -77,8 +77,31 @@ namespace Dev2.Runtime.ServiceModel
             return service;
         }
 
+        public WebService ApplyPath(string args, Guid workspaceID, Guid dataListID)
+        {
+            var service = new WebService();
+            try
+            {
+                service = JsonConvert.DeserializeObject<WebService>(args);
+                service.ApplyPath();
+                service.Recordsets = FetchRecordset(service, true);
+            }
+            catch(Exception ex)
+            {
+                RaiseError(ex);
+                if(service.Recordsets.Count > 0)
+                {
+                    service.Recordsets[0].HasErrors = true;
+                    service.Recordsets[0].ErrorMessage = ex.Message;
+                }
+                service.RequestResponse = ex.Message;
+            }
+
+            return service;
+        }
+
         #endregion
-        
+
         #region ExecuteRequest
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
@@ -86,7 +109,7 @@ namespace Dev2.Runtime.ServiceModel
             ExecuteRequest(service, throwError, out errors, DefaultWebExecute);
         }
 
-        static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
+        public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
             var headers = string.IsNullOrEmpty(service.RequestHeaders)
                               ? new string[0]
@@ -94,6 +117,10 @@ namespace Dev2.Runtime.ServiceModel
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
             service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
+            if(!String.IsNullOrEmpty(service.JsonPath))
+            {
+                service.ApplyPath();
+            }
         }
 
         #endregion
@@ -109,5 +136,5 @@ namespace Dev2.Runtime.ServiceModel
 
     }
 
-    
+
 }

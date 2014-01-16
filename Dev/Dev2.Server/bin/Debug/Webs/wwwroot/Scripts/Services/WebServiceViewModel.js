@@ -11,8 +11,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     var $requestUrl = $("#requestUrl");
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
+    var $addPathDialog = $("#addPathDialog");
     
     $("#addResponseButton").length > 0 ? $("#addResponseButton")
+      .text("")
+      .append('<img height="16px" width="16px" src="images/edit.png" />')
+      .button() : null;
+
+    $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
       .button() : null;
@@ -32,7 +38,8 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.data.requestMethod = ko.observable("");
     self.data.requestHeaders = ko.observable("");
     self.data.requestBody = ko.observable("");
-    self.data.requestResponse = ko.observable("");   
+    self.data.requestResponse = ko.observable("");
+    self.data.jsonPath = ko.observable("");
 
     self.sourceAddress = ko.observable("");
     
@@ -476,6 +483,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         return self.data.source() ? true : false;
     });
     self.isTestResultsLoading = ko.observable(false);
+    self.setTestResultsLoading = function (testResultsLoading) {
+        return self.isTestResultsLoading(testResultsLoading);
+    };
     self.isEditSourceEnabled = ko.computed(function () {
         return self.data.source();
     });
@@ -505,6 +515,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         return ko.toJSON(self.data);
     };
 
+    self.setRequestResponse = function (requestResponse) {
+        return self.data.requestResponse(requestResponse);
+    };
+
     self.load = function () {
         self.loadSources(
             self.loadService());
@@ -521,7 +535,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.data.resourceType(result.ResourceType);
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
-
+            self.data.jsonPath(result.JsonPath);
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
@@ -597,6 +611,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.addResponse = function () {
         $addResponseDialog.dialog("open");
     };
+
+    self.addPath = function () {
+        $addPathDialog.dialog("open");
+    };
     
     self.testWebService = function (isResponseCleared) {
         self.isTestResultsLoading(true);
@@ -668,6 +686,30 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
             },
             "Cancel": function () {
                 $(this).dialog("close");
+            }
+        }
+    });
+
+    $("#addPathDialog").dialog({
+        resizable: false,
+        autoOpen: false,
+        modal: true,
+        position: utils.getDialogPosition(),
+        width: 600,
+        buttons: {
+            "Ok": function () {
+                $(this).dialog("close");
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            },
+            "Test Path": function () {
+                webServiceViewModel.setTestResultsLoading(true);
+                $.post("Service/WebServices/ApplyPath" + window.location.search, webServiceViewModel.getJsonData(), function (result) {
+                    webServiceViewModel.setTestResultsLoading(false);
+                    webServiceViewModel.setRequestResponse(result.RequestResponse);
+                    webServiceViewModel.testWebService(false);
+                });
             }
         }
     });

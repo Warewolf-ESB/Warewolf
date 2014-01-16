@@ -7,11 +7,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
 
     // PBI 1220 - 2013.05.26 - TWR - Created
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebServiceTests
     {
         #region CTOR
@@ -42,7 +44,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             const string XmlDataString = @"<Service Name=""Test WebService"" ID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<Actions>
-		<Action Name=""Test_WebService"" Type=""WebService"" SourceName=""Test WebService"" SourceMethod=""Get"">
+		<Action Name=""Test_WebService"" Type=""WebService"" SourceName=""Test WebService"" SourceMethod=""Get"" JsonPath=""$.apath"">
 			<Inputs>
 				<Input Name=""Path"" Source=""Path"">
 					<Validator Type=""Required"" />
@@ -72,6 +74,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("Test WebService", webService.ResourceName);
             Assert.AreEqual(ResourceType.WebService, webService.ResourceType);
             Assert.AreEqual("51a58300-7e9d-4927-a57b-e5d700b11b55", webService.ResourceID.ToString());
+            Assert.AreEqual("$.apath", webService.JsonPath);
             Assert.AreEqual("System", webService.ResourcePath);
             Assert.IsNotNull(webService.Source);
         }
@@ -91,7 +94,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServiceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
-            var service = new WebService(null);
+            new WebService(null);
         }
 
         [TestMethod]
@@ -131,7 +134,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 RequestMethod = WebRequestMethod.Get,
                 RequestHeaders = "Content-Type: text/xml",
                 RequestBody = "abc",
-                RequestResponse = "xyz"
+                RequestResponse = "xyz",
+                JsonPath = "$.somepath"
             };
 
             #region setup method parameters
@@ -213,6 +217,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual(expected.RequestMethod, actual.RequestMethod);
             Assert.AreEqual(expected.RequestHeaders, actual.RequestHeaders);
             Assert.AreEqual(expected.RequestBody, actual.RequestBody);
+            Assert.AreEqual(expected.JsonPath, actual.JsonPath);
             Assert.IsNull(actual.RequestResponse);
 
             foreach(var expectedParameter in expected.Method.Parameters)
@@ -277,6 +282,78 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ApplyPath")]
+        public void WebService_ApplyPath_WhenResponseDataNull_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            var webService = new WebService { RequestResponse = null };
+            //------------Execute Test---------------------------
+            webService.ApplyPath();
+            //------------Assert Results-------------------------
+            Assert.IsNull(webService.RequestResponse);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ApplyPath")]
+        public void WebService_ApplyPath_WhenResponseDataEmpty_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            var webService = new WebService { RequestResponse = "" };
+            //------------Execute Test---------------------------
+            webService.ApplyPath();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("", webService.RequestResponse);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ApplyPath")]
+        public void WebService_ApplyPath_WhenJsonPathNull_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            var webService = new WebService();
+            const string expected = "this is the response";
+            webService.RequestResponse = expected;
+            webService.JsonPath = null;
+            //------------Execute Test---------------------------
+            webService.ApplyPath();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, webService.RequestResponse);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ApplyPath")]
+        public void WebService_ApplyPath_WhenJsonPathEmpty_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            var webService = new WebService();
+            const string expected = "this is the response";
+            webService.RequestResponse = expected;
+            webService.JsonPath = "";
+            //------------Execute Test---------------------------
+            webService.ApplyPath();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, webService.RequestResponse);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WebService_ApplyPath")]
+        public void WebService_ApplyPath_ResponseDataNotJsonData_ExceptionThrown()
+        {
+            //------------Setup for test--------------------------
+            string expected = "blah blah";
+            var webService = new WebService { RequestResponse = expected, JsonPath = "some path" };
+            //------------Execute Test---------------------------
+            webService.ApplyPath();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, webService.RequestResponse);
+        }
 
     }
 }

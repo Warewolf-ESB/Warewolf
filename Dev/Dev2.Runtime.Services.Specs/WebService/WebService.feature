@@ -20,7 +20,11 @@ Scenario: Execute webservice which returns a primitive array
 		| Address, 28039 Madrid, Spain | point_of_interest,hospital,establishment | APPROXIMATE           | 40.447337           | -3.7070179          | 40.4486859802915             | -3.7056689197085             | 40.4459880197085             | -3.7083668802915             |
 
 
-#Scenario Outline: Apply JsonPath to payload
-#	Given I have a webservice with <response> as a response
-#	When I apply <path> to the response
-#	Then the mapping should be <mapping>
+Scenario Outline: Apply JsonPath to payload
+	Given I have a webservice with '<response file>' as a response
+	When I apply '<path>' to the response
+	Then the mapping should be '<mapping>'
+	Examples: 
+		| response file              | path                | mapping                              |
+		| simple json.txt            | $.store.book[*]     | UnnamedArrayData().category          |
+		| LargeWebServicePayLoad.txt | $.return.markets[*] | UnnamedArrayData().recenttrades().id |
