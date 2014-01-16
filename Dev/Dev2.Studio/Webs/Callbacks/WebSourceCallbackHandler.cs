@@ -1,6 +1,8 @@
-﻿using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
+﻿using System;
 using System.Diagnostics;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
@@ -18,15 +20,11 @@ namespace Dev2.Studio.Webs.Callbacks
             : base(environmentRepository)
         {
         }
-        //
-        //        protected override void NavigateTo(string uri, string args, string returnUri)
-        //        {
-        //            Uri theUri;
-        //            if(!string.IsNullOrEmpty(uri) && Uri.TryCreate(uri, UriKind.Absolute, out theUri) && ValidSchemes.Contains(theUri.Scheme.ToLowerInvariant()))
-        //            {
-        //                StartUriProcess(uri);
-        //            }
-        //        }
+
+        protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
+        {
+            ReloadResource(environmentModel, Guid.Parse(jsonObj.ResourceID.Value), ResourceType.Source);
+        }
 
         protected virtual void StartUriProcess(string uri)
         {

@@ -221,7 +221,7 @@ namespace Dev2.Studio.Webs
 
                     case ResourceType.WebService:   // PBI 1220 - 2013.05.20 - TWR - Added
                         pageName = "services/webservice";
-                        pageHandler = new WebServiceCallbackHandler();
+                        pageHandler = new ServiceCallbackHandler();
                         width = ServiceDialogWidth;
                         height = ServiceDialogHeight;
                         break;

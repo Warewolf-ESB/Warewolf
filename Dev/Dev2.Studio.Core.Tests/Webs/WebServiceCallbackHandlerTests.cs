@@ -14,12 +14,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebServiceCallbackHandlerTests
     {
         static ImportServiceContext _importContext;
-
-        private static Mock<IEventAggregator> _eventAgrregator;
 
         #region Class/TestInitialize
 
@@ -33,7 +32,7 @@ namespace Dev2.Core.Tests.Webs
             {
                 new FullTestAggregateCatalog()
             });
-            _eventAgrregator = new Mock<IEventAggregator>();
+            new Mock<IEventAggregator>();
             var workspace = new Mock<IWorkspaceItemRepository>();
             ImportService.AddExportedValueToContainer(workspace.Object);
 
@@ -52,10 +51,10 @@ namespace Dev2.Core.Tests.Webs
         [TestMethod]
         public void WebServiceCallbackHandlerSaveWithValidArgsExpectedPublishesUpdateResourceMessage()
         {
-            Guid ResourceID = Guid.NewGuid();
+            Guid resourceID = Guid.NewGuid();
 
             var resourceModel = new Mock<IResourceModel>();
-            resourceModel.Setup(r => r.ID).Returns(ResourceID);
+            resourceModel.Setup(r => r.ID).Returns(resourceID);
             resourceModel.Setup(r => r.ResourceName).Returns("Some Name I Made Up For Testing");
 
             var resourceRepo = new Mock<IResourceRepository>();
@@ -67,17 +66,17 @@ namespace Dev2.Core.Tests.Webs
 
             var aggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
-            var handler = new WebServiceCallbackHandlerMock(aggregator.Object, envRepo.Object);
+            var handler = new WebServiceCallbackHandlerMock(envRepo.Object);
 
             aggregator.Setup(e => e.Publish(It.IsAny<UpdateResourceMessage>()))
                             .Callback<Object>(m =>
                             {
                                 var msg = (UpdateResourceMessage)m;
-                                Assert.AreEqual(ResourceID, msg.ResourceModel.ID);
+                                Assert.AreEqual(resourceID, msg.ResourceModel.ID);
                             })
                              .Verifiable();
 
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceID + "'}");
             handler.TestSave(envModel.Object, jsonObj);
 
             aggregator.Verify(e => e.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
