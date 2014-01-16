@@ -5,8 +5,7 @@
   <Links />
   <Templates>
     <WorkspaceTemplate>
-      <Name>DEV2 SCRUM Project</Name>
-      <Description />
+      <Name>DEV2 SCRUM Project 1</Name>
       <Folders>
         <WorkspaceTemplateMapping>
           <ServerItem>$/DEV2 SCRUM Project</ServerItem>
@@ -17,6 +16,7 @@
     </WorkspaceTemplate>
     <WorkspaceTemplate>
       <Name>Copy DEV2 SCRUM Project</Name>
+      <Description />
       <Folders>
         <WorkspaceTemplateMapping>
           <ServerItem>$/DEV2 SCRUM Project</ServerItem>
