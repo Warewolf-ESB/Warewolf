@@ -53,10 +53,10 @@ namespace Dev2.CodedUI.Tests
         public void NewWorkflowShortcutKeyExpectedWorkflowOpens()
         {
             var preCount = TabManagerUIMap.GetTabCount();
-            StudioWindow.SetFocus();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             StudioWindow.WaitForControlReady();
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+            StudioWindow.SetFocus();
             Keyboard.SendKeys(StudioWindow, "{CTRL}W");
             string activeTabName = TabManagerUIMap.GetActiveTabName();
             var postCount = TabManagerUIMap.GetTabCount();
@@ -323,13 +323,13 @@ namespace Dev2.CodedUI.Tests
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-            
+
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
             ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
-            
+
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
             var targetPoint = new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25);
@@ -357,7 +357,7 @@ namespace Dev2.CodedUI.Tests
 
             // Its not on the design surface, must be in foreach
             Assert.IsNotNull(calcTaxReturnsControl, "Could not drop it ;(");
-            }
+        }
 
         [TestMethod]
         public void ClickShowMapping_Expected_InputOutputAdornersAreDisplayed()
@@ -487,7 +487,7 @@ namespace Dev2.CodedUI.Tests
             RibbonUIMap.ClickRibbonMenuItem("Feedback");
             Playback.Wait(500);
             var dialogPrompt = StudioWindow.GetChildren()[0];
-            if (dialogPrompt.GetType() != typeof (WpfWindow))
+            if(dialogPrompt.GetType() != typeof(WpfWindow))
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
             }
@@ -500,7 +500,7 @@ namespace Dev2.CodedUI.Tests
             // Click stop, then make sure the Feedback window has appeared.
             FeedbackUIMap.ClickStartStopRecordingButton();
             Playback.Wait(1500);
-            if (!FeedbackUIMap.DoesFeedbackWindowExist())
+            if(!FeedbackUIMap.DoesFeedbackWindowExist())
             {
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
             }

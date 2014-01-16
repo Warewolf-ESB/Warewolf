@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for FindRecordsActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaActivityTest : BaseActivityUnitTest
     {
         TestContext testContextInstance;
@@ -131,8 +132,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
 
             Assert.AreEqual(6, actual.Count);
-            Assert.AreEqual("2",actual[0].TheValue);
-            Assert.AreEqual("3",actual[1].TheValue);
+            Assert.AreEqual("2", actual[0].TheValue);
+            Assert.AreEqual("3", actual[1].TheValue);
             Assert.AreEqual("6", actual[2].TheValue);
             Assert.AreEqual("7", actual[3].TheValue);
             Assert.AreEqual("8", actual[4].TheValue);
@@ -148,8 +149,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("jimmy",">",1)},
-                    StartIndex = "",                    
+                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("jimmy", ">", 1) },
+                    StartIndex = "",
                     Result = "[[Result().res]]"
                 }
             };
@@ -205,12 +206,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = "<root>" + data + "</root>";
             IDSFDataObject result = ExecuteProcess();
 
-            IList<IBinaryDataListItem> actual ;
+            IList<IBinaryDataListItem> actual;
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "Result", "res", out actual, out error);
 
-            Assert.AreEqual(1,actual.Count);
-            Assert.AreEqual("-1",actual[0].TheValue);
+            Assert.AreEqual(1, actual.Count);
+            Assert.AreEqual("-1", actual[0].TheValue);
         }
 
 
@@ -222,7 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","=",2)},
+                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("32", ">", 1), new FindRecordsTO("Mr A", "=", 2) },
                     StartIndex = "",
                     Result = "[[Result().res]]",
                     RequireAllTrue = false
@@ -304,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","Equal",2)},
+                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("32", ">", 1), new FindRecordsTO("Mr A", "Equal", 2) },
                     StartIndex = "",
                     RequireAllTrue = true,
                     Result = "[[Result().res]]"
@@ -379,7 +380,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Action = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("32",">",1),new FindRecordsTO("Mr A","=",2)},
+                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("32", ">", 1), new FindRecordsTO("Mr A", "=", 2) },
                     StartIndex = "",
                     RequireAllTrue = true,
                     Result = "[[Result().res]]"
@@ -453,21 +454,21 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var act = new DsfFindRecordsMultipleCriteriaActivity
             {
-                FieldsToSearch = "[[Customers(*).DOB]]", 
-                ResultsCollection =  new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1)},
+                FieldsToSearch = "[[Customers(*).DOB]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1) },
                 Result = "[[res]]"
             };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(6, inRes.Count);
             IList<DebugItemResult> fetchInputList = inRes[0].FetchResultsList();
             Assert.AreEqual(1, fetchInputList.Count);
             Assert.AreEqual("Fields To Search", fetchInputList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchInputList[0].Type);
-            
+            Assert.AreEqual(DebugItemResultType.Label, fetchInputList[0].Type);
+
             fetchInputList = inRes[1].FetchResultsList();
             Assert.AreEqual(30, fetchInputList.Count);
             Assert.AreEqual("[[Customers(1).DOB]]", fetchInputList[0].Value);
@@ -582,16 +583,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void FindRecordsMulitpleCriteriaActivity_GetDebugInputOutput_WithRecordsetWithStarIndex_ExpectedPass()
         {
-            var act = new DsfFindRecordsMultipleCriteriaActivity { 
-                FieldsToSearch = "[[Customers(*)]]", 
-                ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1),new FindRecordsTO("Wallis","=",2)},
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*)]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1), new FindRecordsTO("Wallis", "=", 2) },
                 RequireAllTrue = true,
-                Result = "[[res]]" };
+                Result = "[[res]]"
+            };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(7, inRes.Count);
             IList<DebugItemResult> fetchInputList = inRes[0].FetchResultsList();
             Assert.AreEqual(1, fetchInputList.Count);
@@ -672,17 +675,19 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void FindRecordsMulitpleCriteriaActivity_GetDebugInputOutput_SetRequiresValues_WithRecordsetWithStarIndex_ExpectedPass()
         {
-            var act = new DsfFindRecordsMultipleCriteriaActivity { 
-                FieldsToSearch = "[[Customers(*)]]", 
-                ResultsCollection = new List<FindRecordsTO>{new FindRecordsTO("/","Contains",1),new FindRecordsTO("Wallis","Equal",2)},
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                FieldsToSearch = "[[Customers(*)]]",
+                ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("/", "Contains", 1), new FindRecordsTO("Wallis", "Equal", 2) },
                 RequireAllTrue = false,
                 RequireAllFieldsToMatch = false,
-                Result = "[[res]]" };
+                Result = "[[res]]"
+            };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
             Assert.AreEqual(7, inRes.Count);
             IList<DebugItemResult> fetchInputList = inRes[0].FetchResultsList();
             Assert.AreEqual(1, fetchInputList.Count);

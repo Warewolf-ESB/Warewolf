@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FileReadTests : BaseActivityUnitTest
     {
 
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(4,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(4, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -132,7 +133,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("TestData", outRes[0].ResultsList[2].Value);
-        }    
+        }
 
         #endregion
 

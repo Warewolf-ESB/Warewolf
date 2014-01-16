@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for FindRecordsActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindRecordsActivityTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -34,9 +35,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                     SearchType = ">",
                     StartIndex = "",
                     Result = "[[Result().res]]"
-                }                
+                }
             };
-            
+
             const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
@@ -181,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(6,res);
+            Assert.AreEqual(6, res);
         }
 
         [TestMethod]
@@ -346,7 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("[[res]]",outRes[0].ResultsList[0].Value);
+            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("1,2,3,4,5,6,7,8,9,10", outRes[0].ResultsList[2].Value);
         }
@@ -395,7 +396,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(inputs.UID);
 
 
-            Assert.AreEqual(5,res);
+            Assert.AreEqual(5, res);
         }
 
         [TestMethod]
@@ -410,7 +411,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,res);
+            Assert.AreEqual(1, res);
         }
 
         #endregion Get Input/Output Tests

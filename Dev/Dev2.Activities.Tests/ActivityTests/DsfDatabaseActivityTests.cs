@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.DataList.Contract;
 using Dev2.Services.Execution;
@@ -8,7 +7,8 @@ using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfDatabaseActivityTests
     {
         /// <summary>

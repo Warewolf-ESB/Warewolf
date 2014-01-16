@@ -1,14 +1,14 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Dev2;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -18,7 +18,8 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for BaseConvertActivityTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BaseConvertActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -262,13 +263,13 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("From", inRes[0].ResultsList[5].Value);
             Assert.AreEqual("Text", inRes[0].ResultsList[6].Value);
             Assert.AreEqual("To", inRes[0].ResultsList[7].Value);
-            Assert.AreEqual("Binary", inRes[0].ResultsList[8].Value);            
+            Assert.AreEqual("Binary", inRes[0].ResultsList[8].Value);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(4, outRes[0].ResultsList.Count);
             Assert.AreEqual("1", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("[[CompanyName]]", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[2].Value);
-            Assert.AreEqual("01000100011001010111011000110010", outRes[0].ResultsList[3].Value);            
+            Assert.AreEqual("01000100011001010111011000110010", outRes[0].ResultsList[3].Value);
         }
 
         /// <summary>
@@ -304,13 +305,13 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("Trevor", inRes[0].ResultsList[10].Value);
             Assert.AreEqual("[[Customers(4).FirstName]]", inRes[0].ResultsList[11].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[12].Value);
-            Assert.AreEqual("Travis", inRes[0].ResultsList[13].Value);            
+            Assert.AreEqual("Travis", inRes[0].ResultsList[13].Value);
             Assert.AreEqual(10, outRes.Count);
             Assert.AreEqual(4, outRes[0].ResultsList.Count);
             Assert.AreEqual("1", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("[[Customers(1).FirstName]]", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[2].Value);
-            Assert.AreEqual("010101110110000101101100011011000110100101110011", outRes[0].ResultsList[3].Value);            
+            Assert.AreEqual("010101110110000101101100011011000110100101110011", outRes[0].ResultsList[3].Value);
         }
 
         #endregion
@@ -327,13 +328,13 @@ namespace ActivityUnitTests.ActivityTests
 
             IBinaryDataList binaryDL = testAct.GetWizardData();
             var recsets = binaryDL.FetchRecordsetEntries();
-            if (recsets.Count != 1)
+            if(recsets.Count != 1)
             {
                 passTest = false;
             }
             else
             {
-                if (recsets[0].Columns.Count != 4)
+                if(recsets[0].Columns.Count != 4)
                 {
                     passTest = false;
                 }
@@ -452,9 +453,9 @@ namespace ActivityUnitTests.ActivityTests
 
             //------------Assert Results-------------------------
 
-            
+
             Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
-    
+
 
         }
 

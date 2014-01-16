@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CaseConvertActivityTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CaseConvertActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -304,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-  
+
         }
 
         #endregion
@@ -347,13 +348,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(binaryDL.UID);
 
-            if (recsets.Count != 1)
+            if(recsets.Count != 1)
             {
                 passTest = false;
             }
             else
             {
-                if (recsets[0].Columns.Count != 3)
+                if(recsets[0].Columns.Count != 3)
                 {
                     passTest = false;
                 }
@@ -429,7 +430,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 	        };
 
 
-            var dsfCaseConvert = new DsfCaseConvertActivity() {ConvertCollection = fieldsCollection};
+            var dsfCaseConvert = new DsfCaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             dsfCaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
@@ -559,13 +560,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
 
-           
+
             string actualValue = actual[2].TheValue;
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            
+
             Assert.AreEqual(expected, actualValue);
         }
 
@@ -582,7 +583,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetRecordSetFieldValueFromDataList(result.DataListID, "testRecSet", "testVar", out actual, out error);
 
-            
+
             // This should be an index of 2
             string actualValue = actual[1].TheValue;
 

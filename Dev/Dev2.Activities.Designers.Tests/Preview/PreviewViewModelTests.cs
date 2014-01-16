@@ -7,7 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.Preview
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PreviewViewModelTests
     {
         [TestMethod]
@@ -24,7 +25,7 @@ namespace Dev2.Activities.Designers.Tests.Preview
             Assert.IsNotNull(previewViewModel.Inputs);
             Assert.IsInstanceOfType(previewViewModel.Inputs, typeof(ObservableCollection<ObservablePair<string, string>>));
             Assert.AreEqual(0, previewViewModel.Inputs.Count);
-       
+
             Assert.IsNotNull(previewViewModel.PreviewCommand);
             Assert.AreEqual(Visibility.Visible, previewViewModel.InputsVisibility);
         }

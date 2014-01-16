@@ -8,9 +8,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.XPath
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XPathDesignerViewModelTests
-    {        
+    {
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("XPathDesignerViewModel_Constructor")]

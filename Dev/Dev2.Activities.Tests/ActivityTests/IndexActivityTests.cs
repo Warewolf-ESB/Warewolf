@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class IndexActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
- 
+
         }
 
         [TestMethod]
@@ -57,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(24, actual.Count);
-  
+
         }
 
         [TestMethod]
@@ -112,7 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
- 
+
         }
 
         [TestMethod]
@@ -304,7 +305,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(6,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(6, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -317,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests
@@ -360,7 +361,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Test", act.Characters);
         }
 
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfIndexActivity_UpdateForEachOutputs")]

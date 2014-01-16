@@ -78,12 +78,12 @@ namespace Dev2.Activities.Designers.Tests.Service
             new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
-
+            
             // No exception it passed ;)
         }
 
 
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -241,8 +241,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.ShowLarge);
             Assert.IsFalse(IsItemDragged.Instance.IsDragged);
-        }
-
+        }     
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -599,7 +599,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
 
             // No exception, all is good ;)
-
+           
         }
 
 

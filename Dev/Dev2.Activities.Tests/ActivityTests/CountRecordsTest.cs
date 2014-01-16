@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CountRecordsTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-           
+
         }
 
         //Bug 7853
@@ -265,7 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(1,result);
+            Assert.AreEqual(1, result);
         }
 
         [TestMethod]
@@ -280,7 +281,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,result);
+            Assert.AreEqual(1, result);
         }
 
         #endregion Get Input/Output Tests
@@ -296,7 +297,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(recordsetName,act.RecordsetName);
+            Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
         [TestMethod]
@@ -312,7 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(recordsetName,act.RecordsetName);
+            Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
         [TestMethod]
@@ -325,9 +326,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var act = new DsfCountRecordsetActivity { RecordsetName = recordsetName, CountNumber = "[[res]]" };
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1}, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test",act.RecordsetName);
+            Assert.AreEqual("Test", act.RecordsetName);
         }
 
         [TestMethod]
@@ -341,7 +342,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(recordsetName,act.RecordsetName);
+            Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
         [TestMethod]
@@ -357,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(recordsetName,act.RecordsetName);
+            Assert.AreEqual(recordsetName, act.RecordsetName);
         }
 
         [TestMethod]
@@ -372,7 +373,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test",act.CountNumber);
+            Assert.AreEqual("Test", act.CountNumber);
         }
 
         [TestMethod]

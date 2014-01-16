@@ -126,6 +126,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
+            StudioWindow.WaitForControlReady();
 
             //Create a workflow
             RibbonUIMap.CreateNewWorkflow();

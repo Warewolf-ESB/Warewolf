@@ -10,7 +10,8 @@ using Moq;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActivityDesignerButtonTests
     {
         #region Tests
@@ -39,7 +40,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         [Owner("Tshepo Ntlhokoa")]
         public void ActivityDesignerButton_Execute_IsClosedAfterIsSetToFalse_HideContentIsNotCalled()
         {
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: false,  isValid: true, validationErrorCount: 0, customCommand: null);
+            VerifyExecution(isValidatedBefore: false, isClosedAfter: false, isValid: true, validationErrorCount: 0, customCommand: null);
         }
 
         [TestMethod]
@@ -120,10 +121,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             {
                 validatonErrors.Add(new ErrorInfo { Message = "Error " + i });
             }
-            
+
             var mockDataContext = new Mock<ITestDataContext>();
             mockDataContext.SetupGet(v => v.IsValid).Returns(isValid);
-          
+
             var button = new ActivityDesignerButton
             {
                 DataContext = mockDataContext.Object,
@@ -138,9 +139,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         #endregion
     }
 
-#region Fakes
+    #region Fakes
     public interface ITestDataContext : IValidator, IErrorsSource
     {
     }
-#endregion
+    #endregion
 }

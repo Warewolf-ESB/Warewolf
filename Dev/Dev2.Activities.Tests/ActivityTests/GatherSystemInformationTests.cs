@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-
+       
         [TestMethod]
         public void GatherSystemInformationWhereGetSystemInformationHelperNullExpectConcreateImplementation()
         {
@@ -46,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GatherSystemInformationWhereConstructedExpectIsICollectionActivity()
         {
             //------------Setup for test--------------------------
-
+            
             //------------Execute Test---------------------------
             var activity = GetGatherSystemInformationActivity();
             //------------Assert Results-------------------------
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, operatingSystemInformation);
         }
-
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetServicePackInformationExpectOSDetails()
         {
@@ -127,8 +127,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.IsTrue(result.Millisecond > 0);
             }
             Assert.IsTrue(result.Millisecond > 0);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetDateTimeFormatInformationExpectDateTimeInformation()
         {
@@ -155,8 +155,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var diskInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.DiskAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, diskInformation);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetDiskSpaceTotalInformationInformationExpectDiskInformation()
         {
@@ -183,8 +183,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, memoryInformation);
-        }
-
+        }  
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetMemoryTotalInformationExpectMemoryInformation()
         {
@@ -197,8 +197,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var memoryInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.PhysicalMemoryTotal);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, memoryInformation);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUAvailableInformationExpectProcessorInformation()
         {
@@ -211,8 +211,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var processorInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.CPUAvailable);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, processorInformation);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetCPUTotalInformationExpectProcessorInformation()
         {
@@ -281,8 +281,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.UserName);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, userNameInformation);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetDomainInformationExpectDomainInformation()
         {
@@ -295,8 +295,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var userNameInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.Domain);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, userNameInformation);
-        }
-
+        } 
+        
         [TestMethod]
         public void GatherSystemInformationWhereGetNumberOfWareWolfAgentsInformationExpectNumberOfWareWolfAgentsInformation()
         {
@@ -309,8 +309,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var numWareWolfAgents = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.NumberOfWarewolfAgents);
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedValue, numWareWolfAgents);
-        }
-
+        }       
+        
         [TestMethod]
         public void GetFindMissingTypeExpectDataGridActivityType()
         {
@@ -381,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-
+        
         [TestMethod]
         public void GatherSystemInformationWithStarNotationWhereExecuteExpectCorrectResultsWithRecordsetOverwrite()
         {
@@ -472,7 +472,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
             Assert.AreEqual("1", fetchResultsList[0].Value);
-
+            
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[1].Type);
             Assert.AreEqual("[[testVar]]", fetchResultsList[1].Value);
 
@@ -546,7 +546,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, activity.SystemInformationCollection.Count);
         }
-
+        
         [TestMethod]
         public void AddListToCollectionWhereOverwriteExpectAddToCollection()
         {
@@ -705,9 +705,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             else
             {
-                activity = GetGatherSystemInformationActivity();
-            }
-
+                activity = GetGatherSystemInformationActivity();                
+            }            
+            
             return activity;
         }
 

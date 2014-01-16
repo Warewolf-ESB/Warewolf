@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -12,7 +12,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -21,7 +22,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-       
+
         #region GetDebugInputs/Outputs
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            var result =  CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
                                                                 "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
 
             // remove test datalist ;)

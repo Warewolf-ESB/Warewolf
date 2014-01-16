@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CommentActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -73,9 +74,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("SomeText",act.Text);
-        }   
-        
+            Assert.AreEqual("SomeText", act.Text);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
@@ -87,8 +88,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachOutputs(null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("SomeText", act.Text);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
@@ -99,11 +100,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             var tuple1 = new Tuple<string, string>("Test1", "Test");
             var tuple2 = new Tuple<string, string>("Test2", "Test");
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1,tuple2 }, null);
+            act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("SomeText", act.Text);
-        }  
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCommentActivity_UpdateForEachOutputs")]
@@ -115,7 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test",act.Text);
+            Assert.AreEqual("Test", act.Text);
         }
 
         [TestMethod]

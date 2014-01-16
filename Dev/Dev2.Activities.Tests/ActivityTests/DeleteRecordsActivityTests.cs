@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DeleteRecordsActivityTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -65,7 +66,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(0,recsetData.Count);
+            Assert.AreEqual(0, recsetData.Count);
         }
 
         #endregion Delete Using Star
@@ -157,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(5, recsetData.Count);
             Assert.AreEqual("f1r2", recsetData[0]);
- 
+
         }
 
         [TestMethod]
@@ -405,7 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, inRes.Count);
             Assert.AreEqual(32, inRes[0].FetchResultsList().Count);
 
-            Assert.AreEqual("[[Numeric(1).num1]]",inRes[0].ResultsList[1].Value);
+            Assert.AreEqual("[[Numeric(1).num1]]", inRes[0].ResultsList[1].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[2].Value);
             Assert.AreEqual("1", inRes[0].ResultsList[3].Value);
 
@@ -444,7 +445,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[Numeric(1).num10]]", inRes[0].ResultsList[28].Value);
             Assert.AreEqual("=", inRes[0].ResultsList[29].Value);
             Assert.AreEqual("10", inRes[0].ResultsList[30].Value);
-            
+
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
 
@@ -467,7 +468,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(1,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -480,7 +481,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests

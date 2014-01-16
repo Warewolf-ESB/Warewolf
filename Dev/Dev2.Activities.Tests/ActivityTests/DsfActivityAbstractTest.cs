@@ -5,7 +5,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfActivityAbstractTest //: NativeActivityTest
     {
 
@@ -20,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IBinaryDataList testDl = testAct.GetGeneralSettingData();
 
-            Assert.AreEqual(1,testDl.FetchAllEntries().Count);
+            Assert.AreEqual(1, testDl.FetchAllEntries().Count);
         }
 
         #endregion Get General Settings Tests

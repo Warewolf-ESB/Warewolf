@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using ActivityUnitTests;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CalculateActivityTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -412,11 +413,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,dsfForEachItems.Count);
-            Assert.AreEqual(expression,dsfForEachItems[0].Name);
-            Assert.AreEqual(expression,dsfForEachItems[0].Value);
+            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(expression, dsfForEachItems[0].Name);
+            Assert.AreEqual(expression, dsfForEachItems[0].Value);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_GetForEachOutputs")]
@@ -429,7 +430,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachOutputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,dsfForEachItems.Count);
+            Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
@@ -444,11 +445,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(null,null);
+            act.UpdateForEachInputs(null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expression,act.Expression);
-        }      
-        
+            Assert.AreEqual(expression, act.Expression);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
@@ -459,13 +460,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            var tuple1 = new Tuple<string, string>("Test","Test");
-            var tuple2 = new Tuple<string, string>("Test2","Test2");
-            act.UpdateForEachInputs(new List<Tuple<string, string>>{tuple1,tuple2}, null);
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expression,act.Expression);
+            Assert.AreEqual(expression, act.Expression);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]
@@ -476,10 +477,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            var tuple1 = new Tuple<string, string>("Test1","Test");
-            act.UpdateForEachInputs(new List<Tuple<string, string>>{tuple1}, null);
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test",act.Expression);
+            Assert.AreEqual("Test", act.Expression);
         }
 
         [TestMethod]
@@ -492,11 +493,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
             //------------Execute Test---------------------------
-            act.UpdateForEachOutputs(null,null);
+            act.UpdateForEachOutputs(null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expression,act.Expression);
-        }      
-        
+            Assert.AreEqual(expression, act.Expression);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
@@ -506,14 +507,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
-            var tuple1 = new Tuple<string, string>("Test","Test");
-            var tuple2 = new Tuple<string, string>("Test2","Test2");
+            var tuple1 = new Tuple<string, string>("Test", "Test");
+            var tuple2 = new Tuple<string, string>("Test2", "Test2");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(expression,act.Expression);
+            Assert.AreEqual(expression, act.Expression);
         }
-        
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachOutputs")]
@@ -523,11 +524,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
             const string result = "[[res]]";
             var act = new DsfCalculateActivity { Expression = expression, Result = result };
-            var tuple1 = new Tuple<string, string>("Test1","Test");
+            var tuple1 = new Tuple<string, string>("Test1", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachOutputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Test",act.Result);
+            Assert.AreEqual("Test", act.Result);
         }
     }
 }

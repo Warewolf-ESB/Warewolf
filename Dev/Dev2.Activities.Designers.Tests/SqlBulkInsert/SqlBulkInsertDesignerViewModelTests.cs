@@ -22,7 +22,8 @@ using Moq;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SqlBulkInsertDesignerViewModelTests
     {
         [TestMethod]
@@ -924,7 +925,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 columnsJson = columnList;
             }).Returns(() => columnsJson);
 
-            if (configureFindSingle)
+            if(configureFindSingle)
             {
                 envModel.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel);
             }

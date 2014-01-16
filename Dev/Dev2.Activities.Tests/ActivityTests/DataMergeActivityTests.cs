@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataMergeActivityTest : BaseActivityUnitTest
     {
         IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
@@ -28,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            if (_mergeCollection == null)
+            if(_mergeCollection == null)
             {
                 _mergeCollection = new List<DataMergeDTO>();
             }
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #region Language Tests
 
         [TestMethod]
-        public void   Merge_Two_Sclars_Char_Merge_Expected_Data_Merged_Together_Success()
+        public void Merge_Two_Sclars_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, "", "Left"));
             _mergeCollection.Add(new DataMergeDTO("[[CompanyTelNo]]", "None", "", 2, "", "Left"));
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -154,7 +155,7 @@ Sashen,Naidoo
 Wallis,Buchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
         #endregion New Line Merge Tests
@@ -209,7 +210,7 @@ SNaidoo
 WBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
         [TestMethod]
@@ -238,7 +239,7 @@ Sashen0000Naidoo
 Wallis0000Buchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
         [TestMethod]
@@ -267,7 +268,7 @@ Wallis0000Buchan
 0000WallisBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
         //2013.05.31: Ashley Lewis for bug 9485 - merge tool dropping data if index equals length
@@ -297,7 +298,7 @@ SashenNaidoo
 WallisBuchan
 ";
 
-            Assert.AreEqual(expected.Replace("\r\n","\n"), actual);
+            Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
         #endregion Index Tests
@@ -356,13 +357,13 @@ WallisBuchan
             // remove test datalist ;)
             DataListRemoval(binaryDL.UID);
 
-            if (recsets.Count != 1 && scalars.Count != 2)
+            if(recsets.Count != 1 && scalars.Count != 2)
             {
                 passTest = false;
             }
             else
             {
-                if (recsets[0].Columns.Count != 3)
+                if(recsets[0].Columns.Count != 3)
                 {
                     passTest = false;
                 }

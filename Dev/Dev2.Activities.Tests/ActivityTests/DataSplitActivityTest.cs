@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
@@ -32,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            if (_resultsCollection == null)
+            if(_resultsCollection == null)
             {
                 _resultsCollection = new List<DataSplitDTO>();
             }
@@ -74,13 +75,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var col2List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col2", out error);
             var col3List = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "col3", out error);
             var dataList = RetrieveAllRecordSetFieldValues(result.DataListID, "rs", "data", out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string>() {"RSA ID",""};
+            var col1Expected = new List<string>() { "RSA ID", "" };
             var col2Expected = new List<string>() { "FirstName", "" };
             var col3Expected = new List<string>() { "LastName", "" };
             var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
@@ -128,9 +129,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Assert Results-------------------------
 
-            var col1Expected = new List<string>() { "RSA ID", ""};
-            var col2Expected = new List<string>() { "FirstName","" };
-            var col3Expected = new List<string>() { "LastName","" };
+            var col1Expected = new List<string>() { "RSA ID", "" };
+            var col2Expected = new List<string>() { "FirstName", "" };
+            var col3Expected = new List<string>() { "LastName", "" };
             var dataExpected = new List<string>() { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -219,7 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr", "|Frank|Williams" };
             List<string> actual = new List<string>();
 
-            for (int i = 1; i <= 4; i++)
+            for(int i = 1; i <= 4; i++)
             {
                 string returnVal;
                 string error;
@@ -254,7 +255,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("896", actualScalar);
 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out actualRecordSet, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -335,14 +336,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO errors;
             IBinaryDataList dList = compiler.FetchBinaryDataList(result.DataListID, out errors);
 
-           
 
-            foreach (string data in dList.FetchAllUserKeys())
+
+            foreach(string data in dList.FetchAllUserKeys())
             {
                 IBinaryDataListEntry entry;
                 string error;
                 dList.TryGetEntry(data, out entry, out error);
-                if (entry.FetchAppendRecordsetIndex() == 1)
+                if(entry.FetchAppendRecordsetIndex() == 1)
                 {
                     isPopulated.Add(false);
                 }
@@ -413,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out tempResult, out error);
             Assert.AreEqual("Title", tempResult);
             GetScalarValueFromDataList(result.DataListID, "OutVar2", out tempResult, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -533,7 +534,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
-            
+
         }
 
         [TestMethod]
@@ -732,7 +733,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual(string.Empty,actual[0]);
+            Assert.AreEqual(string.Empty, actual[0]);
         }
 
         [TestMethod]
@@ -744,7 +745,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var res = Compiler.HasErrors(result.DataListID);
 
-          
+
 
             Assert.IsTrue(res);
         }
@@ -846,7 +847,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);          
+            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
         }
 
         /// <summary>
@@ -871,7 +872,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(1, outRes.Count);
             // Changed back from 13 to 31 as it orginally was ;)
-            Assert.AreEqual(31, outRes[0].FetchResultsList().Count);          
+            Assert.AreEqual(31, outRes[0].FetchResultsList().Count);
         }
 
         //2013.06.04: Ashley Lewis for bug 9600 - blank debug output
@@ -913,13 +914,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(binaryDL.UID);
 
-            if (recsets.Count != 1 && scalars.Count != 2)
+            if(recsets.Count != 1 && scalars.Count != 2)
             {
                 passTest = false;
             }
             else
             {
-                if (recsets[0].Columns.Count != 4)
+                if(recsets[0].Columns.Count != 4)
                 {
                     passTest = false;
                 }
@@ -951,14 +952,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1),new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1), new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             var tuple1 = new Tuple<string, string>("2", "Test");
             var tuple2 = new Tuple<string, string>("1", "Test2");
             var tuple3 = new Tuple<string, string>("[[CompanyName]]", "Test3");
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2,tuple3 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.ResultsCollection[0].At);
             Assert.AreEqual("Test2", act.ResultsCollection[1].At);
