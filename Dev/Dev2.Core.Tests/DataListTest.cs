@@ -9,7 +9,8 @@ namespace DataListTset
     /// <summary>
     /// Summary description for check-in
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListTest
     {
         /// <summary>
@@ -39,7 +40,7 @@ namespace DataListTset
             //------------Setup for test--------------------------
             var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
             var defs = DataListFactory.CreateOutputParser().Parse(arguments);
-            
+
             //------------Execute Test---------------------------
             var result = DataListFactory.CreateRecordSetCollection(defs, true);
 
@@ -66,7 +67,7 @@ namespace DataListTset
             //------------Setup for test--------------------------
             var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name="""" MapsTo="""" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
             var defs = DataListFactory.CreateOutputParser().ParseAndAllowBlanks(arguments);
-            
+
             //------------Execute Test---------------------------
             var result = DataListFactory.CreateRecordSetCollection(defs, true);
 
@@ -120,8 +121,8 @@ namespace DataListTset
             IDev2Definition d = defs[0];
 
             Assert.IsTrue(d.IsRecordSet);
-            Assert.AreEqual("ppl", recCol.RecordSetNames[0] );
-            Assert.AreEqual("ppl().firstName", recCol.RecordSets[0].Columns[0].Value );
+            Assert.AreEqual("ppl", recCol.RecordSetNames[0]);
+            Assert.AreEqual("ppl().firstName", recCol.RecordSets[0].Columns[0].Value);
 
         }
 
@@ -139,7 +140,7 @@ namespace DataListTset
         {
             IList<IDev2Definition> defs = DataListFactory.CreateOutputParser().Parse(TestStrings.sampleActivityMappingMixed);
             IRecordSetCollection recCol = DataListFactory.CreateRecordSetCollection(defs, true);
-            IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs,true);
+            IList<IDev2Definition> scalarList = DataListFactory.CreateScalarList(defs, true);
 
 
             Assert.IsTrue(scalarList.Count == 1 && recCol.RecordSetNames.Count == 1);
