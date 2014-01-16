@@ -58,6 +58,7 @@ namespace Gui
             MainWindow = new SetupWizard();
             MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
             MainWindow.WindowStyle = WindowStyle.None;
+            MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             MainWindow.AllowsTransparency = true;
             MainWindow.Background = new SolidColorBrush(Colors.Transparent);
             MainWindow.Show();
