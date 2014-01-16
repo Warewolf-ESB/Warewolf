@@ -14,19 +14,19 @@
 namespace Dev2.Runtime.Services.Specs.WebService
 {
     using TechTalk.SpecFlow;
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class WebServiceFeature
     {
-        
+
         private static TechTalk.SpecFlow.ITestRunner testRunner;
-        
+
 #line 1 "WebService.feature"
 #line hidden
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
@@ -35,40 +35,40 @@ namespace Dev2.Runtime.Services.Specs.WebService
                     " a service which can retrieve webservice data for use", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute()]
         public static void FeatureTearDown()
         {
             testRunner.OnFeatureEnd();
             testRunner = null;
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
         public virtual void TestInitialize()
         {
-            if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
+            if(((TechTalk.SpecFlow.FeatureContext.Current != null)
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "WebService")))
             {
                 Dev2.Runtime.Services.Specs.WebService.WebServiceFeature.FeatureSetup(null);
             }
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
         public virtual void ScenarioTearDown()
         {
             testRunner.OnScenarioEnd();
         }
-        
+
         public virtual void ScenarioSetup(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioStart(scenarioInfo);
         }
-        
+
         public virtual void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("A webservice that returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
@@ -78,19 +78,19 @@ namespace Dev2.Runtime.Services.Specs.WebService
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("A webservice that returns a primitive array", new string[] {
                         "Webservice_MappingJsonWithPrimitiveArrays_10641"});
 #line 7
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I have a webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a webservice", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And("the webservice returns JSON with a primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            testRunner.And("the webservice returns JSON with a primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.When("the mapping is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("the mapping is generated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.Then("the mapping should contain the primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+            testRunner.Then("the mapping should contain the primitive array", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
-        
+
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Execute webservice which returns a primitive array")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WebService")]
@@ -102,12 +102,12 @@ this.ScenarioSetup(scenarioInfo);
                         "ignore",
                         "Webservice_ExecutingJsonWithPrimitiveArrays_10641"});
 #line 15
-this.ScenarioSetup(scenarioInfo);
+            this.ScenarioSetup(scenarioInfo);
 #line 16
- testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
-                    "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            testRunner.Given("I have a webservice calling http://maps.googleapis.com/maps/api/geocode/json?sens" +
+                               "or=true&amp;address=address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
- testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+            testRunner.When("the service is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "formatted_address",
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
                         "40.4459880197085",
                         "-3.7083668802915"});
 #line 18
- testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
+            testRunner.Then("I have the following data", ((string)(null)), table1, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

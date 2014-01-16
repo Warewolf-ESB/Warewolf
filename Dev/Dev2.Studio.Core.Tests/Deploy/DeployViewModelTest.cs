@@ -371,7 +371,7 @@ namespace Dev2.Core.Tests
         {
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
-            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer, 10);
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
 
@@ -398,7 +398,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(deployViewModel.CanDeploy);
         }
 
-        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer)
+        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer, int deploymentCount = 0)
         {
             ImportService.CurrentContext = _okayContext;
 
@@ -412,7 +412,8 @@ namespace Dev2.Core.Tests
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             serverProvider.Setup(s => s.Load()).Returns(servers);
 
-            int deployItemCount;
+            // ReSharper disable once RedundantAssignment
+            int deployItemCount = deploymentCount;
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
