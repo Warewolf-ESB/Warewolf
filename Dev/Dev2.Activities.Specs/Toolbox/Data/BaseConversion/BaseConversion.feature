@@ -282,3 +282,41 @@ Scenario: Convert negative recordset index from base64 to binary
 	When the base conversion tool is executed
 	Then the result is ""
 	And the execution has "AN" error
+#
+#	Debug output
+#	
+#	Scenario:  Ensure that user must be able to see type as "Base Conversion" in debug output
+#	Given I have created a workflow 
+#	When the base conversion tool is executed
+#	Then I can see type as "Base Conversion" in the debug output
+#
+#	Scenario:  Ensure that user can be able to see inputs in debug output
+#	Given I have created a workflow
+#	When the base conversion tool is executed
+#	Then I can see the debug output 
+#	And then I can see inputs of the Base conversion in the debug output
+#
+#	Scenario:  Ensure that user must be able to see output variables in debug output
+#	Given I have created a workflow 
+#	When the base conversion tool is executed
+#	Then I can see the debug output on the right and
+#	And  I can see output variables in the debug output
+#
+#
+#	Scenario:  Ensure that user must be able to see duration in the debug output
+#	Given I have created a workflow
+#	When the base conversion tool is executed
+#	Then click on the options button on top of the debug output
+#	And select duration on the list
+#	Then I can see the duration in the debug output
+#
+#	Scenario: Ensure that user must be able to see Conversion error in red in the debug output
+#	Given I have created a Base conversion workflow with error 
+#	When the base conversion tool is executed
+#	Then I can see the error in red in debug output
+#
+#	Scenario: Ensure that system should show the values selected in the option menu of the debug output
+#	Given I have created a workflow
+#	When the base conversion tool is executed
+#	And select options in the list
+#	Then I can see the selected option value in the debug output

@@ -142,3 +142,5 @@ Scenario: Convert a negative recordset index to Title Case
 	And I convert a variable "[[my(-1).sentenct]]" to "Title Case"		
 	When the case conversion tool is executed
 	Then the execution has "AN" error
+
+	

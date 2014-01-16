@@ -11,6 +11,13 @@ Scenario: Merge a scalar to a scalar using merge type none
 	When the data merge tool is executed
 	Then the merged result is "Warewolf Rocks"
 	And the execution has "NO" error
+	And the debug look like this
+	| variable | value                                    |
+	| Step     | DataMerge                                |
+	| Type     | Assign                                   |
+	| Inputs   | 1 Merge [[a]] = Warewolf With None       |
+	|          | 1 Merge [[b]] = Rocks With None          |
+	| Outputs  |  WarewolfRocks                           |
 
 Scenario: Merge a recordset table and free text using None
 	Given a merge recordset
@@ -127,6 +134,15 @@ Scenario: Merge a long string using small index and padding and alignment at inv
 	When the data merge tool is executed
 	Then the merged result is ""
 	And the execution has "AN" error
+	And the debug look like this
+	| variable | value                                    |
+	| Step     | DataMerge                                |
+	| Type     | Assign                                   |
+	| Inputs   | 1 Merge [[a]] = Warewolf With Index "-1" |
+	|          | 1 Merge [[b]] = 12345 With Index "-1"    |
+	| Outputs  |                                          |
+
+
 
 Scenario: Merge a negative recordset index Input
 	Given an Input "[[my(-1).a]]" and merge type "Index" and string at as "10" and Padding " " and Alignment "Left"	
@@ -152,6 +168,13 @@ Scenario: Merge a variable using index that is a variable and is not blank
 	When the data merge tool is executed
 	Then the merged result is "ab"
 	And the execution has "NO" error
+	And the debug look like this
+	| variable | value                                 |
+	| Step     | DataMerge                             |
+	| Type     | Assign                                |
+	| Inputs   | 1 Merge [[a]] = aA with Index [[c]]=1 |
+	|          | 1 Merge [[b]] = bB with Index [[c]]=1 |
+	| Outputs  | b                                     |
 
 Scenario: Merge a variable using index that is blank
 	Given a merge variable "[[a]]" equal to "aA "
@@ -162,3 +185,11 @@ Scenario: Merge a variable using index that is blank
 	When the data merge tool is executed
 	Then the merged result is "b"
 	And the execution has "AN" error
+	And the debug look like this
+	| variable | value                                 |
+	| Step     | DataMerge                             |
+	| Type     | Assign                                |
+	| Inputs   | 1 Merge [[a]] = aA with Index ""      |
+	|          | 1 Merge [[b]] = bB with Index [[c]]=1 |
+	| Outputs  | b                                     |
+	| Error    | 1 The At value cannot be blank        |

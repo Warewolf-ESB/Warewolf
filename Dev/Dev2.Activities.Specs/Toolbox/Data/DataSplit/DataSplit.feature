@@ -148,3 +148,39 @@ Scenario: Split text to a recordset using a negative Index
 #	Then the execution has "AN" error
 
 
+#Debug output
+#	
+#	Scenario:  Ensure that user must be able to see type as "Data Split" in debug output
+#	Given I have created a workflow with Data split 
+#	When the data split tool is executed
+#	Then I can see type as "Data split" in the debug output
+#
+#	Scenario:  Ensure that user can be able to see inputs in debug output 
+#	Given I have created a workflow
+#	When the data split tool is executed
+#	Then I can see inputs of the Data split in the debug output
+#
+#	Scenario:  Ensure that user must be able to seeData split output variables in debug output
+#	Given I have created a Data split workflow 
+#	When the data split tool is executed
+#	Then I can see output variables in the debug output
+#
+#
+#	Scenario:  Ensure that user must be able to see duration in the debug output
+#	Given I have created a workflow
+#	When the data split tool is executed
+#	Then click on the options button on top of the debug output
+#	And select duration on the list
+#	Then I can see the duration in the debug output
+#
+#	Scenario: Ensure that user must be able to see error in red in the debug output
+#	Given I have created aData split workflow with error 
+#	When the data split tool is executed
+#	Then I can see the error in red in debug output
+#
+#	Scenario: Ensure that system should show the values selected in the option menu of the debug output
+#	Given I have created a workflow with Data split
+#	When the data split tool is executed
+#	Then click on the options button on top of the debug output
+#	And select options in the list
+#	Then I can see the selected option value in the debug output
