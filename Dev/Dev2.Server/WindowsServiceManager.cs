@@ -46,12 +46,15 @@ namespace Dev2
             InstallContext context = null;
             try
             {
+                //ServiceProcessInstaller spl = new ServiceProcessInstaller();
+                //spl.Account
                 using(AssemblyInstaller inst = new AssemblyInstaller(typeof(ServerLifecycleManager).Assembly, null))
                 {
                     context = inst.Context;
                     LogMessage("Installing service " + GlobalConstants.ServiceName, inst.Context);
                     IDictionary state = new Hashtable();
                     inst.UseNewContext = true;
+
                     try
                     {
                         inst.Install(state);
@@ -127,6 +130,7 @@ namespace Dev2
             try
             {
                 ServiceController controller = new ServiceController(GlobalConstants.ServiceName);
+
                 if(controller.Status != ServiceControllerStatus.Stopped)
                 {
                     throw new Exception(string.Format("Can't start the service because it is in the '{0}' state.", controller.Status.ToString()));
@@ -138,7 +142,7 @@ namespace Dev2
             catch(Exception ex)
             {
                 result = false;
-                LogMessage("An error occured while starting the service, please start it manually or reboot the computer.", context);
+                LogMessage("An error occurred while starting the service, please start it manually or reboot the computer.", context);
                 WriteExceptions(ex, context);
             }
 
@@ -163,7 +167,7 @@ namespace Dev2
             catch(Exception ex)
             {
                 result = false;
-                LogMessage("An error occured while start the service, please start it manually or reboot the computer.", context);
+                LogMessage("An error occurred while start the service, please start it manually or reboot the computer.", context);
                 WriteExceptions(ex, context);
             }
 

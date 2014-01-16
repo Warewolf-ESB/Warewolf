@@ -35,9 +35,9 @@ namespace Dev2.Data.Operations
         /// <exception cref="System.ArgumentNullException">value;The value can not be null.</exception>
         public void Merge(string value, enMergeType mergeType, string at, string padding, enMergeAlignment mergeAlignment)
         {
-            if (value != null)
+            if(value != null)
             {
-                switch (mergeType)
+                switch(mergeType)
                 {
                     case enMergeType.Char:
                         CharMergeOp(value, at);
@@ -72,13 +72,13 @@ namespace Dev2.Data.Operations
 
         public void Merge(string value, string mergeType, string at, string padding, string align)
         {
-            enMergeType mergingType = enMergeType.None;
+            enMergeType mergingType;
             enMergeAlignment mergeAlignment = enMergeAlignment.Left;
 
-            switch (mergeType)
+            switch(mergeType)
             {
                 case "Index":
-                    switch (align)
+                    switch(align)
                     {
                         case "Left":
                             mergeAlignment = enMergeAlignment.Left;
@@ -134,16 +134,16 @@ namespace Dev2.Data.Operations
         private void IndexMergeOp(string value, string at, string padding, enMergeAlignment mergeAlignment)
         {
             int indexToUse;
-            if (Int32.TryParse(at, out indexToUse))
+            if(Int32.TryParse(at, out indexToUse))
             {
                 string paddedString = string.Empty;
                 int difference = indexToUse - value.Length;
-                if (difference >= 0)
+                if(difference >= 0)
                 {
                     var padChar = string.IsNullOrEmpty(padding) || padding.Length < 1 ? ' ' : padding[0];
                     paddedString = paddedString.PadRight(difference, padChar);
 
-                    if (mergeAlignment == enMergeAlignment.Left)
+                    if(mergeAlignment == enMergeAlignment.Left)
                     {
                         paddedString = paddedString.Insert(0, value);
                     }
@@ -152,7 +152,7 @@ namespace Dev2.Data.Operations
                         paddedString += value;
                     }
                 }
-                else if (difference < 0)
+                else if(difference < 0)
                 {
                     paddedString = value.Substring(0, indexToUse);
                 }

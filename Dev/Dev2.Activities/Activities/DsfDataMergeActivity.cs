@@ -77,13 +77,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Overridden NativeActivity Methods
-
-// ReSharper disable RedundantOverridenMember
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-// ReSharper restore RedundantOverridenMember
+        // ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -94,93 +93,93 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errorResultTO = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
                 CleanArguments(MergeCollection);
 
-                if(MergeCollection.Count > 0)
+                if(MergeCollection.Count <= 0)
                 {
-                    IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                    IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    allErrors.MergeErrors(errors);
-                    Dictionary<int, List<IDev2DataListEvaluateIterator>> listOfIterators = new Dictionary<int, List<IDev2DataListEvaluateIterator>>();
+                    return;
+                }
 
-                    #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
+                IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
+                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                allErrors.MergeErrors(errorResultTO);
+                Dictionary<int, List<IDev2DataListEvaluateIterator>> listOfIterators = new Dictionary<int, List<IDev2DataListEvaluateIterator>>();
 
-                    int dictionaryKey = 0;
-                    foreach(DataMergeDTO row in MergeCollection)
+                #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
+
+                int dictionaryKey = 0;
+                foreach(DataMergeDTO row in MergeCollection)
+                {
+                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
+
+                    IBinaryDataListEntry atEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
+
+                    if(dataObject.IsDebugMode())
                     {
-                        IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errors);
-                        allErrors.MergeErrors(errors);
-
-                        IBinaryDataListEntry atEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errors);
-                        allErrors.MergeErrors(errors);
-
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(row.InputVariable, row.At, row.MergeType, expressionsEntry, atEntry, executionId);
-                        }
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                        IDev2DataListEvaluateIterator atItr = Dev2ValueObjectFactory.CreateEvaluateIterator(atEntry);
-
-                        iteratorCollection.AddIterator(itr);
-                        iteratorCollection.AddIterator(atItr);
-
-                        listOfIterators.Add(dictionaryKey, new List<IDev2DataListEvaluateIterator> { itr, atItr });
-                        dictionaryKey++;
+                        AddDebugInputItem(row.InputVariable, row.At, row.MergeType, expressionsEntry, atEntry, executionId);
                     }
+                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                    IDev2DataListEvaluateIterator atItr = Dev2ValueObjectFactory.CreateEvaluateIterator(atEntry);
 
-                    #endregion
+                    iteratorCollection.AddIterator(itr);
+                    iteratorCollection.AddIterator(atItr);
 
-                    #region Iterate and Merge Data
+                    listOfIterators.Add(dictionaryKey, new List<IDev2DataListEvaluateIterator> { itr, atItr });
+                    dictionaryKey++;
+                }
 
-                    while(iteratorCollection.HasMoreData())
+                #endregion
+
+                #region Iterate and Merge Data
+
+                while(iteratorCollection.HasMoreData())
+                {
+                    int pos = 0;
+                    foreach(var iterator in listOfIterators)
                     {
-                        int pos = 0;
-                        foreach(var iterator in listOfIterators)
+                        var val = iteratorCollection.FetchNextRow(iterator.Value[0]);
+                        var at = iteratorCollection.FetchNextRow(iterator.Value[1]);
+
+                        if(val != null)
                         {
-
-                            var val = iteratorCollection.FetchNextRow(iterator.Value[0]);
-                            var at = iteratorCollection.FetchNextRow(iterator.Value[1]);
-
-                            if(val != null)
+                            if(at != null)
                             {
-                                if(at != null)
+                                if((MergeCollection[pos].MergeType == "Index" || MergeCollection[pos].MergeType == "Chars") && string.IsNullOrEmpty(at.TheValue))
                                 {
-                                    if((MergeCollection[pos].MergeType == "Index" || MergeCollection[pos].MergeType == "Chars") && string.IsNullOrEmpty(at.TheValue))
-                                    {
-                                        allErrors.AddError("The At value cannot be blank.");
-                                    }
-                                    mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, MergeCollection[pos].Padding, MergeCollection[pos].Alignment);
-                                    pos++;
+                                    allErrors.AddError("The At value cannot be blank.");
                                 }
+                                mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, MergeCollection[pos].Padding, MergeCollection[pos].Alignment);
+                                pos++;
                             }
                         }
                     }
+                }
 
-                    #endregion Iterate and Merge Data
+                #endregion Iterate and Merge Data
 
-                    #region Add Result to DataList
-
-                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                #region Add Result to DataList
+                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+                    toUpsert.Add(region, mergeOperations.MergeData.ToString());
+                    if(dataObject.IsDebugMode())
                     {
-                        toUpsert.Add(region, mergeOperations.MergeData.ToString());
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugOutputItem(region, mergeOperations.MergeData.ToString(), executionId);
-                        }
-
-                        toUpsert.FlushIterationFrame();
-                        compiler.Upsert(executionId, toUpsert, out errors);
-                        allErrors.MergeErrors(errors);
+                        AddDebugOutputItem(region, mergeOperations.MergeData.ToString(), executionId);
                     }
 
-                    #endregion Add Result to DataList
+                    toUpsert.FlushIterationFrame();
+                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
                 }
+
+                #endregion Add Result to DataList
             }
             catch(Exception e)
             {
@@ -193,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -263,47 +262,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["MergeCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["MergeCollection"];
+            if(modelProperty != null)
             {
-                List<DataMergeDTO> listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
-                if(listOfValidRows.Count > 0)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
-                    foreach(string s in listToAdd)
+                    List<DataMergeDTO> listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
+                    if(listOfValidRows.Count > 0)
                     {
-                        mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
-                        startIndex++;
+                        int startIndex = MergeCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        foreach(string s in listToAdd)
+                        {
+                            mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
+                            startIndex++;
+                        }
+                        CleanUpCollection(mic, modelItem, startIndex);
                     }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
-                else
-                {
-                    AddToCollection(listToAdd, modelItem);
+                    else
+                    {
+                        AddToCollection(listToAdd, modelItem);
+                    }
                 }
             }
         }
 
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["MergeCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["MergeCollection"];
+            if(modelProperty != null)
             {
-                int startIndex = 0;
-                string firstRowMergeType = MergeCollection[0].MergeType;
-                string firstRowPadding = MergeCollection[0].Padding;
-                string firstRowAlignment = MergeCollection[0].Alignment;
-                mic.Clear();
-                foreach(string s in listToAdd)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    mic.Add(new DataMergeDTO(s, firstRowMergeType, string.Empty, startIndex + 1, firstRowPadding, firstRowAlignment));
-                    startIndex++;
+                    int startIndex = 0;
+                    string firstRowMergeType = MergeCollection[0].MergeType;
+                    string firstRowPadding = MergeCollection[0].Padding;
+                    string firstRowAlignment = MergeCollection[0].Alignment;
+                    mic.Clear();
+                    foreach(string s in listToAdd)
+                    {
+                        mic.Add(new DataMergeDTO(s, firstRowMergeType, string.Empty, startIndex + 1, firstRowPadding, firstRowAlignment));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
             }
         }
 
@@ -314,25 +321,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new DataMergeDTO(string.Empty, "None", string.Empty, startIndex + 1, " ", "Left To Right"));
-            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            }
         }
 
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if(currentName.Contains("(") && currentName.Contains(")"))
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
             {
-                if(currentName.Contains(" ("))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    if(currentName.Contains(" ("))
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
+            return null;
         }
 
         #endregion Private Methods
@@ -388,7 +404,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    var items = MergeCollection.Where(c => !string.IsNullOrEmpty(c.InputVariable) && c.InputVariable.Equals(t.Item1));
+                    Tuple<string, string> t1 = t;
+                    var items = MergeCollection.Where(c => !string.IsNullOrEmpty(c.InputVariable) && c.InputVariable.Equals(t1.Item1));
 
                     // issues updates
                     foreach(var a in items)

@@ -121,9 +121,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Specs", "Dev2.Studio.Core.Specs\Dev2.Studio.Core.Specs.csproj", "{96E59B04-1506-4554-B46A-B2B494116B07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.DataBinding.Tests", "Dev2.DataBinding.Tests\Dev2.DataBinding.Tests\Dev2.DataBinding.Tests.csproj", "{50778840-8275-4D2C-8701-D5FABA5E963F}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 44
+		SccNumberOfProjects = 45
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -256,6 +258,9 @@ Global
 		SccProjectUniqueName43 = Dev2.Studio.Core.Specs\\Dev2.Studio.Core.Specs.csproj
 		SccProjectName43 = Dev2.Studio.Core.Specs
 		SccLocalPath43 = Dev2.Studio.Core.Specs
+		SccProjectUniqueName44 = Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests.csproj
+		SccProjectName44 = Dev2.DataBinding.Tests/Dev2.DataBinding.Tests
+		SccLocalPath44 = Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -811,6 +816,18 @@ Global
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|x64.ActiveCfg = Release|Any CPU
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|x86.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x64.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

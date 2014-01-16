@@ -498,23 +498,23 @@ namespace Dev2.Server.Datalist
 
                             }
 
-                            var rsName2 = DataListUtil.ExtractRecordsetNameFromValue(def2.RawValue);
-                            var rsCol2 = DataListUtil.ExtractFieldNameFromValue(def2.RawValue);
+                                var rsName2 = DataListUtil.ExtractRecordsetNameFromValue(def2.RawValue);
+                                var rsCol2 = DataListUtil.ExtractFieldNameFromValue(def2.RawValue);
 
-                            if(def.Name == rsCol2 && def.RecordSetName == rsName2)
-                            {
-                                IBinaryDataListEntry entry;
-                                string error;
-                                childDL.TryGetEntry(def.RecordSetName, out entry, out error);
-                                errors.AddError(error);
+                                if(def.Name == rsCol2 && def.RecordSetName == rsName2)
+                                {
+                                    IBinaryDataListEntry entry;
+                                    string error;
+                                    childDL.TryGetEntry(def.RecordSetName, out entry, out error);
+                                    errors.AddError(error);
 
-                                entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
-                                errors.MergeErrors(invokeErrors);
-                                outputRemoveIdx.Add(oPos);
-                                inputRemoveIdx.Add(iPos);
-                                break;
+                                    entry.AdjustForIOMapping(parentDLID, rsCol, rsName, def.Name, out invokeErrors);
+                                    errors.MergeErrors(invokeErrors);
+                                    outputRemoveIdx.Add(oPos);
+                                    inputRemoveIdx.Add(iPos);
+                                    break;
+                                }
                             }
-                        }
 
                         oPos++;
                     }
@@ -765,11 +765,6 @@ namespace Dev2.Server.Datalist
 
         public Guid TransferSystemTags(NetworkContext ctx, Guid parentDLID, Guid childDLID, bool parentToChild, out ErrorResultTO errors)
         {
-
-            // TODO : Build transfer instruction payload and send through to Upsert...???
-
-            // TODO : Build system tag transfer into Translator for XML...
-
             throw new NotImplementedException();
         }
 
@@ -1458,7 +1453,7 @@ namespace Dev2.Server.Datalist
             {
                 // ReSharper disable ImplicitlyCapturedClosure
                 recordSets = tmpRecs.ToLookup(definition =>
-                // ReSharper restore ImplicitlyCapturedClosure
+                    // ReSharper restore ImplicitlyCapturedClosure
                                               DataListUtil.AddBracketsToValueIfNotExist(
                                                   DataListUtil.MakeValueIntoHighLevelRecordset(
                                                       DataListUtil.ExtractRecordsetNameFromValue(
@@ -1469,7 +1464,7 @@ namespace Dev2.Server.Datalist
             {
                 // ReSharper disable ImplicitlyCapturedClosure
                 recordSets = tmpRecs.ToLookup(definition =>
-                // ReSharper restore ImplicitlyCapturedClosure
+                    // ReSharper restore ImplicitlyCapturedClosure
                 DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(DataListUtil.ExtractRecordsetNameFromValue(inputExpressionExtractor(definition)
                 ), true)));
             }
@@ -1798,12 +1793,13 @@ namespace Dev2.Server.Datalist
                 }
 
                 var result = rules.BindCompiledExpression();
+                EvaluateRuleSet ers;
                 if(result != null)
                 {
                     // Check if compiled expression has more parts ;)
                     if(IsEvaluated(rules.CompiledExpression))
                     {
-                        EvaluateRuleSet ers = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
+                        ers = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
 
                         result = InternalDataListEvaluateV2(ers);
                     }
@@ -1811,30 +1807,30 @@ namespace Dev2.Server.Datalist
                     return result;                     
                 }
 
-                if(rules.CompiledExpression == null)
-                {
-                    return null;
-                }
+                    if(rules.CompiledExpression == null)
+                    {
+                        return null;
+                    }
 
-                if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
-                {
-                    // Create a new entry for return ;)
-                    string error;
-                    var field = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
-                    result = Dev2BinaryDataListFactory.CreateEntry(field, string.Empty, rules.BinaryDataList.UID);
-                    result.TryPutScalar(new BinaryDataListItem(rules.CompiledExpression, field), out error);
-                    rules.Errors.AddError(error);
+                    if(rules.EvaluateToRootOnly && DataListUtil.isRootVariable(rules.CompiledExpression))
+                    {
+                        // Create a new entry for return ;)
+                        string error;
+                        var field = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                        result = Dev2BinaryDataListFactory.CreateEntry(field, string.Empty, rules.BinaryDataList.UID);
+                        result.TryPutScalar(new BinaryDataListItem(rules.CompiledExpression, field), out error);
+                        rules.Errors.AddError(error);
 
-                    return result;
-                }
+                        return result;
+                    }
 
                 // we need to drop in again for further evaluation ;)
                 EvaluateRuleSet ers2 = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
 
                 result = InternalDataListEvaluateV2(ers2);
 
-                return result;
-            }
+                    return result;
+                }
             else
             {
 
@@ -1882,59 +1878,59 @@ namespace Dev2.Server.Datalist
                 return result;
             }
 
-            var idx = token.Option.RecordsetIndex;
+                var idx = token.Option.RecordsetIndex;
 
-            string colsToKeep;
+                string colsToKeep;
 
-            if(!string.IsNullOrEmpty(field))
-            {
-                colsToKeep = field;
-            }
-            else
-            {
-                colsToKeep = GlobalConstants.AllColumns;
-            }
-
-            if(bdl.TryGetEntry(rs, out val, out error))
-            {
-                enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
-
-                if(idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                if(!string.IsNullOrEmpty(field))
                 {
-                    int myIdx;
-                    if(idxType == enRecordsetIndexType.Numeric)
-                    {
-                        myIdx = Int32.Parse(idx);
-                    }
-                    else
-                    {
-                        myIdx = val.FetchLastRecordsetIndex();
-                    }
-
-                    var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
-                    res.MakeRecordsetEvaluateReady(myIdx, colsToKeep, out error);
-                    errors.AddError(error);
-
-                    return res;
+                    colsToKeep = field;
+                }
+                else
+                {
+                    colsToKeep = GlobalConstants.AllColumns;
                 }
 
-                if(idxType == enRecordsetIndexType.Error)
+                if(bdl.TryGetEntry(rs, out val, out error))
                 {
-                    errors.AddError("Invalid Recordset Index For { " + displayValue + " }");
-                    return null;
-                } 
+                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(idx);
 
-                if(idxType == enRecordsetIndexType.Star)
-                {
-                    var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
-                    res.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, colsToKeep, out error);
-                    errors.AddError(error);
+                    if(idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
+                    {
+                        int myIdx;
+                        if(idxType == enRecordsetIndexType.Numeric)
+                        {
+                            myIdx = Int32.Parse(idx);
+                        }
+                        else
+                        {
+                            myIdx = val.FetchLastRecordsetIndex();
+                        }
 
-                    return res;
+                        var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
+                        res.MakeRecordsetEvaluateReady(myIdx, colsToKeep, out error);
+                        errors.AddError(error);
+
+                        return res;
+                    }
+
+                    if(idxType == enRecordsetIndexType.Error)
+                    {
+                        errors.AddError("Invalid Recordset Index For { " + displayValue + " }");
+                        return null;
+                    } 
+
+                    if(idxType == enRecordsetIndexType.Star)
+                    {
+                        var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
+                        res.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, colsToKeep, out error);
+                        errors.AddError(error);
+
+                        return res;
+                    }
                 }
-            }
 
-            errors.AddError(error);
+                errors.AddError(error);
 
             return null;
         }
@@ -1994,7 +1990,7 @@ namespace Dev2.Server.Datalist
                         // find the part to use
                         IIntellisenseResult part = tc.ParseTokenForMatch(frameItem.Expression, bdl.FetchIntellisenseParts());
 
-                        // recusive eval ;)
+                        // recursive eval ;)
                         if(part == null)
                         {
                             EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
@@ -2094,17 +2090,13 @@ namespace Dev2.Server.Datalist
                                 bdl.TryGetEntry(field, out entry, out error);
                                 allErrors.AddError(error);
 
-                                if(payload.IsDebug)
-                                {
-                                    if(entry != null)
+                                if(payload.IsDebug && entry != null)
                                     {
                                         debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                     }
-                                }
                                 
-                                if(entry != null)
-                                {
-                                    if(evaluatedValue != null)
+
+                                if(evaluatedValue != null && entry != null)
                                     {
                                         if(!evaluatedValue.IsRecordset)
                                         {
@@ -2139,7 +2131,7 @@ namespace Dev2.Server.Datalist
                                         }
                                         }
                                     } // else do nothing
-                                }
+
                             }
                             else
                             {
@@ -2219,8 +2211,6 @@ namespace Dev2.Server.Datalist
                                             }
                                             else
                                             {
-                                                // TODO : Extract into untilty method for testing ;)
-
                                                 int starPopIdxPos = 0;
 
                                                 // field to field move

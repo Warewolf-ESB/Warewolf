@@ -32,7 +32,7 @@ namespace Dev2
 {
     /// <summary>
     /// PBI 5278
-    /// Application Server Lifecycle Manager
+    /// Application Server Life-cycle Manager
     /// Facilitates start-up, execution and tear-down of the application server.
     /// </summary>
     internal sealed class ServerLifecycleManager : IDisposable
@@ -320,7 +320,7 @@ namespace Dev2
                 result = 98; // ????
                 didBreak = true;
             }
-            
+
             if(!didBreak && !StartWebServer())
             {
                 result = 4;
@@ -1284,7 +1284,7 @@ namespace Dev2
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
-                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);                    
+                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
 
 
                     // start SSL traffic if it is enabled ;)
@@ -1684,10 +1684,10 @@ namespace Dev2
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
-                Write("done.");
-                WriteLine("");
-                return true;
-            }
+            Write("done.");
+            WriteLine("");
+            return true;
+        }
 
 
 
@@ -1703,7 +1703,7 @@ namespace Dev2
                     {
                         _owinServer = WebServerStartup.Start(_endpoints);
                     }
-                    catch (Exception e)
+                    catch(Exception e)
                     {
                         ServerLogger.LogError(e);
                     }

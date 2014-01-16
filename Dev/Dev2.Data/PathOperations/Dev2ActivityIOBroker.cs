@@ -118,10 +118,10 @@ namespace Dev2.PathOperations
                             {
                                 File.WriteAllText(tmp, args.FileContents);
                             }
-                            result = MoveTmpFileToDestination(dst, tmp, result);
-                            RemoveTmpFile(tmp);
+                    result = MoveTmpFileToDestination(dst, tmp, result);
+                    RemoveTmpFile(tmp);
                             break;
-                    }
+                }
                 }
                 else
                 {
@@ -147,8 +147,7 @@ namespace Dev2.PathOperations
 
         string MoveTmpFileToDestination(IActivityIOOperationsEndPoint dst, string tmp, string result)
         {
-            Stream s;
-            using(s = new MemoryStream(File.ReadAllBytes(tmp)))
+            using(Stream s = new MemoryStream(File.ReadAllBytes(tmp)))
             {
                 Dev2CRUDOperationTO newArgs = new Dev2CRUDOperationTO(true);
 
@@ -202,7 +201,7 @@ namespace Dev2.PathOperations
                 return src.ListDirectory(src.IOPath);
             }
             return readTypes == ReadTypes.Files ? src.ListFilesInDirectory(src.IOPath) : src.ListFoldersInDirectory(src.IOPath);
-        }
+            }
 
         public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
@@ -246,8 +245,6 @@ namespace Dev2.PathOperations
                         using(var s = src.Get(src.IOPath))
                         {
                             dst.Put(s, dst.IOPath, args, sourceFile.Directory);
-                            s.Close();
-                            s.Dispose();
                         }
                     }
                     return ResultOk;
@@ -527,7 +524,7 @@ namespace Dev2.PathOperations
             if(args.DoRecursiveCopy)
             {
                 RecursiveCopy(src, dst, args);
-            }
+                }
 
             var srcContents = src.ListFilesInDirectory(src.IOPath);
             var result = true;
@@ -555,24 +552,24 @@ namespace Dev2.PathOperations
                         DoFileTransfer(src, dst, args, cpPath, p, path, ref result);
                     }
                     else if(args.Overwrite || !dst.PathExist(dst.IOPath))
-                    {
+                        {
                         var tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
                         var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
                         DoFileTransfer(src, dst, args, path, p, path.Path, ref result);
                     }
                 }
                 catch(Exception ex)
-                {
+                                {
                     ServerLogger.LogError(ex);
-                }
-            }
+                            }
+                        }
             return result;
-        }
+                    }
 
         static void DoFileTransfer(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, IActivityIOPath dstPath, IActivityIOPath p, string path, ref bool result)
-        {
+                    {
             if(args.Overwrite || !dst.PathExist(dstPath))
-            {
+                        {
                 result = TransferFile(src, dst, args, path, p, result);
             }
         }
@@ -581,27 +578,27 @@ namespace Dev2.PathOperations
         {
             var tmpPath = ActivityIOFactory.CreatePathFromString(path, dst.IOPath.Username, dst.IOPath.Password, true);
             var tmpEp = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-            var whereToPut = GetWhereToPut(src, dst);
+                            var whereToPut = GetWhereToPut(src, dst);
             using(var s = src.Get(p))
             {
                 if(tmpEp.Put(s, tmpEp.IOPath, args, whereToPut) < 0)
-                {
-                    result = false;
-                }
-                s.Close();
-                s.Dispose();
-            }
+                            {
+                                result = false;
+                            }
+                            s.Close();
+                            s.Dispose();
+                        }
             return result;
-        }
+                }
 
         void RecursiveCopy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
         {
             try
-            {
+                {
                 // List directory contents
                 var srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
                 Task.WaitAll(srcContentsFolders.Select(sourcePath => Task.Run(() =>
-                {
+                    {
                     var sourceEndPoint =
                         ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
                     IList<string> dirParts =
@@ -615,7 +612,7 @@ namespace Dev2.PathOperations
                     dst.CreateDirectory(destinationPath, args);
                     TransferDirectoryContents(sourceEndPoint, destinationEndPoint, args);
                 })).ToArray());
-            }
+                }
             catch(AggregateException e)
             {
                 var message = e.InnerExceptions.Where(exception => exception != null && !string.IsNullOrEmpty(exception.Message)).Aggregate("", (current, exception) => current + (exception.Message + "\r\n"));

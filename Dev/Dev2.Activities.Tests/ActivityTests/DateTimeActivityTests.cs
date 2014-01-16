@@ -246,7 +246,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
             if(actual == "0")
             {
-                Thread.Sleep(10);
+                Thread.Sleep(11);
 
                 result = ExecuteProcess();
 
