@@ -122,6 +122,7 @@ namespace Gui
         {
             PreUnInstallMsg.Text = msg;
             preUnInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Collapsed;
             btnRerun.Visibility = Visibility.Collapsed;
             preUnInstallStatusImg.Source =
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
@@ -141,6 +142,7 @@ namespace Gui
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
                                         UriKind.RelativeOrAbsolute));
             preUnInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Collapsed;
             btnRerun.Visibility = Visibility.Visible;
             CanGoNext = false;
         }
@@ -175,7 +177,8 @@ namespace Gui
                     {
 
                         btnRerun.Visibility = Visibility.Hidden;
-                        preUnInstallStatusImg.Visibility = Visibility.Hidden;
+                        preUnInstallStatusImg.Visibility = Visibility.Collapsed;
+                        postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
 
                         // Get the BackgroundWorker that raised this event.
                         BackgroundWorker worker = new BackgroundWorker();
@@ -210,7 +213,8 @@ namespace Gui
                     BackgroundWorker worker = new BackgroundWorker();
 
                     btnRerun.Visibility = Visibility.Hidden;
-                    preUnInstallStatusImg.Visibility = Visibility.Hidden;
+                    preUnInstallStatusImg.Visibility = Visibility.Collapsed;
+                    postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
 
                     worker.DoWork += delegate
                     {

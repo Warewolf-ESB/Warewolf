@@ -45,6 +45,7 @@ namespace Gui
         {
             PreInstallMsg.Text = msg;
             preInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Collapsed;
             preInstallStatusImg.Source =
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
@@ -54,7 +55,8 @@ namespace Gui
         private void SetCleanupMessage()
         {
             PreInstallMsg.Text = InstallVariables.RollbackMessage;
-            preInstallStatusImg.Visibility = Visibility.Hidden;
+            preInstallStatusImg.Visibility = Visibility.Collapsed;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Collapsed;
         }
 
@@ -69,6 +71,7 @@ namespace Gui
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
                                         UriKind.RelativeOrAbsolute));
             preInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Collapsed;
             CanGoNext = false;
             btnRerun.Visibility = Visibility.Visible;
         }

@@ -27,6 +27,7 @@
             <TextBlock Grid.Column="1"
                        HorizontalAlignment="Right"
                        Margin="0,0,-5,-20"
+                       FontWeight="Bold"
                        Style="{StaticResource TextBlockStyle}"
                        Text="{Binding StepsString}"></TextBlock>
         </Grid>

@@ -84,8 +84,9 @@ namespace Gui
             postInstallStatusImg.Source =
                 new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/tick.png",
                                         UriKind.RelativeOrAbsolute));
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Hidden;
             CanGoNext = true;
-            btnRerun.Visibility = Visibility.Hidden;
+            btnRerun.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -102,7 +103,8 @@ namespace Gui
         private void SetCleanupMessage()
         {
             PostInstallMsg.Text = InstallVariables.RollbackMessage;
-            postInstallStatusImg.Visibility = Visibility.Hidden;
+            postInstallStatusImg.Visibility = Visibility.Collapsed;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
             CanGoNext = false;
             btnRerun.Visibility = Visibility.Hidden;
         }
@@ -116,9 +118,10 @@ namespace Gui
         {
             PostInstallMsg.Text = msg;
             postInstallStatusImg.Source =
-                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/cross.png",
+                new BitmapImage(new Uri("pack://application:,,,/Resourcefiles/Images/cross.png",
                                         UriKind.RelativeOrAbsolute));
             postInstallStatusImg.Visibility = Visibility.Visible;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Collapsed;
             CanGoNext = false;
             btnRerun.Visibility = Visibility.Visible;
         }
@@ -318,7 +321,8 @@ namespace Gui
         {
 
             CanGoNext = false;
-            postInstallStatusImg.Visibility = Visibility.Hidden;
+            postInstallStatusImg.Visibility = Visibility.Collapsed;
+            postInstallStatusCircularProgressBar.Visibility = Visibility.Visible;
             btnRerun.Visibility = Visibility.Hidden;
             // Setup a cancel action ;)
             Cancel += delegate

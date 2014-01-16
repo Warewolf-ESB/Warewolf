@@ -774,6 +774,7 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Bottom"
                                        HorizontalAlignment="Right"
+                                       FontWeight="Bold"
                                        Style="{StaticResource TextBlockStyle}"
                                        Text="{Binding StepsString}"></TextBlock>
                         </Grid>
@@ -855,6 +856,7 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Bottom"
                                        HorizontalAlignment="Right"
+                                       FontWeight="Bold"
                                        Style="{StaticResource TextBlockStyle}"
                                        Text="{Binding StepsString}"></TextBlock>
                         </Grid>
