@@ -266,4 +266,7 @@
     <value>Warewolf collects anonymous stats on usage.
 No personally identifiable information will be sent.</value>
   </data>
+  <data name="PreInstall_UseLocalSystemAccount" xml:space="preserve">
+    <value>Use Local System Account</value>
+  </data>
 </root>

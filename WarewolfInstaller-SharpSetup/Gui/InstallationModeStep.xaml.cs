@@ -14,7 +14,6 @@ namespace Gui
             InitializeComponent();
             imsModes.ItemsSource = installationModes;
             imsModes.Loaded += (s, e) => { imsModes.Focus(); };
-            DataContext = new InfoStepDataContext();
         }
 
         private void InstallationModeStep_MoveNext(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)

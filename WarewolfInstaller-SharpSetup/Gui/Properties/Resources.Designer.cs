@@ -350,6 +350,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use Local System Account.
+        /// </summary>
+        public static string PreInstall_UseLocalSystemAccount {
+            get {
+                return ResourceManager.GetString("PreInstall_UseLocalSystemAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press Finish to exit installer..
         /// </summary>
         public static string PreInstallProcess_MessageBottom {

@@ -12,11 +12,11 @@ namespace Gui
     public partial class InstallationStep
     {
         readonly InstallationMode mode;
-        public InstallationStep(InstallationMode mode)
+        public InstallationStep(InstallationMode mode, int stepNumber, int totalSteps)
         {
             InitializeComponent();
             this.mode = mode;
-            DataContext = new InfoStepDataContext();
+            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
         }
 
         /// <summary>

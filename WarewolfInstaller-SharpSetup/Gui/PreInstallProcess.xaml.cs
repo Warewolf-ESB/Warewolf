@@ -11,13 +11,12 @@ namespace Gui
     /// </summary>
     public partial class PreInstallProcess
     {
-
-        public PreInstallProcess()
+        public PreInstallProcess(int stepNumber, int totalSteps)
         {
             InitializeComponent();
             // enable shortcut install
             InstallVariables.InstallShortcuts = true;
-            DataContext = new InfoStepDataContext();
+            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
         }
 
         /// <summary>
@@ -237,5 +236,11 @@ namespace Gui
         {
             InstallVariables.InstallShortcuts = !(InstallVariables.InstallShortcuts);
         }
+
+        void BtnUseLocalSystemAccount(object sender, RoutedEventArgs e)
+        {
+            //TODO: Trav implement
+        }
+
     }
 }

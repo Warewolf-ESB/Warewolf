@@ -21,10 +21,10 @@ namespace Gui
         private bool _serviceInstalled;
         private bool _serviceInstallException;
 
-        public PostInstallProcess()
+        public PostInstallProcess(int stepNumber, int totalSteps)
         {
             InitializeComponent();
-            DataContext = new InfoStepDataContext();
+            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Gui
                 Process p = Process.Start(psi);
 
                 int cnt = 0;
-                while(cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited)
+                while(p != null && (cnt < InstallVariables.DefaultWaitInSeconds && !p.HasExited))
                 {
                     Thread.Sleep(1000);
                     cnt++;
@@ -324,7 +324,7 @@ namespace Gui
             Cancel += delegate
                     {
                         SetCleanupMessage();
-                        var trans = new PreUnInstallProcess();
+                        var trans = new PreUnInstallProcess(2, 6);
 
                         if(!trans.Rollback())
                         {

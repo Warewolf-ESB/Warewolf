@@ -7,7 +7,7 @@ namespace Gui
     /// </summary>
     public partial class FinishStep
     {
-        public FinishStep()
+        public FinishStep(int stepNumber, int totalSteps)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace Gui
                 // Force a studio start ;)
                 InstallVariables.StartStudioOnExit = true;
             }
-
+            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
         }
 
         void BtnExitWithStart(object sender, RoutedEventArgs e)

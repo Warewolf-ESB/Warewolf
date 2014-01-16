@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/Colors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!-- TextBox Brushes -->
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource Color_009b}" />
+    <SolidColorBrush x:Key="TextBoxBorderBrush" Color="{StaticResource WarewolfLightGrey}" />
+    <SolidColorBrush x:Key="TextBoxHoverBackgroundBrush" Color="{StaticResource Color_009b}" />  <!-- DO NOT make TextBoxHoverBackgroundBrush transparent! -->
+    <SolidColorBrush x:Key="TextBoxHoverBorderBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxFocusedBrush" Color="{StaticResource WarewolfOrange}" />
+    <SolidColorBrush x:Key="TextBoxReadOnlyBackgroundBrush" Color="{StaticResource WarewolfLightGrey}" />
+    
+</ResourceDictionary>

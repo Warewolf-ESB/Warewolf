@@ -15,7 +15,7 @@ namespace Gui
     {
         private bool _serviceRemoved;
 
-        public PreUnInstallProcess()
+        public PreUnInstallProcess(int stepNumber, int totalSteps)
         {
             InitializeComponent();
 
@@ -27,7 +27,7 @@ namespace Gui
                 // set the shortcut variable ;)
                 MsiConnection.Instance.SetProperty("INSTALLSHORTCUT", InstallVariables.InstallShortcuts ? "1" : "0");
             }
-            DataContext = new InfoStepDataContext();
+            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
         }
 
         public bool Rollback()

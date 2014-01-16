@@ -41,8 +41,8 @@ namespace Gui
                 SetupHelper.ApplyMsiProperties();
                 if(MsiConnection.Instance.IsRestored)
                 {
-                    AddStep(new InstallationStep(InstallationMode.Install));
-                    AddStep(new FinishStep());
+                    AddStep(new InstallationStep(InstallationMode.Install, 1, 2));
+                    AddStep(new FinishStep(2, 2));
                 }
                 var modes = GetInstallationModes(MsiConnection.Instance.Mode);
                 if(modes.Contains(InstallationMode.Downgrade))
@@ -62,34 +62,34 @@ namespace Gui
                 {
                     case InstallationMode.Install:
 
-                        AddStep(new LicenseStep());
-                        AddStep(new PreInstallProcess());
-                        AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallProcess());
-                        AddStep(new FinishStep());
+                        AddStep(new LicenseStep(1, 5));
+                        AddStep(new PreInstallProcess(2, 5));
+                        AddStep(new InstallationStep(InstallationMode.Install, 3, 5));
+                        AddStep(new PostInstallProcess(4, 5));
+                        AddStep(new FinishStep(5, 5));
                         break;
                     case InstallationMode.Uninstall:
                         // Set install mode variable ;)
                         InstallVariables.IsInstallMode = false;
 
-                        AddStep(new PreUnInstallProcess());
-                        AddStep(new InstallationStep(InstallationMode.Uninstall));
-                        AddStep(new FinishStep());
+                        AddStep(new PreUnInstallProcess(1, 3));
+                        AddStep(new InstallationStep(InstallationMode.Uninstall, 2, 3));
+                        AddStep(new FinishStep(3, 3));
                         break;
                     case InstallationMode.Upgrade:
-                        AddStep(new LicenseStep());
-                        AddStep(new PreUnInstallProcess());
-                        AddStep(new InstallationStep(InstallationMode.Uninstall));
-                        AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallProcess());
-                        AddStep(new FinishStep());
+                        AddStep(new LicenseStep(1, 6));
+                        AddStep(new PreUnInstallProcess(2, 6));
+                        AddStep(new InstallationStep(InstallationMode.Uninstall, 3, 6));
+                        AddStep(new InstallationStep(InstallationMode.Install, 4, 6));
+                        AddStep(new PostInstallProcess(5, 6));
+                        AddStep(new FinishStep(6, 6));
                         break;
                     case InstallationMode.Reinstall:
-                        AddStep(new LicenseStep());
-                        AddStep(new PreInstallProcess());
-                        AddStep(new InstallationStep(InstallationMode.Install));
-                        AddStep(new PostInstallProcess());
-                        AddStep(new FinishStep());
+                        AddStep(new LicenseStep(1, 5));
+                        AddStep(new PreInstallProcess(2, 5));
+                        AddStep(new InstallationStep(InstallationMode.Install, 3, 5));
+                        AddStep(new PostInstallProcess(4, 5));
+                        AddStep(new FinishStep(5, 5));
                         break;
                     default:
                         MessageBox.Show("Mode not supported: " + (InstallationMode)argument);
