@@ -6,6 +6,17 @@
   <Templates>
     <WorkspaceTemplate>
       <Name>DEV2 SCRUM Project</Name>
+      <Description />
+      <Folders>
+        <WorkspaceTemplateMapping>
+          <ServerItem>$/DEV2 SCRUM Project</ServerItem>
+          <LocalItem>C:\Development</LocalItem>
+          <IsCloaked>false</IsCloaked>
+        </WorkspaceTemplateMapping>
+      </Folders>
+    </WorkspaceTemplate>
+    <WorkspaceTemplate>
+      <Name>Copy DEV2 SCRUM Project</Name>
       <Folders>
         <WorkspaceTemplateMapping>
           <ServerItem>$/DEV2 SCRUM Project</ServerItem>
