@@ -3,16 +3,5 @@
   <LoadLimit>20</LoadLimit>
   <Queries />
   <Links />
-  <Templates>
-    <WorkspaceTemplate>
-      <Name>RSAKLFASHLEY</Name>
-      <Folders>
-        <WorkspaceTemplateMapping>
-          <ServerItem>$/DEV2 SCRUM Project</ServerItem>
-          <LocalItem>C:\Development</LocalItem>
-          <IsCloaked>false</IsCloaked>
-        </WorkspaceTemplateMapping>
-      </Folders>
-    </WorkspaceTemplate>
-  </Templates>
+  <Templates />
 </TeamDataProperty>
