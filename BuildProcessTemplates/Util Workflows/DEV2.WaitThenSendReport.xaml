@@ -67,9 +67,9 @@
       </mtbwa:InvokeProcess>
       <If Condition="[SendReport]" DisplayName="If can send report" sap2010:WorkflowViewState.IdRef="If_1">
         <If.Then>
-          <Sequence DisplayName="Send Report">
-            <mtbwa:WriteBuildWarning Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Calling &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedBy]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" />
-            <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedBy]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
+          <Sequence DisplayName="Send Report" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Calling &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedBy]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+            <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
               <mtbwa:InvokeProcess.ErrorDataReceived>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
@@ -85,7 +85,6 @@
                 </ActivityAction>
               </mtbwa:InvokeProcess.OutputDataReceived>
             </mtbwa:InvokeProcess>
-            <sap2010:WorkflowViewState.IdRef>Sequence_3</sap2010:WorkflowViewState.IdRef>
           </Sequence>
         </If.Then>
         <If.Else>
@@ -94,7 +93,7 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbCABkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDYg4CAQEwBTCzAQIBMDEFMb0BAgEuMgVgGAIBAjChATCwAQIBMTEwMWICAS8ysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBJzQHQx0CASJEB14MAgEMXwdfmQICAQkzrwEzywQCASkzYTOmAQIBKDQmNNQBAgEkNIMCNK0CAgEjRBVEIwIBDUYLWRYCARJcC1zOAgIBD19+X7IBAgELRw1H9AMCARtIDVcjAgETXLMBXOcBAgERXGVcqgECARBHf0fXAgIBHUcxR3YCARxILEj/AQIBFUijAkjFAgIBFA==</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbCABkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDYQ4CAQEwBTCzAQIBMDEFMb0BAgEuMgVfGAIBAjChATCwAQIBMTEwMWICAS8ysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBJzQHQx0CASJEB10MAgEMXgdemQICAQkzrwEzywQCASkzYTOmAQIBKDQmNNQBAgEkNIMCNK0CAgEjRBVEIwIBDUYLWBYCARJbC1vOAgIBD15+XrIBAgELRw1H9AMCARtIDVcjAgETW7MBW+cBAgERW2VbqgECARBHtQFHjQMCAR1HZ0esAQIBHEgsSKYCAgEVSMoCSOwCAgEU</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
