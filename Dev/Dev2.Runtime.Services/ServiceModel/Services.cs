@@ -45,11 +45,12 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Services/Get
         public Service Get(string args, Guid workspaceID, Guid dataListID)
         {
+            ResourceType resourceType = ResourceType.Unknown;
             try
             {
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
                 var resourceTypeStr = webRequestPoco.ResourceType;
-                var resourceType = Resources.ParseResourceType(resourceTypeStr);
+                resourceType = Resources.ParseResourceType(resourceTypeStr);
                 var resourceID = webRequestPoco.ResourceID;
                 var xmlStr = _resourceCatalog.GetResourceContents(workspaceID, Guid.Parse(resourceID));
 
@@ -57,20 +58,32 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     return DeserializeService(xmlStr.ToXElement(), resourceType);
                 }
-
-
-                if (webRequestPoco.ResourceType == "DbService")
-                {
-                    return DbService.Create();
-                }
-
-
-                return null;
+                return GetDefaultService(resourceType);
 
             }
             catch(Exception ex)
             {
                 RaiseError(ex);
+                return GetDefaultService(resourceType);
+            }
+        }
+
+        static Service GetDefaultService(ResourceType resourceType)
+        {
+            switch(resourceType)
+            {
+                case ResourceType.DbService:
+                    {
+                        return DbService.Create();
+                    }
+                case ResourceType.PluginService:
+                    {
+                        return PluginService.Create();
+                    }
+                case ResourceType.WebService:
+                    {
+                        return WebService.Create();
+                    }
             }
             return DbService.Create();
         }

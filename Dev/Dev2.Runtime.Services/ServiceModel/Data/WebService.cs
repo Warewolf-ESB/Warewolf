@@ -35,6 +35,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region CTOR
 
+        public static WebService Create()
+        {
+            var result = new WebService
+            {
+                ResourceID = Guid.Empty,
+                Source = { ResourceID = Guid.Empty },
+            };
+            return result;
+        }
+
         public WebService()
         {
             ResourceID = Guid.Empty;

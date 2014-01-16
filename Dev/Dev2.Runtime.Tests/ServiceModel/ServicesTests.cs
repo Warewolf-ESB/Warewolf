@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI: 801
@@ -126,7 +129,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = new Service();
-            
+
             #region Test String
 
             var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
@@ -956,6 +959,53 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Get")]
+        public void Services_Get_WithDBServiceWebRequestPoco_ShouldReturnDbService()
+        {
+            //------------Setup for test--------------------------
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var webRequestPoco = new WebRequestPoco();
+            webRequestPoco.ResourceType = "DbService";
+            //------------Execute Test---------------------------
+            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(service);
+            Assert.IsInstanceOfType(service, typeof(DbService));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Get")]
+        public void Services_Get_WithPluginServiceWebRequestPoco_ShouldReturnPluginService()
+        {
+            //------------Setup for test--------------------------
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var webRequestPoco = new WebRequestPoco();
+            webRequestPoco.ResourceType = "PluginService";
+            //------------Execute Test---------------------------
+            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(service);
+            Assert.IsInstanceOfType(service, typeof(PluginService));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Get")]
+        public void Services_Get_WithWebServiceWebRequestPoco_ShouldReturnWebService()
+        {
+            //------------Setup for test--------------------------
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var webRequestPoco = new WebRequestPoco();
+            webRequestPoco.ResourceType = "WebService";
+            //------------Execute Test---------------------------
+            var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(service);
+            Assert.IsInstanceOfType(service, typeof(WebService));
+        }
         #endregion
     }
 }
