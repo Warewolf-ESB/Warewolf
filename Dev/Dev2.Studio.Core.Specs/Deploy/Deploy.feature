@@ -6,23 +6,18 @@
 #NOTE : A conflict occurs when a resource with the same ID exists in both the source and destination server
 
 Scenario: Ensure the deploy is successful when there are no conflicts
-	Given I have selected a work flow in the source server
-	And the workflow does not exist in the destination server
+	Given I have selected a work flow  that "doesn't" exist in the destination server
 	When I click the deploy
-	Then the workflow should be deployed on the destination server
+	Then the workflow "should" be deployed on the destination server
 	
-Scenario: Ensure the deploy shows a message when there is a conflicts	
-	Given I have selected a work flow in the source server
-	And The workflow does exists in the destination server
-	When I click the deploy
-	Then The system prompts the user to overwrite with OK or Cancel buttons
+Scenario: Ensure the resource is deployed successfully when user selects OK	
+	Given I have selected a work flow  that "does" exist in the destination server
+	And the user selects "OK" when prompted to continue
+	When I click the deploy	
+	Then the workflow "should" be deployed on the destination server
 
-Scenario: Ensure the deploy proceeds if user clicks OK	
-	When  The user selects OK from the message
-	Then the workflow should be deployed on the destination server
-
-Scenario: Ensure the deploy stops if user clicks Cancel	
-	When  The user selects Cancel from the message
-	Then the deploy should be cancelled
-
-
+Scenario: Ensure the resource is not deployed when user selects Cancel	
+	Given I have selected a work flow  that "does" exist in the destination server
+	And the user selects "Cancel" when prompted to continue
+	When I click the deploy	
+	Then the workflow "shouldn't" be deployed on the destination server

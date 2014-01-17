@@ -79,65 +79,51 @@ namespace Dev2.Studio.Core.Specs.Deploy
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("I have selected a work flow in the source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I have selected a work flow  that \"doesn\'t\" exist in the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
- testRunner.And("the workflow does not exist in the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I click the deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
- testRunner.When("I click the deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 12
- testRunner.Then("the workflow should be deployed on the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the workflow \"should\" be deployed on the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the deploy shows a message when there is a conflicts")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the resource is deployed successfully when user selects OK")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
-        public virtual void EnsureTheDeployShowsAMessageWhenThereIsAConflicts()
+        public virtual void EnsureTheResourceIsDeployedSuccessfullyWhenUserSelectsOK()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the deploy shows a message when there is a conflicts", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the resource is deployed successfully when user selects OK", ((string[])(null)));
+#line 13
+this.ScenarioSetup(scenarioInfo);
 #line 14
-this.ScenarioSetup(scenarioInfo);
+ testRunner.Given("I have selected a work flow  that \"does\" exist in the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
- testRunner.Given("I have selected a work flow in the source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("the user selects \"OK\" when prompted to continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.And("The workflow does exists in the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
  testRunner.When("I click the deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
- testRunner.Then("The system prompts the user to overwrite with OK or Cancel buttons", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 17
+ testRunner.Then("the workflow \"should\" be deployed on the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the deploy proceeds if user clicks OK")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the resource is not deployed when user selects Cancel")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
-        public virtual void EnsureTheDeployProceedsIfUserClicksOK()
+        public virtual void EnsureTheResourceIsNotDeployedWhenUserSelectsCancel()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the deploy proceeds if user clicks OK", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the resource is not deployed when user selects Cancel", ((string[])(null)));
+#line 19
+this.ScenarioSetup(scenarioInfo);
 #line 20
-this.ScenarioSetup(scenarioInfo);
+ testRunner.Given("I have selected a work flow  that \"does\" exist in the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.When("The user selects OK from the message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("the user selects \"Cancel\" when prompted to continue", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
- testRunner.Then("the workflow should be deployed on the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Ensure the deploy stops if user clicks Cancel")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy")]
-        public virtual void EnsureTheDeployStopsIfUserClicksCancel()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ensure the deploy stops if user clicks Cancel", ((string[])(null)));
-#line 24
-this.ScenarioSetup(scenarioInfo);
-#line 25
- testRunner.When("The user selects Cancel from the message", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 26
- testRunner.Then("the deploy should be cancelled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I click the deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 23
+ testRunner.Then("the workflow \"shouldn\'t\" be deployed on the destination server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

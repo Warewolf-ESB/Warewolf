@@ -169,6 +169,7 @@
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
     <Compile Include="Deploy\DeployUnitTestIsolation.cs" />
+    <Compile Include="Deploy\DeployViewModelTestBase.cs" />
     <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />

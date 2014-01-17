@@ -97,6 +97,10 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
+      <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
+      <Name>Dev2.Infrastructure</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
       <Project>{1fd73e36-fc73-4bdf-bcba-278a44f06550}</Project>
       <Name>Dev2.Studio.Core.Tests</Name>
@@ -109,6 +113,9 @@
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

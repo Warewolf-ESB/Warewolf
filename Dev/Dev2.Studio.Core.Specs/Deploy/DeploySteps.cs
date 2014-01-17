@@ -1,87 +1,64 @@
-﻿using System.Collections.Generic;
-using Caliburn.Micro;
-using Dev2.Core.Tests.Environments;
-using Dev2.Studio.Core.Interfaces;
+﻿using Dev2.Core.Tests.Deploy;
+using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Deploy;
-using Moq;
+using Dev2.ViewModels.Deploy;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.Core.Specs.Deploy
 {
     [Binding]
-    public class DeploySteps
+    public class DeploySteps : DeployViewModelTestBase
     {
-        [Given(@"I have selected a work flow in the source server")]
-        public void GivenIHaveSelectedAWorkFlowInTheSourceServer()
+        [Given(@"I have selected a work flow  that ""(.*)"" exist in the destination server")]
+        public void GivenIHaveSelectedAWorkFlowThatExistInTheDestinationServer(string exists)
         {
-            //ScenarioContext.Current.Pending();
+            ScenarioContext.Current.Add("isResourceChecked", exists.Equals("does"));
         }
-
-        [Given(@"the workflow does not exist in the destination server")]
-        public void GivenTheWorkflowDoesNotExistInTheDestinationServer()
-        {
-            //ScenarioContext.Current.Pending();
-        }
-
+        
         [When(@"I click the deploy")]
         public void WhenIClickTheDeploy()
         {
-            var source = new Mock<IEnvironmentModel>();
-            var e1 = new Mock<IEnvironmentModel>();
-            e1.Setup(e => e.Disconnect()).Verifiable();
-            var e2 = new Mock<IEnvironmentModel>();
-            e2.Setup(e => e.Disconnect()).Verifiable();
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            
-            var s2 = e2.Object;
-            var c2 = Mock.Get(e2.Object.Connection);
-            c2.Setup(c => c.Disconnect()).Verifiable();
+            ViewModelDialogResults dialogResult;
+            if (!ScenarioContext.Current.TryGetValue("dialogResults", out dialogResult))
+            {
+                dialogResult = ViewModelDialogResults.Cancel;
+            }
 
-            var s1 = e1.Object;
-            var c1 = Mock.Get(e1.Object.Connection);
-            c1.Setup(c => c.Disconnect()).Verifiable();
-            
-            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
-            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            bool isResourceChecked = ScenarioContext.Current.Get<bool>("isResourceChecked");
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object);
+            DeployViewModel deployViewModel;
+
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+            var isOverwriteMessageDisplayed = false;
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = dialogResult;
+                isOverwriteMessageDisplayed = true;
+            };
+
+            SetupResources(deployStatsCalculator, isResourceChecked);
+            deployViewModel.HasNoResourcesToDeploy = (i,o) =>  false; 
+            deployViewModel.DeployCommand.Execute(null);
+
+            ScenarioContext.Current.Add("isOverwriteMessageDisplayed", isOverwriteMessageDisplayed);
+            ScenarioContext.Current.Add("deployedSuccessfully", deployViewModel.DeploySuccessfull);
         }
 
-        [Then(@"the workflow should be deployed on the destination server")]
-        public void ThenTheWorkflowShouldBeDeployedOnTheDestinationServer()
+        [Given(@"the user selects ""(.*)"" when prompted to continue")]
+        public void GivenTheUserSelectsWhenPromptedToContinue(string selected)
         {
-            //ScenarioContext.Current.Pending();
+            ScenarioContext.Current.Add("dialogResults", selected == "OK" ? ViewModelDialogResults.Okay : ViewModelDialogResults.Cancel);
         }
-
-        [Given(@"The workflow does exists in the destination server")]
-        public void GivenTheWorkflowDoesExistsInTheDestinationServer()
+        
+        [Then(@"the workflow ""(.*)"" be deployed on the destination server")]
+        public void ThenTheWorkflowBeDeployedOnTheDestinationServer(string shouldBeDeployed)
         {
-            //ScenarioContext.Current.Pending();
+            bool deployedSuccessfully = ScenarioContext.Current.Get<bool>("deployedSuccessfully");
+            Assert.AreEqual(shouldBeDeployed.Equals("should"), deployedSuccessfully);
         }
-
-        [Then(@"The system prompts the user to overwrite with OK or Cancel buttons")]
-        public void ThenTheSystemPromptsTheUserToOverwriteWithOKOrCancelButtons()
-        {
-            //ScenarioContext.Current.Pending();
-        }
-
-        [When(@"The user selects OK from the message")]
-        public void WhenTheUserSelectsOKFromTheMessage()
-        {
-            //ScenarioContext.Current.Pending();
-        }
-
-        [When(@"The user selects Cancel from the message")]
-        public void WhenTheUserSelectsCancelFromTheMessage()
-        {
-            //ScenarioContext.Current.Pending();
-        }
-
-        [Then(@"the deploy should be cancelled")]
-        public void ThenTheDeployShouldBeCancelled()
-        {
-            //ScenarioContext.Current.Pending();
-        }
-
     }
 }

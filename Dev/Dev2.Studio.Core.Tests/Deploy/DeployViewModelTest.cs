@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Messages;
@@ -16,33 +12,28 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
-using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable once CheckNamespace
 namespace Dev2.Core.Tests
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
-    public class DeployViewModelTest
+    public class DeployViewModelTest : DeployViewModelTestBase
     {
-        #region Class Members
-
-        private static ImportServiceContext _okayContext = new Mock<ImportServiceContext>().Object;
-       
-        #endregion Class Members
-        
         #region Connect
 
         [TestMethod]
         public void DeployViewModelConnectWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            ImportService.CurrentContext = _okayContext;
+            ImportService.CurrentContext = OkayContext;
 
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
@@ -96,7 +87,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeployViewModelDeployWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            ImportService.CurrentContext = _okayContext;
+            ImportService.CurrentContext = OkayContext;
 
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
@@ -132,7 +123,7 @@ namespace Dev2.Core.Tests
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ITreeNode>())).Returns(true);
 
             var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
-            
+
             Assert.IsTrue(source.Object.IsConnected);
             Assert.IsTrue(s1.IsConnected);
             Assert.IsTrue(s2.IsConnected);
@@ -145,23 +136,13 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DeployViewModelTest")]
         public void DeployViewModelTest_DeployCommand_AConflictWasFound_DialogIsShown()
         {
-            var source = EnviromentRepositoryTest.CreateMockEnvironment();
-            var destination = EnviromentRepositoryTest.CreateMockEnvironment();
+            DeployViewModel deployViewModel;
 
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { source.Object, destination.Object });
-
-            var repo = new TestEnvironmentRespository(source.Object, destination.Object);
-
-            var DeployStatsCalculator = new DeployStatsCalculator();
-
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, DeployStatsCalculator)
-                {
-                    SelectedSourceServer = source.Object,
-                    SelectedDestinationServer = destination.Object
-                };
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
 
@@ -172,30 +153,51 @@ namespace Dev2.Core.Tests
                     isOverwriteMessageDisplayed = true;
                 };
 
-            SetupResources(DeployStatsCalculator, true);
+            SetupResources(deployStatsCalculator, true);
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsTrue(isOverwriteMessageDisplayed);
+            Assert.IsFalse(deployViewModel.DeploySuccessfull);
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DeployViewModelTest")]
+        public void DeployViewModelTest_DeployCommand_AConflictWasFoundAndUserOptsToOverwrite_DeploysSuccessfully()
+        {
+            DeployViewModel deployViewModel;
+
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
+
+            var isOverwriteMessageDisplayed = false;
+
+            deployViewModel.ShowDialog = o =>
+            {
+                var viewModel = (DeployDialogViewModel)o;
+                viewModel.DialogResult = ViewModelDialogResults.Okay;
+                isOverwriteMessageDisplayed = true;
+            };
+
+            deployViewModel.HasNoResourcesToDeploy = (o, i) =>
+                {
+                    return false;
+                };
+
+            SetupResources(deployStatsCalculator, true);
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.IsTrue(isOverwriteMessageDisplayed);
+            Assert.IsTrue(deployViewModel.DeploySuccessfull);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DeployViewModelTest")]
         public void DeployViewModelTest_DeployCommand_AConflictWasNotFound_DialogIsNotShown()
         {
-            var source = EnviromentRepositoryTest.CreateMockEnvironment();
-            var destination = EnviromentRepositoryTest.CreateMockEnvironment();
+            DeployViewModel deployViewModel;
 
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { source.Object, destination.Object });
-
-            var repo = new TestEnvironmentRespository(source.Object, destination.Object);
-
-            var DeployStatsCalculator = new DeployStatsCalculator();
-
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, DeployStatsCalculator)
-            {
-                SelectedSourceServer = source.Object,
-                SelectedDestinationServer = destination.Object
-            };
+            var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
 
@@ -206,29 +208,12 @@ namespace Dev2.Core.Tests
                 isOverwriteMessageDisplayed = true;
             };
 
-            SetupResources(DeployStatsCalculator, false);
+            SetupResources(deployStatsCalculator, false);
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsFalse(isOverwriteMessageDisplayed);
+            Assert.IsFalse(deployViewModel.DeploySuccessfull);
         }
-
-        static void SetupResources(DeployStatsCalculator deployStatsCalculator, bool isChecked)
-        {
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-            var rootVm = new RootTreeViewModel(eventAggregator);
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var environmentVm = new EnvironmentTreeViewModel(eventAggregator, rootVm, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            var serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, environmentVm, ResourceType.WorkflowService);
-            var categoryVm = new CategoryTreeViewModel(eventAggregator, serviceTypeVm, resourceModel.Object.Category, resourceModel.Object.ResourceType);
-            var resourceVm = new ResourceTreeViewModel(eventAggregator, categoryVm, resourceModel.Object);
-            resourceVm.IsChecked = isChecked;
-            ResourceTreeViewModel vm = resourceVm;
-            vm.DataContext = resourceModel.Object;
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
-            deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, environmentModel);
-        }
-
         #endregion
 
         #region AddServerToDeployMessage
@@ -246,7 +231,7 @@ namespace Dev2.Core.Tests
                 publishedEnvironmentModel = ((UpdateSelectedServer)updateSelectedServer).EnvironmentModel;
                 publishedIsSource = ((UpdateSelectedServer)updateSelectedServer).IsSourceServer;
             });
-            var envID = SetupVMForMessages(out server, out vm, mockEventAggregator);
+            var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
 
             var sourceCtx = vm.SourceContext;
 
@@ -271,7 +256,7 @@ namespace Dev2.Core.Tests
                 publishedEnvironmentModel = ((UpdateSelectedServer)updateSelectedServer).EnvironmentModel;
                 publishedIsSource = ((UpdateSelectedServer)updateSelectedServer).IsSourceServer;
             });
-            var envID = SetupVMForMessages(out server, out vm, mockEventAggregator);
+            var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
 
             var destCtx = vm.DestinationContext;
 
@@ -287,7 +272,7 @@ namespace Dev2.Core.Tests
         {
             IEnvironmentModel server;
             DeployViewModel vm;
-            var envID = SetupVMForMessages(out server, out vm);
+            var envID = SetupVmForMessages(out server, out vm);
 
             var msg = new AddServerToDeployMessage(server, true, false);
             vm.Handle(msg);
@@ -299,7 +284,7 @@ namespace Dev2.Core.Tests
         {
             IEnvironmentModel server;
             DeployViewModel vm;
-            var envID = SetupVMForMessages(out server, out vm);
+            var envID = SetupVmForMessages(out server, out vm);
 
             var msg = new AddServerToDeployMessage(server, false, true);
             vm.Handle(msg);
@@ -311,7 +296,7 @@ namespace Dev2.Core.Tests
         {
             IEnvironmentModel server;
             DeployViewModel vm;
-            SetupVMForMessages(out server, out vm);
+            SetupVmForMessages(out server, out vm);
             Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
         }
 
@@ -321,7 +306,7 @@ namespace Dev2.Core.Tests
             //Setup
             IEnvironmentModel server;
             DeployViewModel vm;
-            SetupVMForMessages(out server, out vm);
+            SetupVmForMessages(out server, out vm);
             var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
             vm.Target.AddEnvironment(mockEnv.Object);
             vm.Source.AddEnvironment(mockEnv.Object);
@@ -336,43 +321,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(0, vm.Target.Environments.Count);
             Assert.AreEqual(0, vm.Source.Environments.Count);
         }
-        #endregion
-
-        #region CreateEnvironmentRepositoryMock
-
-        private static Guid SetupVMForMessages(out IEnvironmentModel server, out DeployViewModel vm, Mock<IEventAggregator> mockEventAggregator = null)
-        {
-            ImportService.CurrentContext = _okayContext;
-            var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            var envID = env.Object.ID;
-            server = env.Object;
-
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { server });
-            var repo = CreateEnvironmentRepositoryMock();
-            if(mockEventAggregator == null)
-            {
-                mockEventAggregator = new Mock<IEventAggregator>();
-            }
-            vm = new DeployViewModel(serverProvider.Object, repo.Object, mockEventAggregator.Object);
-            return envID;
-        }
-
-        static Mock<IEnvironmentRepository> CreateEnvironmentRepositoryMock()
-        {
-            var repo = new Mock<IEnvironmentRepository>();
-            repo.Setup(l => l.Load()).Verifiable();
-
-            var model = new Mock<IEnvironmentModel>();
-            repo.Setup(l => l.Save(model.Object)).Verifiable();
-
-            IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
-            repo.Setup(l => l.All()).Returns(models);
-
-
-            return repo;
-        }
-
         #endregion
 
         #region SelectItemInDeployMessage
@@ -445,7 +393,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
-            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer, 10);
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.HasItemsToDeploy = (s, d) => { return true; };
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
 
@@ -470,29 +419,6 @@ namespace Dev2.Core.Tests
 
             destEnv.Setup(e => e.IsConnected).Returns(true);
             Assert.IsFalse(deployViewModel.CanDeploy);
-        }
-
-        static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer, int deploymentCount = 0)
-        {
-            ImportService.CurrentContext = _okayContext;
-
-            destEnv = new Mock<IEnvironmentModel>();
-            destServer = destEnv;
-
-            var envRepo = new Mock<IEnvironmentRepository>();
-            envRepo.Setup(r => r.Fetch(It.IsAny<IEnvironmentModel>())).Returns(destEnv.Object);
-
-            var servers = new List<IEnvironmentModel> { destEnv.Object };
-            var serverProvider = new Mock<IEnvironmentModelProvider>();
-            serverProvider.Setup(s => s.Load()).Returns(servers);
-
-            // ReSharper disable once RedundantAssignment
-            int deployItemCount = deploymentCount;
-            var statsCalc = new Mock<IDeployStatsCalculator>();
-            statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
-
-            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, statsCalc.Object);
-            return deployViewModel;
         }
 
         [TestMethod]
