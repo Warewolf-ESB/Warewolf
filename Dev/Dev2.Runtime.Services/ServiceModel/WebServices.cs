@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -61,7 +63,40 @@ namespace Dev2.Runtime.ServiceModel
                     ((WebSource)service.Source).DisposeClient();
                 }
 
-                service.Recordsets = FetchRecordset(service, true);
+                var preTestRSData = service.Recordsets;
+                service.RequestMessage = string.Empty;
+                service.JsonPathResult = string.Empty;
+
+                if(service.RequestResponse.IsJSON() && String.IsNullOrEmpty(service.JsonPath))
+                {
+                    service.ApplyPath();
+                    // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
+                    Thread jsonMapTaskThread = null;
+                    var jsonMapTask = new Task(() =>
+                        {
+                            jsonMapTaskThread = Thread.CurrentThread;
+                            service.Recordsets = FetchRecordset(service, true);
+                        });
+
+                    jsonMapTask.Start();
+                    jsonMapTask.Wait(1000);
+
+                    if(!jsonMapTask.IsCompleted)
+                    {
+                        if(jsonMapTaskThread != null)
+                        {
+                            jsonMapTaskThread.Abort();
+                        }
+
+                        service.Recordsets = preTestRSData;
+                        service.RequestMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
+                    }
+                }
+                else
+                {
+                    service.Recordsets = FetchRecordset(service, true);
+                }
+
             }
             catch(Exception ex)
             {
@@ -84,7 +119,10 @@ namespace Dev2.Runtime.ServiceModel
             {
                 service = JsonConvert.DeserializeObject<WebService>(args);
                 service.ApplyPath();
+                var oldResult = service.RequestResponse;
+                service.RequestResponse = service.JsonPathResult;
                 service.Recordsets = FetchRecordset(service, true);
+                service.RequestResponse = oldResult;
             }
             catch(Exception ex)
             {
@@ -94,7 +132,8 @@ namespace Dev2.Runtime.ServiceModel
                     service.Recordsets[0].HasErrors = true;
                     service.Recordsets[0].ErrorMessage = ex.Message;
                 }
-                service.RequestResponse = ex.Message;
+
+                service.JsonPathResult = ex.Message;
             }
 
             return service;

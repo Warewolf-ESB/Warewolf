@@ -8,13 +8,61 @@ namespace Dev2.Common.Test
     [ExcludeFromCodeCoverage]
     public class StringExtensionTests
     {
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("StringExtensions_IsJSON")]
+        public void StringExtensionss_IsJSON_WhenValidJSON_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            const string fragment = "{}";
+
+            //------------Execute Test---------------------------
+            var result = fragment.IsJSON();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("StringExtensions_IsJSON")]
+        public void StringExtensionss_IsJSON_WhenValidXML_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            const string fragment = "<x></x>";
+
+            //------------Execute Test---------------------------
+            var result = fragment.IsJSON();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("StringExtensions_IsJSON")]
+        public void StringExtensionss_IsJSON_WhenValidText_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            const string fragment = "{ hello } { name }";
+
+            //------------Execute Test---------------------------
+            var result = fragment.IsJSON();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
         [TestMethod]
         [TestCategory("StringExtensionUnitTest")]
-        [Description("Test for 'ValidateCategoryName' string extention method: A valid resource category name ('new_category.var') is passed to it and true is expected to be returned back")]
+        [Description("Test for 'ValidateCategoryName' string extension method: A valid resource category name ('new_category.var') is passed to it and true is expected to be returned back")]
         [Owner("Ashley Lewis")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void StringExtension_StringExtensionUnitTest_ValidateCategoryName_TrueIsReturned()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             Assert.IsTrue("new_category.var".IsValidCategoryName(), "Valid category name was rejected by the validation function");
         }
@@ -23,9 +71,9 @@ namespace Dev2.Common.Test
         [TestCategory("StringExtensionUnitTest")]
         [Description("Test for 'ValidateCategoryName' string extention method: An invalid resource category name ('new/<category>') is passed to it and true is expected to be returned back")]
         [Owner("Ashley Lewis")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void StringExtension_StringExtensionUnitTest_ValidateCategoryName_FalseIsReturned()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             Assert.IsFalse("new/<category>".IsValidCategoryName(), "Invalid category name passed validation");
         }
@@ -46,15 +94,15 @@ namespace Dev2.Common.Test
   <IconPath>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</IconPath>
   <HelpLink></HelpLink>
   <UnitTestTargetWorkflowService></UnitTestTargetWorkflowService></ResourceXml>";
-            
+
             //------------Execute Test---------------------------
 
             string actual = xml.Escape();
 
             //------------Assert Results-------------------------
 
-            StringAssert.Contains(actual,"&gt;");
-            StringAssert.Contains(actual,"&lt;");
+            StringAssert.Contains(actual, "&gt;");
+            StringAssert.Contains(actual, "&lt;");
         }
     }
 }

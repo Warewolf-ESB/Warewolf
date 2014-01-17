@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_AdjustForEncodingIssues_WithStringLengthOf3_SameDataAsPassedIn()
         {
             //------------Setup for test--------------------------
-            var startingData = "A A";
+            const string startingData = "A A";
             //------------Execute Test---------------------------
             string result = DataListUtil.AdjustForEncodingIssues(startingData);
             //------------Assert Results-------------------------
@@ -37,7 +37,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_IsSystemTag_WhenNoPrefix_ExpectSystemTagDetected()
         {
             //------------Setup for test--------------------------
-            var tag = "ManagmentServicePayload";
+            const string tag = "ManagmentServicePayload";
 
             //------------Execute Test---------------------------
             var result = DataListUtil.IsSystemTag(tag);
@@ -52,7 +52,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void DataListUtil_IsSystemTag_WhenDev2SystemPrefix_ExpectSystemTagDetected()
         {
             //------------Setup for test--------------------------
-            var tag = GlobalConstants.SystemTagNamespaceSearch+"ManagmentServicePayload";
+            const string tag = GlobalConstants.SystemTagNamespaceSearch + "ManagmentServicePayload";
 
             //------------Execute Test---------------------------
             var result = DataListUtil.IsSystemTag(tag);
@@ -304,7 +304,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Execute Test---------------------------
             ErrorResultTO invokeErrors;
             var result = DataListUtil.ShapeDefinitionsToDataList(defs, enDev2ArgumentType.Output, out invokeErrors);
-            
+
             //------------Assert Results-------------------------
             const string expected = @"<ADL>
 <dbo_proc_GetAllMapLocations>
@@ -612,7 +612,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokenNumber = 0;
 
             var tokens = new List<string> { "f1", "", "f3", "f4", "" };
-            
+
             var tokenizer = new Mock<IDev2Tokenizer>();
             // ReSharper disable ImplicitlyCapturedClosure
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);

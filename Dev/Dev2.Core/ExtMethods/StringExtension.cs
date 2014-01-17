@@ -2,6 +2,7 @@
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Data.Util;
+using Newtonsoft.Json;
 
 namespace Dev2
 {
@@ -10,16 +11,14 @@ namespace Dev2
         public static bool IsDate(this string payload)
         {
             bool result = false;
-            string errorMsg;
-            IDateTimeResultTO to;
 
-
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return false;
             }
 
-            List<string> acceptedDateFormats = new List<string>() { 
+            List<string> acceptedDateFormats = new List<string>
+                { 
                 "yyyymmdd",
                 "mmddyyyy",
                 "yyyyddmm",
@@ -49,8 +48,10 @@ namespace Dev2
             };
             DateTimeParser d = new DateTimeParser();
             int count = 0;
-            while (result == false && count < acceptedDateFormats.Count)
+            while(result == false && count < acceptedDateFormats.Count)
             {
+                string errorMsg;
+                IDateTimeResultTO to;
                 result = d.TryParseDateTime(payload, acceptedDateFormats[count], out to, out errorMsg);
                 count++;
             }
@@ -63,16 +64,30 @@ namespace Dev2
             bool isFragment;
 
 
-            if (DataListUtil.IsXml(payload, out isFragment))
+            if(DataListUtil.IsXml(payload, out isFragment))
             {
                 result = true;
             }
-            else if (isFragment)
+            else if(isFragment)
             {
                 result = true;
             }
 
             return result;
+        }
+
+        public static bool IsJSON(this string payload)
+        {
+
+            try
+            {
+                JsonConvert.DeserializeObject(payload);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

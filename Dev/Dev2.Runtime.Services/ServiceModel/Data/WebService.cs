@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
@@ -30,6 +31,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public RecordsetList Recordsets { get; set; }
         public string JsonPath { get; set; }
+        public string RequestMessage { get; set; }
+        public string JsonPathResult { get; set; }
 
         #endregion
 
@@ -111,6 +114,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 var dataBrowser = DataBrowserFactory.CreateDataBrowser();
                 dataSourceShape.Paths.AddRange(dataBrowser.Map(requestResponse));
             }
+
             catch(Exception ex)
             {
                 var dataBrowser = DataBrowserFactory.CreateDataBrowser();
@@ -189,17 +193,23 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return;
             }
+
+            JsonPath = JsonPath.Trim();
+
             try
             {
                 var json = JObject.Parse(RequestResponse);
                 var context = new JsonPathContext { ValueSystem = new JsonNetValueSystem() };
                 var values = context.SelectNodes(json, JsonPath).Select(node => node.Value);
                 var newResponseValue = JsonConvert.SerializeObject(values);
-                RequestResponse = newResponseValue;
+
+                JsonPathResult = newResponseValue;
             }
-            catch(JsonException)
+            catch(JsonException je)
             {
+                ServerLogger.LogError(je);
             }
         }
+
     }
 }

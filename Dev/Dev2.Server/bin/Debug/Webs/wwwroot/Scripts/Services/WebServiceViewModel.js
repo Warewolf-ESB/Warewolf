@@ -20,7 +20,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
     $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
-      .append('<img height="16px" width="16px" src="images/edit.png" />')
+      .append('<img height="16px" width="16px" src="images/jsonpath.png" />')
       .button() : null;
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
@@ -40,6 +40,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.data.requestBody = ko.observable("");
     self.data.requestResponse = ko.observable("");
     self.data.jsonPath = ko.observable("");
+	self.data.jsonPathResult = ko.observable("");
+	self.data.requestMessage = ko.observable("");	
+	self.data.displayData = ko.observable("");
 
     self.sourceAddress = ko.observable("");
     
@@ -482,8 +485,24 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.isTestEnabled = ko.computed(function () {
         return self.data.source() ? true : false;
     });
+	self.isJsonPathEnabled = ko.computed(function () {
+        var firstFlag =  self.data.requestResponse() ? true : false;
+		
+		if(firstFlag){
+			// check that it is JSONData ;)
+			try{
+				JSON.parse(self.data.requestResponse());
+				return true;
+			}catch(e){
+				return false;
+			}
+		}
+		return false;
+    });
     self.isTestResultsLoading = ko.observable(false);
+	self.canDisplayJSONPathResult = ko.observable(true);
     self.setTestResultsLoading = function (testResultsLoading) {
+		self.canDisplayJSONPathResult(!testResultsLoading);
         return self.isTestResultsLoading(testResultsLoading);
     };
     self.isEditSourceEnabled = ko.computed(function () {
@@ -518,6 +537,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.setRequestResponse = function (requestResponse) {
         return self.data.requestResponse(requestResponse);
     };
+	
+	self.setJsonPathData = function (data) {
+        return self.data.jsonPathResult(data);
+    };
+	
+	self.setDisplayData = function(data){
+		return self.data.displayData(data);
+	}
 
     self.load = function () {
         self.loadSources(
@@ -536,6 +563,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
             self.data.jsonPath(result.JsonPath);
+			self.data.requestMessage(result.RequestMessage);
+			self.data.displayData("");
+			
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
@@ -552,7 +582,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 self.data.requestHeaders(result.RequestHeaders);
                 self.data.requestBody(result.RequestBody);
                 self.data.requestResponse(result.RequestResponse);
-
+				
                 self.pushRecordsets(result);
                 self.onLoadSourceCompleted = null;
             };
@@ -625,7 +655,16 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         $.post("Service/WebServices/Test" + window.location.search, self.getJsonData(), function (result) {
             self.isTestResultsLoading(false);
             self.data.requestResponse(result.RequestResponse);
-            
+            self.data.requestMessage(result.RequestMessage);
+			self.data.jsonPathResult(result.RequestResponse);
+			
+			// set correct display data ;)
+			if(result.RequestMessage != null && result.RequestMessage != ""){
+				self.data.displayData(result.RequestMessage + " ");
+			}else{
+				self.data.displayData(result.RequestResponse+" ");
+			}
+			
             self.pushRecordsets(result);
         });
     };
@@ -695,9 +734,11 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
         autoOpen: false,
         modal: true,
         position: utils.getDialogPosition(),
-        width: 600,
+        width: 650,
         buttons: {
             "Ok": function () {
+				webServiceViewModel.setRequestResponse(webServiceViewModel.data.jsonPathResult());
+				webServiceViewModel.setDisplayData(webServiceViewModel.data.jsonPathResult());
                 $(this).dialog("close");
             },
             "Cancel": function () {
@@ -706,9 +747,16 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
             "Test Path": function () {
                 webServiceViewModel.setTestResultsLoading(true);
                 $.post("Service/WebServices/ApplyPath" + window.location.search, webServiceViewModel.getJsonData(), function (result) {
-                    webServiceViewModel.setTestResultsLoading(false);
-                    webServiceViewModel.setRequestResponse(result.RequestResponse);
-                    webServiceViewModel.testWebService(false);
+                    
+					webServiceViewModel.setJsonPathData(result.JsonPathResult);
+					
+					if(result.jsonPath != null && result.jsonPath != ""){
+						webServiceViewModel.setDisplayData(result.JsonPathResult+" ");
+					}
+
+					webServiceViewModel.pushRecordsets(result);
+					//webServiceViewModel.pushResult(webServiceViewModel.data.recordsets, result.Recordsets);
+					webServiceViewModel.setTestResultsLoading(false);
                 });
             }
         }
