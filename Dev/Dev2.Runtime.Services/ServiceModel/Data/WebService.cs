@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var result = CreateXml(enActionType.InvokeWebService, Source, Recordsets,
                 new XAttribute("RequestUrl", RequestUrl ?? string.Empty),
                 new XAttribute("RequestMethod", RequestMethod.ToString()),
-                new XAttribute("JsonPath", JsonPath),
+                new XAttribute("JsonPath", JsonPath ?? string.Empty),
                 new XElement("RequestHeaders", new XCData(RequestHeaders ?? string.Empty)),
                 new XElement("RequestBody", new XCData(RequestBody ?? string.Empty))
                 );
