@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="ESB\EsbServicesEndpointTests.cs" />
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
+    <Compile Include="Json\JsonResource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelperTests.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
     <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBrokerTests.cs" />
@@ -284,6 +285,8 @@
     <EmbeddedResource Include="XML\HostSecurityProviderSystemSigned.xml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Json\empty.json" />
+    <EmbeddedResource Include="Json\cryptsy_all_markets_shaped_response.json" />
     <None Include="XML\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +403,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\DbServiceLocationsOutputDescription.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Json\cryptsy_all_markets.json" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

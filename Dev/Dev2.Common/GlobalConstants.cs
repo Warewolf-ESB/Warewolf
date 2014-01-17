@@ -254,5 +254,7 @@ namespace Dev2.Common
 
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
+
+        public static string WebServiceTimeoutMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
     }
 }

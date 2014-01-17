@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
@@ -79,7 +80,7 @@ namespace Dev2.Runtime.ServiceModel
                         });
 
                     jsonMapTask.Start();
-                    jsonMapTask.Wait(1000);
+                    jsonMapTask.Wait(10000);
 
                     if(!jsonMapTask.IsCompleted)
                     {
@@ -89,7 +90,7 @@ namespace Dev2.Runtime.ServiceModel
                         }
 
                         service.Recordsets = preTestRSData;
-                        service.RequestMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
+                        service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
                     }
                 }
                 else

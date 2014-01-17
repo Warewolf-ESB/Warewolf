@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.JSON;
 using Dev2.Tests.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,6 +21,125 @@ namespace Dev2.Tests.Runtime.ServiceModel
     public class WebServicesTest
     {
         string _requestResponse;
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_Test")]
+        public void Webservice_Test_WhenRequestShouldTimeout_ExpectTimeoutMessage()
+        {
+            //------------Setup for test--------------------------
+            var serviceXml = XmlResource.Fetch("WebService");
+            var sourceXml = XmlResource.Fetch("WebSource");
+            var response = JsonResource.Fetch("cryptsy_all_markets");
+
+            var service = new WebService(serviceXml) { Source = new WebSource(sourceXml) };
+
+            foreach(var parameter in service.Method.Parameters)
+            {
+                parameter.Value = parameter.DefaultValue;
+            }
+
+            var webExecuteHitCount = 0;
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var services = new WebServicesMock(resourceCatalog.Object,
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                {
+                    webExecuteHitCount++;
+                    errors = new ErrorResultTO();
+                    return response;
+                });
+
+            //------------Execute Test---------------------------
+            var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, webExecuteHitCount);
+            Assert.AreEqual(GlobalConstants.WebServiceTimeoutMessage, result.RequestMessage);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_Test")]
+        public void Webservice_Test_WhenRequestShouldNotTimeout_ExpectNoMessage()
+        {
+            //------------Setup for test--------------------------
+            var serviceXml = XmlResource.Fetch("WebService");
+            var sourceXml = XmlResource.Fetch("WebSource");
+            var response = JsonResource.Fetch("empty");
+
+            var service = new WebService(serviceXml) { Source = new WebSource(sourceXml) };
+
+            foreach(var parameter in service.Method.Parameters)
+            {
+                parameter.Value = parameter.DefaultValue;
+            }
+
+            var webExecuteHitCount = 0;
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var services = new WebServicesMock(resourceCatalog.Object,
+                (WebSource source, WebRequestMethod method, string uri, string data, bool error, out ErrorResultTO errors, string[] headers) =>
+                {
+                    webExecuteHitCount++;
+                    errors = new ErrorResultTO();
+                    return response;
+                });
+
+            //------------Execute Test---------------------------
+            var result = services.Test(service.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, webExecuteHitCount);
+            Assert.AreEqual(string.Empty, result.RequestMessage);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_ApplyPath")]
+        public void Webservice_Test_WhenJsonPathSet_ExpectShapedData()
+        {
+            //------------Setup for test--------------------------
+            var serviceXml = XmlResource.Fetch("WebService");
+            var sourceXml = XmlResource.Fetch("WebSource");
+            var response = JsonResource.Fetch("cryptsy_all_markets");
+            var expected = JsonResource.Fetch("cryptsy_all_markets_shaped_response");
+
+            var service = new WebService(serviceXml) { Source = new WebSource(sourceXml) };
+
+            var services = new WebServicesMock();
+
+            service.RequestResponse = response;
+            service.JsonPath = "$.return.markets[*]";
+
+            //------------Execute Test---------------------------
+            var result = services.ApplyPath(service.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, result.JsonPathResult);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("Webservice_ApplyPath")]
+        public void Webservice_Test_WhenJsonPathNotSet_ExpectNoShapedData()
+        {
+            //------------Setup for test--------------------------
+            var serviceXml = XmlResource.Fetch("WebService");
+            var sourceXml = XmlResource.Fetch("WebSource");
+            var response = JsonResource.Fetch("cryptsy_all_markets");
+
+            var service = new WebService(serviceXml) { Source = new WebSource(sourceXml) };
+
+            var services = new WebServicesMock();
+
+            service.RequestResponse = response;
+
+            //------------Execute Test---------------------------
+            var result = services.ApplyPath(service.ToString(), Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(null, result.JsonPathResult);
+        }
+
 
         [TestMethod]
         public void WebServicesTestWithValidArgsAndEmptyResponseExpectedExecutesRequestAndFetchesRecordset()
