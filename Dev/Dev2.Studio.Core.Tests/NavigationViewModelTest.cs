@@ -1031,6 +1031,45 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_SetNodeOverwrite")]
+        public void NavigationViewModel_SetNodeOverwrite_SetToFalse_FalseReturned()
+        {
+            Init(false, true);
+            var newResource = new Mock<IContextualResourceModel>();
+            newResource.Setup(r => r.ResourceType)
+                        .Returns(ResourceType.WorkflowService);
+            newResource.Setup(r => r.Category).Returns("Testing");
+            newResource.Setup(r => r.ResourceName).Returns("Cake");
+            newResource.Setup(r => r.Environment)
+                        .Returns(_mockEnvironmentModel.Object);
+
+            var updatemsg = new UpdateResourceMessage(newResource.Object);
+            _vm.Handle(updatemsg);
+
+            Assert.IsFalse(_vm.SetNodeOverwrite(newResource.Object, false));
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_SetNodeOverwrite")]
+        public void NavigationViewModel_SetNodeOverwrite_SetToFalse_TrueReturned()
+        {
+            Init(false, true);
+            var newResource = new Mock<IContextualResourceModel>();
+            newResource.Setup(r => r.ResourceType)
+                        .Returns(ResourceType.WorkflowService);
+            newResource.Setup(r => r.Category).Returns("Testing");
+            newResource.Setup(r => r.ResourceName).Returns("Cake");
+            newResource.Setup(r => r.Environment)
+                        .Returns(_mockEnvironmentModel.Object);
+
+            var updatemsg = new UpdateResourceMessage(newResource.Object);
+            _vm.Handle(updatemsg);
+
+            Assert.IsTrue(_vm.SetNodeOverwrite(newResource.Object, true));
+        }
 
         [TestMethod]
         [TestCategory("NavigationViewModel_Constructor")]

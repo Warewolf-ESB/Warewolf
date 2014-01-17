@@ -113,7 +113,7 @@ namespace Dev2.Studio.Deploy
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
-            if(targetNavViewModel.Environments.Any())
+            if(targetNavViewModel != null && targetNavViewModel.Environments.Any())
             {
                 IEnvironmentModel targetEnvironment = targetNavViewModel.Environments[0];
                 if(vm.DataContext == null

@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests
 
         #region Initialization
 
-        void Setup()
+        void Setup(Guid resourceId = new Guid(), string mockResourceName = "")
         {
             _importContext = new Mock<ImportServiceContext>().Object;
 
@@ -49,7 +49,11 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
             _mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(serverEvents);
 
-            _mockResourceModel = CreateResourceModel(serverEvents);
+            _mockResourceModel = CreateResourceModel(serverEvents, resourceId);
+            if(!string.IsNullOrEmpty(mockResourceName))
+            {
+                _mockResourceModel.Setup(c => c.ResourceName).Returns(mockResourceName);
+            }
 
             _rootVm = new RootTreeViewModel(eventAggregator);
 
@@ -59,17 +63,18 @@ namespace Dev2.Core.Tests
             _resourceVm = new ResourceTreeViewModel(eventAggregator, _categoryVm, _mockResourceModel.Object);
         }
 
-        static Mock<IContextualResourceModel> CreateResourceModel()
+        static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceId = new Guid())
         {
-            return CreateResourceModel(new Mock<IEventPublisher>().Object);
+            return CreateResourceModel(new Mock<IEventPublisher>().Object, resourceId);
         }
 
-        static Mock<IContextualResourceModel> CreateResourceModel(IEventPublisher serverEvents)
+        static Mock<IContextualResourceModel> CreateResourceModel(IEventPublisher serverEvents, Guid resourceId = new Guid())
         {
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(r => r.Category).Returns("Testing");
             resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(serverEvents);
+            resourceModel.Setup(r => r.ID).Returns(resourceId);
             return resourceModel;
         }
 
@@ -345,98 +350,105 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        //[TestMethod]
-        //public void DeploySummaryPredicateExisting_UnCheckedNavigationItemViewModel_Expected_False()
-        //{
-        //    Setup();
-        //    ImportService.CurrentContext = _importContext;
+        [TestMethod]
+        public void DeploySummaryPredicateExisting_UnCheckedNavigationItemViewModel_Expected_False()
+        {
+            Setup();
+            ImportService.CurrentContext = _importContext;
 
-        //    _resourceVm.IsChecked = false;
-        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+            _resourceVm.IsChecked = false;
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
-        //    bool expected = false;
-        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+            bool expected = false;
+            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            navigationViewModel.Environments.Add(environmentModel);
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
-        //    Assert.AreEqual(expected, actual);
-        //}
+            Assert.AreEqual(expected, actual);
+        }
 
-        //[TestMethod]
-        //public void DeploySummaryPredicateExisting_NullResourceOnNavigationItemViewModel_Expected_False()
-        //{
-        //    ImportService.CurrentContext = _importContext;
+        [TestMethod]
+        public void DeploySummaryPredicateExisting_NullResourceOnNavigationItemViewModel_Expected_False()
+        {
+            ImportService.CurrentContext = _importContext;
 
 
-        //    ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, CreateResourceModel().Object);
+            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, CreateResourceModel().Object);
 
-        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
-        //    bool expected = false;
-        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(navigationItemViewModel, environmentModel);
+            bool expected = false;
+            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            navigationViewModel.Environments.Add(environmentModel);
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(navigationItemViewModel, navigationViewModel);
 
-        //    Assert.AreEqual(expected, actual);
-        //}
+            Assert.AreEqual(expected, actual);
+        }
 
-        //[TestMethod]
-        //public void DeploySummaryPredicateExisting_NullResourcesOnEnvironmentModel_Expected_False()
-        //{
-        //    Setup();
-        //    ImportService.CurrentContext = _importContext;
+        [TestMethod]
+        public void DeploySummaryPredicateExisting_NullResourcesOnEnvironmentModel_Expected_False()
+        {
+            Setup();
+            ImportService.CurrentContext = _importContext;
 
-        //    _resourceVm.IsChecked = true;
+            _resourceVm.IsChecked = true;
 
-        //    Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
-        //    mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
+            Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
+            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
-        //    IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
+            IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
 
-        //    bool expected = false;
-        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+            bool expected = false;
+            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            navigationViewModel.Environments.Add(environmentModel);
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
-        //    Assert.AreEqual(expected, actual);
-        //}
+            Assert.AreEqual(expected, actual);
+        }
 
-        //[TestMethod]
-        //public void DeploySummaryPredicateExisting_EnvironmentContainsResource_Expected_True()
-        //{
-        //    Setup();
-        //    ImportService.CurrentContext = _importContext;
+        [TestMethod]
+        public void DeploySummaryPredicateExisting_EnvironmentContainsResourceWithSameIDButDifferentName_ExpectedTrue()
+        {
+            Guid resourceGuid = Guid.NewGuid();
+            Setup(resourceGuid, "OtherResource");
+            ImportService.CurrentContext = _importContext;
 
-        //    Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, resourceGuid);
 
-        //    _resourceVm.IsChecked = true;
-        //    ResourceTreeViewModel vm = _resourceVm;
+            _resourceVm.IsChecked = true;
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-        //    vm.DataContext = resourceModel.Object;
+            bool expected = true;
+            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            navigationViewModel.Environments.Add(environmentModel);
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
-        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+            Assert.AreEqual(expected, actual);
+            Assert.IsTrue(DeployStatsCalculator.ConflictingResources.Count > 0);
+        }
 
-        //    bool expected = true;
-        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+        [TestMethod]
+        public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
+        {
+            Setup();
+            ImportService.CurrentContext = _importContext;
 
-        //    Assert.AreEqual(expected, actual);
-        //    Assert.IsTrue(DeployStatsCalculator.ConflictingResources.Count > 0);
-        //}
+            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
-        //[TestMethod]
-        //public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
-        //{
-        //    Setup();
-        //    ImportService.CurrentContext = _importContext;
+            _resourceVm.IsChecked = true;
+            ResourceTreeViewModel vm = _resourceVm;
 
-        //    Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+            vm.DataContext = resourceModel.Object;
 
-        //    _resourceVm.IsChecked = true;
-        //    ResourceTreeViewModel vm = _resourceVm;
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
-        //    vm.DataContext = resourceModel.Object;
+            bool expected = false;
+            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            navigationViewModel.Environments.Add(environmentModel);
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
-        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
-
-        //    bool expected = false;
-        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
-
-        //    Assert.AreEqual(expected, actual);
-        //}
+            Assert.AreEqual(expected, actual);
+        }
 
         #endregion DeploySummaryPredicateExisting
 

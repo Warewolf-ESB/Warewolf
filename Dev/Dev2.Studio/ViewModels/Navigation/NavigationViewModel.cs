@@ -345,7 +345,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public void SetNodeOverwrite(IContextualResourceModel resource, bool state)
+        public bool SetNodeOverwrite(IContextualResourceModel resource, bool state)
         {
             if(Root.Children.Count > 0 && resource != null && !resource.IsNewWorkflow && Environments.Any())
             {
@@ -359,13 +359,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                     var child = TryGetResourceNode(resModel as IContextualResourceModel);
                     if(child != null)
                     {
-                        child.IsOverwrite = state;
+                        return child.IsOverwrite = state;
                     }
                 }
             }
+            return false;
         }
 
-        ITreeNode TryGetResourceNode(IContextualResourceModel resourceModel)
+        public ITreeNode TryGetResourceNode(IContextualResourceModel resourceModel)
         {
             CategoryTreeViewModel findCategoryNode;
             ServiceTypeTreeViewModel findServiceTypeNode;
