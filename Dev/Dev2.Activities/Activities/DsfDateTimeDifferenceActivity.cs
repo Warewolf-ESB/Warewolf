@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
@@ -47,7 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// The property that holds the time modifier string the user selects in the "Output In" combobox
         /// </summary>
-        [Inputs("OutputType")]        
+        [Inputs("OutputType")]
         public string OutputType { get; set; }
 
         /// <summary>
@@ -76,10 +77,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
@@ -93,12 +96,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
-            string error = string.Empty;
 
             // Process if no errors
             try
@@ -112,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input1Entry);
                 colItr.AddIterator(input1Itr);
 
-                IBinaryDataListEntry Input2Entry = compiler.Evaluate(executionId, enActionType.User,string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2 , false, out errors);
+                IBinaryDataListEntry Input2Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator input2Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input2Entry);
                 colItr.AddIterator(input2Itr);
@@ -122,7 +123,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(InputFormatEntry);
                 colItr.AddIterator(ifItr);
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
                     AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Start Date", Input1Entry, executionId);
                     AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "End Date", Input2Entry, executionId);
@@ -130,9 +131,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 int indexToUpsertTo = 1;
-                string expression = string.Empty;
 
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTO(colItr.FetchNextRow(input1Itr).TheValue,
                                                                        colItr.FetchNextRow(input2Itr).TheValue,
@@ -142,12 +142,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
                     //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
                     string result;
-                    if (comparer.TryCompare(transObj, out result, out error))
+                    string error;
+                    if(comparer.TryCompare(transObj, out result, out error))
                     {
-                        if (DataListUtil.IsValueRecordset(Result) &&
+                        string expression;
+                        if(DataListUtil.IsValueRecordset(Result) &&
                             DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString());
+                            expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                         }
                         else
                         {
@@ -159,11 +161,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             toUpsert.Add(region, result);
 
-                        if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
-                        {
+                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            {
                                 AddDebugOutputItem(region, result, indexToUpsertTo - 1, executionId);
                             }
-                        }                        
+                        }
                     }
                     else
                     {
@@ -175,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -183,14 +185,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || dataObject.RemoteInvoke)
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
@@ -204,14 +206,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
 
-            if (valueEntry != null)
+            if(valueEntry != null)
             {
                 itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }            
+            }
 
             _debugInputs.Add(itemToAdd);
 
-            if (labelText == "Input Format")
+            if(labelText == "Input Format")
             {
                 itemToAdd = new DebugItem();
                 itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output In" });
@@ -220,7 +222,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugOutputItem(string expression, string value,int iterationCounter, Guid dlId)
+        private void AddDebugOutputItem(string expression, string value, int iterationCounter, Guid dlId)
         {
             DebugItem itemToAdd = new DebugItem();
 
@@ -242,7 +244,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -251,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -264,20 +266,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
 
-                if (t.Item1 == Input1)
+                if(t.Item1 == Input1)
                 {
                     Input1 = t.Item2;
                 }
 
-                if (t.Item1 == Input2)
+                if(t.Item1 == Input2)
                 {
                     Input2 = t.Item2;
                 }
 
-                if (t.Item1 == InputFormat)
+                if(t.Item1 == InputFormat)
                 {
                     InputFormat = t.Item2;
                 }
@@ -287,7 +289,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates.Count == 1)
+            if(updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

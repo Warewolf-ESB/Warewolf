@@ -18,7 +18,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
         // Every call to the XamlReader requires a ParserContext, so a static instance is kept
         // to reduce the overhead of creating one every time a value is converted.
-        private static System.Windows.Markup.ParserContext parserContext;
+        private static readonly System.Windows.Markup.ParserContext parserContext;
 
         #endregion // Data
 
@@ -44,14 +44,17 @@ namespace WPF.JoshSmith.Data.ValueConverters
 
             // We need to create a MemoryStream because the XamlReader requires a stream
             // from which the XAML is read.  
-            using (System.IO.MemoryStream stream = new System.IO.MemoryStream())
+            using(System.IO.MemoryStream stream = new System.IO.MemoryStream())
             {
                 // Convert the inner xml of the element into a byte array so
                 // that it can be loaded into the memory stream.
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(elem.InnerXml);
+                if(elem != null)
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(elem.InnerXml);
 
-                // Write the XAML element into the memory stream.
-                stream.Write(bytes, 0, bytes.Length);
+                    // Write the XAML element into the memory stream.
+                    stream.Write(bytes, 0, bytes.Length);
+                }
 
                 // Reset the stream's current position back to the beginning so that when it
                 // is read from, the reading will begin at the correct place.

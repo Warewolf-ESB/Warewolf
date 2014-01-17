@@ -183,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
-        private static object o = new object();
+        private static readonly object o = new object();
 
         public static ResourceList Read(Guid workspaceID, ResourceType resourceType)
         {
@@ -313,12 +313,12 @@ namespace Dev2.Runtime.ServiceModel
         static Resource ReadResource(Guid resourceID, ResourceType resourceType, string resourceName, string resourcePath, string content)
         {
             ResourceDelimiter delimiter;
-            string delimiterValue;
 
             switch(resourceType)
             {
                 case ResourceType.DbSource:
                     delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\"" };
+                    string delimiterValue;
                     delimiter.TryGetValue(content, out delimiterValue);
                     return new DbSource
                     {

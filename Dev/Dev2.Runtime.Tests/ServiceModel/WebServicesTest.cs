@@ -179,14 +179,18 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
+            // ReSharper disable ObjectCreationAsStatement
             new WebServices(null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServicesContructorWithNullWebExectueExpectedThrowsArgumentNullException()
         {
+            // ReSharper disable ObjectCreationAsStatement
             new WebServices(new Mock<IResourceCatalog>().Object, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         #endregion

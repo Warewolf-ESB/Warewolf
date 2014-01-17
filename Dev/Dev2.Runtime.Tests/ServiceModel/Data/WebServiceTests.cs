@@ -94,7 +94,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServiceContructorWithNullXmlExpectedThrowsArgumentNullException()
         {
+            // ReSharper disable ObjectCreationAsStatement
             new WebService(null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -347,7 +349,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void WebService_ApplyPath_ResponseDataNotJsonData_ExceptionThrown()
         {
             //------------Setup for test--------------------------
-            string expected = "blah blah";
+            const string expected = "blah blah";
             var webService = new WebService { RequestResponse = expected, JsonPath = "some path" };
             //------------Execute Test---------------------------
             webService.ApplyPath();

@@ -256,7 +256,7 @@ namespace Dev2.Studio.Webs
             if(environment == null)
             {
                 // ReSharper disable once NotResolvedInText
-                throw new ArgumentNullException("environment");
+                throw new ArgumentNullException("resourceModel");
             }
             const string PageName = "dialogs/savedialog";
             const double Width = 604;

@@ -9,8 +9,6 @@ using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
 {
-    // PBI: 801
-    // BUG: 8477
 
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
@@ -30,7 +28,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType="""">
       <Validator Type=""Required"" />
@@ -132,7 +130,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"">
       <Validator Type=""Required"" />
@@ -234,7 +232,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"">
       <Validator Type=""Required"" />
@@ -336,7 +334,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"">
       <Validator Type=""Required"" />
@@ -438,7 +436,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"" EmptyToNull=""true"">
       <Validator Type=""Required"" />
@@ -540,7 +538,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"" EmptyToNull=""true"">
     </Input>
@@ -641,7 +639,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"" EmptyToNull=""true"">
       <Validator Type=""Required"" />
@@ -743,7 +741,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue="""" NativeType=""String"" EmptyToNull=""true"">
       <Validator Type=""Required"" />
@@ -845,7 +843,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             #region Test String
 
-            var input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
+            const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
   <Inputs>
     <Input Name=""StringData"" Source=""StringData"" DefaultValue=""XXX"" NativeType=""String"" EmptyToNull=""true"">
       <Validator Type=""Required"" />
@@ -966,8 +964,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco();
-            webRequestPoco.ResourceType = "DbService";
+            var webRequestPoco = new WebRequestPoco { ResourceType = "DbService" };
             //------------Execute Test---------------------------
             var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -982,8 +979,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco();
-            webRequestPoco.ResourceType = "PluginService";
+            var webRequestPoco = new WebRequestPoco { ResourceType = "PluginService" };
             //------------Execute Test---------------------------
             var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
@@ -998,8 +994,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var services = new Dev2.Runtime.ServiceModel.Services();
-            var webRequestPoco = new WebRequestPoco();
-            webRequestPoco.ResourceType = "WebService";
+            var webRequestPoco = new WebRequestPoco { ResourceType = "WebService" };
             //------------Execute Test---------------------------
             var service = services.Get(JsonConvert.SerializeObject(webRequestPoco), Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------

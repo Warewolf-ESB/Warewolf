@@ -10,15 +10,15 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
     {
         #region Class Members
 
-        private static readonly string _seperatorSymbol = ".";
-        private static readonly string _enumerableSymbol = "()";
+        const string _seperatorSymbol = ".";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
         #region Constructors
 
-        public JsonPath() 
-            : this("","","", "")
+        public JsonPath()
+            : this("", "", "", "")
         {
         }
 
@@ -48,7 +48,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         {
             List<IPathSegment> segments = new List<IPathSegment>();
 
-            foreach (string segment in ActualPath.Split(SeperatorSymbol.ToCharArray()))
+            foreach(string segment in ActualPath.Split(SeperatorSymbol.ToCharArray()))
             {
                 segments.Add(CreatePathSegment(segment));
             }
@@ -59,7 +59,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             JsonPathSegment pathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
+            if(pathSegmentString.EndsWith(EnumerableSymbol))
             {
                 pathSegment = new JsonPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
             }

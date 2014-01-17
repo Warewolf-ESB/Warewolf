@@ -141,7 +141,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public void SetIsNew(XElement xml)
         {
             var xElement = xml.Element("IsNewWorkflow");
-            if (xElement != null)
+            if(xElement != null)
             {
                 var tmp = xElement.Value;
                 bool isNew;
@@ -183,7 +183,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     Guid instanceID;
                     Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceID);
                     CompileMessageType messageType;
-                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"),true, out messageType);
+                    Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out messageType);
                     Errors.Add(new ErrorInfo
                     {
                         InstanceID = instanceID,
@@ -254,7 +254,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public List<IErrorInfo> Errors { get; set; }
 
         public bool ReloadActions { get; set; }
-        
+
         [JsonIgnore]
         public string DataList { get; set; }
 
@@ -337,7 +337,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XElement("DisplayName", ResourceName ?? string.Empty),
                 new XElement("Category", ResourcePath ?? string.Empty),
                 new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
+                // ReSharper disable ConstantNullCoalescingCondition
                 new XElement("ErrorMessages", WriteErrors() ?? null)
+                // ReSharper restore ConstantNullCoalescingCondition
                 );
         }
 
@@ -518,7 +520,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            using (var textReader = new StringReader(loadXml[0].Value))
+            using(var textReader = new StringReader(loadXml[0].Value))
             {
                 var errors = new StringBuilder();
                 try
@@ -534,7 +536,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                               select desc;
                     var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                     var count = xElements.Count();
-                    if (count > 0)
+                    if(count > 0)
                     {
                         Dependencies = new List<ResourceForTree>();
                         xElements.ForEach(element =>
@@ -555,7 +557,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                     AddEmailSources(elementToUse);
                     AddDatabaseSourcesForSqlBulkInsertTool(elementToUse);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     var resName = xml.AttributeSafe("Name");
                     errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
@@ -602,8 +604,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<ResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                where desc.Name.LocalName.Contains("EmailSource") && desc.HasAttributes
-                select desc;
+                                      where desc.Name.LocalName.Contains("EmailSource") && desc.HasAttributes
+                                      select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
             var count = xElements.Count();
             if(count == 1)
@@ -623,7 +625,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             var environmentIDString = element.AttributeSafe("EnvironmentID");
             Guid environmentID;
-            if(Guid.TryParse(environmentIDString, out environmentID) && environmentID!=Guid.Empty)
+            if(Guid.TryParse(environmentIDString, out environmentID) && environmentID != Guid.Empty)
             {
                 if(environmentID == Guid.Empty) return;
                 var resourceName = element.AttributeSafe("FriendlySourceName");
@@ -639,7 +641,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return;
             }
 
-            using (var textReader = new StringReader(loadXml[0].Value))
+            using(var textReader = new StringReader(loadXml[0].Value))
             {
 
                 var errors = new StringBuilder();
@@ -653,7 +655,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                               select desc;
                     var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                     var count = xElements.Count();
-                    if (count > 0)
+                    if(count > 0)
                     {
                         Dependencies = new List<ResourceForTree>();
                         xElements.ForEach(element =>
@@ -671,7 +673,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                             });
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     var resName = xml.AttributeSafe("Name");
                     errors.AppendLine("Loading dependencies for [ " + resName + " ] caused " + e.Message);
