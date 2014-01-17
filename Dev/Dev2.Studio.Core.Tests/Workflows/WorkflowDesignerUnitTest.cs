@@ -1003,9 +1003,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNull_ExpectWorkflowXamlFetch()
         {
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-            // ReSharper restore ObjectCreationAsStatement
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
@@ -1042,9 +1040,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlValid_ExpectWorkflowXamlFetch()
         {
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-            // ReSharper restore ObjectCreationAsStatement
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
@@ -1088,9 +1084,7 @@ namespace Dev2.Core.Tests.Workflows
         {
 
             //------------Setup for test--------------------------
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-                // ReSharper restore ObjectCreationAsStatement
                 {
                     #region Large Xaml
 
@@ -1141,9 +1135,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
         {
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-            // ReSharper restore ObjectCreationAsStatement
             {
                 //------------Setup for test--------------------------
                 var repo = new Mock<IResourceRepository>();
@@ -1263,9 +1255,7 @@ namespace Dev2.Core.Tests.Workflows
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
             new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
-                // ReSharper restore ObjectCreationAsStatement
                 null, null,
                 new Mock<IPopupController>().Object, false);
 
@@ -1816,9 +1806,7 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_ExpectMarksResourceIsWorkflowSavedFalse()
         {
             #region Setup viewModel
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-            // ReSharper restore ObjectCreationAsStatement
             {
                 var workflow = new ActivityBuilder();
                 var resourceRep = new Mock<IResourceRepository>();
@@ -1883,9 +1871,7 @@ namespace Dev2.Core.Tests.Workflows
         [Description("When the xaml changes after a redo we mark the resource as unsaved")]
         public void WorkflowDesignerViewModel_UnitTest_RedoWithXAMLDifferent_ExpectMarksResourceIsWorkflowSavedFalse()
         {
-            // ReSharper disable ObjectCreationAsStatement
             new Thread(() =>
-            // ReSharper restore ObjectCreationAsStatement
             {
                 var workflow = new ActivityBuilder();
 

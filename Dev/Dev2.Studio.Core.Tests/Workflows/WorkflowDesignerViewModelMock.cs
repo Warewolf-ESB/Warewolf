@@ -64,18 +64,18 @@ namespace Dev2.Core.Tests.Workflows
 
         public void TestModelServiceModelChanged(ModelChangedEventArgs e)
         {
-            ModelServiceModelChanged(null, e);
+            base.ModelServiceModelChanged(null, e);
         }
 
         public void TestWorkflowDesignerModelChanged()
         {
-            WdOnModelChanged(new object(), new EventArgs());
+            base.WdOnModelChanged(new object(), new EventArgs());
         }
 
 
         public void TestWorkflowDesignerModelChangedWithNullSender()
         {
-            WdOnModelChanged(null, new EventArgs());
+            base.WdOnModelChanged(null, new EventArgs());
         }
 
         public void SetDataObject(dynamic dataobject)
@@ -107,7 +107,7 @@ namespace Dev2.Core.Tests.Workflows
 
         public ModelItem TestPerformAddItems(ModelItem modelItems)
         {
-            return PerformAddItems(new List<ModelItem> { modelItems }).FirstOrDefault();
+            return PerformAddItems(new List<ModelItem>() { modelItems }).FirstOrDefault();
         }
     }
 }

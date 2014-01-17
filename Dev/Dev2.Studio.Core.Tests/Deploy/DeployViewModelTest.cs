@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
@@ -21,6 +17,10 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
             var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
-
+           
             deployViewModel.ShowDialog = o =>
             {
                 var viewModel = (DeployDialogViewModel)o;
@@ -178,7 +178,10 @@ namespace Dev2.Core.Tests
                 isOverwriteMessageDisplayed = true;
             };
 
-            deployViewModel.HasNoResourcesToDeploy = (o, i) => false;
+            deployViewModel.HasNoResourcesToDeploy = (o, i) =>
+                {
+                    return false;
+                };
 
             SetupResources(deployStatsCalculator, true);
 
@@ -399,7 +402,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            deployViewModel.HasItemsToDeploy = (s, d) => true;
+            deployViewModel.HasItemsToDeploy = (s, d) => { return true; };
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
 
