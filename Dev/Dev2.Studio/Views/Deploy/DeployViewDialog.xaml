@@ -15,8 +15,8 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}"> 
-
+        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}">
+    
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
     </i:Interaction.Behaviors>
@@ -41,7 +41,7 @@
                   VerticalGridLinesBrush="Transparent"
                   HorizontalGridLinesBrush="{StaticResource Brush03b}"
                   Grid.Row="1">
-            <DataGrid.Columns>
+             <DataGrid.Columns>
                 
                 <DataGridTemplateColumn Header="#" 
                                         Width="Auto"
@@ -75,8 +75,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="Destination Resource"
+                 
+                   <DataGridTemplateColumn Header="Destination Resource"
                                         Width="*"
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>

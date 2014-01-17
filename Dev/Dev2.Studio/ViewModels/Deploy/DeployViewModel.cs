@@ -51,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
-
+       
         private string _initialItemDisplayName;
         private IEnvironmentModel _initialItemEnvironment;
         private bool _isDeploying;
@@ -514,7 +514,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void Deploy()
         {
             if(_deployStatsCalculator != null
-                && _deployStatsCalculator.ConflictingResources != null
+                && _deployStatsCalculator.ConflictingResources != null 
                 && _deployStatsCalculator.ConflictingResources.Count > 0)
             {
                 var deployDialogViewModel = new DeployDialogViewModel(_deployStatsCalculator.ConflictingResources);
