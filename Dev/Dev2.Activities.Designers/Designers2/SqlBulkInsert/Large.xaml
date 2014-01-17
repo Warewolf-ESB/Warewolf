@@ -14,7 +14,7 @@
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                Width="350"
                                MinWidth="350"
-                               MinHeight="306"
+                               MinHeight="400"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"                               
                                Padding="10,7,10,10"
@@ -48,6 +48,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
        </Grid.RowDefinitions>
@@ -395,6 +396,9 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
+        <errors:OnError Grid.Column="0"
+                        Grid.Row="5"
+                        Grid.ColumnSpan="3"/>
     </Grid>
     
 </core:ActivityDesignerTemplate>
