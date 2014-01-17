@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
@@ -10,9 +13,6 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Core.Tests.Deploy
 {
@@ -62,7 +62,9 @@ namespace Dev2.Core.Tests.Deploy
             ResourceTreeViewModel vm = resourceVm;
             vm.DataContext = resourceModel.Object;
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
-            deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, environmentModel);
+            NavigationViewModel navVm = new NavigationViewModel(Guid.NewGuid());
+            navVm.Environments.Add(environmentModel);
+            deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, navVm);
         }
 
         protected static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer)
@@ -100,7 +102,7 @@ namespace Dev2.Core.Tests.Deploy
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { server });
             var repo = CreateEnvironmentRepositoryMock();
-            if (mockEventAggregator == null)
+            if(mockEventAggregator == null)
             {
                 mockEventAggregator = new Mock<IEventAggregator>();
             }

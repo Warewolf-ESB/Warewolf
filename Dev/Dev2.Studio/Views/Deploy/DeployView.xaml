@@ -1,8 +1,8 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.Deploy.DeployView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:nv="clr-namespace:Dev2.Studio.Views.Navigation" 
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
+             xmlns:nv="clr-namespace:Dev2.Studio.Views.Navigation"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
              xmlns:Dev2="clr-namespace:Dev2.UI"
@@ -11,76 +11,100 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="5" Grid.IsSharedSizeScope="True">
+        <Grid Grid.Row="0"
+              Margin="5"
+              Grid.IsSharedSizeScope="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="0" Margin="0,0,5,0">
+            <Grid Grid.Column="0"
+                  Margin="0,0,5,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                
-                <Dev2:ConnectControl Grid.Row="0"  Margin="3"
-                                 LabelText="Source Server:" 
-                                 ServerChangedCommand="{Binding SourceServerChangedCommand}"
-                                 NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
-                                 EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
-                                 Context="{Binding SourceContext}"/>
 
-                    
-                <nv:NavigationView Grid.Row="1" DataContext="{Binding Source}" x:Name="SourceNavigationView">
+                <Dev2:ConnectControl Grid.Row="0"
+                                     Margin="3"
+                                     LabelText="Source Server:"
+                                     ServerChangedCommand="{Binding SourceServerChangedCommand}"
+                                     NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
+                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
+                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
+                                     Context="{Binding SourceContext}" />
+
+                <nv:NavigationView Grid.Row="1"
+                                   DataContext="{Binding Source}"
+                                   x:Name="SourceNavigationView">
                     <nv:NavigationView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
-                            <Setter Property="FontWeight" Value="Normal" />
+                        <Style TargetType="{x:Type TreeViewItem}"
+                               BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <Setter Property="IsExpanded"
+                                    Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected"
+                                    Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="Visibility"
+                                    Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_SourceServer_{0}_AutoID">
-                                        <Binding Path="DisplayName"/>
+                                        <Binding Path="DisplayName" />
                                     </MultiBinding>
                                 </Setter.Value>
-                            </Setter>                            
+                            </Setter>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                                    <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                                <DataTrigger Binding="{Binding IsOverwrite}"
+                                             Value="true">
+                                    <Setter Property="Background"
+                                            Value="Red"></Setter>
+                                    <Setter Property="Foreground"
+                                            Value="White"></Setter>
                                 </DataTrigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="FontWeight" Value="UltraLight" />
+                                <DataTrigger Binding="{Binding IsConnected}"
+                                             Value="False">
+                                    <Setter Property="ContentControl.Foreground"
+                                            Value="{StaticResource DisabledForegroundBrush}" />
+                                </DataTrigger>
+                                <Trigger Property="IsEnabled"
+                                         Value="False">
+                                    <Setter Property="FontWeight"
+                                            Value="UltraLight" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="20">
+                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
+                                                  ItemsSource="{Binding Path=Children}">
+                            <StackPanel Orientation="Horizontal"
+                                        AllowDrop="True"
+                                        Height="20">
                                 <StackPanel.ContextMenu>
                                     <ContextMenu Visibility="{Binding CanSelectDependencies, Converter={StaticResource BoolToVisConverter}}">
-                                        <MenuItem Header="Select All Dependencies" Click="MenuItem_OnClick" Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}"></MenuItem>
+                                        <MenuItem Header="Select All Dependencies"
+                                                  Click="MenuItem_OnClick"
+                                                  Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}"></MenuItem>
                                     </ContextMenu>
                                 </StackPanel.ContextMenu>
                                 <!--TODO i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
                                 </i:Interaction.Behaviors-->
 
-                                <CheckBox IsChecked="{Binding IsChecked}"                                          
+                                <CheckBox IsChecked="{Binding IsChecked}"
                                           Margin="0,0,5,0">
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_CheckBox{0}_AutoID">
-                                            <Binding Path="DisplayName"/>
+                                            <Binding Path="DisplayName" />
                                         </MultiBinding>
                                     </AutomationProperties.AutomationId>
                                 </CheckBox>
@@ -92,53 +116,73 @@
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>
                 </nv:NavigationView>
-                            </Grid>
+            </Grid>
 
             <GridSplitter Width="2.5" />
 
-            <Grid Grid.Column="1" Margin="2.5,0,0,0">
+            <Grid Grid.Column="1"
+                  Margin="2.5,0,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Dev2:ConnectControl Grid.Row="0" 
-                                 Margin="3"
-                                 LabelText="Destination Server:" 
-                                 ServerChangedCommand="{Binding TargetServerChangedCommand}"
-                                 Context="{Binding DestinationContext}"
-                                 NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
-                                 EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"/>
+                <Dev2:ConnectControl Grid.Row="0"
+                                     Margin="3"
+                                     LabelText="Destination Server:"
+                                     ServerChangedCommand="{Binding TargetServerChangedCommand}"
+                                     Context="{Binding DestinationContext}"
+                                     NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
+                                     EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
+                                     ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID" />
 
-                <nv:NavigationView Grid.Row="2" DataContext="{Binding Target}" x:Name="TargetNavigationView">
+                <nv:NavigationView Grid.Row="2"
+                                   DataContext="{Binding Target}"
+                                   x:Name="TargetNavigationView">
                     <nv:NavigationView.ItemContainerStyle>
-                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
-                            <Setter Property="FontWeight" Value="Normal" />
+                        <Style TargetType="{x:Type TreeViewItem}"
+                               BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <Setter Property="IsExpanded"
+                                    Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <Setter Property="IsSelected"
+                                    Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="Visibility"
+                                    Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_DestinationServer_{0}_AutoID">
-                                        <Binding Path="DisplayName"/>
+                                        <Binding Path="DisplayName" />
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                                    <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                                <DataTrigger Binding="{Binding IsOverwrite}"
+                                             Value="true">
+                                    <Setter Property="Background"
+                                            Value="Red"></Setter>
+                                    <Setter Property="Foreground"
+                                            Value="White"></Setter>
                                 </DataTrigger>
-                                <Trigger Property="IsEnabled" Value="False">
-                                    <Setter Property="FontWeight" Value="UltraLight" />
+                                <DataTrigger Binding="{Binding IsConnected}"
+                                             Value="False">
+                                    <Setter Property="ContentControl.Foreground"
+                                            Value="{StaticResource DisabledForegroundBrush}" />
+                                </DataTrigger>
+                                <Trigger Property="IsEnabled"
+                                         Value="False">
+                                    <Setter Property="FontWeight"
+                                            Value="UltraLight" />
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal" AllowDrop="True" Height="30">
+                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
+                                                  ItemsSource="{Binding Path=Children}">
+                            <StackPanel Orientation="Horizontal"
+                                        AllowDrop="True"
+                                        Height="20">
                                 <i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior />
                                 </i:Interaction.Behaviors>
@@ -148,69 +192,104 @@
                                 </ContentControl>
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                    </nv:NavigationView.ItemTemplate>                    
+                    </nv:NavigationView.ItemTemplate>
                 </nv:NavigationView>
             </Grid>
-            
-            <Grid Grid.ColumnSpan="2" Grid.Row="1" Background="#7F7F7F">
+
+            <Grid Grid.ColumnSpan="2"
+                  Grid.Row="1"
+                  Background="#7F7F7F">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Grid.Row="0" Foreground="White" Margin="0,5,5,0" FontWeight="Bold" >Selected for Deploy:</TextBlock>
-                
-                <ItemsControl Grid.Column="0" Grid.Row="1" Grid.IsSharedSizeScope="True" ItemsSource="{Binding SourceStats}">
+                <TextBlock Grid.Column="0"
+                           Grid.Row="0"
+                           Foreground="White"
+                           Margin="0,5,5,0"
+                           FontWeight="Bold">Selected for Deploy:</TextBlock>
+
+                <ItemsControl Grid.Column="0"
+                              Grid.Row="1"
+                              Grid.IsSharedSizeScope="True"
+                              ItemsSource="{Binding SourceStats}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" SharedSizeGroup="AA" />
-                                    <ColumnDefinition Width="*" SharedSizeGroup="BB" />
+                                    <ColumnDefinition Width="*"
+                                                      SharedSizeGroup="AA" />
+                                    <ColumnDefinition Width="*"
+                                                      SharedSizeGroup="BB" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Foreground="White" HorizontalAlignment="Right">
+                                <TextBlock Grid.Column="0"
+                                           Foreground="White"
+                                           HorizontalAlignment="Right">
                                     <Run Text="{Binding Name}" />
                                     <Run Text=" : " />
                                 </TextBlock>
-                                <TextBlock Grid.Column="1" Foreground="White" Text="{Binding Description}" HorizontalAlignment="Left" />
+                                <TextBlock Grid.Column="1"
+                                           Foreground="White"
+                                           Text="{Binding Description}"
+                                           HorizontalAlignment="Left" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <TextBlock Grid.Column="1" Grid.Row="0" Foreground="White" Margin="0,5,5,0" FontWeight="Bold" >Deploy Summary:</TextBlock>
+                <TextBlock Grid.Column="1"
+                           Grid.Row="0"
+                           Foreground="White"
+                           Margin="0,5,5,0"
+                           FontWeight="Bold">Deploy Summary:</TextBlock>
 
-                <ItemsControl Grid.Column="1" Grid.Row="1"
-                                Grid.IsSharedSizeScope="True" ItemsSource="{Binding TargetStats}">
+                <ItemsControl Grid.Column="1"
+                              Grid.Row="1"
+                              Grid.IsSharedSizeScope="True"
+                              ItemsSource="{Binding TargetStats}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" SharedSizeGroup="AA" />
-                                    <ColumnDefinition Width="*" SharedSizeGroup="BB" />
+                                    <ColumnDefinition Width="*"
+                                                      SharedSizeGroup="AA" />
+                                    <ColumnDefinition Width="*"
+                                                      SharedSizeGroup="BB" />
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Foreground="White" HorizontalAlignment="Right">
+                                <TextBlock Grid.Column="0"
+                                           Foreground="White"
+                                           HorizontalAlignment="Right">
                                     <Run Text="{Binding Name}" />
                                     <Run Text=" : " />
                                 </TextBlock>
-                                <TextBlock Grid.Column="1" Foreground="White" Text="{Binding Description}" HorizontalAlignment="Left" />
+                                <TextBlock Grid.Column="1"
+                                           Foreground="White"
+                                           Text="{Binding Description}"
+                                           HorizontalAlignment="Left" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <TextBlock Grid.Column="2" Grid.Row="0" Foreground="White" Margin="0,5,5,0" FontWeight="Bold" >Steps to Deploy:</TextBlock>
+                <TextBlock Grid.Column="2"
+                           Grid.Row="0"
+                           Foreground="White"
+                           Margin="0,5,5,0"
+                           FontWeight="Bold">Steps to Deploy:</TextBlock>
 
-                <Grid Grid.Column="2" Grid.Row="1" VerticalAlignment="Top">
+                <Grid Grid.Column="2"
+                      Grid.Row="1"
+                      VerticalAlignment="Top">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -221,43 +300,97 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Image Grid.Column="0" Grid.Row="0" Style="{StaticResource ImageTickStyle}" 
-                               Visibility="{Binding SelectedSourceServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="0" Foreground="White" Text="1. Connect to a source server." AutomationProperties.AutomationId="UI_DeploySourceTB_AutoID"
-                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    <Image Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource ImageTickStyle}"
+                           Visibility="{Binding SelectedSourceServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="0"
+                               Foreground="White"
+                               Text="1. Connect to a source server."
+                               AutomationProperties.AutomationId="UI_DeploySourceTB_AutoID"
+                               VerticalAlignment="Center"
+                               Margin="3,0,0,0" />
 
-                    <Image Grid.Column="0" Grid.Row="1" Style="{StaticResource ImageTickStyle}" 
-                               Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="1" Foreground="White" Text="2. Connect to a destination server." AutomationProperties.AutomationId="UI_DeployDestinationTB_AutoID"
-                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    <Image Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource ImageTickStyle}"
+                           Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="1"
+                               Foreground="White"
+                               Text="2. Connect to a destination server."
+                               AutomationProperties.AutomationId="UI_DeployDestinationTB_AutoID"
+                               VerticalAlignment="Center"
+                               Margin="3,0,0,0" />
 
-                    <Image Grid.Column="0" Grid.Row="2" Style="{StaticResource ImageTickStyle}" 
-                               Visibility="{Binding SourceItemsSelected, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
-                    <TextBlock Grid.Column="1" Grid.Row="2" Foreground="White" Text="3. Please select something to deploy." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    <Image Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource ImageTickStyle}"
+                           Visibility="{Binding SourceItemsSelected, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                    <TextBlock Grid.Column="1"
+                               Grid.Row="2"
+                               Foreground="White"
+                               Text="3. Please select something to deploy."
+                               AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                               VerticalAlignment="Center"
+                               Margin="3,0,0,0" />
                 </Grid>
-                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
-                    <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID" 
-                    Content="Select All Dependencies" HorizontalAlignment="Right" Background="Transparent" 
-                    BorderBrush="Transparent" Command="{Binding SelectAllDependanciesCommand}" />
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Left"
+                            Orientation="Horizontal">
+                    <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID"
+                            Content="Select All Dependencies"
+                            HorizontalAlignment="Right"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Command="{Binding SelectAllDependanciesCommand}" />
                 </StackPanel>
-                <StackPanel Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0" Visibility="{Binding DeploySuccessfull, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                        <Image Grid.Column="0" Grid.Row="2" Style="{StaticResource ImageTickStyle}" />
-                        <TextBlock Grid.Column="1" Grid.Row="2" Foreground="White" Text="Items deployed successfully" AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                <StackPanel Grid.Row="2"
+                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,0,5,0"
+                                Visibility="{Binding DeploySuccessfull, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                        <Image Grid.Column="0"
+                               Grid.Row="2"
+                               Style="{StaticResource ImageTickStyle}" />
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Foreground="White"
+                                   Text="Items deployed successfully"
+                                   AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0" Visibility="{Binding ServersAreNotTheSame, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                        <TextBlock Foreground="{StaticResource ValidationErrorElement}" Text="Source and Destination cannot be the same." AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
-                                   VerticalAlignment="Center" Margin="3,0,0,0"/>
+                    <StackPanel Orientation="Horizontal"
+                                Margin="0,0,5,0"
+                                Visibility="{Binding ServersAreNotTheSame, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                        <TextBlock Foreground="{StaticResource ValidationErrorElement}"
+                                   Text="Source and Destination cannot be the same."
+                                   AutomationProperties.AutomationId="UI_DeploySelectTB_AutoID"
+                                   VerticalAlignment="Center"
+                                   Margin="3,0,0,0" />
                     </StackPanel>
-                    <customControls2:CircularProgressBar Height="15" Width="15" VerticalAlignment="Center" Margin="0,0,5,0" 
-                                                        Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}"/>
-                    <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
-                    Content="Deploy" HorizontalAlignment="Left" Background="Transparent" 
-                    BorderBrush="Transparent" Command="{Binding DeployCommand}" IsEnabled="{Binding CanDeploy}" MaxWidth="50" MinWidth="50" />
+                    <customControls2:CircularProgressBar Height="15"
+                                                         Width="15"
+                                                         VerticalAlignment="Center"
+                                                         Margin="0,0,5,0"
+                                                         Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}" />
+                    <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID"
+                            Content="Deploy"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            Command="{Binding DeployCommand}"
+                            IsEnabled="{Binding CanDeploy}"
+                            MaxWidth="50"
+                            MinWidth="50" />
                 </StackPanel>
             </Grid>
-        </Grid>                
+        </Grid>
     </Grid>
 </UserControl>

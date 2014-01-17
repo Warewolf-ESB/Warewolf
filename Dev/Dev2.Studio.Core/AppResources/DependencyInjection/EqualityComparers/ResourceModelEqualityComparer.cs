@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
                 return false;
 
             //Check whether the products' properties are equal.
-            return x.ResourceName == y.ResourceName;
+            return x.ID == y.ID;
         }
 
         public int GetHashCode(IResourceModel obj)

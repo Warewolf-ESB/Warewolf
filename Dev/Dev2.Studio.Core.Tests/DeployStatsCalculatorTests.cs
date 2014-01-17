@@ -1,4 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
@@ -11,10 +15,6 @@ using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
@@ -345,98 +345,98 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod]
-        public void DeploySummaryPredicateExisting_UnCheckedNavigationItemViewModel_Expected_False()
-        {
-            Setup();
-            ImportService.CurrentContext = _importContext;
+        //[TestMethod]
+        //public void DeploySummaryPredicateExisting_UnCheckedNavigationItemViewModel_Expected_False()
+        //{
+        //    Setup();
+        //    ImportService.CurrentContext = _importContext;
 
-            _resourceVm.IsChecked = false;
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+        //    _resourceVm.IsChecked = false;
+        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
-            bool expected = false;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+        //    bool expected = false;
+        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
-        [TestMethod]
-        public void DeploySummaryPredicateExisting_NullResourceOnNavigationItemViewModel_Expected_False()
-        {
-            ImportService.CurrentContext = _importContext;
+        //[TestMethod]
+        //public void DeploySummaryPredicateExisting_NullResourceOnNavigationItemViewModel_Expected_False()
+        //{
+        //    ImportService.CurrentContext = _importContext;
 
 
-            ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, CreateResourceModel().Object);
+        //    ITreeNode navigationItemViewModel = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, CreateResourceModel().Object);
 
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
-            bool expected = false;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(navigationItemViewModel, environmentModel);
+        //    bool expected = false;
+        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(navigationItemViewModel, environmentModel);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
-        [TestMethod]
-        public void DeploySummaryPredicateExisting_NullResourcesOnEnvironmentModel_Expected_False()
-        {
-            Setup();
-            ImportService.CurrentContext = _importContext;
+        //[TestMethod]
+        //public void DeploySummaryPredicateExisting_NullResourcesOnEnvironmentModel_Expected_False()
+        //{
+        //    Setup();
+        //    ImportService.CurrentContext = _importContext;
 
-            _resourceVm.IsChecked = true;
+        //    _resourceVm.IsChecked = true;
 
-            Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
-            mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
+        //    Mock<IEnvironmentModel> mockEnvironmentModel = Dev2MockFactory.SetupEnvironmentModel();
+        //    mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns<object>(null);
 
-            IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
+        //    IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
 
-            bool expected = false;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+        //    bool expected = false;
+        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
-        [TestMethod]
-        public void DeploySummaryPredicateExisting_EnvironmentContainsResource_Expected_True()
-        {
-            Setup();
-            ImportService.CurrentContext = _importContext;
+        //[TestMethod]
+        //public void DeploySummaryPredicateExisting_EnvironmentContainsResource_Expected_True()
+        //{
+        //    Setup();
+        //    ImportService.CurrentContext = _importContext;
 
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+        //    Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
-            _resourceVm.IsChecked = true;
-            ResourceTreeViewModel vm = _resourceVm;
+        //    _resourceVm.IsChecked = true;
+        //    ResourceTreeViewModel vm = _resourceVm;
 
-            vm.DataContext = resourceModel.Object;
+        //    vm.DataContext = resourceModel.Object;
 
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-            bool expected = true;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+        //    bool expected = true;
+        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
-            Assert.AreEqual(expected, actual);
-            Assert.IsTrue(DeployStatsCalculator.ConflictingResources.Count > 0);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //    Assert.IsTrue(DeployStatsCalculator.ConflictingResources.Count > 0);
+        //}
 
-        [TestMethod]
-        public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
-        {
-            Setup();
-            ImportService.CurrentContext = _importContext;
+        //[TestMethod]
+        //public void DeploySummaryPredicateExisting_EnvironmentDoesntContainResource_Expected_False()
+        //{
+        //    Setup();
+        //    ImportService.CurrentContext = _importContext;
 
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+        //    Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
 
-            _resourceVm.IsChecked = true;
-            ResourceTreeViewModel vm = _resourceVm;
+        //    _resourceVm.IsChecked = true;
+        //    ResourceTreeViewModel vm = _resourceVm;
 
-            vm.DataContext = resourceModel.Object;
+        //    vm.DataContext = resourceModel.Object;
 
-            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
+        //    IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
-            bool expected = false;
-            bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
+        //    bool expected = false;
+        //    bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, environmentModel);
 
-            Assert.AreEqual(expected, actual);
-        }
+        //    Assert.AreEqual(expected, actual);
+        //}
 
         #endregion DeploySummaryPredicateExisting
 

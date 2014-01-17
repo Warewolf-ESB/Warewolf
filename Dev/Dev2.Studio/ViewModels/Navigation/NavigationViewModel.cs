@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Threading;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -10,13 +17,6 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Threading;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 using Action = System.Action;
 
 // ReSharper disable once CheckNamespace
@@ -340,6 +340,26 @@ namespace Dev2.Studio.ViewModels.Navigation
                     if(resourceNode != null)
                     {
                         UpdateSearchFilter(_searchFilter);
+                    }
+                }
+            }
+        }
+
+        public void SetNodeOverwrite(IContextualResourceModel resource, bool state)
+        {
+            if(Root.Children.Count > 0 && resource != null && !resource.IsNewWorkflow && Environments.Any())
+            {
+                IEnvironmentModel env = Environments[0];
+
+                var resModel = env.ResourceRepository.All()
+                                    .FirstOrDefault(r => ResourceModelEqualityComparer
+                                    .Current.Equals(r, resource));
+                if(resModel != null)
+                {
+                    var child = TryGetResourceNode(resModel as IContextualResourceModel);
+                    if(child != null)
+                    {
+                        child.IsOverwrite = state;
                     }
                 }
             }

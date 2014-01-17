@@ -106,40 +106,47 @@ namespace Dev2.Studio.Deploy
         ///     The predicate used to detemine which resources are going to be overridden
         /// </summary>
         public bool DeploySummaryPredicateExisting(ITreeNode node,
-                                                   IEnvironmentModel targetEnvironment)
+                                                   NavigationViewModel targetNavViewModel)
         {
             var vm = node as ResourceTreeViewModel;
             if(vm == null
                 || !vm.IsChecked.HasValue
                 || !vm.IsChecked.Value) return false;
 
+            if(targetNavViewModel.Environments.Any())
+            {
+                IEnvironmentModel targetEnvironment = targetNavViewModel.Environments[0];
+                if(vm.DataContext == null
+                    || targetEnvironment == null
+                    || targetEnvironment.ResourceRepository == null) return false;
 
-            if(vm.DataContext == null
-                || targetEnvironment == null
-                || targetEnvironment.ResourceRepository == null) return false;
 
-            var conflictingItems = targetEnvironment.ResourceRepository.All()
-                                    .Where(r => ResourceModelEqualityComparer
-                                    .Current.Equals(r, vm.DataContext))
-                                    .Select(r => new Tuple<string, string>(r.ResourceName, vm.DataContext.ResourceName))
-                                    .ToList();
+                var conflictingItems = targetEnvironment.ResourceRepository.All()
+                                        .Where(r => ResourceModelEqualityComparer
+                                        .Current.Equals(r, vm.DataContext))
+                                        .Select(r => new Tuple<IResourceModel, IContextualResourceModel, ITreeNode, NavigationViewModel>(r, vm.DataContext, node, targetNavViewModel))
+                                        .ToList();
 
-            conflictingItems.ForEach(AddConflictingResources);
+                conflictingItems.ForEach(AddConflictingResources);
 
-            return targetEnvironment.ResourceRepository.All()
-                                    .Any(r =>
-                                         ResourceModelEqualityComparer
-                                             .Current.Equals(r, vm.DataContext));
+                return targetEnvironment.ResourceRepository.All()
+                                        .Any(r =>
+                                             ResourceModelEqualityComparer
+                                                 .Current.Equals(r, vm.DataContext));
+            }
+            return false;
         }
 
         /// <summary>
         ///     Add items that are found to be in conflicts
         /// </summary>
         /// <param name="resourceInConflict"></param>
-        void AddConflictingResources(Tuple<string, string> resourceInConflict)
+        void AddConflictingResources(Tuple<IResourceModel, IContextualResourceModel, ITreeNode, NavigationViewModel> resourceInConflict)
         {
-            if(ConflictingResources.Any(c => c.SourceName == resourceInConflict.Item1)) return;
-            ConflictingResources.Add(new DeployDialogTO(ConflictingResources.Count + 1, resourceInConflict.Item1, resourceInConflict.Item2));
+            if(ConflictingResources.Any(c => c.SourceName == resourceInConflict.Item1.ResourceName)) return;
+            ConflictingResources.Add(new DeployDialogTO(ConflictingResources.Count + 1, resourceInConflict.Item2.ResourceName, resourceInConflict.Item1.ResourceName, resourceInConflict.Item1));
+            resourceInConflict.Item3.IsOverwrite = true;
+            resourceInConflict.Item4.SetNodeOverwrite(resourceInConflict.Item1 as IContextualResourceModel, true);
         }
 
         /// <summary>

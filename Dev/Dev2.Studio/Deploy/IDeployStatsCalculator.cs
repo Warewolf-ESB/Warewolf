@@ -1,10 +1,11 @@
-﻿using Dev2.Studio.Core.AppResources.Enums;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.TO;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.ViewModels.Deploy;
 
 // ReSharper disable once CheckNamespace
@@ -40,7 +41,7 @@ namespace Dev2.Studio.Deploy
         ///     The predicate used to detemine which resources are going to be overridden
         /// </summary>
         bool DeploySummaryPredicateExisting(ITreeNode node,
-                                            IEnvironmentModel targetEnvironment);
+                                            NavigationViewModel targetNavViewMode);
 
         /// <summary>
         ///     The predicate used to detemine which resources are going to be overridden

@@ -1,4 +1,6 @@
-﻿namespace Dev2.ViewModels.Deploy
+﻿using Dev2.Studio.Core.Interfaces;
+
+namespace Dev2.ViewModels.Deploy
 {
     public class DeployDialogTO
     {
@@ -7,16 +9,18 @@
         public string SourceName { get; private set; }
         public string DestinationName { get; private set; }
         public int RowNumber { get; private set; }
+        public IResourceModel DestinationResource { get; private set; }
 
         #endregion
 
         #region Ctor
 
-        public DeployDialogTO(int rowNumber, string sourceName, string destinationName)
+        public DeployDialogTO(int rowNumber, string sourceName, string destinationName, IResourceModel destinationResourceModel)
         {
             RowNumber = rowNumber;
             SourceName = sourceName;
             DestinationName = destinationName;
+            DestinationResource = destinationResourceModel;
         }
 
         #endregion

@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
@@ -15,12 +21,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -261,7 +261,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if (value == _source) return;
+                if(value == _source) return;
 
                 _source = value;
                 NotifyOfPropertyChange(() => Source);
@@ -276,7 +276,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                if (value == _target) return;
+                if(value == _target) return;
                 _target = value;
                 NotifyOfPropertyChange(() => Target);
             }
@@ -308,7 +308,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             set
             {
                 // ReSharper disable once PossibleUnintendedReferenceComparison
-                if (value != _selectedDestinationServer)
+                if(value != _selectedDestinationServer)
                 {
                     _selectedDestinationServer = value;
                     LoadDestinationEnvironment(_selectedDestinationServer);
@@ -409,7 +409,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                                                .DeploySummaryPredicateNew(n, TargetEnvironment));
             _targetStatPredicates.Add("Override",
                                       n => _deployStatsCalculator
-                                               .DeploySummaryPredicateExisting(n, TargetEnvironment));
+                                               .DeploySummaryPredicateExisting(n, Target));
         }
 
         /// <summary>
@@ -440,17 +440,17 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<ResourceTreeViewModel> resourceTreeViewModels = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
             List<ResourceTreeViewModel> selectedResourcesTreeViewModels = resourceTreeViewModels.Where(c => c.IsChecked == true).ToList();
             List<IContextualResourceModel> selectedResourceModels = new List<IContextualResourceModel>();
-            foreach (var resourceTreeViewModel in selectedResourcesTreeViewModels)
+            foreach(var resourceTreeViewModel in selectedResourcesTreeViewModels)
             {
                 selectedResourceModels.Add(resourceTreeViewModel.DataContext);
             }
 
             List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
 
-            foreach (var dependant in dependancyNames)
+            foreach(var dependant in dependancyNames)
             {
                 ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
-                if (treeNode != null)
+                if(treeNode != null)
                 {
                     treeNode.IsChecked = true;
                 }
@@ -465,19 +465,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             List<IEnvironmentModel> servers = _serverProvider.Load();
             Servers.Clear();
 
-            foreach (var server in servers)
+            foreach(var server in servers)
             {
                 Servers.Add(server);
             }
 
-            if (servers.Count > 0)
+            if(servers.Count > 0)
             {
                 //
                 // Find a source server to select
                 //
                 SelectedSourceServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedSourceServer));
 
-                if (SelectedSourceServer == null && _initialLoad)
+                if(SelectedSourceServer == null && _initialLoad)
                 {
                     SelectSourceServerFromInitialValue();
                     _initialLoad = false;
@@ -494,11 +494,11 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Servers.Add(server);
 
-            if (connectSource)
+            if(connectSource)
             {
                 SelectedSourceServer = server;
             }
-            if (connectTarget)
+            if(connectTarget)
             {
                 SelectedDestinationServer = server;
             }
@@ -510,22 +510,27 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
-            if (_deployStatsCalculator != null
+            if(_deployStatsCalculator != null
                 && _deployStatsCalculator.ConflictingResources != null
                 && _deployStatsCalculator.ConflictingResources.Count > 0)
             {
                 var deployDialogViewModel = new DeployDialogViewModel(_deployStatsCalculator.ConflictingResources);
                 ShowDialog(deployDialogViewModel);
-                if (deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
+                if(deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
                 {
                     return;
+                }
+                if(Target.Environments.Any())
+                {
+                    IEnvironmentModel env = Target.Environments[0];
+                    _deployStatsCalculator.ConflictingResources.ToList().ForEach(r => env.ResourceRepository.DeleteResource(r.DestinationResource));
                 }
             }
 
             //
             //Get the resources to deploy
             //
-            if (_deployStatsCalculator != null)
+            if(_deployStatsCalculator != null)
             {
                 var resourcesToDeploy = Source.Root.GetChildren
                     (_deployStatsCalculator.SelectForDeployPredicate)
@@ -534,7 +539,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
                 var deployResourceRepo = SourceEnvironment.ResourceRepository;
 
-                if (HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
+                if(HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
                 {
                     return;
                 }
@@ -565,7 +570,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public Func<List<IResourceModel>, IResourceRepository, bool> HasNoResourcesToDeploy = (resourcesToDeploy, deployResourceRepo) =>
             {
-                if (resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
+                if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
                 {
                     return true;
                 }
@@ -589,9 +594,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Source.RemoveAllEnvironments();
 
-            if (SourceEnvironment != null)
+            if(SourceEnvironment != null)
             {
-                if (_selectingAndExpandingFromNavigationItem)
+                if(_selectingAndExpandingFromNavigationItem)
                 {
                     Source.LoadResourcesCompleted += OnResourcesLoaded;
                 }
@@ -618,7 +623,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             Target.RemoveAllEnvironments();
 
-            if (TargetEnvironment != null)
+            if(TargetEnvironment != null)
             {
                 Target.AddEnvironment(TargetEnvironment);
             }
@@ -635,12 +640,12 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             IEnvironmentModel environment = null;
 
-            if (_initialItemDisplayName != null && _initialItemEnvironment != null)
+            if(_initialItemDisplayName != null && _initialItemEnvironment != null)
             {
                 environment = _initialItemEnvironment;
             }
 
-            if (environment != null)
+            if(environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
                 //
@@ -659,13 +664,13 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             ITreeNode navigationItemViewModel = null;
 
-            if (_initialItemDisplayName != null)
+            if(_initialItemDisplayName != null)
             {
                 navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialItemDisplayName)
                     .FirstOrDefault();
             }
 
-            if (navigationItemViewModel == null) return;
+            if(navigationItemViewModel == null) return;
 
             //
             // Select and expand the initial node
@@ -673,7 +678,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             navigationItemViewModel.IsChecked = true;
 
             var parent = navigationItemViewModel.TreeParent;
-            if (parent != null)
+            if(parent != null)
             {
                 parent.IsExpanded = true;
             }
@@ -696,6 +701,10 @@ namespace Dev2.Studio.ViewModels.Deploy
         public void Handle(ResourceCheckedMessage message)
         {
             Logger.TraceInfo(message.GetType().Name);
+            if(message.PreCheckedState == true && message.PostCheckedState == false)
+            {
+                Target.SetNodeOverwrite(message.ResourceModel, false);
+            }
             CalculateStats();
         }
 
@@ -716,14 +725,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         public void Handle(AddServerToDeployMessage message)
         {
             Logger.TraceInfo(message.GetType().Name);
-            if (message.Context != null)
+            if(message.Context != null)
             {
                 var ctx = message.Context;
-                if (ctx.Equals(SourceContext))
+                if(ctx.Equals(SourceContext))
                 {
                     AddServer(message.Server, true, false);
                 }
-                else if (ctx.Equals(DestinationContext))
+                else if(ctx.Equals(DestinationContext))
                 {
                     AddServer(message.Server, false, true);
                 }
@@ -737,12 +746,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         public void Handle(EnvironmentDeletedMessage message)
         {
             Logger.TraceInfo(message.GetType().Name);
-            if (Source != null)
+            if(Source != null)
             {
                 Source.RemoveEnvironment(message.EnvironmentModel);
             }
 
-            if (Target != null)
+            if(Target != null)
             {
                 Target.RemoveEnvironment(message.EnvironmentModel);
             }
@@ -753,14 +762,14 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void SelectDependencies(IContextualResourceModel resource)
         {
-            if (resource != null)
+            if(resource != null)
             {
                 List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SourceEnvironment);
                 dependancyNames.Add(resource.ResourceName);
-                foreach (var dependant in dependancyNames)
+                foreach(var dependant in dependancyNames)
                 {
                     ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant);
-                    if (treeNode != null)
+                    if(treeNode != null)
                     {
                         treeNode.IsChecked = true;
                     }

@@ -20,6 +20,7 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         IEnvironmentModel EnvironmentModel { get; }
         int ChildrenCount { get; }
         bool? IsChecked { get; set; }
+        bool IsOverwrite { get; set; }
         string IconPath { get; }
         bool IsFiltered { get; set; }
         bool IsExpanded { get; set; }

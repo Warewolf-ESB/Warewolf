@@ -1,10 +1,4 @@
-﻿using Caliburn.Micro;
-using Dev2.Providers.Logs;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -13,6 +7,12 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Caliburn.Micro;
+using Dev2.Providers.Logs;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Navigation;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -44,6 +44,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         int _serverRenameProgress;
         bool _isNew;
         protected readonly IEventAggregator EventPublisher;
+        bool _isOverwrite;
 
         #endregion
 
@@ -65,6 +66,19 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region properties
 
         #region public
+
+        public bool IsOverwrite
+        {
+            get
+            {
+                return _isOverwrite;
+            }
+            set
+            {
+                _isOverwrite = value;
+                NotifyOfPropertyChange(() => IsOverwrite);
+            }
+        }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is refreshing.
@@ -715,9 +729,15 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
+            bool? preState = _isChecked; ;
             if(value == _isChecked)
             {
                 return;
+            }
+
+            if(_isChecked == true && value == false)
+            {
+                IsOverwrite = false;
             }
 
             _isChecked = value;
@@ -738,7 +758,12 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             NotifyOfPropertyChange(() => IsChecked);
             Logger.TraceInfo("Publish message of type - " + typeof(ResourceCheckedMessage));
-            EventPublisher.Publish(new ResourceCheckedMessage());
+            ResourceTreeViewModel rstvm = this as ResourceTreeViewModel;
+            if(rstvm != null)
+            {
+                EventPublisher.Publish(new ResourceCheckedMessage { PreCheckedState = preState, PostCheckedState = value, ResourceModel = rstvm.DataContext });
+            }
+            EventPublisher.Publish(new ResourceCheckedMessage { PreCheckedState = preState, PostCheckedState = value });
         }
 
         /// <summary>
