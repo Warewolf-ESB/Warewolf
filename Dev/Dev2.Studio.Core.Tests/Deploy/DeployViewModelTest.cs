@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
             var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
-
+           
             deployViewModel.ShowDialog = o =>
             {
                 var viewModel = (DeployDialogViewModel)o;
@@ -184,10 +184,18 @@ namespace Dev2.Core.Tests
                 };
 
             SetupResources(deployStatsCalculator, true);
+
+            var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
+            var resourceRepository = new Mock<IResourceRepository>();
+            mockEnv.Setup(m => m.ResourceRepository).Returns(resourceRepository.Object);
+            resourceRepository.Setup(m => m.DeleteResource(It.IsAny<IResourceModel>()));
+            deployViewModel.Target.Environments[0] = mockEnv.Object;
+
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsTrue(isOverwriteMessageDisplayed);
             Assert.IsTrue(deployViewModel.DeploySuccessfull);
+            resourceRepository.Verify(m => m.DeleteResource(It.IsAny<IResourceModel>()));
         }
 
         [TestMethod]
