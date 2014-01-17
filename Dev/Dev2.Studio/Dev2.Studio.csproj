@@ -331,6 +331,7 @@
     <Compile Include="ViewModels\Administration\DialogueViewModel.cs" />
     <Compile Include="RibbonControl\Dev2RibbonApplicationMenu.cs" />
     <Compile Include="ViewModels\DependencyVisualization\DependencyGraphGenerator.cs" />
+    <Compile Include="ViewModels\Deploy\DeployDialogTO.cs" />
     <Compile Include="ViewModels\Deploy\DeployDialogViewModel.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />

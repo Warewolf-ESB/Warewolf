@@ -1,4 +1,10 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
@@ -13,12 +19,6 @@ using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
 
@@ -51,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
-       
+
         private string _initialItemDisplayName;
         private IEnvironmentModel _initialItemEnvironment;
         private bool _isDeploying;
@@ -364,7 +364,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             DeploySuccessfull = false;
             var items = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
-            _deployStatsCalculator.ConflictingResources = new List<Tuple<string, string>>();
+            _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
             _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
             _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
             NotifyOfPropertyChange(() => CanDeploy);
@@ -513,13 +513,13 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
-            if (_deployStatsCalculator != null 
-                && _deployStatsCalculator.ConflictingResources != null 
+            if(_deployStatsCalculator != null
+                && _deployStatsCalculator.ConflictingResources != null
                 && _deployStatsCalculator.ConflictingResources.Count > 0)
             {
                 var deployDialogViewModel = new DeployDialogViewModel(_deployStatsCalculator.ConflictingResources);
                 ShowDialog(deployDialogViewModel);
-                if (deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
+                if(deployDialogViewModel.DialogResult == ViewModelDialogResults.Cancel)
                 {
                     return;
                 }

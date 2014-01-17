@@ -7,53 +7,89 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:deploy="clr-namespace:Dev2.ViewModels.Deploy"
         Title="Resources exists in the destination server"
-        Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
-        Width="350"
+        Icon="{StaticResource Deploy-32}"
+        MinWidth="370"
+        MinHeight="400"
+        Width="370"
         Height="400"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}">
-        <!--<Window.Resources>
-            <ResourceDictionary Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
-        </Window.Resources>-->
-    
+        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}"> 
+
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
     </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Label Content="Deploy Conflicts"
+                   Margin="0,0,0,10"
+                   FontWeight="Bold" />
+            <TextBlock TextWrapping="Wrap"
+                       Margin="0,0,0,10"
+                       Text="The following resources will be overwritten on the destination server would you like to continue?" />
+        </StackPanel>
         <DataGrid ItemsSource="{Binding ConflictingItems}"
+                  BorderBrush="{StaticResource Brush03b}"
+                  CanUserReorderColumns="False"
                   AutoGenerateColumns="False"
-                  Grid.Row="0">
-             <DataGrid.Columns>
+                  VerticalGridLinesBrush="Transparent"
+                  HorizontalGridLinesBrush="{StaticResource Brush03b}"
+                  Grid.Row="1">
+            <DataGrid.Columns>
+                
+                <DataGridTemplateColumn Header="#" 
+                                        Width="Auto"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=RowNumber}">
+                            </Label>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="Source Resource"
                                         Width="*"
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Path=Item1}">
+                            <Label Content="{Binding Path=SourceName}">
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                 
-                   <DataGridTemplateColumn Header="Destination Resource"
+                
+                <DataGridTemplateColumn Header="->"
+                                        Width="Auto"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="->">
+                            </Label>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="Destination Resource"
                                         Width="*"
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Path=Item2}">
+                            <Label Content="{Binding Path=DestinationName}">
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Left">
             <Button Content="Cancel"
@@ -64,7 +100,7 @@
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Grid.Row="1">
+                    Grid.Row="2">
             <Button Content="OK"
                     IsEnabled="{Binding SelectedResourceModel, Converter={StaticResource NullToBoolConvert} }"
                     Command="{Binding OkCommand}"

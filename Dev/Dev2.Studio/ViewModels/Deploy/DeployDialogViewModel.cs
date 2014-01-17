@@ -1,8 +1,7 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using Dev2.Studio.Core.ViewModels.Base;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.ViewModels.Deploy
 {
@@ -11,9 +10,9 @@ namespace Dev2.ViewModels.Deploy
         #region Fields
         private RelayCommand _executeCommmand;
         private RelayCommand _cancelComand;
-        List<Tuple<string, string>> _conflictingItems;
+        ObservableCollection<DeployDialogTO> _conflictingItems;
 
-        public List<Tuple<string, string>> ConflictingItems
+        public ObservableCollection<DeployDialogTO> ConflictingItems
         {
             get
             {
@@ -30,7 +29,7 @@ namespace Dev2.ViewModels.Deploy
             }
         }
 
-        public DeployDialogViewModel(List<Tuple<string, string>> resourcesInConflict)
+        public DeployDialogViewModel(ObservableCollection<DeployDialogTO> resourcesInConflict)
         {
             ConflictingItems = resourcesInConflict;
         }
@@ -42,7 +41,7 @@ namespace Dev2.ViewModels.Deploy
         {
             get
             {
-                if (_executeCommmand == null)
+                if(_executeCommmand == null)
                 {
                     _executeCommmand = new RelayCommand(param => Okay(), param => true);
                 }
@@ -54,7 +53,7 @@ namespace Dev2.ViewModels.Deploy
         {
             get
             {
-                if (_cancelComand == null)
+                if(_cancelComand == null)
                 {
                     _cancelComand = new RelayCommand(param => Cancel(), param => true);
                 }

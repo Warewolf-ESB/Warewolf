@@ -5,6 +5,7 @@ using Dev2.Studio.TO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.ViewModels.Deploy;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Deploy
@@ -14,7 +15,7 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         /// List of resources in conflict ITEM1 : source and ITEM2 : destination
         /// </summary>
-        List<Tuple<string, string>> ConflictingResources { get; set; }
+        ObservableCollection<DeployDialogTO> ConflictingResources { get; set; }
 
         /// <summary>
         ///     Calculates the stastics from navigation item view models

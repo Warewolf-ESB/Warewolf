@@ -1,5 +1,5 @@
-﻿using Dev2.Dialogs;
-using System.Windows;
+﻿using System.Windows;
+using Dev2.Dialogs;
 
 namespace Dev2.Views.Deploy
 {
