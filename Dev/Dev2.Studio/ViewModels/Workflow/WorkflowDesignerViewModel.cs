@@ -185,8 +185,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IPopupController PopUp { get; set; }
 
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public IList<IDataListVerifyPart> WorkflowVerifiedDataParts { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public UserControl PopupContent
         {
@@ -1319,8 +1320,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
+            // ReSharper disable ExplicitCallerInfoArgument
             Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            // ReSharper restore ExplicitCallerInfoArgument
             foreach(var modelItem in ModelService.Find(ModelService.Root, typeof(DsfActivity)))
             {
                 var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
