@@ -11,7 +11,8 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DebugStateTreeViewItemViewModelTests
     {
         static ImportServiceContext _importContext;
@@ -245,9 +246,10 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_IsSelected_PublishesSelectionEventWithSameActivitySelectionType()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.None, expectedCount: 1, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Single, expectedCount: 1, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 1, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.None, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Single, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Remove, expectedCount: 2, setIsSelected: false);
         }
 
         static void Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType activityType, ActivitySelectionType expectedSelectionType, int expectedCount, bool setIsSelected = false)
@@ -274,15 +276,18 @@ namespace Dev2.Core.Tests
                 vm.SelectionType = expectedSelectionType;
                 vm.IsSelected = true;
             }
+            else
+            {
+                vm.IsSelected = false;
+                vm.SelectionType = expectedSelectionType;
+            }
 
             EventPublishers.Studio.RemoveEvent<DebugSelectionChangedEventArgs>();
 
             Assert.AreEqual(expectedCount, events.Count);
-            for(var i = 0; i < expectedCount; i++)
-            {
-                Assert.AreEqual(expectedSelectionType, events[i].SelectionType);
-                Assert.AreSame(expected, events[i].DebugState);
-            }
+            var foundEvent = events.Find(args => args.SelectionType == expectedSelectionType);
+            Assert.IsNotNull(foundEvent);
+            Assert.AreSame(expected, foundEvent.DebugState);
         }
 
         static void Verify_Constructor_AssignsNameToContentServer(StateType stateType, bool contentServerIsSource = false)

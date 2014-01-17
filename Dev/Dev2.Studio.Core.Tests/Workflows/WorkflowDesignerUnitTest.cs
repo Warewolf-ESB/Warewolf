@@ -2360,21 +2360,25 @@ namespace Dev2.Core.Tests.Workflows
                 case ActivitySelectionType.None:
                     Assert.AreEqual(0, selection.SelectionCount);
                     Assert.AreEqual(1, viewModel.BringIntoViewHitCount); // 1 because we had to add something first!
+                    Assert.AreEqual(0, viewModel.SelectedDebugModelItems.Count);
                     break;
 
                 case ActivitySelectionType.Single:
                     Assert.AreEqual(1, selection.SelectionCount);
                     Assert.AreEqual(1, viewModel.BringIntoViewHitCount);
+                    Assert.AreEqual(1, viewModel.SelectedDebugModelItems.Count);
                     break;
 
                 case ActivitySelectionType.Add:
                     Assert.AreEqual(2, selection.SelectionCount);
                     Assert.AreEqual(2, viewModel.BringIntoViewHitCount);
+                    Assert.AreEqual(2, viewModel.SelectedDebugModelItems.Count);
                     break;
 
                 case ActivitySelectionType.Remove:
-                    Assert.AreEqual(1, selection.SelectionCount);
+                    Assert.AreEqual(2, selection.SelectionCount);
                     Assert.AreEqual(2, viewModel.BringIntoViewHitCount); // 2 because we had to add something first!
+                    Assert.AreEqual(1, viewModel.SelectedDebugModelItems.Count);
                     break;
             }
 

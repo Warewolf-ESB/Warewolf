@@ -1,13 +1,13 @@
-﻿using Dev2.Diagnostics;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Diagnostics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Dev2.Diagnostics;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Diagnostics;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -141,6 +141,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     while(parent != null);
                 }
                 EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = content, SelectionType = SelectionType });
+            }
+            else
+            {
+                EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = Content, SelectionType = ActivitySelectionType.Remove });
             }
 
             SelectionType = ActivitySelectionType.Single;

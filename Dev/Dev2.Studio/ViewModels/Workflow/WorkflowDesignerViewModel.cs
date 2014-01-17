@@ -1,4 +1,27 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities;
+using System.Activities.Core.Presentation;
+using System.Activities.Debugger;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Xaml;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
@@ -34,29 +57,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Utilities;
 using Dev2.Utils;
-using System;
-using System.Activities;
-using System.Activities.Core.Presentation;
-using System.Activities.Debugger;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Metadata;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xaml;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -82,7 +82,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         RelayCommand _collapseAllCommand;
 
         protected dynamic DataObject { get; set; }
-
+        List<ModelItem> _selectedDebugItems = new List<ModelItem>();
         RelayCommand _expandAllCommand;
         protected ModelService ModelService;
         UserControl _popupContent;
@@ -1064,7 +1064,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _virtualizedContainerServicePopulateAllMethod = _virtualizedContainerService.GetType().GetMethod("BeginPopulateAll", BindingFlags.Instance | BindingFlags.NonPublic);
             }
-
             _debugSelectionChangedService.Unsubscribe();
             _debugSelectionChangedService.Subscribe(args =>
             {
@@ -1127,22 +1126,36 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected virtual void SelectSingleModelItem(ModelItem selectedModelItem)
         {
+            if(SelectedDebugItems.Contains(selectedModelItem))
+            {
+                return;
+            }
             Selection.SelectOnly(_wd.Context, selectedModelItem);
+            SelectedDebugItems.Add(selectedModelItem);
         }
 
         protected virtual void RemoveModelItemFromSelection(ModelItem selectedModelItem)
         {
-            Selection.Toggle(_wd.Context, selectedModelItem);
+            if(SelectedDebugItems.Contains(selectedModelItem))
+            {
+                SelectedDebugItems.Remove(selectedModelItem);
+            }
         }
 
         protected virtual void AddModelItemToSelection(ModelItem selectedModelItem)
         {
+            if(SelectedDebugItems.Contains(selectedModelItem))
+            {
+                return;
+            }
             Selection.Union(_wd.Context, selectedModelItem);
+            SelectedDebugItems.Add(selectedModelItem);
         }
 
         protected virtual void ClearSelection()
         {
             _wd.Context.Items.SetValue(new Selection());
+            _selectedDebugItems = new List<ModelItem>();
         }
 
         protected virtual void BringIntoView(ModelItem selectedModelItem)
@@ -1468,6 +1481,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         string _originalDataList;
 
+
         /// <summary>
         /// Models the service model changed.
         /// </summary>
@@ -1691,6 +1705,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </value>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnvironmentModel EnvironmentModel { get { return ResourceModel.Environment; } }
+        protected List<ModelItem> SelectedDebugItems
+        {
+            get
+            {
+                return _selectedDebugItems;
+            }
+        }
 
         #region Implementation of IHandle<EditActivityMessage>
 

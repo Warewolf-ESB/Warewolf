@@ -49,6 +49,14 @@ namespace Dev2.Core.Tests.Workflows
             _isDesignerViewVisible = isVisible;
         }
 
+        public List<ModelItem> SelectedDebugModelItems
+        {
+            get
+            {
+                return SelectedDebugItems;
+            }
+        }
+
         public void TestCheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel environmentModel)
         {
             CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, environmentModel);
