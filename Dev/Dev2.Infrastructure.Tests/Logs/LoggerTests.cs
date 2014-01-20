@@ -36,7 +36,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            this.TraceInfo("This is some information");
+            Logger.TraceInfo("This is some information");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithStringValue_StringBuilderContainsMethodNameAndMessage : This is some information\r\n");
@@ -50,7 +50,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            this.TraceInfo("This is some information", "MyMethodName");
+            Logger.TraceInfo("This is some information", "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : This is some information\r\n");
@@ -64,7 +64,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            this.TraceInfo(null, "MyMethodName");
+            Logger.TraceInfo(null, "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : ");
@@ -78,7 +78,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            this.TraceInfo(null, null);
+            Logger.TraceInfo(null, null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->   : ");
@@ -92,7 +92,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            this.TraceInfo();
+            Logger.TraceInfo();
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithNoParameters_MethodNameStillLogged : ");
