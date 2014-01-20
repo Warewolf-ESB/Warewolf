@@ -5,7 +5,7 @@ call :cleanDIR
 goto :eof
 
 :cleanDIR
-for /d /r "C:\Builds\TestRunWorkspace\UITestResults" %%x in (*) do rd /s /q "%%x"
-attrib -R "C:\Builds\TestRunWorkspace\UITestResults\*.*"
-del /Q "C:\Builds\TestRunWorkspace\UITestResults\*.*"
+for /d /r "C:\Builds\TestRunWorkspace\CodedUITestResults" %%x in (*) do rd /s /q "%%x"
+attrib -R "C:\Builds\TestRunWorkspace\CodedUITestResults\*.*"
+del /Q "C:\Builds\TestRunWorkspace\CodedUITestResults\*.*"
 exit /b
