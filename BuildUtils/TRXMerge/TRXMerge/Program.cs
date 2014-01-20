@@ -150,7 +150,7 @@ namespace TRXMerge
 
         public static void SetSummary(string fileName)
         {
-            System.Xml.XmlDocument oDoc = new XmlDocument();
+            XmlDocument oDoc = new XmlDocument();
             oDoc.Load(fileName);
 
             XmlNode master = oDoc.SelectSingleNode("//ResultSummary/Counters");
@@ -187,8 +187,18 @@ namespace TRXMerge
             elapsed.Value = CalculateSummaryTime(oDoc).ToString();
             oTimes.Attributes.Append(elapsed);
 
-            oDoc.Save(fileName);
+            ////append ID
+            XmlNode oRoot = oDoc.DocumentElement;
+            var id = oDoc.CreateAttribute("id");
+            id.Value = Guid.NewGuid().ToString();
+            oRoot.Attributes.Append(id);
 
+            ////append XML namespace
+            var xmlns = oDoc.CreateAttribute("xmlns");
+            id.Value = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
+            oRoot.Attributes.Append(xmlns);
+
+            oDoc.Save(fileName);
         }
 
         public static double CalculateSummaryTime(XmlDocument doc)
