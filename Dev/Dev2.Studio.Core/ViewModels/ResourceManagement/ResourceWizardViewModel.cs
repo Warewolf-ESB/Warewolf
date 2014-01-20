@@ -262,20 +262,20 @@ namespace Dev2.Studio.Core.ViewModels
                     {
                         var resourceWithContext = new ResourceModel(_resource.Environment);
                         resourceWithContext.Update(resource);
-                        Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                        this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                         _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                     }
                 }
                 else
                 {
                     _resource.Environment.ResourceRepository.Save(_resource);
-                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     _eventPublisher.Publish(new UpdateResourceMessage(_resource));
                 }
 
                 if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
-                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(_resource));
                 }
             }
@@ -297,7 +297,7 @@ namespace Dev2.Studio.Core.ViewModels
                 {
                     var resourceWithContext = new ResourceModel(_resource.Environment);
                     resourceWithContext.Update(resource);
-                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                 }
             }
@@ -305,13 +305,13 @@ namespace Dev2.Studio.Core.ViewModels
 
         public void Close()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
+            this.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
             _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 
         public void Cancel()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
+            this.TraceInfo("Publish message of type - " + typeof(CloseWizardMessage));
             _eventPublisher.Publish(new CloseWizardMessage(this));
         }
 

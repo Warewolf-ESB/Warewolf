@@ -140,7 +140,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(SetSelectedIContextualResourceModel message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             SelectedResourceModel = message.SelectedResource;
             if(message.DidDoubleClickOccur)
             {

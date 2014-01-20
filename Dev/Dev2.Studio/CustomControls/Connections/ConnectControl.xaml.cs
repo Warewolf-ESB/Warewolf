@@ -32,7 +32,7 @@ namespace Dev2.UI
         #region CTOR
 
         public ConnectControl()
-            : this(EventPublishers.Aggregator,new AsyncWorker())
+            : this(EventPublishers.Aggregator, new AsyncWorker())
         {
         }
 
@@ -142,7 +142,7 @@ namespace Dev2.UI
 
         #endregion
 
-        
+
 
         #region LabelText
 
@@ -162,7 +162,7 @@ namespace Dev2.UI
 
         #endregion
 
-        
+
 
         public Guid? Context
         {
@@ -173,7 +173,7 @@ namespace Dev2.UI
         public static readonly DependencyProperty ContextProperty =
             DependencyProperty.Register("Context", typeof(Guid?), typeof(ConnectControl));
 
-       
+
         #endregion Dependency Properties
 
 
@@ -187,7 +187,7 @@ namespace Dev2.UI
             }
             set
             {
-                _viewModel = value;     
+                _viewModel = value;
                 OnPropertyChanged();
             }
         }
@@ -216,9 +216,9 @@ namespace Dev2.UI
             if(server != null && (ViewModel != null && ViewModel.IsSelectedFromDropDown))
             {
                 InvokeCommands(server);
-                Logger.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
+                this.TraceInfo("Publish message of type - " + typeof(SetSelectedItemInExplorerTree));
                 _eventPublisher.Publish(new SetSelectedItemInExplorerTree(server.Name));
-                Logger.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(server));
             }
             else
@@ -236,20 +236,20 @@ namespace Dev2.UI
             environment.CanStudioExecute = true;
 
             //2013.06.02: Ashley Lewis for bug 9445 - environments do not autoconnect
-            _asyncWorker.Start(environment.Connect,() =>
+            _asyncWorker.Start(environment.Connect, () =>
             {
-            //Used by deployviewmodel and settings - to do, please use only one.
-            if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
-            {
-                   ServerChangedCommand.Execute(server);
-            }
+                //Used by deployviewmodel and settings - to do, please use only one.
+                if(ServerChangedCommand != null && ServerChangedCommand.CanExecute(environment))
+                {
+                    ServerChangedCommand.Execute(server);
+                }
 
-            //Used by rest.
-            if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
-            {
+                //Used by rest.
+                if(EnvironmentChangedCommand != null && EnvironmentChangedCommand.CanExecute(environment))
+                {
                     EnvironmentChangedCommand.Execute(environment);
-            }
-            });                                    
+                }
+            });
         }
 
         #endregion
@@ -272,7 +272,7 @@ namespace Dev2.UI
 
         public void Handle(UpdateActiveEnvironmentMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(message.EnvironmentModel != null && BindToActiveEnvironment)
             {
                 if(ViewModel != null)
@@ -291,7 +291,7 @@ namespace Dev2.UI
                 if(ViewModel != null)
                 {
                     ViewModel.ChangeSelected(ViewModel.ActiveEnvironment);
-                    
+
                 }
             }
             else

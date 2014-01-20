@@ -90,9 +90,9 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             CurrentEnvironmentRepository.Save(newEnvironment);
-            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
+            this.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
             EventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, Context, true));
-            Logger.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
+            this.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
             EventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, Context));
         }
 

@@ -183,7 +183,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
+            this.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
@@ -262,7 +262,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
+            this.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
             EventPublisher.Publish(new UpdateIntellisenseMessage());
         }
 
@@ -347,7 +347,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
             WriteToResourceModel();
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
+            this.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
             EventPublisher.Publish(new UpdateIntellisenseMessage());
             RemoveBlankScalars();
             RemoveBlankRecordsets();

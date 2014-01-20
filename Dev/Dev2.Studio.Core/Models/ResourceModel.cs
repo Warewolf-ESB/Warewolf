@@ -509,7 +509,7 @@ namespace Dev2.Studio.Core.Models
             ID = resourceModel.ID;
             ServerResourceType = resourceModel.ServerResourceType;
 
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
+            this.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
             _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             if(resourceModel.Errors != null)

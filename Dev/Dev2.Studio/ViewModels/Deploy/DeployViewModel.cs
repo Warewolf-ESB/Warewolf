@@ -700,7 +700,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(ResourceCheckedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(message.PreCheckedState == true && message.PostCheckedState == false)
             {
                 Target.SetNodeOverwrite(message.ResourceModel, false);
@@ -710,13 +710,13 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(UpdateDeployMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             RefreshEnvironments();
         }
 
         public void Handle(SelectItemInDeployMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             _initialItemDisplayName = message.DisplayName;
             _initialItemEnvironment = message.Environment;
             SelectSourceServerFromInitialValue();
@@ -724,7 +724,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(AddServerToDeployMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(message.Context != null)
             {
                 var ctx = message.Context;
@@ -745,7 +745,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(EnvironmentDeletedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(Source != null)
             {
                 Source.RemoveEnvironment(message.EnvironmentModel);

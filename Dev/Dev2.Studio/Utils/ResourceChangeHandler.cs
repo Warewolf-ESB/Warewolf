@@ -47,7 +47,7 @@ namespace Dev2.Utils
                 }
                 else
                 {
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
+                    this.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
                     _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
                 }
             }

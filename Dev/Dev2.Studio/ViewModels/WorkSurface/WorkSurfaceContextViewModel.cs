@@ -173,7 +173,7 @@ namespace Dev2.ViewModels.WorkSurface
                        (_editResourceCommand =
                            new RelayCommand(param =>
                            {
-                               Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                               this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                                EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
                            }
                             , param => CanExecute()));
@@ -245,19 +245,19 @@ namespace Dev2.ViewModels.WorkSurface
 
         public void Handle(DebugResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             Debug(message.Resource, true);
         }
 
         public void Handle(ExecuteResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             Debug(message.Resource, false);
         }
 
         public void Handle(SaveResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(ContextualResourceModel != null)
             {
                 if(ContextualResourceModel.ResourceName == message.Resource.ResourceName)
@@ -273,7 +273,7 @@ namespace Dev2.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceDisplayName message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
                 //tab title
@@ -284,7 +284,7 @@ namespace Dev2.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             //ContextualResourceModel.ServiceDefinition = ContextualResourceModel.ServiceDefinition
             //        .Replace("x:Class=\"" + ContextualResourceModel.ResourceName, "x:Class=\"" + message.NewName)
             //        .Replace("Name=\"" + ContextualResourceModel.ResourceName, "Name=\"" + message.NewName)
@@ -439,7 +439,7 @@ namespace Dev2.ViewModels.WorkSurface
         public void ViewInBrowser()
         {
             FindMissing();
-            Logger.TraceInfo("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
+            this.TraceInfo("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
             EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if(ContextualResourceModel == null || ContextualResourceModel.Environment == null ||
@@ -538,7 +538,7 @@ namespace Dev2.ViewModels.WorkSurface
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
             }
-            Logger.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
+            this.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
             EventPublisher.Publish(new UpdateDeployMessage());
         }
 

@@ -110,7 +110,7 @@ namespace Dev2.Studio.Core.Models
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
 
-            Logger.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
+            this.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
         }
 
@@ -258,13 +258,13 @@ namespace Dev2.Studio.Core.Models
                 if(Application.Current != null)
                 {
                     // application is not shutting down!!
-                    Logger.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => _eventPublisher.Publish(message)), null);
                 }
             }
             else
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
+                this.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
                 _eventPublisher.Publish(message);
             }
         }

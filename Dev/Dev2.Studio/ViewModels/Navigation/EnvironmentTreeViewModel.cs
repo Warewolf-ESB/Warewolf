@@ -299,7 +299,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                        (_newResourceCommand = new RelayCommand<string>(s
                                                                        =>
                        {
-                           Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
+                           this.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
                            EventPublisher.Publish(new ShowNewResourceWizard(s));
                        }, o => HasFileMenu));
             }
@@ -406,7 +406,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             Disconnect();
             var rootVm = FindRootNavigationViewModel();
             var ctx = (rootVm == null) ? null : rootVm.Context;
-            Logger.TraceInfo("Publish message of type - " + typeof(RemoveEnvironmentMessage));
+            this.TraceInfo("Publish message of type - " + typeof(RemoveEnvironmentMessage));
             EventPublisher.Publish(new RemoveEnvironmentMessage(EnvironmentModel, ctx));
             RaisePropertyChangedForCommands();
         }
@@ -452,7 +452,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public void Handle(CloseWizardMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             throw new NotImplementedException();
         }
 

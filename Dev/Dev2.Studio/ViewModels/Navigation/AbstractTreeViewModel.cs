@@ -602,7 +602,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                        (_deployCommand =
                         new RelayCommand(param =>
                         {
-                            Logger.TraceInfo("Publish message of type - " + typeof(DeployResourcesMessage));
+                            this.TraceInfo("Publish message of type - " + typeof(DeployResourcesMessage));
                             EventPublisher.Publish(new DeployResourcesMessage(this));
                         },
                             o => CanDeploy));

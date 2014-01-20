@@ -36,7 +36,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo("This is some information");
+            this.TraceInfo("This is some information");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithStringValue_StringBuilderContainsMethodNameAndMessage : This is some information\r\n");
@@ -50,13 +50,13 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo("This is some information","MyMethodName");
+            this.TraceInfo("This is some information", "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : This is some information\r\n");
             VerifyDateTimeIsLogged(currentlyLogged);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Logger_TraceInfo")]
@@ -64,7 +64,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo(null,"MyMethodName");
+            this.TraceInfo(null, "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : ");
@@ -78,7 +78,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo(null,null);
+            this.TraceInfo(null, null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->   : ");
@@ -92,7 +92,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo();
+            this.TraceInfo();
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithNoParameters_MethodNameStillLogged : ");
@@ -125,8 +125,8 @@ namespace Dev2.Infrastructure.Tests.Logs
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->  MyMethodName : This is some information\r\n");
             VerifyDateTimeIsLogged(currentlyLogged);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Logger_Warning")]
@@ -195,8 +195,8 @@ namespace Dev2.Infrastructure.Tests.Logs
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR ->  MyMethodName : This is some information\r\n");
             VerifyDateTimeIsLogged(currentlyLogged);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Logger_Error")]
@@ -267,8 +267,8 @@ namespace Dev2.Infrastructure.Tests.Logs
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->  MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
             VerifyDateTimeIsLogged(currentlyLogged);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Logger_Error")]
@@ -303,14 +303,14 @@ namespace Dev2.Infrastructure.Tests.Logs
         public void Logger_Error_WithExceptionWithInnerExceptionValue_StringBuilderContainsGivenMethodNameAndMessageAndInnerExceptionMessageStackTrace()
         {
             //------------Setup for test--------------------------
-            var myException = new Exception("This is some information",new Exception("This is the one inner exception",new Exception("This is another inner exception")));
+            var myException = new Exception("This is some information", new Exception("This is the one inner exception", new Exception("This is another inner exception")));
             //------------Execute Test---------------------------
             Logger.Error(myException);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : This is some information\r\n\r\nThis is the one inner exception\r\n\r\nThis is another inner exception\r\n");
             VerifyDateTimeIsLogged(currentlyLogged);
-        } 
+        }
 
         static void VerifyDateTimeIsLogged(string currentlyLogged)
         {
@@ -319,7 +319,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         #endregion
     }
 
-    public class TestTraceListner:TraceListener
+    public class TestTraceListner : TraceListener
     {
         readonly StringBuilder _stringBuilder;
 

@@ -117,20 +117,20 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if(!DontAllowDraging)
             {
-                Logger.TraceInfo("Drag Is Allowed");
+                this.TraceInfo("Drag Is Allowed");
                 var inputElement = sender as IInputElement;
                 var dependencyObject = sender as DependencyObject;
 
                 if(e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
                 {
-                    Logger.TraceInfo("Starting Drag");
+                    this.TraceInfo("Starting Drag");
                     Point currentPosition = e.GetPosition(inputElement);
 
                     if((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) || (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                     {
                         var dragData = new DataObject();
                         var dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
-                        Logger.TraceInfo("Got DataContext");
+                        this.TraceInfo("Got DataContext");
                         if(dragSourceDataContext != null)
                         {
                             if(dragSourceDataContext.IsRenaming)
@@ -139,7 +139,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                             }
 
                             dragSourceDataContext.IsNew = true;
-                            Logger.TraceInfo("Set IsNew");
+                            this.TraceInfo("Set IsNew");
                             if(!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
                             {
                                 dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);

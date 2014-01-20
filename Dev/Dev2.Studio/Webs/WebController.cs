@@ -35,18 +35,18 @@ namespace Dev2.Studio.Webs
 
         public void Handle(ShowWebpartWizardMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
         }
 
         public void Handle(CloseWizardMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             CloseWizard();
         }
 
         public void Handle(SetActivePageMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
         }
         #endregion IHandle
 

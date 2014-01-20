@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Helpers
 
         public LatestWebGetter(IDev2WebClient webClient)
         {
-            if (webClient == null)
+            if(webClient == null)
             {
                 throw new ArgumentNullException("webClient");
             }
@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core.Helpers
 
         public void GetLatest(string uri, string filePath)
         {
-            using (var client = _webClient)
+            using(var client = _webClient)
             {
                 try
                 {
@@ -41,11 +41,11 @@ namespace Dev2.Studio.Core.Helpers
                     // ensure dir structure is present ;)
                     var rootPath = Path.GetDirectoryName(filePath);
 
-                    if (rootPath != null && !Directory.Exists(rootPath))
+                    if(rootPath != null && !Directory.Exists(rootPath))
                     {
                         Directory.CreateDirectory(rootPath);
                     }
-                    
+
                     // DO NOT use DownloadFile as this will nuke the file even if there is an error
                     var source = client.DownloadString(uri);
                     File.WriteAllText(filePath, source);
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch(Exception ex)
                 {
-                    Logger.TraceInfo(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
+                    this.TraceInfo(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }
             RaiseInvoked();

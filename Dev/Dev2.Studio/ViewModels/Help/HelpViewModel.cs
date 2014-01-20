@@ -64,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         public void Handle(TabClosedMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(!message.Context.Equals(this)) return;
 
             EventPublisher.Unsubscribe(this);

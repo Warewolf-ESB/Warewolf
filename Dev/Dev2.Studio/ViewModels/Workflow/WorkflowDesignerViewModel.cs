@@ -348,7 +348,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         ModelProperty modelProperty = mi.Properties["Key"];
                         if(modelProperty != null && ((modelProperty.Value != null) && modelProperty.Value.ToString().Contains("Case")))
                         {
-                            Logger.TraceInfo("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
+                            this.TraceInfo("Publish message of type - " + typeof(ConfigureCaseExpressionMessage));
                             EventPublisher.Publish(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, EnvironmentModel = _resourceModel.Environment });
                         }
                     }
@@ -453,13 +453,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
-            Logger.TraceInfo("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
             EventPublisher.Publish(new ConfigureSwitchExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
         }
 
         protected void InitializeFlowDecision(ModelItem mi)
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
             EventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
         }
 
@@ -873,7 +873,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <date>2013/02/06</date>
         public void Handle(AddStringListToDataListMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             IDataListViewModel dlvm = DataListSingleton.ActiveDataList;
             if(dlvm != null)
             {
@@ -895,7 +895,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="message">The message.</param>
         public void Handle(UpdateResourceMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             if(
                 ContexttualResourceModelEqualityComparer.Current.Equals(
                     message.ResourceModel, _resourceModel))
@@ -1193,7 +1193,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workspace = GlobalConstants.ServerWorkspaceID;
 
                 // log the trace for fetch ;)
-                Logger.TraceInfo(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
+                this.TraceInfo(string.Format("Null Definition For {0} :: {1}. Fetching...", _resourceModel.ID, _resourceModel.ResourceName));
 
                 // In the case of null of empty try fetching again ;)
                 var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
@@ -1207,7 +1207,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if(_resourceModel.ResourceType == ResourceType.WorkflowService)
                 {
                     // log the trace for fetch ;)
-                    Logger.TraceInfo(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
+                    this.TraceInfo(string.Format("Could not find {0}. Creating a new workflow", _resourceModel.ResourceName));
 
                     // BUG 9304 - 2013.05.08 - TWR 
                     _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
@@ -1320,7 +1320,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            Logger.TraceInfo(message.GetType().Name, GetType().Name);
+            this.TraceInfo(message.GetType().Name, GetType().Name);
             foreach(var modelItem in ModelService.Find(ModelService.Root, typeof(DsfActivity)))
             {
                 var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
@@ -1373,7 +1373,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
-                            Logger.TraceInfo("Publish message of type - " + typeof(EditCaseExpressionMessage));
+                            this.TraceInfo("Publish message of type - " + typeof(EditCaseExpressionMessage));
                             EventPublisher.Publish(new EditCaseExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                         }
                     }
@@ -1382,7 +1382,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowSwitch<string>))
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
+                        this.TraceInfo("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
                         EventPublisher.Publish(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
 
@@ -1390,7 +1390,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
                        item.ItemType == typeof(FlowDecision))
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
+                        this.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
                         EventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
                 }
@@ -1410,7 +1410,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                             IWebActivity webpageActivity = WebActivityFactory.CreateWebActivity(modelItem, _resourceModel,
                                 modelProperty
                                     .ComputedValue.ToString());
-                            Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                            this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                             EventPublisher.Publish(new AddWorkSurfaceMessage(webpageActivity));
                         }
                         return true;
@@ -1717,7 +1717,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void Handle(EditActivityMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             EditActivity(message.ModelItem, message.ParentEnvironmentID, message.EnvironmentRepository);
         }
 

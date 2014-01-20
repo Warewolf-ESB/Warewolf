@@ -399,7 +399,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
             if(resourceModel != null)
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                 _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 RefreshDatabases();
             }
@@ -407,7 +407,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
+            this.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
             RefreshDatabases();
         }

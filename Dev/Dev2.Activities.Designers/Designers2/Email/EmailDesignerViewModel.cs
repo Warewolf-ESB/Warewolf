@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public void CreateNewEmailSource()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
+            this.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("EmailSource"));
             UpdateEnvironmentResources();
         }
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers2.Email
         public void EditEmailSource()
         {
             Action<IEnvironmentModel> callback = EditEmailSource;
-            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
+            this.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
         #endregion
@@ -173,7 +173,7 @@ namespace Dev2.Activities.Designers2.Email
         private void UpdateEnvironmentResources()
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
-            Logger.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
+            this.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers2.Email
                 IResourceModel resourceModel = env.ResourceRepository.FindSingle(c => c.ResourceName == SelectedEmailSource.ResourceName);
                 if(resourceModel != null)
                 {
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 }
             }

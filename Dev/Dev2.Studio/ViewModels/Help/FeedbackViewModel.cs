@@ -471,7 +471,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// <exception cref="System.NullReferenceException">ICommService of type EmailCommMessage</exception>
         public void Send(ICommService<EmailCommMessage> commService)
         {
-            Logger.TraceInfo();
+            this.TraceInfo();
             if(commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
 
             var message = new EmailCommMessage

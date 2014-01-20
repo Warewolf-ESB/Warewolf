@@ -154,7 +154,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 //update resource repository
                 resourceRepository.Rename(DataContext.ID.ToString(), newName);
                 //Update open instance of this resource
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName));
+                this.TraceInfo("Publish message of type - " + typeof(UpdateWorksurfaceDisplayName));
                 EventPublisher.Publish(new UpdateWorksurfaceDisplayName(DataContext.ID, DataContext.ResourceName, newName));
                 //update this data context
                 if(DataContext.WorkflowXaml != null)
@@ -788,7 +788,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             //TODO: Implement in PBI 9501
             var resourceModel = ResourceModelFactory.CreateResourceModel(EnvironmentModel, DataContext.ResourceType, string.Empty, obj.ToString());
             resourceModel.Category = TreeParent.DisplayName;
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
             EventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
         }
 
@@ -872,7 +872,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Debug()
         {
             EditCommand.Execute(null);
-            Logger.TraceInfo("Publish message of type - " + typeof(DebugResourceMessage));
+            this.TraceInfo("Publish message of type - " + typeof(DebugResourceMessage));
             EventPublisher.Publish(new DebugResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -886,7 +886,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(DataContext == null)
                 return;
-            Logger.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage));
+            this.TraceInfo("Publish message of type - " + typeof(DeleteResourcesMessage));
             EventPublisher.Publish(new DeleteResourcesMessage(new Collection<IContextualResourceModel> { DataContext }));
             RaisePropertyChangedForCommands();
         }
@@ -963,7 +963,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowProperties()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
             EventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -975,7 +975,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void ShowDependencies()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowDependenciesMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ShowDependenciesMessage));
             EventPublisher.Publish(new ShowDependenciesMessage(DataContext, true));
             RaisePropertyChangedForCommands();
         }
@@ -987,7 +987,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public void Run()
         {
-            Logger.TraceInfo("Publish message of type - " + typeof(ExecuteResourceMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ExecuteResourceMessage));
             EventPublisher.Publish(new ExecuteResourceMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -1001,7 +1001,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             if(DataContext != null && !String.IsNullOrEmpty(DataContext.HelpLink))
             {
-                Logger.TraceInfo("Publish message of type - " + typeof(ShowHelpTabMessage));
+                this.TraceInfo("Publish message of type - " + typeof(ShowHelpTabMessage));
                 EventPublisher.Publish(new ShowHelpTabMessage(DataContext.HelpLink));
             }
 
@@ -1016,7 +1016,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Build()
         {
             EditCommand.Execute(null);
-            Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
+            this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
             EventPublisher.Publish(new SaveResourceMessage(DataContext, false));
             RaisePropertyChangedForCommands();
         }
@@ -1047,7 +1047,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             // TODO : Handle via resource type?!
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+            this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
             EventPublisher.Publish(new ShowEditResourceWizardMessage(DataContext));
             RaisePropertyChangedForCommands();
         }
@@ -1078,15 +1078,15 @@ namespace Dev2.Studio.ViewModels.Navigation
             switch(resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
-                    Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
                     break;
                 case ResourceType.Source:
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     EventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
                 case ResourceType.Service:
-                    Logger.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                     EventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                     break;
             }

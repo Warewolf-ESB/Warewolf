@@ -77,7 +77,7 @@ namespace Dev2.Webs.Callbacks
                 {
                     var resourceWithContext = new ResourceModel(environmentModel);
                     resourceWithContext.Update(resource);
-                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     EventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                 }
             }

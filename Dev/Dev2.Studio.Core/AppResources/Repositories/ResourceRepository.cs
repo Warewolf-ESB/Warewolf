@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         if(resourceToUpdate != null)
                         {
                             resourceToUpdate.Update(resource);
-                            Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                            this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                             // For some daft reason we have two model versions?!
                             var resourceWithContext = new ResourceModel(targetEnviroment);
                             resourceWithContext.Update(resource);
@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
             }
 
-            Logger.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage));
+            this.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage));
             eventPublisher.Publish(new RefreshExplorerMessage());
         }
 
@@ -959,7 +959,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, targetEnv.Connection.WorkspaceID);
 
             // log the trace for fetch ;)
-            Logger.TraceInfo(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelID, workspaceID));
+            this.TraceInfo(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelID, workspaceID));
 
             return result;
         }

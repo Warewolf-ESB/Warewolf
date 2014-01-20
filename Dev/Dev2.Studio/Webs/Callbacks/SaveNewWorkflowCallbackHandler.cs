@@ -52,7 +52,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 if(_resourceModel != null)
                 {
                     _resourceModel.IsNewWorkflow = false;
-                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                     EventPublisher.Publish(new SaveResourceMessage(_resourceModel, true, false));
                     IContextualResourceModel newResourceModel =
                         ResourceModelFactory.CreateResourceModel(_resourceModel.Environment, "Workflow",
@@ -65,16 +65,16 @@ namespace Dev2.Studio.Webs.Callbacks
                     newResourceModel.DataList = _resourceModel.DataList;
                     newResourceModel.IsNewWorkflow = false;
 
-                    Logger.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     EventPublisher.Publish(new UpdateResourceMessage(newResourceModel));
                     if(_addToTabManager)
                     {
-                        Logger.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
+                        this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                         EventPublisher.Publish(new AddWorkSurfaceMessage(newResourceModel));
                     }
-                    Logger.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
                     EventPublisher.Publish(new SaveResourceMessage(newResourceModel, false, _addToTabManager));
-                    Logger.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
                     EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(_resourceModel));
 
                     NewWorkflowNames.Instance.Remove(_resourceModel.ResourceName);

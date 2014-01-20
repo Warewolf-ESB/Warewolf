@@ -142,7 +142,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         void ShowNewResourceWizard(object obj)
         {
             var commandParameter = obj.ToString();
-            Logger.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
+            this.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             EventPublisher.Publish(new ShowNewResourceWizard(commandParameter));
         }
 

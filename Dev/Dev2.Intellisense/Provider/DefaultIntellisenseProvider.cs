@@ -65,7 +65,7 @@ namespace Dev2.Studio.InterfaceImplementors
             Optional = false;
             HandlesResultInsertion = true;
             EventPublishers.Aggregator.Subscribe(this);
-            if (DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
+            if(DesignTestObject.Dispatcher.CheckAccess() && !DesignerProperties.GetIsInDesignMode(DesignTestObject))
             {
                 _isUpdated = true;
                 CreateDataList();
@@ -78,7 +78,7 @@ namespace Dev2.Studio.InterfaceImplementors
         private void OnUpdateIntellisense()
         {
             _isUpdated = true;
-            if (_textBox != null) _textBox.UpdateErrorState();
+            if(_textBox != null) _textBox.UpdateErrorState();
         }
         #endregion
 
@@ -88,16 +88,16 @@ namespace Dev2.Studio.InterfaceImplementors
             StringBuilder result = new StringBuilder("<ADL>");
             ObservableCollection<IDataListItemModel> dataList = null;
 
-            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
+            if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.DataList != null)
             {
                 dataList = DataListSingleton.ActiveDataList.DataList;
             }
 
             bool wasRebuilt = false;
 
-            if (dataList != null)
+            if(dataList != null)
             {
-                if (!_hasCachedDatalist || _isUpdated)
+                if(!_hasCachedDatalist || _isUpdated)
                 {
                     wasRebuilt = true;
 
@@ -108,10 +108,10 @@ namespace Dev2.Studio.InterfaceImplementors
 
             result.Append("</ADL>");
 
-            if (wasRebuilt)
+            if(wasRebuilt)
             {
                 //   _cachedDataList = result.ToString();
-                if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
+                if(DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.Resource != null &&
                     DataListSingleton.ActiveDataList.Resource.DataList != null)
                 {
                     _cachedDataList = DataListSingleton.ActiveDataList.Resource.DataList;
@@ -131,29 +131,29 @@ namespace Dev2.Studio.InterfaceImplementors
             string result = context.InputText;
             int startIndex = 0;
 
-            if (!string.IsNullOrEmpty(input))
+            if(!string.IsNullOrEmpty(input))
             {
-                if (subStringToReplace.Contains("("))
+                if(subStringToReplace.Contains("("))
                 {
                     int innerStartIndex = subStringToReplace.IndexOf("(", StringComparison.Ordinal) + 1;
                     int innerEndIndex = subStringToReplace.Length;
 
                     preString = subStringToReplace.Substring(0, innerStartIndex);
 
-                    if (subStringToReplace.Contains(")"))
+                    if(subStringToReplace.Contains(")"))
                     {
                         innerEndIndex = subStringToReplace.IndexOf(")", StringComparison.Ordinal);
 
                         postString = subStringToReplace.Substring(innerEndIndex, subStringToReplace.Length - innerEndIndex);
                     }
 
-                    if (context.CaretPosition > innerStartIndex && context.CaretPosition <= innerEndIndex)
+                    if(context.CaretPosition > innerStartIndex && context.CaretPosition <= innerEndIndex)
                     {
-                        if (!string.IsNullOrEmpty(preString))
+                        if(!string.IsNullOrEmpty(preString))
                         {
                             subStringToReplace = subStringToReplace.Replace(preString, "");
                         }
-                        if (!string.IsNullOrEmpty(postString))
+                        if(!string.IsNullOrEmpty(postString))
                         {
                             subStringToReplace = subStringToReplace.Replace(postString, "");
                         }
@@ -164,11 +164,11 @@ namespace Dev2.Studio.InterfaceImplementors
                         postString = string.Empty;
                     }
                 }
-                if (string.IsNullOrEmpty(preString) && string.IsNullOrEmpty(postString))
+                if(string.IsNullOrEmpty(preString) && string.IsNullOrEmpty(postString))
                 {
-                    if (context.CaretPosition < context.InputText.Length)
+                    if(context.CaretPosition < context.InputText.Length)
                     {
-                        if (context.InputText[context.CaretPosition] != ']' && context.InputText[context.CaretPosition + 1] != ']')
+                        if(context.InputText[context.CaretPosition] != ']' && context.InputText[context.CaretPosition + 1] != ']')
                         {
                             postString = subStringToReplace.Substring(context.CaretPosition);
                             context.InputText = subStringToReplace.Remove(context.CaretPosition);
@@ -186,7 +186,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 var toCmp = replaceStr.Replace("[[", "").Replace("]]", "");
                 var matchFound = false;
 
-                if (compareStr.Contains(toCmp))
+                if(compareStr.Contains(toCmp))
                 {
                     matchFound = true;
                 }
@@ -195,24 +195,24 @@ namespace Dev2.Studio.InterfaceImplementors
                     // try replacing () with (*) or (*) with () ;)
 
                     var tmp = compareStr.Replace("()", "(*)");
-                    if (tmp.Contains(toCmp))
+                    if(tmp.Contains(toCmp))
                     {
                         matchFound = true;
                     }
                     else
                     {
                         tmp = compareStr.Replace("(*)", "()");
-                        if (tmp.Contains(tmp))
+                        if(tmp.Contains(tmp))
                         {
                             matchFound = true;
                         }
                     }
                 }
 
-                if (matchFound)
+                if(matchFound)
                 {
                     int indexToRemoveFrom = startIndex;
-                    if (indexToRemoveFrom == 0 && !string.IsNullOrEmpty(preString))
+                    if(indexToRemoveFrom == 0 && !string.IsNullOrEmpty(preString))
                     {
                         indexToRemoveFrom = preString.Length;
                     }
@@ -220,7 +220,7 @@ namespace Dev2.Studio.InterfaceImplementors
                     var txt = context.InputText;
 
                     // we need to bounds check ;)
-                    if (!string.IsNullOrEmpty(txt))
+                    if(!string.IsNullOrEmpty(txt))
                     {
                         result = context.InputText.Remove(indexToRemoveFrom);
                     }
@@ -241,20 +241,20 @@ namespace Dev2.Studio.InterfaceImplementors
             startIndex = context.InputText.LastIndexOf("[[", StringComparison.Ordinal);
             int tmpIndex = context.InputText.LastIndexOf("]]", StringComparison.Ordinal);
 
-            if (startIndex > tmpIndex)
+            if(startIndex > tmpIndex)
             {
                 subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
             }
-            else if (subStringToReplace.Contains("]]"))
+            else if(subStringToReplace.Contains("]]"))
             {
                 startIndex = subStringToReplace.LastIndexOf("]]", StringComparison.Ordinal) + 2;
-                if (startIndex > -1)
+                if(startIndex > -1)
                 {
-                    if (startIndex != subStringToReplace.Length)
+                    if(startIndex != subStringToReplace.Length)
                     {
                         subStringToReplace = context.InputText.Substring(startIndex, context.InputText.Length - startIndex);
                         string tmpString = subStringToReplace.TrimStart(trimCharArray);
-                        if (tmpString.Length < subStringToReplace.Length)
+                        if(tmpString.Length < subStringToReplace.Length)
                         {
                             startIndex = startIndex + (subStringToReplace.Length - tmpString.Length);
                             subStringToReplace = tmpString;
@@ -267,7 +267,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
             }
 
-            if (startIndex == -1)
+            if(startIndex == -1)
             {
                 startIndex = 0;
             }
@@ -279,13 +279,13 @@ namespace Dev2.Studio.InterfaceImplementors
             var result = value;
             newPos = pos;
             if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
-            {
-                result = getBetweenBraces(result, pos, out newPos);
-                pos = newPos;
-            }
+                {
+                    result = getBetweenBraces(result, pos, out newPos);
+                    pos = newPos;
+                }
 
             // if empty default back to original value ;)
-            if (string.IsNullOrEmpty(result))
+            if(string.IsNullOrEmpty(result))
             {
                 result = value;
             }
@@ -293,12 +293,12 @@ namespace Dev2.Studio.InterfaceImplementors
             var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
 
             // is it recordset notation and the only value present?
-            if (!String.IsNullOrEmpty(rsName))
+            if(!String.IsNullOrEmpty(rsName))
             {
                 var case1Len = 1;
                 var case2Len = 2;
 
-                if (result.Length == pos && !result.StartsWith("[["))
+                if(result.Length == pos && !result.StartsWith("[["))
                 {
                     result = string.Concat("[[", result);
                     newPos += 2;
@@ -311,7 +311,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 }
 
                 // we have a rs( case ;)
-                if (rsName.Length + case1Len == value.Length)
+                if(rsName.Length + case1Len == value.Length)
                 {
                     // fake it to get recordset field data ;)
                     result = string.Concat(result, ").");
@@ -335,19 +335,19 @@ namespace Dev2.Studio.InterfaceImplementors
         // Travis.Frisinger : Rolled-back to CI 8121 since it was over-writen by 3 other check-ins
         private bool IsBetweenBraces(string value, int pos)
         {
-            if (pos < 0 || pos > value.Length - 1) return false;
+            if(pos < 0 || pos > value.Length - 1) return false;
             return (value.LastIndexOf('(', pos) != -1 && value.IndexOf(')', pos) != -1);
         }
 
         private string getBetweenBraces(string value, int pos, out int newPos)
         {
             newPos = pos;
-            if (pos < 0 || pos > value.Length - 1) return "";
+            if(pos < 0 || pos > value.Length - 1) return "";
 
             int start = value.LastIndexOf('(', pos) + 1;
             int length = value.IndexOf(')', pos) - value.LastIndexOf('(', pos) - 1;
 
-            if (start < 0 || length <= 0 || start + length > value.Length - 1) return "";
+            if(start < 0 || length <= 0 || start + length > value.Length - 1) return "";
 
             newPos = pos - value.LastIndexOf('(', pos) - 1;
 
@@ -356,11 +356,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {
-            if (_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
-            if (!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
+            if(_isDisposed) throw new ObjectDisposedException("DefaultIntellisenseProvider");
+            if(!Equals(_textBox, context.TextBox)) _textBox = context.TextBox as IntellisenseTextBox;
             IList<IIntellisenseResult> results;
             string inputText = context.InputText;
-            if (context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
+            if(context.CaretPosition > context.InputText.Length || context.CaretPosition < 0)
             {
                 return new List<IntellisenseProviderResult>();
             }
@@ -370,7 +370,7 @@ namespace Dev2.Studio.InterfaceImplementors
             enIntellisensePartType filterType = context.FilterType;
             IntellisenseDesiredResultSet desiredResultSet = context.DesiredResultSet;
 
-            switch (desiredResultSet)
+            switch(desiredResultSet)
             {
                 case IntellisenseDesiredResultSet.EntireSet: results = GetIntellisenseResultsImpl("[[", filterType); break;
                 default:
@@ -379,11 +379,11 @@ namespace Dev2.Studio.InterfaceImplementors
                         inputText = CleanupInput(inputText, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
                         string removeCsv;
-                        if (context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
+                        if(context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
                         {
                             char letter = context.InputText[context.CaretPosition];
 
-                            if (char.IsWhiteSpace(letter))
+                            if(char.IsWhiteSpace(letter))
                             {
                                 results = GetIntellisenseResultsImpl(inputText.Substring(0, context.CaretPosition), filterType);
                             }
@@ -396,7 +396,7 @@ namespace Dev2.Studio.InterfaceImplementors
                         {
                             //consider csv input
                             var csv = inputText.Split(',');
-                            if (csv.Count() < 2)
+                            if(csv.Count() < 2)
                             {
                                 //non csv 
                                 removeCsv = inputText;
@@ -409,7 +409,7 @@ namespace Dev2.Studio.InterfaceImplementors
                             results = GetIntellisenseResultsImpl(removeCsv, filterType);
                         }
 
-                        if (results == null || results.Count == 0 && HandlesResultInsertion)
+                        if(results == null || results.Count == 0 && HandlesResultInsertion)
                         {
                             //Reset carret position before searching for minimum, 
                             //This is only needed because the caret position is modified,
@@ -421,17 +421,17 @@ namespace Dev2.Studio.InterfaceImplementors
                             int foundMinimum = -1;
                             int foundLength = 0;
 
-                            for (int i = context.CaretPosition - 1; i >= 0; i--)
+                            for(int i = context.CaretPosition - 1; i >= 0; i--)
                             {
                                 char currentChar = context.InputText[i];
 
-                                if (Char.IsWhiteSpace(currentChar) || !Char.IsLetterOrDigit(currentChar))
+                                if(Char.IsWhiteSpace(currentChar) || !Char.IsLetterOrDigit(currentChar))
                                 {
                                     i = -1;
                                 }
                                 else
                                 {
-                                    if (currentChar == '[')
+                                    if(currentChar == '[')
                                     {
                                         i = -1;
                                     }
@@ -443,25 +443,25 @@ namespace Dev2.Studio.InterfaceImplementors
                                 }
                             }
 
-                            if (foundMinimum != -1)
+                            if(foundMinimum != -1)
                             {
                                 appendText = context.InputText.Substring(foundMinimum, foundLength);
                             }
 
-                            if (!String.IsNullOrEmpty(appendText))
+                            if(!String.IsNullOrEmpty(appendText))
                             {
                                 inputText = "[[" + appendText;
                                 results = GetIntellisenseResultsImpl(inputText, filterType);
 
-                                if (results != null)
+                                if(results != null)
                                 {
                                     context.State = true;
 
-                                    for (int i = 0; i < results.Count; i++)
+                                    for(int i = 0; i < results.Count; i++)
                                     {
                                         IIntellisenseResult currentResult = results[i];
 
-                                        if (currentResult.ErrorCode != enIntellisenseErrorCode.None)
+                                        if(currentResult.ErrorCode != enIntellisenseErrorCode.None)
                                         {
                                             context.State = false;
                                             i = results.Count;
@@ -480,27 +480,27 @@ namespace Dev2.Studio.InterfaceImplementors
 
             string[] openParts = Regex.Split(context.InputText, @"\[\[");
             string[] closeParts = Regex.Split(context.InputText, @"\]\]");
-            if (openParts.Length != closeParts.Length)
+            if(openParts.Length != closeParts.Length)
             {
                 results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
             }
 
-            if (results != null)
+            if(results != null)
             {
-                for (int i = 0; i < results.Count; i++)
+                for(int i = 0; i < results.Count; i++)
                 {
                     IIntellisenseResult currentResult = results[i];
 
-                    if (currentResult.ErrorCode != enIntellisenseErrorCode.None)
+                    if(currentResult.ErrorCode != enIntellisenseErrorCode.None)
                     {
-                        if (currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
+                        if(currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
                         {
                             trueResults.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Message, currentResult.Message, true));
                         }
                     }
 
 
-                    if (currentResult.Type == enIntellisenseResultType.Selectable)
+                    if(currentResult.Type == enIntellisenseResultType.Selectable)
                     {
                         trueResults.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Option.Description, currentResult.Option.Description, false));
                     }
@@ -522,20 +522,20 @@ namespace Dev2.Studio.InterfaceImplementors
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            if (input.Trim().EndsWith("]"))
+            if(input.Trim().EndsWith("]"))
             {
                 var bracketNumber = Regex.Matches(input, @"\[\[[0-9]");
-                if (bracketNumber.Count > 0)
+                if(bracketNumber.Count > 0)
                 {
                     results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(1, 1, "Invalid Expression", "", StringResources.IntellisenseErrorExpressionStartingWithANumber));
                 }
 
-                if (results.Count < 0)
+                if(results.Count < 0)
                 {
                     var tmpResults = parser.ParseDataLanguageForIntellisense(input, _cachedDataList, false, filterTO, true);
                     tmpResults.ToList().ForEach(r =>
                     {
-                        if (r.Type == enIntellisenseResultType.Error)
+                        if(r.Type == enIntellisenseResultType.Error)
                         {
                             results.Add(r);
                         }
@@ -576,7 +576,7 @@ namespace Dev2.Studio.InterfaceImplementors
         ~DefaultIntellisenseProvider()
         {
             Dispose(false);
-        
+
         }
 
         public void OnDispose()
@@ -597,7 +597,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Handle(UpdateIntellisenseMessage message)
         {
-            Logger.TraceInfo(message.GetType().Name);
+            this.TraceInfo(message.GetType().Name);
             OnUpdateIntellisense();
         }
 

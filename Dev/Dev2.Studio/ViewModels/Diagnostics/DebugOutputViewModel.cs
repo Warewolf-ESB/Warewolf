@@ -487,20 +487,20 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if(item == null)
             {
-                Logger.TraceInfo("Debug line item is null, did not proceed");
+                this.TraceInfo("Debug line item is null, did not proceed");
                 return;
             }
 
             if(string.IsNullOrEmpty(item.MoreLink))
             {
-                Logger.TraceInfo("Link is empty");
+                this.TraceInfo("Link is empty");
             }
             else
             {
                 try
                 {
                     string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    Logger.TraceInfo(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
+                    this.TraceInfo(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
                 catch(Exception ex)

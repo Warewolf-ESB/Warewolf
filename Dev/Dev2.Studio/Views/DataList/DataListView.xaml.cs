@@ -125,7 +125,7 @@ namespace Dev2.Studio.Views.DataList
             if(vm != null)
             {
                 vm.WriteToResourceModel();
-                Logger.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
+                this.TraceInfo("Publish message of type - " + typeof(UpdateIntellisenseMessage));
                 _eventPublisher.Publish(new UpdateIntellisenseMessage());
             }
         }
