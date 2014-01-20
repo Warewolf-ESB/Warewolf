@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly}]" this:Process.WarewolfServerURI="Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport" this:Process.SendReport="True"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Workflow.Activities.AgentSettings() With {.MaxWaitTime = New System.TimeSpan(4, 0, 0), .MaxExecutionTime = New System.TimeSpan(0, 0, 0), .TagComparison = Microsoft.TeamFoundation.Build.Workflow.Activities.TagComparison.MatchExactly}]" this:Process.SendReport="True" this:Process.WarewolfServerSendReportURI="Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport" this:Process.WarewolfServerInsertResultsURI="Http://RSAKLFSVRWRWBLD:1234/services/JustProcessFile" this:Process.TestResultsStagingDirectory="\\RSAKLFSVRGENDEV\TestResultFiles"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -28,15 +28,20 @@
  xmlns:scg2="clr-namespace:System.Collections.Generic;assembly=System"
  xmlns:scg3="clr-namespace:System.Collections.Generic;assembly=System.ServiceModel"
  xmlns:sl="clr-namespace:System.Linq;assembly=System.Core"
+ xmlns:sw="clr-namespace:System.Web;assembly=System.Web"
+ xmlns:sw1="clr-namespace:System.Web;assembly=System"
  xmlns:this="clr-namespace:TfsBuild"
  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="AgentSettings" Type="InArgument(mtbwa:AgentSettings)" />
     <x:Property Name="BuildIDs" Type="InArgument(x:String)" />
     <x:Property Name="BranchID" Type="InArgument(x:String)" />
-    <x:Property Name="WarewolfServerURI" Type="InArgument(x:String)" />
     <x:Property Name="SendReport" Type="InArgument(x:Boolean)" />
     <x:Property Name="SpecifiedChangeSet" Type="InArgument(x:String)" />
+    <x:Property Name="WarewolfServerSendReportURI" Type="InArgument(x:String)" />
+    <x:Property Name="WarewolfServerInsertResultsURI" Type="InArgument(x:String)" />
+    <x:Property Name="TestResultsStagingDirectory" Type="InArgument(x:String)" />
+    <x:Property Name="TestResultTypes" Type="InArgument(s:String[])" />
   </x:Members>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
   <mva:VisualBasic.Settings>Assembly references and imported namespaces serialized as XML namespaces</mva:VisualBasic.Settings>
@@ -67,9 +72,52 @@
       </mtbwa:InvokeProcess>
       <If Condition="[SendReport]" DisplayName="If can send report" sap2010:WorkflowViewState.IdRef="If_1">
         <If.Then>
-          <Sequence DisplayName="Send Report" sap2010:WorkflowViewState.IdRef="Sequence_3">
-            <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Calling &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-            <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
+          <Sequence DisplayName="Insert Results and Send Report" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="x:String" Name="TestResultsStagingDirectoryWithNewFileName" />
+              <Variable x:TypeArguments="mtvc:Workspace" Name="Workspace" />
+            </Sequence.Variables>
+            <mtbwa:CreateWorkspace Name="[BuildAgent.ServiceHost.Name &amp; &quot;_BuildWait&quot;]" Result="[Workspace]" sap2010:WorkflowViewState.IdRef="CreateWorkspace_1" />
+            <mtbwa:DownloadFile DeletionId="{x:Null}" DisplayName="Download cURL" LocalPath="C:\Builds\WaitForBuilds\curl.exe" ServerPath="$/DEV2 SCRUM Project/BuildProcessTemplates/Utils/curl.exe" Version="[Microsoft.TeamFoundation.VersionControl.Client.VersionSpec.Latest.DisplayString]" VersionControlServer="[Workspace.VersionControlServer]" sap2010:WorkflowViewState.IdRef="DownloadFile_1" />
+            <ForEach x:TypeArguments="x:String" DisplayName="ForEach Type of Test Result" Values="[TestResultTypes]">
+              <ActivityAction x:TypeArguments="x:String">
+                <ActivityAction.Argument>
+                  <DelegateInArgument x:TypeArguments="x:String" Name="type" />
+                </ActivityAction.Argument>
+                <Sequence DisplayName="Insert results">
+                  <Assign DisplayName="Generate Test Results File Name">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectory &amp; "\" &amp; SpecifiedChangeSet &amp; "_" &amp; BuildDetail.RequestedFor.Replace(" ", ".") &amp; "_" &amp; BranchID &amp; "_" &amp; type &amp; ".trx"]</InArgument>
+                    </Assign.Value>
+                    <sap2010:WorkflowViewState.IdRef>Assign_1</sap2010:WorkflowViewState.IdRef>
+                  </Assign>
+                  <mtbwa:InvokeProcess Arguments="[&quot;-u &quot;&quot;DEV2\IntegrationTester:I73573r0&quot;&quot; --ntlm &quot;&quot;&quot; &amp; WarewolfServerInsertResultsURI &amp; &quot;?File=&quot; &amp; System.Web.HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName) &amp; &quot;&quot;&quot;&quot;]" DisplayName="Insert Results" FileName="C:\Builds\WaitForBuilds\curl.exe">
+                    <mtbwa:InvokeProcess.ErrorDataReceived>
+                      <ActivityAction x:TypeArguments="x:String">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                        </ActivityAction.Argument>
+                      </ActivityAction>
+                    </mtbwa:InvokeProcess.ErrorDataReceived>
+                    <mtbwa:InvokeProcess.OutputDataReceived>
+                      <ActivityAction x:TypeArguments="x:String">
+                        <ActivityAction.Argument>
+                          <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                        </ActivityAction.Argument>
+                      </ActivityAction>
+                    </mtbwa:InvokeProcess.OutputDataReceived>
+                    <sap2010:WorkflowViewState.IdRef>InvokeProcess_3</sap2010:WorkflowViewState.IdRef>
+                  </mtbwa:InvokeProcess>
+                  <sap2010:WorkflowViewState.IdRef>Sequence_4</sap2010:WorkflowViewState.IdRef>
+                </Sequence>
+              </ActivityAction>
+              <sap2010:WorkflowViewState.IdRef>ForEach`1_1</sap2010:WorkflowViewState.IdRef>
+            </ForEach>
+            <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Calling &quot; &amp; WarewolfServerSendReportURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+            <mtbwa:InvokeProcess Arguments="[&quot;-c &quot; &amp; WarewolfServerSendReportURI &amp; &quot;?CheckInID=&quot; &amp; SpecifiedChangeSet &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
               <mtbwa:InvokeProcess.ErrorDataReceived>
                 <ActivityAction x:TypeArguments="x:String">
                   <ActivityAction.Argument>
@@ -93,17 +141,29 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbCABkAMBxgMBBAFhAe8CAQMB4AMB5QMBAisDYQ4CAQEwBTCzAQIBMDEFMb0BAgEuMgVfGAIBAjChATCwAQIBMTEwMWICAS8ysQEyzgECAQcyggEypAECAQUy3wEyigICAQMzBzOyBQIBJzQHQx0CASJEB10MAgEMXgdemQICAQkzrwEzywQCASkzYTOmAQIBKDQmNNQBAgEkNIMCNK0CAgEjRBVEIwIBDUYLWBYCARJbC1vOAgIBD15+XrIBAgELRw1HmwQCARtIDVcjAgETW7MBW+cBAgERW2VbqgECARBHtQFHtAMCAR1HZ0esAQIBHEgsSKYCAgEVSMoCSOwCAgEU</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbDMBnQQB0gQBBgG5AwHvAwEFAWEB7wIBBAH9BAGfBQEDAYkDAY4DAQIwA5EBDgIBATUFNbMBAgFONgU2vQECAUw3BY8BGAIBAjWhATWwAQIBTzYwNmICAU03sQE3zgECAQc3ggE3pAECAQU33wE3igICAQM4BziyBQIBRTkHSB0CAUBJB40BDAIBDI4BB44BmQICAQk4rwE4ywQCAUc4YTimAQIBRjkmOdQBAgFCOYMCOa0CAgFBSRVJIwIBDUsLiAEWAgESiwELiwHOAgIBD44Bfo4BsgECAQtQDVCxAQIBO1ENUY4DAgE1Ug12FwIBIncNd6UEAgEbeA2HASMCAROLAbMBiwHnAQIBEYsBZYsBqgECARBQbVB6AgE+UClQZQIBPFGLAVHGAQIBOlFdUX8CATlRzwFRogICAThRuAJR2gICATZSYlJ1AgEzVxFzHAIBI3e1AXe+AwIBHXdnd6wBAgEceCx4sAICARV41AJ49gICARRYE2AcAgEqYRNxKQIBJF0+XfQBAgEtWj9aawIBK2EyYcACAgEmYecCYYkDAgEl</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="464,264" />
-      <sap2010:ViewStateData Id="WriteBuildWarning_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="200,264" />
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="222,450">
+      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="563,22" />
+      <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="563,22" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="541,22" />
+      <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="541,264" />
+      <sap2010:ViewStateData Id="CreateWorkspace_1" sap:VirtualizedContainerService.HintSize="294,22" />
+      <sap2010:ViewStateData Id="DownloadFile_1" sap:VirtualizedContainerService.HintSize="294,22" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="InvokeProcess_3" sap:VirtualizedContainerService.HintSize="242,264" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="264,488">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="294,636" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_3" sap:VirtualizedContainerService.HintSize="294,22" />
+      <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="294,264" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="316,1250">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -111,17 +171,17 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildWarning_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="464,598" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="486,1150" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="508,1398">
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="541,1398" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="541,22" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="563,1950" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="585,2198">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="548,1478" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="625,2278" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
