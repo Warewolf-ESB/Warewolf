@@ -56,8 +56,9 @@
       <mtbwa:AgentScope.Variables>
         <Variable x:TypeArguments="mtvc:Workspace" Name="Workspace" />
       </mtbwa:AgentScope.Variables>
-      <mtbwa:CreateWorkspace sap2010:WorkflowViewState.IdRef="CreateWorkspace_2" Name="_BuildWait" Result="[Workspace]" />
-      <mtbwa:DownloadFile DeletionId="{x:Null}" DisplayName="Download WaitForBuild" sap2010:WorkflowViewState.IdRef="DownloadFile_2" LocalPath="C:\Builds\WaitForBuilds\WaitForBuild.exe" ServerPath="$/DEV2 SCRUM Project/BuildProcessTemplates/Utils/QueueBuild/WaitForBuild.exe" Version="[Microsoft.TeamFoundation.VersionControl.Client.VersionSpec.Latest.DisplayString]" VersionControlServer="[Workspace.VersionControlServer]" />
+      <mtbwa:GetBuildAgent DisplayName="Get the Agent" mtbwt:BuildTrackingParticipant.Importance="Low" Result="[BuildAgent]" sap2010:WorkflowViewState.IdRef="GetBuildAgent_1" />
+      <mtbwa:CreateWorkspace sap2010:WorkflowViewState.IdRef="CreateWorkspace_2" Name="[BuildAgent.ServiceHost.Name &amp; &quot;_BuildWait&quot;]" Result="[Workspace]" />
+      <mtbwa:DownloadFile DeletionId="{x:Null}" DisplayName="Download WaitForBuild" sap2010:WorkflowViewState.IdRef="DownloadFile_2" LocalPath="C:\Builds\WaitForBuilds\WaitForBuild.exe" ServerPath="$/DEV2 SCRUM Project/BuildProcessTemplates/Utils/WaitForBuild.exe" Version="[Microsoft.TeamFoundation.VersionControl.Client.VersionSpec.Latest.DisplayString]" VersionControlServer="[Workspace.VersionControlServer]" />
       <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_1" Importance="[Microsoft.TeamFoundation.Build.Client.BuildMessageImportance.High]" Message="[&quot;Waiting for test runs &quot; &amp; BuildIDs &amp; &quot; queued by checkin &quot; &amp; SpecifiedChangeSet &amp; &quot; on branch &quot; &amp; BranchID &amp; &quot; by executing &quot;&quot;WaitForBuild.exe &quot; &amp; &quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;&quot;&quot;]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
       <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;&quot; &amp; BuildIDs &amp; &quot;&quot;&quot;&quot;]" DisplayName="Wait for All Test Runs" FileName="C:\Builds\WaitForBuilds\WaitForBuild.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_1">
         <mtbwa:InvokeProcess.ErrorDataReceived>
@@ -140,12 +141,13 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbDgBnQQB0gQBBgG5AwHvAwEFAWEB7wIBBAH9BAGfBQEDAYkDAY4DAQIwA5ABDgIBATUFNbMBAgFTNgU2vQECAVE3BY4BGAIBAjWhATWwAQIBVDYwNmICAVI3sQE3zgECAQc3ggE3pAECAQU33wE3igICAQM7Bzt7AgFNPAc8qwMCAUc9Bz2yBQIBQD4HTR0CATtOB4wBDAIBDI0BB40BmQICAQk7azt4AgFPO1c7YwIBTjzGATyUAgIBTDyQATy6AQIBSzydAjzwAgIBSjyGAzyoAwIBSD2vAT3LBAIBQj1hPaYBAgFBPiY+1AECAT0+gwI+rQICATxOFU4jAgENUAuHARYCARKKAQuKAc4CAgEPjQF+jQGyAQIBC1QNVI4DAgE1VQ11FwIBInYNdqUEAgEbdw2GASMCAROKAbMBigHnAQIBEYoBZYoBqgECARBUvAFU9wECATpUjgFUsAECATlUgAJU0wICAThU6QJUiwMCATZVkAFVowECATNaEXMcAgEjdrUBdr4DAgEddmd2rAECARx3LHf7AgIBFXefA3fBAwIBFFsTYhwCASpjE3IpAgEkYD5g9AECAS1dP11rAgErYzJjwAICASZj5wJjiQMCASU=</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d1BDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXRpbCBXb3JrZmxvd3NcREVWMi5XYWl0VGhlblNlbmRSZXBvcnQueGFtbDoBnQQB0gQBBgG5AwHvAwEFAWEB7wIBBAH9BAGfBQEDAYkDAY4DAQIwA5EBDgIBATUFNbMBAgFXNgU2vQECAVU3BY8BGAIBAjWhATWwAQIBWDYwNmICAVY3sQE3zgECAQc3ggE3pAECAQU33wE3igICAQM7BzuyAQIBUjwHPKsBAgFNPQc9oAMCAUc+Bz6yBQIBQD8HTh0CATtPB40BDAIBDI4BB44BmQICAQk7bzt9AgFTPJsBPKgBAgFQPFc8kwECAU49xgE9iQICAUw9kAE9ugECAUs9kgI95QICAUo9+wI9nQMCAUg+rwE+ywQCAUI+YT6mAQIBQT8mP9QBAgE9P4MCP60CAgE8TxVPIwIBDVELiAEWAgESiwELiwHOAgIBD44Bfo4BsgECAQtVDVWOAwIBNVYNdhcCASJ3DXelBAIBG3gNhwEjAgETiwGzAYsB5wECARGLAWWLAaoBAgEQVbwBVfcBAgE6VY4BVbABAgE5VYACVdMCAgE4VekCVYsDAgE2VpABVqMBAgEzWxF0HAIBI3e1AXe+AwIBHXdnd6wBAgEceCx4+wICARV4nwN4wQMCARRcE2McAgEqZBNzKQIBJGE+YfQBAgEtXj9eawIBK2QyZMACAgEmZOcCZIkDAgEl</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
       <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="563,22" />
       <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="563,22" />
+      <sap2010:ViewStateData Id="GetBuildAgent_1" sap:VirtualizedContainerService.HintSize="541,22" />
       <sap2010:ViewStateData Id="CreateWorkspace_2" sap:VirtualizedContainerService.HintSize="541,22" />
       <sap2010:ViewStateData Id="DownloadFile_2" sap:VirtualizedContainerService.HintSize="541,22" />
       <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="541,22" />
@@ -173,15 +175,15 @@
       <sap2010:ViewStateData Id="WriteBuildWarning_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="541,1336" />
       <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="541,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="563,2012" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="585,2260">
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="563,2074" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="585,2322">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="625,2340" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="625,2402" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
