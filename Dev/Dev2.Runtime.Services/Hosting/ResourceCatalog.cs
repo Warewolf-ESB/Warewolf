@@ -663,6 +663,10 @@ namespace Dev2.Runtime.Hosting
                         }
                 };
             UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
+            if(workspaceID == GlobalConstants.ServerWorkspaceID)
+            {
+                ServerAuthorizationService.Instance.Remove(resource.ResourceID);
+            }
             return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Success,

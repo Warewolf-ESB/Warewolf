@@ -10,6 +10,41 @@ namespace Dev2.Runtime.WebServer.Controllers
     public class WebServerController : AbstractController
     {
         [HttpGet]
+        [Route("{website}/decisions/{file}")]
+        public HttpResponseMessage GetDecisions(string website, string file)
+        {
+            return Get(website, "decisions", file);
+        }
+
+        [HttpGet]
+        [Route("{website}/dialogs/{file}")]
+        public HttpResponseMessage GetDialogs(string website, string file)
+        {
+            return Get(website, "dialogs", file);
+        }
+
+        [HttpGet]
+        [Route("{website}/services/{file}")]
+        public HttpResponseMessage GetServices(string website, string file)
+        {
+            return Get(website, "services", file);
+        }
+
+        [HttpGet]
+        [Route("{website}/sources/{file}")]
+        public HttpResponseMessage GetSources(string website, string file)
+        {
+            return Get(website, "sources", file);
+        }
+
+        [HttpGet]
+        [Route("{website}/switch/{file}")]
+        public HttpResponseMessage GetSwitch(string website, string file)
+        {
+            return Get(website, "switch", file);
+        }
+
+        [HttpGet]
         [Route("{website}/{folder}/{file}")]
         public HttpResponseMessage Get(string website, string folder, string file)
         {
@@ -22,19 +57,20 @@ namespace Dev2.Runtime.WebServer.Controllers
 
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
-//        
-//        [HttpGet]
-//        [Route("{*path}")]
-//        public HttpResponseMessage Get(string path)
-//        {
-//            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
-//            var requestVariables = new NameValueCollection
-//            {
-//                { "path", string.Format(path) }
-//            };
-//
-//            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-//        }
+
+        //        
+        //        [HttpGet]
+        //        [Route("{*path}")]
+        //        public HttpResponseMessage Get(string path)
+        //        {
+        //            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
+        //            var requestVariables = new NameValueCollection
+        //            {
+        //                { "path", string.Format(path) }
+        //            };
+        //
+        //            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
+        //        }
 
         [HttpGet]
         [Route("{website}/{path}/{folder}/{*file}")]

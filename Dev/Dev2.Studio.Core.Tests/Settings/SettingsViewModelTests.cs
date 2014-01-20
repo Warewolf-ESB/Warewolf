@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
+using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
@@ -216,16 +217,17 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(viewModel.IsLoading);
-            Assert.IsFalse(viewModel.IsDirty);
             Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsDirty);
+            Assert.IsTrue(viewModel.IsSaved);
+            Assert.IsFalse(viewModel.HasErrors);
+            Assert.IsFalse(viewModel.IsLoading);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_SaveCommand")]
-        [ExpectedException(typeof(NullReferenceException), "The Setting are null")]
-        public void SettingsViewModel_SaveCommand_ResultIsNull_ThrowsException()
+        public void SettingsViewModel_SaveCommand_ResultIsNull_HasErrorsIsTrue()
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
@@ -238,6 +240,11 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"), viewModel.Errors);
         }
 
         [TestMethod]
@@ -258,6 +265,9 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual(ErrorMessage, viewModel.Errors);
         }
@@ -287,7 +297,7 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             Assert.IsNull(viewModel.CurrentEnvironment);
 
-            var server = new Mock<IEnvironmentModel>();            
+            var server = new Mock<IEnvironmentModel>();
 
             //------------Execute Test---------------------------
             viewModel.ServerChangedCommand.Execute(server.Object);
@@ -308,9 +318,10 @@ namespace Dev2.Core.Tests.Settings
             var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
 
             var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEventAgg = new Mock<IEventAggregator>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var server = new EnvironmentModel(mockEventAgg.Object,Guid.NewGuid(),mockConnection.Object,mockResourceRepo.Object);
+            var server = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
 
             Assert.IsNull(viewModel.CurrentEnvironment);
             Assert.IsTrue(server.CanStudioExecute);
@@ -327,7 +338,7 @@ namespace Dev2.Core.Tests.Settings
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsViewModel_ServerChangedCommand")]
-        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnectedAndSettingsHasErrors_ThrowsException()
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnectedAndSettingsHasErrors_ShowsLoadError()
         {
             //------------Setup for test--------------------------
             var popupController = new Mock<IPopupController>();
@@ -337,21 +348,46 @@ namespace Dev2.Core.Tests.Settings
             var settings = new Data.Settings.Settings
             {
                 HasError = true,
-                Error = "Error occurred loading"
+                Error = "Error occurred loading",
+                Security = new SecuritySettingsTO()
             };
 
             //------------Execute Test---------------------------
             var viewModel = CreateViewModel(popupController.Object, settings.ToString());
 
             //------------Assert Results-------------------------
-
-            // For some reason (threading??) this exception does not get thrown in test
             Assert.AreEqual(1, viewModel.ShowErrorHitCount);
             Assert.IsNotNull(viewModel.CurrentEnvironment);
             Assert.IsNotNull(viewModel.SecurityViewModel);
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(settings.Error, viewModel.Errors);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_ServerChangedCommand")]
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnectedAndSettingsIsNull_ShowsNetworkError()
+        {
+            //------------Setup for test--------------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(p => p.Show()).Verifiable();
+            popupController.SetupAllProperties();
+
+            //------------Execute Test---------------------------
+            var viewModel = CreateViewModel(popupController.Object, null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.ShowErrorHitCount);
+            Assert.IsNotNull(viewModel.CurrentEnvironment);
+            Assert.IsNull(viewModel.SecurityViewModel);
+            Assert.IsFalse(viewModel.IsLoading);
+            Assert.IsFalse(viewModel.IsDirty);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"), viewModel.Errors);
+        }
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -370,8 +406,8 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsFalse(viewModel.IsLoading);
             Assert.IsFalse(viewModel.IsDirty);
 
-            var serverPerms = settings.Security.Where(p => p.IsServer).ToList();
-            var resourcePerms = settings.Security.Where(p => !p.IsServer).ToList();
+            var serverPerms = settings.Security.WindowsGroupPermissions.Where(p => p.IsServer).ToList();
+            var resourcePerms = settings.Security.WindowsGroupPermissions.Where(p => !p.IsServer).ToList();
 
             // SecurityViewModel adds extra "new" permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.SecurityViewModel.ServerPermissions.Count);
@@ -415,14 +451,15 @@ namespace Dev2.Core.Tests.Settings
 
             var mockResourceRepo = new Mock<IResourceRepository>();
 
-            var msg1 = new ExecuteMessage {HasError = false};
-            msg1.SetMessage(executeCommandReadResult);
+            ExecuteMessage writeMsg = null;
+            if(!string.IsNullOrEmpty(executeCommandWriteResult))
+            {
+                writeMsg = new ExecuteMessage { HasError = executeCommandWriteResult != "Success" };
+                writeMsg.SetMessage(executeCommandWriteResult);
+            }
 
-            var msg2 = new ExecuteMessage {HasError = false};
-            msg2.SetMessage(executeCommandWriteResult);
-
-            mockResourceRepo.Setup(c => c.ReadSettings(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnvironmentModel>())).Returns(msg1);
-            mockResourceRepo.Setup(c => c.WriteSettings(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IEnvironmentModel>())).Returns(msg2);
+            mockResourceRepo.Setup(c => c.ReadSettings(It.IsAny<IEnvironmentModel>())).Returns(executeCommandReadResult == null ? null : new Dev2JsonSerializer().Deserialize<Data.Settings.Settings>(executeCommandReadResult));
+            mockResourceRepo.Setup(c => c.WriteSettings(It.IsAny<IEnvironmentModel>(), It.IsAny<Data.Settings.Settings>())).Returns(writeMsg);
 
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -438,7 +475,7 @@ namespace Dev2.Core.Tests.Settings
         {
             var settings = new Data.Settings.Settings
             {
-                Security = new List<WindowsGroupPermission>(new[]
+                Security = new SecuritySettingsTO(new[]
                 {
                     new WindowsGroupPermission
                     {
@@ -491,8 +528,154 @@ namespace Dev2.Core.Tests.Settings
                         WindowsGroup = "Windows Group 4", View = false, Execute = false, Contribute = true
                     }
                 })
+                {
+                    CacheTimeout = GlobalConstants.DefaultTimeoutValue
+                }
             };
             return settings;
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsSavedSuccessVisible")]
+        public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsFalseAndIsDirtyFalseAndIsSavedTrue_True()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var settingsViewModel = CreateViewModel();
+            settingsViewModel.HasErrors = false;
+            settingsViewModel.IsDirty = false;
+            settingsViewModel.IsSaved = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(settingsViewModel.IsSavedSuccessVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsSavedSuccessVisible")]
+        public void SettingsViewModel_IsSavedSuccessVisible_HasErrorsTrueAndIsDirtyTrueAndIsSavedFalse_False()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var settingsViewModel = CreateViewModel();
+            settingsViewModel.HasErrors = true;
+            settingsViewModel.IsDirty = true;
+            settingsViewModel.IsSaved = false;
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(settingsViewModel.IsSavedSuccessVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsErrorsVisible")]
+        public void SettingsViewModel_IsErrorsVisible_HasErrorsTrue_True()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var settingsViewModel = CreateViewModel();
+            settingsViewModel.HasErrors = true;
+            settingsViewModel.IsDirty = false;
+            settingsViewModel.IsSaved = false;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(settingsViewModel.IsErrorsVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsErrorsVisible")]
+        public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyTrueAndIsSavedFalse_True()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var settingsViewModel = CreateViewModel();
+            settingsViewModel.HasErrors = false;
+            settingsViewModel.IsDirty = true;
+            settingsViewModel.IsSaved = false;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(settingsViewModel.IsErrorsVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsErrorsVisible")]
+        public void SettingsViewModel_IsErrorsVisible_HasErrorsFalseAndAndIsDirtyFalseAndIsSavedTrue_False()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var settingsViewModel = CreateViewModel();
+            settingsViewModel.HasErrors = false;
+            settingsViewModel.IsDirty = false;
+            settingsViewModel.IsSaved = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(settingsViewModel.IsErrorsVisible);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsErrorsVisible")]
+        public void SettingsViewModel_IsErrorsVisible_PropertyChangedFired()
+        {
+            Verify_PropertyChangedFired("IsErrorsVisible", SettingsProperty.HasErrors);
+            Verify_PropertyChangedFired("IsErrorsVisible", SettingsProperty.IsDirty);
+            Verify_PropertyChangedFired("IsErrorsVisible", SettingsProperty.IsSaved);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_IsSavedSuccessVisible")]
+        public void SettingsViewModel_IsSavedSuccessVisible_PropertyChangedFired()
+        {
+            Verify_PropertyChangedFired("IsSavedSuccessVisible", SettingsProperty.HasErrors);
+            Verify_PropertyChangedFired("IsSavedSuccessVisible", SettingsProperty.IsDirty);
+            Verify_PropertyChangedFired("IsSavedSuccessVisible", SettingsProperty.IsSaved);
+        }
+       
+        void Verify_PropertyChangedFired(string propertyName, SettingsProperty settingsProperty)
+        {
+            //------------Setup for test--------------------------
+            var propertyChanged = false;
+            var viewModel = new TestSettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
+            viewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == propertyName)
+                {
+                    propertyChanged = true;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            switch(settingsProperty)
+            {
+                case SettingsProperty.HasErrors:
+                    viewModel.HasErrors = true;
+                    break;
+                case SettingsProperty.IsDirty:
+                    viewModel.IsDirty = true;
+                    break;
+                case SettingsProperty.IsSaved:
+                    viewModel.IsSaved = true;
+                    break;
+            }
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(propertyChanged);
+        }
+
+        enum SettingsProperty
+        {
+            HasErrors,
+            IsDirty,
+            IsSaved
         }
     }
 }

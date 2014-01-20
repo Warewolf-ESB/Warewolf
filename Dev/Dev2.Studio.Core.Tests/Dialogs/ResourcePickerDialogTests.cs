@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
@@ -14,7 +15,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
-using Dev2.Threading;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -24,6 +26,11 @@ namespace Dev2.Core.Tests.Dialogs
     [ExcludeFromCodeCoverage]
     public class ResourcePickerDialogTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -172,7 +179,7 @@ namespace Dev2.Core.Tests.Dialogs
                 SelectedResource = selectedResource
             };
             //------------Execute Test---------------------------
-            
+
             // Need to invoke ShowDialog in order to get the DsfActivityDropViewModel
             dialog.ShowDialog();
 
@@ -213,7 +220,7 @@ namespace Dev2.Core.Tests.Dialogs
                 SelectedResource = new Mock<IResourceModel>().Object
             };
             //------------Execute Test---------------------------
-            
+
             // Need to invoke ShowDialog in order to get the DsfActivityDropViewModel
             dialog.ShowDialog();
 
@@ -302,6 +309,58 @@ namespace Dev2.Core.Tests.Dialogs
             Assert.AreEqual(enDsfActivityType.All, typeOf);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourcePickerDialog_ShowDialog")]
+        public void ResourcePickerDialog_ShowDialog_DialogResultIsOkay_SelectedResourceIsNotNull()
+        {
+            //------------Setup for test--------------------------
+            var picker = new TestResourcePickerDialogOkay();
+
+            //------------Execute Test---------------------------
+            var result = picker.ShowDialog();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+            Assert.IsNotNull(picker.SelectedResource);
+            Assert.AreSame(picker.CreateDialogDataContext.SelectedResourceModel, picker.SelectedResource);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourcePickerDialog_ShowDropDialog")]
+        public void ResourcePickerDialog_ShowDropDialog_ActivityTypeIsAll_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            ResourcePickerDialog dialog = null;
+            DsfActivityDropViewModel dropViewModel;
+
+            //------------Execute Test---------------------------
+            var result = ResourcePickerDialog.ShowDropDialog(ref dialog, "xxxx", out dropViewModel);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+            Assert.IsNull(dropViewModel);
+            Assert.IsNull(dialog);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourcePickerDialog_ShowDropDialog")]
+        public void ResourcePickerDialog_ShowDropDialog_ActivityTypeIsNotAllAndPickerIsNull_CreatesPickerAndInvokesShowDialog()
+        {
+            //------------Setup for test--------------------------
+            TestResourcePickerDialog dialog = null;
+            DsfActivityDropViewModel dropViewModel;
+
+            //------------Execute Test---------------------------
+            var result = ResourcePickerDialog.ShowDropDialog(ref dialog, GlobalConstants.ResourcePickerServiceString, out dropViewModel);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+            Assert.IsNotNull(dropViewModel);
+            Assert.IsNotNull(dialog);
+        }
 
         static Mock<IResourceRepository> CreateMockResourceRepository(Mock<IEnvironmentModel> mockEnvironmentModel)
         {
@@ -316,7 +375,7 @@ namespace Dev2.Core.Tests.Dialogs
             mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
             mockResourceModel1.Setup(r => r.Environment).Returns(mockEnvironmentModel.Object);
-            
+
 
             var mockResourceModel2 = new Mock<IContextualResourceModel>();
             mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
@@ -330,7 +389,7 @@ namespace Dev2.Core.Tests.Dialogs
                 mockResourceModel1.Object,
                 mockResourceModel2.Object
             };
-           
+
             var mockResourceRepository = new Mock<IResourceRepository>();
             mockResourceRepository.Setup(r => r.All()).Returns(mockResources);
             return mockResourceRepository;

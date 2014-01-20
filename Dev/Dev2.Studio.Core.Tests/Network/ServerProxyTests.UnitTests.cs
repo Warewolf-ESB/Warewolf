@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Dev2.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
@@ -65,6 +68,89 @@ namespace Dev2.Core.Tests.Network
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServerProxy_Wait")]
+        public void ServerProxy_Wait_TaskThrowsHttpRequestException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsFalse()
+        {
+            //------------Setup for test--------------------------
+            const string ExMessage = "Server unavailable.";
+            var result = new StringBuilder();
+            var task = new Task<string>(() =>
+            {
+                throw new HttpRequestException(ExMessage);
+            });
+
+
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true
+            };
+
+            //------------Execute Test---------------------------
+            serverProxy.TestWait(task, result);
+            
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), ExMessage);
+            Assert.IsTrue(task.IsFaulted);
+            Assert.IsFalse(serverProxy.IsConnected);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServerProxy_Wait")]
+        public void ServerProxy_Wait_TaskThrowsReconnectingBeforeInvocationInvalidOperationException_ExceptionHandledAndTaskIsFaultedAndIsConnectedIsTrue()
+        {
+            //------------Setup for test--------------------------
+            const string ExMessage = "Connection started reconnecting before invocation result was received";
+            var result = new StringBuilder();
+            var task = new Task<string>(() =>
+            {
+                throw new InvalidOperationException(ExMessage);
+            });
+            
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true
+            };
+
+            //------------Execute Test---------------------------
+            serverProxy.TestWait(task, result);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), ExMessage);
+            Assert.IsTrue(task.IsFaulted);
+            Assert.IsTrue(serverProxy.IsConnected);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServerProxy_Wait")]
+        [ExpectedException(typeof(AggregateException))]
+        public void ServerProxy_Wait_TaskThrowsOtherException_ExceptionNotHandledAndTaskIsFaultedAndIsConnectedIsTrue()
+        {
+            //------------Setup for test--------------------------
+            const string ExMessage = "An unhandled error occurred";
+            var result = new StringBuilder();
+            var task = new Task<string>(() =>
+            {
+                throw new Exception(ExMessage);
+            });
+
+            var serverProxy = new TestServerProxy
+            {
+                IsConnected = true
+            };
+
+            //------------Execute Test---------------------------
+            serverProxy.TestWait(task, result);
+
+            //------------Assert Results-------------------------
+            StringAssert.Contains(result.ToString(), ExMessage);
+            Assert.IsTrue(task.IsFaulted);
+            Assert.IsTrue(serverProxy.IsConnected);
+        }
     }
 
     internal class TestServerProxy : ServerProxy
@@ -81,9 +167,15 @@ namespace Dev2.Core.Tests.Network
             EsbProxy = hubProxy;
         }
 
+        public T TestWait<T>(Task<T> task, StringBuilder result)
+        {
+            task.Start();
+            return Wait(task, result, 10);
+        }
+
         #region Overrides of ServerProxy
 
-        protected override T Wait<T>(Task<T> task)
+        protected override T Wait<T>(Task<T> task, StringBuilder result)
         {
             task.Start();
             return task.Result;
@@ -159,10 +251,11 @@ namespace Dev2.Core.Tests.Network
 
         public void SetStateChange(ConnectionState connected)
         {
-            var classType = this.GetType();
+            var classType = GetType();
             var eventInfos = classType.GetEvent("StateChanged");
             // eventInfos.AddMethod
 
         }
     }
+
 }

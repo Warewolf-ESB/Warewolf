@@ -4,6 +4,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -17,8 +18,8 @@ namespace Dev2.Runtime.ServiceModel
         {
         }
 
-        public PluginServices(IResourceCatalog resourceCatalog)
-            : base(resourceCatalog)
+        public PluginServices(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
+            : base(resourceCatalog, authorizationService)
         {
         }
 

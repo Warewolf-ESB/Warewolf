@@ -10,6 +10,9 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.Core.Wizards.Interfaces;
+using Infragistics;
+using Microsoft.Expression.Interactivity.Core;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -85,7 +88,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _resourceType; }
             set
             {
-                if(_resourceType == value) return;
+                if(_resourceType == value)
+                {
+                    return;
+                }
 
                 _resourceType = value;
                 NotifyOfPropertyChange(() => ResourceType);
@@ -122,7 +128,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if(_children == value) return;
+                if(_children == value)
+                {
+                    return;
+                }
 
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
@@ -190,7 +199,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return ResourceType == ResourceType.WorkflowService || ResourceType == ResourceType.Source || ResourceType == ResourceType.Service;
+                return (ResourceType == ResourceType.WorkflowService || ResourceType == ResourceType.Source || ResourceType == ResourceType.Service)
+                    && EnvironmentModel.IsAuthorizedDeployFrom;
             }
         }
 
@@ -223,7 +233,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 var type = (ResourceType)Enum.Parse(typeof(ResourceType), resourceToFind.ToString());
                 if(ResourceType == type)
+                {
                     return this;
+            }
             }
             return base.FindChild(resourceToFind);
         }
@@ -266,7 +278,9 @@ namespace Dev2.Studio.ViewModels.Navigation
                 var order1 = ResourceType.GetDisplayOrder();
                 var order2 = other.ResourceType.GetDisplayOrder();
                 if(order1 != order2)
+                {
                     return order1.CompareTo(order2);
+                }
                 return String.Compare(DisplayName, other.DisplayName, StringComparison.Ordinal);
             }
             return base.CompareTo(obj);

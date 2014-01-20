@@ -7,6 +7,7 @@ using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
@@ -45,7 +46,7 @@ namespace Dev2.Core.Tests
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
             var serverEvents = new Mock<IEventPublisher>().Object;
-
+            
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
             _mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(serverEvents);
 
@@ -360,7 +361,7 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
             bool expected = false;
-            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navigationViewModel = CreateNavigationViewModel(Guid.NewGuid());
             navigationViewModel.Environments.Add(environmentModel);
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
@@ -378,7 +379,7 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
 
             bool expected = false;
-            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navigationViewModel = CreateNavigationViewModel(Guid.NewGuid());
             navigationViewModel.Environments.Add(environmentModel);
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(navigationItemViewModel, navigationViewModel);
 
@@ -399,7 +400,7 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = mockEnvironmentModel.Object;
 
             bool expected = false;
-            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navigationViewModel = CreateNavigationViewModel(Guid.NewGuid());
             navigationViewModel.Environments.Add(environmentModel);
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
@@ -419,7 +420,7 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
             bool expected = true;
-            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navigationViewModel = CreateNavigationViewModel(Guid.NewGuid());
             navigationViewModel.Environments.Add(environmentModel);
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
@@ -443,7 +444,7 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
             bool expected = false;
-            NavigationViewModel navigationViewModel = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navigationViewModel = CreateNavigationViewModel(Guid.NewGuid());
             navigationViewModel.Environments.Add(environmentModel);
             bool actual = DeployStatsCalculator.DeploySummaryPredicateExisting(_resourceVm, navigationViewModel);
 
@@ -473,8 +474,11 @@ namespace Dev2.Core.Tests
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
             var resourceModel = CreateResourceModel();
-            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, new Mock<IEnvironmentModel>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            _environmentVm = new EnvironmentTreeViewModel(eventAggregator, _rootVm, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             _serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, _environmentVm, ResourceType.WorkflowService);
             _categoryVm = new CategoryTreeViewModel(eventAggregator, _serviceTypeVm, "Test Category", _mockResourceModel.Object.ResourceType);
             _resourceVm = new ResourceTreeViewModel(eventAggregator, _categoryVm, resourceModel.Object);
@@ -576,5 +580,10 @@ namespace Dev2.Core.Tests
         #endregion DeploySummaryPredicateNew
 
         #endregion Test Methods
+
+        static NavigationViewModel CreateNavigationViewModel(Guid? context = null)
+        {
+            return new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, context, EnvironmentRepository.Instance);
+        }
     }
 }

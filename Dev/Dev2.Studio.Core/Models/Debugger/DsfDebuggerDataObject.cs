@@ -1,10 +1,11 @@
-﻿using Dev2.Data.Enums;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Data.Enums;
+using System.Security.Principal;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using System;
-using System.Collections.Generic;
 
-namespace Dev2.Models.Debugger
+namespace Dev2.Studio.Core.Models
 {
     public class DsfDebuggerDataObject : IDSFDataObject
     {
@@ -32,6 +33,7 @@ namespace Dev2.Models.Debugger
         public Guid ResourceID { get; set; }
         public ErrorResultTO Errors { get; set; }
         public int NumberOfSteps { get; set; }
+        public IPrincipal ExecutingUser { get; set; }
 
         public enTranslationDepth DatalistOutMergeDepth { get; set; }
         public DataListMergeFrequency DatalistOutMergeFrequency { get; set; }

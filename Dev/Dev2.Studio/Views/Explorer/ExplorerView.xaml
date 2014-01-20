@@ -1,87 +1,104 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.Explorer.ExplorerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ap="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
-             xmlns:NavigationViews="clr-namespace:Dev2.Studio.Views.Navigation"         
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
-             xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors" 
+             xmlns:NavigationViews="clr-namespace:Dev2.Studio.Views.Navigation"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:Dev2="clr-namespace:Dev2.UI"
-             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-    xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
+             xmlns:help="clr-namespace:Dev2.Help"
              AllowDrop="False"
-    xmlns:micro="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-    Name="Explorer">
-    
+             Name="Explorer">
+
     <UserControl.InputBindings>
-        <KeyBinding Command="{Binding RenameCommand}" Key="F2" />
-        <KeyBinding Command="{Binding DeleteCommand}" Key="Delete" />
+        <KeyBinding Command="{Binding RenameCommand}"
+                    Key="F2" />
+        <KeyBinding Command="{Binding DeleteCommand}"
+                    Key="Delete" />
     </UserControl.InputBindings>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="24"/>
+            <ColumnDefinition Width="24" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Dev2:ConnectControl Grid.ColumnSpan="2"
+                             Margin="2,2,2,0"
+                             LabelText="Connect:"
+                             Context="{Binding Context}"
+                             EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
+                             EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
+                             NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
+                             ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
+                             BindToActiveEnvironment="True" />
 
-            <Dev2:ConnectControl Grid.ColumnSpan="2" Margin="2,2,2,0"
-                                 LabelText="Connect:" 
-                                 Context="{Binding Context}"
-                                 EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
-                                 EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
-                                 NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
-                                 ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
-                                 BindToActiveEnvironment="True"/>
-
-        <NavigationViews:NavigationView x:Name="TheNavigationView" 
-                                        DataContext="{Binding NavigationViewModel}" 
-                                        Grid.Row="1" Grid.ColumnSpan="2">
+        <NavigationViews:NavigationView x:Name="TheNavigationView"
+                                        DataContext="{Binding NavigationViewModel}"
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2">
             <NavigationViews:NavigationView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                    <Setter Property="Visibility" Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
-                    <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                <Style TargetType="{x:Type TreeViewItem}"
+                       BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Setter Property="Visibility"
+                            Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
+                    <Setter Property="IsExpanded"
+                            Value="{Binding IsExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected"
+                            Value="{Binding IsSelected, Mode=TwoWay}" />
 
                     <!-- This is a hack. Need to rethink how to get this behavior attached properly-->
-                    <Setter Property="behavior:AttachBehavior.BehaviorType" Value="{x:Type behavior2:BringIntoViewWhenSelectedBehavior}"/>
-                    
-                    <Setter Property="AutomationProperties.AutomationId" Value="{Binding Path=DataContext.DisplayName,
-                        RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}"/>
+                    <Setter Property="behavior:AttachBehavior.BehaviorType"
+                            Value="{x:Type behavior2:BringIntoViewWhenSelectedBehavior}" />
+
+                    <Setter Property="AutomationProperties.AutomationId"
+                            Value="{Binding Path=DataContext.DisplayName,
+                        RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}" />
                     <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="FontWeight" Value="UltraLight" />
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter Property="FontWeight"
+                                    Value="UltraLight" />
                         </Trigger>
-                        <DataTrigger Binding="{Binding IsConnected}" Value="False">
-                            <Setter Property="ContentControl.Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+                        <DataTrigger Binding="{Binding IsConnected}"
+                                     Value="False">
+                            <Setter Property="ContentControl.Foreground"
+                                    Value="{StaticResource DisabledForegroundBrush}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionToBooleanConverter}, ConverterParameter=Contribute}"
+                                     Value="False">
+                            <Setter Property="ContentControl.Foreground"
+                                    Value="{StaticResource DisabledForegroundBrush}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </NavigationViews:NavigationView.ItemContainerStyle>
-            
+
             <NavigationViews:NavigationView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" 
+                <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
                                           ItemsSource="{Binding Path=Children}">
-                    <Border IsHitTestVisible="True" Background="{StaticResource BrushNearTransparent}" >
+                    <Border IsHitTestVisible="True"
+                            Background="{StaticResource BrushNearTransparent}">
                         <Border.RenderTransform>
                             <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform/>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
                             </TransformGroup>
                         </Border.RenderTransform>
                         <i:Interaction.Behaviors>
-                            <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" 
-                                                                                OpenOnDoubleClick="True" 
-                                                                                SelectOnRightClick="True"
-                                                                                DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
+                            <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True"
+                                                                            OpenOnDoubleClick="True"
+                                                                            SelectOnRightClick="True"
+                                                                            DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                             <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                         </i:Interaction.Behaviors>
 
@@ -89,121 +106,222 @@
                             <ContextMenu Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}">
                                 <ContextMenu.Resources>
                                     <Style TargetType="{x:Type MenuItem}">
-                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-                                        <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                        <Setter Property="AutomationProperties.AutomationId" Value="UI_ExplorerContextMenu_AutoID" />
+                                        <Setter Property="HorizontalContentAlignment"
+                                                Value="Left" />
+                                        <Setter Property="VerticalContentAlignment"
+                                                Value="Center" />
+                                        <Setter Property="AutomationProperties.AutomationId"
+                                                Value="UI_ExplorerContextMenu_AutoID" />
                                     </Style>
                                 </ContextMenu.Resources>
-                    
-                                <MenuItem Header="Connect" Command="{Binding ConnectCommand}" Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
-                                <MenuItem Header="Refresh" Command="{Binding RefreshCommand}" Visibility="{Binding CanRefresh, Converter={StaticResource BoolToVisConverter}}" AutomationProperties.AutomationId="UI_ExplorerContextMenuRefreshItem_AutoID" />
-                                <MenuItem Header="{Binding NewWorkflowTitle}" Command="{Binding Path=NewResourceCommand}" CommandParameter="Workflow" AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New" >
-                                 <MenuItem.Visibility>
+
+                                <MenuItem Header="Connect"
+                                          Command="{Binding ConnectCommand}"
+                                          Visibility="{Binding CanConnect, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Disconnect"
+                                          Command="{Binding DisconnectCommand}"
+                                          Visibility="{Binding CanDisconnect, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID" />
+                                <MenuItem Header="Refresh"
+                                          Command="{Binding RefreshCommand}"
+                                          Visibility="{Binding CanRefresh, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId="UI_ExplorerContextMenuRefreshItem_AutoID" />
+                                <MenuItem Header="{Binding NewWorkflowTitle}"
+                                          Command="{Binding Path=NewResourceCommand}"
+                                          CommandParameter="Workflow"
+                                          AutomationProperties.AutomationId="UI_RibbonApplicationMenu_New">
+                                    <MenuItem.Visibility>
                                         <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
-                                            <Binding Path="HasFileMenu"/>
-                                            <Binding Path="HasNewWorkflowMenu"/>
+                                            <Binding Path="HasFileMenu" />
+                                            <Binding Path="HasNewWorkflowMenu" />
                                         </MultiBinding>
                                     </MenuItem.Visibility>
                                 </MenuItem>
-                                <MenuItem Header="{Binding NewServiceTitle}" Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}" >
-                                    <MenuItem Header="Database Procedure Ctrl + Shift + D" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbService"></MenuItem>
-                                    <MenuItem Header="Plugin Ctrl + Shift + P" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginService"></MenuItem>
-                                    <MenuItem Header="Web Ctrl + Shift + W" Command="{Binding Path=NewResourceCommand}" CommandParameter="WebService"></MenuItem>
+                                <MenuItem Header="{Binding NewServiceTitle}"
+                                          Visibility="{Binding HasNewServiceMenu, Converter={StaticResource BoolToVisConverter}}">
+                                    <MenuItem Header="Database Procedure Ctrl + Shift + D"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="DbService"></MenuItem>
+                                    <MenuItem Header="Plugin Ctrl + Shift + P"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="PluginService"></MenuItem>
+                                    <MenuItem Header="Web Ctrl + Shift + W"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="WebService"></MenuItem>
                                 </MenuItem>
-                                <MenuItem Header="{Binding AddSourceTitle}" Visibility="{Binding HasNewSourceMenu, Converter={StaticResource BoolToVisConverter}}" >
-                                    <MenuItem Header="Remote Warewolf" Command="{Binding Path=NewResourceCommand}" CommandParameter="RemoteWarewolf"></MenuItem>
-                                    <MenuItem Header="Database" Command="{Binding Path=NewResourceCommand}" CommandParameter="DbSource"></MenuItem>
-                                    <MenuItem Header="Plugin" Command="{Binding Path=NewResourceCommand}" CommandParameter="PluginSource"></MenuItem>
-                                    <MenuItem Header="Web" Command="{Binding Path=NewResourceCommand}" CommandParameter="WebSource"></MenuItem>
-                                    <MenuItem Header="Email" Command="{Binding Path=NewResourceCommand}" CommandParameter="EmailSource"></MenuItem>
+                                <MenuItem Header="{Binding AddSourceTitle}"
+                                          Visibility="{Binding HasNewSourceMenu, Converter={StaticResource BoolToVisConverter}}">
+                                    <MenuItem Header="Remote Warewolf"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="RemoteWarewolf"></MenuItem>
+                                    <MenuItem Header="Database"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="DbSource"></MenuItem>
+                                    <MenuItem Header="Plugin"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="PluginSource"></MenuItem>
+                                    <MenuItem Header="Web"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="WebSource"></MenuItem>
+                                    <MenuItem Header="Email"
+                                              Command="{Binding Path=NewResourceCommand}"
+                                              CommandParameter="EmailSource"></MenuItem>
                                 </MenuItem>
-                                <MenuItem Header="Open" Command="{Binding EditCommand}" Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Open"
+                                          Command="{Binding EditCommand}"
+                                          Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="DatabaseService"/>
-                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                          CommandParameter="DatabaseService" />
+                                <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="ResourceService"/>
-                                <MenuItem Header="New Web Service   (Ctrl+Shift+W)" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" 
+                                          CommandParameter="ResourceService" />
+                                <MenuItem Header="New Web Service   (Ctrl+Shift+W)"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="WebService"/>
+                                          CommandParameter="WebService" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="New Remote Warewolf Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                <MenuItem Header="New Remote Warewolf Source"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="Server"/>
-                                <MenuItem Header="New Database Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          CommandParameter="Server" />
+                                <MenuItem Header="New Database Source"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="DbSource"/>
-                                <MenuItem Header="New Plugin Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          CommandParameter="DbSource" />
+                                <MenuItem Header="New Plugin Source"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="ResourceSource"/>
-                                <MenuItem Header="New Web Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          CommandParameter="ResourceSource" />
+                                <MenuItem Header="New Web Source"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="WebSource"/>
-                                <MenuItem Header="New Email Source" Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
+                                          CommandParameter="WebSource" />
+                                <MenuItem Header="New Email Source"
+                                          Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding Path=NewResourceCommand}"
-                                             CommandParameter="EmailSource"/>
+                                          CommandParameter="EmailSource" />
                                 <Separator Visibility="{Binding HasFileMenu, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Build" Command="{Binding BuildCommand}" Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="{Binding DeployTitle}" Command="{Binding DeployCommand}" Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Build"
+                                          Command="{Binding BuildCommand}"
+                                          Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="{Binding DeployTitle}"
+                                          Command="{Binding DeployCommand}"
+                                          Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="{Binding CanDuplicate, Converter={StaticResource BoolToVisConverter}}" />-->
-                                <MenuItem Header="Rename   (F2)" Command="{Binding RenameCommand}" Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Rename   (F2)"
+                                          Command="{Binding RenameCommand}"
+                                          Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
-                                <MenuItem Header="Delete" Command="{Binding DeleteCommand}" Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Remove" Command="{Binding RemoveCommand}" Visibility="{Binding CanRemove, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Show Dependencies" Command="{Binding ShowDependenciesCommand}" Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Debug" Command="{Binding DebugCommand}" Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Run" Command="{Binding RunCommand}" Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Delete"
+                                          Command="{Binding DeleteCommand}"
+                                          Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Remove"
+                                          Command="{Binding RemoveCommand}"
+                                          Visibility="{Binding CanRemove, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Show Dependencies"
+                                          Command="{Binding ShowDependenciesCommand}"
+                                          Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Debug"
+                                          Command="{Binding DebugCommand}"
+                                          Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Run"
+                                          Command="{Binding RunCommand}"
+                                          Visibility="{Binding CanRun, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />-->
-                                <MenuItem Header="Create Wizard" Command="{Binding CreateWizardCommand}" Visibility="{Binding CanCreateWizard, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Edit Wizard" Command="{Binding EditWizardCommand}" Visibility="{Binding CanEditWizard, Converter={StaticResource BoolToVisConverter}}" />
-                                <MenuItem Header="Help" Command="{Binding HelpCommand}" Visibility="{Binding CanHelp, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Create Wizard"
+                                          Command="{Binding CreateWizardCommand}"
+                                          Visibility="{Binding CanCreateWizard, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Edit Wizard"
+                                          Command="{Binding EditWizardCommand}"
+                                          Visibility="{Binding CanEditWizard, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Help"
+                                          Command="{Binding HelpCommand}"
+                                          Visibility="{Binding CanHelp, Converter={StaticResource BoolToVisConverter}}" />
 
-                                <MenuItem Header="Properties" Command="{Binding ShowPropertiesCommand}" Visibility="{Binding CanShowProperties, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Properties"
+                                          Command="{Binding ShowPropertiesCommand}"
+                                          Visibility="{Binding CanShowProperties, Converter={StaticResource BoolToVisConverter}}" />
                             </ContextMenu>
                         </Border.ContextMenu>
-                        <StackPanel Orientation="Horizontal" AllowDrop="False">                                                   
-                            <i:Interaction.Behaviors>
-                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True" 
-                                                                                OpenOnDoubleClick="True" 
-                                                                                SelectOnRightClick="True"
-                                                                                DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,
+
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Orientation="Horizontal"
+                                        AllowDrop="False">
+                                <i:Interaction.Behaviors>
+                                    <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True"
+                                                                                    OpenOnDoubleClick="True"
+                                                                                    SelectOnRightClick="True"
+                                                                                    DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,
                                                                                 AncestorType=NavigationViews:NavigationView},
                                                                                 Path=DataContext.IsFromActivityDrop}" />
-                                <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
-                            </i:Interaction.Behaviors>
+                                    <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=NavigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
+                                </i:Interaction.Behaviors>
 
-                            <customControls2:CircularProgressBar Width="18" Height="18" Margin="3,1,3,1"
-                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>                            
-                            
-                            <Image Width="17" Height="17" Margin="3,1,3,1"
-                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="PreviewMouseDown">
-                                        <i:InvokeCommandAction Command="{Binding RefreshCommand}"></i:InvokeCommandAction>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>                                
-                                <Image.Source>
-                                    
-                                    <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
-                                        <MultiBinding.Bindings>
-                                            <Binding Path="IconPath"/>
-                                            <Binding Path="."/>
-                                        </MultiBinding.Bindings>
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                </ContentControl.Resources>
-                            </ContentControl>
+                                <customControls2:CircularProgressBar Width="18"
+                                                                     Height="18"
+                                                                     Margin="3,1,3,1"
+                                                                     Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                                     AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID" />
+
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="3,1,0,1"
+                                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                    <Image Width="17"
+                                           Height="17">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseDown">
+                                                <i:InvokeCommandAction Command="{Binding RefreshCommand}"></i:InvokeCommandAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
+                                                <MultiBinding.Bindings>
+                                                    <Binding Path="IconPath" />
+                                                    <Binding Path="." />
+                                                </MultiBinding.Bindings>
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Button Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=View}"
+                                            ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
+                                            Style="{StaticResource AuthButtonStyle}"
+                                            Command="{Binding EditCommand}">
+                                        <Image Style="{StaticResource AuthViewIconStyle}"/>
+                                    </Button>
+                                    <Button Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=Execute}"
+                                            ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipExecute}"
+                                            Style="{StaticResource AuthButtonStyle}"
+                                            Command="{Binding ExecuteCommand}">
+                                        <Image Style="{StaticResource AuthExecuteIconStyle}"/>
+                                    </Button>                              
+                                    <Image Style="{StaticResource AuthNoneIconStyle}"
+                                           Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=None}"
+                                           ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipNone}" />
+                                </StackPanel>
+
+                                <ContentControl Content="{Binding}">
+                                    <ContentControl.Resources>
+                                    </ContentControl.Resources>
+                                </ContentControl>
+
+                            </StackPanel>
+
+                            <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
+                                    Visibility="{Binding IsAuthorized, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
+                                    <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                    <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
+                                               Text="{x:Static help:HelpTextResources.ExplorerSecurityServerUnauthorized}"></TextBlock>
+                                </StackPanel>
+                            </Border>
                         </StackPanel>
                     </Border>
                 </HierarchicalDataTemplate>
-            </NavigationViews:NavigationView.ItemTemplate>           
+            </NavigationViews:NavigationView.ItemTemplate>
         </NavigationViews:NavigationView>
     </Grid>
 </UserControl>

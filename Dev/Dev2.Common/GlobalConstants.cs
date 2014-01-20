@@ -12,6 +12,9 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        //Default TimeoutValue
+        public static readonly TimeSpan DefaultTimeoutValue = new TimeSpan(0, 0, 20, 0);
+
         // Max String Size
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 

@@ -2,6 +2,7 @@
 using System.Activities.Persistence;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Security.Principal;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Data.Enums;
@@ -90,7 +91,7 @@ namespace Dev2.DynamicServices
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
-                    Guid parentInstanceID = Guid.NewGuid();
+                    Guid parentInstanceID;
                     Guid.TryParse(dataObject.GetValue("BookmarkExecutionCallbackID"), out parentInstanceID);
 
                     ParentInstanceID = dataObject.GetValue("ParentInstanceID");
@@ -182,6 +183,7 @@ namespace Dev2.DynamicServices
         }
 
         public int NumberOfSteps { get; set; }
+        public IPrincipal ExecutingUser { get; set; }
         public Guid DatalistOutMergeID { get; set; }
         public enTranslationDepth DatalistOutMergeDepth { get; set; }
         public DataListMergeFrequency DatalistOutMergeFrequency { get; set; }
@@ -354,21 +356,6 @@ namespace Dev2.DynamicServices
 
             writeOnlyValues = null;
         }
-
-        /// <summary>
-        /// A host invokes this method after it is done with collecting the values in the first stage. The host forwards two read-only dictionaries of values it collected from all persistence participants during the first stage (CollectValues stage) to this method for mapping. The host adds values in the dictionary returned by this method to the collection of write-only values.
-        /// </summary>
-        /// <param name="readWriteValues">The read-write values to be persisted.</param>
-        /// <param name="writeOnlyValues">The write-only values to be persisted.</param>
-        /// <returns>
-        /// A dictionary containing additional write-only values to be persisted.
-        /// </returns>
-        protected override IDictionary<XName, object> MapValues(IDictionary<XName, object> readWriteValues, IDictionary<XName, object> writeOnlyValues)
-        {
-            return base.MapValues(readWriteValues, writeOnlyValues);
-        }
-
-        // We deserialize the persistance information and rehydrate the Data Transfer object
 
         /// <summary>
         /// The host invokes this method and passes all the loaded values in the <see cref="P:System.Activities.Persistence.SaveWorkflowCommand.InstanceData" /> collection (filled by the <see cref="T:System.Activities.Persistence.LoadWorkflowCommand" /> or <see cref="T:System.Activities.Persistence.LoadWorkflowByInstanceKeyCommand" />) as a dictionary parameter.

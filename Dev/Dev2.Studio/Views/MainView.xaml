@@ -13,6 +13,7 @@
         xmlns:explorer="clr-namespace:Dev2.Studio.Views.Explorer"
         xmlns:customControls="clr-namespace:Dev2.Studio.Core.CustomControls;assembly=Dev2.Studio.Core"
         xmlns:viewModels="clr-namespace:Dev2.Studio.ViewModels"
+        xmlns:help="clr-namespace:Dev2.Help"
         WindowState="Maximized"
         Title="{Binding DisplayName}"
         Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
@@ -322,15 +323,12 @@
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Workflow-32}"
                                                    ToolTip="New Workflow (Ctrl+W)"
                                                    />
+                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding SaveCommand}"
@@ -341,6 +339,9 @@
                                                    Source="{StaticResource Save-32}"
                                                    ToolTip="Save (Ctrl+S)"
                                                    />
+                                             <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding SaveCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
 
@@ -380,15 +381,13 @@
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
                                                    ToolTip="New Database Service (Ctrl+Shift+D)"
                                                    />
+                                            <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
                                         </Grid>                                       
                                     </Button>
                                     <Button Command="{Binding NewResourceCommand}"
@@ -396,15 +395,13 @@
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
                                                    ToolTip="New Plugin Service (Ctrl+Shift+P)"
                                                    />
+                                            <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding NewResourceCommand}"
@@ -412,15 +409,13 @@
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
                                                    ToolTip="New Web Service (Ctrl+Shift+W)"
                                                    />
+                                            <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -443,28 +438,26 @@
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             >
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource ExecuteViewInBrowser-32}"
                                                    ToolTip="View in Browser"
                                                    />
+                                            <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding ViewInBrowserCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
 
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{Binding ActiveItem.DebugOutputViewModel.DebugImage,Converter={StaticResource NullToDebugImageConverter},FallbackValue=pack://application:\,\,\,\/Warewolf\ Studio\;component/Images/ExecuteDebugStart-32.png}"
                                                    ToolTip="{Binding ActiveItem.DebugOutputViewModel.DebugText,Converter={StaticResource NullToDebugRibbonButtonTextConverter},FallbackValue=Debug}" />
+                                            
+                                            <Image
+                                                   Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding DebugCommand.UnauthorizedVisibility}"/>
                                         </Grid>
                                     </Button>
                                 </StackPanel>
@@ -557,7 +550,7 @@
                         </Border>
 
                         <!--Settings-->
-                        <!--<Border Style="{StaticResource BorderStyleRibbon}">
+                        <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -570,16 +563,19 @@
                                 <StackPanel Grid.Row="0"
                                             Orientation="Horizontal">
                                     <Button Command="{Binding SettingsCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Settings-32}"
                                                    ToolTip="Manage Settings" />
+                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
                                         </Grid>
                                     </Button>
                                 </StackPanel>
                             </Grid>
-                        </Border>-->
+                        </Border>
                         
                     </StackPanel>
 
@@ -710,6 +706,10 @@
                                                                    Margin="4,4,4,2" />
                                                             <TextBlock Text="{Binding DisplayName}"
                                                                        VerticalAlignment="Center" />
+                                                            <Image Style="{StaticResource AuthNoneIconStyle}"
+                                                                   Visibility="{Binding CanSave, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                   ToolTip="{x:Static help:HelpTextResources.WorkflowDesignerSecurityToolTipNone}"
+                                                                   Margin="4,0,0,0"/>
                                                         </StackPanel>
                                                     </DataTemplate>
                                                 </Setter.Value>

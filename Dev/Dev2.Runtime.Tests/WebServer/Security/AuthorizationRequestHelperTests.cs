@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Controllers;
 using Dev2.Runtime.WebServer.Hubs;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

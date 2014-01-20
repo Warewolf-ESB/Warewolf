@@ -20,6 +20,8 @@ namespace Dev2.Services.Security
         [Reason("You are not authorized to deploy from this server.")]
         DeployFrom,
 
+        Administrator,
+
         Any
     }
 }

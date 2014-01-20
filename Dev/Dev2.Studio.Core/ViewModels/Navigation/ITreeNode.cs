@@ -27,6 +27,9 @@ namespace Dev2.Studio.Core.ViewModels.Navigation
         bool IsSelected { get; set; }
         string FilterText { get; set; }
         bool IsConnected { get; }
+        bool IsAuthorized { get; }
+        bool IsAuthorizedDeployFrom { get; }
+        bool IsAuthorizedDeployTo { get; }
         string DisplayName { get; set; }
         ICollectionView FilteredChildren { get; }
         bool IsNew { get; set; }

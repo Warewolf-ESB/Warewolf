@@ -1,9 +1,10 @@
-﻿using System.Drawing;
-using System.Linq;
-using Dev2.Studio.UI.Tests;
+﻿using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
+using System.Drawing;
+using System.Linq;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 // ReSharper disable CheckNamespace
@@ -20,7 +21,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         {
             get
             {
-                if((_debugUIMap == null))
+                if ((_debugUIMap == null))
                 {
                     _debugUIMap = new DebugUIMap();
                 }
@@ -44,16 +45,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             // We then recusrsively call the method again with the now validated tab, and it works as itended.
             // Note: This recursive call will only happen the first time the ribbon is used, as it will subsequently be initialised correctly.
 
-            if(uIRibbonTabList == null)
+            if (uIRibbonTabList == null)
             {
                 uIRibbonTabList = UIBusinessDesignStudioWindow.UIRibbonTabList;
             }
 
             UITestControlCollection tabList = uIRibbonTabList.Tabs;
             UITestControl theControl;
-            foreach(WpfTabPage tabPage in tabList)
+            foreach (WpfTabPage tabPage in tabList)
             {
-                if(tabPage.Name == menuAutomationId)
+                if (tabPage.Name == menuAutomationId)
                 {
                     theControl = tabPage;
                     Point p;
@@ -65,7 +66,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
                 {
                     theControl = tabPage;
                     Point p = new Point(theControl.BoundingRectangle.X + 5, theControl.BoundingRectangle.Y + 5);
-                    if(p.X > 5)
+                    if (p.X > 5)
                     {
                         Mouse.Click(p);
                         break;
@@ -76,7 +77,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             // Somethign has gone wrong - Retry!
 
             loopCount++; // This was added due to the infinite loop happening if the ribbon was totally unclickable due to a crash
-            if(loopCount < 10)
+            if (loopCount < 10)
             {
                 ClickRibbonMenu(menuAutomationId);
             }
@@ -87,20 +88,41 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             ClickRibbonMenuItem("UI_RibbonHomeTabPluginServiceBtn_AutoID");
         }
 
+        public void ClickManageSecuritySettings()
+        {
+            StudioWindow.SetFocus();
+            ClickRibbonMenuItem("UI_RibbonHomeManageSecuritySettingsBtn_AutoID");
+            StudioWindow.WaitForControlReady();
+        }
+
         public void ClickRibbonMenuItem(string itemName)
         {
             var ribbonButtons = StudioWindow.GetChildren();
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName.Contains(itemName)));
+            if (control == null)
+            {
+                var message = string.Format("Resource with name : [{0}] was not found", itemName);
+                throw new Exception(message);
+            }
+
             control.WaitForControlEnabled();
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
             Playback.Wait(100);
+
+
         }
 
         public void CreateNewWorkflow()
         {
             var uiTestControlCollection = StudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
+            if (control == null)
+            {
+                var message = string.Format("Resource with name : [{0}] was not found", "UI_RibbonHomeTabWorkflowBtn_AutoID");
+                throw new Exception(message);
+            }
+
             var p = new Point(control.BoundingRectangle.Left + 5, control.BoundingRectangle.Top + 5);
             Mouse.Click(p);
             Playback.Wait(500);

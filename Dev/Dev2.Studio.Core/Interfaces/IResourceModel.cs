@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Collections;
 using Dev2.Providers.Errors;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
 
@@ -12,10 +13,12 @@ namespace Dev2.Studio.Core.Interfaces
     public interface IResourceModel : IWorkSurfaceObject
     {
         Guid ID { get; set; }
+        Permissions UserPermissions { get; set; }
+        bool IsAuthorized(AuthorizationContext authorizationContext);
+
         string Inputs { get; set; }
         string Outputs { get; set; }
         bool AllowCategoryEditing { get; set; }
-        string AuthorRoles { get; set; }
         string Category { get; set; }
         string Comment { get; set; }
         string DataTags { get; set; }

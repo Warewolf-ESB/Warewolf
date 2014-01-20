@@ -17,7 +17,7 @@ using Dev2.Studio.Enums;
 
 namespace Dev2.Settings.Security
 {
-    public class SecurityViewModel : DependencyObject, IHelpSource
+    public class SecurityViewModel : SettingsItemViewModel, IHelpSource
     {
         readonly IResourcePickerDialog _resourcePicker;
         readonly IDirectoryObjectPickerDialog _directoryObjectPicker;
@@ -25,14 +25,13 @@ namespace Dev2.Settings.Security
         readonly IEnvironmentModel _environment;
         bool _isUpdatingHelpText;
 
-        internal SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IWin32Window parentWindow, IEnvironmentModel environment)
-            : this(permissions, new ResourcePickerDialog(enDsfActivityType.All, environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
+        internal SecurityViewModel(SecuritySettingsTO securitySettings, IWin32Window parentWindow, IEnvironmentModel environment)
+            : this(securitySettings, new ResourcePickerDialog(enDsfActivityType.All, environment), new DirectoryObjectPickerDialog(), parentWindow, environment)
         {
         }
 
-        public SecurityViewModel(IEnumerable<WindowsGroupPermission> permissions, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
+        public SecurityViewModel(SecuritySettingsTO securitySettings, IResourcePickerDialog resourcePicker, IDirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IEnvironmentModel environment)
         {
-            VerifyArgument.IsNotNull("permissions", permissions);
             VerifyArgument.IsNotNull("resourcePicker", resourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull("parentWindow", parentWindow);
@@ -54,7 +53,8 @@ namespace Dev2.Settings.Security
             PickResourceCommand = new RelayCommand(PickResource, o => true);
 
             InitializeHelp();
-            InitializePermissions(permissions);
+
+            InitializePermissions(securitySettings == null ? null : securitySettings.WindowsGroupPermissions);
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions { get; private set; }
@@ -68,24 +68,6 @@ namespace Dev2.Settings.Security
         public ICommand PickWindowsGroupCommand { get; private set; }
 
         public ICommand PickResourceCommand { get; private set; }
-
-        public ICommand CloseHelpCommand { get; private set; }
-
-        public string HelpText
-        {
-            get { return (string)GetValue(HelpTextProperty); }
-            set { SetValue(HelpTextProperty, value); }
-        }
-
-        public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SecurityViewModel), new PropertyMetadata(null));
-
-        public bool IsDirty
-        {
-            get { return (bool)GetValue(IsDirtyProperty); }
-            set { SetValue(IsDirtyProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false));
 
         public bool IsServerHelpVisible
         {
@@ -113,13 +95,13 @@ namespace Dev2.Settings.Security
             ((SecurityViewModel)d).UpdateHelpText(HelpType.Resource);
         }
 
-        public virtual void Save(List<WindowsGroupPermission> permissions, List<string> errors)
+        public virtual void Save(SecuritySettingsTO securitySettings)
         {
-            VerifyArgument.IsNotNull("permissions", permissions);
-            VerifyArgument.IsNotNull("errors", errors);
-            permissions.Clear();
-            Copy(ServerPermissions, permissions);
-            Copy(ResourcePermissions, permissions);
+            VerifyArgument.IsNotNull("securitySettings", securitySettings);
+
+            securitySettings.WindowsGroupPermissions.Clear();
+            Copy(ServerPermissions, securitySettings.WindowsGroupPermissions);
+            Copy(ResourcePermissions, securitySettings.WindowsGroupPermissions);
         }
 
         void Copy(IList<WindowsGroupPermission> source, IList<WindowsGroupPermission> target)
@@ -148,7 +130,6 @@ namespace Dev2.Settings.Security
         {
             ServerHelpToggle = CreateHelpToggle(IsServerHelpVisibleProperty);
             ResourceHelpToggle = CreateHelpToggle(IsResourceHelpVisibleProperty);
-            CloseHelpCommand = new RelayCommand(o => CloseHelp(), o => true);
         }
 
         void InitializePermissions(IEnumerable<WindowsGroupPermission> permissions)
@@ -156,16 +137,19 @@ namespace Dev2.Settings.Security
             ServerPermissions = new ObservableCollection<WindowsGroupPermission>();
             ResourcePermissions = new ObservableCollection<WindowsGroupPermission>();
 
-            foreach(var permission in permissions)
+            if(permissions != null)
             {
-                RegisterPropertyChanged(permission);
-                if(permission.IsServer)
+                foreach(var permission in permissions)
                 {
-                    ServerPermissions.Add(permission);
-                }
-                else
-                {
-                    ResourcePermissions.Add(permission);
+                    RegisterPropertyChanged(permission);
+                    if(permission.IsServer)
+                    {
+                        ServerPermissions.Add(permission);
+                    }
+                    else
+                    {
+                        ResourcePermissions.Add(permission);
+                    }
                 }
             }
             ServerPermissions.Add(CreateNewPermission(true));
@@ -311,7 +295,7 @@ namespace Dev2.Settings.Security
             return toggle;
         }
 
-        void CloseHelp()
+        protected override void CloseHelp()
         {
             IsServerHelpVisible = false;
             IsResourceHelpVisible = false;

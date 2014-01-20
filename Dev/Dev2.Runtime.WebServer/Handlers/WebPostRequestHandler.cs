@@ -35,7 +35,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 d.AddResponse(formData);
             }
 
-            IResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats);
+            IResponseWriter responseWriter = CreateForm(d, serviceName, workspaceID, ctx.FetchHeaders(), PublicFormats, ctx.Request.User);
             ctx.Send(responseWriter);
         }
 

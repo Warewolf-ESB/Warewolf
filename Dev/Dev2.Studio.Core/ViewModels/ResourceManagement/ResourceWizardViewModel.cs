@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common.Common;
 using Dev2.Composition;
 using Dev2.Interfaces;
 using Dev2.Providers.Logs;
@@ -14,6 +15,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Util;
 
 
 // ReSharper disable once CheckNamespace
@@ -85,42 +87,14 @@ namespace Dev2.Studio.Core.ViewModels
         {
             XElement feedback = XElement.Parse(WizardFeedback);
 
-            XElement xElement = feedback.Element("ResourceName");
-            if(xElement != null)
-            {
-                _resource.ResourceName = xElement.Value;
+            _resource.ResourceName = feedback.ElementSafe("ResourceName");
+            _resource.ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), feedback.ElementSafe("ResourceType"));
+            _resource.Category = feedback.ElementSafe("Category");
+            _resource.Comment = feedback.ElementSafe("Comment");
+            _resource.Tags = feedback.ElementSafe("Tags");
+            _resource.HelpLink = feedback.ElementSafe("HelpLink");
+            _resource.UpdateIconPath(feedback.ElementSafe("IconPath"));
             }
-            XElement element = feedback.Element("ResourceType");
-            if(element != null)
-            {
-                _resource.ResourceType = (ResourceType)Enum.Parse(typeof(ResourceType), element.Value);
-            }
-            XElement xElement1 = feedback.Element("Category");
-            if(xElement1 != null)
-            {
-                _resource.Category = xElement1.Value;
-            }
-            XElement element1 = feedback.Element("Comment");
-            if(element1 != null)
-            {
-                _resource.Comment = element1.Value;
-            }
-            XElement xElement2 = feedback.Element("Tags");
-            if(xElement2 != null)
-            {
-                _resource.Tags = xElement2.Value;
-            }
-            XElement element2 = feedback.Element("HelpLink");
-            if(element2 != null)
-            {
-                _resource.HelpLink = element2.Value;
-            }
-            XElement xElement3 = feedback.Element("IconPath");
-            if(xElement3 != null)
-            {
-                _resource.UpdateIconPath(xElement3.Value);
-            }
-        }
 
         #endregion Private Methods
 
@@ -187,7 +161,7 @@ namespace Dev2.Studio.Core.ViewModels
             Uri postUri;
             if(!Uri.TryCreate(_resource.Environment.Connection.WebServerUri, uri, out postUri))
             {
-                if(!Uri.TryCreate(new Uri(StringResources.Uri_WebServer), uri, out postUri))
+                if(!Uri.TryCreate(new Uri(AppSettings.LocalHost), uri, out postUri))
                 {
                     throw new Exception("Unable to create the URL to post wizard information to the server.");
                 }

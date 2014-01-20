@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Network;
 using System.Text;
-using Dev2.Diagnostics;
 using Dev2.Network;
 using Dev2.Providers.Events;
-using Dev2.Services.Security;
-using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
 
 // ReSharper disable once CheckNamespace
@@ -18,14 +15,13 @@ namespace Dev2.Studio.Core.Interfaces
 
         Guid ServerID { get; }
         Guid WorkspaceID { get; }
-        IDebugWriter DebugWriter { get; }
 
         Uri AppServerUri { get; }
         Uri WebServerUri { get; }
 
-        event EventHandler<LoginStateEventArgs> LoginStateChanged;
         event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
-        event EventHandler<ServerStateEventArgs> ServerStateChanged;
+        event EventHandler PermissionsChanged;
+        bool IsAuthorized { get; }
 
         StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceID, Guid dataListID);
 
@@ -44,7 +40,6 @@ namespace Dev2.Studio.Core.Interfaces
         // BUG 10106 - 2013.08.13 - TWR - added
         void StartAutoConnect();
 
-        IAuthorizationService AuthorizationService { get; }
         bool IsLocalHost { get; }
     }
 }

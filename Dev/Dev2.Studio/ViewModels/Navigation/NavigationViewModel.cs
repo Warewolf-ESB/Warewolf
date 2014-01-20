@@ -7,8 +7,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
-using Dev2.Services;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -41,6 +39,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         RelayCommand _refreshMenuCommand;
         string _searchFilter = string.Empty;
         enDsfActivityType _activityType;
+        readonly NavigationViewModelType _navigationViewModelType;
         bool _fromActivityDrop;
         readonly IEventAggregator _eventPublisher;
         readonly IAsyncWorker _asyncWorker;
@@ -49,17 +48,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        public NavigationViewModel(Guid? context, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(context, Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
-        {
-        }
-
-        public NavigationViewModel(Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(EventPublishers.Aggregator, new AsyncWorker(), context, environmentRepository, isFromActivityDrop, activityType)
-        {
-        }
-
-        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, NavigationViewModelType navigationViewModelType = NavigationViewModelType.Explorer)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -73,6 +62,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             _activityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
+            _navigationViewModelType = navigationViewModelType;
             Environments = new List<IEnvironmentModel>();
 
             _root = new RootTreeViewModel(eventPublisher);
@@ -216,7 +206,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <summary>
         ///     Adds an environment and it's resources to the tree
         /// </summary>
-        public void AddEnvironment(IEnvironmentModel environment, IDesignValidationService validator = null)
+        public void AddEnvironment(IEnvironmentModel environment)
         {
             VerifyArgument.IsNotNull("environment", environment);
             if(Environments.Any(e => e.ID == environment.ID))
@@ -540,9 +530,8 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             var treeNodes = environmentNode.GetChildren(c => c.GetType() == typeof(ResourceTreeViewModel)).ToList();
 
-            foreach(var treeNode in treeNodes)
+            foreach(ResourceTreeViewModel resourceTreeViewModel in treeNodes)
             {
-                var resourceTreeViewModel = (ResourceTreeViewModel)treeNode;
                 preTreeViewModels.Add(resourceTreeViewModel);
             }
 
@@ -753,7 +742,24 @@ namespace Dev2.Studio.ViewModels.Navigation
                             //
                             // Build the resources into a tree
                             //
-                            BuildNavigationItemViewModels(environment);
+                            switch(_navigationViewModelType)
+                            {
+                                case NavigationViewModelType.Explorer:
+                                    BuildNavigationItemViewModels(environment);
+                                    break;
+                                case NavigationViewModelType.DeployFrom:
+                                    if(environment.IsAuthorizedDeployFrom)
+                                    {
+                                        BuildNavigationItemViewModels(environment);
+                                    }
+                                    break;
+                                case NavigationViewModelType.DeployTo:
+                                    if(environment.IsAuthorizedDeployTo)
+                                    {
+                                        BuildNavigationItemViewModels(environment);
+                                    }
+                                    break;
+                            }
                         }
                     }
                     finally
@@ -808,5 +814,12 @@ namespace Dev2.Studio.ViewModels.Navigation
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treeNodes[0].EnvironmentModel));
             }
         }
+    }
+
+    public enum NavigationViewModelType
+    {
+        Explorer,
+        DeployFrom,
+        DeployTo
     }
 }

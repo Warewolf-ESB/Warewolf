@@ -14,5 +14,14 @@ namespace Dev2.Security
         {
             return IsAuthorized(ClaimsPrincipal.Current, context, resource);
         }
+
+        public override bool IsAuthorized(IAuthorizationRequest request)
+        {
+            return false;
+        }
+
+        protected override void OnDisposed()
+        {
+        }
     }
 }

@@ -8,7 +8,11 @@ namespace Dev2.Services.Security
         event EventHandler PermissionsChanged;
 
         IReadOnlyList<WindowsGroupPermission> Permissions { get; }
+        TimeSpan TimeOutPeriod { get; set; }
 
         void Read();
+        event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
+
+        void Remove(Guid resourceID);
     }
 }

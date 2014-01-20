@@ -9,19 +9,14 @@ namespace Dev2.Core.Tests.Environments
 
         public TestLoadEnvironmentRespository()
         {
-            // Set IsLoaded = true, so that we don't connect to the server when invoking .All()
-            IsLoaded = true;
         }
 
         public TestLoadEnvironmentRespository(IEnvironmentModel source, params IEnvironmentModel[] environments)
             : base(source)
         {
-            // Set IsLoaded = true, so that we don't connect to the server when invoking .All()
-            IsLoaded = true;
-
-            if (environments != null)
+            if(environments != null)
             {
-                foreach (var environment in environments)
+                foreach(var environment in environments)
                 {
                     Environments.Add(environment);
                 }
@@ -30,6 +25,7 @@ namespace Dev2.Core.Tests.Environments
 
         protected override void LoadInternal()
         {
+            // Override, so that we don't connect to the server!
             LoadInternalHitCount++;
         }
 

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
 using Caliburn.Micro;
+using Dev2.Util;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
@@ -12,7 +13,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
     {
         #region fields
 
-        bool _loaded = false;
+        bool _loaded;
         private ObservableCollection<ComputerDrive> _children;
         private ComputerDrive _parent;
         private string _title;
@@ -26,7 +27,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _title; }
             set
             {
-                if (_title == value)
+                if(_title == value)
                 {
                     return;
                 }
@@ -42,7 +43,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
             get { return _fullTitle; }
             set
             {
-                if (_fullTitle == value)
+                if(_fullTitle == value)
                 {
                     return;
                 }
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         {
             get 
             {  
-                if (_children == null)
+                if(_children == null)
                 {
                     _children = new ObservableCollection<ComputerDrive>();
                     _children.CollectionChanged += (s, e) => NotifyOfPropertyChange(() => ChildrenCount);
@@ -72,10 +73,10 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public ComputerDrive Parent
         {
-            get { return  _parent; }
+            get { return _parent; }
             set
             {
-                if (_parent == value)
+                if(_parent == value)
                 {
                     return;
                 }
@@ -110,7 +111,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public void LoadChildren()
         {
-            if (Loaded)
+            if(Loaded)
             { return; }
 
             Loaded = true;
@@ -138,20 +139,20 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private static Uri GetDirectoryUri(string currentTitle)
         {
-            const string address = "http://localhost:1234/services/FindDirectoryService";
+            var address = AppSettings.LocalHost + "/services/FindDirectoryService";
             return new Uri(address + "?DirectoryPath=" + currentTitle);
         }
 
         private static Uri GetDriveUri()
         {
-            const string address = "http://localhost:1234/services/FindDriveService";
+            var address = AppSettings.LocalHost + "/services/FindDriveService";
              return new Uri(address);
         }
 
         private string PrepareTitleForService()
         {
             var currentTitle = FullTitle;
-            if (!currentTitle.EndsWith("\\"))
+            if(!currentTitle.EndsWith("\\"))
             {
                 currentTitle += "/";
             }
@@ -165,17 +166,16 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private void ChildrenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            if (e.Error != null || e.Cancelled)
+            if(e.Error != null || e.Cancelled)
             {
-                //TODO Handle errors
                 return;
             }
 
             Children.Clear();
             var list = DeserializeJson(e.Result);
-            foreach (var drive in list)
+            foreach(var drive in list)
             {
-                if (drive.Title.StartsWith("$"))
+                if(drive.Title.StartsWith("$"))
                 {
                     continue;
                 }
@@ -188,12 +188,12 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         private string CreateFullTitle(ComputerDrive drive)
         {
-            return GetDirectoryPath(drive).TrimEnd('\\','/');
+            return GetDirectoryPath(drive).TrimEnd('\\', '/');
         }
 
         private string GetDirectoryPath(ComputerDrive drive)
         {
-            if (drive.Parent == null || string.IsNullOrWhiteSpace(drive.Parent.Title))
+            if(drive.Parent == null || string.IsNullOrWhiteSpace(drive.Parent.Title))
                 return drive.Title;
 
             return drive.Title.Insert(0, CreateFullTitle(drive.Parent) + "\\");

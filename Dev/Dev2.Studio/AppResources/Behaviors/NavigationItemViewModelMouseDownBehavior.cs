@@ -1,12 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interactivity;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -30,15 +31,21 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
+            if(AssociatedObject == null)
+            {
+                return;
+            }
             SubscribeToEvents();
-            _eventPublisher.Subscribe(this);
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
-            UnsubscribeToEvents();
-            _eventPublisher.Unsubscribe(this);
+            if(AssociatedObject == null)
+            {
+                return;
+            }
+            UnsubscribeFromEvents();
         }
 
         #endregion Override Methods
@@ -114,41 +121,46 @@ namespace Dev2.Studio.AppResources.Behaviors
         /// <summary>
         /// Subscribes to the associated objects events for this behavior
         /// </summary>
-        private void SubscribeToEvents()
+        protected virtual void SubscribeToEvents()
         {
             if(AssociatedObject == null)
             {
                 return;
             }
 
-            AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
-            AssociatedObject.MouseDown += AssociatedObject_MouseDown;
+            AssociatedObject.MouseDown -= OnMouseDown;
+            AssociatedObject.MouseDown += OnMouseDown;
+            _eventPublisher.Subscribe(this);
         }
 
         /// <summary>
         /// Unsubscribes from the associated objects events for this behavior
         /// </summary>
-        private void UnsubscribeToEvents()
+        protected virtual void UnsubscribeFromEvents()
         {
             if(AssociatedObject == null)
             {
                 return;
             }
 
-            AssociatedObject.MouseDown -= AssociatedObject_MouseDown;
+            AssociatedObject.MouseDown -= OnMouseDown;
+            _eventPublisher.Unsubscribe(this);
         }
 
         #endregion Private Methods
 
         #region Event Handler Methods
 
-        private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)
+        protected void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var treenode = AssociatedObject.DataContext as ITreeNode;
+            e.Handled = OnMouseDown(AssociatedObject.DataContext as ITreeNode, e.ClickCount);
+        }
 
+        protected bool OnMouseDown(ITreeNode treenode, int clickCount)
+        {
             if(treenode == null)
             {
-                return;
+                return false;
             }
 
             //Select on rightclick
@@ -172,10 +184,15 @@ namespace Dev2.Studio.AppResources.Behaviors
                 var resourceTreeViewModel = model;
                 if(resourceTreeViewModel.DataContext != null)
                 {
+                    if(!resourceTreeViewModel.DataContext.IsAuthorized(AuthorizationContext.View))
+                    {
+                        return true;
+                    }
+
                     //
                     // Double click logic
                     //
-                    if(OpenOnDoubleClick && e.ClickCount == 2)
+                    if(OpenOnDoubleClick && clickCount == 2)
                     {
                         this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
@@ -189,15 +206,14 @@ namespace Dev2.Studio.AppResources.Behaviors
                             //
                             // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
                             //
-                            e.Handled = true;
+                            return true;
                         }
                     }
-                    else if(OpenOnDoubleClick && e.ClickCount == 1)
+                    else if(OpenOnDoubleClick && clickCount == 1)
                     {
                         this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false));
                     }
-
                 }
             }
             else
@@ -205,6 +221,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                 _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
             }
+            return false;
         }
 
         #endregion Event Handler Methods

@@ -75,16 +75,16 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationHelpers_Matches")]
-        public void AuthorizationHelpers_Matches_ResourceIsNullOrEmpty_True()
+        public void AuthorizationHelpers_Matches_ResourceIsNullOrEmpty_False()
         {
             //------------Setup for test--------------------------
-            var securityPermission = new WindowsGroupPermission { IsServer = false };
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "CATEGORY\\TEST2" };
 
             //------------Execute Test---------------------------
             var authorized = securityPermission.Matches(null);
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(authorized);
+            Assert.IsFalse(authorized);
         }
 
         [TestMethod]
@@ -162,6 +162,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Verify_ToPermissions(AuthorizationContext.Contribute, Permissions.Administrator | Permissions.Contribute);
             Verify_ToPermissions(AuthorizationContext.DeployTo, Permissions.Administrator | Permissions.DeployTo);
             Verify_ToPermissions(AuthorizationContext.DeployFrom, Permissions.Administrator | Permissions.DeployFrom);
+            Verify_ToPermissions(AuthorizationContext.Administrator, Permissions.Administrator);
             Verify_ToPermissions(AuthorizationContext.Any, Permissions.Administrator | Permissions.View | Permissions.Contribute | Permissions.Execute | Permissions.DeployFrom | Permissions.DeployTo);
         }
 

@@ -3,8 +3,8 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Security.Principal;
-using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Handlers;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

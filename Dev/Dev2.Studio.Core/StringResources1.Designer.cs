@@ -236,15 +236,6 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:77/dsf.
-        /// </summary>
-        public static string DefaultEnvironmentUri {
-            get {
-                return ResourceManager.GetString("DefaultEnvironmentUri", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TUW-DEVFS/dsfDev.
         /// </summary>
         public static string Dev_SPN_Endpoint_Identity {
@@ -988,6 +979,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to For the case of:.
         /// </summary>
         public static string StringWindow_CaseLabelValue {
@@ -1348,47 +1348,11 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://localhost:3142/dsf.
-        /// </summary>
-        public static string Uri_Development_Environment {
-            get {
-                return ResourceManager.GetString("Uri_Development_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to net.tcp://localhost:7658/dsfmanager.
-        /// </summary>
-        public static string Uri_Development_Manager_Connection {
-            get {
-                return ResourceManager.GetString("Uri_Development_Manager_Connection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to https://warewolf.s3.amazonaws.com/Latest/.
         /// </summary>
         public static string Uri_DownloadPage {
             get {
                 return ResourceManager.GetString("Uri_DownloadPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://localhost:3142/dsf.
-        /// </summary>
-        public static string Uri_Live_Environment {
-            get {
-                return ResourceManager.GetString("Uri_Live_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to net.tcp://rsaklfsvrgendev:7658/dsfmanager.
-        /// </summary>
-        public static string Uri_Live_Manager_Connection {
-            get {
-                return ResourceManager.GetString("Uri_Live_Manager_Connection", resourceCulture);
             }
         }
         
@@ -1420,6 +1384,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help\PageForbidden.htm.
+        /// </summary>
+        public static string Uri_Studio_PageForbidden {
+            get {
+                return ResourceManager.GetString("Uri_Studio_PageForbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help\PageNotFound.htm.
         /// </summary>
         public static string Uri_Studio_PageNotFound {
@@ -1434,33 +1407,6 @@ namespace Dev2 {
         public static string Uri_Studio_Shortcut_Keys_Document {
             get {
                 return ResourceManager.GetString("Uri_Studio_Shortcut_Keys_Document", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://localhost:3142/dsf.
-        /// </summary>
-        public static string Uri_Testing_Environment {
-            get {
-                return ResourceManager.GetString("Uri_Testing_Environment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to net.tcp://rsaklfsvrgendev:7658/dsfmanager.
-        /// </summary>
-        public static string Uri_Testing_Manager_Connection {
-            get {
-                return ResourceManager.GetString("Uri_Testing_Manager_Connection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to http://localhost:3142.
-        /// </summary>
-        public static string Uri_WebServer {
-            get {
-                return ResourceManager.GetString("Uri_WebServer", resourceCulture);
             }
         }
         

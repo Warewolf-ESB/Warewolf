@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void PluginServicesContructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            var services = new PluginServices(null);
+            var services = new PluginServices(null, null);
         }
 
         #endregion

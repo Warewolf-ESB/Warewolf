@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using Dev2.Services.Security;
+﻿using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Data.Settings
 {
     public class Settings
     {
-        public List<WindowsGroupPermission> Security { get; set; }
+        public SecuritySettingsTO Security { get; set; }
 
         public bool HasError { get; set; }
         public string Error { get; set; }

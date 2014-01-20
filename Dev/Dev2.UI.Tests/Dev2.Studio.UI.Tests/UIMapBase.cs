@@ -380,17 +380,17 @@ namespace Dev2.Studio.UI.Tests
 
         #region Popup Dialog UI Map
 
-        public PopupDialogUIMap PopupDialogUIMap
+        public PopupDialogUiMap PopupDialogUIMap
         {
             get
             {
                 if(_popupDialogUIMap == null)
-                    _popupDialogUIMap = new PopupDialogUIMap();
+                    _popupDialogUIMap = new PopupDialogUiMap();
                 return _popupDialogUIMap;
             }
         }
 
-        private PopupDialogUIMap _popupDialogUIMap;
+        private PopupDialogUiMap _popupDialogUIMap;
 
         #endregion Popup Dialog UI Map
 

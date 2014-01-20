@@ -1,12 +1,13 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.Deploy.DeployView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:nv="clr-namespace:Dev2.Studio.Views.Navigation"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:nv="clr-namespace:Dev2.Studio.Views.Navigation" 
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:help="clr-namespace:Dev2.Help"
              Name="DeployUserControl">
     <Grid>
         <Grid.RowDefinitions>
@@ -33,14 +34,14 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
+                
                 <Dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
-                                     LabelText="Source Server:"
-                                     ServerChangedCommand="{Binding SourceServerChangedCommand}"
-                                     NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
-                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
-                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
+                                 LabelText="Source Server:" 
+                                 ServerChangedCommand="{Binding SourceServerChangedCommand}"
+                                 NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
+                                 EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
+                                 ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
                                      Context="{Binding SourceContext}" />
 
                 <nv:NavigationView Grid.Row="1"
@@ -61,7 +62,7 @@
                                         <Binding Path="DisplayName" />
                                     </MultiBinding>
                                 </Setter.Value>
-                            </Setter>
+                            </Setter>                            
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsOverwrite}"
                                              Value="true">
@@ -84,11 +85,12 @@
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
-                                                  ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal"
-                                        AllowDrop="True"
-                                        Height="20">
+                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal"
+                                            AllowDrop="True"
+                                            Height="20"
+                                            Visibility="{Binding IsAuthorizedDeployFrom, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                 <StackPanel.ContextMenu>
                                     <ContextMenu Visibility="{Binding CanSelectDependencies, Converter={StaticResource BoolToVisConverter}}">
                                         <MenuItem Header="Select All Dependencies"
@@ -100,7 +102,7 @@
                                     <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
                                 </i:Interaction.Behaviors-->
 
-                                <CheckBox IsChecked="{Binding IsChecked}"
+                                <CheckBox IsChecked="{Binding IsChecked}"                                          
                                           Margin="0,0,5,0">
                                     <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_CheckBox{0}_AutoID">
@@ -112,11 +114,26 @@
                                 <ContentControl Content="{Binding}">
                                     <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
                                 </ContentControl>
+
+                                </StackPanel>
+
+                                <ContentControl Content="{Binding}"
+                                                Height="20"
+                                                Visibility="{Binding IsAuthorizedDeployFrom, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+
+                                <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
+                                        Visibility="{Binding IsAuthorizedDeployFrom, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                    <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
+                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                        <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
+                                                   Text="{x:Static help:HelpTextResources.DeploySecurityFromUnauthorized}"></TextBlock>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </nv:NavigationView.ItemTemplate>
                 </nv:NavigationView>
-            </Grid>
+                            </Grid>
 
             <GridSplitter Width="2.5" />
 
@@ -128,13 +145,13 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Dev2:ConnectControl Grid.Row="0"
-                                     Margin="3"
-                                     LabelText="Destination Server:"
-                                     ServerChangedCommand="{Binding TargetServerChangedCommand}"
-                                     Context="{Binding DestinationContext}"
-                                     NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
-                                     EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
+                <Dev2:ConnectControl Grid.Row="0" 
+                                 Margin="3"
+                                 LabelText="Destination Server:" 
+                                 ServerChangedCommand="{Binding TargetServerChangedCommand}"
+                                 Context="{Binding DestinationContext}"
+                                 NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
+                                 EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
                                      ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID" />
 
                 <nv:NavigationView Grid.Row="2"
@@ -178,11 +195,12 @@
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
-                                                  ItemsSource="{Binding Path=Children}">
-                            <StackPanel Orientation="Horizontal"
-                                        AllowDrop="True"
-                                        Height="20">
+                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}" ItemsSource="{Binding Path=Children}">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal"
+                                            AllowDrop="True"
+                                            Height="30"
+                                            Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                 <i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior />
                                 </i:Interaction.Behaviors>
@@ -191,11 +209,27 @@
                                     <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
                                 </ContentControl>
                             </StackPanel>
+                                  
+                                <ContentControl Content="{Binding}" Height="20"
+                                                Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+
+                                <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
+                                        Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                                    <!-- Fix some weird 1px issue on just the target  -->
+                                    <Border Background="{StaticResource TreeViewBackgroundBrush}" Margin="-1,0">
+                                        <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
+                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                            <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
+                                                       Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"></TextBlock>
+                                        </StackPanel>
+                                    </Border>
+                                </Border>
+                            </StackPanel>
                         </HierarchicalDataTemplate>
-                    </nv:NavigationView.ItemTemplate>
+                    </nv:NavigationView.ItemTemplate>                    
                 </nv:NavigationView>
             </Grid>
-
+            
             <Grid Grid.ColumnSpan="2"
                   Grid.Row="1"
                   Background="#7F7F7F">
@@ -204,7 +238,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
@@ -216,7 +250,7 @@
                            Foreground="White"
                            Margin="0,5,5,0"
                            FontWeight="Bold">Selected for Deploy:</TextBlock>
-
+                
                 <ItemsControl Grid.Column="0"
                               Grid.Row="1"
                               Grid.IsSharedSizeScope="True"
@@ -340,7 +374,7 @@
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             Orientation="Horizontal">
-                    <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID"
+                    <Button AutomationProperties.AutomationId="UI_SelectDepbtn_AutoID" 
                             Content="Select All Dependencies"
                             HorizontalAlignment="Right"
                             Background="Transparent"
@@ -380,7 +414,7 @@
                                                          VerticalAlignment="Center"
                                                          Margin="0,0,5,0"
                                                          Visibility="{Binding IsDeploying, Converter={StaticResource BoolToVisConverter}}" />
-                    <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID"
+                    <Button AutomationProperties.AutomationId="UI_Deploybtn_AutoID" 
                             Content="Deploy"
                             HorizontalAlignment="Left"
                             Background="Transparent"
@@ -391,6 +425,6 @@
                             MinWidth="50" />
                 </StackPanel>
             </Grid>
-        </Grid>
+        </Grid>                
     </Grid>
 </UserControl>

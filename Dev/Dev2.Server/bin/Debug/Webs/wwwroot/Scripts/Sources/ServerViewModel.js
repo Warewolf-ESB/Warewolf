@@ -66,7 +66,7 @@
     });
 
     self.ServerUrlOnKeyDownEvent = function (elem, e) {
-        if (e.keyCode == 13) {
+        if (e.keyCode == 13 && !self.isReadOnly) {
             self.test();
         }
         return true;
@@ -93,6 +93,7 @@
     self.helpDictionary = {};
     self.helpText = ko.observable("");
     self.isHelpTextVisible = ko.observable(true);
+    self.isReadOnly = false;
 
     self.isTestResultsLoading = ko.observable(false);
     self.showTestResults = ko.observable(false);
@@ -135,7 +136,9 @@
         var jsonData = ko.toJSON(self.data);
         
         utils.postTimestamped(self, "testTime", "Service/Connections/Test", jsonData, function(result) {
-            $testButton.button("option", "disabled", false);
+            if (!self.isReadOnly) {
+                $testButton.button("option", "disabled", false);
+            }
             self.isTestResultsLoading(false);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);

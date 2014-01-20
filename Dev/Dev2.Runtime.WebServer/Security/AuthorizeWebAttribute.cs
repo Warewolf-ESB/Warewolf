@@ -3,6 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.WebServer.Security
 {
@@ -10,7 +12,7 @@ namespace Dev2.Runtime.WebServer.Security
     public class AuthorizeWebAttribute : AuthorizationFilterAttribute
     {
         public AuthorizeWebAttribute()
-            : this(AuthorizationService.Instance)
+            : this(ServerAuthorizationService.Instance)
         {
         }
 

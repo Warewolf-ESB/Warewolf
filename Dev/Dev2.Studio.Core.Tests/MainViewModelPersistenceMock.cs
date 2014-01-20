@@ -3,8 +3,8 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using Dev2.ViewModels.WorkSurface;
 using Moq;
 
 namespace Dev2.Core.Tests

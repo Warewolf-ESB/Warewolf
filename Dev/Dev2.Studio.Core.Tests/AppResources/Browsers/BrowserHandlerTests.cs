@@ -11,7 +11,8 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     // PBI 9644 - 2013.06.21 - TWR: added    
     // PBI 9512 - 2013.06.07 - TWR: merged
     // BUG 9798 - 2013.06.25 - TWR : refactored for external
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
         #region CTOR
@@ -98,7 +99,9 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         #region OnResourceResponse
 
         [TestMethod]
-        public void BrowserHandlerOnResourceResponseWithIsPoppingTrueExpectedInvokesConfigurePopupAndResetsIsPopping()
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_OnResourceResponse")]
+        public void BrowserHandler_OnResourceResponse_IsPoppingTrue_InvokesConfigurePopupAndResetsIsPopping()
         {
             var browser = new Mock<IWebBrowser>();
             var popupController = new Mock<IBrowserPopupController>();
@@ -121,7 +124,9 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         }
 
         [TestMethod]
-        public void BrowserHandlerOnResourceResponseWithIsPoppingFalseExpectedDoesNotInvokeConfigurePopup()
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_OnResourceResponse")]
+        public void BrowserHandler_OnResourceResponse_IsPoppingFalse_DoesNotInvokeConfigurePopup()
         {
             var browser = new Mock<IWebBrowser>();
             var popupController = new Mock<IBrowserPopupController>();
@@ -137,6 +142,36 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             popupController.Verify(c => c.ConfigurePopup(), Times.Never());
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BrowserHandler_OnResourceResponse")]
+        public void BrowserHandler_OnResourceResponse_StatusIsForbiddenOrUnauthorized_RedirectsToPageForbidden()
+        {
+            foreach(HttpStatusCode statusCode in Enum.GetValues(typeof(HttpStatusCode)))
+            {
+                var redirects = statusCode == HttpStatusCode.Forbidden || statusCode == HttpStatusCode.Unauthorized;
+                Verify_OnResourceResponse_RedirectsToPageUnauthorized(statusCode, redirects);
+            }
+        }
+
+        void Verify_OnResourceResponse_RedirectsToPageUnauthorized(HttpStatusCode statusCode, bool redirects)
+        {
+            var hitCount = redirects ? 1 : 0;
+
+            //------------Setup for test--------------------------
+            var browser = new Mock<IWebBrowser>();
+            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageForbidden)))).Verifiable();
+
+            var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
+
+
+            //------------Execute Test---------------------------
+            handler.OnResourceResponse(browser.Object, string.Empty, (int)statusCode, statusCode.ToString(), string.Empty, new WebHeaderCollection());
+
+            //------------Assert Results-------------------------
+            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageForbidden))), Times.Exactly(hitCount));
+        }
+
         #endregion
 
         [TestMethod]
@@ -146,10 +181,10 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         {
             //------------Setup for test--------------------------
             var handler = new BrowserHandler(new Mock<IBrowserPopupController>().Object);
-            
+
             //------------Execute Test---------------------------
             var password = "";
-            var username= "";
+            var username = "";
             var result = handler.GetAuthCredentials(new Mock<IWebBrowser>().Object, false, "", 0, "", "NTLM", ref username, ref password);
 
             //------------Assert Results-------------------------
@@ -189,7 +224,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
-  
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("BrowserHandler_OnBeforeBrowse")]

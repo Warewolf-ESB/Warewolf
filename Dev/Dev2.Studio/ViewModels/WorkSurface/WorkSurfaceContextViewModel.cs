@@ -1,13 +1,20 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.View;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
+using Dev2.Security;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -18,16 +25,12 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
-using Dev2.Studio.ViewModels.WorkSurface;
+
 using Dev2.Studio.Webs;
 using Dev2.Utils;
 using Dev2.Workspaces;
-using System;
-using System.Activities.Presentation.View;
-using System.Linq;
-using System.Windows.Input;
 
-namespace Dev2.ViewModels.WorkSurface
+namespace Dev2.Studio.ViewModels.WorkSurface
 {
     /// <summary>
     ///     Class used as unified context across the studio - coordination across different regions
@@ -47,17 +50,18 @@ namespace Dev2.ViewModels.WorkSurface
         IContextualResourceModel _contextualResourceModel;
 
         readonly IWindowManager _windowManager;
-        IWorkspaceItemRepository _workspaceItemRepository;
+        readonly IWorkspaceItemRepository _workspaceItemRepository;
 
-        ICommand _viewInBrowserCommand;
-        ICommand _debugCommand;
-        ICommand _runCommand;
-        ICommand _saveCommand;
-        ICommand _editResourceCommand;
+        AuthorizeCommand _viewInBrowserCommand;
+        AuthorizeCommand _debugCommand;
+        AuthorizeCommand _runCommand;
+        AuthorizeCommand _saveCommand;
+        AuthorizeCommand _editResourceCommand;
+        AuthorizeCommand _quickDebugCommand;
+        AuthorizeCommand _quickViewInBrowserCommand;
+
         bool _hasMappingChange;
-        IEnvironmentModel _environmentModel;
-        ICommand _quickDebugCommand;
-        ICommand _quickViewInBrowserCommand;
+        readonly IEnvironmentModel _environmentModel;
 
         #endregion private fields
 
@@ -139,7 +143,7 @@ namespace Dev2.ViewModels.WorkSurface
                 if(isWorkFlowDesigner)
                 {
                     var workFlowDesignerViewModel = (IWorkflowDesignerViewModel)_workSurfaceViewModel;
-                    _contextualResourceModel = workFlowDesignerViewModel.ResourceModel;
+                    ContextualResourceModel = workFlowDesignerViewModel.ResourceModel;
                     if(ContextualResourceModel != null)
                     {
                         ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
@@ -162,30 +166,6 @@ namespace Dev2.ViewModels.WorkSurface
             if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping) != null)
             {
                 _hasMappingChange = true;
-            }
-        }
-
-        public ICommand EditCommand
-        {
-            get
-            {
-                return _editResourceCommand ??
-                       (_editResourceCommand =
-                           new RelayCommand(param =>
-                           {
-                               this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
-                               EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
-                           }
-                            , param => CanExecute()));
-            }
-        }
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => Save(), param => CanSave()));
             }
         }
 
@@ -296,69 +276,102 @@ namespace Dev2.ViewModels.WorkSurface
 
         #endregion IHandle
 
-        #region commands
-
-        public ICommand RunCommand
-        {
-            get
-            {
-                return _runCommand ??
-                       (_runCommand = new RelayCommand(param => Debug(ContextualResourceModel, false),
-                                                       param => CanExecute()));
-            }
-        }
-
-        public ICommand ViewInBrowserCommand
-        {
-            get
-            {
-                return _viewInBrowserCommand ??
-                       (_viewInBrowserCommand = new RelayCommand(param => ViewInBrowser(),
-                                                    param => CanDebug()));
-            }
-        }
-
-        public ICommand DebugCommand
-        {
-            get
-            {
-                return _debugCommand ??
-                       (_debugCommand =
-                        new RelayCommand(param => Debug(), param => CanDebug()));
-            }
-        }
-
-        public ICommand QuickDebugCommand
-        {
-            get
-            {
-                return _quickDebugCommand ??
-                       (_quickDebugCommand =
-                        new RelayCommand(param => QuickDebug(), param => CanDebug()));
-            }
-        }
-
-        public ICommand QuickViewInBrowserCommand
-        {
-            get
-            {
-                return _quickViewInBrowserCommand ??
-                       (_quickViewInBrowserCommand =
-                        new RelayCommand(param => QuickViewInBrowser(), param => CanDebug()));
-            }
-        }
-
         public IContextualResourceModel ContextualResourceModel
         {
             get
             {
                 return _contextualResourceModel;
             }
+            private set
+            {
+                _contextualResourceModel = value;
+                OnContextualResourceModelChanged();
+            }
         }
 
-        #endregion commands
+        void OnContextualResourceModelChanged()
+        {
+            ViewInBrowserCommand.UpdateContext(Environment, ContextualResourceModel);
+            DebugCommand.UpdateContext(Environment, ContextualResourceModel);
+            RunCommand.UpdateContext(Environment, ContextualResourceModel);
+            SaveCommand.UpdateContext(Environment, ContextualResourceModel);
+            EditCommand.UpdateContext(Environment, ContextualResourceModel);
+            QuickViewInBrowserCommand.UpdateContext(Environment, ContextualResourceModel);
+            QuickDebugCommand.UpdateContext(Environment, ContextualResourceModel);
+        }
 
-        #region public methods
+        #region commands
+
+        public AuthorizeCommand EditCommand
+        {
+            get
+            {
+                return _editResourceCommand ??
+                       (_editResourceCommand =
+                           new AuthorizeCommand(AuthorizationContext.Contribute, param =>
+                           {
+                               this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                               EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
+                           }
+                            , param => CanExecute()));
+            }
+        }
+
+        public AuthorizeCommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ??
+                       (_saveCommand = new AuthorizeCommand(AuthorizationContext.Contribute, param => Save(), param => CanSave()));
+            }
+        }
+
+        public AuthorizeCommand RunCommand
+        {
+            get
+            {
+                return _runCommand ??
+                       (_runCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => Debug(ContextualResourceModel, false), param => CanExecute()));
+            }
+        }
+
+        public AuthorizeCommand ViewInBrowserCommand
+        {
+            get
+            {
+                return _viewInBrowserCommand ??
+                       (_viewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => ViewInBrowser(),
+                                                    param => CanDebug()));
+            }
+        }
+
+        public AuthorizeCommand DebugCommand
+        {
+            get
+            {
+                return _debugCommand ??
+                       (_debugCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => Debug(), param => CanDebug()));
+            }
+        }
+
+        public AuthorizeCommand QuickViewInBrowserCommand
+        {
+            get
+            {
+                return _quickViewInBrowserCommand ??
+                       (_quickViewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickViewInBrowser(),
+                                                    param => CanDebug()));
+            }
+        }
+
+        public AuthorizeCommand QuickDebugCommand
+        {
+            get
+            {
+                return _quickDebugCommand ??
+                       (_quickDebugCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickDebug(), param => CanDebug()));
+            }
+        }
 
         bool CanSave()
         {
@@ -377,6 +390,10 @@ namespace Dev2.ViewModels.WorkSurface
             var enabled = ContextualResourceModel != null && IsEnvironmentConnected() && !DebugOutputViewModel.IsProcessing;
             return enabled;
         }
+
+        #endregion commands
+
+        #region public methods
 
         public void SetDebugStatus(DebugStatus debugStatus)
         {
@@ -447,6 +464,7 @@ namespace Dev2.ViewModels.WorkSurface
             {
                 return;
             }
+
             Debug();
         }
 
@@ -575,7 +593,7 @@ namespace Dev2.ViewModels.WorkSurface
             }
         }
 
-        void Debug()
+        public virtual void Debug()
         {
             if(DebugOutputViewModel.IsProcessing)
             {

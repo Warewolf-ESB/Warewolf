@@ -70,5 +70,17 @@ namespace Dev2.Runtime.WebServer.Hubs
                 _clients.Client(connectionID).SendWorkspaceID(workspaceID);
             }
         }
+
+        public void SendServerID(Guid serverID, string connectionID = null)
+        {
+            if(string.IsNullOrEmpty(connectionID))
+            {
+                _clients.All.SendServerID(serverID);
+            }
+            else
+            {
+                _clients.Client(connectionID).SendServerID(serverID);
+            }
+        }
     }
 }

@@ -38,8 +38,8 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
-        ExecuteMessage ReadSettings(string key, string value, IEnvironmentModel currentEnv);
-        ExecuteMessage WriteSettings(string key, string value, IEnvironmentModel currentEnv);
+        Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv);
+        ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Data.Settings.Settings settings);
         string GetServerLogTempPath(IEnvironmentModel environmentModel);
         DbTableList GetDatabaseTables(DbSource dbSource);
         DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable);

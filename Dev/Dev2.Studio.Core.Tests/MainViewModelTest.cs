@@ -13,6 +13,7 @@ using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -21,6 +22,7 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
@@ -31,10 +33,11 @@ using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
 using Dev2.Threading;
+using Dev2.Util;
 using Dev2.Utilities;
-using Dev2.ViewModels.WorkSurface;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -77,8 +80,16 @@ namespace Dev2.Core.Tests
         const string ServiceDefinition = "<x/>";
         Mock<IWebController> _webController;
         Mock<IWindowManager> _windowManager;
+        Mock<IAuthorizationService> _authorizationService;
+        Mock<IEnvironmentModel> _activeEnvironment;
 
         #endregion Variables
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+        }
 
         [TestMethod]
         public void DeployCommandCanExecuteIrrespectiveOfEnvironments()
@@ -88,21 +99,26 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void SettingsCommandCanExecuteIrrespectiveOfEnvironments()
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_SettingsCommand")]
+        public void MainViewModel_SettingsCommand_CanExecute_Correct()
         {
-            CreateFullExportsAndVm();
-            Assert.IsTrue(_mainViewModel.SettingsCommand.CanExecute(null));
+            Verify_SettingsCommand_CanExecute(expected: true, isAuthorized: true, isConnected: true, canStudioExecute: true);
+            Verify_SettingsCommand_CanExecute(expected: false, isAuthorized: true, isConnected: true, canStudioExecute: false);
+            Verify_SettingsCommand_CanExecute(expected: false, isAuthorized: true, isConnected: false, canStudioExecute: true);
+            Verify_SettingsCommand_CanExecute(expected: false, isAuthorized: false, isConnected: true, canStudioExecute: true);
         }
 
-        //[TestMethod]
-        //[Ignore] //Settings not implemented at the moment
-        //public void SettingsCommandCreatesSettingsWorkSurfaceContext()
-        //{
-        //    CreateFullExportsAndVm();
-        //    _mainViewModel.SettingsCommand.Execute(null);
-        //    var ctx = _mainViewModel.ActiveItem;
-        //    Assert.IsTrue(ctx.WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Settings);
-        //}
+        void Verify_SettingsCommand_CanExecute(bool isConnected, bool canStudioExecute, bool isAuthorized, bool expected)
+        {
+            CreateFullExportsAndVm();
+            _activeEnvironment.Setup(e => e.IsConnected).Returns(isConnected);
+            _activeEnvironment.Setup(e => e.CanStudioExecute).Returns(canStudioExecute);
+            _authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, It.IsAny<string>())).Returns(isAuthorized);
+
+            var actual = _mainViewModel.SettingsCommand.CanExecute(null);
+            Assert.AreEqual(expected, actual);
+        }       
 
         #region Constructor
 
@@ -477,13 +493,14 @@ namespace Dev2.Core.Tests
         #region Close Context
 
         [TestMethod]
-        public void CloseContextWithCloseTrueAndResourceSavedExpectsRemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
+        public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceSaved_RemoveWorkspaceItemRemoveCalledAndTabClosedMessageAndContextRemoved()
         {
             CreateFullExportsAndVm();
 
             Assert.AreEqual(2, _mainViewModel.Items.Count);
 
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(true);
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var activetx =
                 _mainViewModel.Items.ToList()
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -502,12 +519,13 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void CloseContextWithCloseTrueAndResourceNotSavedPopupOkExpectsRemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
+        public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupOk_RemoveWorkspaceItemCalledAndContextRemovedAndSaveResourceEventAggregatorMessage()
         {
             CreateFullExportsAndVm();
 
             Assert.AreEqual(2, _mainViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
 
             var activetx =
@@ -536,11 +554,12 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void CloseContextWithCloseTrueAndResourceNotSavedPopupNotOkExpectsWorkspaceItemNotRemoved()
+        public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupNotOk_WorkspaceItemNotRemoved()
         {
             CreateFullExportsAndVm();
             Assert.AreEqual(2, _mainViewModel.Items.Count);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var activetx =
@@ -558,6 +577,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             string errorString;
             CreateFullExportsAndVm();
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var mockDataListViewModel = new Mock<IDataListViewModel>();
             firstCtx.DataListViewModel = mockDataListViewModel.Object;
@@ -567,13 +587,43 @@ namespace Dev2.Core.Tests
             mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
             mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
         }
-        
+
         [TestMethod]
-        public void CloseContextWithCloseFalseExpectsPreviousItemActivatedAndAllItemsPResent()
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_ChangeActiveItem")]
+        public void MainViewModel_ChangeActiveItem_WhenHasContextWithDataListViewModelActive_ClearsCollectionsOnPreviousAndNewItem()
+        {
+            //------------Setup for test--------------------------
+            string errorString;
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockDataListViewModelForSecondContext = new Mock<IDataListViewModel>();
+            firstCtx.DataListViewModel = mockDataListViewModel.Object;
+            secondCtx.DataListViewModel = mockDataListViewModelForSecondContext.Object;
+            _mainViewModel.ActivateItem(firstCtx);
+            //------------Execute Test---------------------------
+            _mainViewModel.ActivateItem(secondCtx);
+            //------------Assert Results-------------------------
+            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Exactly(2));
+            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+            mockDataListViewModelForSecondContext.Verify(model => model.ClearCollections(), Times.Exactly(2));
+            mockDataListViewModelForSecondContext.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+        }
+
+        [TestMethod]
+        public void MainViewModel_CloseWorkSurfaceContext_CloseFalse_PreviousItemActivatedAndAllItemsPResent()
         {
             CreateFullExportsAndVm();
             AddAdditionalContext();
             Assert.AreEqual(3, _mainViewModel.Items.Count);
+
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
@@ -586,11 +636,14 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void CloseContextWithCloseTrueExpectsPreviousItemActivatedAndOneLessItem()
+        public void MainViewModel_CloseWorkSurfaceContext_CloseTrue_PreviousItemActivatedAndOneLessItem()
         {
             CreateFullExportsAndVm();
             AddAdditionalContext();
             Assert.AreEqual(3, _mainViewModel.Items.Count);
+
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
             var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
@@ -603,9 +656,10 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void CloseContextWithCloseFalseExpectsContextNotRemoved()
+        public void MainViewModel_CloseWorkSurfaceContext_CloseFalse_ContextNotRemoved()
         {
             CreateFullExportsAndVm();
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             var activetx =
                 _mainViewModel.Items.ToList()
                     .First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -617,13 +671,14 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
         [Description("An exisiting workflow with unsaved changes that is not saved, must rollback the resource model.")]
         [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_UnitTest_ExistingUnsavedWorkflowNotSaved_ResourceModelRolledback()
+        public void MainViewModel_CloseWorkSurfaceContext_ExistingUnsavedWorkflowNotSaved_ResourceModelRolledback()
         {
             CreateFullExportsAndVm();
             Assert.IsTrue(_mainViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
             _firstResource.Setup(r => r.Commit()).Verifiable();
             _firstResource.Setup(r => r.Rollback()).Verifiable();
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
@@ -636,11 +691,12 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
         [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
         [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_UnitTest_ExistingUnsavedWorkflowSaved_ResourceModelCommitted()
+        public void MainViewModel_CloseWorkSurfaceContext_ExistingUnsavedWorkflowSaved_ResourceModelCommitted()
         {
             CreateFullExportsAndVm();
             Assert.IsTrue(_mainViewModel.Items.Count == 2);
             _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             _firstResource.Setup(r => r.Commit()).Verifiable();
             _firstResource.Setup(r => r.Rollback()).Verifiable();
 
@@ -650,6 +706,35 @@ namespace Dev2.Core.Tests
             _firstResource.Verify(r => r.Commit(), Times.Once(), "ResourceModel was not committed when saved.");
             _firstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
+        public void MainViewModel_CloseWorkSurfaceContext_UnsavedWorkflowAndResourceCanSaveIsFalse_ResourceModelIsNotSaved()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            Assert.IsTrue(_mainViewModel.Items.Count == 2);
+
+            _firstResource.Setup(r => r.Commit()).Verifiable();
+            _firstResource.Setup(r => r.Rollback()).Verifiable();
+            _firstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(false);
+
+            _eventAggregator.Setup(e => e.Publish(It.IsAny<SaveResourceMessage>())).Verifiable();
+
+            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            var activetx = _mainViewModel.Items.ToList().First(i => i.WorkSurfaceViewModel.WorkSurfaceContext == WorkSurfaceContext.Workflow);
+
+            //------------Execute Test---------------------------
+            _mainViewModel.CloseWorkSurfaceContext(activetx, null);
+
+            //------------Assert Results-------------------------
+            _eventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
+            _firstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when saved.");
+            _firstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
+        }
+
 
         #endregion
 
@@ -740,7 +825,12 @@ namespace Dev2.Core.Tests
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object
                 , _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
-            _mainViewModel.ActiveEnvironment = new Mock<IEnvironmentModel>().Object;
+
+            _activeEnvironment = new Mock<IEnvironmentModel>();
+            _authorizationService = new Mock<IAuthorizationService>();
+            _activeEnvironment.Setup(e => e.AuthorizationService).Returns(_authorizationService.Object);
+
+            _mainViewModel.ActiveEnvironment = _activeEnvironment.Object;
         }
 
         private Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
@@ -954,26 +1044,6 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(langHelpCtx);
             Assert.IsTrue(langHelpCtx.Uri == languageHelpUri);
         }
-
-        //[TestMethod]
-        //[Ignore] // Settings not implemented at the moment
-        //public void SettingsSaveCancelMessageExpectsPreviousContextActive()
-        //{
-        //    CreateFullExportsAndVm();
-        //    var datalistchannelmock = new Mock<INetworkDataListChannel>();
-        //    datalistchannelmock.SetupGet(s => s.ServerID).Returns(_serverID);
-        //    _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
-        //    _mainViewModel.SettingsCommand.Execute(null);
-
-        //    var notActiveCtx = _mainViewModel.Items[0];
-        //    _mainViewModel.ActivateItem(notActiveCtx);
-
-        //    var msg = new SettingsSaveCancelMessage(_environmentModel.Object);
-        //    _mainViewModel.Handle(msg);
-
-        //    var activeCtx = _mainViewModel.ActiveItem;
-        //    Assert.IsTrue(activeCtx.Equals(notActiveCtx));
-        //}
 
         [TestMethod]
         public void NewResourceCommandExpectsWebControllerDisplayDialogue()
@@ -1406,6 +1476,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show()).Verifiable();
@@ -1713,6 +1784,45 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_AuthorizeCommands")]
+        public void MainViewModel_AuthorizeCommands_AuthorizationContextIsCorrect()
+        {
+            //------------Setup for test--------------------------    
+
+            //------------Execute Test---------------------------
+            CreateFullExportsAndVmWithEmptyRepo();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(AuthorizationContext.Contribute, _mainViewModel.NewResourceCommand.AuthorizationContext);
+            Assert.AreEqual(AuthorizationContext.Administrator, _mainViewModel.SettingsCommand.AuthorizationContext);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_AuthorizeCommands")]
+        public void MainViewModel_AuthorizeCommands_ActiveEnvironmentChanged_UpdateContextInvoked()
+        {
+            //------------Setup for test--------------------------            
+            CreateFullExportsAndVmWithEmptyRepo();
+
+            Assert.IsNull(_mainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.IsNull(_mainViewModel.SettingsCommand.AuthorizationService);
+
+            var authService = new Mock<IAuthorizationService>();
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.AuthorizationService).Returns(authService.Object);
+
+            //------------Execute Test---------------------------
+            _mainViewModel.ActiveEnvironment = env.Object;
+
+            //------------Assert Results-------------------------
+            Assert.AreSame(authService.Object, _mainViewModel.NewResourceCommand.AuthorizationService);
+            Assert.AreSame(authService.Object, _mainViewModel.SettingsCommand.AuthorizationService);
+        }
+
+        [TestMethod]
         public void IsActiveEnvironmentConnectExpectFalseWithNullEnvironment()
         {
             CreateFullExportsAndVm();
@@ -1745,7 +1855,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_HandleDeployResourcesMessage")]
         [Description("Handle DeployResourcesMessage must open the deploy tab and select the resource in the view.")]
         [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_UnitTest_HandleDeployResourcesMessage_PublishesSelectItemInDeployMessage()
+        public void MainViewModel_HandleDeployResourcesMessage_PublishesSelectItemInDeployMessage()
         {
             SelectItemInDeployMessage actual = null;
             var eventAggregator = new Mock<IEventAggregator>();
@@ -1777,6 +1887,49 @@ namespace Dev2.Core.Tests
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
             return result;
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_HandleAddWorkSurfaceMessage")]
+        public void MainViewModel_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoadIsTrue_DoesExecuteDebugCommand()
+        {
+            Verify_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoad(true);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_HandleAddWorkSurfaceMessage")]
+        public void MainViewModel_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoadIsFalse_DoesNotExecuteDebugCommand()
+        {
+            Verify_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoad(false);
+        }
+
+        static void Verify_HandleAddWorkSurfaceMessage_ShowDebugWindowOnLoad(bool showDebugWindowOnLoad)
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
+            var environmentModel = new Mock<IEnvironmentModel>().Object;
+            envRepo.Setup(e => e.Source).Returns(environmentModel);
+            envRepo.Setup(e => e.Source.IsConnected).Returns(false);
+            envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
+
+            var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
+
+            var workSurfaceContextViewModel = new Mock<WorkSurfaceContextViewModel>(eventAggregator.Object, new WorkSurfaceKey(), new Mock<IWorkSurfaceViewModel>().Object);
+            workSurfaceContextViewModel.Setup(v => v.Debug()).Verifiable();
+
+            vm.ActiveItem = workSurfaceContextViewModel.Object;
+
+            //------------Execute Test---------------------------
+            vm.Handle(new AddWorkSurfaceMessage(new Mock<IWorkSurfaceObject>().Object) { ShowDebugWindowOnLoad = showDebugWindowOnLoad });
+
+            //------------Assert Results-------------------------
+            workSurfaceContextViewModel.Verify(v => v.Debug(), showDebugWindowOnLoad ? Times.Once() : Times.Never());
+
         }
     }
 }

@@ -1,10 +1,18 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
 using Dev2.Communication;
+using Dev2.Composition;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
@@ -13,13 +21,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.ResourceManagement;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace
@@ -44,7 +47,9 @@ namespace Dev2.Studio.ViewModels.Navigation
         RelayCommand _duplicateCommand;
         RelayCommand _moveRenameCommand;
         RelayCommand _renameCommand;
+        ICommand _executeCommand;
         bool _isRenaming;
+        IWindowManager _windowManager;
 
         #region CTOR
 
@@ -81,6 +86,25 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion
 
         #region public properties
+
+        public IWindowManager WindowManager
+        {
+            get
+            {
+                if(_windowManager == null)
+                {
+                    // GRR! MEF!!
+                    ImportService.TryGetExportValue(out _windowManager);
+                }
+                return _windowManager;
+            }
+            set
+            {
+                _windowManager = value;
+            }
+        }
+
+        public bool ShowDebugWindowOnLoad { get; set; }
 
         /// <summary>
         /// Gets the icon path.
@@ -221,7 +245,20 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return _dataContext; }
             set
             {
+                if(_dataContext != null)
+                {
+                    _dataContext.PropertyChanged -= OnDataContextPropertyChanged;
+                }
                 _dataContext = value;
+                if(_dataContext != null)
+                {
+                    _dataContext.PropertyChanged += OnDataContextPropertyChanged;
+                    UserPermissions = DataContext.UserPermissions;
+                }
+                else
+                {
+                    UserPermissions = Permissions.None;
+                }
                 NotifyOfPropertyChange(() => DataContext);
                 NotifyOfPropertyChange(() => IconPath);
                 NotifyOfPropertyChange(() => DisplayName);
@@ -229,6 +266,14 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     _dataContext.Errors.CollectionChanged += (sender, args) => RefreshDisplayName();
                 }
+            }
+        }
+
+        void OnDataContextPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if(args.PropertyName == "UserPermissions")
+            {
+                UserPermissions = DataContext.UserPermissions;
             }
         }
 
@@ -296,102 +341,25 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public override bool CanBuild
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanBuild { get { return false; } }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance can debug.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance can debug; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override bool CanDebug
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool CanDebug { get { return false; } }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance can be edited.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance can edit; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override bool CanEdit
-        {
-            get
+        public override bool CanEdit { get { return CanDo(AuthorizationContext.View); } }
+
+        public override bool CanManualEdit { get { return CanDo(AuthorizationContext.View); } }
+
+        public override bool CanRun { get { return false; } }
+
+        public override bool CanDelete { get { return CanDo(AuthorizationContext.Contribute); } }
+
+        bool CanDo(AuthorizationContext authorizationContext)
             {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.WorkflowService ||
+            return DataContext != null
+                   && (DataContext.ResourceType == ResourceType.WorkflowService ||
                         DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source);
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance can be manually edited.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can manual edit; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override bool CanManualEdit
-        {
-            get
-            {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.WorkflowService ||
-                        DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source)
-                    ;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance can ran.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance can run; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override bool CanRun
-        {
-            get
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance can be deleted.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance can delete; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
-        public override bool CanDelete
-        {
-            get
-            {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.WorkflowService ||
-                        DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source);
-            }
+                       DataContext.ResourceType == ResourceType.Source)
+                   && DataContext.IsAuthorized(authorizationContext);
         }
 
         /// <summary>
@@ -420,7 +388,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <date>2013/01/23</date>
         public override bool CanShowDependencies
         {
-            get { return DataContext != null; }
+            get { return CanDo(AuthorizationContext.Contribute); }
         }
 
         /// <summary>
@@ -472,24 +440,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        /// <summary>
-        /// Gets a value indicating whether this instance can be duplicated.
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if this instance can duplicate; otherwise, <c>false</c>.
-        /// </value>
-        /// <author>Ashley.lewis</author>
-        /// <date>2013/05/20</date>
-        public override bool CanDuplicate
-        {
-            get
-            {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.WorkflowService ||
-                        DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source);
-            }
-        }
+        public override bool CanDuplicate { get { return CanDo(AuthorizationContext.Contribute); } }
 
         public override bool HasNewWorkflowMenu
         {
@@ -515,16 +466,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public override bool CanMoveRename
-        {
-            get
-            {
-                return DataContext != null &&
-                       (DataContext.ResourceType == ResourceType.WorkflowService ||
-                        DataContext.ResourceType == ResourceType.Service ||
-                        DataContext.ResourceType == ResourceType.Source);
-            }
-        }
+        public override bool CanMoveRename { get { return CanDo(AuthorizationContext.Contribute); } }
 
         public override string NewWorkflowTitle
         {
@@ -550,25 +492,21 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public override bool CanDeploy
-        {
-            get
-            {
-                return DataContext.ResourceType == ResourceType.WorkflowService || DataContext.ResourceType == ResourceType.Source || DataContext.ResourceType == ResourceType.Service;
-            }
-        }
+        public override bool CanDeploy { get { return CanDo(AuthorizationContext.DeployFrom); } }
 
-        public override bool CanRename
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanRename { get { return CanDo(AuthorizationContext.Contribute); } }
 
         #endregion public properties
 
         #region commands
+
+        public override ICommand ExecuteCommand
+        {
+            get
+            {
+                return _executeCommand ?? (_executeCommand = new RelayCommand(param => DoExecute(), param => CanExecute));
+            }
+        }
 
         /// <summary>
         /// Gets the debug command.
@@ -814,7 +752,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _renameCommand ?? (_renameCommand =
-                    new RelayCommand(obj => { IsRenaming = true; }));
+                    new RelayCommand(obj => { IsRenaming = true; }, param => CanRename));
             }
         }
 
@@ -934,10 +872,12 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public void Edit()
+        public virtual void Edit()
         {
             if(DataContext == null)
+            {
                 return;
+            }
 
             SendEditMessage(DataContext);
 
@@ -1067,19 +1007,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             SendEditMessage(resourceModel);
         }
 
-        /// <summary>
-        /// Sends the edit message.
-        /// </summary>
-        /// <param name="resourceModel">The resource model.</param>
-        /// <author>Jurie.smit</author>
-        /// <date>2013/01/23</date>
         void SendEditMessage(IResourceModel resourceModel)
         {
             switch(resourceModel.ResourceType)
             {
                 case ResourceType.WorkflowService:
                     this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
-                    EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel));
+                    EventPublisher.Publish(new AddWorkSurfaceMessage(resourceModel) { ShowDebugWindowOnLoad = ShowDebugWindowOnLoad });
                     break;
                 case ResourceType.Source:
                     this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
@@ -1172,6 +1106,42 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             throw new NotImplementedException();
         }
+
+
+        public override bool CanExecute
+        {
+            get
+            {
+                return DataContext != null;
+            }
+        }
+
+        void DoExecute()
+        {
+            if(DataContext == null)
+            {
+                return;
+            }
+            if(DataContext.ResourceType == ResourceType.WorkflowService)
+            {
+                if(DataContext.UserPermissions.HasFlag(Permissions.Contribute))
+                {
+                    ShowDebugWindowOnLoad = true;
+                    Edit();
+                    ShowDebugWindowOnLoad = false;
+                }
+                else
+                {
+                    var workflowInputDataViewModel = WorkflowInputDataViewModel.Create(DataContext);
+                    WindowManager.ShowDialog(workflowInputDataViewModel);
+                }
+            }
+            else
+            {
+                Edit();
+            }
+        }
+
 
         #region OnDispose
 

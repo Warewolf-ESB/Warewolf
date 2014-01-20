@@ -16,12 +16,11 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-
             var context = new WebServerContext(Request, requestVariables);
-
+            context.Request.User = User;
             var handler = CreateHandler<TRequestHandler>();
-            handler.ProcessRequest(context);
 
+            handler.ProcessRequest(context);
             return context.ResponseMessage;
         }
 

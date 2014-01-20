@@ -137,7 +137,4 @@
     <value>The RoutedPropertyChangingEvent cannot be canceled.</value>
     <comment>Exception thrown when setting Cancel property while IsCancelable is false.</comment>
   </data>
-  <data name="ServicesAddress" xml:space="preserve">
-    <value>http://localhost:1234/wwwroot/services/Service/Resources/{0}</value>
-  </data>
 </root>

@@ -105,6 +105,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Binaries\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -144,8 +145,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\IUserAccountProvider.cs" />
-    <Compile Include="Account\UserAccountProvider.cs" />
     <Compile Include="Activities\Interegators\WorkerServicePropertyInterigator.cs" />
     <Compile Include="Activities\Interegators\WorkflowPropertyInterigator.cs" />
     <Compile Include="Activities\Services\DesignerManagementService.cs" />
@@ -160,6 +159,7 @@
     <Compile Include="AppResources\Browsers\BrowserPopupControllerAbstract.cs" />
     <Compile Include="AppResources\Browsers\ExternalBrowserPopupController.cs" />
     <Compile Include="AppResources\Browsers\IBrowserPopupController.cs" />
+    <Compile Include="AppResources\Converters\AllBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\BooleanInvertConverter.cs" />
     <Compile Include="AppResources\Attributes\IconLocation.cs" />
     <Compile Include="AppResources\Attributes\TreeCategory.cs" />
@@ -176,7 +176,6 @@
     <Compile Include="AppResources\Converters\PercentageConverter.cs" />
     <Compile Include="AppResources\Converters\FindRecordsTypeToBoolConverter.cs" />
     <Compile Include="AppResources\Converters\ForEachTypeToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\MultipleBoolAndBoolToVisibilityValueConverter.cs" />
     <Compile Include="AppResources\Converters\DebugItemResultTypeToColorConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDiscriptionToStringConverter.cs" />
     <Compile Include="AppResources\Converters\EnumDisplayNameToItemSourceConverter.cs" />
@@ -347,7 +346,6 @@
     <Compile Include="Messages\SetActivePageMessage.cs" />
     <Compile Include="Messages\SetSelectedIContextualResourceModel.cs" />
     <Compile Include="Messages\SetSelectedItemInExplorerTree.cs" />
-    <Compile Include="Messages\SettingsSaveCancelMessage.cs" />
     <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowEditResourceWizardMessage.cs" />
     <Compile Include="Messages\ShowHelpTabMessage.cs" />
@@ -359,7 +357,6 @@
     <Compile Include="Messages\UpdateDeployMessage.cs" />
     <Compile Include="Messages\UpdateExplorerMessage.cs" />
     <Compile Include="Messages\UpdateIntellisenseMessage.cs" />
-    <Compile Include="Messages\UpdateResourceDesignerMessage.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
@@ -402,6 +399,7 @@
     </Compile>
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
+    <Compile Include="Security\AuthorizeCommand.cs" />
     <Compile Include="Services\Communication\MailToEmailCommService.cs" />
     <Compile Include="Services\Communication\EmailCommMessage.cs" />
     <Compile Include="Services\Communication\IAsynCommService.cs" />

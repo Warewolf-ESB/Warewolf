@@ -20,10 +20,19 @@ namespace Dev2.Services.Security
             return attribute == null || String.IsNullOrEmpty(attribute.Reason) ? null : attribute.Reason;
         }
 
+        public static bool IsContributor(this Permissions permissions)
+        {
+            return (permissions & Permissions.Contribute) == Permissions.Contribute
+                   || (permissions & Permissions.Administrator) == Permissions.Administrator;
+        }
+
         public static Permissions ToPermissions(this AuthorizationContext context)
         {
             switch(context)
             {
+                case AuthorizationContext.Administrator:
+                    return Permissions.Administrator;
+
                 case AuthorizationContext.View:
                     return Permissions.Administrator | Permissions.Contribute | Permissions.View;
 
@@ -47,7 +56,7 @@ namespace Dev2.Services.Security
 
         public static bool Matches(this WindowsGroupPermission permission, string resource)
         {
-            if(permission.IsServer || String.IsNullOrEmpty(resource))
+            if(permission.IsServer)
             {
                 return true;
             }
@@ -58,7 +67,7 @@ namespace Dev2.Services.Security
                 return permission.ResourceID == resourceID;
             }
 
-            // NOTE : ResourceName is in the format: {categoryName}\{resourceName}
+            // ResourceName is in the format: {categoryName}\{resourceName}
             return permission.ResourceName.EndsWith("\\" + resource);
         }
     }

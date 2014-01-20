@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Text;
+using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
+using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Services.Security;
+using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -29,76 +32,105 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Execute
 
-
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
-        public void SettingsRead_Execute_WhenSecureConfigDoesExist_SettingsContainsSecurity()
+        public void SettingsRead_Execute_SecurityReadDoesNotThrowException_HasErrorsIsFalseAndSecurityPermissionsAreAssigned()
         {
             //------------Setup for test--------------------------
-            var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
-            var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
-            var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
-            var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
-            var securityWrite = new SecurityWrite();
-            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder(serializeObject) } }, null);
-            var settingsRead = new SettingsRead();
-            //------------Assert Preconditions-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
+            var securityPermissions = new List<WindowsGroupPermission>
+            {
+                new WindowsGroupPermission { IsServer = true, WindowsGroup = "TestGroup", Permissions = AuthorizationContext.DeployFrom.ToPermissions() },
+                new WindowsGroupPermission { IsServer = true, WindowsGroup = "NETWORK SERVICE", Permissions = AuthorizationContext.DeployTo.ToPermissions() }
+            };
+
+            var securitySettingsTO = new SecuritySettingsTO(securityPermissions);
+
+            var securityRead = new Func<IEsbManagementEndpoint>(() =>
+            {
+                var endpoint = new Mock<IEsbManagementEndpoint>();
+                endpoint.Setup(e => e.Execute(It.IsAny<Dictionary<string, StringBuilder>>(), It.IsAny<IWorkspace>()))
+                    .Returns(new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTO));
+
+                return endpoint.Object;
+            });
+
+            var settingsRead = new TestSettingsRead(securityRead);
+
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            File.Delete("secure.config");
             var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
             Assert.IsNotNull(settings.Security);
-            Assert.AreEqual(2, settings.Security.Count);
-            Assert.AreEqual(Environment.UserName, settings.Security[0].WindowsGroup);
-            Assert.AreEqual(true, settings.Security[0].IsServer);
-            Assert.AreEqual(false, settings.Security[0].View);
-            Assert.AreEqual(false, settings.Security[0].Execute);
-            Assert.AreEqual(false, settings.Security[0].Contribute);
-            Assert.AreEqual(false, settings.Security[0].DeployTo);
-            Assert.AreEqual(false, settings.Security[0].DeployFrom);
-            Assert.AreEqual(true, settings.Security[0].Administrator);
-            Assert.AreEqual("NETWORK SERVICE", settings.Security[1].WindowsGroup);
-            Assert.AreEqual(true, settings.Security[1].IsServer);
-            Assert.AreEqual(false, settings.Security[1].View);
-            Assert.AreEqual(false, settings.Security[1].Execute);
-            Assert.AreEqual(false, settings.Security[1].Contribute);
-            Assert.AreEqual(false, settings.Security[1].DeployTo);
-            Assert.AreEqual(false, settings.Security[1].DeployFrom);
-            Assert.AreEqual(false, settings.Security[1].Administrator);
+            Assert.IsFalse(settings.HasError);
 
+            var comparer = new WindowsGroupPermissionEqualityComparer();
+            Assert.AreEqual(2, settings.Security.WindowsGroupPermissions.Count);
+
+            for(var i = 0; i < securityPermissions.Count; i++)
+            {
+                var result = comparer.Equals(securityPermissions[i], settings.Security.WindowsGroupPermissions[i]);
+                Assert.IsTrue(result);
+            }
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("SettingsRead_Execute")]
-        public void SettingsRead_Execute_WhenBadSecurityData_SettingsErrorPopulated()
+        public void SettingsRead_Execute_SecurityReadDoesThrowException_HasErrorsIsTrueAndDefaultPermissionsAreAssigned()
         {
             //------------Setup for test--------------------------
-            File.WriteAllText("secure.config", @"some bogus data");
-            var settingsRead = new SettingsRead();
-            //------------Assert Preconditions-------------------------
-            Assert.IsTrue(File.Exists("secure.config"));
+            const string invalidFormat = "Invalid format.";
+            var securityRead = new Func<IEsbManagementEndpoint>(() =>
+            {
+                throw new JsonException(invalidFormat);
+            });
+
+            var settingsRead = new TestSettingsRead(securityRead);
+
             //------------Execute Test---------------------------
             var jsonPermissions = settingsRead.Execute(null, null);
-            File.Delete("secure.config");
             var settings = JsonConvert.DeserializeObject<Settings>(jsonPermissions.ToString());
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(settings);
-            Assert.IsNull(settings.Security);
+            Assert.IsNotNull(settings.Security);
             Assert.IsTrue(settings.HasError);
-            StringAssert.Contains(settings.Error, "Error reading settings configuration : ");
+            StringAssert.Contains(settings.Error, invalidFormat);
+
+            var expected = SecurityRead.DefaultPermissions[0];
+            var actual = settings.Security.WindowsGroupPermissions[0];
+
+            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            Assert.IsTrue(result);
         }
 
-        #endregion Exeute
+        #endregion
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsRead_CreateSecurityReadEndPoint")]
+        public void SettingsRead_CreateSecurityReadEndPoint_IsInstanceOfSecurityRead()
+        {
+            //------------Setup for test--------------------------
+            var securityRead = new Func<IEsbManagementEndpoint>(() => null);
+
+            var settingsRead = new TestSettingsRead(securityRead);
+
+            //------------Execute Test---------------------------
+            var endpoint = settingsRead.TestCreateSecurityReadEndPoint();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(endpoint);
+            Assert.IsInstanceOfType(endpoint, typeof(SecurityRead));
+        }
 
         #region HandlesType
 
         [TestMethod]
-        public void SettingsReadHandlesTypeExpectedReturnsSecurityWriteService()
+        public void SettingsRead_HandlesType_ReturnsSettingsReadService()
         {
             var esb = new SettingsRead();
             var result = esb.HandlesType();
@@ -110,7 +142,7 @@ namespace Dev2.Tests.Runtime.Services
         #region CreateServiceEntry
 
         [TestMethod]
-        public void SettingsReadCreateServiceEntryExpectedReturnsDynamicService()
+        public void SettingsRead_CreateServiceEntry_ReturnsDynamicService()
         {
             var esb = new SettingsRead();
             var result = esb.CreateServiceEntry();
@@ -125,6 +157,5 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         #endregion
-
     }
 }

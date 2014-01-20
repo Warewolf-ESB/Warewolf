@@ -158,8 +158,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DataListExecutionID.Set(context, dataObject.DataListID);
             }
 
-            _previousParentInstanceID = dataObject.ParentInstanceID;
-            _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
+                _previousParentInstanceID = dataObject.ParentInstanceID;
+                _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
 
             OnBeforeExecute(context);
 
@@ -480,21 +480,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(_debugState != null)
                 {
-                    _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
-                    _debugState.StateType = stateType;
-                    _debugState.EndTime = DateTime.Now;
-                    _debugState.HasError = hasError;
-                    _debugState.ErrorMessage = errorMessage;
-                    try
-                    {
-                        Copy(GetDebugOutputs(dataList), _debugState.Outputs);
-                    }
-                    catch(Exception e)
-                    {
-                        _debugState.ErrorMessage = e.Message;
-                        _debugState.HasError = true;
-                    }
+                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
+                _debugState.StateType = stateType;
+                _debugState.EndTime = DateTime.Now;
+                _debugState.HasError = hasError;
+                _debugState.ErrorMessage = errorMessage;
+                try
+                {
+                    Copy(GetDebugOutputs(dataList), _debugState.Outputs);
                 }
+                catch(Exception e)
+                {
+                    _debugState.ErrorMessage = e.Message;
+                    _debugState.HasError = true;
+                }
+            }
             }
 
             if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
@@ -513,32 +513,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(_debugState != null)
                 {
-                    _debugState.ActivityType = ActivityType.Service;
-                }
+                _debugState.ActivityType = ActivityType.Service;
+            }
             }
 
             if(_debugState != null)
             {
-                switch(_debugState.StateType)
-                {
-                    case StateType.Before:
-                        _debugState.Outputs.Clear();
-                        break;
-                    case StateType.After:
-                        _debugState.Inputs.Clear();
-                        break;
-                }
-
-                // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
-                _debugState.ClientID = dataObject.ClientID;
-                _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
-                if(stateType == StateType.After)
-                {
-                    // Free up debug state
-                    _debugState = null;
-                }
+            switch(_debugState.StateType)
+            {
+                case StateType.Before:
+                    _debugState.Outputs.Clear();
+                    break;
+                case StateType.After:
+                    _debugState.Inputs.Clear();
+                    break;
             }
+
+            // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
+            _debugState.ClientID = dataObject.ClientID;
+            _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+
+            if(stateType == StateType.After)
+            {
+                // Free up debug state
+                _debugState = null;
+            }
+        }
         }
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)

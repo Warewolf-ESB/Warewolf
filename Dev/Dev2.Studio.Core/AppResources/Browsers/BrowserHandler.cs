@@ -37,9 +37,14 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         // PBI 9644 - 2013.06.21 - TWR: merged
         public bool OnLoadError(IWebBrowser browser, string url, int errorCode, ref string errorText)
         {
-            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotFound);
-            browser.Load(path);
+            ShowErrorPage(browser, StringResources.Uri_Studio_PageNotFound);
             return true;
+        }
+
+        static void ShowErrorPage(IWebBrowser browser, string pageUri)
+        {
+            var path = FileHelper.GetFullPath(pageUri);
+            browser.Load(path);
         }
 
         #endregion
@@ -78,6 +83,14 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         public void OnResourceResponse(IWebBrowser browser, string url, int status, string statusText, string mimeType, WebHeaderCollection headers)
         {
+            switch(status)
+            {
+                case 401:
+                case 403:
+                    ShowErrorPage(browser, StringResources.Uri_Studio_PageForbidden);
+                    return;
+            }
+
             if(IsPopping)
             {
                 IsPopping = false;

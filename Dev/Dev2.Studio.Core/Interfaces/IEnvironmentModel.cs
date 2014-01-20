@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Services.Security;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
@@ -9,10 +10,14 @@ namespace Dev2.Studio.Core.Interfaces
         // BUG 9940 - 2013.07.29 - TWR - added
         event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
+        IAuthorizationService AuthorizationService { get; }
         Guid ID { get; }
         string Name { get; set; }
         bool IsConnected { get; }
         bool CanStudioExecute { get; set; }
+        bool IsAuthorized { get; }
+        bool IsAuthorizedDeployFrom { get; }
+        bool IsAuthorizedDeployTo { get; }
 
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }

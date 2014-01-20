@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Dev2.Services.Security;
 
 namespace Dev2.Infrastructure.Tests.Services.Security
@@ -13,7 +14,19 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
         protected override List<WindowsGroupPermission> ReadPermissions()
         {
-            return ReadPermissionsResult ?? null;
+            return ReadPermissionsResult;
+        }
+
+        protected override void WritePermissions(List<WindowsGroupPermission> permissions)
+        {
+        }
+
+        protected override void LogStart([CallerMemberName]string methodName = null)
+        {
+        }
+
+        protected override void LogEnd([CallerMemberName]string methodName = null)
+        {
         }
     }
 }

@@ -10,6 +10,7 @@
         xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
         xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
         xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
+        xmlns:help="clr-namespace:Dev2.Help"
         Title="{Binding Title}"
         Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
         Width="350"
@@ -82,6 +83,22 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
+                            <Button Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=View}"
+                                    ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
+                                    Style="{StaticResource AuthButtonStyle}"
+                                    Command="{Binding EditCommand}">
+                                <Image Style="{StaticResource AuthViewIconStyle}" />
+                            </Button>
+                            <Button Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=Execute}"
+                                    ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipExecute}"
+                                    Style="{StaticResource AuthButtonStyle}"
+                                    Command="{Binding ExecuteCommand}">
+                                <Image Style="{StaticResource AuthExecuteIconStyle}" />
+                            </Button>
+                            <Image Style="{StaticResource AuthNoneIconStyle}"
+                                   Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=None}"
+                                   ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipNone}" />
+                        
                             <ContentControl Content="{Binding}">
                                 <ContentControl.Resources>
                                     <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
@@ -122,7 +139,6 @@
                     HorizontalAlignment="Right"
                     Grid.Row="1">
             <Button Content="OK"
-                    IsEnabled="{Binding SelectedResourceModel, Converter={StaticResource NullToBoolConvert} }"
                     Command="{Binding OkCommand}"
                     Width="110"
                     Margin="5"

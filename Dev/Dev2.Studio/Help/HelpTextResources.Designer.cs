@@ -61,6 +61,60 @@ namespace Dev2.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to deploy from this server.
+        /// </summary>
+        public static string DeploySecurityFromUnauthorized {
+            get {
+                return ResourceManager.GetString("DeploySecurityFromUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to deploy to this server.
+        /// </summary>
+        public static string DeploySecurityToUnauthorized {
+            get {
+                return ResourceManager.GetString("DeploySecurityToUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to connect to this server.
+        /// </summary>
+        public static string ExplorerSecurityServerUnauthorized {
+            get {
+                return ResourceManager.GetString("ExplorerSecurityServerUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are authorized to run and debug this resource.
+        /// </summary>
+        public static string ExplorerSecurityToolTipExecute {
+            get {
+                return ResourceManager.GetString("ExplorerSecurityToolTipExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to open, inspect, run or debug this resource.
+        /// </summary>
+        public static string ExplorerSecurityToolTipNone {
+            get {
+                return ResourceManager.GetString("ExplorerSecurityToolTipNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are authorized to open and inspect this resource.
+        /// </summary>
+        public static string ExplorerSecurityToolTipView {
+            get {
+                return ResourceManager.GetString("ExplorerSecurityToolTipView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By Default this group will be able to Edit or Delete this resource. 
         ///To do this they can also View and Execute..
         /// </summary>
@@ -284,6 +338,15 @@ namespace Dev2.Help {
         public static string SettingsSecurityServerToolTipWindowsGroup {
             get {
                 return ResourceManager.GetString("SettingsSecurityServerToolTipWindowsGroup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not authorized to edit this resource.
+        /// </summary>
+        public static string WorkflowDesignerSecurityToolTipNone {
+            get {
+                return ResourceManager.GetString("WorkflowDesignerSecurityToolTipNone", resourceCulture);
             }
         }
     }

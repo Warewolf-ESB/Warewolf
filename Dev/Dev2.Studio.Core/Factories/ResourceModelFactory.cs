@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -11,7 +12,10 @@ namespace Dev2.Studio.Core.Factories
     {
         public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment)
         {
-            return new ResourceModel(environment);
+            return new ResourceModel(environment)
+            {
+                UserPermissions = Permissions.Contribute
+            };
         }
 
         public static IContextualResourceModel CreateResourceModel(IEnvironmentModel environment, ResourceType resourceType, string iconPath, string displayName)
@@ -20,6 +24,7 @@ namespace Dev2.Studio.Core.Factories
             resource.ResourceType = resourceType;
             resource.IconPath = iconPath;
             resource.DisplayName = displayName;
+            resource.UserPermissions = Permissions.Contribute;
             return resource;
         }
 
@@ -38,6 +43,7 @@ namespace Dev2.Studio.Core.Factories
             IContextualResourceModel resource = CreateResourceModel(environment);
             resource.ResourceName = string.Empty;
             resource.ID = Guid.NewGuid();
+            resource.UserPermissions = Permissions.Contribute;
 
             switch(resourceType)
             {

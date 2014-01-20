@@ -1,9 +1,10 @@
-﻿using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.ViewModels;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Services.Security;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.ViewModels;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -58,17 +59,22 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
-            //if it is a workflowservice or serverresource, bounce out and allow the drop
-            if(contextualResourceModel.ResourceType == ResourceType.WorkflowService ||
-               contextualResourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
+            if(!contextualResourceModel.IsAuthorized(AuthorizationContext.Execute))
             {
-                return false;
+                return true;
             }
 
             //if source dont allow the drop
             if(contextualResourceModel.ResourceType == ResourceType.Source)
             {
                 return true;
+            }
+
+            //if it is a workflowservice or serverresource, bounce out and allow the drop
+            if(contextualResourceModel.ResourceType == ResourceType.WorkflowService ||
+               contextualResourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
+            {
+                return false;
             }
 
             //gets the viewmodel on which we gonna drop it.
@@ -78,7 +84,7 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
-            //if the resource is from the same environment bounce out and allow it
+            //if the service is from the same environment bounce out and allow it
             if(currentViewModel.EnvironmentModel.ID == contextualResourceModel.Environment.ID)
             {
                 return false;

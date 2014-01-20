@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Security.Authentication;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Common;
@@ -12,6 +13,8 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -198,12 +201,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _serviceUri;
         InArgument<string> _friendlySourceName;
         InArgument<Guid> _environmentID;
+        [NonSerialized]
+        IAuthorizationService _authorizationService;
 
         protected override void OnExecute(NativeActivityContext context)
         {
 
             // ???? Why is this here....
-            context.Properties.ToObservableCollection();
+            context.Properties.ToObservableCollection(); 
 
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -227,13 +232,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                if(ServiceServer != Guid.Empty)
-                {
-                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
-                    dataObject.RemoteInvokerID = ServiceServer.ToString();
-                }
+                    if(ServiceServer != Guid.Empty)
+                    {
+                        // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                        dataObject.RemoteInvokerID = ServiceServer.ToString();
+                    }
 
-                dataObject.RemoteServiceType = context.GetValue(Type);
+                    dataObject.RemoteServiceType = context.GetValue(Type);
 
                 if(dataObject.IsDebugMode())
                 {
@@ -283,7 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 dataObject.RemoteInvokeResultShape = shape;
                             }
 
-                            BeforeExecutionStart(dataObject, tmpErrors);
+                            BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
 
 
@@ -308,8 +313,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
+                    }
                 }
-            }
             finally
             {
                 dataObject.ResourceID = oldResourceID;
@@ -344,8 +349,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        internal IAuthorizationService AuthorizationService
+        {
+            get
+            {
+                return _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _authorizationService = value;
+            }
+        }
+
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
+            var resourceID = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+            if(resourceID == Guid.Empty || dataObject.ExecutingUser == null)
+            {
+                return;
+            }
+            var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceID.ToString());
+            if(!isAuthorized)
+            {
+                var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
+                tmpErrors.AddError(message);
+                throw new InvalidCredentialException(message);
+            }
         }
 
         protected virtual void AfterExecutionCompleted(ErrorResultTO tmpErrors)
@@ -356,7 +385,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             ServerLogger.LogMessage("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
-
+            
             var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
 
             ServerLogger.LogMessage("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
@@ -530,13 +559,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(tmpEntry != null)
                 {
-                    DebugItem itemToAdd = new DebugItem();
+                DebugItem itemToAdd = new DebugItem();
 
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
+                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
 
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
-                    results.Add(itemToAdd);
-                }
+                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
+                results.Add(itemToAdd);
+            }
                 else
                 {
                     if(errors.HasErrors())

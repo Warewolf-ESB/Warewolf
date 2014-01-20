@@ -10,6 +10,7 @@ using Dev2.DynamicServices;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Util;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable once CheckNamespace
@@ -72,7 +73,7 @@ namespace Dev2.Studio.Core
 
         // Singleton instance only
         protected EnvironmentRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(StringResources.Uri_Live_Environment), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
 
@@ -381,9 +382,8 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable once EmptyGeneralCatchClause
             catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
             {
                 //Swallow exception for localhost connection
             }
@@ -501,15 +501,8 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
-        //        static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias, int webServerPort)
-        //        {
-        //            // MEF!!!!
-        //            return CreateEnvironmentModel(id, applicationServerUri, alias, webServerPort);
-        //        }
-
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
-            //var environmentConnection = new TcpConnection(securityContext, applicationServerUri, webServerPort);
             var environmentConnection = new ServerProxy(applicationServerUri);
             return new EnvironmentModel(id, environmentConnection) { Name = alias };
         }

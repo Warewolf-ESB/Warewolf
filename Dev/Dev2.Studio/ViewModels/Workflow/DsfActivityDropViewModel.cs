@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -6,7 +7,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Explorer;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -74,6 +74,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _selectedResource = value;
                 NotifyOfPropertyChange("SelectedResourceModel");
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -88,11 +89,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if(_executeCommmand == null)
                 {
-                    _executeCommmand = new RelayCommand(param => Okay(), param => true);
+                    _executeCommmand = new RelayCommand(param => Okay(), param => CanOkay);
                 }
                 return _executeCommmand;
             }
         }
+        public bool CanOkay { get { return SelectedResourceModel != null; } }
 
         public ICommand CancelCommand
         {

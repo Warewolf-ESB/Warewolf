@@ -21,6 +21,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
+using Dev2.Util;
 using Moq;
 
 namespace Dev2.Core.Tests
@@ -33,7 +34,10 @@ namespace Dev2.Core.Tests
         private static Mock<IContextualResourceModel> _mockResourceModel;
         private static Mock<IFilePersistenceProvider> _mockFilePersistenceProvider;
 
-
+        static Dev2MockFactory()
+        {
+            AppSettings.LocalHost = "https://localhost:3143";
+        }
 
         /*
          * Travis.Frisinger : 04-04-2012
@@ -106,7 +110,7 @@ namespace Dev2.Core.Tests
                     _mockEnvironmentModel = SetupEnvironmentModel();
                     return _mockEnvironmentModel;
                 }
-                return _mockEnvironmentModel;
+                    return _mockEnvironmentModel;
             }
             set
             {
@@ -126,8 +130,8 @@ namespace Dev2.Core.Tests
                     _mockIMainViewModel = SetupMainViewModel();
                     return _mockIMainViewModel;
                 }
-                return _mockIMainViewModel;
-            }
+                    return _mockIMainViewModel;
+                }
             set
             {
                 _mockIMainViewModel = value;
@@ -170,8 +174,8 @@ namespace Dev2.Core.Tests
                     _mockFilePersistenceProvider = SetupFilePersistenceProviderMock();
                     return _mockFilePersistenceProvider;
                 }
-                return _mockFilePersistenceProvider;
-            }
+                    return _mockFilePersistenceProvider;
+                }
             set
             {
                 _mockFilePersistenceProvider = value;
@@ -187,8 +191,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelMock();
                     return _mockResourceModel;
                 }
-                return _mockResourceModel;
-            }
+                    return _mockResourceModel;
+                }
             set
             {
                 _mockResourceModel = value;
@@ -204,8 +208,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelWithOnlyInputsMock();
                     return _mockResourceModel;
                 }
-                return _mockResourceModel;
-            }
+                    return _mockResourceModel;
+                }
             set
             {
                 _mockResourceModel = value;
@@ -221,8 +225,8 @@ namespace Dev2.Core.Tests
                     _mockResourceModel = SetupResourceModelWithOnlyOuputsMock();
                     return _mockResourceModel;
                 }
-                return _mockResourceModel;
-            }
+                    return _mockResourceModel;
+                }
             set
             {
                 _mockResourceModel = value;
@@ -269,8 +273,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(e => e.Connect()).Verifiable();
             mockEnvironmentModel.Setup(e => e.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(e => e.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            mockEnvironmentModel.Setup(e => e.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(e => e.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(e => e.Connection.ServerEvents).Returns(new EventPublisher());
 
             mockEnvironmentModel.SetupGet(c => c.Connection).Returns(SetupIEnvironmentConnection(messageSendingException).Object);
@@ -279,14 +283,14 @@ namespace Dev2.Core.Tests
 
         static public Mock<IEnvironmentModel> SetupEnvironmentModel()
         {
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(StringResources.Uri_WebServer));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-            return mockEnvironmentModel;
+            var _mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            return _mockEnvironmentModel;
         }
 
         static public Mock<IEnvironmentModel> SetupEnvironmentModel(Mock<IContextualResourceModel> returnResource, List<IResourceModel> resourceRepositoryFakeBacker)
@@ -295,7 +299,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
             return _mockEnvironmentModel;
@@ -307,7 +311,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
-            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(StringResources.Uri_WebServer));
+            _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             _mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
 
             return _mockEnvironmentModel;

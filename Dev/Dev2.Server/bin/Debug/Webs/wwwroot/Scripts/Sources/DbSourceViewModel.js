@@ -18,6 +18,7 @@ function DbSourceViewModel(saveContainerID, environment) {
     self.titleSearchString = "Database Source";
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
+    self.isReadOnly = false;
     
     self.data = {
         resourceID: ko.observable(""),
@@ -109,11 +110,12 @@ function DbSourceViewModel(saveContainerID, environment) {
     });
  
     self.isFormValid = ko.computed(function () {
+
         var isValid = self.isFormTestable() && (self.data.databaseName() ? true : false);
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
-        return isValid;
+        return isValid && !self.isReadOnly;
     });
 
     self.updateHelpText = function (id) {
@@ -143,6 +145,7 @@ function DbSourceViewModel(saveContainerID, environment) {
         utils.postTimestamped(self, "testTime", "Service/DbSources/Test", jsonData, function(result) {
             $testButton.button("option", "disabled", false);
             self.isTestResultsLoading(false);
+            utils.toggleUIReadOnlyState(self.isReadOnly);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
             if (self.testSucceeded()) {
@@ -160,6 +163,7 @@ function DbSourceViewModel(saveContainerID, environment) {
 
     self.cancelTest = function() {
         self.isTestResultsLoading(false);
+        utils.toggleUIReadOnlyState(self.isReadOnly);
         self.testTime = new Date().valueOf();
     };
     
@@ -201,15 +205,17 @@ function DbSourceViewModel(saveContainerID, environment) {
             self.data.port(result.Port);
             self.isEditing = result.ResourceName != null;
             
-            if (self.isEditing) {
-                self.test(result.DatabaseName);
-            }
-
             self.title(self.isEditing ? "Edit Database Source - " + result.ResourceName : "New Database Source");
             self.testSucceeded(self.isEditing);
             if ($dialogContainerID) {
                 $dialogContainerID.dialog("option", "title", self.title());
             }
+            utils.isReadOnly(resourceID, function (isReadOnly) {
+                self.isReadOnly = isReadOnly;
+                if (self.isEditing && !self.isReadOnly) {
+                    self.test(result.DatabaseName);
+                }
+            });
         });
     };
 

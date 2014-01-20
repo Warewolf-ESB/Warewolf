@@ -7,6 +7,8 @@ namespace Dev2.Studio.Core.Messages
     {
         public IWorkSurfaceObject WorkSurfaceObject { get; set; }
 
+        public bool ShowDebugWindowOnLoad { get; set; }
+
         public AddWorkSurfaceMessage()
         {
         }

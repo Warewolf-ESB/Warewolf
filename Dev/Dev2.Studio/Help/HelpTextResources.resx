@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DeploySecurityFromUnauthorized" xml:space="preserve">
+    <value>You are not authorized to deploy from this server</value>
+  </data>
+  <data name="DeploySecurityToUnauthorized" xml:space="preserve">
+    <value>You are not authorized to deploy to this server</value>
+  </data>
+  <data name="ExplorerSecurityServerUnauthorized" xml:space="preserve">
+    <value>You are not authorized to connect to this server</value>
+  </data>
+  <data name="ExplorerSecurityToolTipExecute" xml:space="preserve">
+    <value>You are authorized to run and debug this resource</value>
+  </data>
+  <data name="ExplorerSecurityToolTipNone" xml:space="preserve">
+    <value>You are not authorized to open, inspect, run or debug this resource</value>
+  </data>
+  <data name="ExplorerSecurityToolTipView" xml:space="preserve">
+    <value>You are authorized to open and inspect this resource</value>
+  </data>
   <data name="SettingsSecurityResourceHelpContribute" xml:space="preserve">
     <value>By Default this group will be able to Edit or Delete this resource. 
 To do this they can also View and Execute.</value>
@@ -199,5 +217,8 @@ Permissions are cumulative in nature e.g. If someone is a member of two groups a
   </data>
   <data name="SettingsSecurityServerToolTipWindowsGroup" xml:space="preserve">
     <value>Select Windows Group</value>
+  </data>
+  <data name="WorkflowDesignerSecurityToolTipNone" xml:space="preserve">
+    <value>You are not authorized to edit this resource</value>
   </data>
 </root>

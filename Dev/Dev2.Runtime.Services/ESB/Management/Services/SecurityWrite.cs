@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Security.Principal;
 using System.Text;
-using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
-using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -22,62 +18,64 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage {HasError = false};
-            const string result = "Success";
-            StringBuilder permissions;
-
             if(values == null)
             {
                 throw new InvalidDataException("Empty values passed.");
             }
 
-            values.TryGetValue("Permissions", out permissions);
+            StringBuilder securitySettings;
+            values.TryGetValue("SecuritySettings", out securitySettings);
+            StringBuilder timeoutPeriodString;
+            values.TryGetValue("TimeoutPeriod", out timeoutPeriodString);
 
-            if(permissions == null || permissions.Length == 0)
+            if(securitySettings == null || securitySettings.Length == 0)
             {
-                throw new InvalidDataException("Empty permissions passed.");
+                throw new InvalidDataException("Empty Security Settings passed.");
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             try
             {
-                var windowsGroupPermissions = serializer.Deserialize<List<WindowsGroupPermission>>(permissions);
-
-                if (windowsGroupPermissions == null)
+                var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(securitySettings);
+                if(securitySettingsTO == null)
                 {
-                    throw new InvalidDataException("permissions");
+                    throw new InvalidDataException("The security settings are not valid.");
                 }
 
-                DoFileEncryption(permissions.ToString());
+                Write(securitySettings);
+            }
+            catch(Exception e)
+            {
+                throw new InvalidDataException(string.Format("The security settings are not valid. Error: {0}", e.Message));
+            }
 
-                try
-                {
-                    var fileInfo = DenyAccessToSecurityFileToEveryone();
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage("Success");
 
-                    windowsGroupPermissions.Where(permission => permission.IsServer && permission.Administrator).ForEach(permission => SetFullControlToSecurityConfigFile(permission, fileInfo));
-                }
-                catch(IdentityNotMappedException inmex)
-                {
-                    ServerLogger.LogError(inmex);
-                    msg.HasError = true;
-                    msg.SetMessage("Error writing security configuration: One or more Windows Groups are invalid.");
-                }
-                catch(Exception ex)
-                {
-                    ServerLogger.LogError(ex);
-                    msg.HasError = true;
-                    msg.SetMessage("Error writing security configuration: " + ex.Message);
-                }
+            return serializer.SerializeToBuilder(msg);
+        }
+
+        public static void Write(SecuritySettingsTO securitySettingsTO)
+        {
+            VerifyArgument.IsNotNull("securitySettingsTO", securitySettingsTO);
+            var securitySettings = new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTO);
+            Write(securitySettings);
+        }
+
+        static void Write(StringBuilder securitySettings)
+        {
+            try
+            {
+                DoFileEncryption(securitySettings.ToString());
+
+                // Deny ACL was causing "Access to the path is denied." errors 
+                // so Barney decided it was OK not to do it.
             }
             catch(Exception e)
             {
                 throw new InvalidDataException(string.Format("The permissions passed is not a valid list of permissions. Error: {0}", e.Message));
             }
-
-            msg.SetMessage(result);
-
-            return serializer.SerializeToBuilder(msg);
         }
 
         static void DoFileEncryption(string permissions)
@@ -85,43 +83,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
             byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-            File.WriteAllBytes(ServerSecurityService.FileName, dataToEncrypt);
-        }
 
-        static FileInfo DenyAccessToSecurityFileToEveryone()
-        {
-            var fileInfo = new FileInfo(ServerSecurityService.FileName);
-            // Get a DirectorySecurity object that represents the current security settings.
-            var accessControl = fileInfo.GetAccessControl();
-            //remove any inherited access
-            accessControl.SetAccessRuleProtection(true, false);
-            //get any special user access
-            var rules = accessControl.GetAccessRules(true, true, typeof(SecurityIdentifier));
-            //remove any special access
-            foreach(FileSystemAccessRule rule in rules)
+            using(var outStream = new FileStream(ServerSecurityService.FileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {
-                accessControl.RemoveAccessRule(rule);
+                outStream.SetLength(0);
+                outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);
+                outStream.Flush();
             }
-            fileInfo.SetAccessControl(accessControl);
-            return fileInfo;
-        }
-
-        void SetFullControlToSecurityConfigFile(WindowsGroupPermission permission, FileInfo fileInfo)
-        {
-            var accessRule = new FileSystemAccessRule(permission.WindowsGroup,
-                                         fileSystemRights: FileSystemRights.FullControl,
-                                         inheritanceFlags: InheritanceFlags.None,
-                                         propagationFlags: PropagationFlags.InheritOnly,
-                                         type: AccessControlType.Allow);
-
-            // Get a DirectorySecurity object that represents the current security settings.
-            var accessControl = fileInfo.GetAccessControl();
-
-            // Add the FileSystemAccessRule to the security settings. 
-            accessControl.AddAccessRule(accessRule);
-
-            // Set the new access settings.
-            fileInfo.SetAccessControl(accessControl);
         }
 
         public DynamicService CreateServiceEntry()
@@ -129,7 +97,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Permissions/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><SecuritySettings/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var serviceAction = new ServiceAction

@@ -13,6 +13,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.ViewModels.DataList;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -36,6 +37,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         void Setup()
@@ -954,7 +956,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(parent);
             _dataListViewModel.ValidateNames(parent);
             Assert.IsTrue(parent.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet,parent.ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
 
             _dataListViewModel.RecsetCollection.Last().Children[0] = child;
             _dataListViewModel.ValidateNames(child);            
@@ -1024,7 +1026,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Add(parent);
             _dataListViewModel.ValidateNames(parent);
             Assert.IsTrue(parent.HasError);
-            Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet,parent.ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
         }
 
         [TestMethod]

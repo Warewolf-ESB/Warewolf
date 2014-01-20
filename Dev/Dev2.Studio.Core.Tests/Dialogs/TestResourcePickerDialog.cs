@@ -4,6 +4,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Threading;
+using Moq;
 
 namespace Dev2.Core.Tests.Dialogs
 {
@@ -15,6 +16,9 @@ namespace Dev2.Core.Tests.Dialogs
         public TestResourcePickerDialog(enDsfActivityType activityType)
             : base(activityType)
         {
+            var dialog = new Mock<IDialog>();
+            dialog.Setup(d => d.ShowDialog()).Verifiable();
+            CreateDialogResult = dialog.Object;
         }
 
         /// <summary>

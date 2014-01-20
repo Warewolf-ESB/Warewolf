@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
+using System.Net.Security;
 using System.Network;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -12,12 +15,9 @@ using Dev2.Diagnostics;
 using Dev2.ExtMethods;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
-using Dev2.Security;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Network;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
@@ -35,13 +35,15 @@ namespace Dev2.Network
 
         public ServerProxy(string serverUri)
         {
+            IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
             ServerEvents = EventPublishers.Studio;
 
-            AppServerUri = new Uri(serverUri);
-            WebServerUri = new Uri(serverUri.Replace("/dsf", ""));
+            var uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
+            AppServerUri = new Uri(uriString);
+            WebServerUri = new Uri(uriString.Replace("/dsf", ""));
 
-            HubConnection = new HubConnection(serverUri) { Credentials = CredentialCache.DefaultNetworkCredentials };
+            HubConnection = new HubConnection(uriString) { Credentials = CredentialCache.DefaultNetworkCredentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
@@ -49,29 +51,18 @@ namespace Dev2.Network
             //HubConnection.TraceWriter = Console.Out;
 
             InitializeEsbProxy();
-
-            AuthorizationService = new ClientAuthorizationService(new ClientSecurityService(this));
         }
 
-        public bool IsLocalHost
-        {
-            get
-            {
-                return DisplayName == "localhost";
-            }
-        }
+        public bool IsLocalHost { get { return DisplayName == "localhost"; } }
 
         protected void InitializeEsbProxy()
         {
             EsbProxy = HubConnection.CreateHubProxy("esb");
             EsbProxy.On<string>("SendMemo", OnMemoReceived);
+            EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
             EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
             EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
-        }
-
-        protected void LoadPermissions()
-        {
-            AuthorizationService.Load();
+            EsbProxy.On<Guid>("SendServerID", OnServerIDReceived);
         }
 
         void HubConnectionOnClosed()
@@ -82,9 +73,8 @@ namespace Dev2.Network
         void HasDisconnected()
         {
             IsConnected = false;
+            UpdateIsAuthorized(true);
             StartReconnectTimer();
-            OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Logout, false, false, "Logged Out"));
-            OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
         }
 
@@ -94,59 +84,88 @@ namespace Dev2.Network
             WorkspaceID = obj;
         }
 
+        void OnServerIDReceived(Guid obj)
+        {
+            ServerID = obj;
+        }
+
         void OnDebugStateReceived(string objString)
         {
             var obj = JsonConvert.DeserializeObject<DebugState>(objString);
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
-        void HubConnectionStateChanged(StateChange stateChange)
+        protected void HubConnectionStateChanged(StateChange stateChange)
         {
             switch(stateChange.NewState)
             {
                 case ConnectionState.Connected:
                     IsConnected = true;
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true, false, "Logged In"));
-                    OnServerStateChanged(new ServerStateEventArgs(ServerState.Online));
+                    UpdateIsAuthorized(true);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
-                    LoadPermissions();
                     break;
                 case ConnectionState.Connecting:
                 case ConnectionState.Reconnecting:
                     IsConnected = false;
-                    OnLoginStateChanged(new LoginStateEventArgs(AuthenticationResponse.Success, true, false, "Logged In"));
-                    OnServerStateChanged(new ServerStateEventArgs(ServerState.Offline));
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Connecting));
                     break;
                 case ConnectionState.Disconnected:
                     HasDisconnected();
                     break;
             }
-
-
         }
 
         public bool IsConnected { get; set; }
         public string Alias { get; set; }
         public string DisplayName { get; set; }
+
         public void Connect()
         {
             try
             {
                 if(HubConnection.State == ConnectionState.Disconnected)
                 {
-                    //TODO: take the waiting off the UI thread 
-                    //var t = HubConnection.Start();
-                    //Wait(t);
+                    ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     HubConnection.Start().Wait();
                 }
             }
+            catch(AggregateException aex)
+            {
+                aex.Flatten();
+                aex.Handle(ex =>
+                {
+                    var hex = ex as HttpClientException;
+                    if(hex != null)
+                    {
+                        switch(hex.Response.StatusCode)
+                        {
+                            case HttpStatusCode.Unauthorized:
+                            case HttpStatusCode.Forbidden:
+                                UpdateIsAuthorized(false);
+                                return true; // This we know how to handle this
+                        }
+                    }
+                    //HandleConnectError(ex);
+                    //return false; // Let anything else stop the application.
+                    return true; // This we know how to handle this
+                });
+            }
             catch(Exception e)
             {
+                HandleConnectError(e);
+            }
+        }
+
+        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        {
+            return true;
+        }
+
+        void HandleConnectError(Exception e)
+        {
                 Logger.Error(e);
                 StartReconnectTimer();
             }
-        }
 
         protected virtual void StartReconnectTimer()
         {
@@ -217,8 +236,6 @@ namespace Dev2.Network
             StartReconnectTimer();
         }
 
-        public IAuthorizationService AuthorizationService { get; private set; }
-
         public IEventPublisher ServerEvents { get; set; }
 
         public IHubProxy EsbProxy { get; protected set; }
@@ -232,30 +249,50 @@ namespace Dev2.Network
 
         void OnMemoReceived(string objString)
         {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
             var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
-            this.TraceInfo("Publish message of type - " + typeof(Memo));
             ServerEvents.PublishObject(obj);
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        void OnPermissionsMemoReceived(string objString)
+        {
+            // DO NOT use publish as memo is of type object 
+            // and hence won't find the correct subscriptions
+            var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
+            ServerEvents.PublishObject(obj);
+            RaisePermissionsChanged();
+        }
+
         public Guid ServerID { get; private set; }
         public Guid WorkspaceID { get; private set; }
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
-        public IDebugWriter DebugWriter { get; private set; }
         public Uri AppServerUri { get; private set; }
         public Uri WebServerUri { get; private set; }
-        public event EventHandler<LoginStateEventArgs> LoginStateChanged;
 
-        protected virtual void OnLoginStateChanged(LoginStateEventArgs e)
+        /// <summary>
+        /// <code>True</code> unless server returns Unauthorized or Forbidden status.
+        /// </summary>
+        public bool IsAuthorized { get; private set; }
+
+        public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
+        public event EventHandler PermissionsChanged;
+
+        void RaisePermissionsChanged()
         {
-            var handler = LoginStateChanged;
-            if(handler != null)
+            if(PermissionsChanged != null)
             {
-                handler(this, e);
+                PermissionsChanged(this, EventArgs.Empty);
             }
         }
 
-        public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
+        void UpdateIsAuthorized(bool isAuthorized)
+        {
+            if(IsAuthorized != isAuthorized)
+            {
+                IsAuthorized = isAuthorized;
+                RaisePermissionsChanged();
+            }
+        }
 
         protected virtual void OnNetworkStateChanged(NetworkStateEventArgs e)
         {
@@ -266,24 +303,17 @@ namespace Dev2.Network
             }
         }
 
-        public event EventHandler<ServerStateEventArgs> ServerStateChanged;
-
-        protected virtual void OnServerStateChanged(ServerStateEventArgs e)
-        {
-            var handler = ServerStateChanged;
-            if(handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-
         public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceID, Guid dataListID)
         {
             if(payload == null || payload.Length == 0)
             {
                 throw new ArgumentNullException("payload");
             }
+            //// HACK: Remove this
+            //if(payload.Contains("GetLatestService"))
+            //{
+            //    RaisePermissionsChanged();
+            //}
 
             // build up payload 
             var length = payload.Length;
@@ -314,8 +344,11 @@ namespace Dev2.Network
             {
                 bool isEnd = (i + 1 == mailToSend.Count);
                 Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceID, dataListID, messageID);
-                Wait(invoke);
-
+                Wait(invoke, result);
+                if(invoke.IsFaulted)
+                {
+                    break;
+                }
                 // now build up the result in fragements ;)
                 if(isEnd)
                 {
@@ -323,8 +356,8 @@ namespace Dev2.Network
                     for(int q = 0; q < totalToFetch; q++)
                     {
                         Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
-                        Wait(fragmentInvoke);
-                        if(fragmentInvoke.Result != null)
+                        Wait(fragmentInvoke, result);
+                        if(!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
                         {
                             result.Append(fragmentInvoke.Result);
                         }
@@ -353,29 +386,55 @@ namespace Dev2.Network
 
         }
 
-        protected virtual T Wait<T>(Task<T> task)
+        protected virtual T Wait<T>(Task<T> task, StringBuilder result)
+        {
+            return Wait(task, result, GlobalConstants.NetworkTimeOut);
+        }
+
+        protected T Wait<T>(Task<T> task, StringBuilder result, int millisecondsTimeout)
         {
             try
             {
-                task.WaitWithPumping(GlobalConstants.NetworkTimeOut);
+                task.WaitWithPumping(millisecondsTimeout);
                 return task.Result;
             }
-            catch(Exception e)
+            catch(AggregateException aex)
             {
-                Logger.Error(e);
+                var hasDisconnected = false;
+                aex.Handle(ex =>
+                {
+                    result.AppendFormat("<Error>{0}</Error>", ex.Message);
+                    var hex = ex as HttpRequestException;
+                    if(hex != null)
+            {
+                        hasDisconnected = true;
+                        return true; // This we know how to handle this
+            }
+                    var ioex = ex as InvalidOperationException;
+                    if(ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
+                    {
+                        return true; // This we know how to handle this
+        }
+                    Logger.Error(ex);
+                    return false; // Let anything else stop the application.
+                });
+                if(hasDisconnected)
+        {
+                    HasDisconnected();
+                }
             }
             return default(T);
-        }
-
-        protected virtual void Wait(Task task)
-        {
-            task.Wait(100);
         }
 
         public void AddDebugWriter(Guid workspaceID)
         {
             var t = EsbProxy.Invoke("AddDebugWriter", workspaceID);
             Wait(t);
+        }
+
+        protected virtual void Wait(Task task)
+        {
+            task.Wait(100);
         }
 
         #region Implementation of IDisposable

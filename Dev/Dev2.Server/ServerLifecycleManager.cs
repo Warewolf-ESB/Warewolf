@@ -320,7 +320,7 @@ namespace Dev2
                 result = 98; // ????
                 didBreak = true;
             }
-
+            
             if(!didBreak && !StartWebServer())
             {
                 result = 4;
@@ -984,7 +984,10 @@ namespace Dev2
         bool PreloadReferences()
         {
             if(!LoadExternalDependencies())
+            {
                 return false;
+            }
+
             const bool Result = true;
 
             if(_preloadAssemblies)
@@ -1284,7 +1287,7 @@ namespace Dev2
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
-                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
+                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);                    
 
 
                     // start SSL traffic if it is enabled ;)
@@ -1684,10 +1687,10 @@ namespace Dev2
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
-            Write("done.");
-            WriteLine("");
-            return true;
-        }
+                Write("done.");
+                WriteLine("");
+                return true;
+            }
 
 
 

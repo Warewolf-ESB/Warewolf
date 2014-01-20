@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Dialogs;
 using Dev2.Services.Security;
@@ -12,15 +11,15 @@ namespace Dev2.Core.Tests.Settings
     public class TestSecurityViewModel : SecurityViewModel
     {
         public TestSecurityViewModel()
-            : base(new List<WindowsGroupPermission>(), new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object)
+            : base(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<IDirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object)
         {
         }
 
         public int SaveHitCount { get; private set; }
-        public override void Save(List<WindowsGroupPermission> permissions, List<string> errors)
+        public override void Save(SecuritySettingsTO securitySettings)
         {
             SaveHitCount++;
-            base.Save(permissions, errors);
+            base.Save(securitySettings);
         }
     }
 }

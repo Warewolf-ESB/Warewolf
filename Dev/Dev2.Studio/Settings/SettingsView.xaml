@@ -12,7 +12,8 @@
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance settings:SettingsViewModel}">
+             d:DataContext="{d:DesignInstance settings:SettingsViewModel}"
+             AutomationProperties.AutomationId="UI_SettingsView_AutoID">
     
     <UserControl.Resources>
         <logging:LoggingView x:Key="LoggingView"
@@ -114,15 +115,11 @@
                         HorizontalAlignment="Right">
 
                 <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                    <StackPanel.Visibility>
-                        <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
-                            <Binding Path="IsSaved" Mode="TwoWay"/>
-                            <Binding Path="HasErrors" Mode="TwoWay" Converter="{StaticResource BooleanInvertConverter}" />
-                        </MultiBinding>
-                    </StackPanel.Visibility>
+                            VerticalAlignment="Center"
+                            Visibility="{Binding IsSavedSuccessVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                     <TextBlock Text="Settings saved successfully"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center" 
+                               AutomationProperties.AutomationId="UI_SettingsSaveMessageStackPanel_AutoID"/>
                     <Image Style="{StaticResource ImageTickStyle}"
                            VerticalAlignment="Center"
                            Margin="3,0,0,0" />
@@ -130,20 +127,16 @@
 
                 <TextBlock Foreground="{StaticResource ValidationErrorElement}"
                            Text="{Binding Errors}"
-                           VerticalAlignment="Center">
-                    <TextBlock.Visibility>
-                        <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
-                            <Binding Path="IsSaved" Mode="TwoWay"/>
-                            <Binding Path="HasErrors" Mode="TwoWay" />
-                        </MultiBinding>
-                    </TextBlock.Visibility>
+                           VerticalAlignment="Center"
+                           Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                 </TextBlock>
 
                 <Button Content="Save"
                         Command="{Binding SaveCommand}"
                         Margin="5,0,0,0"
                         Width="90"
-                        Height="28" />
+                        Height="28" 
+                        AutomationProperties.AutomationId="UI_SaveSettingsbtn_AutoID"/>
             </StackPanel>
 
         </Grid>

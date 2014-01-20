@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Principal;
 using System.Web;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -31,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats)
+        protected static IResponseWriter CreateForm(dynamic d, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
             // properly setup xml extraction ;)
             string payload = String.Empty;
@@ -64,6 +65,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             ErrorResultTO errors;
             var allErrors = new ErrorResultTO();
             var dataObject = new DsfDataObject(correctedUri, GlobalConstants.NullDataListID, payload) { IsFromWebServer = true };
+            dataObject.ExecutingUser = user;
             dataObject.ServiceName = serviceName;
 
             // now process headers ;)
@@ -126,7 +128,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var esbEndpoint = new EsbServicesEndpoint();
 
             // Build EsbExecutionRequest - Internal Services Require This ;)
-            EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest{ServiceName = serviceName};
+            EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
             var executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
             allErrors.MergeErrors(errors);
@@ -141,7 +143,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if(executionDlid != GlobalConstants.NullDataListID)
             {
                 // a normal service request
-                if (!esbExecuteRequest.WasInternalService)
+                if(!esbExecuteRequest.WasInternalService)
                 {
                     dataObject.DataListID = executionDlid;
                     dataObject.WorkspaceID = workspaceGuid;
@@ -160,21 +162,21 @@ namespace Dev2.Runtime.WebServer.Handlers
                     executePayload = string.Empty;
                     var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
-                    if (msg != null)
+                    if(msg != null)
                     {
-                        executePayload = msg.Message.ToString();    
+                        executePayload = msg.Message.ToString();
                     }
-                    
+
                     // out fail safe to return differnt types of data from services ;)
-                    if (string.IsNullOrEmpty(executePayload))
+                    if(string.IsNullOrEmpty(executePayload))
                     {
-                        executePayload =  esbExecuteRequest.ExecuteResult.ToString();
+                        executePayload = esbExecuteRequest.ExecuteResult.ToString();
                     }
                 }
             }
-            else 
+            else
             {
-                if (dataObject.ReturnType == EmitionTypes.XML)
+                if(dataObject.ReturnType == EmitionTypes.XML)
                 {
 
                     executePayload =
@@ -191,7 +193,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     executePayload += "}";
                 }
             }
-            
+
 
             // Clean up the datalist from the server
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)

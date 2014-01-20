@@ -37,7 +37,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<AddServerToExplorerMessage>));
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests
            // Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<RemoveEnvironmentMessage>));
@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
@@ -77,7 +77,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -117,7 +117,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
             mockEnvironment.Setup(e => e.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             //------Assert---------
@@ -138,7 +138,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<UpdateExplorerMessage>));
@@ -151,7 +151,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -174,7 +174,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -197,7 +197,7 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(repo);
+            var vm = new ExplorerViewModel(repo); vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -246,7 +246,7 @@ namespace Dev2.Core.Tests
 
             // Create view model with connected localhost - should invoke our action
             var viewModel = new ExplorerViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, false, enDsfActivityType.All, action);
-
+            viewModel.LoadEnvironments();
             Assert.AreEqual(1, actionHitCount, "Constructor did not subscribe to NavigationViewModel.LoadResourcesCompleted.");
 
 

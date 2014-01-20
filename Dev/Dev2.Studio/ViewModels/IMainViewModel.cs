@@ -1,6 +1,7 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using System.Windows.Input;
+using Dev2.Security;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -10,7 +11,7 @@ namespace Dev2.Studio.ViewModels
 
         ICommand DeployCommand { get; }
         ICommand ExitCommand { get; }
-        RelayCommand<string> NewResourceCommand { get; }
+        AuthorizeCommand<string> NewResourceCommand { get; }
         IEnvironmentModel ActiveEnvironment { get; set; }
         SimpleBaseViewModel DeployResource { get; set; }
     }

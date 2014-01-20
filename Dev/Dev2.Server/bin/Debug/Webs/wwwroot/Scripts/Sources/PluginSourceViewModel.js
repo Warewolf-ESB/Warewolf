@@ -16,6 +16,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
     self.titleSearchString = "Plugin Source";
     self.currentEnvironment = ko.observable(environment);
     self.inTitleEnvironment = false;
+    self.isReadOnly = false;
     
     self.onSaveCompleted = null;
     
@@ -139,7 +140,7 @@ function PluginSourceViewModel(saveContainerID, environment) {
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
-        return isValid;
+        return isValid && !self.isReadOnly;
     });
 
     self.validateAssemblyFile = function (helpID) {
@@ -547,6 +548,10 @@ function PluginSourceViewModel(saveContainerID, environment) {
     if (!$dialogContainerID) {
         self.load(resourceID);
     }
+    
+    utils.isReadOnly(resourceID, function (isReadOnly) {
+        self.isReadOnly = isReadOnly;
+    });
 };
 
 PluginSourceViewModel.create = function (pluginSourceContainerID, saveContainerID) {

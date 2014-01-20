@@ -14,6 +14,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 using Newtonsoft.Json;
 
@@ -29,6 +30,16 @@ namespace Dev2.Runtime.WebServer.Hubs
         public EsbHub()
         {
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+        }
+
+        void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
+        {
+            var permissionsMemo = new PermissionsModifiedMemo();
+            permissionsMemo.ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions;
+            var serializedMemo = JsonConvert.SerializeObject(permissionsMemo);
+            var hubCallerConnectionContext = Clients;
+            hubCallerConnectionContext.All.SendPermissionsMemo(serializedMemo);
         }
 
         public EsbHub(Server server)
@@ -55,6 +66,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             var workspaceID = Server.GetWorkspaceID(Context.User.Identity);
             Server.SendWorkspaceID(workspaceID, Context.ConnectionId);
+            Server.SendServerID(HostSecurityProvider.Instance.ServerID, Context.ConnectionId);
             return base.OnConnected();
         }
 
@@ -94,6 +106,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler();
+            internalServiceRequestHandler.ExecutingUser = Context.User;
             try
             {
                 var task = new Task<Receipt>(() =>

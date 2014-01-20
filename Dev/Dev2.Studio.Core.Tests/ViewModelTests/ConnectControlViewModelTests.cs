@@ -115,15 +115,17 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_BuildConnectViewModel_WithDeployResourceAsAbstractTreeViewModelWithEnvironmentAndActiveEnvironment_CreateConnectViewModelWithAbstractTreeViewModelEnvironmentAsActiveEnvironment()
         {
             //------------Setup for test--------------------------
-            var treeViewModelEnvironmentModel = new Mock<IEnvironmentModel>().Object;
-            var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, treeViewModelEnvironmentModel, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var treeViewModelEnvironmentModel = new Mock<IEnvironmentModel>();
+            treeViewModelEnvironmentModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            var resourceModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, treeViewModelEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var mainViewModelActiveEnvironment = new Mock<IEnvironmentModel>().Object;
             //------------Execute Test---------------------------
             var controlViewModel = new ConnectControlViewModelBuilder().BuildConnectControlViewModel(resourceModel, mainViewModelActiveEnvironment);
             //------------Assert Results-------------------------
             Assert.IsNotNull(controlViewModel);
             Assert.IsNotNull(controlViewModel.ActiveEnvironment);
-            Assert.AreEqual(treeViewModelEnvironmentModel, controlViewModel.ActiveEnvironment);
+            Assert.AreEqual(treeViewModelEnvironmentModel.Object, controlViewModel.ActiveEnvironment);
         }
 
         [TestMethod]

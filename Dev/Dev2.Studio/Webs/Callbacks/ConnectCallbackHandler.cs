@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -8,15 +9,12 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Webs.Callbacks;
-using System;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
-        // ReSharper disable once NotAccessedField.Local
-        readonly int _webServerPort;
 
         #region CTOR
 
@@ -33,9 +31,6 @@ namespace Dev2.Studio.Webs.Callbacks
         public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, Guid? context = null)
             : base(eventPublisher, currentEnvironmentRepository, context)
         {
-            //Server = new ServerDTO();
-            Uri defaultWebServerUri;
-            _webServerPort = Uri.TryCreate(StringResources.Uri_WebServer, UriKind.Absolute, out defaultWebServerUri) ? defaultWebServerUri.Port : 80;
         }
 
         #endregion
@@ -72,12 +67,10 @@ namespace Dev2.Studio.Webs.Callbacks
                 throw new ArgumentNullException("connectionName");
             }
 
-            Guid resourceID = Guid.Parse(connectionID);
-            IEnvironmentModel activeEnvironment = CurrentEnvironmentRepository.ActiveEnvironment;
+            var resourceID = Guid.Parse(connectionID);
+            var activeEnvironment = CurrentEnvironmentRepository.ActiveEnvironment;
             var connection = new ServerProxy(new Uri(connectionUri));
             var newEnvironment = new EnvironmentModel(resourceID, connection, activeEnvironment.ResourceRepository) { Name = connectionName, Category = category };
-
-            // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
             if(defaultEnvironment != null)
             {

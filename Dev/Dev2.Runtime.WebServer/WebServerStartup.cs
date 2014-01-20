@@ -14,6 +14,20 @@ namespace Dev2.Runtime.WebServer
 
         public static IDisposable Start(Dev2Endpoint[] endpoints)
         {
+            // Make long polling connections wait a maximum of 110 seconds for a
+            // response. When that time expires, trigger a timeout command and
+            // make the client reconnect.
+            GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(110);
+
+            // Wait a maximum of 30 seconds after a transport connection is lost
+            // before raising the Disconnected event to terminate the SignalR connection.
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(60);
+
+            // For transports other than long polling, send a keepalive packet every
+            // 10 seconds. 
+            // This value must be no more than 1/3 of the DisconnectTimeout value.
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
+
             var startOptions = new StartOptions();
             foreach(var endpoint in endpoints)
             {
@@ -24,9 +38,9 @@ namespace Dev2.Runtime.WebServer
 
         public void Configuration(IAppBuilder app)
         {
-            // Enable NTLM auth
             var listener = (HttpListener)app.Properties[typeof(HttpListener).FullName];
-            listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;
+            listener.AuthenticationSchemes = AuthenticationSchemes.Ntlm;  // Enable NTLM auth
+            listener.IgnoreWriteExceptions = true;  // ignore errors written to disconnected clients.
 
             // Enable cross-domain calls
             app.UseCors(CorsOptions.AllowAll);
@@ -38,7 +52,7 @@ namespace Dev2.Runtime.WebServer
 
             // Add SignalR routing...
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true, EnableJSONP = true };
-            app.MapSignalR("/dsf",hubConfiguration);
+            app.MapSignalR("/dsf", hubConfiguration);
 
             // Add web server routing...
             var config = new HttpConfiguration();

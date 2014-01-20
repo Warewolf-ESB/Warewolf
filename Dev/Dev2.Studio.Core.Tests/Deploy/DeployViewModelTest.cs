@@ -1,4 +1,8 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
@@ -17,10 +21,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests
 {
@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
             var deployStatsCalculator = SetupDeployViewModel(out deployViewModel);
 
             var isOverwriteMessageDisplayed = false;
-           
+
             deployViewModel.ShowDialog = o =>
             {
                 var viewModel = (DeployDialogViewModel)o;
@@ -399,12 +399,21 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_UnitTest_CanDeployToDisconnectedServer_ReturnsFalse()
         {
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            deployViewModel.HasItemsToDeploy = (s, d) => { return true; };
 
             deployViewModel.SelectedDestinationServer = destServer.Object;
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+
+            destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
 
             destEnv.Setup(e => e.IsConnected).Returns(true);
             Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is connected.");
@@ -427,6 +436,80 @@ namespace Dev2.Core.Tests
 
             destEnv.Setup(e => e.IsConnected).Returns(true);
             Assert.IsFalse(deployViewModel.CanDeploy);
+        }
+
+        [TestMethod]
+        [TestCategory("DeployViewModel_CanDeploy")]
+        [Owner("Trevor Williams-Ros")]
+        public void DeployViewModel_CanDeploy_IsAuthorizedToDeployToFrom_Correct()
+        {
+            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: false);
+            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: false, isAuthorizedDeployTo: true);
+            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: false, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: false);
+            Verify_CanDeploy_IsAuthorized(expectedCanDeploy: true, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: true);
+        }
+
+        void Verify_CanDeploy_IsAuthorized(bool expectedCanDeploy, bool isAuthorizedDeployFrom, bool isAuthorizedDeployTo)
+        {
+            var sourceConnection = new Mock<IEnvironmentConnection>();
+            sourceConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://localhost"));
+
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(e => e.Connection).Returns(sourceConnection.Object);
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(isAuthorizedDeployFrom);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
+            var remoteConnection = new Mock<IEnvironmentConnection>();
+            remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
+            
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
+            mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployTo).Returns(isAuthorizedDeployTo);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+
+            Assert.AreEqual(expectedCanDeploy, deployViewModel.CanDeploy);
+        }
+
+
+        [TestMethod]
+        [TestCategory("DeployViewModel_CanSelectAllDependencies")]
+        [Owner("Trevor Williams-Ros")]
+        public void DeployViewModel_CanSelectAllDependencies_IsAuthorizedToDeployFrom_Correct()
+        {
+            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: false, isAuthorizedDeployFrom: false);
+            Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: true, isAuthorizedDeployFrom: true);
+        }
+
+        void Verify_CanSelectAllDependencies_IsAuthorized(bool expectedCanSelect, bool isAuthorizedDeployFrom)
+        {
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(isAuthorizedDeployFrom);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
+            mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+
+            Assert.AreEqual(expectedCanSelect, deployViewModel.CanSelectAllDependencies);
         }
 
         [TestMethod]

@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
+using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 
@@ -14,14 +16,16 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class SecurityRead : IEsbManagementEndpoint
     {
-        static List<WindowsGroupPermission> DefaultPermissions
+        readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
+
+        public static List<WindowsGroupPermission> DefaultPermissions
         {
             get
             {
                 return new List<WindowsGroupPermission>
                 {
-                    WindowsGroupPermission.CreateAdministrators(),
-                    WindowsGroupPermission.CreateEveryone()
+                   WindowsGroupPermission.CreateAdministrators(),
+                   //new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText, Permissions = Permissions.View | Permissions.Execute }
                 };
             }
         }
@@ -30,13 +34,29 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             if(File.Exists(ServerSecurityService.FileName))
             {
-                var encryptedData = File.ReadAllText(ServerSecurityService.FileName);
-                var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                return new StringBuilder(decryptData);
+                string encryptedData;
+                using(var inStream = new FileStream(ServerSecurityService.FileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    using(var reader = new StreamReader(inStream))
+                    {
+                        encryptedData = reader.ReadToEnd();
+                    }
+                }
+                try
+                {
+                    var decryptData = SecurityEncryption.Decrypt(encryptedData);
+                    return new StringBuilder(decryptData);
+                }
+                // ReSharper disable once EmptyGeneralCatchClause
+                catch
+                {
+
+                }
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(DefaultPermissions);
+            var serializer = new Dev2JsonSerializer();
+            var securitySettingsTO = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
+            return serializer.SerializeToBuilder(securitySettingsTO);
         }
 
         public DynamicService CreateServiceEntry()

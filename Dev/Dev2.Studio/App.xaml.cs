@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Threading;
@@ -9,6 +10,7 @@ using Dev2.Diagnostics;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
+using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio
@@ -32,6 +34,7 @@ namespace Dev2.Studio
             _hasShutdownStarted = false;
             ShouldRestart = false;
             InitializeComponent();
+            AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
         }
 
         public static bool IsAutomationMode

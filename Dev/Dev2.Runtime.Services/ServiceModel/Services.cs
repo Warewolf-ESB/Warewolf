@@ -5,9 +5,11 @@ using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Runtime.ServiceModel.Utils;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -21,21 +23,21 @@ namespace Dev2.Runtime.ServiceModel
     public class Services : ExceptionManager
     {
         readonly IResourceCatalog _resourceCatalog;
+        readonly IAuthorizationService _authorizationService;
 
         #region CTOR
 
         public Services()
-            : this(ResourceCatalog.Instance)
+            : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
         {
         }
 
-        public Services(IResourceCatalog resourceCatalog)
+        public Services(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
         {
-            if(resourceCatalog == null)
-            {
-                throw new ArgumentNullException("resourceCatalog");
-            }
+            VerifyArgument.IsNotNull("resourceCatalog", resourceCatalog);
+            VerifyArgument.IsNotNull("authorizationService", authorizationService);
             _resourceCatalog = resourceCatalog;
+            _authorizationService = authorizationService;
         }
 
         #endregion
@@ -73,17 +75,11 @@ namespace Dev2.Runtime.ServiceModel
             switch(resourceType)
             {
                 case ResourceType.DbService:
-                    {
-                        return DbService.Create();
-                    }
+                    return DbService.Create();
                 case ResourceType.PluginService:
-                    {
-                        return PluginService.Create();
-                    }
+                    return PluginService.Create();
                 case ResourceType.WebService:
-                    {
-                        return WebService.Create();
-                    }
+                    return WebService.Create();
             }
             return DbService.Create();
         }
@@ -239,6 +235,15 @@ namespace Dev2.Runtime.ServiceModel
         {
             var broker = CreateDatabaseBroker();
             return broker.GetServiceMethods(dbSource);
+        }
+
+        #endregion
+
+        #region IsReadOnly
+
+        public WebPermission IsReadOnly(string resourceID, Guid workspaceID, Guid dataListID)
+        {
+            return new WebPermission { IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceID) };
         }
 
         #endregion

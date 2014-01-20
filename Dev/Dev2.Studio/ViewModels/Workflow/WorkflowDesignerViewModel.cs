@@ -38,6 +38,7 @@ using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.AppResources.AttachedProperties;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -91,6 +92,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
         DsfActivityDropViewModel _vm;
+        ResourcePickerDialog _resourcePickerDialog;
 
         VirtualizedContainerService _virtualizedContainerService;
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
@@ -165,6 +167,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Properties
 
+        public override bool CanSave { get { return ResourceModel.IsAuthorized(AuthorizationContext.Contribute); } }
+
         protected virtual bool IsDesignerViewVisible { get { return DesignerView.IsVisible; } }
 
         public override string DisplayName
@@ -217,8 +221,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public string WorkflowName { get { return _resourceModel.ResourceName; } }
 
         public bool RequiredSignOff { get { return _resourceModel.RequiresSignOff; } }
-
-        public string AuthorRoles { get { return _resourceModel.AuthorRoles; } set { _resourceModel.AuthorRoles = value; } }
 
         public WorkflowDesigner Designer { get { return _wd; } }
 
@@ -837,7 +839,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 fullyFormattedStringValue = recordSet.Remove(recordSet.IndexOf("(", StringComparison.Ordinal));
             }
             else
+            {
                 return recordSet;
+            }
             return fullyFormattedStringValue;
         }
 
@@ -1450,7 +1454,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(isWorkflow != null)
             {
                 // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
-                var resourcePicked = ResourcePickerDialog.ShowDropDialog(isWorkflow, out _vm);
+                var resourcePicked = ResourcePickerDialog.ShowDropDialog(ref _resourcePickerDialog, isWorkflow, out _vm);
                 if(_vm != null && !resourcePicked)
                 {
                     e.Handled = true;

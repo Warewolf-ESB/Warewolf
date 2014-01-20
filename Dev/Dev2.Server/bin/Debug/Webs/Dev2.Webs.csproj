@@ -141,6 +141,13 @@
     <Content Include="wwwroot\Scripts\Switch\DropModel.js" />
     <Content Include="wwwroot\Views\Templates\InputMapping.htm" />
     <Content Include="wwwroot\Views\Templates\OutputMapping.htm" />
+    <Content Include="web.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
     <None Include="wwwroot\Scripts\fx\jquery-1.7.1.intellisense.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.Guid.js" />
     <Content Include="wwwroot\Scripts\fx\jquery.scrollTo-1.4.3.1.js" />

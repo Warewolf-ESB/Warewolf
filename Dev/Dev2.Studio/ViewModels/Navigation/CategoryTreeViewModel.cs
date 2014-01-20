@@ -1,7 +1,8 @@
-﻿//6180 CODEREVIEW - Please region you code
-
-#region
-
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Providers.Logs;
@@ -13,14 +14,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
-using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 
-
-#endregion
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -295,7 +289,8 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(TreeParent != null)
                 {
-                    return TreeParent.DisplayName == "WORKFLOWS" || TreeParent.DisplayName == "SOURCES" || TreeParent.DisplayName == "SERVICES";
+                    return (TreeParent.DisplayName == "WORKFLOWS" || TreeParent.DisplayName == "SOURCES" || TreeParent.DisplayName == "SERVICES")
+                        && EnvironmentModel.IsAuthorizedDeployFrom;
                 }
                 return false;
             }

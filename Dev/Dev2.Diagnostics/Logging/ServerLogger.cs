@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Diagnostics;
@@ -111,6 +112,25 @@ namespace Dev2.Common
         ///   <c>true</c> if [enable info output]; otherwise, <c>false</c>.
         /// </value>
         public static bool EnableInfoOutput { get; set; }
+
+        public static void LogCallStack(string className, [CallerMemberName]string methodName = null)
+        {
+            if(EnableInfoOutput)
+            {
+                var stackTrace = new System.Diagnostics.StackTrace(1, true); // skip the call to ServerLogger.LogCallStack
+                InternalLogMessage(string.Format("{0}.{1}{2}{3}", className, methodName, Environment.NewLine, stackTrace), "CALLSTACK");
+            }
+        }
+
+        public static void LogDebugStart(string className, [CallerMemberName]string methodName = null)
+        {
+            LogDebug(string.Format("{0}.{1}.START", className, methodName));
+        }
+
+        public static void LogDebugEnd(string className, [CallerMemberName]string methodName = null)
+        {
+            LogDebug(string.Format("{0}.{1}.END", className, methodName));
+        }
 
         /// <summary>
         /// Logs a message.

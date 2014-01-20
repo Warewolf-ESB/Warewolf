@@ -75,7 +75,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
            
             self.isEditing = result.ResourceName != null;
 
-            if (self.isEditing) {
+            if (self.isEditing && !self.isReadOnly) {
                 self.test();
             }
 
@@ -85,12 +85,16 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
                 $dialogContainerID.dialog("option", "title", self.title());
             }
         });
+        utils.isReadOnly(theResourceID, function (isReadOnly) {
+            self.isReadOnly = isReadOnly;
+        });
     };
 
     self.helpDictionaryID = "WebSource";
     self.helpDictionary = {};
     self.helpText = ko.observable("");
     self.isHelpTextVisible = ko.observable(true);
+    self.isReadOnly = false;
 
     self.isTestResultsLoading = ko.observable(false);
     self.showTestResults = ko.observable(false);
@@ -98,6 +102,11 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
     self.testError = ko.observable("");
     
     self.isFormTestable = ko.computed(function () {
+        
+        if (self.isReadOnly) {
+            return false;
+        }
+        
         var valid = self.data.address() ? utils.isValidUrl(self.data.address()) : false;
 
         if (self.isUserInputVisible()) {
@@ -118,7 +127,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
         if ($dialogContainerID) {
             $dialogSaveButton.button("option", "disabled", !isValid);
         }
-        return isValid;
+        return isValid && !self.isReadOnly;
     });
     
     self.updateHelpText = function (id) {
@@ -171,7 +180,9 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
         var jsonData = ko.toJSON(self.data);
         
         utils.postTimestamped(self, "testTime", "Service/WebSources/Test", jsonData, function(result) {
-            $testButton.button("option", "disabled", false);
+            if (!self.isReadOnly) {
+                $testButton.button("option", "disabled", false);
+            }
             self.isTestResultsLoading(false);
             self.showTestResults(true);
             self.testSucceeded(result.IsValid);
@@ -182,7 +193,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
     $address.keyup(function (e) {
         if (self.isFormTestable()) {
             // ENTER key pressed
-            if (e.keyCode == 13) {
+            if (e.keyCode == 13 && !self.isReadOnly) {
                 self.test();
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows.Documents;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -70,7 +69,7 @@ namespace Dev2.Tests
             dataObject.ClientID = Guid.NewGuid();            
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid>() { Guid.NewGuid() };
-            threadsToDispose.Add(3,guidList);
+            threadsToDispose.Add(3, guidList);
             dataObject.ThreadsToDispose = threadsToDispose;
             
             //------------Execute Test---------------------------
@@ -79,8 +78,8 @@ namespace Dev2.Tests
             //------------Assert Results-------------------------
 
             // check counts, then check values
-            var properties = typeof (IDSFDataObject).GetProperties();
-            Assert.AreEqual(45, properties.Length);
+            var properties = typeof(IDSFDataObject).GetProperties();
+            Assert.AreEqual(46, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -97,6 +96,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.DebugSessionID, clonedObject.DebugSessionID);
             Assert.AreEqual(dataObject.EnvironmentID, clonedObject.EnvironmentID);
             Assert.AreEqual(dataObject.Errors, clonedObject.Errors);
+            Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
             Assert.AreEqual(dataObject.ExecutionCallbackID, clonedObject.ExecutionCallbackID);
             Assert.AreEqual(dataObject.ExecutionOrigin, clonedObject.ExecutionOrigin);
             Assert.AreEqual(dataObject.ExecutionOriginDescription, clonedObject.ExecutionOriginDescription);

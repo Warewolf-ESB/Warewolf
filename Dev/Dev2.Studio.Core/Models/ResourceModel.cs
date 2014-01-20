@@ -13,13 +13,12 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Action = System.Action;
 
@@ -32,7 +31,6 @@ namespace Dev2.Studio.Core.Models
 
         private readonly List<string> _tagList;
         private bool _allowCategoryEditing = true;
-        private string _authorRoles;
         private string _category;
         private string _comment;
         private string _dataList;
@@ -56,10 +54,12 @@ namespace Dev2.Studio.Core.Models
         Guid _id;
 
         IDesignValidationService _validationService;
+        IPermissionsModifiedService _permissionsModifiedService;
+
         readonly ObservableReadOnlyList<IErrorInfo> _errors = new ObservableReadOnlyList<IErrorInfo>();
         readonly ObservableReadOnlyList<IErrorInfo> _fixedErrors = new ObservableReadOnlyList<IErrorInfo>();
         bool _isValid;
-        readonly IEventAggregator _eventPublisher;
+        Permissions _userPermissions;
 
         #endregion Class Members
 
@@ -73,7 +73,6 @@ namespace Dev2.Studio.Core.Models
         public ResourceModel(IEnvironmentModel environment, IEventAggregator eventPublisher)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
-            _eventPublisher = eventPublisher;
 
             _tagList = new List<string>();
             Environment = environment;
@@ -137,10 +136,31 @@ namespace Dev2.Studio.Core.Models
 
                     // BUG 9634 - 2013.07.17 - TWR : added
                     _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
+
+                    _permissionsModifiedService = new PermissionsModifiedService(_environment.Connection.ServerEvents);
+
+                    // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
+                    _permissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
                 }
                 NotifyOfPropertyChange("Environment");
                 // ReSharper disable once NotResolvedInText
                 NotifyOfPropertyChange("CanExecute");
+            }
+        }
+
+        public event EventHandler<PermissionsModifiedMemo> OnPermissionsModifiedReceived;
+
+        void ReceivePermissionsModified(PermissionsModifiedMemo memo)
+        {
+            var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID).ToList();
+            if(modifiedPermissions.Count > 0)
+            {
+                UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
+            }
+
+            if(OnPermissionsModifiedReceived != null)
+            {
+                OnPermissionsModifiedReceived(this, memo);
             }
         }
 
@@ -187,6 +207,25 @@ namespace Dev2.Studio.Core.Models
                     _validationService.Subscribe(_id, ReceiveDesignValidation);
                 }
             }
+        }
+
+        public Permissions UserPermissions
+        {
+            get { return _userPermissions; }
+            set
+            {
+                if(value == _userPermissions)
+                {
+                    return;
+                }
+                _userPermissions = value;
+                NotifyOfPropertyChange(() => UserPermissions);
+            }
+        }
+
+        public bool IsAuthorized(AuthorizationContext authorizationContext)
+        {
+            return (UserPermissions & authorizationContext.ToPermissions()) != 0;
         }
 
         public Version Version
@@ -384,17 +423,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        [Required(ErrorMessage = @"Please select the roles that are allowed to author this workflow")]
-        public string AuthorRoles
-        {
-            get { return _authorRoles; }
-            set
-            {
-                _authorRoles = value;
-                NotifyOfPropertyChange("AuthorRoles");
-            }
-        }
-
         public bool IsNewWorkflow { get; set; }
 
         public string ServerResourceType { get; set; }
@@ -490,7 +518,6 @@ namespace Dev2.Studio.Core.Models
         public void Update(IResourceModel resourceModel)
         {
             AllowCategoryEditing = resourceModel.AllowCategoryEditing;
-            AuthorRoles = resourceModel.AuthorRoles;
             Category = resourceModel.Category;
             Comment = resourceModel.Comment;
             DataTags = resourceModel.DataTags;
@@ -508,9 +535,8 @@ namespace Dev2.Studio.Core.Models
             ConnectionString = resourceModel.ConnectionString;
             ID = resourceModel.ID;
             ServerResourceType = resourceModel.ServerResourceType;
+            UserPermissions = resourceModel.UserPermissions;
 
-            this.TraceInfo("Publish message of type - " + typeof(UpdateResourceDesignerMessage));
-            _eventPublisher.Publish(new UpdateResourceDesignerMessage(this));
             _errors.Clear();
             if(resourceModel.Errors != null)
             {
@@ -555,7 +581,7 @@ namespace Dev2.Studio.Core.Models
                     new XElement("DisplayName", ResourceName ?? string.Empty),
                     new XElement("Category", Category ?? string.Empty),
                     new XElement("IsNewWorkflow", IsNewWorkflow),
-                    new XElement("AuthorRoles", AuthorRoles ?? string.Empty),
+                    new XElement("AuthorRoles", string.Empty),
                     new XElement("Comment", Comment ?? string.Empty),
                     new XElement("Tags", Tags ?? string.Empty),
                     new XElement("IconPath", IconPath ?? string.Empty),
@@ -593,7 +619,7 @@ namespace Dev2.Studio.Core.Models
                 var endNode = result.IndexOf("</Category>", 0, true);
                 if(endNode > startNode)
                 {
-                    var len = (endNode - startNode) + 11;
+                    var len = (endNode - startNode);
                     var oldCategory = result.Substring(startNode, len);
                     if(oldCategory != Category)
                     {
@@ -698,5 +724,18 @@ namespace Dev2.Studio.Core.Models
         }
 
         #endregion
+
+        protected override void OnDispose()
+        {
+            if(_validationService != null)
+            {
+                _validationService.Dispose();
+            }
+            if(_permissionsModifiedService != null)
+            {
+                _permissionsModifiedService.Dispose();
+            }
+            base.OnDispose();
+        }
     }
 }

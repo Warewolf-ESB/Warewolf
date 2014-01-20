@@ -1,12 +1,15 @@
-﻿using Dev2.Collections;
-using Dev2.Communication;
-using Dev2.Providers.Errors;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
+using Dev2.Collections;
+using Dev2.Communication;
+using Dev2.Providers.Errors;
+using Dev2.Services.Security;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Core.Tests.ProperMoqs
 {
@@ -20,10 +23,14 @@ namespace Dev2.Core.Tests.ProperMoqs
         public bool IsValid { get; set; }
 
         public Guid ID { get; set; }
+        public Permissions UserPermissions { get; set; }
+
+        public bool IsAuthorized(AuthorizationContext authorizationContext)
+        {
+            return false;
+        }
 
         public bool AllowCategoryEditing { get; set; }
-
-        public string AuthorRoles { get; set; }
 
         public string Category { get; set; }
 
@@ -224,6 +231,16 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public void Rollback()
         {
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

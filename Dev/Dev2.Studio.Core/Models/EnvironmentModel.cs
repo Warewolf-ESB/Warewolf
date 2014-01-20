@@ -6,11 +6,12 @@ using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Security;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Network;
 using Dev2.Workspaces;
 using Action = System.Action;
 
@@ -49,6 +50,7 @@ namespace Dev2.Studio.Core.Models
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
             Initialize(eventPublisher, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread);
         }
+
         //, IWizardEngine wizardEngine
         void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread)
         {
@@ -66,19 +68,19 @@ namespace Dev2.Studio.Core.Models
 
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
-            // This is also triggered by a network state change
-            Connection.LoginStateChanged += OnConnectionLoginStateChanged;
-
-            // PBI 9228: TWR - 2013.04.17
-            Connection.ServerStateChanged += OnServerStateChanged;
-
             // BUG 9940 - 2013.07.29 - TWR - added
             Connection.NetworkStateChanged += OnNetworkStateChanged;
+
+            AuthorizationService = CreateAuthorizationService(environmentConnection);
+            AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+            OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
         }
 
         #endregion
 
         #region Properties
+
+        public IAuthorizationService AuthorizationService { get; private set; }
 
         public bool CanStudioExecute { get; set; }
 
@@ -92,6 +94,10 @@ namespace Dev2.Studio.Core.Models
         public string Name { get { return Connection.DisplayName; } set { Connection.DisplayName = value; } }
 
         public bool IsConnected { get { return Connection.IsConnected; } }
+
+        public bool IsAuthorized { get { return Connection.IsAuthorized; } }
+        public bool IsAuthorizedDeployFrom { get; private set; }
+        public bool IsAuthorizedDeployTo { get; private set; }
 
         public IResourceRepository ResourceRepository { get; private set; }
 
@@ -225,23 +231,12 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             // BUG 9940 - 2013.07.29 - TWR - added
-            RaiseIsConnectedChanged(e.ToState == NetworkState.Online);
-        }
-
-        void OnServerStateChanged(object sender, ServerStateEventArgs e)
-        {
-            RaiseNetworkStateChanged(e.State == ServerState.Online);
-        }
-
-        private void OnConnectionLoginStateChanged(object sender, LoginStateEventArgs e)
-        {
-            RaiseNetworkStateChanged(e.LoggedIn);
+            RaiseNetworkStateChanged(e.ToState == NetworkState.Online);
         }
 
         void RaiseNetworkStateChanged(bool isOnline)
         {
             RaiseIsConnectedChanged(isOnline);
-
 
             AbstractEnvironmentMessage message;
             if(isOnline)
@@ -258,16 +253,17 @@ namespace Dev2.Studio.Core.Models
                 if(Application.Current != null)
                 {
                     // application is not shutting down!!
-                    this.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
+                    this.TraceInfo("Publish message of type - " + message.GetType());
                     Application.Current.Dispatcher.BeginInvoke(new Action(() => _eventPublisher.Publish(message)), null);
                 }
             }
             else
             {
-                this.TraceInfo("Publish message of type - " + typeof(AbstractEnvironmentMessage));
+                this.TraceInfo("Publish message of type - " + message.GetType());
                 _eventPublisher.Publish(message);
             }
         }
+
         #endregion
 
         #region IEquatable
@@ -295,5 +291,17 @@ namespace Dev2.Studio.Core.Models
         }
 
         #endregion
+
+        protected virtual IAuthorizationService CreateAuthorizationService(IEnvironmentConnection environmentConnection)
+        {
+            return new ClientAuthorizationService(new ClientSecurityService(environmentConnection));
+        }
+
+        void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)
+        {
+            IsAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, null);
+            IsAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, null);
+        }
+
     }
 }

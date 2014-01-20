@@ -1,5 +1,7 @@
 ﻿using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Services.Security;
 using Dev2RuntimeServiceModel = Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Integration.Tests.Runtime.ServiceModel
@@ -8,8 +10,13 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
     {
         public SqlDatabaseBroker Broker { get; private set; }
 
+        public TestDbServices(IResourceCatalog resourceCatalog, IAuthorizationService authorizationService)
+            : base(resourceCatalog, authorizationService)
+        {
+        }
+
         public TestDbServices(IResourceCatalog resourceCatalog)
-            : base(resourceCatalog)
+            : this(resourceCatalog, ServerAuthorizationService.Instance)
         {
         }
 

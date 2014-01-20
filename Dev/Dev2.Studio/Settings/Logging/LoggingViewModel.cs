@@ -1,8 +1,9 @@
-﻿using System.Windows;
-
-namespace Dev2.Settings.Logging
+﻿namespace Dev2.Settings.Logging
 {
-    public class LoggingViewModel : DependencyObject
+    public class LoggingViewModel : SettingsItemViewModel
     {
+        protected override void CloseHelp()
+        {
+        }
     }
 }

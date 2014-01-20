@@ -21,6 +21,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.isLoading = false; // BUG 9772 - 2013.06.19 - TWR : added
     self.inputMappingLink = "Please select an action first (Step 2)";
     self.outputMappingLink = "Please run a test first (Step 3)";
+    self.isReadOnly = false;
 
     self.data = {
         resourceID: ko.observable(""),
@@ -81,7 +82,6 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     };
 
     utils.makeClearFilterButton("clearDbServiceFilterButton");
-    utils.makeReloadButton("reloadDbServiceButton");
 
     self.methodNameChanged = ko.observable(false);
     self.hasMethod = ko.computed(function () {
@@ -130,6 +130,10 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         return result;
     };
     self.isFormValid = ko.computed(function () {
+        if (self.isReadOnly) {
+            return false;
+        }
+
         if (self.hasOutputs() && !self.doMethodParamsContain(self.data.recordset.Name())) {
             var isRecordsetNameOptional = self.data.recordset.Records().length <= 1;
             return isRecordsetNameOptional ? true : self.data.recordset.Name() !== "";
@@ -140,10 +144,10 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     self.isSourceMethodsLoading = ko.observable(false);
     self.isTestResultsLoading = ko.observable(false);
     self.isTestEnabled = ko.computed(function () {
-        return self.hasMethod() && !self.isTestResultsLoading();
+        return self.hasMethod() && !self.isTestResultsLoading() && !self.isReadOnly;
     });
     self.isEditSourceEnabled = ko.computed(function () {
-        return self.data.source();
+        return self.data.source() && !self.isReadOnly;
     });
     
     self.title = ko.observable("New Service");
@@ -154,12 +158,23 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         return "<b>" + self.title() + "</b>";
     });
 
-    utils.registerSelectHandler($sourceMethods, function (selectedItem) {
-        self.data.method.Name(selectedItem.Name);
-        self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
-        self.data.method.Parameters(selectedItem.Parameters);
-    });
+    utils.isReadOnly(resourceID, function (isReadOnly) {
+        self.isReadOnly = isReadOnly;
+        
+        if (self.isReadOnly) {
+            $('#reloadDbServiceButton').hide();
+        }else{
+            utils.makeReloadButton("reloadDbServiceButton");
+        }
 
+        utils.registerSelectHandler($sourceMethods, function (selectedItem) {
+            self.data.method.Name(selectedItem.Name);
+            self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
+            self.data.method.Parameters(selectedItem.Parameters);
+            utils.toggleUIReadOnlyState(self.isReadOnly);
+        }, self.isReadOnly);
+    });
+    
     self.getJsonData = function () {
         // Don't need to send records back!
         self.data.recordset.Records([]);
@@ -246,6 +261,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         self.loadSources(
             function() {
                 self.loadService();
+                utils.toggleUIReadOnlyState(self.isReadOnly);
             });
     };
     
@@ -285,6 +301,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
                 self.data.method.Parameters(result.Method.Parameters);
+                utils.toggleUIReadOnlyState(self.isReadOnly);
             }
             if (result.Recordset) {
                 self.updateRecordset(result.Recordset.Name, result.Recordset.Fields);
@@ -457,8 +474,12 @@ DbServiceViewModel.create = function (dbServiceContainerID, saveContainerID) {
         position: utils.getDialogPosition(),
         width: 700,
         buttons: {
-            "Close": function () {
-                $(this).dialog("close");
+            "Close": {
+                text: "Close",
+                id: "dialogCloseBtn",
+                click: function () {
+                    $(this).dialog("close");
+                }
             }
         }
     });

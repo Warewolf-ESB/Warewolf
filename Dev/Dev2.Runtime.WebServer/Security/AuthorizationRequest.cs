@@ -1,5 +1,6 @@
 using System;
 using System.Security.Principal;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hosting;
 
 namespace Dev2.Runtime.WebServer.Security

@@ -1,5 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
@@ -7,9 +11,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Threading;
-using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
@@ -104,6 +105,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return (EnvironmentModel != null) && EnvironmentModel.IsConnected; }
         }
 
+        public override bool IsAuthorized { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorized; } }
+        public override bool IsAuthorizedDeployFrom { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorizedDeployFrom; } }
+        public override bool IsAuthorizedDeployTo { get { return (EnvironmentModel != null) && EnvironmentModel.IsAuthorizedDeployTo; } }
+
         /// <summary>
         /// Gets or sets the environment model for this instance.
         /// </summary>
@@ -121,16 +126,23 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     // BUG 9940 - 2013.07.29 - TWR - added
                     _environmentModel.IsConnectedChanged -= OnEnvironmentModelIsConnectedChanged;
+                    _environmentModel.Connection.PermissionsChanged -= OnEnvironmentModelPermissionsChanged;
                 }
                 _environmentModel = value;
                 if(_environmentModel != null)
                 {
                     // BUG 9940 - 2013.07.29 - TWR - added
                     _environmentModel.IsConnectedChanged += OnEnvironmentModelIsConnectedChanged;
+                    _environmentModel.Connection.PermissionsChanged += OnEnvironmentModelPermissionsChanged;
                 }
                 NotifyOfPropertyChange(() => EnvironmentModel);
                 NotifyOfPropertyChange(() => IsConnected);
             }
+        }
+
+        void OnEnvironmentModelPermissionsChanged(object sender, EventArgs eventArgs)
+        {
+            NotifyOfPropertyChange(() => IsAuthorized);
         }
 
         void OnEnvironmentModelIsConnectedChanged(object sender, ConnectedEventArgs args)
@@ -474,6 +486,4 @@ namespace Dev2.Studio.ViewModels.Navigation
             throw new NotImplementedException();
         }
     }
-
-
 }

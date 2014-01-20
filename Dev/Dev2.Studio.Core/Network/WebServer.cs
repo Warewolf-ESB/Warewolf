@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Util;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Network
@@ -62,7 +63,7 @@ namespace Dev2.Studio.Core.Network
             Uri url;
             if(!Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url))
             {
-                Uri.TryCreate(new Uri(StringResources.Uri_WebServer), relativeUrl, out url);
+                Uri.TryCreate(new Uri(AppSettings.LocalHost), relativeUrl, out url);
             }
 
             using(var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials, Encoding = Encoding.UTF8 })

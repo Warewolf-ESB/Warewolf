@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests;
@@ -9,6 +16,7 @@ using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -19,13 +27,6 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 namespace BusinessDesignStudio.Unit.Tests
@@ -39,6 +40,8 @@ namespace BusinessDesignStudio.Unit.Tests
     {
 
         #region Variables
+
+        readonly Mock<IAuthorizationService> _authService = new Mock<IAuthorizationService>();
 
         // Global variables
         readonly Mock<IEnvironmentConnection> _environmentConnection = CreateEnvironmentConnection();
@@ -62,6 +65,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         void Setup()
         {
+            _authService.Setup(s => s.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
 
             _resourceModel.Setup(res => res.ResourceName).Returns("Resource");
             _resourceModel.Setup(res => res.DisplayName).Returns("My New Resource");
@@ -78,6 +82,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _environmentModel.Setup(m => m.LoadResources()).Verifiable();
             _environmentModel.Setup(e => e.Connection).Returns(_environmentConnection.Object);
+            _environmentModel.Setup(e => e.AuthorizationService).Returns(_authService.Object);
 
             _repo = new ResourceRepository(_environmentModel.Object) { IsLoaded = true }; // Prevent clearing of internal list and call to connection!
         }
@@ -253,6 +258,26 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceRepository_HydrateResourceModel")]
+        public void ResourceRepository_HydrateResourceModel_Permissions_Hydrated()
+        {
+            //------------Setup for test--------------------------
+            const Permissions TestPermissions = Permissions.Contribute | Permissions.Execute;
+
+            var resourceRepository = GetResourceRepository(TestPermissions);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.Server);
+
+            //------------Execute Test---------------------------
+            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(model);
+            Assert.AreEqual(model.UserPermissions, TestPermissions);
         }
 
         #endregion
@@ -1532,7 +1557,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestCategory("ResourceRepositoryUnitTest")]
         [Description("HydrateResourceModel must hydrate the resource's errors.")]
         [Owner("Trevor Williams-Ros")]
-        public void ResourceRepositoryHydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
+        public void ResourceRepository_HydrateResourceModel_ResourceRepositoryUnitTest_ResourceErrors_Hydrated()
         {
             //------------Setup for test--------------------------
             Setup();
@@ -1592,6 +1617,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual("", err.StackTrace, "HydrateResourceModel failed to hydrate the StackTrace.");
             Assert.AreEqual("<Args><Input>[{\"Name\":\"n1\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false},{\"Name\":\"n2\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Input><Output>[{\"Name\":\"result\",\"MapsTo\":\"\",\"Value\":\"\",\"IsRecordSet\":false,\"RecordSetName\":\"\",\"IsEvaluated\":false,\"DefaultValue\":\"\",\"IsRequired\":false,\"RawValue\":\"\",\"EmptyToNull\":false}]</Output></Args>", err.FixData, "HydrateResourceModel failed to hydrate the FixData.");
         }
+
 
         #endregion
 
@@ -2033,6 +2059,26 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNull(actual, "Path returned for blank log file");
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceRepository_GetServerLogTempPath")]
+        public void ResourceRepository_GetServerLogTempPath_ServerDisconnected_DoNotCreateTempFile()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(conn => conn.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+            mockConnection.Setup(c => c.IsConnected).Returns(false); // causes exception which is now caught!
+
+            var mockEnv = new Mock<IEnvironmentModel>();
+            mockEnv.Setup(svr => svr.Connection).Returns(mockConnection.Object);
+            ResourceRepository resourceRepository = new ResourceRepository(mockEnv.Object);
+
+            //------------Execute Test---------------------------
+            var actual = resourceRepository.GetServerLogTempPath(mockEnv.Object);
+
+            // Assert DoNotCreateTempFile
+            Assert.IsNull(actual, "Path returned for disconnected server");
+        }
+
         #endregion
 
 
@@ -2124,9 +2170,13 @@ namespace BusinessDesignStudio.Unit.Tests
             return new StringBuilder(serviceObj);
         }
 
-        private ResourceRepository GetResourceRepository()
+        private ResourceRepository GetResourceRepository(Permissions permissions = Permissions.Administrator)
         {
+            var conn = SetupConnection();
+
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.AuthorizationService.GetResourcePermissions(It.IsAny<Guid>())).Returns(permissions);
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             var resourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
 

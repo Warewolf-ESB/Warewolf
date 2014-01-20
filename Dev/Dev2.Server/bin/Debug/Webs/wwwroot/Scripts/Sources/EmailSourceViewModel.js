@@ -83,6 +83,7 @@ function EmailSourceViewModel(saveContainerID, environment) {
     self.helpDictionary = {};
     self.helpText = ko.observable("");
     self.isHelpTextVisible = ko.observable(true);
+    self.isReadOnly = false;
 
     self.isTestResultsLoading = ko.observable(false);
     self.showTestResults = ko.observable(false);
@@ -103,7 +104,7 @@ function EmailSourceViewModel(saveContainerID, environment) {
     });
     
     self.isFormValid = ko.computed(function () {
-        return self.isFormTestable() && self.showTestResults() && !self.testError();
+        return self.isFormTestable() && self.showTestResults() && !self.testError() && !self.isReadOnly;
     });
     
     self.updateHelpText = function (id) {
@@ -217,6 +218,10 @@ function EmailSourceViewModel(saveContainerID, environment) {
             self.testError(result.ErrorMessage);
         });
     };
+
+    utils.isReadOnly(resourceID, function (isReadOnly) {
+        self.isReadOnly = isReadOnly;
+    });
 };
 
 

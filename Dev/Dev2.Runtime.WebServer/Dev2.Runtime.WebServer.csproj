@@ -137,14 +137,10 @@
     <Compile Include="Hubs\ResourcesHub.cs" />
     <Compile Include="Hubs\Server.cs" />
     <Compile Include="Hubs\ServerHub.cs" />
-    <Compile Include="Security\AuthorizationService.cs" />
     <Compile Include="Security\AuthorizationRequest.cs" />
     <Compile Include="Security\AuthorizationRequestHelper.cs" />
-    <Compile Include="WebServerRequestType.cs" />
     <Compile Include="Security\AuthorizeHubAttribute.cs" />
     <Compile Include="Security\AuthorizeWebAttribute.cs" />
-    <Compile Include="Security\IAuthorizationService.cs" />
-    <Compile Include="Security\IAuthorizationRequest.cs" />
     <Compile Include="Security\QueryString.cs" />
     <Compile Include="WebServerContext.cs" />
     <Compile Include="Dev2Endpoint.cs" />

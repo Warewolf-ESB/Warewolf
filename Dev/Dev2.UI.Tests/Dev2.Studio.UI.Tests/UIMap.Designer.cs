@@ -10,25 +10,18 @@
 
 namespace Dev2.Studio.UI.Tests
 {
-    using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Input;
     using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+    using System.CodeDom.Compiler;
+    using System.Drawing;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public partial class UIMap
     {
-        
+
         /// <summary>
         /// PinnedExplorerClick
         /// </summary>
@@ -41,7 +34,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' -> 'Dev2.Studio.ViewModels.Navigation.ResourceTreeView...' tree item
             Mouse.Click(uIDev2StudioViewModelsTreeItem1, new Point(74, 4));
         }
-        
+
         /// <summary>
         /// ClickSwitch
         /// </summary>
@@ -54,7 +47,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Switch' label
             Mouse.Click(uISwitchText1, new Point(10, 8));
         }
-        
+
         /// <summary>
         /// ClickExplorer
         /// </summary>
@@ -67,7 +60,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.ServiceTypeTreeV...' -> 'Dev2.Studio.ViewModels.Navigation.CategoryTreeView...' tree item
             Mouse.Click(uIDev2StudioViewModelsTreeItem2, new Point(69, 3));
         }
-        
+
         /// <summary>
         /// ClickVariables
         /// </summary>
@@ -80,7 +73,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'NameTxt' text box
             Mouse.Click(uINameTxtEdit, new Point(43, 5));
         }
-        
+
         /// <summary>
         /// ClickDebugOutput
         /// </summary>
@@ -93,7 +86,7 @@ namespace Dev2.Studio.UI.Tests
             // Click first tree next to '+' button
             Mouse.Click(uIItemTree, new Point(103, 88));
         }
-        
+
         /// <summary>
         /// ClickLocalHost
         /// </summary>
@@ -106,7 +99,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Dev2.Studio.ViewModels.Navigation.EnvironmentTreeV...' tree item
             Mouse.Click(uIDev2StudioViewModelsTreeItem, new Point(65, 13));
         }
-        
+
         /// <summary>
         /// ClickExplorerLabel
         /// </summary>
@@ -119,7 +112,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Explorer' label
             Mouse.Click(uIExplorerText, new Point(37, 6));
         }
-        
+
         /// <summary>
         /// ClickToolboxLabel
         /// </summary>
@@ -132,7 +125,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'Toolbox' label
             Mouse.Click(uIToolboxText, new Point(32, 10));
         }
-        
+
         /// <summary>
         /// ClickExplorerSearch
         /// </summary>
@@ -145,7 +138,7 @@ namespace Dev2.Studio.UI.Tests
             // Click 'UI_DataListSearchtxt_AutoID' text box
             Mouse.Click(uIUI_DataListSearchtxtEdit, new Point(16, 14));
         }
-        
+
         /// <summary>
         /// TypeInExplorerFilter - Use 'TypeInExplorerFilterParams' to pass parameters into this method.
         /// </summary>
@@ -158,7 +151,7 @@ namespace Dev2.Studio.UI.Tests
             // Type 'abc' in 'UI_DataListSearchtxt_AutoID' text box
             uIUI_DataListSearchtxtEdit.Text = this.TypeInExplorerFilterParams.UIUI_DataListSearchtxtEditText;
         }
-        
+
         #region Properties
         public virtual TypeInExplorerFilterParams TypeInExplorerFilterParams
         {
@@ -171,7 +164,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mTypeInExplorerFilterParams;
             }
         }
-        
+
         public UIWarewolfWindow UIWarewolfWindow
         {
             get
@@ -184,21 +177,21 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private TypeInExplorerFilterParams mTypeInExplorerFilterParams;
-        
+
         private UIWarewolfWindow mUIWarewolfWindow;
         #endregion
     }
-    
+
     /// <summary>
     /// Parameters to be passed into 'TypeInExplorerFilter'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class TypeInExplorerFilterParams
     {
-        
+
         #region Fields
         /// <summary>
         /// Type 'abc' in 'UI_DataListSearchtxt_AutoID' text box
@@ -206,11 +199,11 @@ namespace Dev2.Studio.UI.Tests
         public string UIUI_DataListSearchtxtEditText = "abc";
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIWarewolfWindow : WpfWindow
     {
-        
+
         public UIWarewolfWindow()
         {
             #region Search Criteria
@@ -219,7 +212,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UITheNavigationViewCustom UITheNavigationViewCustom
         {
@@ -232,7 +225,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUITheNavigationViewCustom;
             }
         }
-        
+
         public UIItemCustom UIItemCustom
         {
             get
@@ -244,7 +237,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom;
             }
         }
-        
+
         public UIItemCustom1 UIItemCustom1
         {
             get
@@ -256,7 +249,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIItemCustom1;
             }
         }
-        
+
         public UIOutputCustom UIOutputCustom
         {
             get
@@ -268,7 +261,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIOutputCustom;
             }
         }
-        
+
         public UIZf1166e575b5d43bb89fCustom UIZf1166e575b5d43bb89fCustom
         {
             get
@@ -281,26 +274,26 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UITheNavigationViewCustom mUITheNavigationViewCustom;
-        
+
         private UIItemCustom mUIItemCustom;
-        
+
         private UIItemCustom1 mUIItemCustom1;
-        
+
         private UIOutputCustom mUIOutputCustom;
-        
+
         private UIZf1166e575b5d43bb89fCustom mUIZf1166e575b5d43bb89fCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UITheNavigationViewCustom : WpfCustom
     {
-        
-        public UITheNavigationViewCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UITheNavigationViewCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.NavigationView";
@@ -308,7 +301,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UINavigationTree UINavigationTree
         {
@@ -321,7 +314,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUINavigationTree;
             }
         }
-        
+
         public UIFilterTextBoxEdit UIFilterTextBoxEdit
         {
             get
@@ -334,27 +327,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UINavigationTree mUINavigationTree;
-        
+
         private UIFilterTextBoxEdit mUIFilterTextBoxEdit;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UINavigationTree : WpfTree
     {
-        
-        public UINavigationTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UINavigationTree(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "Navigation";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDev2StudioViewModelsTreeItem UIDev2StudioViewModelsTreeItem
         {
@@ -368,25 +361,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDev2StudioViewModelsTreeItem mUIDev2StudioViewModelsTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDev2StudioViewModelsTreeItem : WpfTreeItem
     {
-        
-        public UIDev2StudioViewModelsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDev2StudioViewModelsTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_localhost (http://127.0.0.1:77/dsf)_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDev2StudioViewModelsTreeItem1 UIDev2StudioViewModelsTreeItem1
         {
@@ -400,18 +393,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDev2StudioViewModelsTreeItem1 mUIDev2StudioViewModelsTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDev2StudioViewModelsTreeItem1 : WpfTreeItem
     {
-        
-        public UIDev2StudioViewModelsTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDev2StudioViewModelsTreeItem1(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_WORKFLOWS_AutoID";
@@ -419,7 +412,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDev2StudioViewModelsTreeItem2 UIDev2StudioViewModelsTreeItem
         {
@@ -432,7 +425,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIDev2StudioViewModelsTreeItem;
             }
         }
-        
+
         public WpfTreeItem UIDev2StudioViewModelsTreeItem2
         {
             get
@@ -450,20 +443,20 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDev2StudioViewModelsTreeItem2 mUIDev2StudioViewModelsTreeItem;
-        
+
         private WpfTreeItem mUIDev2StudioViewModelsTreeItem2;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDev2StudioViewModelsTreeItem2 : WpfTreeItem
     {
-        
-        public UIDev2StudioViewModelsTreeItem2(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDev2StudioViewModelsTreeItem2(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "UI_Unassigned_AutoID";
@@ -471,7 +464,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfTreeItem UIDev2StudioViewModelsTreeItem1
         {
@@ -490,25 +483,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTreeItem mUIDev2StudioViewModelsTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIFilterTextBoxEdit : WpfEdit
     {
-        
-        public UIFilterTextBoxEdit(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIFilterTextBoxEdit(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "FilterTextBox";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit UIUI_DataListSearchtxtEdit
         {
@@ -526,25 +519,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mUIUI_DataListSearchtxtEdit;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIItemCustom : WpfCustom
     {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIItemCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ToolboxUserControl";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIPART_ToolsTree UIPART_ToolsTree
         {
@@ -558,25 +551,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIPART_ToolsTree mUIPART_ToolsTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIPART_ToolsTree : WpfTree
     {
-        
-        public UIPART_ToolsTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIPART_ToolsTree(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "PART_Tools";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIControlFlowTreeItem UIControlFlowTreeItem
         {
@@ -590,25 +583,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIControlFlowTreeItem mUIControlFlowTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIControlFlowTreeItem : WpfTreeItem
     {
-        
-        public UIControlFlowTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIControlFlowTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Control Flow";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UISystemActivitiesStatTreeItem UISystemActivitiesStatTreeItem
         {
@@ -622,18 +615,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UISystemActivitiesStatTreeItem mUISystemActivitiesStatTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UISystemActivitiesStatTreeItem : WpfTreeItem
     {
-        
-        public UISystemActivitiesStatTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UISystemActivitiesStatTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0" +
@@ -642,7 +635,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UISwitchText UISwitchText
         {
@@ -656,18 +649,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UISwitchText mUISwitchText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UISwitchText : WpfText
     {
-        
-        public UISwitchText(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UISwitchText(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfText.PropertyNames.AutomationId] = "Switch";
@@ -675,7 +668,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText UISwitchText1
         {
@@ -695,25 +688,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mUISwitchText1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIItemCustom1 : WpfCustom
     {
-        
-        public UIItemCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIItemCustom1(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DataListView";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIScalarExplorerTree UIScalarExplorerTree
         {
@@ -727,25 +720,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIScalarExplorerTree mUIScalarExplorerTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIScalarExplorerTree : WpfTree
     {
-        
-        public UIScalarExplorerTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIScalarExplorerTree(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "ScalarExplorer";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDev2StudioCoreModelsTreeItem UIDev2StudioCoreModelsTreeItem
         {
@@ -759,25 +752,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDev2StudioCoreModelsTreeItem mUIDev2StudioCoreModelsTreeItem;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDev2StudioCoreModelsTreeItem : WpfTreeItem
     {
-        
-        public UIDev2StudioCoreModelsTreeItem(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDev2StudioCoreModelsTreeItem(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListHeaderItemModel";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDev2StudioCoreModelsTreeItem1 UIDev2StudioCoreModelsTreeItem1
         {
@@ -791,18 +784,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDev2StudioCoreModelsTreeItem1 mUIDev2StudioCoreModelsTreeItem1;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDev2StudioCoreModelsTreeItem1 : WpfTreeItem
     {
-        
-        public UIDev2StudioCoreModelsTreeItem1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDev2StudioCoreModelsTreeItem1(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.Studio.Core.Models.DataList.DataListItemModel";
@@ -810,7 +803,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfEdit UINameTxtEdit
         {
@@ -829,18 +822,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfEdit mUINameTxtEdit;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIOutputCustom : WpfCustom
     {
-        
-        public UIOutputCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIOutputCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -848,7 +841,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIDebugOutputCustom UIDebugOutputCustom
         {
@@ -862,18 +855,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDebugOutputCustom mUIDebugOutputCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIDebugOutputCustom : WpfCustom
     {
-        
-        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
@@ -881,7 +874,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIItemButton UIItemButton
         {
@@ -895,25 +888,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIItemButton mUIItemButton;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIItemButton : WpfButton
     {
-        
-        public UIItemButton(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIItemButton(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_DebugOutputExpandAllMode_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfTree UIItemTree
         {
@@ -931,18 +924,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfTree mUIItemTree;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIZf1166e575b5d43bb89fCustom : WpfCustom
     {
-        
-        public UIZf1166e575b5d43bb89fCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIZf1166e575b5d43bb89fCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -950,7 +943,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIZ3d0e8544bdbd4fbc8b0TabList UIZ3d0e8544bdbd4fbc8b0TabList
         {
@@ -963,7 +956,7 @@ namespace Dev2.Studio.UI.Tests
                 return this.mUIZ3d0e8544bdbd4fbc8b0TabList;
             }
         }
-        
+
         public UIToolboxCustom UIToolboxCustom
         {
             get
@@ -976,27 +969,27 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIZ3d0e8544bdbd4fbc8b0TabList mUIZ3d0e8544bdbd4fbc8b0TabList;
-        
+
         private UIToolboxCustom mUIToolboxCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIZ3d0e8544bdbd4fbc8b0TabList : WpfTabList
     {
-        
-        public UIZ3d0e8544bdbd4fbc8b0TabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIZ3d0e8544bdbd4fbc8b0TabList(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "Z3d0e8544bdbd4fbc8b0369ecfce4e928";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIExplorerTabPage UIExplorerTabPage
         {
@@ -1010,25 +1003,25 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIExplorerTabPage mUIExplorerTabPage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIExplorerTabPage : WpfTabPage
     {
-        
-        public UIExplorerTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIExplorerTabPage(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Explorer";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public UIExplorerCustom UIExplorerCustom
         {
@@ -1042,18 +1035,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private UIExplorerCustom mUIExplorerCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIExplorerCustom : WpfCustom
     {
-        
-        public UIExplorerCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIExplorerCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -1061,7 +1054,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText UIExplorerText
         {
@@ -1079,18 +1072,18 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mUIExplorerText;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIToolboxCustom : WpfCustom
     {
-        
-        public UIToolboxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIToolboxCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -1098,7 +1091,7 @@ namespace Dev2.Studio.UI.Tests
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
-        
+
         #region Properties
         public WpfText UIToolboxText
         {
@@ -1116,7 +1109,7 @@ namespace Dev2.Studio.UI.Tests
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfText mUIToolboxText;
         #endregion

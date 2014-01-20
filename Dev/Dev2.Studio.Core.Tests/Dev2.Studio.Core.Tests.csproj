@@ -116,6 +116,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive">
       <HintPath>..\Binaries\System.Reactive.dll</HintPath>
     </Reference>
@@ -144,10 +145,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\UserAccountProviderTests.cs" />
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
+    <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserTests.cs" />
@@ -157,6 +158,8 @@
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverterTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
+    <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
+    <Compile Include="ConverterTests\TestNonResourceTreeViewModel.cs" />
     <Compile Include="Custom Dev2 Controls\ConnectControlTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
@@ -172,6 +175,8 @@
     <Compile Include="Deploy\DeployViewModelTestBase.cs" />
     <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
+    <Compile Include="Dialogs\TestResourcePickerDialogOkay.cs" />
+    <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="MainViewModelMock.cs" />
@@ -180,12 +185,16 @@
     <Compile Include="CompositionInitializer.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
+    <Compile Include="Security\ClientSecurityServiceTests.cs" />
     <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
     <Compile Include="Settings\TestSecurityViewModel.cs" />
+    <Compile Include="Settings\TestSettingsItemViewModel.cs" />
     <Compile Include="Settings\TestSettingsViewModel.cs" />
     <Compile Include="Settings\SecurityViewModelTests.cs" />
     <Compile Include="DependencyGraph\DependencyGraphGeneratorTest.cs" />
+    <Compile Include="ResourceModelFactoryTests.cs" />
+    <Compile Include="Settings\SettingsItemViewModelTests.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="Utils\ResourceChangeHandlerTests.cs" />
     <Compile Include="DataListItemViewModelTest.cs" />
@@ -265,6 +274,7 @@
     <Compile Include="ViewModelTests\QuickVariableInputModelTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
     <Compile Include="ViewModelTests\TestUtils.cs" />
+    <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
     <Compile Include="ViewModelTests\ViewModelMocks\CategoryTreeViewModelMock.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
@@ -398,7 +408,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Account\NewFolder1\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />

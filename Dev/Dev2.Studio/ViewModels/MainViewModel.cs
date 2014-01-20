@@ -10,7 +10,9 @@ using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Providers.Logs;
+using Dev2.Security;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.AppResources.ExtensionMethods;
@@ -41,7 +43,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
 using Dev2.Threading;
-using Dev2.ViewModels.WorkSurface;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
@@ -64,7 +65,6 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<DeployResourcesMessage>,
                                         IHandle<ShowHelpTabMessage>,
                                         IHandle<ShowNewResourceWizard>,
-                                        IHandle<SettingsSaveCancelMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IHandle<GetActiveEnvironmentCallbackMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
@@ -79,7 +79,7 @@ namespace Dev2.Studio.ViewModels
         private WorkSurfaceContextViewModel _previousActive;
         private bool _disposed;
 
-        private RelayCommand<string> _newResourceCommand;
+        private AuthorizeCommand<string> _newResourceCommand;
         private ICommand _addStudioShortcutsPageCommand;
         private ICommand _addLanguageHelpPageCommand;
         private ICommand _deployAllCommand;
@@ -87,7 +87,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _displayAboutDialogueCommand;
         private ICommand _exitCommand;
         private ICommand _resetLayoutCommand;
-        private ICommand _settingsCommand;
+        private AuthorizeCommand _settingsCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
         private ICommand _startStopRecordedFeedbackCommand;
@@ -149,12 +149,12 @@ namespace Dev2.Studio.ViewModels
             get { return _activeEnvironment; }
             set
             {
-                if(value != null)
+                if(!Equals(value, _activeEnvironment))
                 {
                     _activeEnvironment = value;
+                    OnActiveEnvironmentChanged();
+                    NotifyOfPropertyChange(() => ActiveEnvironment);
                 }
-
-                NotifyOfPropertyChange(() => ActiveEnvironment);
             }
         }
 
@@ -175,77 +175,85 @@ namespace Dev2.Studio.ViewModels
 
         #endregion
 
+        void OnActiveEnvironmentChanged()
+        {
+            NewResourceCommand.UpdateContext(ActiveEnvironment);
+            SettingsCommand.UpdateContext(ActiveEnvironment);
+        }
+
         #region Commands
 
-        public ICommand EditCommand
+        public AuthorizeCommand EditCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.EditCommand;
             }
         }
 
-        public ICommand SaveCommand
+        public AuthorizeCommand SaveCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.SaveCommand;
             }
         }
-        public ICommand DebugCommand
+
+        public AuthorizeCommand DebugCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.DebugCommand;
             }
         }
 
-        public ICommand QuickDebugCommand
+        public AuthorizeCommand QuickDebugCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.QuickDebugCommand;
             }
         }
 
-        public ICommand QuickViewInBrowserCommand
+        public AuthorizeCommand QuickViewInBrowserCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.QuickViewInBrowserCommand;
             }
         }
-        public ICommand ViewInBrowserCommand
+        public AuthorizeCommand ViewInBrowserCommand
         {
             get
             {
                 if(ActiveItem == null)
                 {
-                    return new RelayCommand(p => { }, param => false);
+                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.ViewInBrowserCommand;
             }
         }
+
         public ICommand NotImplementedCommand
         {
             get
@@ -334,12 +342,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand SettingsCommand
+        public AuthorizeCommand SettingsCommand
         {
             get
             {
                 return _settingsCommand ?? (_settingsCommand =
-                                            new RelayCommand(param => AddSettingsWorkSurface()));
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => AddSettingsWorkSurface(), param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -352,12 +360,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public RelayCommand<string> NewResourceCommand
+        public AuthorizeCommand<string> NewResourceCommand
         {
             get
             {
-                return _newResourceCommand ??
-                       (_newResourceCommand = new RelayCommand<string>(ShowNewResourceWizard, param => IsActiveEnvironmentConnected()));
+                return _newResourceCommand ?? (_newResourceCommand =
+                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, ShowNewResourceWizard, param => IsActiveEnvironmentConnected()));
             }
         }
 
@@ -442,6 +450,7 @@ namespace Dev2.Studio.ViewModels
             if(ExplorerViewModel == null)
             {
                 ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, false, enDsfActivityType.All, AddWorkspaceItems);
+                ExplorerViewModel.LoadEnvironments();
             }
 
             // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
@@ -484,6 +493,10 @@ namespace Dev2.Studio.ViewModels
         {
             this.TraceInfo(message.GetType().Name);
             AddWorkSurface(message.WorkSurfaceObject);
+            if(message.ShowDebugWindowOnLoad)
+            {
+                ActiveItem.DebugCommand.Execute(null);
+            }
         }
 
         public void Handle(DeleteResourcesMessage message)
@@ -499,12 +512,6 @@ namespace Dev2.Studio.ViewModels
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
             this.TraceInfo("Publish message of type - " + typeof(UpdateActiveEnvironmentMessage));
             EventPublisher.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
-        }
-
-        public void Handle(SettingsSaveCancelMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            RemoveSettingsWorkSurface(message.Environment);
         }
 
         public void Handle(ShowDependenciesMessage message)
@@ -818,26 +825,12 @@ namespace Dev2.Studio.ViewModels
         public void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
-            //ActivateOrCreateUniqueWorkSurface<RuntimeConfigurationViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddReportsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<ReportsManagerViewModel>
                 (WorkSurfaceContext.ReportsManager);
-        }
-
-        public void RemoveSettingsWorkSurface(IEnvironmentModel environment)
-        {
-            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.Settings,
-                                                      environment.Connection.ServerID);
-
-            var viewModel = FindWorkSurfaceContextViewModel(key);
-
-            if(viewModel != null)
-            {
-                DeactivateItem(viewModel, true);
-            }
         }
 
         public void AddHelpTabWorkSurface(string uriToDisplay)
@@ -1402,7 +1395,7 @@ namespace Dev2.Studio.ViewModels
                             IContextualResourceModel resource = workflowVm.ResourceModel;
                             if(resource != null)
                             {
-                                remove = resource.IsWorkflowSaved;
+                                remove = !resource.IsAuthorized(AuthorizationContext.Contribute) || resource.IsWorkflowSaved;
 
                                 if(!remove)
                                 {

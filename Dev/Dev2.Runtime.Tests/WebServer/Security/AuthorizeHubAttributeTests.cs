@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Principal;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +24,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var attribute = new AuthorizeHubAttribute();
 
             //------------Assert Results-------------------------
-            Assert.AreSame(AuthorizationService.Instance, attribute.Service);
+            Assert.AreSame(ServerAuthorizationService.Instance, attribute.Service);
         }
 
         [TestMethod]
@@ -182,7 +184,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             hub.Setup(h => h.Context).Returns(new HubCallerContext(request.Object, "connectionId"));
 
             var methodDescriptor = new MethodDescriptor { Name = methodName, Hub = new HubDescriptor { Name = hubName } };
-            
+
             var context = new Mock<IHubIncomingInvokerContext>();
             context.Setup(c => c.Hub).Returns(hub.Object);
             context.Setup(c => c.MethodDescriptor).Returns(methodDescriptor);

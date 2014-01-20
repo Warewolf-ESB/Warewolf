@@ -35,11 +35,11 @@ namespace Dev2.Communication
         {
             StringBuilder result = new StringBuilder();
 
-            using (StringWriter sw = new StringWriter(result))
+            using(StringWriter sw = new StringWriter(result))
             {
                 var jsonSerializer = new JsonSerializer();
 
-                var jsonTextWriter = new JsonTextWriter(sw);   
+                var jsonTextWriter = new JsonTextWriter(sw);
                 jsonSerializer.Serialize(jsonTextWriter, obj);
                 jsonTextWriter.Flush();
                 jsonTextWriter.Close();
@@ -48,7 +48,7 @@ namespace Dev2.Communication
             return result;
         }
 
-        // Please use this for all your deseralize needs ;)
+        // Please use this for all your deserialize needs ;)
         public T Deserialize<T>(StringBuilder message)
         {
             if(message != null && message.Length > 0)
@@ -83,7 +83,7 @@ namespace Dev2.Communication
                     try
                     {
                         // finally do the conversion ;)
-                        using (StreamReader sr = new StreamReader(ms))
+                        using(StreamReader sr = new StreamReader(ms))
                         {
                             JsonReader jr = new JsonTextReader(sr);
                             var result = serializer.Deserialize<T>(jr);

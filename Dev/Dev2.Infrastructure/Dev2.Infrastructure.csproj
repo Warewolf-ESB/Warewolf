@@ -35,9 +35,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.2\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -54,6 +66,7 @@
     <Reference Include="System.Reactive.Windows.Threading">
       <HintPath>..\Binaries\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,6 +81,7 @@
     <Compile Include="Communication\EsbExecuteRequest.cs" />
     <Compile Include="Communication\ExecuteMessage.cs" />
     <Compile Include="Communication\FutureReceipt.cs" />
+    <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
@@ -114,13 +128,19 @@
     <Compile Include="Services\Security\AuthorizationContext.cs" />
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
+    <Compile Include="Services\Security\IAuthorizationRequest.cs" />
+    <Compile Include="Services\Security\PermissionsModifiedService.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
+    <Compile Include="Services\Security\IPermissionsModifiedService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
     <Compile Include="Services\Security\Permissions.cs" />
     <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />
+    <Compile Include="Services\Security\SecuritySettingsTO.cs" />
+    <Compile Include="Services\Security\WebServerRequestType.cs" />
     <Compile Include="Services\Security\WindowsGroupPermission.cs" />
     <Compile Include="Services\Security\WindowsGroupPermissionComparer.cs" />
+    <Compile Include="Services\Security\WindowsGroupPermissionEqualityComparer.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Shared Models\CompileMessageList.cs" />
     <Compile Include="Shared Models\CompileMessageTO.cs" />
@@ -146,6 +166,9 @@
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

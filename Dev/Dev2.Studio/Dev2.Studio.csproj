@@ -237,6 +237,7 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="AppResources\Converters\NavigationViewModelPermissionToBooleanConverter.cs" />
     <Compile Include="AppResources\Converters\CustomIcons.cs" />
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="AppResources\Comparers\WorkSurfaceContextEqualityComparer.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
+    <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NullToDebugImageConverter.cs" />
     <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Exceptions\FeedbackRecordingProcessFailedToStartException.cs" />
@@ -319,6 +321,7 @@
     <Compile Include="Dialogs\IResourcePickerDialog.cs" />
     <Compile Include="Dialogs\ResourcePickerDialog.cs" />
     <Compile Include="Help\IHelpAdorner.cs" />
+    <Compile Include="Settings\SettingsItemViewModel.cs" />
     <Compile Include="Settings\Security\SecurityView.xaml.cs">
       <DependentUpon>SecurityView.xaml</DependentUpon>
     </Compile>
@@ -1037,7 +1040,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Unauthorized.jpg" />
+    <Resource Include="Images\AuthExecute-12.png" />
+    <Resource Include="Images\AuthNone-16.png" />
+    <Resource Include="Images\AuthView-12.png" />
     <Resource Include="Images\HelpShortcutKeys-32.png" />
     <Resource Include="Resources\HelpCommunity-32_files\image0.png" />
     <Resource Include="Images\PluginService-32.png" />
@@ -1130,6 +1135,9 @@
     <Resource Include="Images\ToolSwitch-32.png" />
     <Resource Include="Images\ToolSequence-32.png" />
     <Resource Include="Images\ToolBaseConversion-32.png" />
+    <Content Include="Help\PageForbidden.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\PageNotFound.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

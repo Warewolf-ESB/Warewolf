@@ -403,4 +403,20 @@
         </ObjectAnimationUsingKeyFrames>
     </Storyboard>
     
+    <Style x:Key="UnauthorizedTreeViewBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="-3,0,-1,0"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="{StaticResource TreeViewBackgroundBrush}"/>      
+    </Style>
+    <Style x:Key="UnauthorizedTreeViewStackPanelStyle" TargetType="StackPanel">
+        <Setter Property="Margin" Value="6,3,4,3"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Background" Value="{StaticResource TreeViewBackgroundBrush}"/>      
+   </Style>
+    <Style x:Key="UnauthorizedTreeViewTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="5,0,5,0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+    </Style>
 </ResourceDictionary>

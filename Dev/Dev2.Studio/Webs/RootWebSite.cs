@@ -231,7 +231,8 @@ namespace Dev2.Studio.Webs
 
                 var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
                 resourcePath = HttpUtility.UrlEncode(resourcePath);
-                environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath), pageHandler, width, height);
+                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath);
+                environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height);
             }
             return true;
         }

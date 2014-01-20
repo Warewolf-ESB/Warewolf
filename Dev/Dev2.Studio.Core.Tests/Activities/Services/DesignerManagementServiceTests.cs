@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -13,8 +14,9 @@ namespace Dev2.Core.Tests.Activities.Services
     {
 
         [TestInitialize]
-        public void TestInit()
+        public void Initialize()
         {
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         [TestMethod]

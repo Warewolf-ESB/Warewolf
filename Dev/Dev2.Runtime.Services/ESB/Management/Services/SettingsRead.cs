@@ -22,20 +22,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             var settings = new Settings();
             try
             {
-                var securityRead = new SecurityRead();
+                var securityRead = CreateSecurityReadEndPoint();
                 var jsonPermissions = securityRead.Execute(values, theWorkspace);
-                settings.Security = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
-
+                settings.Security = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             }
             catch(Exception ex)
             {
                 ServerLogger.LogError(ex);
                 settings.HasError = true;
                 settings.Error = "Error reading settings configuration : " + ex.Message;
+                settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(settings);
+        }
+
+        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
+        {
+            return new SecurityRead();
         }
 
         public DynamicService CreateServiceEntry()

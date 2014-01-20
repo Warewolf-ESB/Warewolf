@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.ViewModels.WorkSurface;
+using Dev2.Studio.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.AppResources.Comparers
 {

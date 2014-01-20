@@ -1,7 +1,9 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -16,12 +18,15 @@ using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.Workflow;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -500,7 +505,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("CategoryTreeViewModelUnitTest")]
-        [Description("Test for CategoryTreeViewModel DisplayName: Displayname property is set to a valid resource category name ('new_category.var') and RenameCategory is expected to be called")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for CategoryTreeViewModel DisplayName: Displayname property is set to a valid resource category name ('new_category.var') and RenameCategory is expected to be called")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void CategoryTreeView_CategoryTreeViewModelUnitTest_DisplayNameBinding_RenameCategoryIsCalledOnce()
@@ -528,7 +533,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("CategoryTreeViewModelUnitTest")]
-        [Description("Test for CategoryTreeViewModel's RenameCategory function: ResourceRepository's RenameCategory function is expected to be called")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for CategoryTreeViewModel's RenameCategory function: ResourceRepository's RenameCategory function is expected to be called")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void CategoryTreeView_CategoryTreeViewModelUnitTest_RenameCategory_ResourceRepoRenameCategoryCalledAndReparentCalled()
@@ -773,7 +778,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("ResourceTreeViewModelUnitTest")]
-        [Description("Test for implementation of 'IDataErrorInfo': The IDataErrorInfo error message is set and then recovered from a resource tree view model")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for implementation of 'IDataErrorInfo': The IDataErrorInfo error message is set and then recovered from a resource tree view model")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ResourceTreeViewModel_ResourceTreeViewModelUnitTest_IDataErrorInfoImplimentation_ReturnsItsErrorMessage()
@@ -795,7 +800,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("ResourceTreeViewModelUnitTest")]
-        [Description("Test for implementation of 'OnDesignValidationReceived': OnDesignValidationReceived is called and a new error message is expected to be added to data context")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for implementation of 'OnDesignValidationReceived': OnDesignValidationReceived is called and a new error message is expected to be added to data context")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
         public void ResourceTreeViewModel_ResourceTreeViewModelUnitTest_OnDesignValidationReceived_ErrorNotAddedToDataContext()
@@ -824,7 +829,10 @@ namespace Dev2.Core.Tests
 
             // ReSharper disable ObjectCreationAsStatement
             var vmRoot = new RootTreeViewModel(eventAggregator);
-            new EnvironmentTreeViewModel(eventAggregator, vmRoot, new Mock<IEnvironmentModel>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            new EnvironmentTreeViewModel(eventAggregator, vmRoot, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             new ServiceTypeTreeViewModel(eventAggregator, vmRoot.Children[0], ResourceType.WorkflowService);
             new CategoryTreeViewModel(eventAggregator, vmRoot.Children[0].Children[0], "TESTCATEGORY", ResourceType.WorkflowService);
 
@@ -863,9 +871,10 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedResourceRepo.Setup(repo => repo.All()).Returns(allExistingResources);
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+            mockedEnvironment.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
             //Isolate rename resource unit
-            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object,AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var treeParent = new EnvironmentTreeViewModel(eventAggregator, null, mockedEnvironment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var resourcetreeviewmodel = new MockResourceTreeViewModel(eventAggregator, treeParent, mockedResourceModel.Object);
 
             //------------Execute Test---------------------------
@@ -893,6 +902,7 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Setup(repo => repo.All()).Returns(new Collection<IResourceModel>());
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+            mockedEnvironment.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
@@ -928,6 +938,7 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), newResourceName)).Verifiable();
             mockedResourceRepo.Setup(repo => repo.Rename(oldResourceID.ToString(), oldResourceName)).Verifiable();
             mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
+            mockedEnvironment.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
             var eventAggregator = new Mock<IEventAggregator>().Object;
 
@@ -1033,7 +1044,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("TreeViewModelFactory_Create")]
-        [Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
         [Owner("Trevor Williams-Ros")]
         public void TreeViewModelFactory_UnitTest_AssemblyQualifiedNameMatchesServerResourceType_DbService()
         {
@@ -1066,7 +1077,7 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [TestCategory("TreeViewModelFactory_Create")]
-        [Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("TreeViewModelFactory must assign a AssemblyQualifiedName based on the ServerResourceType to the ResourceTreeViewModel.")]
         [Owner("Huggs")]
         public void TreeViewModelFactory_UnitTest_AssemblyQualifiedNameMatchesServerResourceType_PluginService()
         {
@@ -1100,7 +1111,7 @@ namespace Dev2.Core.Tests
 
 
         [TestMethod]
-        [Description("EnvironmentTreeViewModel must attach NetworkStateChanged event handler to raise IsConnected property changed event.")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("EnvironmentTreeViewModel must attach NetworkStateChanged event handler to raise IsConnected property changed event.")]
         [TestCategory("EnvironmentTreeViewModel_EnvironmentModel")]
         [Owner("Trevor Williams-Ros")]
         // ReSharper disable InconsistentNaming
@@ -1108,6 +1119,7 @@ namespace Dev2.Core.Tests
         // ReSharper restore InconsistentNaming
         {
             var envModel = new Mock<IEnvironmentModel>();
+            envModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
 
             var envTreeViewModel = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, _rootVm, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             envTreeViewModel.PropertyChanged += (sender, args) =>
@@ -1116,6 +1128,586 @@ namespace Dev2.Core.Tests
             };
             envModel.Raise(c => c.IsConnectedChanged += null, new ConnectedEventArgs());
 
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanProperties")]
+        public void ResourceTreeViewModel_CanProperties_ValidResourceTypesAndIsAuthorized_True()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(ResourceTreeViewModelProperty property in Enum.GetValues(typeof(ResourceTreeViewModelProperty)))
+                {
+                    Verify_ResourceTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: true);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanProperties")]
+        public void ResourceTreeViewModel_CanProperties_ValidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(ResourceTreeViewModelProperty property in Enum.GetValues(typeof(ResourceTreeViewModelProperty)))
+                {
+                    Verify_ResourceTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanProperties")]
+        public void ResourceTreeViewModel_CanProperties_InvalidResourceTypesAndIsAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(ResourceTreeViewModelProperty property in Enum.GetValues(typeof(ResourceTreeViewModelProperty)))
+                {
+                    Verify_ResourceTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanProperties")]
+        public void ResourceTreeViewModel_CanProperties_InvalidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(ResourceTreeViewModelProperty property in Enum.GetValues(typeof(ResourceTreeViewModelProperty)))
+                {
+                    Verify_ResourceTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        static void Verify_ResourceTreeViewModel_CanProperties(ResourceTreeViewModelProperty property, ResourceType resourceType, bool isAuthorized, bool expected)
+        {
+            //------------Setup for test--------------------------
+
+            var resourceID = Guid.NewGuid();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(resourceID);
+            resourceModel.Setup(r => r.ResourceType).Returns(resourceType);
+            resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(isAuthorized);
+            resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.DeployFrom)).Returns(isAuthorized);
+            resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(isAuthorized);
+
+            var tvm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceModel.Object);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            switch(property)
+            {
+                case ResourceTreeViewModelProperty.CanDelete:
+                    Assert.AreEqual(expected, tvm.CanDelete);
+                    break;
+                case ResourceTreeViewModelProperty.CanEdit:
+                    Assert.AreEqual(expected, tvm.CanEdit);
+                    break;
+                case ResourceTreeViewModelProperty.CanManualEdit:
+                    Assert.AreEqual(expected, tvm.CanManualEdit);
+                    break;
+                case ResourceTreeViewModelProperty.CanRename:
+                    Assert.AreEqual(expected, tvm.CanRename);
+                    break;
+                case ResourceTreeViewModelProperty.CanDuplicate:
+                    Assert.AreEqual(expected, tvm.CanDuplicate);
+                    break;
+                case ResourceTreeViewModelProperty.CanMoveRename:
+                    Assert.AreEqual(expected, tvm.CanMoveRename);
+                    break;
+                case ResourceTreeViewModelProperty.CanDeploy:
+                    Assert.AreEqual(expected, tvm.CanDeploy);
+                    break;
+                case ResourceTreeViewModelProperty.CanShowDependencies:
+                    Assert.AreEqual(expected, tvm.CanShowDependencies);
+                    break;
+            }
+
+            tvm.Dispose();
+        }
+
+        static IEnumerable<ResourceType> GetResourceTypes(bool isValidType)
+        {
+            return Enum.GetValues(typeof(ResourceType)).Cast<ResourceType>().Where(r => isValidType
+                ? r == ResourceType.WorkflowService || r == ResourceType.Service || r == ResourceType.Source
+                : !(r == ResourceType.WorkflowService || r == ResourceType.Service || r == ResourceType.Source));
+        }
+
+        enum ResourceTreeViewModelProperty
+        {
+            CanDelete,
+            CanEdit,
+            CanManualEdit,
+            CanRename,
+            CanDuplicate,
+            CanMoveRename,
+            CanDeploy,
+            CanShowDependencies
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CategoryTreeViewModel_CanProperties")]
+        public void CategoryTreeViewModel_CanProperties_InvalidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(CategoryTreeViewModelProperty property in Enum.GetValues(typeof(CategoryTreeViewModelProperty)))
+                {
+                    Verify_CategoryTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CategoryTreeViewModel_CanProperties")]
+        public void CategoryTreeViewModel_CanProperties_InvalidResourceTypesAndIsAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(CategoryTreeViewModelProperty property in Enum.GetValues(typeof(CategoryTreeViewModelProperty)))
+                {
+                    Verify_CategoryTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CategoryTreeViewModel_CanProperties")]
+        public void CategoryTreeViewModel_CanProperties_ValidResourceTypesAndIsAuthorized_True()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(CategoryTreeViewModelProperty property in Enum.GetValues(typeof(CategoryTreeViewModelProperty)))
+                {
+                    Verify_CategoryTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: true);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CategoryTreeViewModel_CanProperties")]
+        public void CategoryTreeViewModel_CanProperties_ValidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(CategoryTreeViewModelProperty property in Enum.GetValues(typeof(CategoryTreeViewModelProperty)))
+                {
+                    Verify_CategoryTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        static void Verify_CategoryTreeViewModel_CanProperties(CategoryTreeViewModelProperty property, ResourceType resourceType, bool isAuthorized, bool expected)
+        {
+            //------------Setup for test--------------------------
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.IsAuthorizedDeployFrom).Returns(isAuthorized);
+
+            var displayName = string.Format("{0}s", resourceType == ResourceType.WorkflowService ? "Workflow" : resourceType.ToString()).ToUpper();
+
+            var parent = new Mock<ITreeNode>();
+            parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
+            parent.Setup(p => p.DisplayName).Returns(displayName);
+
+            var tvm = new CategoryTreeViewModel(new Mock<IEventAggregator>().Object, null, "test", resourceType);
+            tvm.TreeParent = parent.Object;
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            switch(property)
+            {
+                case CategoryTreeViewModelProperty.CanDeploy:
+                    Assert.AreEqual(expected, tvm.CanDeploy, string.Format("{0} {1}({2}) WHEN IsAuthorized={3}", property, resourceType, displayName, isAuthorized));
+                    break;
+            }
+
+            tvm.Dispose();
+        }
+
+        enum CategoryTreeViewModelProperty
+        {
+            CanDeploy,
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceTypeTreeViewModel_CanProperties")]
+        public void ServiceTypeTreeViewModel_CanProperties_InvalidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(ServiceTypeTreeViewModelProperty property in Enum.GetValues(typeof(ServiceTypeTreeViewModelProperty)))
+                {
+                    Verify_ServiceTypeTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceTypeTreeViewModel_CanProperties")]
+        public void ServiceTypeTreeViewModel_CanProperties_InvalidResourceTypesAndIsAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(false))
+            {
+                foreach(ServiceTypeTreeViewModelProperty property in Enum.GetValues(typeof(ServiceTypeTreeViewModelProperty)))
+                {
+                    Verify_ServiceTypeTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: false);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceTypeTreeViewModel_CanProperties")]
+        public void ServiceTypeTreeViewModel_CanProperties_ValidResourceTypesAndIsAuthorized_True()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(ServiceTypeTreeViewModelProperty property in Enum.GetValues(typeof(ServiceTypeTreeViewModelProperty)))
+                {
+                    Verify_ServiceTypeTreeViewModel_CanProperties(property, resourceType, isAuthorized: true, expected: true);
+                }
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceTypeTreeViewModel_CanProperties")]
+        public void ServiceTypeTreeViewModel_CanProperties_ValidResourceTypesAndIsNotAuthorized_False()
+        {
+            foreach(var resourceType in GetResourceTypes(true))
+            {
+                foreach(ServiceTypeTreeViewModelProperty property in Enum.GetValues(typeof(ServiceTypeTreeViewModelProperty)))
+                {
+                    Verify_ServiceTypeTreeViewModel_CanProperties(property, resourceType, isAuthorized: false, expected: false);
+                }
+            }
+        }
+
+        static void Verify_ServiceTypeTreeViewModel_CanProperties(ServiceTypeTreeViewModelProperty property, ResourceType resourceType, bool isAuthorized, bool expected)
+        {
+            //------------Setup for test--------------------------
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.IsAuthorizedDeployFrom).Returns(isAuthorized);
+
+            var parent = new Mock<ITreeNode>();
+            parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
+
+            var tvm = new ServiceTypeTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceType);
+            tvm.TreeParent = parent.Object;
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            switch(property)
+            {
+                case ServiceTypeTreeViewModelProperty.CanDeploy:
+                    Assert.AreEqual(expected, tvm.CanDeploy, string.Format("{0} {1} WHEN IsAuthorized={2}", property, resourceType, isAuthorized));
+                    break;
+            }
+
+            tvm.Dispose();
+        }
+
+        enum ServiceTypeTreeViewModelProperty
+        {
+            CanDeploy,
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentTreeViewModel_CanProperties")]
+        public void EnvironmentTreeViewModel_CanProperties_IsAuthorized_True()
+        {
+            foreach(EnvironmentTreeViewModelProperty property in Enum.GetValues(typeof(EnvironmentTreeViewModelProperty)))
+            {
+                Verify_EnvironmentTreeViewModel_CanProperties(property, isAuthorized: true, expected: true);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentTreeViewModel_CanProperties")]
+        public void EnvironmentTreeViewModel_CanProperties_IsNotAuthorized_False()
+        {
+            foreach(EnvironmentTreeViewModelProperty property in Enum.GetValues(typeof(EnvironmentTreeViewModelProperty)))
+            {
+                Verify_EnvironmentTreeViewModel_CanProperties(property, isAuthorized: false, expected: false);
+            }
+        }
+
+        static void Verify_EnvironmentTreeViewModel_CanProperties(EnvironmentTreeViewModelProperty property, bool isAuthorized, bool expected)
+        {
+            //------------Setup for test--------------------------
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.IsAuthorizedDeployFrom).Returns(isAuthorized);
+            environmentModel.Setup(e => e.IsConnected).Returns(true);
+            environmentModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            var parent = new Mock<ITreeNode>();
+            parent.Setup(p => p.EnvironmentModel).Returns(environmentModel.Object);
+
+            var tvm = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, environmentModel.Object, new Mock<IAsyncWorker>().Object);
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            switch(property)
+            {
+                case EnvironmentTreeViewModelProperty.CanDeploy:
+                    Assert.AreEqual(expected, tvm.CanDeploy, string.Format("{0} WHEN IsAuthorized={1}", property, isAuthorized));
+                    break;
+            }
+
+            tvm.Dispose();
+        }
+
+        enum EnvironmentTreeViewModelProperty
+        {
+            CanDeploy,
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_UserPermissions")]
+        public void ResourceTreeViewModel_UserPermissions_DataContextPropertyChanged_UpdatesTreeViewModelUserPermissions()
+        {
+            //------------Setup for test--------------------------
+            const Permissions PrePermissions = Permissions.View;
+            const Permissions PostPermissions = Permissions.Execute;
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.UserPermissions).Returns(PrePermissions);
+
+            var tvm = new MockResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceModel.Object);
+
+            //------------Assert Pre-conditions-------------------------
+            Assert.IsTrue(tvm.UserPermissions.HasValue);
+            Assert.AreEqual(PrePermissions, tvm.UserPermissions.Value);
+
+            //------------Execute Test---------------------------
+            resourceModel.Setup(r => r.UserPermissions).Returns(PostPermissions);
+            resourceModel.Raise(r => r.PropertyChanged += null, new PropertyChangedEventArgs("UserPermissions"));
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(tvm.UserPermissions.HasValue);
+            Assert.AreEqual(PostPermissions, tvm.UserPermissions.Value);
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CategoryTreeViewModel_UserPermissions")]
+        public void CategoryTreeViewModel_UserPermissions_IsNull()
+        {
+            //------------Setup for test--------------------------
+
+
+            //------------Execute Test---------------------------
+            var tvm = new CategoryTreeViewModel(new Mock<IEventAggregator>().Object, null, "test", ResourceType.WorkflowService);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(tvm.UserPermissions.HasValue);
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ServiceTypeTreeViewModel_UserPermissions")]
+        public void ServiceTypeTreeViewModel_UserPermissions_IsNull()
+        {
+            //------------Setup for test--------------------------
+
+
+            //------------Execute Test---------------------------
+            var tvm = new ServiceTypeTreeViewModel(new Mock<IEventAggregator>().Object, null, ResourceType.WorkflowService);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(tvm.UserPermissions.HasValue);
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentTreeViewModel_UserPermissions")]
+        public void EnvironmentTreeViewModel_UserPermissions_IsNull()
+        {
+            //------------Setup for test--------------------------
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.IsConnected).Returns(true);
+            environmentModel.Setup(e => e.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+
+            //------------Execute Test---------------------------
+            var tvm = new EnvironmentTreeViewModel(new Mock<IEventAggregator>().Object, null, environmentModel.Object, new Mock<IAsyncWorker>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(tvm.UserPermissions.HasValue);
+
+            tvm.Dispose();
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_ExecuteCommand")]
+        public void ResourceTreeViewModel_ExecuteCommand_UserPermissionsHasExecuteFlag_ShowsViewInBrowserDialog()
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+            eventAggregator.Setup(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Execute);
+
+            WorkflowInputDataViewModel workflowInputDataViewModel = null;
+
+            var windowManager = new Mock<IWindowManager>();
+            windowManager.Setup(w => w.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()))
+                .Callback((object rootModel, object context, IDictionary<string, object> settings) => workflowInputDataViewModel = (WorkflowInputDataViewModel)rootModel)
+                .Returns(true)
+                .Verifiable();
+
+            var tvm = new MockResourceTreeViewModel(eventAggregator.Object, null, resourceModel.Object) { WindowManager = windowManager.Object };
+
+            Assert.IsFalse(tvm.ShowDebugWindowOnLoad);
+
+            //------------Execute Test---------------------------
+            tvm.ExecuteCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(tvm.ShowDebugWindowOnLoad);
+            eventAggregator.Verify(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
+            windowManager.Verify(w => w.ShowDialog(It.IsAny<object>(), It.IsAny<object>(), It.IsAny<IDictionary<string, object>>()));
+            Assert.IsFalse(workflowInputDataViewModel.CanDebug);
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_ExecuteCommand")]
+        public void ResourceTreeViewModel_ExecuteCommand_UserPermissionsHasContributeFlag_InvokesEdit()
+        {
+            Verify_ResourceTreeViewModel_ExecuteCommand_InvokesEdit(ResourceType.WorkflowService);
+            Verify_ResourceTreeViewModel_ExecuteCommand_InvokesEdit(ResourceType.Source);
+            Verify_ResourceTreeViewModel_ExecuteCommand_InvokesEdit(ResourceType.Service);
+        }
+
+        void Verify_ResourceTreeViewModel_ExecuteCommand_InvokesEdit(ResourceType resourceType)
+        {
+            //------------Setup for test--------------------------
+            ShowEditResourceWizardMessage editMessage = null;
+            AddWorkSurfaceMessage addMessage = null;
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            if(resourceType == ResourceType.WorkflowService)
+            {
+                eventAggregator.Setup(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback((object msg) => addMessage = (AddWorkSurfaceMessage)msg).Verifiable();
+            }
+            else
+            {
+                eventAggregator.Setup(e => e.Publish(It.IsAny<ShowEditResourceWizardMessage>())).Callback((object msg) => editMessage = (ShowEditResourceWizardMessage)msg).Verifiable();
+            }
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Contribute);
+            resourceModel.Setup(r => r.ResourceType).Returns(resourceType);
+
+            var tvm = new MockResourceTreeViewModel(eventAggregator.Object, null, resourceModel.Object);
+            Assert.IsFalse(tvm.ShowDebugWindowOnLoad);
+
+            //------------Execute Test---------------------------
+            tvm.ExecuteCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(tvm.ShowDebugWindowOnLoad);
+            if(resourceType == ResourceType.WorkflowService)
+            {
+                eventAggregator.Verify(e => e.Publish(It.IsAny<AddWorkSurfaceMessage>()));
+                Assert.IsNotNull(addMessage);
+                Assert.IsTrue(addMessage.ShowDebugWindowOnLoad);
+            }
+            else
+            {
+                eventAggregator.Verify(e => e.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
+                Assert.IsNotNull(editMessage);
+                Assert.AreSame(resourceModel.Object, editMessage.ResourceModel);
+            }
+
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanExecute")]
+        public void ResourceTreeViewModel_CanExecute_DataContextIsNotNull_True()
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Contribute);
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+
+            var tvm = new MockResourceTreeViewModel(eventAggregator.Object, null, resourceModel.Object);
+
+            //------------Execute Test---------------------------
+            var result = tvm.ExecuteCommand.CanExecute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+
+            tvm.Dispose();
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ResourceTreeViewModel_CanExecute")]
+        public void ResourceTreeViewModel_CanExecute_DataContextIsNull_False()
+        {
+            //------------Setup for test--------------------------
+            var eventAggregator = new Mock<IEventAggregator>();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceModel.Setup(r => r.ID).Returns(Guid.NewGuid());
+            resourceModel.Setup(r => r.UserPermissions).Returns(Permissions.Contribute);
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+
+            var tvm = new MockResourceTreeViewModel(eventAggregator.Object, null, resourceModel.Object) { DataContext = null };
+
+            //------------Execute Test---------------------------
+            var result = tvm.ExecuteCommand.CanExecute(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+
+            tvm.Dispose();
         }
     }
 }

@@ -11,6 +11,7 @@ using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
@@ -18,8 +19,8 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.ViewModels.Workflow;
-using Dev2.ViewModels.WorkSurface;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
@@ -36,6 +37,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         private bool _rememberInputs;
         RelayCommand _viewInBrowserCommmand;
         readonly DataListConversionUtils _dataListConversionUtils;
+        bool _canViewInBrowser;
+        bool _canDebug;
 
         #endregion Fields
 
@@ -65,6 +68,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionID)
         {
             VerifyArgument.IsNotNull("input", input);
+            CanDebug = true;
+            CanViewInBrowser = true;
 
             DebugTO = new DebugTO
             {
@@ -172,11 +177,45 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
+        public bool CanViewInBrowser
+        {
+            get
+            {
+                return _canViewInBrowser;
+            }
+            set
+            {
+                if(value.Equals(_canViewInBrowser))
+                {
+                    return;
+                }
+                _canViewInBrowser = value;
+                NotifyOfPropertyChange(() => CanViewInBrowser);
+            }
+        }
+
+        public bool CanDebug
+        {
+            get
+            {
+                return _canDebug;
+            }
+            set
+            {
+                if(value.Equals(_canDebug))
+                {
+                    return;
+                }
+                _canDebug = value;
+                NotifyOfPropertyChange(() => CanDebug);
+            }
+        }
+
         public ICommand OkCommand
         {
             get
             {
-                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => true));
+                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => CanDebug));
             }
         }
 
@@ -184,7 +223,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => true));
+                return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
             }
         }
 
@@ -433,22 +472,18 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void SetXmlData()
         {
-            const string Error = "";
             CreateDataListObjectFromList();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
             string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
-            if(string.IsNullOrEmpty(Error))
+            try
             {
-                try
-                {
-                    XmlData = XElement.Parse(dataListString).ToString();
-                }
-                catch(Exception)
-                {
-                    XmlData = "Invalid characters entered";
-                }
+                XmlData = XElement.Parse(dataListString).ToString();
+            }
+            catch(Exception)
+            {
+                XmlData = "Invalid characters entered";
             }
         }
 
@@ -575,7 +610,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             VerifyArgument.IsNotNull("resourceModel", resourceModel);
             var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
-            return new WorkflowInputDataViewModel(debugInfoModel, sessionID);
+
+            var result = new WorkflowInputDataViewModel(debugInfoModel, sessionID)
+            {
+                CanDebug = resourceModel.UserPermissions.HasFlag(Permissions.Contribute)
+            };
+            return result;
         }
     }
 }

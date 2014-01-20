@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -45,6 +46,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _isNew;
         protected readonly IEventAggregator EventPublisher;
         bool _isOverwrite;
+        Permissions? _userPermissions;
 
         #endregion
 
@@ -64,6 +66,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion ctor + init
 
         #region properties
+
+        public Permissions? UserPermissions
+        {
+            get { return _userPermissions; }
+            protected set
+            {
+                if(value == _userPermissions)
+                {
+                    return;
+                }
+                _userPermissions = value;
+                NotifyOfPropertyChange(() => UserPermissions);
+            }
+        }
 
         #region public
 
@@ -152,6 +168,39 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
+        public virtual bool IsAuthorized
+        {
+            get
+            {
+                if(TreeParent != null)
+                {
+                    return TreeParent.IsAuthorized;
+                }
+                return false;
+            }
+        }
+        public virtual bool IsAuthorizedDeployFrom
+        {
+            get
+            {
+                if(TreeParent != null)
+                {
+                    return TreeParent.IsAuthorizedDeployFrom;
+                }
+                return false;
+            }
+        }
+        public virtual bool IsAuthorizedDeployTo
+        {
+            get
+            {
+                if(TreeParent != null)
+                {
+                    return TreeParent.IsAuthorizedDeployTo;
+                }
+                return false;
+            }
+        }
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is filtered from the tree.
         /// </summary>
@@ -253,7 +302,10 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             set
             {
-                if(_children == value) return;
+                if(_children == value)
+                {
+                    return;
+                }
 
                 _children = value;
                 _children.CollectionChanged -= ChildrenOnCollectionChanged;
@@ -422,7 +474,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual bool CanDeploy
         {
-            get { return EnvironmentModel != null && EnvironmentModel.IsConnected; }
+            get { return EnvironmentModel != null && EnvironmentModel.IsConnected && EnvironmentModel.IsAuthorizedDeployFrom; }
         }
 
         public virtual bool CanRename
@@ -527,6 +579,11 @@ namespace Dev2.Studio.ViewModels.Navigation
             get { return false; }
         }
 
+        public virtual bool CanExecute
+        {
+            get { return false; }
+        }
+
         #endregion virtual
 
         #region abstract
@@ -538,6 +595,11 @@ namespace Dev2.Studio.ViewModels.Navigation
         #endregion properties
 
         #region Commands
+
+        public virtual ICommand ExecuteCommand
+        {
+            get { return null; }
+        }
 
         public virtual ICommand BuildCommand
         {
@@ -704,8 +766,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             Children.ToList().ForEach(c => c.NotifyOfFilterPropertyChanged(false));
 
-            Dispatcher.CurrentDispatcher.Invoke(
-                () => FilteredChildren.Refresh());
+            Dispatcher.CurrentDispatcher.Invoke(() => FilteredChildren.Refresh());
             NotifyOfPropertyChange("ChildrenCount");
             VerifyCheckState();
 
@@ -829,7 +890,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(string.IsNullOrWhiteSpace(filterText))
             {
                 if(_unfilteredExpandState != null)
+                {
                     IsExpanded = _unfilteredExpandState.Value;
+                }
                 _hasUnfilteredExpandStateBeenSet = false;
                 foreach(ITreeNode treeNode in Children)
                 {
@@ -1045,8 +1108,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         private bool Filter(object o)
         {
             var vm = o as ITreeNode;
-            if(vm == null) return false;
-            if(!vm.IsFiltered) return true;
+            if(vm == null)
+            {
+                return false;
+            }
+            if(!vm.IsFiltered)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -1095,7 +1164,9 @@ namespace Dev2.Studio.ViewModels.Navigation
             set
             {
                 if(value.Equals(_dataContext))
+                {
                     return;
+                }
 
                 _dataContext = value;
                 NotifyOfPropertyChange(() => DataContext);

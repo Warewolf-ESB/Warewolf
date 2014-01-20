@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -43,6 +44,8 @@ namespace Dev2.Dialogs
 
             _activityType = activityType;
             _explorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, isFromDrop, activityType);
+
+            asyncWorker.Start(() => { }, () => _explorerViewModel.LoadEnvironments());
         }
 
         public IResourceModel SelectedResource { get; set; }
@@ -98,12 +101,16 @@ namespace Dev2.Dialogs
             return enDsfActivityType.All;
         }
 
-        public static bool ShowDropDialog(string typeName, out DsfActivityDropViewModel dropViewModel)
+        public static bool ShowDropDialog<T>(ref T picker, string typeName, out DsfActivityDropViewModel dropViewModel)
+            where T : ResourcePickerDialog
         {
             var activityType = DetermineDropActivityType(typeName);
             if(activityType != enDsfActivityType.All)
             {
-                var picker = new ResourcePickerDialog(activityType);
+                if(picker == null)
+                {
+                    picker = (T)Activator.CreateInstance(typeof(T), activityType);
+                }
                 return picker.ShowDialog(out dropViewModel);
             }
             dropViewModel = null;

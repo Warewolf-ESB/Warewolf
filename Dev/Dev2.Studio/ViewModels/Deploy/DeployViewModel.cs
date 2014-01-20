@@ -16,9 +16,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
+using Dev2.Studio.Enums;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
 
@@ -32,7 +34,7 @@ namespace Dev2.Studio.ViewModels.Deploy
     {
         #region Class Members
 
-        private IDeployStatsCalculator _deployStatsCalculator { get; set; }
+        private IDeployStatsCalculator _deployStatsCalculator;
 
         private IEnvironmentModelProvider _serverProvider;
 
@@ -78,7 +80,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             _initialItemEnvironment = environment;
             _initialItemDisplayName = displayName;
-            Initialize(serverProvider, environmentRepository, deployStatsCalculator);
+            Initialize(serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
         }
 
         public DeployViewModel(string displayName, IEnvironmentModel environment)
@@ -143,9 +145,11 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             get
             {
-                return SelectedDestinationServerIsValid() && HasItemsToDeploy(_sourceDeployItemCount, _destinationDeployItemCount) && !IsDeploying && ServersAreNotTheSame;
+                return SelectedDestinationServerIsValid() && SelectedSourceServerIsValid() && HasItemsToDeploy(_sourceDeployItemCount, _destinationDeployItemCount) && !IsDeploying && ServersAreNotTheSame;
             }
         }
+
+        public bool CanSelectAllDependencies { get { return SelectedSourceServerIsValid(); } }
 
         public bool ServersAreNotTheSame
         {
@@ -159,7 +163,12 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         bool SelectedDestinationServerIsValid()
         {
-            return SelectedDestinationServer != null && SelectedDestinationServer.IsConnected;
+            return SelectedDestinationServer != null && SelectedDestinationServer.IsConnected && SelectedDestinationServer.IsAuthorizedDeployTo;
+        }
+
+        bool SelectedSourceServerIsValid()
+        {
+            return SelectedSourceServer != null && SelectedSourceServer.IsConnected && SelectedSourceServer.IsAuthorizedDeployFrom;
         }
 
         public bool SourceItemsSelected
@@ -324,7 +333,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Private Methods
 
-        private void Initialize(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IDeployStatsCalculator deployStatsCalculator = null)
+        private void Initialize(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
         {
             EnvironmentRepository = environmentRepository;
 
@@ -336,8 +345,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(DestinationContext) { Parent = this };
-            Source = new NavigationViewModel(SourceContext) { Parent = this };
+            Target = new NavigationViewModel(eventAggregator, new AsyncWorker(), DestinationContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployTo) { Parent = this };
+            Source = new NavigationViewModel(eventAggregator, new AsyncWorker(), SourceContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployFrom) { Parent = this };
 
             SetupPredicates();
             SetupCommands();
@@ -418,8 +427,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void SetupCommands()
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
-
-            SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies);
+            SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies, o => CanSelectAllDependencies);
             SourceServerChangedCommand = new RelayCommand(s =>
             {
                 SelectedSourceServer = s as IEnvironmentModel;

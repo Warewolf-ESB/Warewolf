@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Security.Principal;
 using System.Web.Http.Controllers;
-using Dev2.Runtime.WebServer;
-using Dev2.Runtime.WebServer.Controllers;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Security;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -27,7 +25,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
             var attribute = new AuthorizeWebAttribute();
 
             //------------Assert Results-------------------------
-            Assert.AreSame(AuthorizationService.Instance, attribute.Service);
+            Assert.AreSame(ServerAuthorizationService.Instance, attribute.Service);
         }
 
         [TestMethod]

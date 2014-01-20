@@ -6,6 +6,7 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Factory;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -17,31 +18,17 @@ namespace Dev2.Core.Tests.AppResources.Comparers
     [TestClass][ExcludeFromCodeCoverage]
     public class WorkSurfaceKeyEqualityComparerTests
     {
-        public WorkSurfaceKeyEqualityComparerTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
+        [TestInitialize]
+        public void Initialize()
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+        }
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:

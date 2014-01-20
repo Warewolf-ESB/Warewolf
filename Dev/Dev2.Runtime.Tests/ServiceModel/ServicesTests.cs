@@ -2,8 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
@@ -127,7 +130,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = new Service();
-
+            
             #region Test String
 
             const string input = @"<Action Name=""EmitStringData"" Type=""Plugin"" SourceName=""Anything To Xml Hook Plugin"" SourceMethod=""EmitStringData"" NativeType=""String"">
@@ -1002,5 +1005,39 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsInstanceOfType(service, typeof(WebService));
         }
         #endregion
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("Services_IsReadOnly")]
+        public void Services_IsReadOnly_UserIsAuthorized_False()
+        {
+            Verify_IsReadOnly(isAuthorized: true);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("Services_IsReadOnly")]
+        public void Services_IsReadOnly_UserIsNotAuthorized_True()
+        {
+            Verify_IsReadOnly(isAuthorized: false);
+        }
+
+        static void Verify_IsReadOnly(bool isAuthorized)
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(a => a.IsAuthorized(AuthorizationContext.Contribute, resourceID.ToString())).Returns(isAuthorized).Verifiable();
+
+            var services = new Dev2.Runtime.ServiceModel.Services(new Mock<IResourceCatalog>().Object, authorizationService.Object);
+
+            //------------Execute Test---------------------------
+            var result = services.IsReadOnly(resourceID.ToString(), Guid.NewGuid(), Guid.NewGuid());
+
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(isAuthorized, result.IsReadOnly);
+            authorizationService.Verify(a => a.IsAuthorized(AuthorizationContext.Contribute, resourceID.ToString()));
+        }
     }
 }

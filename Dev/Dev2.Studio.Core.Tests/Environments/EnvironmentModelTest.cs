@@ -1,19 +1,19 @@
-﻿using Caliburn.Micro;
-using Dev2.Common.Common;
-using Dev2.Providers.Events;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
-using Dev2.Workspaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Network;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Common.Common;
+using Dev2.Providers.Events;
+using Dev2.Services.Events;
+using Dev2.Services.Security;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
+using Dev2.Workspaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Core.Tests.Environments
 {
@@ -23,19 +23,16 @@ namespace Dev2.Core.Tests.Environments
     [ExcludeFromCodeCoverage]
     public class EnvironmentModelTest
     {
-
-        #region CTOR
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void EnvironmentModelConstructorWithNullConnectionExpectedThrowsArgumentNullException()
+        public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {
             //var wizard = new Mock<IWizardEngine>();
             var env = new EnvironmentModel(Guid.NewGuid(), null);
         }
 
         [TestMethod]
-        public void EnvironmentModelConstructorWithConnectionAndWizardEngineExpectedInitializesConnectionAndResourceRepository()
+        public void EnvironmentModel_Constructor_ConnectionAndWizardEngine_InitializesConnectionAndResourceRepository()
         {
             //// Needed for ResourceRepository!
             //var wizardEngine = new Mock<IWizardEngine>();
@@ -56,14 +53,14 @@ namespace Dev2.Core.Tests.Environments
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void EnvironmentModelConstructorWithConnectionAndNullResourceRepositoryExpectedThrowsArgumentNullException()
+        public void EnvironmentModel_Constructor_ConnectionAndNullResourceRepository_ThrowsArgumentNullException()
         {
             var connection = CreateConnection();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, (IResourceRepository)null);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, null);
         }
 
         [TestMethod]
-        public void EnvironmentModelConstructorWithConnectionAndResourceRepositoryExpectedInitializesConnectionAndResourceRepository()
+        public void EnvironmentModel_Constructor_ConnectionAndResourceRepository_InitializesConnectionAndResourceRepository()
         {
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
@@ -75,15 +72,15 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreSame(repo.Object, env.ResourceRepository);
         }
 
-        #endregion
-
-        #region Connect
-
         [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connect")]
         [ExpectedException(typeof(ArgumentException))]
-        public void EnvironmentModelConnectWithNoNameExpectedThrowsArgumentException()
+        public void EnvironmentModel_Connect_IsNotConnectedAndNameIsEmpty_ThrowsArgumentException()
         {
             var connection = CreateConnection();
+            connection.Setup(c => c.IsConnected).Returns(false);
+            connection.Setup(c => c.DisplayName).Returns("");
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
@@ -91,9 +88,12 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void EnvironmentModelConnectWithNameExpectedInvokesEnvironmentConnection()
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connect")]
+        public void EnvironmentModel_Connect_IsNotConnectedAndNameIsNotEmpty_DoesInvokeConnection()
         {
             var connection = CreateConnection();
+            connection.Setup(c => c.IsConnected).Returns(false);
             connection.Setup(c => c.DisplayName).Returns("Test");
             connection.Setup(c => c.Connect()).Verifiable();
 
@@ -105,8 +105,26 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connect")]
+        public void EnvironmentModel_Connect_IsConnected_DoesNotInvokeConnection()
+        {
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.DisplayName).Returns("Test");
+            connection.Setup(c => c.Connect()).Verifiable();
+
+            var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
+
+            env.Connect();
+
+            connection.Verify(c => c.Connect(), Times.Never());
+        }
+
+        [TestMethod]
+        [TestCategory("EnvironmentModel_Connect")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void EnvironmentModelConnectOtherWithNullExpectedThrowsArgumentNullException()
+        public void EnvironmentModel_ConnectOther_Null_ThrowsArgumentNullException()
         {
             var connection = CreateConnection();
 
@@ -116,7 +134,8 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void EnvironmentModelConnectOtherWithNonNullAndConnectedExpectedDoesNotInvokeOthersConnect()
+        [TestCategory("EnvironmentModel_Connect")]
+        public void EnvironmentModel_ConnectOther_NonNullAndConnected_DoesNotInvokeOthersConnect()
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
@@ -136,7 +155,8 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void EnvironmentModelConnectOtherWithNonNullAndConnectedExpectedInvokesThisConnect()
+        [TestCategory("EnvironmentModel_Connect")]
+        public void EnvironmentModel_ConnectOther_NonNullAndConnected_InvokesThisConnect()
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
@@ -155,12 +175,51 @@ namespace Dev2.Core.Tests.Environments
             c1.Verify(c => c.Connect(), Times.Once());
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connect")]
+        public void EnvironmentModel_ConnectOther_NonNullAndNotConnected_InvokesOtherConnect()
+        {
+            var c1 = CreateConnection();
+            c1.Setup(c => c.DisplayName).Returns("Test");
+            c1.Setup(c => c.Connect()).Verifiable();
 
-        #region ToSourceDefinition
+            var c2 = CreateConnection();
+            c2.Setup(c => c.DisplayName).Returns("Other");
+            c2.Setup(c => c.IsConnected).Returns(false);
+            c2.Setup(c => c.Connect()).Callback(() => c2.Setup(c => c.IsConnected).Returns(true)).Verifiable();
+
+            var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
+            var e2 = CreateEnvironmentModel(Guid.NewGuid(), c2.Object);
+
+            e1.Connect(e2);
+
+            c2.Verify(c => c.Connect(), Times.Once());
+        }
+
 
         [TestMethod]
-        public void EnvironmentModelToSourceDefinitionExpectedCategoryIsNotServers()
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connect")]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void EnvironmentModel_ConnectOther_NonNullAndNotConnectedFails_ThrowsInvalidOperationException()
+        {
+            var c1 = CreateConnection();
+            c1.Setup(c => c.DisplayName).Returns("Test");
+            c1.Setup(c => c.Connect()).Verifiable();
+
+            var c2 = CreateConnection();
+            c2.Setup(c => c.DisplayName).Returns("Other");
+            c2.Setup(c => c.IsConnected).Returns(false);
+
+            var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
+            var e2 = CreateEnvironmentModel(Guid.NewGuid(), c2.Object);
+
+            e1.Connect(e2);
+        }
+
+        [TestMethod]
+        public void EnvironmentModel_ToSourceDefinition_CategoryIsNotServers()
         {
             // BUG: 8786 - TWR - 2013.02.20
             var eventAggregator = new Mock<IEventAggregator>();
@@ -176,154 +235,55 @@ namespace Dev2.Core.Tests.Environments
             Assert.AreNotEqual("SERVERS", category);
         }
 
-        #endregion
-
-        #region ServerStateChanged
-
-        // PBI 9228: TWR - 2013.04.17
-
         [TestMethod]
-        public void ServerStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
+        [TestCategory("EnvironmentModel_NetworkStateChanged")]
+        public void EnvironmentModel_NetworkStateChanged_Offline_DoesPublishEnvironmentDisconnectedMessage()
         {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Offline, false);
+            TestConnectionEvents<EnvironmentDisconnectedMessage>(NetworkState.Offline);
         }
 
         [TestMethod]
-        public void ServerStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
+        [TestCategory("EnvironmentModel_NetworkStateChanged")]
+        public void EnvironmentModel_NetworkStateChanged_Online_DoesPublishEnvironmentConnectedMessage()
         {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, false);
+            TestConnectionEvents<EnvironmentConnectedMessage>(NetworkState.Online);
         }
 
-        [TestMethod]
-        public void ServerStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, true);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Offline, false);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, false);
-        }
-
-        [TestMethod]
-        public void LoginStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, true);
-        }
-
-        [TestMethod]
-        public void NetworkStateChangedEventExpectedDoesNotPublishEnvironmentMessages()
+        static void TestConnectionEvents<TMessage>(NetworkState toState)
         {
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>())).Verifiable();
-            EventPublishers.Aggregator = eventAggregator.Object;
-            var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
-
-            var envModel = CreateEnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object);
-
-            environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
-
-            eventAggregator.Verify(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>()), Times.Never());
-        }
-
-        EnvironmentModel CreateEnvironmentModel(IEventAggregator aggregator, Guid id, IEnvironmentConnection environmentConnection)
-        {
-
-            var repo = new Mock<IResourceRepository>();
-
-            return new EnvironmentModel(aggregator, id, environmentConnection, repo.Object, false);
-        }
-
-        #endregion
-
-        #region ServerStateChanged
-
-        // PBI 9228: TWR - 2013.04.17
-
-        [TestMethod]
-        public void EnvironmentModelServerStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Offline, false);
-        }
-
-        [TestMethod]
-        public void EnvironmentModelServerStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, false);
-        }
-
-        [TestMethod]
-        public void EnvironmentModelServerStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.ServerState, ConnectionEventState.Online, true);
-        }
-
-        [TestMethod]
-        public void EnvironmentModelLoginStateChangedEventWhenOfflineExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentDisconnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Offline, false);
-        }
-
-        [TestMethod]
-        public void EnvironmentModelLoginStateChangedEventWhenOnlineExpectedPublishesEnvironmentConnectedMessage()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, false);
-        }
-
-        [TestMethod]
-        public void EnvironmentModelLoginStateChangedEventWhenAuxiliaryConnectionExpectedDoesNothing()
-        {
-            TestConnectionEvents<EnvironmentConnectedMessage>(ConnectionEventType.LoginState, ConnectionEventState.Online, true);
-        }
-
-        #endregion
-
-        #region TestConnectionEvents
-
-        static void TestConnectionEvents<TExpectedMessage>(ConnectionEventType eventType, ConnectionEventState eventState, bool isAuxiliary)
-        {
-            var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.IsAny<TExpectedMessage>())).Verifiable();
-            EventPublishers.Aggregator = eventAggregator.Object;
-            var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
-            var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
-
-            envModel.IsConnectedChanged += (sender, args) =>
+            if(toState == NetworkState.Online)
             {
-                Assert.AreEqual(eventState == ConnectionEventState.Online, args.IsConnected);
-            };
-
-            switch(eventType)
-            {
-                case ConnectionEventType.ServerState:
-                    environmentConnection.Raise(c => c.ServerStateChanged += null, new ServerStateEventArgs(eventState == ConnectionEventState.Online ? ServerState.Online : ServerState.Offline));
-                    break;
-                case ConnectionEventType.NetworkState:
-                    environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, eventState == ConnectionEventState.Online ? NetworkState.Online : NetworkState.Offline));
-                    break;
-                case ConnectionEventType.LoginState:
-                    environmentConnection.Raise(c => c.LoginStateChanged += null, new LoginStateEventArgs(eventState == ConnectionEventState.Online ? AuthenticationResponse.Success : AuthenticationResponse.Logout, false));
-                    break;
+                eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentConnectedMessage>())).Verifiable();
             }
-            eventAggregator.Verify(e => e.Publish(It.IsAny<TExpectedMessage>()), Times.Once());
+            else
+            {
+                eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDisconnectedMessage>())).Verifiable();
+            }
+
+            var environmentConnection = new Mock<IEnvironmentConnection>();
+            environmentConnection.Setup(connection => connection.IsConnected).Returns(true);
+            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
+
+            var repo = new Mock<IResourceRepository>();
+            var envModel = new EnvironmentModel(eventAggregator.Object, Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
+
+            envModel.IsConnectedChanged += (sender, args) => Assert.AreEqual(toState == NetworkState.Online, args.IsConnected);
+
+            environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, toState));
+
+            if(toState == NetworkState.Online)
+            {
+                eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentConnectedMessage>()));
+            }
+            else
+            {
+                eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDisconnectedMessage>()));
+            }
         }
 
-        #endregion
-
-        #region LoadResources
-
         [TestMethod]
-        public void EnvironmentModelForceLoadResourcesExpectedInvokesForceLoadOnResourceRepository()
+        public void EnvironmentModel_ForceLoadResources_InvokesForceLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.ForceLoad()).Verifiable();
@@ -342,7 +302,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void EnvironmentModelLoadResourcesWithShouldLoadTrueExpectedInvokesLoadOnResourceRepository()
+        public void EnvironmentModel_LoadResources_ShouldLoadTrue_InvokesLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Load()).Verifiable();
@@ -361,7 +321,7 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void EnvironmentModelLoadResourcesWithShouldLoadFalseExpectedNotInvokeLoadOnResourceRepository()
+        public void EnvironmentModel_LoadResources_ShouldLoadFalse_NotInvokeLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Load()).Verifiable();
@@ -379,101 +339,9 @@ namespace Dev2.Core.Tests.Environments
             resourceRepo.Verify(r => r.Load(), Times.Never());
         }
 
-        #endregion
-
-        #region LoginStateChanged
-
         [TestMethod]
-        public void EnvironmentModelLoginStateChangedWithLoginExpectedPublishesEnvironmentConnectedMessage()
-        {
-            var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.Is<EnvironmentConnectedMessage>(m => m != null))).Verifiable();
-
-            EventPublishers.Aggregator = eventAggregator.Object;
-
-            var connection = CreateConnection();
-            connection.Setup(c => c.DisplayName).Returns("Test");
-            connection.Setup(c => c.IsConnected).Returns(true);
-
-            var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
-
-            connection.Raise(c => c.LoginStateChanged += null, new LoginStateEventArgs(AuthenticationResponse.Success, true, false, string.Empty));
-
-            eventAggregator.Verify(e => e.Publish(It.Is<EnvironmentConnectedMessage>(m => m != null)));
-
-        }
-
-        [TestMethod]
-        public void EnvironmentModelLoginStateChangedWithLogoutExpectedPublishesEnvironmentDisconnectedMessage()
-        {
-            var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.Is<EnvironmentDisconnectedMessage>(m => m != null))).Verifiable();
-
-            EventPublishers.Aggregator = eventAggregator.Object;
-
-            var connection = CreateConnection();
-            connection.Setup(c => c.DisplayName).Returns("Test");
-            connection.Setup(c => c.IsConnected).Returns(true);
-
-            var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
-
-            connection.Raise(c => c.LoginStateChanged += null, new LoginStateEventArgs(AuthenticationResponse.InvalidCredentials, false, false, string.Empty));
-
-            eventAggregator.Verify(e => e.Publish(It.Is<EnvironmentDisconnectedMessage>(m => m != null)));
-
-        }
-
-        #endregion
-
-        #region NetworkStateChanged
-
-        [TestMethod]
-        public void EnvironmentModelNetworkStateChangedEventExpectedDoesNotPublishEnvironmentMessages()
-        {
-            var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(e => e.Publish(It.IsAny<IMessage>())).Verifiable();
-            EventPublishers.Aggregator = eventAggregator.Object;
-            var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.Setup(connection => connection.ServerEvents).Returns(EventPublishers.Studio);
-
-            var repo = new Mock<IResourceRepository>();
-            var envModel = new EnvironmentModel(EventPublishers.Aggregator, Guid.NewGuid(), environmentConnection.Object, repo.Object, false);
-
-            environmentConnection.Raise(c => c.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Connecting, NetworkState.Online));
-
-            eventAggregator.Verify(e => e.Publish(It.IsAny<AbstractEnvironmentMessage>()), Times.Never());
-        }
-
-        #endregion
-
-        #region CreateConnection
-
-        static Mock<IEnvironmentConnection> CreateConnection()
-        {
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-
-            return conn;
-        }
-
-        #endregion
-
-        #region CreateEnvironmentModel
-
-        static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
-        {
-
-            var repo = new Mock<IResourceRepository>();
-
-            return new EnvironmentModel(id, connection, repo.Object, false);
-        }
-
-        #endregion
-
-        #region IsLocalHost
-
-        [TestMethod]
-        public void IsLocalHost()
+        [TestCategory("EnvironmentModel_IsLocalHost")]
+        public void EnvironmentModel_IsLocalHost_IsLocalHost_True()
         {
             var conn = CreateConnection();
             conn.SetupProperty(c => c.DisplayName, "localhost");
@@ -484,7 +352,8 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
-        public void IsNotLocalHost()
+        [TestCategory("EnvironmentModel_IsLocalHost")]
+        public void EnvironmentModel_IsLocalHost_IsNotLocalHost_False()
         {
             var conn = CreateConnection();
             conn.Setup(c => c.DisplayName).Returns("notlocalhost");
@@ -492,24 +361,202 @@ namespace Dev2.Core.Tests.Environments
             var isLocalHost = env.IsLocalHost();
             Assert.IsFalse(isLocalHost);
         }
-        #endregion
 
-        #region Enums
-
-        internal enum ConnectionEventType
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_AuthorizationService")]
+        public void EnvironmentModel_AuthorizationService_Constructor_PropertyInitialized()
         {
-            ServerState,
-            NetworkState,
-            LoginState
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+
+            //------------Execute Test---------------------------
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(env.AuthorizationService);
         }
 
-        internal enum ConnectionEventState
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Connection")]
+        public void EnvironmentModel_Connection_PermissionsChanged_IsAuthorizedChanged()
         {
-            Online,
-            Offline
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsAuthorized).Returns(false);
+
+            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+            Assert.IsFalse(envModel.IsAuthorized);
+
+            //------------Execute Test---------------------------
+            connection.Setup(c => c.IsAuthorized).Returns(true);
+            connection.Raise(c => c.PermissionsChanged += null, EventArgs.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(envModel.IsAuthorized);
         }
 
-        #endregion
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_AuthorizationService")]
+        public void EnvironmentModel_AuthorizationService_PermissionsChanged_IsAuthorizedDeployToAndIsAuthorizedDeployFromChanged()
+        {
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
 
+            var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
+
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true).Verifiable();
+            envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true).Verifiable();
+
+            Assert.IsFalse(envModel.IsAuthorizedDeployFrom);
+            Assert.IsFalse(envModel.IsAuthorizedDeployTo);
+
+            //------------Execute Test---------------------------
+            envModel.AuthorizationServiceMock.Raise(a => a.PermissionsChanged += null, EventArgs.Empty);
+
+            //------------Assert Results-------------------------
+            envModel.AuthorizationServiceMock.Verify(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null));
+            envModel.AuthorizationServiceMock.Verify(a => a.IsAuthorized(AuthorizationContext.DeployTo, null));
+            Assert.IsTrue(envModel.IsAuthorizedDeployFrom);
+            Assert.IsTrue(envModel.IsAuthorizedDeployTo);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherIsNull_False()
+        {
+            //------------Setup for test--------------------------
+            var environmentModel = CreateEnvironmentModel(Guid.NewGuid(), CreateConnection().Object);
+
+            //------------Execute Test---------------------------
+            var actual = environmentModel.Equals(null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherIsSame_True()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            const string Name = "test";
+
+            var environmentModel = CreateEnvironmentModel(id, CreateConnection().Object);
+            environmentModel.Name = Name;
+            var other = CreateEnvironmentModel(id, CreateConnection().Object);
+            other.Name = Name;
+
+            //------------Execute Test---------------------------
+            var actual = environmentModel.Equals(other);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherHasDifferentID_False()
+        {
+            //------------Setup for test--------------------------
+            const string Name = "test";
+
+            var connection1 = CreateConnection();
+            connection1.Setup(c => c.DisplayName).Returns(Name);
+            var environment1 = CreateEnvironmentModel(Guid.NewGuid(), connection1.Object);
+
+            var connection2 = CreateConnection();
+            connection1.Setup(c => c.DisplayName).Returns(Name);
+            var environment2 = CreateEnvironmentModel(Guid.NewGuid(), connection2.Object);
+
+            //------------Execute Test---------------------------
+            var actual = environment1.Equals(environment2);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherHasDifferentName_False()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            const string Name = "test";
+
+            var connection1 = CreateConnection();
+            connection1.Setup(c => c.DisplayName).Returns(Name);
+            var environment1 = CreateEnvironmentModel(id, connection1.Object);
+
+            var connection2 = CreateConnection();
+            connection1.Setup(c => c.DisplayName).Returns(Name + "1");
+            var environment2 = CreateEnvironmentModel(id, connection2.Object);
+
+            //------------Execute Test---------------------------
+            var actual = environment1.Equals(environment2);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Disconnect")]
+        public void EnvironmentModel_Disconnect_IsConnected_DoesInvokeDisconnectOnConnection()
+        {
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsConnected).Returns(true);
+            connection.Setup(c => c.Disconnect()).Verifiable();
+
+            var environment = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
+
+            //------------Execute Test---------------------------
+            environment.Disconnect();
+
+            //------------Assert Results-------------------------
+            connection.Verify(c => c.Disconnect());
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Disconnect")]
+        public void EnvironmentModel_Disconnect_IsNotConnected_DoesNotInvokeDisconnectOnConnection()
+        {
+            //------------Setup for test--------------------------
+            var connection = CreateConnection();
+            connection.Setup(c => c.IsConnected).Returns(false);
+            connection.Setup(c => c.Disconnect()).Verifiable();
+
+            var environment = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
+
+            //------------Execute Test---------------------------
+            environment.Disconnect();
+
+            //------------Assert Results-------------------------
+            connection.Verify(c => c.Disconnect(), Times.Never());
+        }
+
+        static Mock<IEnvironmentConnection> CreateConnection()
+        {
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            return conn;
+        }
+
+        static EnvironmentModel CreateEnvironmentModel(Guid id, IEnvironmentConnection connection)
+        {
+            var repo = new Mock<IResourceRepository>();
+
+            return new EnvironmentModel(id, connection, repo.Object, false);
+        }
     }
 }

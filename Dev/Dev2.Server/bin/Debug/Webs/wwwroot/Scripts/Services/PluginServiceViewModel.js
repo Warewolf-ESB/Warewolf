@@ -19,6 +19,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.isLoading = false;  // BUG 9500 - 2013.05.31 - TWR : added
     self.inputMappingLink = "Please select an saveaction first (Step 3)";
     self.outputMappingLink = "Please run a test first (Step 4)";
+    self.isReadOnly = false;
 
     self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "PluginService");
     self.data.namespace = ko.observable("");
@@ -58,15 +59,21 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
     self.testErrorMessage = ko.observable("");
     self.hasTestErrors = ko.observable(false);
     self.isFormValid = ko.computed(function () {
-        return self.hasTestResults();
+        return self.hasTestResults() && !self.isReadOnly;
     });
 
     self.isSourceMethodsLoading = ko.observable(false);
     self.isTestResultsLoading = ko.observable(false);
     self.isTestEnabled = ko.computed(function () {
+        if (self.isReadOnly) {
+            return false;
+        }
         return self.hasMethod() && !self.isTestResultsLoading();
     });
     self.isEditSourceEnabled = ko.computed(function () {
+        if (self.isReadOnly) {
+            return false;
+        }
         return self.data.source();
     });
 
@@ -74,7 +81,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         self.loadNamespaces(newValue);
     });
 
-    self.data.method.Name.subscribe(function (newValue) {
+    self.data.method.Name.subscribe(function () {
         self.pushRecordsets([]);
     });
 
@@ -95,15 +102,18 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         return "<b>" + self.title() + "</b>";
     });
 
-    utils.registerSelectHandler($sourceMethods, function (selectedItem) {
-        self.data.method.Name(selectedItem.Name);
-        self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
-        self.data.method.Parameters(selectedItem.Parameters);
-
-        self.hasTestResults(false);
-        self.hasTestResultRecords(false);
+    utils.isReadOnly(resourceID, function (isReadOnly) {
+        self.isReadOnly = isReadOnly;
+        utils.registerSelectHandler($sourceMethods, function (selectedItem) {
+            self.data.method.Name(selectedItem.Name);
+            self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
+            self.data.method.Parameters(selectedItem.Parameters);
+            utils.toggleUIReadOnlyState(self.isReadOnly);
+            self.hasTestResults(false);
+            self.hasTestResultRecords(false);
+        }, self.isReadOnly);
     });
-
+    
     self.getJsonData = function () {
         // BUG 9500 - 2013.05.31 - TWR : fixed
         return ko.toJSON(self.data);
@@ -164,6 +174,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
         self.hasTestResults(hasResults);
 
         recordsets.pushResult(self.data.recordsets, result);
+        utils.toggleUIReadOnlyState(self.isReadOnly);
     };
 
     self.load = function () {
@@ -208,6 +219,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
                 self.data.method.Parameters(result.Method.Parameters);
+                utils.toggleUIReadOnlyState(self.isReadOnly);
             }
 
             // BUG 9500 - 2013.05.31 - TWR : added           
@@ -249,6 +261,7 @@ function PluginServiceViewModel(saveContainerID, resourceID, sourceName, environ
 
                         // BUG 9500 - 2013.05.31 - TWR : added
                         self.data.method.Parameters(method.Parameters);
+                        utils.toggleUIReadOnlyState(self.isReadOnly);
                         return false;
                     }
                     return true;
@@ -382,8 +395,12 @@ PluginServiceViewModel.create = function (pluginServiceContainerID, saveContaine
         position: utils.getDialogPosition(),
         width: 700,
         buttons: {
-            "Close": function () {
-                $(this).dialog("close");
+            "Close": {
+                text: "Close",
+                id: "dialogCloseBtn",
+                click: function () {
+                    $(this).dialog("close");
+                }
             }
         }
     });

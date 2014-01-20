@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission };
-            var settings = new Settings { Security = windowsGroupPermissions };
+            var settings = new Settings { Security = new SecuritySettingsTO(windowsGroupPermissions) };
             var serializeObject = JsonConvert.SerializeObject(settings);
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.Services
         #region HandlesType
 
         [TestMethod]
-        public void SettingsWriteHandlesTypeExpectedReturnsSecurityWriteService()
+        public void SettingsWrite_HandlesType_ReturnsSettingsWriteService()
         {
             var esb = new SettingsWrite();
             var result = esb.HandlesType();
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Services
         #region CreateServiceEntry
 
         [TestMethod]
-        public void SettingsWriteCreateServiceEntryExpectedReturnsDynamicService()
+        public void SettingsWrite_CreateServiceEntry_ReturnsDynamicService()
         {
             var esb = new SettingsWrite();
             var result = esb.CreateServiceEntry();

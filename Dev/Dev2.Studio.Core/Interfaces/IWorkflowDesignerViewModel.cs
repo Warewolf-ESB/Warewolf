@@ -11,17 +11,8 @@ namespace Dev2.Studio.Core.ViewModels
         object SelectedModelItem { get; }
         string WorkflowName { get; }
         bool RequiredSignOff { get; }
-        string AuthorRoles { get; set; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
-        /// <summary>
-        /// Gets the environment model.
-        /// </summary>
-        /// <value>
-        /// The environment model.
-        /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
-        new IEnvironmentModel EnvironmentModel { get; }
 
         void Dispose();
         bool NotifyItemSelected(object primarySelection);

@@ -1,9 +1,4 @@
-﻿using Dev2.Studio.ViewModels;
-using Dev2.ViewModels.WorkSurface;
-using Infragistics;
-using Infragistics.Windows.DockManager;
-using Infragistics.Windows.DockManager.Events;
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,6 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics;
+using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Dock
@@ -142,7 +142,9 @@ namespace Dev2.Studio.Dock
                     pane.CloseAction = PaneCloseAction.RemovePane;
 
                     if(null == cv || !cv.CanRemove)
+                    {
                         pane.AllowClose = false;
+                    }
                 }
             }
         }
@@ -199,8 +201,9 @@ namespace Dev2.Studio.Dock
         protected sealed override void ValidateContainerType(Type elementType)
         {
             if(!typeof(ContentPane).IsAssignableFrom(elementType))
+            {
                 throw new ArgumentException("ContainerType must be a ContentPane or a derived class.");
-
+            }
             base.ValidateContainerType(elementType);
         }
         #endregion //ValidateContainerType
@@ -305,7 +308,9 @@ namespace Dev2.Studio.Dock
 
                 // ReSharper disable once PossibleUnintendedReferenceComparison
                 if(oldFactory == newFactory)
+                {
                     return;
+                }
 
                 if(oldFactory != null)
                 {
@@ -435,12 +440,16 @@ namespace Dev2.Studio.Dock
 
                 SplitPane splitPane = _target as SplitPane;
                 if(splitPane != null)
+                {
                     targetCollection = splitPane.Panes;
+                }
                 else
                 {
                     TabGroupPane target = _target as TabGroupPane;
                     if(target != null)
+                    {
                         targetCollection = target.Items;
+                    }
                 }
 
                 if(null != targetCollection)
@@ -460,28 +469,40 @@ namespace Dev2.Studio.Dock
             DocumentContentHost dch = _target as DocumentContentHost;
 
             if(dch == null)
+            {
                 return null;
+            }
 
             if(null != dch.ActiveDocument)
+            {
                 return dch.ActiveDocument;
+            }
 
             XamDockManager dm = XamDockManager.GetDockManager(dch);
 
             if(dm == null)
+            {
                 return null;
+            }
 
             ContentPane firstDocument = null;
 
             foreach(ContentPane cp in dm.GetPanes(PaneNavigationOrder.VisibleOrder))
             {
                 if(cp.PaneLocation != PaneLocation.Document)
+                {
                     continue;
+                }
 
                 if(firstDocument == null)
+                {
                     firstDocument = cp;
+                }
 
                 if(cp.Visibility != Visibility.Visible)
+                {
                     continue;
+                }
 
                 return cp;
             }
@@ -505,7 +526,9 @@ namespace Dev2.Studio.Dock
                     vm.Dispose();
                     var mainVm = vm.Parent as MainViewModel;
                     if(mainVm != null && !mainVm.CloseCurrent)
+                    {
                         e.Cancel = true;
+                    }
                 }
             }
         }
@@ -538,7 +561,10 @@ namespace Dev2.Studio.Dock
         #region RaiseInitializeContentPane
         private void RaiseInitializeContentPane(ContentPane pane)
         {
-            if(null == _target) return;
+            if(null == _target)
+            {
+                return;
+            }
 
             var args = new InitializeContentPaneEventArgs(pane) { RoutedEvent = InitializeContentPaneEvent };
             UiElementHelper.RaiseEvent(_target, args);
@@ -566,11 +592,17 @@ namespace Dev2.Studio.Dock
 
             // restore the original close action
             if(oldExpression != null)
+            {
                 cp.SetBinding(closeProp, oldExpression.ParentBindingBase);
+            }
             else if(oldValue == DependencyProperty.UnsetValue)
+            {
                 cp.ClearValue(closeProp);
+            }
             else
+            {
                 cp.SetValue(closeProp, oldValue);
+            }
         }
         #endregion //RemovePane
 
@@ -618,7 +650,7 @@ namespace Dev2.Studio.Dock
     {
         #region Member Variables
 
-        private readonly ContentPane _pane;
+        readonly ContentPane _pane;
 
         #endregion //Member Variables
 
@@ -630,7 +662,9 @@ namespace Dev2.Studio.Dock
         public InitializeContentPaneEventArgs(ContentPane pane)
         {
             if(pane == null)
+            {
                 throw new ArgumentNullException("pane");
+            }
 
             _pane = pane;
         }

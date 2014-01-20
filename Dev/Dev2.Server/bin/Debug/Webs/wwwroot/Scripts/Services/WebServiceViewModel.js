@@ -17,7 +17,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
       .button() : null;
-
+    
     $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/jsonpath.png" />')
@@ -32,13 +32,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.onLoadSourceCompleted = null;
     self.inputMappingLink = "Please enter a request url or body first (Step 3 & 4)";
     self.outputMappingLink = "Please run a test first (Step 5) or paste a response first (Step 6)";
+    self.isReadOnly = false;
     
     self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "WebService");
     self.data.requestUrl = ko.observable("");
     self.data.requestMethod = ko.observable("");
     self.data.requestHeaders = ko.observable("");
     self.data.requestBody = ko.observable("");
-    self.data.requestResponse = ko.observable("");
+    self.data.requestResponse = ko.observable("");   
     self.data.jsonPath = ko.observable("");
 	self.data.jsonPathResult = ko.observable("");
 	self.data.requestMessage = ko.observable("");	
@@ -120,6 +121,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         self.hasTestResults(hasResults);
 
         recordsets.pushResult(self.data.recordsets, result.Recordsets);
+        utils.toggleUIReadOnlyState(self.isReadOnly);
     };
 
     self.getParameter = function (text, start) {
@@ -478,11 +480,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     });
     
     self.isFormValid = ko.computed(function () {
-        return self.hasTestResults();
+        return self.hasTestResults() && !self.isReadOnly;
     });
     
     self.isTestVisible = ko.observable(true);
     self.isTestEnabled = ko.computed(function () {
+        if (self.isReadOnly) {
+            return false;
+        }
         return self.data.source() ? true : false;
     });
 	self.isJsonPathEnabled = ko.computed(function () {
@@ -549,6 +554,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.load = function () {
         self.loadSources(
             self.loadService());
+        utils.isReadOnly(resourceID, function (isReadOnly) {
+            self.isReadOnly = isReadOnly;
+        });
     };
     
     self.loadService = function () {
@@ -565,7 +573,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.data.jsonPath(result.JsonPath);
 			self.data.requestMessage(result.RequestMessage);
 			self.data.displayData("");
-			
+
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
@@ -582,7 +590,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 self.data.requestHeaders(result.RequestHeaders);
                 self.data.requestBody(result.RequestBody);
                 self.data.requestResponse(result.RequestResponse);
-				
+
                 self.pushRecordsets(result);
                 self.onLoadSourceCompleted = null;
             };
@@ -641,7 +649,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.addResponse = function () {
         $addResponseDialog.dialog("open");
     };
-
+    
     self.addPath = function () {
         $addPathDialog.dialog("open");
     };
@@ -664,7 +672,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 			}else{
 				self.data.displayData(result.RequestResponse+" ");
 			}
-			
+            
             self.pushRecordsets(result);
         });
     };
@@ -728,7 +736,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
             }
         }
     });
-
+    
     $("#addPathDialog").dialog({
         resizable: false,
         autoOpen: false,

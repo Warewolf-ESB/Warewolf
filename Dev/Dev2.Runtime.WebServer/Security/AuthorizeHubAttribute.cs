@@ -1,4 +1,6 @@
 ﻿using System;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
@@ -8,7 +10,7 @@ namespace Dev2.Runtime.WebServer.Security
     public class AuthorizeHubAttribute : Attribute, IAuthorizeHubConnection, IAuthorizeHubMethodInvocation
     {
         public AuthorizeHubAttribute()
-            : this(AuthorizationService.Instance)
+            : this(ServerAuthorizationService.Instance)
         {
         }
 

@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -8,13 +13,8 @@ using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using Dev2.ViewModels.WorkSurface;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer
@@ -62,7 +62,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                 _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
                 NavigationViewModel.LoadResourcesCompleted += LoadResourcesCompletedOnceOff;
             }
-            LoadEnvironments();
         }
 
         void LoadResourcesCompletedOnceOff(object sender, EventArgs e)
@@ -161,7 +160,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         /// <summary>
         ///     Loads the environments from the resource repository
         /// </summary>
-        private void LoadEnvironments()
+        public void LoadEnvironments()
         {
             if(EnvironmentRepository == null) return;
 

@@ -8,7 +8,9 @@ using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ServiceModel
@@ -26,7 +28,12 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public WebServices(IResourceCatalog resourceCatalog, WebExecuteString webExecute)
-            : base(resourceCatalog)
+            : this(resourceCatalog, webExecute, ServerAuthorizationService.Instance)
+        {
+        }
+
+        public WebServices(IResourceCatalog resourceCatalog, WebExecuteString webExecute, IAuthorizationService authorizationService)
+            : base(resourceCatalog, authorizationService)
         {
             VerifyArgument.IsNotNull("webExecute", webExecute);
             _webExecute = webExecute;
@@ -74,10 +81,10 @@ namespace Dev2.Runtime.ServiceModel
                     // we need to timeout this request after 10 seconds due to nasty pathing issues ;)
                     Thread jsonMapTaskThread = null;
                     var jsonMapTask = new Task(() =>
-                        {
-                            jsonMapTaskThread = Thread.CurrentThread;
-                            service.Recordsets = FetchRecordset(service, true);
-                        });
+                    {
+                        jsonMapTaskThread = Thread.CurrentThread;
+                        service.Recordsets = FetchRecordset(service, true);
+                    });
 
                     jsonMapTask.Start();
                     jsonMapTask.Wait(10000);
@@ -141,7 +148,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-
+        
         #region ExecuteRequest
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
@@ -176,5 +183,5 @@ namespace Dev2.Runtime.ServiceModel
 
     }
 
-
+    
 }

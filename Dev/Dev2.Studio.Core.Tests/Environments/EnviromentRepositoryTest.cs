@@ -234,6 +234,7 @@ namespace Dev2.Core.Tests.Environments
             var e2 = new Mock<IEnvironmentModel>();
 
             var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            repo.IsLoaded = true;
             Assert.IsTrue(repo.IsLoaded);
             repo.ForceLoad();
             Assert.IsFalse(repo.IsLoaded);

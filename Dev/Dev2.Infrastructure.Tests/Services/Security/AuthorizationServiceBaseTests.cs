@@ -45,6 +45,29 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AuthorizationServiceBase_IsAuthorized")]
+        public void AuthorizationServiceBase_IsAuthorized_UserIsInResourceRoleAndResourceToBeVerifiedIsNull_False()
+        {
+            //------------Setup for test--------------------------
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceName = "Category\\Test1", ResourceID = Guid.NewGuid() };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.IsAuthorized(AuthorizationContext.Contribute, null);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorized")]
         public void AuthorizationServiceBase_IsAuthorized_UserIsNotInRole_False()
         {
             //------------Setup for test--------------------------
@@ -213,5 +236,71 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             }
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_UserHasPermissions_True()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(true);
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationServiceBase_IsAuthorizedToConnect")]
+        public void AuthorizationServiceBase_IsAuthorizedToConnect_UserHasNoPermissions_False()
+        {
+            //------------Setup for test--------------------------
+            var resource = Guid.NewGuid();
+            var securityPermission = new WindowsGroupPermission { IsServer = false, ResourceID = resource, Permissions = Permissions.View };
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.SetupGet(p => p.Permissions).Returns(new List<WindowsGroupPermission> { securityPermission });
+
+            var user = new Mock<IPrincipal>();
+            user.Setup(u => u.IsInRole(It.IsAny<string>())).Returns(false);
+
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object) { User = user.Object };
+
+            //------------Execute Test---------------------------
+            var authorized = authorizationService.TestIsAuthorizedToConnect(user.Object);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(authorized);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationServiceBase_Remove")]
+        public void AuthorizationServiceBase_Remove_InvokesSecurityService()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var securityService = new Mock<ISecurityService>();
+            securityService.Setup(p => p.Remove(resourceID)).Verifiable();
+            var authorizationService = new TestAuthorizationServiceBase(securityService.Object);
+
+            //------------Execute Test---------------------------
+            authorizationService.Remove(resourceID);
+
+            //------------Assert Results-------------------------
+            securityService.Verify(p => p.Remove(resourceID));
+        }
     }
 }

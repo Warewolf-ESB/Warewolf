@@ -33,68 +33,94 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SecurityRead_Execute")]
-        public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_AdministratorsPermissionsSet()
-        {
-            //------------Setup for test--------------------------
-            var securityRead = new SecurityRead();
-
-            //------------Execute Test---------------------------
-            var jsonPermissions = securityRead.Execute(null, null);
-            var windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
-            //------------Assert Results-------------------------
-            Assert.IsTrue(windowsGroupPermissions.Count > 0);
-            Assert.AreEqual("BuiltIn\\Administrators", windowsGroupPermissions[0].WindowsGroup);
-            Assert.AreEqual(true, windowsGroupPermissions[0].IsServer);
-            Assert.AreEqual(true, windowsGroupPermissions[0].View);
-            Assert.AreEqual(true, windowsGroupPermissions[0].Execute);
-            Assert.AreEqual(true, windowsGroupPermissions[0].Contribute);
-            Assert.AreEqual(true, windowsGroupPermissions[0].DeployTo);
-            Assert.AreEqual(true, windowsGroupPermissions[0].DeployFrom);
-            Assert.AreEqual(true, windowsGroupPermissions[0].Administrator);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SecurityRead_Execute")]
         public void SecurityRead_Execute_WhenSecureConfigDoesExist_PermissionsSetFromSecureConfig()
         {
             //------------Setup for test--------------------------
-            if (File.Exists("secure.config"))
+            if(File.Exists("secure.config"))
             {
                 File.Delete("secure.config");
             }
             var permission = new WindowsGroupPermission { Administrator = true, IsServer = true, WindowsGroup = Environment.UserName };
             var permission2 = new WindowsGroupPermission { Administrator = false, DeployFrom = false, IsServer = true, WindowsGroup = "NETWORK SERVICE" };
             var windowsGroupPermissions = new List<WindowsGroupPermission> { permission, permission2 };
-            var serializeObject = JsonConvert.SerializeObject(windowsGroupPermissions);
+            var securitySettings = new SecuritySettingsTO(windowsGroupPermissions) { CacheTimeout = new TimeSpan(0, 10, 0) };
+            var serializeObject = JsonConvert.SerializeObject(securitySettings);
             var securityWrite = new SecurityWrite();
             var securityRead = new SecurityRead();
-            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "Permissions", new StringBuilder(serializeObject) } }, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Preconditions-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             //------------Execute Test---------------------------
             var jsonPermissions = securityRead.Execute(null, null);
             File.Delete("secure.config");
-            windowsGroupPermissions = JsonConvert.DeserializeObject<List<WindowsGroupPermission>>(jsonPermissions.ToString());
+            var readSecuritySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, windowsGroupPermissions.Count);
-            Assert.AreEqual(Environment.UserName, windowsGroupPermissions[0].WindowsGroup);
-            Assert.AreEqual(true, windowsGroupPermissions[0].IsServer);
-            Assert.AreEqual(false, windowsGroupPermissions[0].View);
-            Assert.AreEqual(false, windowsGroupPermissions[0].Execute);
-            Assert.AreEqual(false, windowsGroupPermissions[0].Contribute);
-            Assert.AreEqual(false, windowsGroupPermissions[0].DeployTo);
-            Assert.AreEqual(false, windowsGroupPermissions[0].DeployFrom);
-            Assert.AreEqual(true, windowsGroupPermissions[0].Administrator);
-            Assert.AreEqual("NETWORK SERVICE", windowsGroupPermissions[1].WindowsGroup);
-            Assert.AreEqual(true, windowsGroupPermissions[1].IsServer);
-            Assert.AreEqual(false, windowsGroupPermissions[1].View);
-            Assert.AreEqual(false, windowsGroupPermissions[1].Execute);
-            Assert.AreEqual(false, windowsGroupPermissions[1].Contribute);
-            Assert.AreEqual(false, windowsGroupPermissions[1].DeployTo);
-            Assert.AreEqual(false, windowsGroupPermissions[1].DeployFrom);
-            Assert.AreEqual(false, windowsGroupPermissions[1].Administrator);
+            Assert.AreEqual(2, readSecuritySettings.WindowsGroupPermissions.Count);
+            Assert.AreEqual(Environment.UserName, readSecuritySettings.WindowsGroupPermissions[0].WindowsGroup);
+            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].IsServer);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].View);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].Execute);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].Contribute);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].DeployTo);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[0].DeployFrom);
+            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[0].Administrator);
+            Assert.AreEqual("NETWORK SERVICE", readSecuritySettings.WindowsGroupPermissions[1].WindowsGroup);
+            Assert.AreEqual(true, readSecuritySettings.WindowsGroupPermissions[1].IsServer);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].View);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Execute);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Contribute);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].DeployTo);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].DeployFrom);
+            Assert.AreEqual(false, readSecuritySettings.WindowsGroupPermissions[1].Administrator);
+            Assert.AreEqual(new TimeSpan(0, 10, 0), readSecuritySettings.CacheTimeout);
 
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityRead_Execute")]
+        public void SecurityRead_Execute_WhenSecureConfigDoesNotExist_ReturnsDefaultPermissions()
+        {
+            //------------Setup for test--------------------------
+            var securityRead = new SecurityRead();
+
+            //------------Execute Test---------------------------
+            var jsonPermissions = securityRead.Execute(null, null);
+            var securitySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(securitySettings.WindowsGroupPermissions.Count == 1);
+
+            var expected = SecurityRead.DefaultPermissions[0];
+            var actual = securitySettings.WindowsGroupPermissions[0];
+
+            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SecurityRead_Execute")]
+        public void SecurityRead_Execute_DecryptThrowsException_ReturnsDefaultPermissions()
+        {
+            //------------Setup for test--------------------------
+            File.WriteAllText("secure.config", "Invalid content.");
+            var securityRead = new SecurityRead();
+
+            //------------Execute Test---------------------------
+            var jsonPermissions = securityRead.Execute(null, null);
+            var securitySettings = JsonConvert.DeserializeObject<SecuritySettingsTO>(jsonPermissions.ToString());
+
+            File.Delete("secure.config");
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(securitySettings.WindowsGroupPermissions.Count == 1);
+
+            var expected = SecurityRead.DefaultPermissions[0];
+            var actual = securitySettings.WindowsGroupPermissions[0];
+
+            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            Assert.IsTrue(result);
         }
 
         #endregion Exeute
@@ -102,7 +128,7 @@ namespace Dev2.Tests.Runtime.Services
         #region HandlesType
 
         [TestMethod]
-        public void SecurityReadHandlesTypeExpectedReturnsSecurityWriteService()
+        public void SecurityRead_HandlesType_ReturnsSecurityReadService()
         {
             var esb = new SecurityRead();
             var result = esb.HandlesType();

@@ -32,15 +32,15 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 {
     public class ResourceRepository : IResourceRepository
     {
-        private readonly HashSet<Guid> _cachedServices;
-        private readonly IEnvironmentModel _environmentModel;
-        private readonly List<string> _reservedServices;
+        readonly HashSet<Guid> _cachedServices;
+        readonly IEnvironmentModel _environmentModel;
+        readonly List<string> _reservedServices;
         protected List<IResourceModel> ResourceModels;
-        private bool _isLoaded;
+        bool _isLoaded;
 
-        private readonly IDeployService _deployService = new DeployService();
+        readonly IDeployService _deployService = new DeployService();
 
-        private bool _isDisposed;
+        bool _isDisposed;
         public event EventHandler ItemAdded;
 
         public bool IsLoaded
@@ -227,7 +227,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression)
         {
-            if(expression == null) return null;
+            if(expression == null)
+            {
+                return null;
+            }
             Func<IResourceModel, bool> func = expression.Compile();
             return ResourceModels.FindAll(func.Invoke);
         }
@@ -443,7 +446,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #region Private Methods
 
         //Juries TODO - Refactor to popupProvider
-        private void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
+        void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if(data.HasError)
             {
@@ -454,7 +457,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        private string GetIconPath(ResourceType type)
+        string GetIconPath(ResourceType type)
         {
             var iconPath = string.Empty;
 
@@ -554,9 +557,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable once EmptyGeneralCatchClause
                 catch
-                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Ignore malformed resource
                 }
@@ -598,7 +600,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.ResourceName = data.ResourceName;
                 resource.DisplayName = data.ResourceName;
                 resource.IconPath = GetIconPath(data.ResourceType);
-                resource.AuthorRoles = string.Empty;
                 resource.Category = data.ResourceCategory;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
@@ -606,6 +607,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
+                resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
 
                 if(data.Errors != null)
                 {
@@ -811,20 +813,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Read and Write Settings
 
-        public ExecuteMessage ReadSettings(string key, string value, IEnvironmentModel currentEnv)
+        public Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv)
         {
-            const string ServiceName = "SettingsReadService";
-            var comController = new CommunicationController { ServiceName = ServiceName };
-            comController.AddPayloadArgument(key, value);
+            var comController = new CommunicationController { ServiceName = "SettingsReadService" };
 
-            return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, currentEnv.Connection.WorkspaceID);
+            return comController.ExecuteCommand<Data.Settings.Settings>(currentEnv.Connection, currentEnv.Connection.WorkspaceID);
         }
 
-        public ExecuteMessage WriteSettings(string key, string value, IEnvironmentModel currentEnv)
+        public ExecuteMessage WriteSettings(IEnvironmentModel currentEnv, Data.Settings.Settings settings)
         {
-            const string ServiceName = "SettingsWriteService";
-            var comController = new CommunicationController { ServiceName = ServiceName };
-            comController.AddPayloadArgument(key, value);
+            var comController = new CommunicationController { ServiceName = "SettingsWriteService" };
+            comController.AddPayloadArgument("Settings", settings.ToString());
 
             return comController.ExecuteCommand<ExecuteMessage>(currentEnv.Connection, currentEnv.Connection.WorkspaceID);
         }
@@ -841,13 +840,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 return string.Empty;
             }
 
-            var comController = new CommunicationController { ServiceName = "FetchCurrentServerLogService" };
-            var serverLogData = comController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, environmentModel.Connection.WorkspaceID);
-
-            if(serverLogData != null && serverLogData.Message.Length > 0)
+            try
             {
-                string uniqueOutputPath = FileHelper.GetUniqueOutputPath(".txt");
-                return FileHelper.CreateATemporaryFile(serverLogData.Message, uniqueOutputPath);
+                var comController = new CommunicationController { ServiceName = "FetchCurrentServerLogService" };
+                ExecuteMessage serverLogData = comController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, environmentModel.Connection.WorkspaceID);
+
+                if(serverLogData != null && serverLogData.Message.Length > 0)
+                {
+                    string uniqueOutputPath = FileHelper.GetUniqueOutputPath(".txt");
+                    return FileHelper.CreateATemporaryFile(serverLogData.Message, uniqueOutputPath);
+                }
+            }
+                // ReSharper disable once EmptyGeneralCatchClause
+            catch
+            {
+                // Server unavailable!
             }
 
             return null;
@@ -997,7 +1004,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         // If disposing equals false, the method has been called by the
         // runtime from inside the finalizer and you should not reference
         // other objects. Only unmanaged resources can be disposed.
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
             if(!_isDisposed)

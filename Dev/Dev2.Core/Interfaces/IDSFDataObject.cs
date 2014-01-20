@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Data.Enums;
+using System.Security.Principal;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.Web;
@@ -27,7 +28,7 @@ namespace Dev2
         Guid ServerID { get; set; }
         ErrorResultTO Errors { get; set; }
         int NumberOfSteps { get; set; }
-
+        IPrincipal ExecutingUser { get; set; }
         Guid DatalistOutMergeID { get; set; }
         enDataListMergeTypes DatalistOutMergeType { get; set; }
         enTranslationDepth DatalistOutMergeDepth { get; set; }

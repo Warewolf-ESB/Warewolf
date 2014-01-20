@@ -969,7 +969,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             _vm = CreateViewModel(true, enDsfActivityType.Workflow);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -979,7 +979,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             _vm = CreateViewModel(true, enDsfActivityType.Service);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SERVICES", _vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -989,7 +989,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             _vm = CreateViewModel(true, enDsfActivityType.Source);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual("SOURCES", _vm.Root.Children[0].Children[0].DisplayName);
         }
@@ -999,7 +999,7 @@ namespace Dev2.Core.Tests
         {
             Init(false, true);
             _vm = CreateViewModel(true, enDsfActivityType.All);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(3, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName);
             Assert.AreEqual("SERVICES", _vm.Root.Children[0].Children[1].DisplayName);
@@ -1011,7 +1011,7 @@ namespace Dev2.Core.Tests
         {
             Init(true, true);
             _vm = CreateViewModel(true, enDsfActivityType.Workflow);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
             Assert.AreEqual(0, _vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);
         }
@@ -1022,8 +1022,8 @@ namespace Dev2.Core.Tests
         {
             InitTwoEnvironments(false, true);
             _vm = CreateViewModel(true);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
-            _vm.AddEnvironment(_disconnectedMockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
+            _vm.AddEnvironment(_disconnectedMockEnvironmentModel.Object);
             Assert.AreEqual(2, _vm.Root.Children.Count, "Disconnected environment not added to NavigationViewModel");
             Assert.AreEqual(3, _vm.Root.Children[0].Children.Count, "Resources for connected environment not visible in NavigationViewModel");
             Assert.AreEqual(0, _vm.Root.Children[1].Children.Count, "Resources for disconnected environment are visible in NavigationViewModel");
@@ -1286,7 +1286,7 @@ namespace Dev2.Core.Tests
             SetUpResources(addWizardChildToResource, out mockResourceRepository);
 
             _vm = CreateViewModel();
-            _vm.AddEnvironment(_mockEnvironmentModel.Object, new Mock<IDesignValidationService>().Object);
+            _vm.AddEnvironment(_mockEnvironmentModel.Object);
         }
 
         void SetupMockEnvironment(bool shouldLoadResources)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net.Http;
+using System.Security.Principal;
 using System.Text;
 
 namespace Dev2.Runtime.WebServer
@@ -28,6 +29,7 @@ namespace Dev2.Runtime.WebServer
 
         public string Method { get; private set; }
         public Uri Uri { get; private set; }
+        public IPrincipal User { get; set; }
         public int ContentLength { get; private set; }
         public string ContentType { get; private set; }
         public Encoding ContentEncoding { get; private set; }
@@ -42,7 +44,7 @@ namespace Dev2.Runtime.WebServer
 
         void InitializeContentType()
         {
-            ContentType = _request.Content.Headers.ContentType == null  ? null : _request.Content.Headers.ContentType.MediaType;
+            ContentType = _request.Content.Headers.ContentType == null ? null : _request.Content.Headers.ContentType.MediaType;
         }
 
         void InitializeQueryString()

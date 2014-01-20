@@ -5,6 +5,7 @@ using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Navigation;
@@ -53,7 +54,12 @@ namespace Dev2.Core.Tests.Deploy
             var eventAggregator = new Mock<IEventAggregator>().Object;
             var rootVm = new RootTreeViewModel(eventAggregator);
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService);
+
+            var connection = new Mock<IEnvironmentConnection>();
+
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+
             var environmentVm = new EnvironmentTreeViewModel(eventAggregator, rootVm, mockEnvironmentModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var serviceTypeVm = new ServiceTypeTreeViewModel(eventAggregator, environmentVm, ResourceType.WorkflowService);
             var categoryVm = new CategoryTreeViewModel(eventAggregator, serviceTypeVm, resourceModel.Object.Category, resourceModel.Object.ResourceType);
@@ -62,7 +68,7 @@ namespace Dev2.Core.Tests.Deploy
             ResourceTreeViewModel vm = resourceVm;
             vm.DataContext = resourceModel.Object;
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
-            NavigationViewModel navVm = new NavigationViewModel(Guid.NewGuid());
+            NavigationViewModel navVm = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, Guid.NewGuid(), EnvironmentRepository.Instance);
             navVm.Environments.Add(environmentModel);
             deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, navVm);
         }
@@ -71,7 +77,11 @@ namespace Dev2.Core.Tests.Deploy
         {
             ImportService.CurrentContext = OkayContext;
 
+            var destConnection = new Mock<IEnvironmentConnection>();
+
             destEnv = new Mock<IEnvironmentModel>();
+            destEnv.Setup(e => e.Connection).Returns(destConnection.Object);
+
             destServer = destEnv;
 
             var envRepo = new Mock<IEnvironmentRepository>();

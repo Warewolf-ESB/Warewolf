@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using Dev2.Common;
@@ -52,6 +53,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, dataListID);
             dataObject.ServiceName = request.ServiceName;
             dataObject.ClientID = Guid.Parse(connectionId);
+            dataObject.ExecutingUser = ExecutingUser;
             // we need to assign new ThreadID to request coming from here, becasue it is a fixed connection and will not change ID on its own ;)
             if(!dataObject.Errors.HasErrors())
             {
@@ -69,22 +71,24 @@ namespace Dev2.Runtime.WebServer.Handlers
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
 
-                if (request.ExecuteResult.Length > 0)
+                if(request.ExecuteResult.Length > 0)
                 {
                     return request.ExecuteResult;
                 }
-                
+
                 // return the datalist ;)
                 var result = new StringBuilder(compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors));
                 compiler.ForceDeleteDataListByID(dlID);
                 return result;
             }
 
-            ExecuteMessage msg = new ExecuteMessage {HasError = true};
+            ExecuteMessage msg = new ExecuteMessage { HasError = true };
             msg.SetMessage(dataObject.Errors.MakeDisplayReady());
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
         }
+
+        public IPrincipal ExecutingUser { get; set; }
     }
 }

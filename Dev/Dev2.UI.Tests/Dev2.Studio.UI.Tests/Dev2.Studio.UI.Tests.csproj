@@ -76,6 +76,8 @@
     <Compile Include="AdornerTests.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
+    <Compile Include="WrapperClasses\ManageSecuritySecuritySettingsTestWrapper.cs" />
+    <Compile Include="SecuritySettingsUiTests.cs" />
     <Compile Include="DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />
     <Compile Include="SqlBulkInsertUITests.cs" />
@@ -86,7 +88,12 @@
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="KeyboardCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UIMap.cs" />
+    <Compile Include="UIMap.Designer.cs">
+      <DependentUpon>UIMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="UIMaps\WebSourceWizardUIMap.cs" />
+    <Compile Include="Extensions\UiTestControlExtentions.cs" />
     <Compile Include="Utils\LargeViewUtilMethods.cs" />
     <Compile Include="WorkflowDesignerUITests.cs" />
     <Compile Include="TestBase.cs" />

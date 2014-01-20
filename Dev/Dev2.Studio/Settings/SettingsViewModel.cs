@@ -1,7 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
@@ -10,13 +14,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace Dev2.Settings
 {
@@ -65,10 +62,14 @@ namespace Dev2.Settings
 
         public IEnvironmentModel CurrentEnvironment { get; private set; }
 
+        public bool IsSavedSuccessVisible { get { return !HasErrors && !IsDirty && IsSaved; } }
+
+        public bool IsErrorsVisible { get { return HasErrors || (IsDirty && !IsSaved); } }
+
         public bool HasErrors
         {
             get { return _hasErrors; }
-            private set
+            set
             {
                 if(value.Equals(_hasErrors))
                 {
@@ -76,6 +77,8 @@ namespace Dev2.Settings
                 }
                 _hasErrors = value;
                 NotifyOfPropertyChange(() => HasErrors);
+                NotifyOfPropertyChange(() => IsSavedSuccessVisible);
+                NotifyOfPropertyChange(() => IsErrorsVisible);
             }
         }
 
@@ -96,7 +99,7 @@ namespace Dev2.Settings
         public bool IsSaved
         {
             get { return _isSaved; }
-            private set
+            set
             {
                 if(value.Equals(_isSaved))
                 {
@@ -104,6 +107,8 @@ namespace Dev2.Settings
                 }
                 _isSaved = value;
                 NotifyOfPropertyChange(() => IsSaved);
+                NotifyOfPropertyChange(() => IsSavedSuccessVisible);
+                NotifyOfPropertyChange(() => IsErrorsVisible);
             }
         }
 
@@ -118,6 +123,8 @@ namespace Dev2.Settings
                 }
                 _isDirty = value;
                 NotifyOfPropertyChange(() => IsDirty);
+                NotifyOfPropertyChange(() => IsSavedSuccessVisible);
+                NotifyOfPropertyChange(() => IsErrorsVisible);
             }
         }
 
@@ -250,21 +257,20 @@ namespace Dev2.Settings
 
             _asyncWorker.Start(() =>
             {
-                var settingsJson = ReadSettings();
-                if(!string.IsNullOrEmpty(settingsJson))
-                {
-                    Settings = JsonConvert.DeserializeObject<Data.Settings.Settings>(settingsJson);
-                }
+                Settings = ReadSettings();
             }, () =>
             {
-                SecurityViewModel = CreateSecurityViewModel();
-                var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(Dev2.Settings.Security.SecurityViewModel.IsDirtyProperty, typeof(SecurityViewModel));
-                isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
-
-                // TODO: Read from server
-                LoggingViewModel = new LoggingViewModel();
-
                 IsLoading = false;
+
+                if(Settings == null)
+                {
+                    return;
+                }
+
+                SecurityViewModel = CreateSecurityViewModel();
+                LoggingViewModel = CreateLoggingViewModel();
+
+                AddPropertyChangedHandlers();
 
                 if(Settings.HasError)
                 {
@@ -275,71 +281,83 @@ namespace Dev2.Settings
 
         protected virtual SecurityViewModel CreateSecurityViewModel()
         {
-            return new SecurityViewModel(Settings.Security ?? new List<WindowsGroupPermission>(), _parentWindow, CurrentEnvironment);
+            return new SecurityViewModel(Settings.Security, _parentWindow, CurrentEnvironment);
+        }
+
+        protected virtual LoggingViewModel CreateLoggingViewModel()
+        {
+            return new LoggingViewModel();
+        }
+
+        void AddPropertyChangedHandlers()
+        {
+            var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
+
+            isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
+            isDirtyProperty.AddValueChanged(LoggingViewModel, OnIsDirtyPropertyChanged);
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)
         {
             IsDirty = SecurityViewModel.IsDirty;
+            ClearErrors();
+        }
+
+        void ResetIsDirtyForChildren()
+        {
+            SecurityViewModel.IsDirty = false;
         }
 
         void SaveSettings()
         {
+            // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
+            ResetIsDirtyForChildren();
             ClearErrors();
 
-            var errors = new List<string>();
-            SecurityViewModel.Save(Settings.Security, errors);
+            SecurityViewModel.Save(Settings.Security);
 
-            if(errors.Count > 0)
+            var isWritten = WriteSettings();
+            if(isWritten)
             {
-                ShowError("Save Error", string.Join(Environment.NewLine, errors));
+                IsSaved = true;
+                IsDirty = false;
             }
-
-            var result = WriteSettings();
-            if(result == null)
+            else
             {
-                return;
+                IsSaved = false;
+                IsDirty = true;
             }
-            if(result.ToLowerInvariant() != "success")
-            {
-                ShowError("Save Error", result);
-                return;
-            }
-
-            SecurityViewModel.IsDirty = false;
-            IsDirty = false;
-            IsSaved = true;
         }
 
-        string WriteSettings()
+        bool WriteSettings()
         {
-            var payload = CurrentEnvironment.ResourceRepository.WriteSettings("Settings", Settings.ToString(), CurrentEnvironment);
-            if(payload == null || payload.Message.Length == 0)
+            var payload = CurrentEnvironment.ResourceRepository.WriteSettings(CurrentEnvironment, Settings);
+            if(payload == null)
             {
-                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsWriteService"));
-                throw new NullReferenceException("The Setting are null");
+                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "WriteSettings"));
+                return false;
             }
-
-            return payload.Message.ToString();
+            if(payload.HasError)
+            {
+                ShowError("Save Error", payload.Message.ToString());
+                return false;
+            }
+            return true;
         }
 
-        string ReadSettings()
+        Data.Settings.Settings ReadSettings()
         {
-            var payload = CurrentEnvironment.ResourceRepository.ReadSettings("Settings", Settings.ToString(), CurrentEnvironment);
-            if(payload == null || payload.Message.Length == 0)
+            var payload = CurrentEnvironment.ResourceRepository.ReadSettings(CurrentEnvironment);
+            if(payload == null)
             {
-                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "SettingsReadService"));
+                ShowError("Network Error", string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "ReadSettings"));
             }
 
-            if(payload != null)
-            {
-                return payload.Message.ToString();
-            }
-            return string.Empty;
+            return payload;
         }
 
 
-        void ClearErrors()
+        protected void ClearErrors()
         {
             HasErrors = false;
             Errors = null;
@@ -353,3 +371,4 @@ namespace Dev2.Settings
         }
     }
 }
+

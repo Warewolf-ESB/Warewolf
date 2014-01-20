@@ -266,37 +266,13 @@
     <value>workflowservice2.png</value>
     <comment>net.tcp://sameeraw:2094/dsfDevmanager/</comment>
   </data>
-  <data name="Uri_Development_Environment" xml:space="preserve">
-    <value>http://localhost:3142/dsf</value>
-    <comment>http://tuw-devfs:1994/dsfDev/</comment>
-  </data>
-  <data name="Uri_Live_Environment" xml:space="preserve">
-    <value>http://localhost:3142/dsf</value>
-    <comment>http://tuw-devfs:1996/dsfLive/</comment>
-  </data>
-  <data name="Uri_Testing_Environment" xml:space="preserve">
-    <value>http://localhost:3142/dsf</value>
-    <comment>http://tuw-devfs:1995/dsfTest/</comment>
-  </data>
   <data name="Uri_Start_Page" xml:space="preserve">
     <value>http://www.google.co.za/</value>
     <comment>http://tuw-hubps/Pages/Business%20Design%20Studio.aspx</comment>
   </data>
-  <data name="Uri_Development_Manager_Connection" xml:space="preserve">
-    <value>net.tcp://localhost:7658/dsfmanager</value>
-    <comment>net.tcp://tuw-devfs:2094/dsfDevmanager/</comment>
-  </data>
   <data name="SPN_Endpoint_Identity" xml:space="preserve">
     <value>TUW-DEVFS/dsfDev</value>
     <comment>TUW-DEVFS/dsfDev</comment>
-  </data>
-  <data name="Uri_Live_Manager_Connection" xml:space="preserve">
-    <value>net.tcp://rsaklfsvrgendev:7658/dsfmanager</value>
-    <comment>net.tcp://tuw-devfs:2096/dsfLivemanager/</comment>
-  </data>
-  <data name="Uri_Testing_Manager_Connection" xml:space="preserve">
-    <value>net.tcp://rsaklfsvrgendev:7658/dsfmanager</value>
-    <comment>net.tcp://tuw-devfs:2095/dsfTestmanager/</comment>
   </data>
   <data name="AllowedRoles_DevelopmentEnvironment" xml:space="preserve">
     <value>Business Design Studio Administrators,Business Design Studio Developers,Business Design Studio Users</value>
@@ -336,9 +312,6 @@
   </data>
   <data name="Error_Environments_Directory_Not_Found" xml:space="preserve">
     <value>Directory Not found</value>
-  </data>
-  <data name="Uri_WebServer" xml:space="preserve">
-    <value>http://localhost:3142</value>
   </data>
   <data name="Window_Title_Property_Editor" xml:space="preserve">
     <value>{0} Editor</value>
@@ -463,9 +436,6 @@ Sofware development by: www.dev2.co.za
   </data>
   <data name="DefaultEnvironmentName" xml:space="preserve">
     <value>localhost</value>
-  </data>
-  <data name="DefaultEnvironmentUri" xml:space="preserve">
-    <value>http://localhost:77/dsf</value>
   </data>
   <data name="Feedback_Recordings_Directory" xml:space="preserve">
     <value>Feedback</value>
@@ -787,5 +757,11 @@ Would you like to start the setup now?</value>
   </data>
   <data name="Pack_Uri_Server_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
+  </data>
+  <data name="Uri_Studio_PageForbidden" xml:space="preserve">
+    <value>Help\PageForbidden.htm</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
 </root>

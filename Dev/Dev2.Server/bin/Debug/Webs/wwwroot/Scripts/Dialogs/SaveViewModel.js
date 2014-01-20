@@ -271,7 +271,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {
 
     utils.registerSelectHandler($resourceFolders, function (selectedItem) {
         self.data.resourcePath(selectedItem);
-    });
+    }, self.isReadOnly);
 
     self.save = function () {
 
