@@ -1,14 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -16,7 +16,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for AssignActivity
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {
         IList<string> _fieldName;
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _fieldValue.Add("testValue10");
 
 
-            for (int i = 0; i < _fieldName.Count; i++)
+            for(int i = 0; i < _fieldName.Count; i++)
             {
                 _fieldCollection.Add(new ActivityDTO(_fieldName[i], _fieldValue[i], _fieldCollection.Count));
             }
@@ -88,7 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             const string expected = "Value1";
             string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "gRec", "opt", out error).FirstOrDefault();
-            
+
             // remove test datalist
             DataListRemoval(result.DataListID);
 
@@ -153,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
-                          , "<root>" + data +"</root>");
+                          , "<root>" + data + "</root>");
             IDSFDataObject result = ExecuteProcess();
 
             const string expected = "display1";
@@ -290,8 +291,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(2,resultCollection.Count);
-            Assert.AreEqual("Value2",resultCollection[1]);
+            Assert.AreEqual(2, resultCollection.Count);
+            Assert.AreEqual("Value2", resultCollection[1]);
         }
 
         [TestMethod]
@@ -345,7 +346,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             // first and row 100
-            Assert.AreEqual(2,actual.Count);
+            Assert.AreEqual(2, actual.Count);
             Assert.AreEqual("Value2", actual.Last());
         }
 
@@ -370,7 +371,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 <display/>
 </cRec>
 </ADL>"
-                          ,@"<ADL>
+                          , @"<ADL>
 <gRec>
 <opt>Value1</opt>
 <display>display1</display>
@@ -392,9 +393,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             // first and row 100
-            Assert.AreEqual(2,actual.Count);
-            Assert.AreEqual(string.Empty,actual.First());
-            Assert.AreEqual(string.Empty,actual.Last());
+            Assert.AreEqual(2, actual.Count);
+            Assert.AreEqual(string.Empty, actual.First());
+            Assert.AreEqual(string.Empty, actual.Last());
         }
 
         [TestMethod]
@@ -560,7 +561,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                      , "testRecValue1" };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error);
-            
+
             // remove test datalist
             DataListRemoval(result.DataListID);
 
@@ -695,7 +696,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             var binaryDataListItem = actual.FirstOrDefault(c => c.DisplayValue == "cRec(10).opt");
-            if (binaryDataListItem != null)
+            if(binaryDataListItem != null)
                 Assert.AreEqual("testRecValue1", binaryDataListItem.TheValue);
         }
 
@@ -1113,7 +1114,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual("some value \"testData\" another",actual[1]);
+            Assert.AreEqual("some value \"testData\" another", actual[1]);
         }
 
         [TestMethod]
@@ -1139,7 +1140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual("some value \"testData\" another",actual);
+            Assert.AreEqual("some value \"testData\" another", actual);
         }
 
         [TestMethod]
@@ -1162,7 +1163,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (act != null)
+            if(act != null)
             {
                 act.RemoveItem();
 
@@ -1264,7 +1265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual, "Assigning to an invalid recordset index did not return an error");
         }
-        
+
         #endregion Language Tests
 
         #region Calculate Mode Tests
@@ -1380,13 +1381,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IBinaryDataList binaryDL = testAct.GetWizardData();
             var recsets = binaryDL.FetchRecordsetEntries();
-            if (recsets.Count != 1)
+            if(recsets.Count != 1)
             {
                 passTest = false;
             }
             else
             {
-                if (recsets[0].Columns.Count != 2)
+                if(recsets[0].Columns.Count != 2)
                 {
                     passTest = false;
                 }
@@ -1456,7 +1457,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,string.Empty, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, string.Empty, out inRes, out outRes);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
@@ -1489,7 +1490,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [Owner("Huggs")]
         // ReSharper disable InconsistentNaming
         public void MultiAssign_UnitTest_DebugEmitRecordsetIndexing_WhenComplexExpression()
-            // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
                 {
@@ -1724,7 +1725,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         private void SetupArguments(string currentDL, string testData, string outputMapping = null)
         {
-            if (outputMapping == null)
+            if(outputMapping == null)
             {
                 TestStartNode = new FlowStep
                 {
