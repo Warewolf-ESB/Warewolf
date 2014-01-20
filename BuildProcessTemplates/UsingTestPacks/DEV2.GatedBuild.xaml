@@ -325,130 +325,10 @@
                         </TryCatch>
                       </ActivityAction>
                     </ForEach>
-                    <mtbwa:InvokeProcess Arguments="[SourcesDirectory &amp; &quot; &quot; &amp; NumberOfTestRunAgentsToQueueOn &amp; &quot; &quot; &amp; BinariesDirectory &amp; &quot;\TestPacks&quot;]" DisplayName="Build Test Pack" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\TestPackBuilderExe\TestPackBuilderExe.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_30">
-                      <mtbwa:InvokeProcess.ErrorDataReceived>
-                        <ActivityAction x:TypeArguments="x:String">
-                          <ActivityAction.Argument>
-                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                          </ActivityAction.Argument>
-                        </ActivityAction>
-                      </mtbwa:InvokeProcess.ErrorDataReceived>
-                      <mtbwa:InvokeProcess.OutputDataReceived>
-                        <ActivityAction x:TypeArguments="x:String">
-                          <ActivityAction.Argument>
-                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                          </ActivityAction.Argument>
-                        </ActivityAction>
-                      </mtbwa:InvokeProcess.OutputDataReceived>
-                    </mtbwa:InvokeProcess>
-                    <Sequence DisplayName="Gated Test Run Staging" sap2010:WorkflowViewState.IdRef="Sequence_92">
-                      <mtbwa:CopyDirectory Destination="C:\Binaries" DisplayName="Create C:\Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_14" Source="[BinariesDirectory]" />
-                      <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_11">
-                        <TryCatch.Try>
-                          <InvokeMethod DisplayName="Delete Zip" sap2010:WorkflowViewState.IdRef="InvokeMethod_26" MethodName="Delete" TargetType="si:File">
-                            <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
-                          </InvokeMethod>
-                        </TryCatch.Try>
-                        <TryCatch.Catches>
-                          <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_10">
-                            <ActivityAction x:TypeArguments="si:IOException">
-                              <ActivityAction.Argument>
-                                <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
-                              </ActivityAction.Argument>
-                            </ActivityAction>
-                          </Catch>
-                        </TryCatch.Catches>
-                      </TryCatch>
-                      <mtbwa:InvokeProcess Arguments="[&quot; -9 -r &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\DevMergeStaging&quot; &amp; &quot;&quot;&quot; &quot;&quot;C:\Binaries&quot;&quot;&quot;]" DisplayName="Zip C:\Binaries" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\zip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_27">
-                        <mtbwa:InvokeProcess.ErrorDataReceived>
-                          <ActivityAction x:TypeArguments="x:String">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                            </ActivityAction.Argument>
-                          </ActivityAction>
-                        </mtbwa:InvokeProcess.ErrorDataReceived>
-                        <mtbwa:InvokeProcess.OutputDataReceived>
-                          <ActivityAction x:TypeArguments="x:String">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                            </ActivityAction.Argument>
-                          </ActivityAction>
-                        </mtbwa:InvokeProcess.OutputDataReceived>
-                      </mtbwa:InvokeProcess>
-                      <mtbwa:InvokeProcess DisplayName="Clean Local Staging" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\clean - Local Staging.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_28">
-                        <mtbwa:InvokeProcess.ErrorDataReceived>
-                          <ActivityAction x:TypeArguments="x:String">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                            </ActivityAction.Argument>
-                          </ActivityAction>
-                        </mtbwa:InvokeProcess.ErrorDataReceived>
-                        <mtbwa:InvokeProcess.OutputDataReceived>
-                          <ActivityAction x:TypeArguments="x:String">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                            </ActivityAction.Argument>
-                            <mtbwa:WriteBuildMessage DisplayName="WriteOutput" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                          </ActivityAction>
-                        </mtbwa:InvokeProcess.OutputDataReceived>
-                      </mtbwa:InvokeProcess>
-                      <InvokeMethod DisplayName="Create Staging Directory" sap2010:WorkflowViewState.IdRef="InvokeMethod_23" MethodName="CreateDirectory" TargetType="si:Directory">
-                        <InArgument x:TypeArguments="x:String">[TestRunStagingDir]</InArgument>
-                      </InvokeMethod>
-                      <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_12">
-                        <TryCatch.Try>
-                          <InvokeMethod DisplayName="Clear Gated Testing Run Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_27" MethodName="Delete" TargetType="si:File">
-                            <InArgument x:TypeArguments="x:String">\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\GatedTestingRun.zip</InArgument>
-                          </InvokeMethod>
-                        </TryCatch.Try>
-                        <TryCatch.Catches>
-                          <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_11">
-                            <ActivityAction x:TypeArguments="si:IOException">
-                              <ActivityAction.Argument>
-                                <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
-                              </ActivityAction.Argument>
-                            </ActivityAction>
-                          </Catch>
-                        </TryCatch.Catches>
-                      </TryCatch>
-                      <InvokeMethod DisplayName="Do Gated Testing Run Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_24" MethodName="Copy" TargetType="si:File">
-                        <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
-                        <InArgument x:TypeArguments="x:String">\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\GatedTestingRun.zip</InArgument>
-                      </InvokeMethod>
-                    </Sequence>
-                    <Assign DisplayName="Initialize Count" sap2010:WorkflowViewState.IdRef="Assign_14">
-                      <Assign.To>
-                        <OutArgument x:TypeArguments="x:Int32">[Count]</OutArgument>
-                      </Assign.To>
-                      <Assign.Value>
-                        <InArgument x:TypeArguments="x:Int32">0</InArgument>
-                      </Assign.Value>
-                    </Assign>
-                    <ClearCollection x:TypeArguments="x:Int32" Collection="[ParallelForEachVar]" DisplayName="ClearGatedTestingRunParallelizeVariable" sap2010:WorkflowViewState.IdRef="ClearCollection`1_1" />
-                    <While sap2010:WorkflowViewState.IdRef="While_3" Condition="[Count &lt; NumberOfTestRunAgentsToQueueOn]">
-                      <Sequence DisplayName="Initialize ParallelForEach" sap2010:WorkflowViewState.IdRef="Sequence_91">
-                        <AddToCollection x:TypeArguments="x:Int32" Collection="[ParallelForEachVar]" DisplayName="AddToGatedTestingRunParallelizeVariable" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Count]" />
-                        <Assign DisplayName="Increment Count" sap2010:WorkflowViewState.IdRef="Assign_15">
-                          <Assign.To>
-                            <OutArgument x:TypeArguments="x:Int32">[Count]</OutArgument>
-                          </Assign.To>
-                          <Assign.Value>
-                            <InArgument x:TypeArguments="x:Int32">[Count + 1]</InArgument>
-                          </Assign.Value>
-                        </Assign>
-                      </Sequence>
-                    </While>
-                    <ParallelForEach x:TypeArguments="x:Int32" sap2010:WorkflowViewState.IdRef="ParallelForEach`1_1" Values="[ParallelForEachVar]">
-                      <ActivityAction x:TypeArguments="x:Int32">
-                        <ActivityAction.Argument>
-                          <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
-                        </ActivityAction.Argument>
-                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_90">
-                          <Sequence.Variables>
-                            <Variable x:TypeArguments="mtbc:BuildStatus" Name="GatedTestingRunResult" />
-                            <Variable x:TypeArguments="x:Int32" Name="GatedTestingRunID" />
-                          </Sequence.Variables>
-                          <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;Gated Test Run - &quot; &amp; BranchID &amp; &quot;&quot;&quot; &quot;&quot;&quot; &amp; BuildDetail.RequestedBy &amp; &quot;&quot;&quot; &quot;&quot;GatedTestingRun&quot;&quot; &quot;&quot;&quot; &amp; item &amp; &quot;&quot;&quot;&quot;]" DisplayName="Queue Gated Testing Run" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\QueueBuild\QueueCIBuildForTestPack.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_29" Result="[GatedTestingRunID]">
+                    <If Condition="[Not DisableTests]" DisplayName="If Not DisableTests" mtbwt:BuildTrackingParticipant.Importance="Low">
+                      <If.Then>
+                        <Sequence DisplayName="Distributed gated test run">
+                          <mtbwa:InvokeProcess Arguments="[SourcesDirectory &amp; &quot; &quot; &amp; NumberOfTestRunAgentsToQueueOn &amp; &quot; &quot; &amp; BinariesDirectory &amp; &quot;\TestPacks&quot;]" DisplayName="Build Test Pack" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\TestPackBuilderExe\TestPackBuilderExe.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_30">
                             <mtbwa:InvokeProcess.ErrorDataReceived>
                               <ActivityAction x:TypeArguments="x:String">
                                 <ActivityAction.Argument>
@@ -464,43 +344,173 @@
                               </ActivityAction>
                             </mtbwa:InvokeProcess.OutputDataReceived>
                           </mtbwa:InvokeProcess>
-                          <mtlwa:WaitForWorkflow BuildDetails="{x:Null}" AllowPartiallySucceededBuild="[false]" sap2010:WorkflowViewState.IdRef="WaitForWorkflow_1" LabWorkflowType="[Microsoft.TeamFoundation.Lab.Workflow.Activities.WorkflowType.None]" MaxConsecutiveFailuresToIgnoreDuringWaitForCompletion="[3]" MaxWaitTime="[System.TimeSpan.Zero]" QueueBuildId="[GatedTestingRunID]" RefreshInterval="[System.TimeSpan.FromSeconds(10)]" Result="[GatedTestingRunResult]" ThrowOnError="[false]" />
-                          <If Condition="[GatedTestingRunResult = BuildStatus.Failed]" DisplayName="If the gated testing run was a failure" sap2010:WorkflowViewState.IdRef="If_80">
-                            <If.Then>
-                              <mtbwa:SetBuildProperties DisplayName="SetBuildTestStatusToFailed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_14" PropertiesToSet="TestStatus" TestStatus="[BuildPhaseStatus.Failed]" />
-                            </If.Then>
-                            <If.Else>
-                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_93">
-                                <InvokeMethod DisplayName="Delete Zip" sap2010:WorkflowViewState.IdRef="InvokeMethod_25" MethodName="Delete" TargetType="si:File">
+                          <Sequence DisplayName="Gated Test Run Staging" sap2010:WorkflowViewState.IdRef="Sequence_92">
+                            <mtbwa:CopyDirectory Destination="C:\Binaries" DisplayName="Create C:\Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_14" Source="[BinariesDirectory]" />
+                            <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_11">
+                              <TryCatch.Try>
+                                <InvokeMethod DisplayName="Delete Zip" sap2010:WorkflowViewState.IdRef="InvokeMethod_26" MethodName="Delete" TargetType="si:File">
                                   <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
                                 </InvokeMethod>
-                                <If Condition="[SendReportOnGatedTestingRunFailure]" DisplayName="If can call warewolf server">
+                              </TryCatch.Try>
+                              <TryCatch.Catches>
+                                <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_10">
+                                  <ActivityAction x:TypeArguments="si:IOException">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
+                                    </ActivityAction.Argument>
+                                  </ActivityAction>
+                                </Catch>
+                              </TryCatch.Catches>
+                            </TryCatch>
+                            <mtbwa:InvokeProcess Arguments="[&quot; -9 -r &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\DevMergeStaging&quot; &amp; &quot;&quot;&quot; &quot;&quot;C:\Binaries&quot;&quot;&quot;]" DisplayName="Zip C:\Binaries" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\zip.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_27">
+                              <mtbwa:InvokeProcess.ErrorDataReceived>
+                                <ActivityAction x:TypeArguments="x:String">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                  </ActivityAction.Argument>
+                                </ActivityAction>
+                              </mtbwa:InvokeProcess.ErrorDataReceived>
+                              <mtbwa:InvokeProcess.OutputDataReceived>
+                                <ActivityAction x:TypeArguments="x:String">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                  </ActivityAction.Argument>
+                                </ActivityAction>
+                              </mtbwa:InvokeProcess.OutputDataReceived>
+                            </mtbwa:InvokeProcess>
+                            <mtbwa:InvokeProcess DisplayName="Clean Local Staging" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\clean - Local Staging.bat&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_28">
+                              <mtbwa:InvokeProcess.ErrorDataReceived>
+                                <ActivityAction x:TypeArguments="x:String">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                  </ActivityAction.Argument>
+                                </ActivityAction>
+                              </mtbwa:InvokeProcess.ErrorDataReceived>
+                              <mtbwa:InvokeProcess.OutputDataReceived>
+                                <ActivityAction x:TypeArguments="x:String">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                  </ActivityAction.Argument>
+                                  <mtbwa:WriteBuildMessage DisplayName="WriteOutput" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_11" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                </ActivityAction>
+                              </mtbwa:InvokeProcess.OutputDataReceived>
+                            </mtbwa:InvokeProcess>
+                            <InvokeMethod DisplayName="Create Staging Directory" sap2010:WorkflowViewState.IdRef="InvokeMethod_23" MethodName="CreateDirectory" TargetType="si:Directory">
+                              <InArgument x:TypeArguments="x:String">[TestRunStagingDir]</InArgument>
+                            </InvokeMethod>
+                            <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_12">
+                              <TryCatch.Try>
+                                <InvokeMethod DisplayName="Clear Gated Testing Run Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_27" MethodName="Delete" TargetType="si:File">
+                                  <InArgument x:TypeArguments="x:String">\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\GatedTestingRun.zip</InArgument>
+                                </InvokeMethod>
+                              </TryCatch.Try>
+                              <TryCatch.Catches>
+                                <Catch x:TypeArguments="si:IOException" sap2010:WorkflowViewState.IdRef="Catch`1_11">
+                                  <ActivityAction x:TypeArguments="si:IOException">
+                                    <ActivityAction.Argument>
+                                      <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
+                                    </ActivityAction.Argument>
+                                  </ActivityAction>
+                                </Catch>
+                              </TryCatch.Catches>
+                            </TryCatch>
+                            <InvokeMethod DisplayName="Do Gated Testing Run Stage" sap2010:WorkflowViewState.IdRef="InvokeMethod_24" MethodName="Copy" TargetType="si:File">
+                              <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
+                              <InArgument x:TypeArguments="x:String">\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\GatedTestingRun.zip</InArgument>
+                            </InvokeMethod>
+                          </Sequence>
+                          <Assign DisplayName="Initialize Count" sap2010:WorkflowViewState.IdRef="Assign_14">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[Count]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <ClearCollection x:TypeArguments="x:Int32" Collection="[ParallelForEachVar]" DisplayName="ClearGatedTestingRunParallelizeVariable" sap2010:WorkflowViewState.IdRef="ClearCollection`1_1" />
+                          <While sap2010:WorkflowViewState.IdRef="While_3" Condition="[Count &lt; NumberOfTestRunAgentsToQueueOn]">
+                            <Sequence DisplayName="Initialize ParallelForEach" sap2010:WorkflowViewState.IdRef="Sequence_91">
+                              <AddToCollection x:TypeArguments="x:Int32" Collection="[ParallelForEachVar]" DisplayName="AddToGatedTestingRunParallelizeVariable" sap2010:WorkflowViewState.IdRef="AddToCollection`1_2" Item="[Count]" />
+                              <Assign DisplayName="Increment Count" sap2010:WorkflowViewState.IdRef="Assign_15">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Int32">[Count]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Int32">[Count + 1]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </While>
+                          <ParallelForEach x:TypeArguments="x:Int32" sap2010:WorkflowViewState.IdRef="ParallelForEach`1_1" Values="[ParallelForEachVar]">
+                            <ActivityAction x:TypeArguments="x:Int32">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
+                              </ActivityAction.Argument>
+                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_90">
+                                <Sequence.Variables>
+                                  <Variable x:TypeArguments="mtbc:BuildStatus" Name="GatedTestingRunResult" />
+                                  <Variable x:TypeArguments="x:Int32" Name="GatedTestingRunID" />
+                                </Sequence.Variables>
+                                <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;http://rsaklfsvrgendev:8080/tfs/&quot;&quot; &quot;&quot;DEV2 SCRUM Project&quot;&quot; &quot;&quot;Gated Test Run - &quot; &amp; BranchID &amp; &quot;&quot;&quot; &quot;&quot;&quot; &amp; BuildDetail.RequestedBy &amp; &quot;&quot;&quot; &quot;&quot;GatedTestingRun&quot;&quot; &quot;&quot;&quot; &amp; item &amp; &quot;&quot;&quot;&quot;]" DisplayName="Queue Gated Testing Run" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\QueueBuild\QueueCIBuildForTestPack.exe&quot;]" sap2010:WorkflowViewState.IdRef="InvokeProcess_29" Result="[GatedTestingRunID]">
+                                  <mtbwa:InvokeProcess.ErrorDataReceived>
+                                    <ActivityAction x:TypeArguments="x:String">
+                                      <ActivityAction.Argument>
+                                        <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                      </ActivityAction.Argument>
+                                    </ActivityAction>
+                                  </mtbwa:InvokeProcess.ErrorDataReceived>
+                                  <mtbwa:InvokeProcess.OutputDataReceived>
+                                    <ActivityAction x:TypeArguments="x:String">
+                                      <ActivityAction.Argument>
+                                        <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                      </ActivityAction.Argument>
+                                    </ActivityAction>
+                                  </mtbwa:InvokeProcess.OutputDataReceived>
+                                </mtbwa:InvokeProcess>
+                                <mtlwa:WaitForWorkflow BuildDetails="{x:Null}" AllowPartiallySucceededBuild="[false]" sap2010:WorkflowViewState.IdRef="WaitForWorkflow_1" LabWorkflowType="[Microsoft.TeamFoundation.Lab.Workflow.Activities.WorkflowType.None]" MaxConsecutiveFailuresToIgnoreDuringWaitForCompletion="[3]" MaxWaitTime="[System.TimeSpan.Zero]" QueueBuildId="[GatedTestingRunID]" RefreshInterval="[System.TimeSpan.FromSeconds(10)]" Result="[GatedTestingRunResult]" ThrowOnError="[false]" />
+                                <If Condition="[GatedTestingRunResult = BuildStatus.Failed]" DisplayName="If the gated testing run was a failure" sap2010:WorkflowViewState.IdRef="If_80">
                                   <If.Then>
-                                    <mtbwa:InvokeProcess Arguments="[&quot;-c Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport?CheckInID=&quot; &amp; BuildDetail.SourceGetVersion &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_31">
-                                      <mtbwa:InvokeProcess.ErrorDataReceived>
-                                        <ActivityAction x:TypeArguments="x:String">
-                                          <ActivityAction.Argument>
-                                            <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
-                                          </ActivityAction.Argument>
-                                        </ActivityAction>
-                                      </mtbwa:InvokeProcess.ErrorDataReceived>
-                                      <mtbwa:InvokeProcess.OutputDataReceived>
-                                        <ActivityAction x:TypeArguments="x:String">
-                                          <ActivityAction.Argument>
-                                            <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
-                                          </ActivityAction.Argument>
-                                        </ActivityAction>
-                                      </mtbwa:InvokeProcess.OutputDataReceived>
-                                    </mtbwa:InvokeProcess>
+                                    <mtbwa:SetBuildProperties DisplayName="SetBuildTestStatusToFailed" sap2010:WorkflowViewState.IdRef="SetBuildProperties_14" PropertiesToSet="TestStatus" TestStatus="[BuildPhaseStatus.Failed]" />
                                   </If.Then>
-                                  <sap2010:WorkflowViewState.IdRef>If_81</sap2010:WorkflowViewState.IdRef>
+                                  <If.Else>
+                                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_93">
+                                      <InvokeMethod DisplayName="Delete Zip" sap2010:WorkflowViewState.IdRef="InvokeMethod_25" MethodName="Delete" TargetType="si:File">
+                                        <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
+                                      </InvokeMethod>
+                                      <If Condition="[SendReportOnGatedTestingRunFailure]" DisplayName="If can call warewolf server" sap2010:WorkflowViewState.IdRef="If_81">
+                                        <If.Then>
+                                          <mtbwa:InvokeProcess Arguments="[&quot;-c Http://RSAKLFSVRWRWBLD:1234/services/JustSendCIReport?CheckInID=&quot; &amp; BuildDetail.SourceGetVersion &amp; &quot;&amp;LUCBranch=&quot; &amp; BranchID &amp; &quot;&amp;RunByUser=&quot; &amp; BuildDetail.RequestedFor.Replace(&quot; &quot;, &quot;.&quot;)]" DisplayName="Send Report" FileName="C:\Builds\WaitForBuilds\wget.exe" sap2010:WorkflowViewState.IdRef="InvokeProcess_31">
+                                            <mtbwa:InvokeProcess.ErrorDataReceived>
+                                              <ActivityAction x:TypeArguments="x:String">
+                                                <ActivityAction.Argument>
+                                                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                                </ActivityAction.Argument>
+                                              </ActivityAction>
+                                            </mtbwa:InvokeProcess.ErrorDataReceived>
+                                            <mtbwa:InvokeProcess.OutputDataReceived>
+                                              <ActivityAction x:TypeArguments="x:String">
+                                                <ActivityAction.Argument>
+                                                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                                </ActivityAction.Argument>
+                                              </ActivityAction>
+                                            </mtbwa:InvokeProcess.OutputDataReceived>
+                                          </mtbwa:InvokeProcess>
+                                        </If.Then>
+                                      </If>
+                                    </Sequence>
+                                  </If.Else>
                                 </If>
                               </Sequence>
-                            </If.Else>
-                          </If>
+                            </ActivityAction>
+                          </ParallelForEach>
+                          <sap2010:WorkflowViewState.IdRef>Sequence_94</sap2010:WorkflowViewState.IdRef>
                         </Sequence>
-                      </ActivityAction>
-                    </ParallelForEach>
+                      </If.Then>
+                      <If.Else>
+                        <mtbwa:WriteBuildWarning DisplayName="Write Warning" Message="No automated tests will be run for this build because tests have been disabled for this build definition. To enable these tests, edit this build definition and set the Disable Tests process parameter to false." mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildWarning_7" />
+                      </If.Else>
+                      <sap2010:WorkflowViewState.IdRef>If_82</sap2010:WorkflowViewState.IdRef>
+                    </If>
                   </Sequence>
                 </ActivityAction>
               </ForEach>
@@ -577,6 +587,90 @@
                     </If>
                   </Sequence>
                   <Sequence DisplayName="Stage Binaries" sap2010:WorkflowViewState.IdRef="Sequence_56">
+                    <If Condition="[DisableTests]" DisplayName="If tests are disabled">
+                      <If.Then>
+                        <Sequence>
+                          <mtbwa:InvokeProcess Arguments="[SourcesDirectory &amp; &quot; &quot; &amp; NumberOfTestRunAgentsToQueueOn &amp; &quot; &quot; &amp; BinariesDirectory &amp; &quot;\TestPacks&quot;]" DisplayName="Build Test Pack" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\TestPackBuilderExe\TestPackBuilderExe.exe&quot;]">
+                            <mtbwa:InvokeProcess.ErrorDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                </ActivityAction.Argument>
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.ErrorDataReceived>
+                            <mtbwa:InvokeProcess.OutputDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                </ActivityAction.Argument>
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.OutputDataReceived>
+                            <sap2010:WorkflowViewState.IdRef>InvokeProcess_32</sap2010:WorkflowViewState.IdRef>
+                          </mtbwa:InvokeProcess>
+                          <mtbwa:CopyDirectory Destination="C:\Binaries" DisplayName="Create C:\Binaries" Source="[BinariesDirectory]" sap2010:WorkflowViewState.IdRef="CopyDirectory_15" />
+                          <TryCatch>
+                            <TryCatch.Try>
+                              <InvokeMethod DisplayName="Delete Zip" MethodName="Delete" TargetType="si:File">
+                                <InArgument x:TypeArguments="x:String">[BuildDirectory &amp; "\DevMergeStaging.zip"]</InArgument>
+                                <sap2010:WorkflowViewState.IdRef>InvokeMethod_28</sap2010:WorkflowViewState.IdRef>
+                              </InvokeMethod>
+                            </TryCatch.Try>
+                            <TryCatch.Catches>
+                              <Catch x:TypeArguments="si:IOException">
+                                <ActivityAction x:TypeArguments="si:IOException">
+                                  <ActivityAction.Argument>
+                                    <DelegateInArgument x:TypeArguments="si:IOException" Name="exception" />
+                                  </ActivityAction.Argument>
+                                </ActivityAction>
+                                <sap2010:WorkflowViewState.IdRef>Catch`1_12</sap2010:WorkflowViewState.IdRef>
+                              </Catch>
+                            </TryCatch.Catches>
+                            <sap2010:WorkflowViewState.IdRef>TryCatch_13</sap2010:WorkflowViewState.IdRef>
+                          </TryCatch>
+                          <mtbwa:InvokeProcess Arguments="[&quot; -9 -r &quot;&quot;&quot; &amp; BuildDirectory &amp; &quot;\DevMergeStaging&quot; &amp; &quot;&quot;&quot; &quot;&quot;C:\Binaries&quot;&quot;&quot;]" DisplayName="Zip C:\Binaries" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\zip.exe&quot;]">
+                            <mtbwa:InvokeProcess.ErrorDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                </ActivityAction.Argument>
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.ErrorDataReceived>
+                            <mtbwa:InvokeProcess.OutputDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                </ActivityAction.Argument>
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.OutputDataReceived>
+                            <sap2010:WorkflowViewState.IdRef>InvokeProcess_33</sap2010:WorkflowViewState.IdRef>
+                          </mtbwa:InvokeProcess>
+                          <mtbwa:InvokeProcess DisplayName="Clean Local Staging" FileName="[SourcesDirectory &amp; &quot;\BuildUtils\Cleaning Utils\clean - Local Staging.bat&quot;]">
+                            <mtbwa:InvokeProcess.ErrorDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
+                                </ActivityAction.Argument>
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.ErrorDataReceived>
+                            <mtbwa:InvokeProcess.OutputDataReceived>
+                              <ActivityAction x:TypeArguments="x:String">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="x:String" Name="stdOutput" />
+                                </ActivityAction.Argument>
+                                <mtbwa:WriteBuildMessage DisplayName="WriteOutput" Message="[stdOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_12" />
+                              </ActivityAction>
+                            </mtbwa:InvokeProcess.OutputDataReceived>
+                            <sap2010:WorkflowViewState.IdRef>InvokeProcess_34</sap2010:WorkflowViewState.IdRef>
+                          </mtbwa:InvokeProcess>
+                          <InvokeMethod DisplayName="Create Staging Directory" MethodName="CreateDirectory" TargetType="si:Directory">
+                            <InArgument x:TypeArguments="x:String">[TestRunStagingDir]</InArgument>
+                            <sap2010:WorkflowViewState.IdRef>InvokeMethod_29</sap2010:WorkflowViewState.IdRef>
+                          </InvokeMethod>
+                          <sap2010:WorkflowViewState.IdRef>Sequence_95</sap2010:WorkflowViewState.IdRef>
+                        </Sequence>
+                      </If.Then>
+                      <sap2010:WorkflowViewState.IdRef>If_83</sap2010:WorkflowViewState.IdRef>
+                    </If>
                     <mtbwa:CreateDirectory Directory="[BinariesDirectory &amp; &quot;\Services&quot;]" DisplayName="Create Services Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" />
                     <mtbwa:CreateDirectory Directory="[BinariesDirectory + &quot;\Sources&quot;]" DisplayName="Create Sources Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" />
                     <mtbwa:CreateDirectory Directory="[BinariesDirectory &amp; &quot;\Webs&quot;]" DisplayName="Create Webs Directory" sap2010:WorkflowViewState.IdRef="CreateDirectory_3" />
@@ -706,15 +800,15 @@
       </If>
       <mtbwa:WriteBuildMessage DisplayName="Completed Message" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_6" Message="------------------- Build DONE -------------------" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>d0hDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXNpbmdUZXN0UGFja3NcREVWMi5HYXRlZEJ1aWxkLnhhbWyLAwGQEAGVEAEZAfULAbUMARgBzg4B0w4BFwH5CQGACgEWAZMGAfkGARUBkQUB5gUBFAHrDgHvDgETAf4DAYYEARIBwwEB8gIBEQGWBwGlCQEQAZ8KAeYKAQ8B8A8B8g8BDgGxCwG4CwENAdQJAdsJAQwBkA8Bwg8BCwHHEAHMEAEKAaQEAfIEAQkBnw4Bpw4BCAGPCwGWCwEHAWEBqgEBBgHJDQH8DQEFAaUNAa8NAQQBkwMB0gMBAwHUCwHcCwECYQPGBQ4CAQFoBWizAQMByARpBWn9AgMBxARqBWq3AQMBvwRrBW8KAwG5BHAFxAUYAgECaKEBaLABAwHJBGnOAWmWAgMBxgRpgAFpxQEDAcUEaqUBarQBAwHCBGowakUDAcAEaxNrNAMBugRtCW3pAQMBvARwsQFwzgECAQlwggFwpAECAQdw3wFwigICAQV1NnVRAgEDggEHlgESAwGJBJcBB+cBEgMBmwPoAQf5ARIDAYoD+gEHnQQSAwGrAZ4EB7gFDAIBIrkFB8IFDAIBDsMFB8MFmQICAQttUG1gAwG9BIMBCYMBtAEDAbYEhAEJhAHKAQMBswSFAQmFAZwCAwGtBIYBCYYBjwIDAagEhwEJhwGSAgMBowSIAQmIAZ0CAwGeBIkBCY0BDgMBlwSOAQmVAQ4DAYoEmAEJmAHOAQMBhQSZAQm3AQ4DAdMDuAEJvwESAwHOA8ABCeYBFAMBnAPqAQvuARYDAYsDjQILmwQWAwG5AYECC4oCFgMBrAGeBBWeBIsBAgEjoAQLswUWAgEptgULtgWvAgIBJrkFFbkFMAIBD7sFC8AFFgIBEcMFfsMFsgECAQ2DAaMBgwGxAQMBtwSEAbUBhAHHAQMBtASFAcwBhQGZAgMBsASFAbQBhQHFAQMBrgSGAdIBhgGMAgMBqwSGAbcBhgHLAQMBqQSHAdQBhwGPAgMBpgSHAbgBhwHNAQMBpASIAdwBiAGaAgMBoQSIAb0BiAHVAQMBnwSJAReJAUYDAZgEiwENiwHzAgMBmgSOAReOAYwBAwGLBJABDZMBGAMBjQSYASqYAT8DAYcEmQEXmQF3AwHUA5sBDZ8BGAMB8gOi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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>d0hDOlxEZXZlbG9wbWVudFxCdWlsZFByb2Nlc3NUZW1wbGF0ZXNcVXNpbmdUZXN0UGFja3NcREVWMi5HYXRlZEJ1aWxkLnhhbWylAwGQEAGVEAEZAfULAbUMARgBzg4B0w4BFwH5CQGACgEWAZMGAfkGARUBkQUB5gUBFAHrDgHvDgETAf4DAYYEARIBwwEB8gIBEQGWBwGlCQEQAZ8KAeYKAQ8B8A8B8g8BDgGxCwG4CwENAdQJAdsJAQwBkA8Bwg8BCwHHEAHMEAEKAaQEAfIEAQkBnw4Bpw4BCAGPCwGWCwEHAWEBqgEBBgHJDQH8DQEFAaUNAa8NAQQBkwMB0gMBAwHUCwHcCwECYQOkBg4CAQFoBWizAQMB9ARpBWn9AgMB8ARqBWq3AQMB6wRrBW8KAwHlBHAFogYYAgECaKEBaLABAwH1BGnOAWmWAgMB8gRpgAFpxQEDAfEEaqUBarQBAwHuBGowakUDAewEaxNrNAMB5gRtCW3pAQMB6ARwsQFwzgECAQlwggFwpAECAQdw3wFwigICAQV1NnVRAgEDggEHlgESAwG1BJcBB+cBEgMBxwPoAQf5ARIDAbYD+gEHpwQSAwHQAagEB5YGDAIBIpcGB6AGDAIBDqEGB6EGmQICAQttUG1gAwHpBIMBCYMBtAEDAeIEhAEJhAHKAQMB3wSFAQmFAZwCAwHZBIYBCYYBjwIDAdQEhwEJhwGSAgMBzwSIAQmIAZ0CAwHKBIkBCY0BDgMBwwSOAQmVAQ4DAbYEmAEJmAHOAQMBsQSZAQm3AQ4DAf8DuAEJvwESAwH6A8ABCeYBFAMByAPqAQvuARYDAbcDjQILpQQWAwHeAYECC4oCFgMB0QGoBBWoBIsBAgEjqgQLkQYWAgEplAYLlAavAgIBJpcGFZcGMAIBD5kGC54GFgIBEaEGfqEGsgECAQ2DAaMBgwGxAQMB4wSEAbUBhAHHAQMB4ASFAcwBhQGZAgMB3ASFAbQBhQHFAQMB2gSGAdIBhgGMAgMB1wSGAbcBhgHLAQMB1QSHAdQBhwGPAgMB0gSHAbgBhwHNAQMB0ASIAdwBiAGaAgMBzQSIAb0BiAHVAQMBywSJAReJAUYDAcQEiwENiwHzAgMBxgSOAReOAYwBAwG3BJABDZMBGAMBuQSYASqYAT8DAbMEmQEXmQF3AwGABJsBDZ8BGAMBngSiAQ21ARgDAYIEvQE0vQFlAwH9A7oBNboBQwMB+wPCAQ3LASMDAewD0wER4gEcAwHJA+sBDesBmgIDAcID7AEN7AGLAgMBvQPtAQ3tAaECAwG4A44CDZQEGAMB7gGVBA2kBBIDAd8BggINhAIlAwHaAYUCDYkCEgMB0gGxBA35BRICATj6BQ2QBhICASqUBowBlAbIAQIBKJoGDZoG2gECAR6bBg2bBtABAgEanAYNnAbsAQIBFp0GDZ0G0gECARKLAVeLAX8DAcgEiwGcAosB8AIDAccEkQEPkQH4AwMBvwSSAQ+SAd8CAwG6BJwBD5wB3AEDAa0EnQEPnQHSAQMBqQSeAQ+eAacCAwGfBKMBD7QBGgMBgwTCAUHCAUcDAfkDwgFwwgG3AQMB+APCAfUBwgH8AQMB9wPCAfECwgH/AgMB9QPCAYoDwgGXAwMB8wPCATDCATYDAfIDyAETyAGnAgMB7QPUARPUAb4CAwHqA9UBE9UB4AEDAeYD1gET1gHXAQMB4gPXARPXAasCAwHYA9gBE+EBKQMBygPrAS7rAXQDAcUD6wHJAesBlwIDAcMD7AEu7AFsAwHAA+wBwgHsAYgCAwG+A+0BLu0BcwMBuwPtAdEB7QGeAgMBuQOPAg+EBBkDAf8BhQQPiQQUAwH6AYoED44EFAMB9QGPBA+TBBQDAe8BlQQblQQ+AwHgAZcEEaIEFgMB4gGDAg+DApMBAwHbAYUCG4UCRQMB0wGHAhGHAr4BAwHVAbEEG7EEPAIBObMEEfcFHAIBO/oFG/oFPAIBK/wFEY4GHAIBLZoGNZoGPQIBIZoGxgGaBtcBAgEfmwYumwZCAgEcnAYunAZGAgEYnAbhAZwG6QECARedBi6dBkMCARSRAZEBkQGRAwMBwQSSAdsBkgHcAgMBvQSSAcMBkgHUAQMBuwScATecAT8DAbAEnAHIAZwB2QEDAa4EnQEwnQFEAwGrBJ4BNZ4BRwMBpwSeAVCeAX8DAaYEngHxAZ4B/gEDAaQEngGQAp4BpAIDAaIEngHYAZ4B6QEDAaAEpQETpQGfAQMBmASyAROyAasCAwGOBK0BF60BrwIDAYQEyAExyAGAAQMB8QPIAZICyAGkAgMB7wPUAYgB1AG7AgMB6wPVATvVAUMDAekD1QHMAdUB3QEDAecD1gE01gFIAwHkA9cBOdcBSwMB4APXAVTXAYMBAwHfA9cB9QHXAYICAwHdA9cBlALXAagCAwHbA9cB3AHXAe0BAwHZA9gBMtgBOAMB1wPYAWHYAagBAwHWA9gB5gHYAe0BAwHVA9gB4gLYAfACAwHTA9gB+wLYAYgDAwHRA94BGd4BrQIDAcsDjwL5AY8CoQIDAbQDlAITggQeAwGAAoUEHYUEfwMB+wGHBBOHBMMCAwH9AYoEHYoEeAMB9gGMBBOMBK4CAwH4AY8EHY8EnAEDAfABkQQTkQSXAgMB8wGXBB+XBC4DAeMBmQQVnQQgAwHoAaAEFaAE8QIDAeUBgwKDAYMCkAEDAdwBhwIyhwJCAwHYAYcCpgGHArsBAwHWAbQEE8wEHgMBvQHNBBOxBR4CAW+yBRP2BRgCATz9BROMBikCATONBhONBrYBAgEupQF2pQGDAQMBnASlAZQBpQGcAQMBmwSlAV2lAW4DAZkEsgE5sgFLAwGWBLIBVLIBgwEDAZUEsgH1AbIBggIDAZMEsgGUArIBqAIDAZEEsgHcAbIB7QEDAY8ErQE9rQFPAwGMBK0BWK0BhwEDAYsErQH5Aa0BhgIDAYkErQGYAq0BrAIDAYcErQHgAa0B8QEDAYUE3gE33gGGAQMBzwPeAZgC3gGqAgMBzQOYAk2YAmUDAYECmgIVxwIfAwH0AsgCFYEEGgMBggKHBD+HBIMBAwH+AYwE5wGMBKsCAwH5AZEE2AGRBJQCAwH0AZoEF5wELwMB6QGgBKwBoASKAgMB5wG1BBW1BLkBAwHLAbYEFcsEGgMBvgHOBBWhBRoDAZgBogUVogXGAQMBlQGjBRWjBcABAwGSAaQFFaQFvgEDAY8BpQUVpQXEAQMBjAGmBRWmBZACAwGHAacFFacFjQIDAYIBqAUVqAWMAgIBfakFFakFjQICAXiqBRWtBSQCAXOuBRWwBSQCAXCyBSGyBYkBAgE9tAUX8QUiAgFE9AUX9AXOAgIBQf0FTf0FpgECATSNBjSNBkICATGNBp4BjQazAQIBL5oC3wGaAoACAwGyA58CGcUCJAMB9QLIAiPIAjcDAYMCygIZ+wMkAwGIAv4DGf4DxgMDAYUCmwQZmwTYAQMB6gG1BKkBtQS2AQMBzQG1BJoBtQShAQMBzAG2BCO2BDsDAb8BuAQZvwQiAwHGAcIEGckEIgMBwQHOBCPOBDMDAZkB0AQZngUkAwGbAaIFNqIFZwMBlgGjBTajBWIDAZMBpAU2pAVjAwGQAaUFNqUFZgMBjQGmBTamBWcDAYoBpgXPAaYFjQIDAYgBpwU2pwVmAwGFAacFzQGnBYoCAwGDAagFNqgFYwMBgAGoBccBqAWJAgIBfqkFNqkFZgIBe6kFzQGpBYoCAgF5qwU+qwVrAgF2rAU+rAWcAQIBdK8FPq8FawIBcbUFGbwFIgIBa70FGeAFIQIBUOEFGfAFLwIBRfQFbvQF5wECAUOhAh2nAigDAZIDrwIhwQIsAwH2AssCG9oCMQMB7ALbAhulAyYDAcsCpgMbrQMkAwHHAq4DG64D1gEDAcQCrwMbuwMjAwG1ArwDG/kDLQMBiQL+A1b+A6kCAwGHApsEvQGbBNUBAwHrAb0ERL0EYgMByQG6BEW6BFsDAccBxwRExwRmAwHEAcQERcQEWwMBwgHRBBvhBDEDAbUB4gQb4gS9AQMBsQHjBBv1BCYDAa0B9gQbhgUxAwGnAYcFG5gFMQMBnwGZBRucBSoDAZwBugVDugVEAgFutwVEtwVSAgFsvgUb3wUmAgFUvQWBAb0FugECAVHhBTjhBesDAgFK4QWOBOEF5gQCAUjhBaEF4QWzBQIBRqUCH6UCpwIDAasDpgIfpgLRBQMBkwOzAiOzAswCAwGQA7QCI7oCKAMBhAO7AiO7AvQBAwGBA7wCI7wCtwIDAfwCvQIjvwI7AwH4AsACI8ACxQEDAfcCywI6ywLQAQMB7wLLAvgBywLUAgMB7QLcAh3cAr8BAwHoAt0CHewCKAMB5ALtAh38AjMDAd4C/QIdjQMzAwHWAo4DHZADLAMB0wKRAx2gAygDAdACoQMdpAMsAwHMAqsDRasDRgMBygKoA0aoA00DAcgCrgNRrgNnAwHFArADHboDKAMBuQKvA1avA4MBAwG2ArwDgwG8A5kBAwGzAsEDH/cDKgMBigLRBDrRBNABAwG4AdEE+AHRBNQCAwG2AeIEPOIESQMBtAHiBHLiBIcBAwGyAeUEH+gELgMBrgH2BDr2BNgBAwGqAfYEgAL2BLoCAwGoAYcFW4cFtgEDAaQBlAUhlAWHAgMBoAGaBUSaBVcDAZ0BvwUdzgUzAgFgzwUd1gUmAgFa1wUd3gUmAgFVpQLaAaUC9AEDAbADpQL8AaUCjAIDAa4DpQKXAqUCpAIDAawDpgKFAqYCjQIDAagDpgKMBaYCzgUDAacDpgLuBKYCgQUDAaUDpgLOAqYC5QIDAaMDpgLpA6YC/AMDAaEDpgJDpgKZAQMBnwOmAp0DpgK/AwMBnQOmAvMCpgL2AgMBmgOmAsgDpgLYAwMBmAOmAqgBpgLPAQMBlgOmAv4CpgKTAwMBlAOzAk+zApABAwGRA7QCMbQCQwMBhQO2Aie4Aj8DAYcDuwLfAbsC8QEDAYIDvAJBvAKQAQMBgAO8AqICvAK0AgMB/gK+AiW+AqkBAwH5AtwCPtwCSwMB6wLcAqcB3AK8AQMB6QLfAiHhAjADAeUC7QI87QLaAQMB4QLtAoIC7QK8AgMB3wL9Al39ArgBAwHbAooDI4oDiQIDAdcCjwNGjwNZAwHUApMDIZUDMAMB0QKiA0aiA3MDAc4CowNGowOLAQMBzQKxAx+xA+kBAwG/ArIDH7kDKAMBugLGAyHVAzcDAakC1gMh1gP0AwMBngLXAyH2AyYDAYsC5gRI5gR1AwGvAZQFXJQFaQMBogG/BTy/BcgDAgFlvwWZBL8F8gQCAWO/Ba0FvwW/BQIBYdQFSNQFeAIBXdEFSdEFWgIBW9wFR9wFWQIBWNkFSNkFVgIBVrcCKbcCpAUDAYgDvgKZAb4CpgEDAfoC4AJK4AJ3AwHmAooDlQGKA6IBAwHZApQDSpQDjwEDAdICsQNVsQNrAwHCArED3QGxA+YBAwHAArcDSbcDVAMBvQK0A0q0A1EDAbsCxgNAxgOoAwMBrgLGA9gDxgOxBAMBrALGA+wExgOBBQMBqgLWA/AC1gOFAwMBpwLWA7gC1gO9AgMBpgLWA8oC1gPiAgMBpQLWA+gD1gPxAwMBpALWA5YD1gO5AwMBowLWA8ED1gPaAwMBoQLWA23WA3YDAaAC1gO7AdYDgQIDAZ8C1wMv1wNdAwGMAtkDJdkD5gEDAZwC3AMl9AMwAwGOArcCxgG3At4DAwGPA7cCbbcCuAEDAY4DtwK1BLcCiAUDAYwDtwKOBbcCoQUDAYsDtwJItwJkAwGJA9kDyAHZA+MBAwGdAt0DJ98DNgMBmQLgAyfzAywDAY8C3gNQ3gN9AwGaAuADNeADWwMBkALiAyvxA0EDAZIC4gNK4gPYAgMBlALiA/wC4gOeAwMBkwI=</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="1625,22" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="1625,22" />
-      <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="1625,22" />
+      <sap2010:ViewStateData Id="GetBuildDetail_1" sap:VirtualizedContainerService.HintSize="1872,22" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="1872,22" />
+      <sap2010:ViewStateData Id="UpdateBuildNumber_1" sap:VirtualizedContainerService.HintSize="1872,22" />
       <sap2010:ViewStateData Id="SetBuildProperties_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_68" sap:VirtualizedContainerService.HintSize="1625,208" />
+      <sap2010:ViewStateData Id="If_68" sap:VirtualizedContainerService.HintSize="1872,208" />
       <sap2010:ViewStateData Id="GetBuildAgent_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="GetBuildDirectory_1" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="Assign`1_3" sap:VirtualizedContainerService.HintSize="464,22" />
@@ -733,7 +827,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_4" sap:VirtualizedContainerService.HintSize="464,356" />
-      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="1603,1100">
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="1850,1100">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -796,7 +890,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TryCatch_8" sap:VirtualizedContainerService.HintSize="687,384" />
-      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="1603,1269">
+      <sap2010:ViewStateData Id="Sequence_48" sap:VirtualizedContainerService.HintSize="1850,1269">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -821,7 +915,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_10" sap:VirtualizedContainerService.HintSize="1603,497" />
+      <sap2010:ViewStateData Id="TryCatch_10" sap:VirtualizedContainerService.HintSize="1850,497" />
       <sap2010:ViewStateData Id="RevertWorkspace_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeForReason_7" sap:VirtualizedContainerService.HintSize="464,146" />
       <sap2010:ViewStateData Id="CopyDirectory_2" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -867,8 +961,8 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="TryCatch_9" sap:VirtualizedContainerService.HintSize="418,435" />
-      <sap2010:ViewStateData Id="ForEach`1_11" sap:VirtualizedContainerService.HintSize="763,583" />
-      <sap2010:ViewStateData Id="InvokeProcess_30" sap:VirtualizedContainerService.HintSize="517,264" />
+      <sap2010:ViewStateData Id="ForEach`1_11" sap:VirtualizedContainerService.HintSize="1010,583" />
+      <sap2010:ViewStateData Id="InvokeProcess_30" sap:VirtualizedContainerService.HintSize="763,264" />
       <sap2010:ViewStateData Id="CopyDirectory_14" sap:VirtualizedContainerService.HintSize="418,22" />
       <sap2010:ViewStateData Id="InvokeMethod_26" sap:VirtualizedContainerService.HintSize="218,132" />
       <sap2010:ViewStateData Id="Catch`1_10" sap:VirtualizedContainerService.HintSize="404,21">
@@ -936,21 +1030,30 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ParallelForEach`1_1" sap:VirtualizedContainerService.HintSize="763,1494" />
-      <sap2010:ViewStateData Id="Sequence_70" sap:VirtualizedContainerService.HintSize="785,5094">
+      <sap2010:ViewStateData Id="Sequence_94" sap:VirtualizedContainerService.HintSize="785,4471">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_12" sap:VirtualizedContainerService.HintSize="815,5242" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_7" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_82" sap:VirtualizedContainerService.HintSize="1010,4619" />
+      <sap2010:ViewStateData Id="Sequence_70" sap:VirtualizedContainerService.HintSize="1032,5366">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_12" sap:VirtualizedContainerService.HintSize="1062,5514" />
       <sap2010:ViewStateData Id="SetBuildProperties_10" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_59" sap:VirtualizedContainerService.HintSize="569,208" />
+      <sap2010:ViewStateData Id="If_59" sap:VirtualizedContainerService.HintSize="1062,208" />
       <sap2010:ViewStateData Id="SetBuildProperties_11" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_60" sap:VirtualizedContainerService.HintSize="568,208" />
+      <sap2010:ViewStateData Id="If_60" sap:VirtualizedContainerService.HintSize="1062,208" />
       <sap2010:ViewStateData Id="SetBuildProperties_12" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_61" sap:VirtualizedContainerService.HintSize="568,208" />
-      <sap2010:ViewStateData Id="Sequence_71" sap:VirtualizedContainerService.HintSize="837,6110">
+      <sap2010:ViewStateData Id="If_61" sap:VirtualizedContainerService.HintSize="1062,208" />
+      <sap2010:ViewStateData Id="Sequence_71" sap:VirtualizedContainerService.HintSize="1084,6382">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -968,9 +1071,9 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildWarning_6" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_62" sap:VirtualizedContainerService.HintSize="469,418" />
-      <sap2010:ViewStateData Id="If_63" sap:VirtualizedContainerService.HintSize="594,6110" />
-      <sap2010:ViewStateData Id="Parallel_5" sap:VirtualizedContainerService.HintSize="1585,6156" />
-      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="1603,6361" />
+      <sap2010:ViewStateData Id="If_63" sap:VirtualizedContainerService.HintSize="594,6382" />
+      <sap2010:ViewStateData Id="Parallel_5" sap:VirtualizedContainerService.HintSize="1832,6428" />
+      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="1850,6633" />
       <sap2010:ViewStateData Id="CheckInGatedChanges_1" sap:VirtualizedContainerService.HintSize="509,22" />
       <sap2010:ViewStateData Id="Assign_13" sap:VirtualizedContainerService.HintSize="242,60" />
       <sap2010:ViewStateData Id="Assign_12" sap:VirtualizedContainerService.HintSize="242,60" />
@@ -982,17 +1085,41 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CreateDirectory_2" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CreateDirectory_3" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CreateDirectory_4" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CopyDirectory_4" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CopyDirectory_5" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CopyDirectory_6" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="CopyDirectory_8" sap:VirtualizedContainerService.HintSize="218,22" />
-      <sap2010:ViewStateData Id="InvokeMethod_8" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="InvokeMethod_19" sap:VirtualizedContainerService.HintSize="218,132" />
-      <sap2010:ViewStateData Id="Sequence_56" sap:VirtualizedContainerService.HintSize="711,924">
+      <sap2010:ViewStateData Id="InvokeProcess_32" sap:VirtualizedContainerService.HintSize="418,264" />
+      <sap2010:ViewStateData Id="CopyDirectory_15" sap:VirtualizedContainerService.HintSize="418,22" />
+      <sap2010:ViewStateData Id="InvokeMethod_28" sap:VirtualizedContainerService.HintSize="218,132" />
+      <sap2010:ViewStateData Id="Catch`1_12" sap:VirtualizedContainerService.HintSize="404,21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_13" sap:VirtualizedContainerService.HintSize="418,359" />
+      <sap2010:ViewStateData Id="InvokeProcess_33" sap:VirtualizedContainerService.HintSize="418,264" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_12" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeProcess_34" sap:VirtualizedContainerService.HintSize="418,271" />
+      <sap2010:ViewStateData Id="InvokeMethod_29" sap:VirtualizedContainerService.HintSize="418,132" />
+      <sap2010:ViewStateData Id="Sequence_95" sap:VirtualizedContainerService.HintSize="440,1636">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_83" sap:VirtualizedContainerService.HintSize="565,1784" />
+      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CreateDirectory_2" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CreateDirectory_3" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CreateDirectory_4" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_4" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_5" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_6" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="CopyDirectory_8" sap:VirtualizedContainerService.HintSize="565,22" />
+      <sap2010:ViewStateData Id="InvokeMethod_8" sap:VirtualizedContainerService.HintSize="565,132" />
+      <sap2010:ViewStateData Id="InvokeMethod_19" sap:VirtualizedContainerService.HintSize="565,132" />
+      <sap2010:ViewStateData Id="Sequence_56" sap:VirtualizedContainerService.HintSize="711,2748">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1021,14 +1148,14 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildWarning_5" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_56" sap:VirtualizedContainerService.HintSize="711,1422" />
-      <sap2010:ViewStateData Id="Sequence_78" sap:VirtualizedContainerService.HintSize="733,2944">
+      <sap2010:ViewStateData Id="Sequence_78" sap:VirtualizedContainerService.HintSize="733,4768">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_64" sap:VirtualizedContainerService.HintSize="858,3092" />
+      <sap2010:ViewStateData Id="If_64" sap:VirtualizedContainerService.HintSize="858,4916" />
       <sap2010:ViewStateData Id="InvokeProcess_15" sap:VirtualizedContainerService.HintSize="200,264" />
       <sap2010:ViewStateData Id="CopyDirectory_12" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Sequence_79" sap:VirtualizedContainerService.HintSize="222,450">
@@ -1039,7 +1166,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_65" sap:VirtualizedContainerService.HintSize="858,598" />
-      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="880,3854">
+      <sap2010:ViewStateData Id="Sequence_34" sap:VirtualizedContainerService.HintSize="880,5678">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1047,7 +1174,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_10" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_43" sap:VirtualizedContainerService.HintSize="1356,4002" />
+      <sap2010:ViewStateData Id="If_43" sap:VirtualizedContainerService.HintSize="1850,5826" />
       <sap2010:ViewStateData Id="DeleteWorkspace_5" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="DeleteDirectory_6" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="DeleteDirectory_7" sap:VirtualizedContainerService.HintSize="200,22" />
@@ -1059,17 +1186,17 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_54" sap:VirtualizedContainerService.HintSize="1356,480" />
-      <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="1356,22" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1625,14095" />
-      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1647,14653">
+      <sap2010:ViewStateData Id="If_54" sap:VirtualizedContainerService.HintSize="1850,480" />
+      <sap2010:ViewStateData Id="WriteBuildMessage_6" sap:VirtualizedContainerService.HintSize="1850,22" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1872,16191" />
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="1894,16749">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1687,14733" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1934,16829" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
