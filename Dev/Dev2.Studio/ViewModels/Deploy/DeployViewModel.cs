@@ -32,7 +32,7 @@ namespace Dev2.Studio.ViewModels.Deploy
     {
         #region Class Members
 
-        public IDeployStatsCalculator _deployStatsCalculator { get; set; }
+        private IDeployStatsCalculator _deployStatsCalculator { get; set; }
 
         private IEnvironmentModelProvider _serverProvider;
 

@@ -567,32 +567,7 @@ namespace Dev2.Core.Tests
             mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
             mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_ChangeActiveItem")]
-        public void MainViewModel_ChangeActiveItem_WhenHasContextWithDataListViewModelActive_ClearsCollectionsOnPreviousAndNewItem()
-        {
-            //------------Setup for test--------------------------
-            string errorString;
-            CreateFullExportsAndVm();
-            AddAdditionalContext();
-            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            var mockDataListViewModelForSecondContext = new Mock<IDataListViewModel>();
-            firstCtx.DataListViewModel = mockDataListViewModel.Object;
-            secondCtx.DataListViewModel = mockDataListViewModelForSecondContext.Object;
-            _mainViewModel.ActivateItem(firstCtx);
-            //------------Execute Test---------------------------
-            _mainViewModel.ActivateItem(secondCtx);
-            //------------Assert Results-------------------------
-            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Exactly(2));
-            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
-            mockDataListViewModelForSecondContext.Verify(model => model.ClearCollections(), Times.Exactly(2));
-            mockDataListViewModelForSecondContext.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
-        }
-
+        
         [TestMethod]
         public void CloseContextWithCloseFalseExpectsPreviousItemActivatedAndAllItemsPResent()
         {

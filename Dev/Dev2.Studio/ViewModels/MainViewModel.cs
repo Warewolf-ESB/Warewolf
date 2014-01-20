@@ -894,10 +894,6 @@ namespace Dev2.Studio.ViewModels
         {
             if(_previousActive != null)
             {
-                if(_previousActive.DataListViewModel != null)
-                {
-                    _previousActive.DataListViewModel.ClearCollections();
-                }
                 if(newItem != null)
                 {
                     if(newItem.DataListViewModel != null)
@@ -978,9 +974,9 @@ namespace Dev2.Studio.ViewModels
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
+            _previousActive = ActiveItem;
             base.ActivateItem(item);
             if (item == null || item.ContextualResourceModel == null) return;
-            _previousActive = ActiveItem;
 
             if(ExplorerViewModel != null)
             {
