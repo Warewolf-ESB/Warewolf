@@ -978,9 +978,10 @@ namespace Dev2.Studio.ViewModels
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)
         {
-            _previousActive = ActiveItem;
             base.ActivateItem(item);
-            if(item == null || item.ContextualResourceModel == null) return;
+            if (item == null || item.ContextualResourceModel == null) return;
+            _previousActive = ActiveItem;
+
             if(ExplorerViewModel != null)
             {
                 ExplorerViewModel.BringItemIntoView(item);
