@@ -146,6 +146,7 @@ namespace Dev2.Studio.Deploy
             if(ConflictingResources.Any(c => c.SourceName == resourceInConflict.Item1.ResourceName)) return;
             ConflictingResources.Add(new DeployDialogTO(ConflictingResources.Count + 1, resourceInConflict.Item2.ResourceName, resourceInConflict.Item1.ResourceName, resourceInConflict.Item1));
             resourceInConflict.Item3.IsOverwrite = true;
+            resourceInConflict.Item3.TreeParent.IsOverwrite = true;
             resourceInConflict.Item4.SetNodeOverwrite(resourceInConflict.Item1 as IContextualResourceModel, true);
         }
 

@@ -359,6 +359,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                     var child = TryGetResourceNode(resModel as IContextualResourceModel);
                     if(child != null)
                     {
+                        child.TreeParent.IsOverwrite = state;
                         return child.IsOverwrite = state;
                     }
                 }

@@ -737,6 +737,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(_isChecked == true && value == false)
             {
+                TreeParent.IsOverwrite = false;
                 IsOverwrite = false;
             }
 
