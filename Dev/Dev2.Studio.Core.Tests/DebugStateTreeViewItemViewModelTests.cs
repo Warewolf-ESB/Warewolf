@@ -195,7 +195,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsNotWorkflow_PublishesSelectionEventWithActivitySelectionTypeAdd()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 1);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 2);
         }
 
         [TestMethod]
@@ -285,9 +285,12 @@ namespace Dev2.Core.Tests
             EventPublishers.Studio.RemoveEvent<DebugSelectionChangedEventArgs>();
 
             Assert.AreEqual(expectedCount, events.Count);
-            var foundEvent = events.Find(args => args.SelectionType == expectedSelectionType);
-            Assert.IsNotNull(foundEvent);
-            Assert.AreSame(expected, foundEvent.DebugState);
+            if(events.Count > 0)
+            {
+                var foundEvent = events.Find(args => args.SelectionType == expectedSelectionType);
+                Assert.IsNotNull(foundEvent);
+                Assert.AreSame(expected, foundEvent.DebugState);
+            }
         }
 
         static void Verify_Constructor_AssignsNameToContentServer(StateType stateType, bool contentServerIsSource = false)

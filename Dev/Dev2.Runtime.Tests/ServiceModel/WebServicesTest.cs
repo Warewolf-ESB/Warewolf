@@ -399,7 +399,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             ErrorResultTO errors;
             WebServices.ExecuteRequest(service, false, out errors, DummyWebExecute);
             //------------Assert Results-------------------------
-            Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.RequestResponse);
+            Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.JsonPathResult);
         }
 
         string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)

@@ -164,6 +164,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             var webService = ScenarioContext.Current.Get<ServiceModel.Data.WebService>("WebService");
             webService.JsonPath = jsonPath;
             webService.ApplyPath();
+            webService.RequestResponse = webService.JsonPathResult;
         }
 
         [Then(@"the mapping should be '(.*)'")]
