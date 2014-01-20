@@ -18,7 +18,7 @@ namespace TRXMerge
                 return 1;
             }
             if(!File.Exists(args[1])) { Console.WriteLine(Message); return 1; }
-            System.Xml.XmlDocument oDocFirst = new XmlDocument();
+            XmlDocument oDocFirst = new XmlDocument();
             oDocFirst.Load(MakeCompatXML(args[1]));
 
             int count = 2;
@@ -180,42 +180,23 @@ namespace TRXMerge
             master.Attributes["executed"].Value = oSummary.executed.ToString();
             master.Attributes["passed"].Value = oSummary.passed.ToString();
 
-            ////locate and update times
-            XmlNode oTimes = oDoc.SelectSingleNode("//Times");
-            //add a new attribute elapsed time, original trx would not have that
-            XmlAttribute elapsed = oDoc.CreateAttribute("elapsedtime");
-            elapsed.Value = CalculateSummaryTime(oDoc).ToString();
-            oTimes.Attributes.Append(elapsed);
-
             ////append ID
             XmlNode oRoot = oDoc.DocumentElement;
             var id = oDoc.CreateAttribute("id");
             id.Value = Guid.NewGuid().ToString();
             oRoot.Attributes.Append(id);
 
+            ////append name
+            var name = oDoc.CreateAttribute("name");
+            name.Value = fileName.Substring(fileName.LastIndexOf('\\') + 1, fileName.Length - fileName.LastIndexOf('\\') - 5);
+            oRoot.Attributes.Append(name);
+
             ////append XML namespace
             var xmlns = oDoc.CreateAttribute("xmlns");
-            id.Value = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
+            xmlns.Value = "http://microsoft.com/schemas/VisualStudio/TeamTest/2010";
             oRoot.Attributes.Append(xmlns);
 
             oDoc.Save(fileName);
-        }
-
-        public static double CalculateSummaryTime(XmlDocument doc)
-        {
-            double sDiff = 0;
-
-            int i = 0;
-
-            while(doc.SelectSingleNode("//Results").ChildNodes.Count != i)
-            {
-                DateTime sTime = Convert.ToDateTime(doc.SelectSingleNode("//Results").ChildNodes[i].Attributes["startTime"].Value);
-                DateTime eTime = Convert.ToDateTime(doc.SelectSingleNode("//Results").ChildNodes[i].Attributes["endTime"].Value);
-                //// calculate timespan for each test case and add them to calculate total time
-                sDiff += (eTime - sTime).TotalSeconds;
-                i++;
-            }
-            return sDiff;
         }
     }
 
