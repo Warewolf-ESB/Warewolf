@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Xaml;
 using Microsoft.TeamFoundation.Build.Client;
 using Microsoft.TeamFoundation.Client;
-using System;
-using System.Reflection;
 
 namespace QueueCIBuildForTestPacks
 {
@@ -40,17 +40,17 @@ namespace QueueCIBuildForTestPacks
             string def = args[2].Trim();
             string user = args[3].Trim();
             string changeSetID = args[4].Trim();
-            string testPackID = args[5].Trim();
+            string numberOfTestRunAgentsToQueueOn = args[5].Trim();
 
             BuildQueuer qb = new BuildQueuer();
 
             File.WriteAllText(LogFile(), buildTS + " :: Queuing Build With Args { Server : '" + server + "', Project : '" + project +
-                                "', Definition : '" + def + "', for User : '" + user + "', for changeset : '" + changeSetID + 
-                                "' and test pack id : '" + testPackID + "'}");
+                                "', Definition : '" + def + "', for User : '" + user + "', for changeset : '" + changeSetID +
+                                "' and number of test agents to queue on : '" + numberOfTestRunAgentsToQueueOn + "'}");
 
             try
             {
-                return qb.Run(server, project, def, user, changeSetID, testPackID);
+                return qb.Run(server, project, def, user, changeSetID, numberOfTestRunAgentsToQueueOn);
             }
             catch(Exception e)
             {
@@ -64,7 +64,7 @@ namespace QueueCIBuildForTestPacks
     public class BuildQueuer
     {
 
-        public int Run(string server, string project, string def, string user, string changeSetID, string testPackID)
+        public int Run(string server, string project, string def, string user, string changeSetID, string numberOfTestRunAgentsToQueueOn)
         {
             var tfs = TeamFoundationServerFactory.GetServer(server);
             var buildServer = (IBuildServer)tfs.GetService(typeof(IBuildServer));
@@ -74,7 +74,7 @@ namespace QueueCIBuildForTestPacks
             // is there a changeset?
             if(!string.IsNullOrEmpty(changeSetID))
             {
-                req.ProcessParameters = UpdateAgentTag(changeSetID, testPackID);
+                req.ProcessParameters = UpdateAgentTag(changeSetID, numberOfTestRunAgentsToQueueOn);
             }
             req.RequestedFor = user;
 
@@ -84,11 +84,11 @@ namespace QueueCIBuildForTestPacks
 
         }
 
-        private static string UpdateAgentTag(string changeSetID, string testPackID)
+        private static string UpdateAgentTag(string changeSetID, string numberOfTestRunAgentsToQueueOn)
         {
             IDictionary<String, Object> paramValues = new Dictionary<string, object>();
             paramValues.Add("SpecifiedChangeSet", changeSetID);
-            paramValues.Add("TestPackID", testPackID);
+            paramValues.Add("NumberOfTestRunAgentsToQueueOn", numberOfTestRunAgentsToQueueOn);
             return XamlServices.Save(paramValues);
         }
 
