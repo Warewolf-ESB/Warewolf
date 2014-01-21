@@ -13,6 +13,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -476,6 +477,34 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, res);
         }
 
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DbServices_TestService")]
+        public void DbServices_TestService_NestedTransactions_DoesNotThrowException()
+        {
+            //------------Setup for test--------------------------
+            var dbService = new DbService
+            {
+                Recordset = new Recordset(),
+                Method = new ServiceMethod
+                {
+                    Name = "dbo.Pr_GeneralTestNestedTransaction"
+                    //Name = "dbo.Pr_TestTransactionsNested"
+                },
+                Source = SqlServerTests.CreateDev2TestingDbSource()
+            };
+            var args = JsonConvert.SerializeObject(dbService);
+
+            var dbServices = new TestDbServices(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
+
+            //------------Execute Test---------------------------
+            var result = dbServices.DbTest(args, Guid.Empty, Guid.Empty);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.HasErrors);           
+        }
         #endregion
 
         #region Mappings
