@@ -21,6 +21,10 @@ namespace Dev2.Tests.Runtime.ServiceModel
     public class WebServicesTest
     {
         string _requestResponse;
+        string _requestUrlEvaluated;
+        string _requestBodyEvaluated;
+        string[] _requestHeadersEvaluated;
+
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -392,7 +396,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var service = CreateDummyWebService();
+            service.RequestHeaders = "[[test1]]";
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
             service.JsonPath = "$.results[*]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
             _requestResponse = "{\"results\" : [{\"address_components\": [{\"long_name\" :\"Address:\",\"short_name\" :\"Address:\",\"types\" : [\"point_of_interest\",\"establishment\" ]}]}],\"status\" : \"OK\"}";
             service.RequestResponse = _requestResponse;
             //------------Execute Test---------------------------
@@ -402,8 +413,35 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual("[{\"address_components\":[{\"long_name\":\"Address:\",\"short_name\":\"Address:\",\"types\":[\"point_of_interest\",\"establishment\"]}]}]", service.JsonPathResult);
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("Services_Execute")]
+        public void Services_Execute_WithVariablesInAllField_ShouldUseEvaluatedValues()
+        {
+            //------------Setup for test--------------------------
+            var service = CreateDummyWebService();
+            service.RequestHeaders = "[[test1]]";
+            service.RequestBody = "[[test2]]";
+            service.RequestUrl = "[[test3]]";
+            service.Method.Parameters.Add(new MethodParameter { Name = "test1", Value = "val1" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test2", Value = "val2" });
+            service.Method.Parameters.Add(new MethodParameter { Name = "test3", Value = "val3" });
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            WebServices.ExecuteRequest(service, false, out errors, DummyWebExecute);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("val1", _requestHeadersEvaluated[0]);
+            Assert.AreEqual("val2", _requestBodyEvaluated);
+            Assert.AreEqual("val3", _requestUrlEvaluated);
+        }
+
         string DummyWebExecute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
+            _requestUrlEvaluated = relativeUri;
+            _requestBodyEvaluated = data;
+            _requestHeadersEvaluated = headers;
+
             errors = new ErrorResultTO();
             return _requestResponse;
         }
