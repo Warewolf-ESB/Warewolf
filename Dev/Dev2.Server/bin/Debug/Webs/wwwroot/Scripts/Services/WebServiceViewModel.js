@@ -442,7 +442,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         }
         self.onSourceChanged(newValue);
     });
-
+    
     self.onSourceChanged = function (newValue) {
         self.hasSourceSelectionChanged = true;
         try {
@@ -610,7 +610,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 }
 
                 self.data.requestUrl(result.RequestUrl);
-                self.data.requestMethod(result.RequestMethod);
+                self.data.requestMethod(result.RequestMethod.toUpperCase());
                 self.data.requestHeaders(result.RequestHeaders);
                 self.data.requestBody(result.RequestBody);
                 self.data.requestResponse(result.RequestResponse);
