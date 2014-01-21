@@ -199,7 +199,7 @@
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal"
                                             AllowDrop="True"
-                                            Height="30"
+                                            Height="20"
                                             Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterPositive}}">
                                 <i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior />
