@@ -148,7 +148,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-        
+
         #region ExecuteRequest
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
@@ -158,9 +158,10 @@ namespace Dev2.Runtime.ServiceModel
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors, WebExecuteString webExecute)
         {
-            var headers = string.IsNullOrEmpty(service.RequestHeaders)
+            var requestHeaders = SetParameters(service.Method.Parameters, service.RequestHeaders);
+            var headers = string.IsNullOrEmpty(requestHeaders)
                               ? new string[0]
-                              : service.RequestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                              : requestHeaders.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
             var requestUrl = SetParameters(service.Method.Parameters, service.RequestUrl);
             var requestBody = SetParameters(service.Method.Parameters, service.RequestBody);
             service.RequestResponse = webExecute(service.Source as WebSource, service.RequestMethod, requestUrl, requestBody, throwError, out errors, headers);
@@ -183,5 +184,5 @@ namespace Dev2.Runtime.ServiceModel
 
     }
 
-    
+
 }
