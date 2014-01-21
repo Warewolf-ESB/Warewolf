@@ -386,6 +386,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     
     self.data.requestHeaders.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {
+            var splitValue = newValue.split(/\n/);
+            newValue = splitValue.join(";");
+            self.data.requestHeaders(newValue);
             self.updateVariables(SRC_HEADER, newValue);
         }
     });
