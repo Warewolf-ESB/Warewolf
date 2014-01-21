@@ -157,6 +157,7 @@ namespace TRXMerge
 
             summary oSummary;
             oSummary.passed = 0;
+            oSummary.failed = 0;
 
             //count the number of test cases for total
             oSummary.total = oDoc.SelectSingleNode("//TestDefinitions").ChildNodes.Count;
@@ -175,10 +176,22 @@ namespace TRXMerge
                 i++;
             }
 
+            //count the number of failed test cases from results
+            i = 0;
+            while(oDoc.SelectSingleNode("//Results").ChildNodes.Count != i)
+            {
+                if(oDoc.SelectSingleNode("//Results").ChildNodes[i].Attributes["outcome"].Value == "Failed")
+                {
+                    oSummary.failed++;
+                }
+                i++;
+            }
+
             ////update summary with new numbers
             master.Attributes["total"].Value = oSummary.total.ToString();
             master.Attributes["executed"].Value = oSummary.executed.ToString();
             master.Attributes["passed"].Value = oSummary.passed.ToString();
+            master.Attributes["failed"].Value = oSummary.failed.ToString();
 
             ////append ID
             XmlNode oRoot = oDoc.DocumentElement;
@@ -205,6 +218,7 @@ namespace TRXMerge
         public int total;
         public int executed;
         public int passed;
+        public int failed;
         public double time;
     }
 }
