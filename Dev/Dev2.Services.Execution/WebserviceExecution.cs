@@ -1,5 +1,6 @@
 ﻿using Dev2.Data.Util;
 using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -29,6 +30,19 @@ namespace Dev2.Services.Execution
 
         protected virtual void ExecuteWebRequest(WebService service, out ErrorResultTO errors)
         {
+            if(service != null)
+            {
+                ErrorResultTO error;
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                //Evaluate the request headers
+                IBinaryDataListEntry dlEntry = compiler.Evaluate(DataObj.DataListID, enActionType.User, service.RequestHeaders, false, out error);
+                IBinaryDataListItem binaryDataListItem = dlEntry.FetchScalar();
+                service.RequestHeaders = binaryDataListItem.TheValue;
+                //Evaluate the request body
+                IBinaryDataListEntry bodyDlEntry = compiler.Evaluate(DataObj.DataListID, enActionType.User, service.RequestBody, false, out error);
+                IBinaryDataListItem bodyBinaryDataListItem = bodyDlEntry.FetchScalar();
+                service.RequestBody = bodyBinaryDataListItem.TheValue;
+            }
             WebServices.ExecuteRequest(service, true, out errors);
         }
 

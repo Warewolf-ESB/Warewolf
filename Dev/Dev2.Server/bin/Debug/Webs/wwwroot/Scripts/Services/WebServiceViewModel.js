@@ -3,9 +3,12 @@
 
 function WebServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
     var self = this;
-    var SRC_URL = 0;
-    var SRC_BODY = 1;
-    var SRC_HEADER = 2;
+    var srcUrl = 0;
+    var srcBody = 1;
+    var srcHeader = 2;
+
+    var srcBodyPrev = "";
+    var srcHeaderPrev = "";
     
     var $tabs = $("#tabs");
     var $sourceAddress = $("#sourceAddress");
@@ -18,6 +21,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     $("#addResponseButton").length > 0 ? $("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
+    // ReSharper disable once WrongExpressionStatement
       .button() : null;
     
     $("#addPathButton").length > 0 ? $("#addPathButton")
@@ -164,6 +168,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         var prev = text.slice(start - 2, start - 1);
 		
         if (prev == "]") {
+            
             var idx = text.lastIndexOf("[[", start);
             if (idx != -1) {
                 var paramName = text.substring(idx + 2, start - 2);
@@ -175,12 +180,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.updateVariablesText = function (varSrc, newValue, caretPos) {
         try {
             self.isUpdatingVariables = true;
-            if (varSrc == SRC_URL) {
+            if (varSrc == srcUrl) {
                 self.data.requestUrl(newValue);
                 $requestUrl.caret(caretPos);
 
-            } else {
+            } else if(varSrc == srcBody){
                 self.data.requestBody(newValue);
+            }else {
+                self.data.requestHeaders(newValue);
             }
         } finally {
             self.isUpdatingVariables = false;
@@ -199,7 +206,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         if (!paramVars) {
             paramVars = [];
         }
-        if (varSrc == SRC_URL) {
+        if (varSrc == srcUrl) {
             // regex should include a lookbehind to exclude leading char but lookbehind ?<= is not supported!            
             paramNames = newValue.match(/([?&#]).*?(?==)/g); // ideal regex: (?<=[?&#]).*?(?==) 
             paramValues = newValue.match(/=([^&#]*)/g); // ideal regex: (?<==)([^&#]*) 
@@ -218,7 +225,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
         $.each(paramNames, function (index, paramName) {
             var varName = paramName;
-            if (varSrc == SRC_URL) {
+            if (varSrc == srcUrl) {
                 if (paramName.substr(0, 2) != "[[") {
                     paramName = paramName ? paramName.slice(1) : "";
                     varName = "[[" + paramName + "]]";
@@ -232,7 +239,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
             self.pushRequestVariable(paramName, varSrc, paramValue ? paramValue.slice(1) : ""); // remove = prefix from paramValue
 
-            if (varSrc == SRC_URL) {
+            if (varSrc == srcUrl) {
                 var replaceStr = paramName + "=" + varName;
                 if (newValue.indexOf(replaceStr) == -1) {
                     newValue = newValue.replace(paramName + paramValue, paramName + "=" + varName);
@@ -295,15 +302,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 		var param = self.getParameter(newValue, start);
 		var start = 0;
 
-        if(varSrc == SRC_URL) {
+        if(varSrc == srcUrl) {
             start = $requestUrl.caret();
-        }else if(varSrc == SRC_BODY) {
-            start =  $requestBody.caret();
-        } else if (varSrc == SRC_HEADER) {
-            start =  $requestHeaders.caret();
+        }else if(varSrc == srcBody) {
+            start = $requestBody.caret();
+        } else if (varSrc == srcHeader) {
+            start = $requestHeaders.caret();
         }
 
-		
         if (self.hasSourceSelectionChanged) {
 		
             // when paste do this ;)
@@ -312,10 +318,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 				self.hasPasteHappened = false;
 
                 // Scan for [[]] regions prior to the variable request string ;)
-				var paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
+				paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
 
-                for (var i = 0; i < paramVars.length; i++) {
-                    var value = paramVars[i].replace("[[","").replace("]]","");
+                for (var ii = 0; ii < paramVars.length; ii++) {
+                    var value = paramVars[ii].replace("[[","").replace("]]","");
                     self.pushRequestVariable(value, "", "");
                 }
 
@@ -328,9 +334,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             return;
         }
 	
-        if (varSrc == SRC_URL) {
+        if (varSrc == srcUrl) {
             if (self.isEqualPressed) {
-                var param = self.getParameter(newValue, start);
+                param = self.getParameter(newValue, start);
 
 				var afterParam = "";
                 var offSet = start + (param.name.length);
@@ -355,53 +361,93 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {
-			
-				// handle more normal use cass ;)
+				// handle more normal use case ;)
 				self.ProperlyHandleVariableInput(newValue);
 			}
         } else { // SRC_BODY
 			
             if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
+            } else {
+                if (srcHeaderPrev == "" || srcBodyPrev == "") {
+                    // fake paste due to silly binding issues
+                    self.updateAllVariables(varSrc, newValue);
+                }
             }
         }
 
-        // Clean up variables
-        if (newValue) {
 
-			var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
-			if (paramVars) {
-				for (var i = self.data.method.Parameters().length - 1; i >= 0; i--) {
-					var requestVar = self.data.method.Parameters()[i];
-					var paramVar = $.grep(paramVars, function (e) { return e == "[[" + requestVar.Name + "]]"; });
-					if (paramVar.length == 0 && requestVar.Src == varSrc) {
-						self.data.method.Parameters.splice(i, 1);
-					}
-				}
-			}
+            // Clean up variables
+            var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
+            var forceRemoveItems = new Array();
+            if (!paramVars) {
+                paramVars = newValue.match(/\[\[\w*\]/g);    // match our variables!
+                if (!paramVars) {
+                    // all gone, swap what was there for parsing ;)
+                    if (varSrc == srcBody) {
+                        paramVars = srcBodyPrev.match(/\[\[\w*\]\]/g);    // match our variables!
+                    }else if(varSrc == srcHeader) {
+                        paramVars = srcHeaderPrev.match(/\[\[\w*\]\]/g);    // match our variables!
+                    }
+                }
+
+                for (var q = 0; q < paramVars.length; q++) {
+                    if (!paramVars[q].endsWith("]]")) {
+                        forceRemoveItems[q] = paramVars[q] + "]";
+                    }else {
+                        forceRemoveItems[q] = paramVars[q];
+                    }
+                }
+            }
+
+
+        if (paramVars) {
+            for (var i = self.data.method.Parameters().length - 1; i >= 0; i--) {
+                var requestVar = self.data.method.Parameters()[i];
+                if (requestVar != undefined) {
+                    var paramVar = $.grep(paramVars, function (e1) { return e1 == "[[" + requestVar.Name + "]]"; });
+                }
+                if (paramVar.length == 0 && requestVar.Src == varSrc) {
+                    self.data.method.Parameters.splice(i, 1);
+                } else {
+                    for (var z = 0; z < forceRemoveItems.length; z++) {
+                        //alert("here");
+
+                        for (var c = 0; c < self.data.method.Parameters().length; c++) {
+                            var tmp = self.data.method.Parameters()[c];
+                            if("[["+tmp.Name+"]]" == forceRemoveItems[z]) {
+                                self.data.method.Parameters.splice(c, 1);
+                            }
+                        }
+                    }
+                }
+            }
         }
+ 
+		if (varSrc == srcBody) {
+			srcBodyPrev = newValue;
+		} else if (varSrc == srcHeader) {
+			srcHeaderPrev = newValue;
+		}
 		
         self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
     };
     
     self.data.requestHeaders.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {
-            var splitValue = newValue.split(/\n/);
-            newValue = splitValue.join(";");
-            self.data.requestHeaders(newValue);
-            self.updateVariables(SRC_HEADER, newValue);
+            self.updateVariables(srcHeader, newValue);
         }
     });
 
     self.data.requestUrl.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {            
-            self.updateVariables(SRC_URL, newValue);
+            self.updateVariables(srcUrl, newValue);
         }
     });
     
     self.data.requestBody.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {
-            self.updateVariables(SRC_BODY, newValue);
+            self.updateVariables(srcBody, newValue);
         }
     });
 
@@ -445,7 +491,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         }
         self.onSourceChanged(newValue);
     });
-    
+
     self.onSourceChanged = function (newValue) {
         self.hasSourceSelectionChanged = true;
         try {
@@ -613,9 +659,11 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 }
 
                 self.data.requestUrl(result.RequestUrl);
-                self.data.requestMethod(result.RequestMethod.toUpperCase());
+                self.data.requestMethod(result.RequestMethod);
                 self.data.requestHeaders(result.RequestHeaders);
+                srcHeaderPrev = result.RequestHeaders;
                 self.data.requestBody(result.RequestBody);
+                srcBodyPrev = result.RequestBody;
                 self.data.requestResponse(result.RequestResponse);
 
                 self.pushRecordsets(result);
