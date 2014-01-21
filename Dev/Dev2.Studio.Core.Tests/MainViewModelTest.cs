@@ -10,7 +10,6 @@ using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
-using Dev2.DataList.Contract.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -118,7 +117,7 @@ namespace Dev2.Core.Tests
 
             var actual = _mainViewModel.SettingsCommand.CanExecute(null);
             Assert.AreEqual(expected, actual);
-        }       
+        }
 
         #region Constructor
 
@@ -586,33 +585,6 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
             mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("MainViewModel_ChangeActiveItem")]
-        public void MainViewModel_ChangeActiveItem_WhenHasContextWithDataListViewModelActive_ClearsCollectionsOnPreviousAndNewItem()
-        {
-            //------------Setup for test--------------------------
-            string errorString;
-            CreateFullExportsAndVm();
-            AddAdditionalContext();
-            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
-            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
-            var mockDataListViewModel = new Mock<IDataListViewModel>();
-            var mockDataListViewModelForSecondContext = new Mock<IDataListViewModel>();
-            firstCtx.DataListViewModel = mockDataListViewModel.Object;
-            secondCtx.DataListViewModel = mockDataListViewModelForSecondContext.Object;
-            _mainViewModel.ActivateItem(firstCtx);
-            //------------Execute Test---------------------------
-            _mainViewModel.ActivateItem(secondCtx);
-            //------------Assert Results-------------------------
-            mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Exactly(2));
-            mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
-            mockDataListViewModelForSecondContext.Verify(model => model.ClearCollections(), Times.Exactly(2));
-            mockDataListViewModelForSecondContext.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
         }
 
         [TestMethod]
