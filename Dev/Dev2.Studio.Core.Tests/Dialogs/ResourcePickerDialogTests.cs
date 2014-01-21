@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Dialogs
             const enDsfActivityType ActivityType = enDsfActivityType.All;
             const bool IsFromActivityDrop = true;
 
-            var envRepo = new TestLoadEnvironmentRespository();
+            var envRepo = new TestLoadEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
             //var envRepo = EnvironmentRepository.Create(new Mock<IEnvironmentModel>().Object);
 
             //------------Execute Test---------------------------

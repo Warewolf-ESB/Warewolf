@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ServiceModel
                         return FixResponse(client.DownloadString(address));
 
                     default:
-                        return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant()));
+                        return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
                 }
             }
             catch(Exception e)

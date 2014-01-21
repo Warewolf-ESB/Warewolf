@@ -1,6 +1,7 @@
 ﻿using System;
-using Dev2.Providers.Logs;
-using Dev2.Studio.Core.Services.Communication.Mapi;
+//using Dev2.Studio.Core.Services.Communication.Mapi;
+using SendFileTo;
+using ServiceStack.Common.Extensions;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication
@@ -22,22 +23,23 @@ namespace Dev2.Studio.Core.Services.Communication
         /// <datetime>2013/01/14-09:10 AM</datetime>
         public void SendCommunication(T message)
         {
-            this.TraceInfo();
-            var mapiMessage = new MapiMailMessage(message.Subject, message.Content);
-            mapiMessage.Recipients.Add(message.To);
+            //this.TraceInfo();
+            MAPI mapi = new MAPI();
+            mapi.AddRecipientTo(message.To);
+
             if(!String.IsNullOrEmpty(message.AttachmentLocation))
             {
                 if(message.AttachmentLocation.Contains(";"))
                 {
                     var attachmentList = message.AttachmentLocation.Split(';');
-                    mapiMessage.Files.AddRange(attachmentList);
+                    attachmentList.ForEach(mapi.AddAttachment);
                 }
                 else
                 {
-                    mapiMessage.Files.Add(@message.AttachmentLocation);
+                    mapi.AddAttachment(@message.AttachmentLocation);
                 }
             }
-            mapiMessage.ShowDialog();
+            mapi.SendMailPopup(message.Subject, message.Content);
         }
     }
 }
