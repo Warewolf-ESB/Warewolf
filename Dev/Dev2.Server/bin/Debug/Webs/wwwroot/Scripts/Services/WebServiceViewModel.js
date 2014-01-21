@@ -5,9 +5,11 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     var self = this;
     var SRC_URL = 0;
     var SRC_BODY = 1;
+    var SRC_HEADER = 2;
     
     var $tabs = $("#tabs");
     var $sourceAddress = $("#sourceAddress");
+    var $requestHeaders = $("#requestHeaders");
     var $requestUrl = $("#requestUrl");
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
@@ -89,6 +91,12 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     };
 
     $requestBody.keydown(function (e) {
+        self.isCloseBracketPressed = e.keyCode == 221;
+    }).keyup(function (e) {
+        self.isCloseBracketPressed = false;
+    });
+
+    $requestHeaders.keydown(function (e) {
         self.isCloseBracketPressed = e.keyCode == 221;
     }).keyup(function (e) {
         self.isCloseBracketPressed = false;
@@ -285,7 +293,16 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.updateVariables = function (varSrc, newValue) {
 
 		var param = self.getParameter(newValue, start);
-        var start = varSrc == SRC_URL ? $requestUrl.caret() : $requestBody.caret();
+		var start = 0;
+
+        if(varSrc == SRC_URL) {
+            start = $requestUrl.caret();
+        }else if(varSrc == SRC_BODY) {
+            start =  $requestBody.caret();
+        } else if (varSrc == SRC_HEADER) {
+            start =  $requestHeaders.caret();
+        }
+
 		
         if (self.hasSourceSelectionChanged) {
 		
@@ -367,6 +384,12 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
     };
     
+    self.data.requestHeaders.subscribe(function (newValue) {
+        if (!self.isUpdatingVariables) {
+            self.updateVariables(SRC_HEADER, newValue);
+        }
+    });
+
     self.data.requestUrl.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {            
             self.updateVariables(SRC_URL, newValue);
@@ -425,6 +448,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         try {
             self.data.requestBody("");
             self.data.requestResponse("");
+            self.data.requestHeaders("");
             self.clearRequestVariables();
             self.data.recordsets.removeAll();
             self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
