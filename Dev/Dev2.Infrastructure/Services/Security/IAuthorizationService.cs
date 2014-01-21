@@ -13,5 +13,7 @@ namespace Dev2.Services.Security
         Permissions GetResourcePermissions(Guid resourceID);
 
         void Remove(Guid resourceID);
+
+        string JsonPermissions();
     }
 }

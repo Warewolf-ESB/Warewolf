@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Messages;
 using Dev2.Providers.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 // ReSharper disable InconsistentNaming
@@ -21,6 +25,12 @@ namespace Dev2.Core.Tests.ViewModelTests
     [ExcludeFromCodeCoverage]
     public class WorkSurfaceContextViewModelTests
     {
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext context)
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkSurfaceContextViewModel_Constructor")]
@@ -440,5 +450,162 @@ namespace Dev2.Core.Tests.ViewModelTests
             var environmentModel = mockEnvironmentModel.Object;
             return CreateWorkSurfaceContextViewModel(environmentModel);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasAdministratorPermissions_CanExecuteIsTrue()
+        {
+            Verify_DebugCommand_CanExecute(Permissions.Administrator, true);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasContributePermissions_CanExecuteIsTrue()
+        {
+            Verify_DebugCommand_CanExecute(Permissions.Contribute, true);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasViewAndExecutePermissions_CanExecuteIsTrue()
+        {
+            Verify_DebugCommand_CanExecute(Permissions.View | Permissions.Execute, true);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasViewPermissions_CanExecuteIsFalse()
+        {
+            Verify_DebugCommand_CanExecute(Permissions.View, false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasExecutePermissions_CanExecuteIsFalse()
+        {
+            Verify_DebugCommand_CanExecute(Permissions.Execute, false);
+        }
+
+        void Verify_DebugCommand_CanExecute(Permissions userPermissions, bool expected)
+        {
+            //------------Setup for test--------------------------
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
+
+            //------------Execute Test---------------------------
+            var actualDebug = workSurfaceContextViewModel.DebugCommand.CanExecute(null);
+            var actualQuickDebug = workSurfaceContextViewModel.QuickDebugCommand.CanExecute(null);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, actualDebug);
+            Assert.AreEqual(expected, actualQuickDebug);
+        }
+
+        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(Permissions userPermissions)
+        {
+            CompositionInitializer.InitializeForMeflessBaseViewModel();
+
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var authService = new Mock<IAuthorizationService>();
+            authService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authService.Object);
+
+            var environmentModel = mockEnvironmentModel.Object;
+
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ID = Guid.NewGuid(),
+                ResourceName = "TestResource" + Guid.NewGuid(),
+                UserPermissions = userPermissions
+            };
+
+            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(model => model.ResourceModel).Returns(resourceModel);
+
+            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), workSurfaceViewModel)
+            {
+                DebugOutputViewModel = { DebugStatus = DebugStatus.Ready }
+            };
+
+            workSurfaceContextViewModel.DebugCommand.UpdateContext(environmentModel, resourceModel);
+            workSurfaceContextViewModel.QuickDebugCommand.UpdateContext(environmentModel, resourceModel);
+
+            return workSurfaceContextViewModel;
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasNoContributePermissions_SaveIsNotInvoked()
+        {
+            Verify_DebugCommand_SaveIsInvoked(Permissions.Execute, 0);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
+        public void WorkSurfaceContextViewModel_DebugCommand_UserHasContributePermissions_SaveIsInvoked()
+        {
+            Verify_DebugCommand_SaveIsInvoked(Permissions.Contribute, 1);
+        }
+
+        void Verify_DebugCommand_SaveIsInvoked(Permissions userPermissions, int saveHitCount)
+        {
+            //------------Setup for test--------------------------
+            var expected = saveHitCount;
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
+
+            var resourceRepo = new Mock<IResourceRepository>();
+            resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
+
+            var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
+            environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
+
+
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            workSurfaceContextViewModel.DebugCommand.Execute(null);
+            resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Exactly(expected));
+
+            expected += saveHitCount;
+
+            workSurfaceContextViewModel.QuickDebugCommand.Execute(null);
+            resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Exactly(expected));
+        }
+    }
+
+    public class TestWorkSurfaceContextViewModel : WorkSurfaceContextViewModel
+    {
+        public TestWorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+            : base(workSurfaceKey, workSurfaceViewModel)
+        {
+        }
+
+        public TestWorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel)
+        {
+        }
+
+        public int SaveHitCount { get; private set; }
+
+        protected override void Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        {
+            SaveHitCount++;
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Text;
 
 namespace Dev2.Services.Security
 {
@@ -78,6 +79,19 @@ namespace Dev2.Services.Security
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
         {
             return _securityService.Permissions.Where(p => principal.IsInRole(p.WindowsGroup));
+        }
+
+        public string JsonPermissions()
+        {
+            var result = new StringBuilder();
+            result.AppendLine("{{");
+            foreach(var permission in _securityService.Permissions)
+            {
+                result.AppendFormat("\t{{ ResourceID:{0},\tWindowsGroup:{1},\tPermissions:{2} }}", permission.ResourceID, permission.WindowsGroup, permission.Permissions);
+                result.AppendLine();
+            }
+            result.AppendLine("}}");
+            return result.ToString();
         }
     }
 }

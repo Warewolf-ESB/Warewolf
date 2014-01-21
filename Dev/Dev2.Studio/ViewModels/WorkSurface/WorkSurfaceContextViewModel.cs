@@ -14,7 +14,6 @@ using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -340,8 +339,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return _viewInBrowserCommand ??
-                       (_viewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => ViewInBrowser(),
-                                                    param => CanDebug()));
+                       (_viewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => ViewInBrowser(), param => CanDebug()));
             }
         }
 
@@ -359,8 +357,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get
             {
                 return _quickViewInBrowserCommand ??
-                       (_quickViewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickViewInBrowser(),
-                                                    param => CanDebug()));
+                       (_quickViewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickViewInBrowser(), param => CanViewInBrowser()));
             }
         }
 
@@ -380,6 +377,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         bool CanDebug()
+        {
+            var enabled = ContextualResourceModel != null && ContextualResourceModel.UserPermissions.CanDebug()
+                          && IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring;
+            return enabled;
+        }
+
+        bool CanViewInBrowser()
         {
             var enabled = IsEnvironmentConnected() && !DebugOutputViewModel.IsStopping && !DebugOutputViewModel.IsConfiguring;
             return enabled;
@@ -526,13 +530,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        void Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected virtual void Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
         {
-            if(resource == null)
+            if(resource == null || !resource.UserPermissions.IsContributor())
             {
                 return;
             }
-
+            
             if(resource.IsNewWorkflow && !isLocalSave)
             {
                 ShowSaveDialog(resource, addToTabManager);

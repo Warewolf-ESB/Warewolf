@@ -175,5 +175,45 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Assert.AreEqual(expectedPermissions, actual);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationHelpers_IsContributor")]
+        public void AuthorizationHelpers_IsContributor_CorrectlyTranslated()
+        {
+            Verify_IsContributor(Permissions.Administrator | Permissions.View, true);
+            Verify_IsContributor(Permissions.Contribute | Permissions.View, true);
+            Verify_IsContributor(Permissions.View | Permissions.Execute, false);
+        }
+
+        void Verify_IsContributor(Permissions permissions, bool expected)
+        {
+            //------------Execute Test---------------------------
+            var actual = permissions.IsContributor();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("AuthorizationHelpers_CanDebug")]
+        public void AuthorizationHelpers_CanDebug_CorrectlyTranslated()
+        {
+            Verify_CanDebug(Permissions.Administrator | Permissions.View, true);
+            Verify_CanDebug(Permissions.Contribute | Permissions.View, true);
+            Verify_CanDebug(Permissions.View | Permissions.Execute, true);
+            Verify_CanDebug(Permissions.View, false);
+            Verify_CanDebug(Permissions.Execute, false);
+        }
+
+        void Verify_CanDebug(Permissions permissions, bool expected)
+        {
+            //------------Execute Test---------------------------
+            var actual = permissions.CanDebug();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

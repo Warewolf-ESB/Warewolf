@@ -613,7 +613,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var result = new WorkflowInputDataViewModel(debugInfoModel, sessionID)
             {
-                CanDebug = resourceModel.UserPermissions.HasFlag(Permissions.Contribute)
+                CanDebug = resourceModel.UserPermissions.CanDebug()
             };
             return result;
         }

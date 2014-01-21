@@ -14,7 +14,7 @@ namespace Dev2.Security
     public class ClientSecurityService : SecurityServiceBase
     {
         readonly IEnvironmentConnection _environmentConnection;
-        PermissionsModifiedService _permissionsModifiedService;
+        readonly PermissionsModifiedService _permissionsModifiedService;
 
         public ClientSecurityService(IEnvironmentConnection environmentConnection)
         {
@@ -34,19 +34,14 @@ namespace Dev2.Security
             var modifiedPermissions = obj.ModifiedPermissions;
             foreach(var modifiedPermission in modifiedPermissions)
             {
-                var foundPermission = Permissions.FirstOrDefault(perm => modifiedPermission.ResourceID == perm.ResourceID);
+                var foundPermission = Permissions.FirstOrDefault(perm =>
+                    modifiedPermission.IsServer == perm.IsServer
+                    && modifiedPermission.ResourceID == perm.ResourceID
+                    && modifiedPermission.WindowsGroup == perm.WindowsGroup);
+
                 if(foundPermission != null)
                 {
                     foundPermission.Permissions = modifiedPermission.Permissions;
-                }
-                if(modifiedPermission.IsServer)
-                {
-                    var currentPermission = modifiedPermission;
-                    var foundServerPermission = Permissions.FirstOrDefault(permission => permission.WindowsGroup == currentPermission.WindowsGroup);
-                    if(foundServerPermission != null)
-                    {
-                        foundServerPermission.Permissions = currentPermission.Permissions;
-                    }
                 }
             }
         }
