@@ -798,7 +798,10 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(_isChecked == true && value == false)
             {
+                if(TreeParent != null)
+                {
                 TreeParent.IsOverwrite = false;
+                }
                 IsOverwrite = false;
             }
 
@@ -813,7 +816,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
 
-            if(updateParent && _treeParent != null)
+            if(updateParent && TreeParent != null)
             {
                 TreeParent.VerifyCheckState();
             }
