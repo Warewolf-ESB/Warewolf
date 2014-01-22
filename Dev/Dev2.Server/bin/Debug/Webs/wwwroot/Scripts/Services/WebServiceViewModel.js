@@ -659,7 +659,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 }
 
                 self.data.requestUrl(result.RequestUrl);
-                self.data.requestMethod(result.RequestMethod);
+                self.data.requestMethod(result.RequestMethod.toUpperCase());
                 self.data.requestHeaders(result.RequestHeaders);
                 srcHeaderPrev = result.RequestHeaders;
                 self.data.requestBody(result.RequestBody);
