@@ -21,13 +21,20 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     $("#addResponseButton").length > 0 ? $("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
-    // ReSharper disable once WrongExpressionStatement
+      // ReSharper disable once WrongExpressionStatement
       .button() : null;
     
     $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/jsonpath.png" />')
       .button() : null;
+	  
+	$("#requestMethod").change(function(){
+		if($(this).val() == "GET"){
+			// clear out the header data ;)
+			self.data.requestBody("");
+		}
+	});
     
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
