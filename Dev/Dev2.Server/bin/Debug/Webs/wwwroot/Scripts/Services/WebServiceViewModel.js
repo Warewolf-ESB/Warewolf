@@ -369,6 +369,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {
+				
                 if (srcHeaderPrev == "" || srcBodyPrev == "") {
                     // fake paste due to silly binding issues
                     self.updateAllVariables(varSrc, newValue);
@@ -556,15 +557,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         return self.hasTestResults() && !self.isReadOnly;
     });
     
-    self.isTestVisible = ko.observable(true);
-    self.isTestEnabled = ko.computed(function () {
-        if (self.isReadOnly) {
-            return false;
-        }
-        return self.data.source() ? true : false;
-    });
 	self.isJsonPathEnabled = ko.computed(function () {
-        var firstFlag =  self.data.requestResponse() ? true : false;
+        
+		try{
+			var firstFlag =  self.data.requestResponse() ? true : false;
+		}catch(e){
+			return false;
+		}
 		
 		if(firstFlag){
 			// check that it is JSONData ;)
@@ -577,6 +576,15 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 		}
 		return false;
     });
+	
+    self.isTestVisible = ko.observable(true);
+    self.isTestEnabled = ko.computed(function () {
+        if (self.isReadOnly) {
+            return false;
+        }
+        return self.data.source() ? true : false;
+    });
+	
     self.isTestResultsLoading = ko.observable(false);
 	self.canDisplayJSONPathResult = ko.observable(true);
     self.setTestResultsLoading = function (testResultsLoading) {
