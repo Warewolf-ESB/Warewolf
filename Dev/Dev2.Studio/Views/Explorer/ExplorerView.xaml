@@ -288,15 +288,19 @@
                                     </Image>
                                     <Button Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=View}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
-                                            Style="{StaticResource AuthButtonStyle}"
-                                            Command="{Binding EditCommand}">
+                                            Style="{StaticResource AuthButtonStyle}">
+                                        <Button.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding EditCommand}"></MouseBinding>
+                                        </Button.InputBindings>
                                         <Image Style="{StaticResource AuthViewIconStyle}"/>
                                     </Button>
                                     <Button Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=Execute}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipExecute}"
-                                            Style="{StaticResource AuthButtonStyle}"
-                                            Command="{Binding ExecuteCommand}">
+                                            Style="{StaticResource AuthButtonStyle}">
                                         <Image Style="{StaticResource AuthExecuteIconStyle}"/>
+                                         <Button.InputBindings>
+                                            <MouseBinding Gesture="LeftClick" Command="{Binding ExecuteCommand}"></MouseBinding>
+                                        </Button.InputBindings>
                                     </Button>                              
                                     <Image Style="{StaticResource AuthNoneIconStyle}"
                                            Visibility="{Binding UserPermissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=None}"
