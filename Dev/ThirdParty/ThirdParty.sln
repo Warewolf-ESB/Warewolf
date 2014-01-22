@@ -33,6 +33,9 @@ Global
 		SccProjectName5 = SharpSSH-1.1.1.13.src/SharpSSH
 		SccLocalPath5 = SharpSSH-1.1.1.13.src\\SharpSSH
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 075edfc7-a063-4561-b395-cfad2fd484d8
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64

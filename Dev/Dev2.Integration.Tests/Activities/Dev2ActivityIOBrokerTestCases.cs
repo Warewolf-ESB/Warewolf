@@ -34,14 +34,22 @@ namespace Dev2.Integration.Tests.Activities
 
             _zipFile = fileName;
 
-            StartSftpServer();
+
         }
 
-        [ClassCleanup]
-        public static void TearDown()
+        [TestCleanup]
+        public void TestTearDown()
         {
             // stop the server                                                                        
+            server.Bindings.Clear();
             server.Stop();
+            server = null;
+        }
+
+        [TestInitialize]
+        public void TestStartUp()
+        {
+            StartSftpServer();
         }
 
         /// <summary>
