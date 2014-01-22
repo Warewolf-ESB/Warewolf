@@ -84,14 +84,6 @@ namespace Dev2.Security
 
         public bool CanExecute(object parameter)
         {
-            if(parameter != null && parameter.ToString() == "Workflow")
-            {
-                if(AuthorizationService != null)
-                {
-                    System.Diagnostics.Trace.WriteLine(string.Format("{0} {1} --> {2}", DateTime.Now, parameter, AuthorizationService.JsonPermissions()));
-                }
-            }
-
             var authorized = true;
             var canExecute = _canExecute != null && _canExecute((T)parameter);
             if(canExecute)
