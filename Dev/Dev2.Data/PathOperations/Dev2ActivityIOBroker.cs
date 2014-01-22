@@ -1,15 +1,15 @@
-﻿using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Data.Binary_Objects;
-using Dev2.Data.PathOperations.Enums;
-using Dev2.Data.PathOperations.Extension;
-using Ionic.Zip;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Data.Binary_Objects;
+using Dev2.Data.PathOperations.Enums;
+using Dev2.Data.PathOperations.Extension;
+using Ionic.Zip;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
@@ -118,10 +118,10 @@ namespace Dev2.PathOperations
                             {
                                 File.WriteAllText(tmp, args.FileContents);
                             }
-                            result = MoveTmpFileToDestination(dst, tmp, result);
-                            RemoveTmpFile(tmp);
+                    result = MoveTmpFileToDestination(dst, tmp, result);
+                    RemoveTmpFile(tmp);
                             break;
-                    }
+                }
                 }
                 else
                 {
@@ -201,7 +201,7 @@ namespace Dev2.PathOperations
                 return src.ListDirectory(src.IOPath);
             }
             return readTypes == ReadTypes.Files ? src.ListFilesInDirectory(src.IOPath) : src.ListFoldersInDirectory(src.IOPath);
-        }
+            }
 
         public string Create(IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, bool createToFile)
         {
@@ -210,50 +210,50 @@ namespace Dev2.PathOperations
         }
 
         public string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                             Dev2CRUDOperationTO args)
         {
             return ValidateRenameSourceAndDesinationTypes(src, dst, args);
         }
 
         public string Copy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                           Dev2CRUDOperationTO args)
         {
             return ValidateCopySourceDestinationFileOperation(src, dst, args, () =>
-            {
+                {
                 if(src.RequiresLocalTmpStorage())
-                {
-                    if(dst.PathIs(dst.IOPath) == enPathType.Directory)
                     {
-                        dst.IOPath.Path = dst.Combine(GetFileNameFromEndPoint(src));
-                    }
+                    if(dst.PathIs(dst.IOPath) == enPathType.Directory)
+                        {
+                            dst.IOPath.Path = dst.Combine(GetFileNameFromEndPoint(src));
+                        }
 
                     using(var s = src.Get(src.IOPath))
-                    {
-                        dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? new FileInfo(src.IOPath.Path).Directory : null);
-                        s.Close();
-                        s.Dispose();
+                        {
+                            dst.Put(s, dst.IOPath, args, Path.IsPathRooted(src.IOPath.Path) ? new FileInfo(src.IOPath.Path).Directory : null);
+                            s.Close();
+                            s.Dispose();
+                        }
                     }
-                }
-                else
-                {
-                    var sourceFile = new FileInfo(src.IOPath.Path);
+                    else
+                    {
+                        var sourceFile = new FileInfo(src.IOPath.Path);
                     if(dst.PathIs(dst.IOPath) == enPathType.Directory)
-                    {
-                        dst.IOPath.Path = dst.Combine(sourceFile.Name);
-                    }
+                        {
+                            dst.IOPath.Path = dst.Combine(sourceFile.Name);
+                        }
 
                     using(var s = src.Get(src.IOPath))
-                    {
-                        dst.Put(s, dst.IOPath, args, sourceFile.Directory);
+                        {
+                            dst.Put(s, dst.IOPath, args, sourceFile.Directory);
+                        }
                     }
-                }
-                return ResultOk;
-            });
+                    return ResultOk;
+                });
 
         }
 
         public string Move(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                           Dev2CRUDOperationTO args)
         {
             var result = Copy(src, dst, args);
 
@@ -266,53 +266,53 @@ namespace Dev2.PathOperations
         }
 
         public string UnZip(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-            Dev2UnZipOperationTO args)
+                            Dev2UnZipOperationTO args)
         {
             return ValidateUnzipSourceDestinationFileOperation(src, dst, args, () =>
-            {
-                ZipFile zip;
-                var tempFile = "";
+                {
+                    ZipFile zip;
+                    var tempFile = "";
 
                 if(src.RequiresLocalTmpStorage())
-                {
-                    var tmpZip = CreateTmpFile();
-                    using(var s = src.Get(src.IOPath))
                     {
+                        var tmpZip = CreateTmpFile();
+                    using(var s = src.Get(src.IOPath))
+                        {
 
-                        File.WriteAllBytes(tmpZip, s.ToByteArray());
-                        s.Close();
-                        s.Dispose();
+                            File.WriteAllBytes(tmpZip, s.ToByteArray());
+                            s.Close();
+                            s.Dispose();
+                        }
+
+                        tempFile = tmpZip;
+                        zip = ZipFile.Read(tempFile);
+                    }
+                    else
+                    {
+                        zip = ZipFile.Read(src.Get(src.IOPath));
                     }
 
-                    tempFile = tmpZip;
-                    zip = ZipFile.Read(tempFile);
-                }
-                else
-                {
-                    zip = ZipFile.Read(src.Get(src.IOPath));
-                }
-
                 if(dst.RequiresLocalTmpStorage())
-                {
-                    // unzip locally then Put the contents of the archive to the dst end-point
-                    var tempPath = CreateTmpDirectory();
-                    ExtractFile(args, zip, tempPath);
-                    var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, "", "");
-                    var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
-                    Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
-                }
-                else
-                {
-                    ExtractFile(args, zip, dst.IOPath.Path);
-                }
+                    {
+                        // unzip locally then Put the contents of the archive to the dst end-point
+                        var tempPath = CreateTmpDirectory();
+                        ExtractFile(args, zip, tempPath);
+                        var endPointPath = ActivityIOFactory.CreatePathFromString(tempPath, "", "");
+                        var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(endPointPath);
+                        Move(endPoint, dst, new Dev2CRUDOperationTO(args.Overwrite));
+                    }
+                    else
+                    {
+                        ExtractFile(args, zip, dst.IOPath.Path);
+                    }
 
                 if(src.RequiresLocalTmpStorage())
-                {
-                    File.Delete(tempFile);
-                }
+                    {
+                        File.Delete(tempFile);
+                    }
 
-                return ResultOk;
-            });
+                    return ResultOk;
+                });
         }
 
         static void ExtractFile(Dev2UnZipOperationTO args, ZipFile zip, string extractFromPath)
@@ -331,9 +331,9 @@ namespace Dev2.PathOperations
                         try
                         {
                             ze.Extract(extractFromPath,
-                                args.Overwrite
-                                    ? ExtractExistingFileAction.OverwriteSilently
-                                    : ExtractExistingFileAction.DoNotOverwrite);
+                                       args.Overwrite
+                                           ? ExtractExistingFileAction.OverwriteSilently
+                                           : ExtractExistingFileAction.DoNotOverwrite);
                         }
                         catch(BadPasswordException bpe)
                         {
@@ -362,7 +362,7 @@ namespace Dev2.PathOperations
             while(pos >= 0 && deepestIndex == -1)
             {
                 var tmpPath = ActivityIOFactory.CreatePathFromString(dirParts[pos], activityIOPath.Username,
-                    activityIOPath.Password, true);
+                                                                                 activityIOPath.Password, true);
                 try
                 {
                     if(dst.ListDirectory(tmpPath) != null)
@@ -370,16 +370,16 @@ namespace Dev2.PathOperations
                         deepestIndex = pos;
                     }
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
-                    // ReSharper restore EmptyGeneralCatchClause
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     //Note that we doing a recursive create should the directory not exists
                 }
                 finally
                 {
-                    pos--;
-                }
+                pos--;
+            }
             }
 
             // now create all the directories we need ;)
@@ -391,7 +391,7 @@ namespace Dev2.PathOperations
             while(pos <= startDepth && ok)
             {
                 var toCreate = ActivityIOFactory.CreatePathFromString(dirParts[pos], dst.IOPath.Username,
-                    dst.IOPath.Password, true);
+                                                                                  dst.IOPath.Password, true);
                 dst.IOPath = toCreate;
                 ok = CreateDirectory(dst, args);
                 pos++;
@@ -521,14 +521,14 @@ namespace Dev2.PathOperations
         /// <param name="dst"></param>
         /// <param name="args"></param>
         bool TransferDirectoryContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                                               Dev2CRUDOperationTO args)
         {
             ValidateSourceAndDestinationContents(src, dst, args);
 
             if(args.DoRecursiveCopy)
             {
                 RecursiveCopy(src, dst, args);
-            }
+                }
 
             var srcContents = src.ListFilesInDirectory(src.IOPath);
             var result = true;
@@ -549,31 +549,31 @@ namespace Dev2.PathOperations
                         var cpPath =
                             ActivityIOFactory.CreatePathFromString(
                                 string.Format("{0}{1}{2}", origDstPath, dst.PathSeperator(),
-                                    (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
+                                              (Dev2ActivityIOPathUtils.ExtractFileName(p.Path))),
                                 dst.IOPath.Username,
                                 dst.IOPath.Password, true);
                         var path = cpPath.Path;
                         DoFileTransfer(src, dst, args, cpPath, p, path, ref result);
                     }
                     else if(args.Overwrite || !dst.PathExist(dst.IOPath))
-                    {
+                        {
                         var tmp = origDstPath + "\\" + Dev2ActivityIOPathUtils.ExtractFileName(p.Path);
                         var path = ActivityIOFactory.CreatePathFromString(tmp, dst.IOPath.Username, dst.IOPath.Password);
                         DoFileTransfer(src, dst, args, path, p, path.Path, ref result);
                     }
                 }
                 catch(Exception ex)
-                {
+                                {
                     this.LogError(ex);
-                }
-            }
+                            }
+                        }
             return result;
-        }
+                    }
 
         static void DoFileTransfer(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args, IActivityIOPath dstPath, IActivityIOPath p, string path, ref bool result)
-        {
+                    {
             if(args.Overwrite || !dst.PathExist(dstPath))
-            {
+                        {
                 result = TransferFile(src, dst, args, path, p, result);
             }
         }
@@ -582,27 +582,27 @@ namespace Dev2.PathOperations
         {
             var tmpPath = ActivityIOFactory.CreatePathFromString(path, dst.IOPath.Username, dst.IOPath.Password, true);
             var tmpEp = ActivityIOFactory.CreateOperationEndPointFromIOPath(tmpPath);
-            var whereToPut = GetWhereToPut(src, dst);
+                            var whereToPut = GetWhereToPut(src, dst);
             using(var s = src.Get(p))
             {
                 if(tmpEp.Put(s, tmpEp.IOPath, args, whereToPut) < 0)
-                {
-                    result = false;
-                }
-                s.Close();
-                s.Dispose();
-            }
+                            {
+                                result = false;
+                            }
+                            s.Close();
+                            s.Dispose();
+                        }
             return result;
-        }
+                }
 
         void RecursiveCopy(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args)
         {
             try
-            {
+                {
                 // List directory contents
                 var srcContentsFolders = src.ListFoldersInDirectory(src.IOPath);
                 Task.WaitAll(srcContentsFolders.Select(sourcePath => Task.Run(() =>
-                {
+                    {
                     var sourceEndPoint =
                         ActivityIOFactory.CreateOperationEndPointFromIOPath(sourcePath);
                     IList<string> dirParts =
@@ -616,7 +616,7 @@ namespace Dev2.PathOperations
                     dst.CreateDirectory(destinationPath, args);
                     TransferDirectoryContents(sourceEndPoint, destinationEndPoint, args);
                 })).ToArray());
-            }
+                }
             catch(AggregateException e)
             {
                 var message = e.InnerExceptions.Where(exception => exception != null && !string.IsNullOrEmpty(exception.Message)).Aggregate("", (current, exception) => current + (exception.Message + "\r\n"));
@@ -631,8 +631,8 @@ namespace Dev2.PathOperations
         /// <param name="dst"></param>
         /// <param name="args"></param>
         void ValidateSourceAndDestinationContents(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                                                          IActivityIOOperationsEndPoint dst,
+                                                          Dev2CRUDOperationTO args)
         {
             if(!args.Overwrite)
             {
@@ -644,12 +644,12 @@ namespace Dev2.PathOperations
 
                     IList<string> dirParts =
                         sourceEndPoint.IOPath.Path.Split(sourceEndPoint.PathSeperator().ToCharArray(),
-                            StringSplitOptions.RemoveEmptyEntries);
+                                                         StringSplitOptions.RemoveEmptyEntries);
                     var directory = dirParts.Last();
                     var destinationPath =
                         ActivityIOFactory.CreatePathFromString(dst.Combine(directory),
-                            dst.IOPath.Username,
-                            dst.IOPath.Password, true);
+                                                               dst.IOPath.Username,
+                                                               dst.IOPath.Password, true);
 
                     var destinationEndPoint =
                         ActivityIOFactory.CreateOperationEndPointFromIOPath(destinationPath);
@@ -674,8 +674,8 @@ namespace Dev2.PathOperations
                     if(commonFiles.Count > 0)
                     {
                         var fileNames = commonFiles.Aggregate("",
-                            (current, commonFile) =>
-                                current + ("\r\n" + commonFile));
+                                                                 (current, commonFile) =>
+                                                                 current + ("\r\n" + commonFile));
                         throw new Exception(
                             "The following file(s) exist in the destination folder and overwrite is set to false:- " +
                             fileNames);
@@ -790,9 +790,9 @@ namespace Dev2.PathOperations
             {
                 string tempDir = CreateTmpDirectory();
                 var tmpFile = Path.Combine(tempDir,
-                    src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                        StringSplitOptions.RemoveEmptyEntries)
-                        .Last());
+                                           src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
+                                                                 StringSplitOptions.RemoveEmptyEntries)
+                                              .Last());
                 packFile = tmpFile;
                 var s = src.Get(src.IOPath);
                 File.WriteAllBytes(tmpFile, s.ToByteArray());
@@ -861,8 +861,8 @@ namespace Dev2.PathOperations
         }
 
         string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args,
-            string tmpZip)
+                                                        IActivityIOOperationsEndPoint dst, Dev2ZipOperationTO args,
+                                                        string tmpZip)
         {
             // now transfer the zip file to the correct location
             string result;
@@ -872,7 +872,7 @@ namespace Dev2.PathOperations
                 dst =
                     ActivityIOFactory.CreateOperationEndPointFromIOPath(
                         ActivityIOFactory.CreatePathFromString(dst.IOPath.Path, dst.IOPath.Username,
-                            dst.IOPath.Password, true));
+                                                               dst.IOPath.Password, true));
 
                 var zipTransferArgs = new Dev2CRUDOperationTO(args.Overwrite);
 
@@ -925,8 +925,8 @@ namespace Dev2.PathOperations
         #region Validations
 
         string ValidateRenameSourceAndDesinationTypes(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args)
+                                                              IActivityIOOperationsEndPoint dst,
+                                                              Dev2CRUDOperationTO args)
         {
             //ensures that the source and destination locations are of the same type
             if(src.PathIs(src.IOPath) != dst.PathIs(dst.IOPath))
@@ -950,9 +950,9 @@ namespace Dev2.PathOperations
         }
 
         string ValidateCopySourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst,
-            Dev2CRUDOperationTO args,
-            Func<string> performAfterValidation)
+                                                                  IActivityIOOperationsEndPoint dst,
+                                                                  Dev2CRUDOperationTO args,
+                                                                  Func<string> performAfterValidation)
         {
             var result = ResultOk;
             ValidateSourceAndDestinationPaths(src, dst);
@@ -995,9 +995,9 @@ namespace Dev2.PathOperations
         }
 
         string ValidateUnzipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst,
-            Dev2UnZipOperationTO args,
-            Func<string> performAfterValidation)
+                                                                   IActivityIOOperationsEndPoint dst,
+                                                                   Dev2UnZipOperationTO args,
+                                                                   Func<string> performAfterValidation)
         {
             ValidateSourceAndDestinationPaths(src, dst);
 
@@ -1020,9 +1020,9 @@ namespace Dev2.PathOperations
         }
 
         string ValidateZipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst,
-            Dev2ZipOperationTO args,
-            Func<string> performAfterValidation)
+                                                                 IActivityIOOperationsEndPoint dst,
+                                                                 Dev2ZipOperationTO args,
+                                                                 Func<string> performAfterValidation)
         {
             AddMissingFileDirectoryParts(src, dst);
 
@@ -1031,7 +1031,7 @@ namespace Dev2.PathOperations
             {
                 var sourcePart =
                     src.IOPath.Path.Split(src.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                        .Last();
+                       .Last();
                 if(src.PathIs(src.IOPath) == enPathType.File)
                 {
                     var fileInfo = new FileInfo(sourcePart);
@@ -1046,7 +1046,7 @@ namespace Dev2.PathOperations
             {
                 var sourcePart =
                     dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                        .Last();
+                       .Last();
                 var fileInfo = new FileInfo(sourcePart);
                 dst.IOPath.Path = dst.IOPath.Path.Replace(fileInfo.Extension, ".zip");
             }
@@ -1058,7 +1058,7 @@ namespace Dev2.PathOperations
 
             //ensures destination folder structure exists
             var opStatus = CreateEndPoint(dst, new Dev2CRUDOperationTO(args.Overwrite),
-                dst.PathIs(dst.IOPath) == enPathType.Directory);
+                                             dst.PathIs(dst.IOPath) == enPathType.Directory);
             if(!opStatus.Equals("Success"))
             {
                 throw new Exception("Recursive Directory Create Failed For [ " + dst.IOPath.Path + " ]");
@@ -1068,14 +1068,14 @@ namespace Dev2.PathOperations
         }
 
         void AddMissingFileDirectoryParts(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst)
+                                                  IActivityIOOperationsEndPoint dst)
         {
             if(src.IOPath.Path.Trim().Length == 0)
             {
                 throw new Exception("Source can not be an empty string");
             }
             var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                    StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if(dst.IOPath.Path.Trim().Length == 0)
             {
@@ -1088,12 +1088,12 @@ namespace Dev2.PathOperations
                     var lastPart = sourceParts.Last();
                     dst.IOPath.Path =
                         Path.Combine(src.PathIs(dst.IOPath) == enPathType.Directory
-                            ? src.IOPath.Path
-                            : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
+                                         ? src.IOPath.Path
+                                         : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
                 }
             }
             var destinationParts = dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(),
-                StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                         StringSplitOptions.RemoveEmptyEntries).ToList();
 
             while(destinationParts.Count > sourceParts.Count)
             {
@@ -1105,11 +1105,11 @@ namespace Dev2.PathOperations
                 if(dst.PathIs(dst.IOPath) == enPathType.Directory)
                 {
                     var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                        StringSplitOptions.RemoveEmptyEntries);
+                                                             StringSplitOptions.RemoveEmptyEntries);
                     var lastPart = strings.Last();
                     dst.IOPath.Path = src.PathIs(src.IOPath) == enPathType.Directory
-                        ? Path.Combine(dst.IOPath.Path, lastPart)
-                        : dst.IOPath.Path.Replace(lastPart, "");
+                                          ? Path.Combine(dst.IOPath.Path, lastPart)
+                                          : dst.IOPath.Path.Replace(lastPart, "");
                 }
             }
             else
@@ -1117,7 +1117,7 @@ namespace Dev2.PathOperations
                 if(dst.PathIs(dst.IOPath) == enPathType.Directory && src.PathIs(src.IOPath) == enPathType.Directory)
                 {
                     var strings = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                        StringSplitOptions.RemoveEmptyEntries);
+                                                             StringSplitOptions.RemoveEmptyEntries);
                     var lastPart = strings.Last();
                     dst.IOPath.Path = dst.Combine(lastPart);
                 }
@@ -1125,7 +1125,7 @@ namespace Dev2.PathOperations
         }
 
         void ValidateSourceAndDestinationPaths(IActivityIOOperationsEndPoint src,
-            IActivityIOOperationsEndPoint dst)
+                                                       IActivityIOOperationsEndPoint dst)
         {
             if(src.IOPath.Path.Trim().Length == 0)
             {
@@ -1133,7 +1133,7 @@ namespace Dev2.PathOperations
             }
 
             var sourceParts = src.IOPath.Path.Split(src.PathSeperator().ToCharArray(),
-                StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                       StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if(dst.IOPath.Path.Trim().Length == 0)
             {
@@ -1148,13 +1148,13 @@ namespace Dev2.PathOperations
 
                     dst.IOPath.Path =
                         Path.Combine(src.PathIs(dst.IOPath) == enPathType.Directory
-                            ? src.IOPath.Path
-                            : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
+                                         ? src.IOPath.Path
+                                         : src.IOPath.Path.Replace(lastPart, ""), dst.IOPath.Path);
                 }
             }
 
             var destinationParts = dst.IOPath.Path.Split(dst.PathSeperator().ToCharArray(),
-                StringSplitOptions.RemoveEmptyEntries).ToList();
+                                                       StringSplitOptions.RemoveEmptyEntries).ToList();
 
             while(destinationParts.Count > sourceParts.Count)
             {
@@ -1162,7 +1162,7 @@ namespace Dev2.PathOperations
             }
 
             if(destinationParts.OrderBy(i => i).SequenceEqual(
-                sourceParts.OrderBy(i => i)))
+                 sourceParts.OrderBy(i => i)))
             {
                 throw new Exception("Destination directory can not be a child of the source directory");
             }
@@ -1179,7 +1179,7 @@ namespace Dev2.PathOperations
             {
                 var type = endPoint.PathIs(endPoint.IOPath) == enPathType.Directory ? "Directory" : "File";
                 throw new Exception(string.Format("Destination {0} already exists and overwrite is set to false",
-                    type));
+                                                  type));
             }
         }
 

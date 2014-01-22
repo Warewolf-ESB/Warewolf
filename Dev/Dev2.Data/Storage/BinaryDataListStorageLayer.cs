@@ -50,7 +50,7 @@ namespace Dev2.Data.Storage
         /// <summary>
         /// Removes the specified unique key.
         /// </summary>
-        /// <param name="uniqueKey">The unique key.</param>
+        /// <param name="theList">The list.</param>
         /// <returns></returns>
         public static int RemoveAll(IEnumerable<Guid> theList)
         {
@@ -262,13 +262,7 @@ namespace Dev2.Data.Storage
         /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
         public int GetHashCode(IndexBasedBinaryDataListRow obj)
         {
-            var hashCode = 0;
-
-            foreach(var compareCol in _compareCols)
-            {
-                hashCode += obj.Row.FetchValue(compareCol, -1).GetHashCode();
-            }
-            return hashCode;
+            return _compareCols.Sum(compareCol => obj.Row.FetchValue(compareCol, -1).GetHashCode());
         }
 
         #endregion

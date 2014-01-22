@@ -12,8 +12,8 @@ namespace Dev2.Data.Storage
     /// </summary>
     public static class StorageSettingManager
     {
-        private static double _pressureFactor = 0.8;
-        private static int _minSlabSize = 14889779; // ~ 15MB
+        const double _pressureFactor = 0.8;
+        const int _minSlabSize = 14889779; // ~ 15MB
 
         public static Func<ulong> TotalFreeMemory { get; set; }
 
@@ -33,15 +33,9 @@ namespace Dev2.Data.Storage
                 return result;
             };
 
-            StorageLayerSegments = () =>
-            {
-                return ConfigurationManager.AppSettings["StorageLayerSegments"];
-            };
+            StorageLayerSegments = () => ConfigurationManager.AppSettings["StorageLayerSegments"];
 
-            StorageLayerSegmentSize = () =>
-            {
-                return ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
-            };
+            StorageLayerSegmentSize = () => ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
         }
 
         /// <summary>
@@ -153,15 +147,15 @@ namespace Dev2.Data.Storage
             }
 
             // 32-bit programs run on both 32-bit and 64-bit Windows
-            // Detect whether the current process is a 32-bit process 
-            // running on a 64-bit system.
-            bool flag;
-            return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
-                     IsWow64Process(GetCurrentProcess(), out flag)) && flag);
-        }
+                // Detect whether the current process is a 32-bit process 
+                // running on a 64-bit system.
+                bool flag;
+                return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
+                         IsWow64Process(GetCurrentProcess(), out flag)) && flag);
+            }
 
         /// <summary>
-        /// The function determins whether a method exists in the export 
+        /// The function determines whether a method exists in the export 
         /// table of a certain module.
         /// </summary>
         /// <param name="moduleName">The name of the module</param>

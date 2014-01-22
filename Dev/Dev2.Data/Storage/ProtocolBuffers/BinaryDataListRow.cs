@@ -62,23 +62,23 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             var offSet = 0;
 
             // copy over _rowBytesLen for unpacking ;)
-            Buffer.BlockCopy(BitConverter.GetBytes(rowBytesLen), 0, result, offSet, 4);
+            Buffer.BlockCopy(BitConverter.GetBytes(rowBytesLen), 0, result, offSet, sizeof(int));
 
             // copy over _colCnt
-            offSet += 4;
-            Buffer.BlockCopy(BitConverter.GetBytes(_colCnt), 0, result, offSet, 2);
+            offSet += sizeof(int);
+            Buffer.BlockCopy(BitConverter.GetBytes(_colCnt), 0, result, offSet, sizeof(short));
 
 
             // copy over _storageCapacity
-            offSet += 2;
-            Buffer.BlockCopy(BitConverter.GetBytes(_storageCapacity), 0, result, offSet, 4);
+            offSet += sizeof(short);
+            Buffer.BlockCopy(BitConverter.GetBytes(_storageCapacity), 0, result, offSet, sizeof(int));
 
             // copy over _usedStorage
-            offSet += 4;
-            Buffer.BlockCopy(BitConverter.GetBytes(_usedStorage), 0, result, offSet, 4);
+            offSet += sizeof(int);
+            Buffer.BlockCopy(BitConverter.GetBytes(_usedStorage), 0, result, offSet, sizeof(int));
 
             // copy over _rowBytes
-            offSet += 4;
+            offSet += sizeof(int);
             Buffer.BlockCopy(rowBytes, 0, result, offSet, rowBytesLen);
 
             // copy over _startIdx
@@ -101,28 +101,29 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         public override void ToObject(byte[] bytes)
         {
-
             var offSet = 0;
+
+            // TODO : Look at this code!!!!!
 
             // unpack _rowBytesLen
             var intBytes = new byte[sizeof(int)];
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, 4);
+            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
             int packedRowBytesLen = BitConverter.ToInt32(intBytes, 0);
 
             // unpack _colCnt
-            offSet += 4;
+            offSet += sizeof(int);
             var shortBytes = new byte[sizeof(short)];
-            Buffer.BlockCopy(bytes, offSet, shortBytes, 0, 2);
+            Buffer.BlockCopy(bytes, offSet, shortBytes, 0, sizeof(short));
             _colCnt = BitConverter.ToInt16(shortBytes, 0);
 
             // unpack _storageCapacity
-            offSet += 2;
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, 4);
+            offSet += sizeof(short);
+            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
             _storageCapacity = BitConverter.ToInt32(intBytes, 0);
 
             // unpack _usedStorage
-            offSet += 4;
-            Buffer.BlockCopy(bytes, offSet, intBytes, 0, 4);
+            offSet += sizeof(int);
+            Buffer.BlockCopy(bytes, offSet, intBytes, 0, sizeof(int));
             _usedStorage = BitConverter.ToInt32(intBytes, 0);
 
             // unpack _rowData
@@ -130,14 +131,14 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             try
             {
                 var charBytes = new byte[charSize];
-                offSet += 4;
+                offSet += sizeof(int);
                 Buffer.BlockCopy(bytes, offSet, charBytes, 0, charSize);
                 _rowData = Encoding.UTF8.GetString(charBytes).ToCharArray();
             }
             catch(Exception ae)
             {
                 // we may have a flipping huge issue ;)
-                this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ]");
+                this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ] StorageCapacity [ " + _storageCapacity + " ] Column Count [ " + _colCnt + " ] TOTAL ROW BYTES [ " + packedRowBytesLen + " ]");
                 this.LogError(ae);
             }
 
@@ -149,13 +150,13 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             // process a block at a time ;)
             int pos = 0;
-            for(int i = 0; i < intSize; i += 4)
+            for(int i = 0; i < intSize; i += sizeof(int))
             {
                 Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
                 int val = BitConverter.ToInt32(intArrayBytes, 0);
                 _startIdx[pos] = val;
                 pos++;
-                offSet += 4;
+                offSet += sizeof(int);
             }
 
             // unpack _columnLen
@@ -163,13 +164,13 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             _columnLen = new int[_colCnt];
 
             // process a block at a time ;)
-            for(int i = 0; i < intSize; i += 4)
+            for(int i = 0; i < intSize; i += sizeof(int))
             {
                 Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
                 var val = BitConverter.ToInt32(intArrayBytes, 0);
                 _columnLen[pos] = val;
                 pos++;
-                offSet += 4;
+                offSet += sizeof(int);
             }
         }
 
@@ -327,14 +328,12 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                         _rowData[i] = itr.Current;
                     }
 
-
                     itr.Dispose();
 
                     // finally, update the storage data
                     _startIdx[idx] = start;
                     _columnLen[idx] = canidateLen;
                     _usedStorage += canidateLen;
-
                 }
             }
             else
@@ -389,7 +388,13 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         private int FetchStorageStartIdx()
         {
-            return _usedStorage == 0 ? 0 : (_usedStorage);
+            if(_usedStorage == 0)
+            {
+                return 0;
+            }
+
+            return (_usedStorage);
+
         }
 
         /// <summary>

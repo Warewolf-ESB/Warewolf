@@ -13,7 +13,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
         public override byte[] ToByteArray()
         {
             // account for the 4 bytes of int and how ever long string is?!
-            int strLen = TheString.Length; ;
+            int strLen = TheString.Length;
             int len = 4 + strLen;
 
             byte[] result = new byte[len];

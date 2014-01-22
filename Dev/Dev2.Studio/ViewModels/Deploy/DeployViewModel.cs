@@ -317,8 +317,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
-                // ReSharper disable once PossibleUnintendedReferenceComparison
+                // ReSharper disable PossibleUnintendedReferenceComparison
                 if(value != _selectedDestinationServer)
+                // ReSharper restore PossibleUnintendedReferenceComparison
                 {
                     _selectedDestinationServer = value;
                     LoadDestinationEnvironment(_selectedDestinationServer);
@@ -340,7 +341,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
             // ReSharper disable once ObjectCreationAsStatement
-            new DeployService();
             _serverProvider = serverProvider;
             _servers = new ObservableCollection<IEnvironmentModel>();
             _targetStats = new ObservableCollection<DeployStatsTO>();
@@ -393,23 +393,33 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStatPredicates = new Dictionary<string, Func<ITreeNode, bool>>();
 
             _sourceStatPredicates.Add("Services",
+                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator
+                                          // ReSharper restore ImplicitlyCapturedClosure
                                           .SelectForDeployPredicateWithTypeAndCategories
                                           (n, ResourceType.Service, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
+                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator.
+                                          // ReSharper restore ImplicitlyCapturedClosure
                                                SelectForDeployPredicateWithTypeAndCategories
                                                (n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Sources",
+                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator
+                                          // ReSharper restore ImplicitlyCapturedClosure
                                                .SelectForDeployPredicateWithTypeAndCategories
                                                (n, ResourceType.Source, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Webpages",
+                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator
+                                          // ReSharper restore ImplicitlyCapturedClosure
                                                .SelectForDeployPredicateWithTypeAndCategories
                                                (n, ResourceType.WorkflowService, webpageCategories, blankCategories));
             _sourceStatPredicates.Add("Websites",
+                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator
+                                          // ReSharper restore ImplicitlyCapturedClosure
                                                .SelectForDeployPredicateWithTypeAndCategories
                                                (n, ResourceType.WorkflowService, websiteCategories, blankCategories));
             _sourceStatPredicates.Add("Unknown",
@@ -448,11 +458,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             List<ResourceTreeViewModel> resourceTreeViewModels = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
             List<ResourceTreeViewModel> selectedResourcesTreeViewModels = resourceTreeViewModels.Where(c => c.IsChecked == true).ToList();
-            List<IContextualResourceModel> selectedResourceModels = new List<IContextualResourceModel>();
-            foreach(var resourceTreeViewModel in selectedResourcesTreeViewModels)
-            {
-                selectedResourceModels.Add(resourceTreeViewModel.DataContext);
-            }
+            List<IContextualResourceModel> selectedResourceModels = selectedResourcesTreeViewModels.Select(resourceTreeViewModel => resourceTreeViewModel.DataContext).ToList();
 
             List<string> dependancyNames = SourceEnvironment.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SourceEnvironment);
 
@@ -589,8 +595,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public Action<object> ShowDialog = deployDialogViewModel =>
             {
-                var dialog = new DeployViewDialog();
-                dialog.DataContext = deployDialogViewModel;
+                var dialog = new DeployViewDialog { DataContext = deployDialogViewModel };
                 dialog.ShowDialog();
             };
 

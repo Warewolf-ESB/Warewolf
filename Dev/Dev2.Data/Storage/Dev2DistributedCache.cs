@@ -10,7 +10,7 @@ namespace Dev2.Data.Storage
 
     /// <summary>
     /// Wrapper to scale out the BinaryStorage class 
-    /// Partitions across the mod of the key hashcode for now ;)
+    /// Partitions across the mod of the key hash code for now ;)
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class Dev2DistributedCache<T> where T : AProtocolBuffer
@@ -18,7 +18,7 @@ namespace Dev2.Data.Storage
 
         // we always create a background container to work in ;)
         private readonly int _numOfSegments;
-        ConcurrentDictionary<int, Dev2BinaryStorage<T>> _scalableCache = new ConcurrentDictionary<int, Dev2BinaryStorage<T>>();
+        readonly ConcurrentDictionary<int, Dev2BinaryStorage<T>> _scalableCache = new ConcurrentDictionary<int, Dev2BinaryStorage<T>>();
 
         public Dev2DistributedCache(int numOfSegments, int segmentSize)
         {
@@ -29,7 +29,7 @@ namespace Dev2.Data.Storage
 
             for(int i = 0; i < _numOfSegments; i++)
             {
-                _scalableCache[i] = new Dev2BinaryStorage<T>(Guid.NewGuid().ToString() + ".data", sizeOf);
+                _scalableCache[i] = new Dev2BinaryStorage<T>(Guid.NewGuid() + ".data", sizeOf);
             }
 
             // fire up the scrub region ;)
@@ -92,16 +92,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public int RemoveAll(IEnumerable<Guid> theList)
         {
-            int totalLeft = 0;
-
-            foreach(var container in _scalableCache.Values)
-            {
-                // ReSharper disable PossibleMultipleEnumeration
-                totalLeft += container.RemoveAll(theList);
-                // ReSharper restore PossibleMultipleEnumeration
-            }
-
-            return totalLeft;
+            return _scalableCache.Values.Sum(container => container.RemoveAll(theList));
         }
 
         /// <summary>
@@ -110,14 +101,7 @@ namespace Dev2.Data.Storage
         /// <param name="key">The key.</param>
         public int RemoveAll(string key)
         {
-            int totalLeft = 0;
-
-            foreach(var container in _scalableCache.Values)
-            {
-                totalLeft += container.RemoveAll(key);
-            }
-
-            return totalLeft;
+            return _scalableCache.Values.Sum(container => container.RemoveAll(key));
         }
 
         public void CompactMemory(bool force = false)
