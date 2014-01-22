@@ -816,6 +816,7 @@ namespace Dev2.Core.Tests
             result.Setup(c => c.Environment).Returns(_environmentModel.Object);
             result.Setup(c => c.ServerID).Returns(_serverID);
             result.Setup(c => c.ID).Returns(_firstResourceID);
+            result.Setup(c => c.UserPermissions).Returns(Permissions.Contribute);
             return result;
         }
 
@@ -910,6 +911,7 @@ namespace Dev2.Core.Tests
             _secondResource.Setup(c => c.Environment).Returns(_environmentModel.Object);
             _secondResource.Setup(c => c.ServerID).Returns(_serverID);
             _secondResource.Setup(c => c.ID).Returns(_secondResourceID);
+            _secondResource.Setup(c => c.UserPermissions).Returns(Permissions.Contribute);
             var msg = new AddWorkSurfaceMessage(_secondResource.Object);
             _mainViewModel.Handle(msg);
         }
@@ -1596,6 +1598,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
+            resourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
 
             #endregion
 

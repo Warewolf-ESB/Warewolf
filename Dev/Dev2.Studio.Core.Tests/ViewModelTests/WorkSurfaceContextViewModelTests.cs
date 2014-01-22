@@ -286,6 +286,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Debug(mockResourceModel.Object, true);
             //------------Assert---------------------------------
@@ -354,6 +356,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+            
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new DebugResourceMessage(mockResourceModel.Object));
             //------------Assert---------------------------------
@@ -385,6 +389,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new ExecuteResourceMessage(mockResourceModel.Object));
             //------------Assert---------------------------------
@@ -418,6 +423,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
+            mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
+
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
