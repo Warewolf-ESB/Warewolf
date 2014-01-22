@@ -606,19 +606,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 if(_selectingAndExpandingFromNavigationItem)
                 {
-                    Source.LoadResourcesCompleted += OnResourcesLoaded;
+                    Source.LoadResourcesCompleted += SourceOnResourcesLoaded;
                 }
 
                 Source.AddEnvironment(SourceEnvironment);
             }
         }
 
-        void OnResourcesLoaded(object source, EventArgs args)
+        void SourceOnResourcesLoaded(object source, EventArgs args)
         {
             //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
             SelectAndExpandFromInitialValue();
             CalculateStats();
-            Source.LoadResourcesCompleted -= OnResourcesLoaded;
+            Source.LoadResourcesCompleted -= SourceOnResourcesLoaded;
         }
 
         /// <summary>
@@ -633,10 +633,17 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             if(TargetEnvironment != null)
             {
+                Target.LoadResourcesCompleted += DestinationOnResourcesLoaded;
                 Target.AddEnvironment(TargetEnvironment);
             }
+        }
 
+        void DestinationOnResourcesLoaded(object source, EventArgs args)
+        {
+            //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
+            SelectAndExpandFromInitialValue();
             CalculateStats();
+            Target.LoadResourcesCompleted -= DestinationOnResourcesLoaded;
         }
 
         /// <summary>

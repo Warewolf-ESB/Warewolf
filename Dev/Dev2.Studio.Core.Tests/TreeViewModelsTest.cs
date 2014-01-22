@@ -955,6 +955,31 @@ namespace Dev2.Core.Tests
             mockedResourceRepo.Verify(repo => repo.Rename(oldResourceID.ToString(), oldResourceName), Times.Once(), "Resource repository rename resource was not called with the correct params");
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ResourceTreeViewModel_SetIsChecked")]
+        public void ResourceTreeViewModel_SetIsChecked_SettingIsCheckToFalseFromTrue_IsOverwriteGetsSetToFalseOnResource()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ServerResourceType).Returns("Workflow");
+            resourceModel.Setup(r => r.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var cvm = new CategoryTreeViewModel(new Mock<IEventAggregator>().Object, null, "test", ResourceType.WorkflowService);
+            var rvm = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, resourceModel.Object);
+            cvm.Children.Add(rvm);
+            rvm.TreeParent = cvm;
+            rvm.IsOverwrite = true;
+            cvm.IsOverwrite = true;
+            rvm.IsChecked = true;
+            Assert.AreEqual(true, rvm.IsOverwrite);
+            Assert.AreEqual(true, cvm.IsOverwrite);
+            //------------Execute Test---------------------------
+            rvm.IsChecked = false;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(false, rvm.IsOverwrite);
+            Assert.AreEqual(false, cvm.IsOverwrite);
+        }
+
         #endregion Resource
 
         [TestMethod]

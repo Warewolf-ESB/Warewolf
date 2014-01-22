@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
@@ -16,6 +17,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
+using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.ViewModels.Deploy;
@@ -78,6 +80,54 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(source.Object.IsConnected);
             Assert.IsTrue(s1.IsConnected);
             Assert.IsTrue(s2.IsConnected);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DeployViewModel_SelectDestinationServer")]
+        public void DeployViewModel_SelectDestinationServer_SelectDestinationServer_CalculateStatsHitOnce()
+        {
+            //------------Setup for test--------------------------
+            ImportService.CurrentContext = OkayContext;
+
+            var source = EnviromentRepositoryTest.CreateMockEnvironment();
+            var sourceConn = Mock.Get(source.Object.Connection);
+            sourceConn.Setup(c => c.Disconnect()).Verifiable();
+
+            var e1 = EnviromentRepositoryTest.CreateMockEnvironment();
+            var c1 = Mock.Get(e1.Object.Connection);
+            c1.Setup(c => c.Disconnect()).Verifiable();
+            var s1 = e1.Object;
+
+            var e2 = EnviromentRepositoryTest.CreateMockEnvironment();
+            var c2 = Mock.Get(e2.Object.Connection);
+            c2.Setup(c => c.Disconnect()).Verifiable();
+            var s2 = e2.Object;
+
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
+
+            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+
+            Mock<IDeployStatsCalculator> mockDeployStatsCalculator = new Mock<IDeployStatsCalculator>();
+            int calcStats;
+            mockDeployStatsCalculator.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats)).Verifiable();
+
+            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockDeployStatsCalculator.Object);
+
+            // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
+            deployViewModel.Source.Environments.Clear();
+            deployViewModel.Target.Environments.Clear();
+
+            //------------Execute Test---------------------------
+
+            deployViewModel.SelectedSourceServer = s1;
+
+            deployViewModel.SelectedDestinationServer = s2;
+
+            //------------Assert Results-------------------------
+
+            mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(2));
         }
 
         #endregion
@@ -462,7 +512,7 @@ namespace Dev2.Core.Tests
 
             var remoteConnection = new Mock<IEnvironmentConnection>();
             remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
-            
+
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
             mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
