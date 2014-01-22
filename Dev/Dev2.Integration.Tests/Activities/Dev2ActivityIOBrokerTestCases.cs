@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestCleanup]
         public void TestTearDown()
         {
-            // stop the server                                                                        
+            // stop the server                                                                         
             server.Bindings.Clear();
             server.Stop();
             server = null;
