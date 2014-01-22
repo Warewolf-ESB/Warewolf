@@ -42,7 +42,18 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, double? eventValue = null)
         {
-            App.EventTrack(eventGroup.ToString(), eventName.ToString(), eventValue);
+            TrackEvent(eventGroup, eventName.ToString(), eventValue);
+        }
+
+        /// <summary>
+        /// Track events being used from within your application
+        /// </summary>
+        /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
+        /// <param name="customText">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
+        /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
+        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, double? eventValue = null)
+        {
+            App.EventTrack(eventGroup.ToString(), customText, eventValue);
         }
 
         /// <summary>
