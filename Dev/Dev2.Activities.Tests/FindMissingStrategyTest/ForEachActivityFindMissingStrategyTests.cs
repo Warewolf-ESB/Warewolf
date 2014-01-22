@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for ForEachActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ForEachActivityFindMissingStrategyTests
     {
         public ForEachActivityFindMissingStrategyTests()
@@ -75,7 +76,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.ForEach);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "NUD2347", "registration223", "[[number]]", "Fines.Date","5" };
+            List<string> expected = new List<string> { "NUD2347", "registration223", "[[number]]", "Fines.Date", "5" };
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -90,7 +91,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.ForEach);
             List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "[[AssignRight1]]", "[[AssignLeft1]]", "[[AssignRight2]]", "[[AssignLeft2]]","5" };
+            List<string> expected = new List<string> { "[[AssignRight1]]", "[[AssignLeft1]]", "[[AssignRight2]]", "[[AssignLeft2]]", "5" };
             CollectionAssert.AreEqual(expected, actual);
         }
 

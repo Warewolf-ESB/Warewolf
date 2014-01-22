@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,6 @@ using Dev2.PathOperations;
 using Dev2.Tests.Activities;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace ActivityUnitTests.ActivityTests
@@ -17,7 +17,8 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;
@@ -59,38 +60,38 @@ namespace ActivityUnitTests.ActivityTests
         {
             myTestContext = testContext;
         }
-        
-         //Use ClassCleanup to run code after all tests in a class have run
-         [ClassCleanup()]
-         public static void MyClassCleanup()
-         {
-             if(tempFile != null)
-             {
-                 try
-                 {
-                     File.Delete(tempFile);
-                 }
-                 catch(Exception e)
-                 {
-                     if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
 
-                 try
-                 {
-                     File.Delete(Path.GetTempPath() + NewFileName + ".zip");
-                 }
-                 catch(Exception e)
-                 {
-                     if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
-             }
-         }
+        //Use ClassCleanup to run code after all tests in a class have run
+        [ClassCleanup()]
+        public static void MyClassCleanup()
+        {
+            if(tempFile != null)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch(Exception e)
+                {
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+
+                try
+                {
+                    File.Delete(Path.GetTempPath() + NewFileName + ".zip");
+                }
+                catch(Exception e)
+                {
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -136,7 +137,7 @@ namespace ActivityUnitTests.ActivityTests
             List<string> zipfileNames = new List<string>();
             zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2Zip.zip"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, "TestData");
             }
@@ -159,7 +160,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[7].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[8].FetchResultsList().Count);
-            
+
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
@@ -181,7 +182,7 @@ namespace ActivityUnitTests.ActivityTests
             zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
             zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, Guid.NewGuid() + ".zip"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -189,9 +190,9 @@ namespace ActivityUnitTests.ActivityTests
             recsetList.Add(fileNames);
             recsetList.Add(zipfileNames);
 
-            List<string> recsetnames = new List<string> {"FileNames", "ZipNames"};
+            List<string> recsetnames = new List<string> { "FileNames", "ZipNames" };
 
-            List<string> fieldnames = new List<string> {"Name", "Zips"};
+            List<string> fieldnames = new List<string> { "Name", "Zips" };
 
             string dataListWithData;
             string dataListShape;
@@ -227,7 +228,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[3].Value));
             Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[3].ResultsList[4].Value);
             Assert.AreEqual("=", inRes[3].ResultsList[5].Value);
-            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[6].Value)); 
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[6].Value));
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual("Username", inRes[4].ResultsList[0].Value);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
@@ -240,7 +241,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("Success", outRes[0].ResultsList[2].Value);
-      
+
         }
 
         #endregion
@@ -256,20 +257,20 @@ namespace ActivityUnitTests.ActivityTests
             var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
             IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true));
             IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true));
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null,true);
-            File.WriteAllText(zipPathName,"");
+            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
+            File.WriteAllText(zipPathName, "");
             //------------Assert Preconditions-------------------
             Assert.IsTrue(zipTO.Overwrite);
             Assert.IsTrue(File.Exists(zipPathName));
             var readAllBytes = File.ReadAllBytes(zipPathName);
-            Assert.AreEqual(0,readAllBytes.Count());
+            Assert.AreEqual(0, readAllBytes.Count());
             //------------Execute Test---------------------------
             ActivityIOFactory.CreateOperationsBroker().Zip(scrEndPoint, dstEndPoint, zipTO);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(zipPathName));
             readAllBytes = File.ReadAllBytes(zipPathName);
             Assert.AreNotEqual(0, readAllBytes.Count());
-            
+
         }
 
         [TestMethod]
@@ -284,14 +285,15 @@ namespace ActivityUnitTests.ActivityTests
             var zipfileNames = new List<string>();
             zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2Zip.zip"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, "TestData");
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
-            DsfZip preact = new DsfZip {
+            DsfZip preact = new DsfZip
+            {
                 InputPath = "OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
                 Result = "[[res]]",

@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PathCreateTests : BaseActivityUnitTest
     {
 
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(5,inputs.FetchAllEntries().Count);
+            Assert.AreEqual(5, inputs.FetchAllEntries().Count);
         }
 
         [TestMethod]
@@ -49,7 +50,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,outputs.FetchAllEntries().Count);
+            Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
         #endregion Get Input/Output Tests
@@ -78,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -117,10 +118,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         #endregion
@@ -152,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var newGuid = Guid.NewGuid();
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfPathCreate {  OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfPathCreate { OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>(outputPath, "Test");
             var tuple2 = new Tuple<string, string>(inputPath, "Test2");
@@ -160,8 +161,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(outputPath, act.OutputPath);
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCreate_UpdateForEachInputs")]
@@ -170,7 +171,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfPathCreate {  OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfPathCreate { OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>(outputPath, "Test");
             //------------Execute Test---------------------------
@@ -221,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfPathCreate {  OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfPathCreate { OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
@@ -238,7 +239,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var newGuid = Guid.NewGuid();
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
-            var act = new DsfPathCreate {  OutputPath = outputPath, Result = "[[CompanyName]]" };
+            var act = new DsfPathCreate { OutputPath = outputPath, Result = "[[CompanyName]]" };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();

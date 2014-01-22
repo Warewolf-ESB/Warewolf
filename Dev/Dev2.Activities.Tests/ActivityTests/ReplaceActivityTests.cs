@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ReplaceActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -40,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 string replacedRes;
@@ -48,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
-                Assert.AreEqual("It Worked", replacedRes);                
+                Assert.AreEqual("It Worked", replacedRes);
             }
             else
             {
@@ -70,7 +71,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
@@ -100,7 +101,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
 
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
@@ -134,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -158,13 +159,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
 
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-                
+
                 Assert.AreEqual("TheUnlimted", actual);
             }
             else
@@ -185,7 +186,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
@@ -211,14 +212,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("barney", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -242,14 +243,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -274,11 +275,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
             GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
-                
+
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -303,7 +304,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string error;
 
             GetScalarValueFromDataList(result.DataListID, "Res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
@@ -331,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
@@ -361,7 +362,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
                 IList<IBinaryDataListItem> dataListItems;
@@ -394,12 +395,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"<InnerError>Please insert only variables into Fields To Search</InnerError>";
-            string actual;;
+            string actual; ;
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -419,11 +420,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }
@@ -446,7 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual);
             }

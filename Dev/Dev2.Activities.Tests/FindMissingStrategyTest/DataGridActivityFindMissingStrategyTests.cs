@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Enums;
 using Dev2.Factories;
 using Dev2.Interfaces;
@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for DataGridActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataGridActivityFindMissingStrategyTests
     {
         public DataGridActivityFindMissingStrategyTests()
@@ -50,7 +51,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             List<string> actual = strategy.GetActivityFields(baseConvertActivity);
             List<string> expected = new List<string> { "[[FromExpression]]", "[[ToExpression]]", "[[FromExpression2]]", "[[ToExpression2]]" };
-            CollectionAssert.AreEqual(expected,actual);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         #endregion

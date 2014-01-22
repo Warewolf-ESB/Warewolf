@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PathDeleteTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -37,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(4,res);
+            Assert.AreEqual(4, res);
         }
 
         [TestMethod]
@@ -52,7 +53,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,res);
+            Assert.AreEqual(1, res);
         }
 
         #endregion Get Input/Output Tests
@@ -83,7 +84,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);            
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -102,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
-            
+
             //------------Execute Test---------------------------
             var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes);
@@ -134,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             foreach(string fileName in fileNames)
             {
-                File.WriteAllText(fileName,@"TestData");
+                File.WriteAllText(fileName, @"TestData");
             }
 
             string dataListWithData;
@@ -156,10 +157,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(3, inRes.Count);
             Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);            
+            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
 
         [TestMethod]
@@ -167,7 +168,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfPathDelete_Execution")]
         public void DsfPathDelete_Execution_FileNotFound_DebugOutputErrorMessageRelevant()
         {
-            var dsfPathDelete = new DsfPathDelete{ InputPath = TestContext.TestRunDirectory + "\\some file that doesnt exist.txt", Result = "[[res]]" };
+            var dsfPathDelete = new DsfPathDelete { InputPath = TestContext.TestRunDirectory + "\\some file that doesnt exist.txt", Result = "[[res]]" };
             List<DebugItem> inRes;
             List<DebugItem> outRes;
             string actual;

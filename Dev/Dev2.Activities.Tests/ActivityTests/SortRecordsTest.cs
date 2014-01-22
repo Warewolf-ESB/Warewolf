@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for SortRecordsTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SortRecordsTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -318,7 +319,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(2,res);
+            Assert.AreEqual(2, res);
         }
 
         [TestMethod]
@@ -447,7 +448,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("1988/09/23", outRes[0].ResultsList[26].Value);
             Assert.AreEqual("[[Customers(10).DOB]]", outRes[0].ResultsList[27].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[28].Value);
-            Assert.AreEqual("1988/10/14", outRes[0].ResultsList[29].Value);    
+            Assert.AreEqual("1988/10/14", outRes[0].ResultsList[29].Value);
         }
 
         #endregion
@@ -461,7 +462,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             const string SortField = "[[Company().Name]]";
-            var act = new DsfSortRecordsActivity { SortField = SortField};
+            var act = new DsfSortRecordsActivity { SortField = SortField };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null, null);

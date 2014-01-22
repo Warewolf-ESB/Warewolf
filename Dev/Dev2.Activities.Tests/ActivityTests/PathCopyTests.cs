@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
@@ -7,7 +8,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PathCopyTests : BaseActivityUnitTest
     {
 
@@ -94,12 +95,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(7, inRes.Count);
             Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);            
+            Assert.AreEqual(1, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);    
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
@@ -242,7 +243,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(2, dsfForEachItems.Count);
             Assert.AreEqual(inputPath, dsfForEachItems[0].Name);
-            Assert.AreEqual(inputPath, dsfForEachItems[0].Value); 
+            Assert.AreEqual(inputPath, dsfForEachItems[0].Value);
             Assert.AreEqual(outputPath, dsfForEachItems[1].Name);
             Assert.AreEqual(outputPath, dsfForEachItems[1].Value);
         }
@@ -264,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DsfPathCopy_Execute")]
@@ -273,7 +274,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var fileNames = new List<string>();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, "TestData");
             }

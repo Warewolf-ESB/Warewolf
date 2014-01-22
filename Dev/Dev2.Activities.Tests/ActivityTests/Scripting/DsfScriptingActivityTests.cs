@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Activities.Statements;
+﻿using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -23,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        
+
         #region JavaScript
 
         #region Should execute valid javascript
@@ -45,7 +46,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             DataListRemoval(result.DataListID);
 
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript executed incorrectly");
             }
@@ -55,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
                     string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}",
                                     error));
             }
-            
+
         }
 
         [TestMethod]
@@ -73,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             DataListRemoval(result.DataListID);
 
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript with a variable executed incorrectly");
             }
@@ -98,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             DataListRemoval(result.DataListID);
 
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Javascript with datalist region executed incorrectly");
             }
@@ -122,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("8", actual, "Valid Javascript with datalist region executed incorrectly");
             }
@@ -146,7 +147,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", dataListItems[0].TheValue, "Valid Javascript with datalist region executed incorrectly");
                 Assert.AreEqual("3", dataListItems[1].TheValue, "Valid Javascript with datalist region executed incorrectly");
@@ -173,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(string.Empty, dataListItems[0].TheValue, "Valid Javascript with empty Recordset did not evaluate with blank");
             }
@@ -203,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
             }
@@ -229,7 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Javascript with unexpected datalist variable did not throw error");
             }
@@ -261,7 +262,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby executed incorrectly");
             }
@@ -285,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with a variable executed incorrectly");
             }
@@ -309,7 +310,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with datalist region executed incorrectly");
             }
@@ -333,7 +334,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("8", actual, "Valid Ruby with datalist region executed incorrectly");
             }
@@ -357,7 +358,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", dataListItems[0].TheValue, "Valid Ruby with datalist region executed incorrectly");
                 Assert.AreEqual("3", dataListItems[1].TheValue, "Valid Ruby with datalist region executed incorrectly");
@@ -384,7 +385,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(string.Empty, dataListItems[0].TheValue, "Valid Ruby with empty Recordset did not evaluate with blank");
             }
@@ -409,7 +410,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual("2", actual, "Valid Ruby with empty Recordset did not evaluate without return keyword");
             }
@@ -440,7 +441,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             DataListRemoval(result.DataListID);
 
 
-            if (string.IsNullOrEmpty(error))
+            if(string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Ruby with unexpected datalist variable did not throw error");
             }
@@ -484,7 +485,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
             Assert.AreEqual("return [[Numeric(1).num]],[[Numeric(2).num]];", inRes[0].FetchResultsList()[1].Value);
             Assert.AreEqual("=", inRes[0].FetchResultsList()[2].Value);
-            Assert.AreEqual("return 654,668416154;", inRes[0].FetchResultsList()[3].Value);            
+            Assert.AreEqual("return 654,668416154;", inRes[0].FetchResultsList()[3].Value);
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("[[res]]", outRes[0].FetchResultsList()[0].Value);
@@ -495,13 +496,13 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         [TestMethod]
         public void ScriptingGetDebugInputOutputWithRecordsetsUsingStarExpectedPass()
         {
-            DsfScriptingActivity act = new DsfScriptingActivity { Script = "return [[Numeric(*).num]]", Result = "[[res]]", ScriptType = enScriptType.JavaScript};
+            DsfScriptingActivity act = new DsfScriptingActivity { Script = "return [[Numeric(*).num]]", Result = "[[res]]", ScriptType = enScriptType.JavaScript };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
             var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 

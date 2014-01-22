@@ -16,7 +16,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     ///     Summary description for RandomActivityTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RandomActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -332,7 +333,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(length,actual.Length);
+                Assert.AreEqual(length, actual.Length);
             }
             else
             {
@@ -356,7 +357,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(10,actual.Length);
+                Assert.AreEqual(10, actual.Length);
             }
             else
             {
@@ -380,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             if(string.IsNullOrEmpty(error))
             {
-                Assert.AreEqual(5,dataListItems.Count);
+                Assert.AreEqual(5, dataListItems.Count);
                 Assert.AreEqual(dataListItems[0].TheValue.Length, 10);
                 Assert.AreEqual(dataListItems[1].TheValue.Length, 20);
                 Assert.AreEqual(dataListItems[2].TheValue.Length, 30);
@@ -499,7 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[recset2(3).field2]]", inRes[1].FetchResultsList()[7].Value);
             Assert.AreEqual("=", inRes[1].FetchResultsList()[8].Value);
             Assert.AreEqual("-30", inRes[1].FetchResultsList()[9].Value);
-            Assert.AreEqual("[[recset2(4).field2]]", inRes[1].FetchResultsList()[10].Value);            
+            Assert.AreEqual("[[recset2(4).field2]]", inRes[1].FetchResultsList()[10].Value);
             Assert.AreEqual("=", inRes[1].FetchResultsList()[11].Value);
             Assert.AreEqual("-40", inRes[1].FetchResultsList()[12].Value);
             Assert.AreEqual("[[recset2(5).field2]]", inRes[1].FetchResultsList()[13].Value);
@@ -515,7 +516,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(15, outRes[4].FetchResultsList().Count);
             Assert.AreEqual("[[recset1(1).field1]]", outRes[4].FetchResultsList()[0].Value);
             Assert.AreEqual("=", outRes[4].FetchResultsList()[1].Value);
-            Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[2].Value,out intRes));
+            Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[2].Value, out intRes));
             Assert.AreEqual("[[recset1(2).field1]]", outRes[4].FetchResultsList()[3].Value);
             Assert.AreEqual("=", outRes[4].FetchResultsList()[4].Value);
             Assert.IsTrue(int.TryParse(outRes[4].FetchResultsList()[5].Value, out intRes));

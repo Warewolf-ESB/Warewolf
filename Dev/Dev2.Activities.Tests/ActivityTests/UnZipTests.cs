@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UnZipTests : BaseActivityUnitTest
     {
 
@@ -221,7 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.Delete(fileName);
             }

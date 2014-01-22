@@ -11,6 +11,7 @@ namespace Dev2.DataBinding.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("HelpAdorner_Bindings")]
+        [Ignore]//21/01/2014 - Ashley: MSTest.exe cannot run this test
         public void HelpAdorner_Bindings_GetBindings_HasBinding()
         {
             //------------Setup for test--------------------------

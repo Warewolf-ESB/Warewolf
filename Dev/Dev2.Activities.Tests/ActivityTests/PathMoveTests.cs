@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
@@ -7,7 +8,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -16,13 +16,14 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PathMoveTests : BaseActivityUnitTest
     {
-        #pragma warning disable 649
+#pragma warning disable 649
         static string _tempFile;
-        #pragma warning restore 649
-        
+#pragma warning restore 649
+
         const string _newFileName = "MovedTempFile";
 
         /// <summary>
@@ -42,21 +43,21 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-        
+
         //
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup]
         public static void MyClassCleanup()
         {
-            if (_tempFile != null)
+            if(_tempFile != null)
             {
                 try
                 {
                     File.Delete(_tempFile);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
                     {
                         throw;
                     }
@@ -66,9 +67,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     File.Delete(Path.GetTempPath() + _newFileName);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
-                    if (e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
                     {
                         throw;
                     }
@@ -92,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(inputs.UID);
 
-            Assert.AreEqual(8,res);
+            Assert.AreEqual(8, res);
         }
 
         [TestMethod]
@@ -107,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(outputs.UID);
 
-            Assert.AreEqual(1,res);
+            Assert.AreEqual(1, res);
         }
 
         #endregion Get Input/Output Tests
@@ -131,12 +132,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
-            foreach (string directoryName in directoryNames)
+            foreach(string directoryName in directoryNames)
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -159,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);      
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -175,18 +176,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             List<string> fileNames = new List<string>();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));            
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
 
             List<string> directoryNames = new List<string>();
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
-            foreach (string directoryName in directoryNames)
+            foreach(string directoryName in directoryNames)
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
@@ -214,7 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);  
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -367,19 +368,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
-            foreach (string directoryName in directoryNames)
+            foreach(string directoryName in directoryNames)
             {
                 Directory.CreateDirectory(directoryName);
             }
 
-            foreach (string fileName in fileNames)
+            foreach(string fileName in fileNames)
             {
                 File.WriteAllText(fileName, @"TestData");
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
-            DsfPathMove act = new DsfPathMove {
+            DsfPathMove act = new DsfPathMove
+            {
                 InputPath = "OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
                 Result = "[[res]]",

@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UniqueActivityTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -28,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void EmptyInFieldsStringExpectedNoUnique()
         {
             const string dataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
-            SetupArguments("<root>" + dataList + "</root>", dataList, "", "[[recset1().field1]]","[[OutVar1]]");
+            SetupArguments("<root>" + dataList + "</root>", dataList, "", "[[recset1().field1]]", "[[OutVar1]]");
             IDSFDataObject result = ExecuteProcess();
 
             string actual;
@@ -64,9 +65,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
-                ,"[[recset1().field2]]"
-                , "[[recset1().field1]]","[[recset2().id]]");
-            List<string> expected = new List<string> { "1","2","5" };
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]]", "[[recset2().id]]");
+            List<string> expected = new List<string> { "1", "2", "5" };
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -107,8 +108,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<OutVar1/></ADL>";
             SetupArguments("<root>" + dataListWithData + "</root>"
                 , dataList
-                ,"[[recset1().field2]]"
-                , "[[recset1().field1]]","[[OutVar1]]");
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]]", "[[OutVar1]]");
             const string expected = "1,2,5";
 
             IDSFDataObject result = ExecuteProcess();
@@ -128,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
             const string dataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
@@ -153,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , dataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[recset2().id]]");
-            List<string> expected = new List<string> { "10","1", "2", "5" };
+            List<string> expected = new List<string> { "10", "1", "2", "5" };
 
             IDSFDataObject result = ExecuteProcess();
 
@@ -174,7 +175,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithMulitpleRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
             const string dataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
@@ -208,7 +209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer); 
+            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
@@ -331,7 +332,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void UniqueGetDebugInputOutputWithScalarsExpectedPass()
         {
-            DsfUniqueActivity act = new DsfUniqueActivity { InFields = "[[recset1().field2]]", ResultFields = "[[recset1().field1]]",Result = "[[OutVar1]]"};
+            DsfUniqueActivity act = new DsfUniqueActivity { InFields = "[[recset1().field2]]", ResultFields = "[[recset1().field1]]", Result = "[[OutVar1]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -355,26 +356,26 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
 
-           var result = CheckActivityDebugInputOutput(act, dataList,
-                dataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, dataList,
+                 dataListWithData, out inRes, out outRes);
 
 
-           // remove test datalist ;)
-           DataListRemoval(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
 
 
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(18, fetchResultsList.Count);
-            Assert.AreEqual("1",fetchResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchResultsList[0].Type);
+            Assert.AreEqual("1", fetchResultsList[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
             Assert.AreEqual("In Fields", fetchResultsList[1].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[1].Type);
-            Assert.AreEqual("=",fetchResultsList[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchResultsList[2].Type);
+            Assert.AreEqual("=", fetchResultsList[2].Value);
+            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[2].Type);
 
-            Assert.AreEqual("[[recset1(1).field2]]",fetchResultsList[3].Value);
-            Assert.AreEqual(DebugItemResultType.Variable,fetchResultsList[3].Type);
+            Assert.AreEqual("[[recset1(1).field2]]", fetchResultsList[3].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[3].Type);
             Assert.AreEqual("=", fetchResultsList[4].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[4].Type);
             Assert.AreEqual("a", fetchResultsList[5].Value);
@@ -387,7 +388,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("b", fetchResultsList[8].Value);
             Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[8].Type);
 
-           
+
             Assert.AreEqual("[[recset1(3).field2]]", fetchResultsList[9].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[9].Type);
             Assert.AreEqual("=", fetchResultsList[10].Value);
@@ -431,7 +432,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void UniqueGetDebugInputOutputWithRecordsetExpectedPass()
         {
-            DsfUniqueActivity act = new DsfUniqueActivity { InFields = "[[recset1().field2]]", ResultFields = "[[recset1().field1]]",Result = "[[recset2().id]]"};
+            DsfUniqueActivity act = new DsfUniqueActivity { InFields = "[[recset1().field2]]", ResultFields = "[[recset1().field1]]", Result = "[[recset2().id]]" };
 
             List<DebugItem> inRes;
             List<DebugItem> outRes;
@@ -463,15 +464,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes.Count);
             IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
             Assert.AreEqual(18, fetchResultsList.Count);
-            Assert.AreEqual("1",fetchResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchResultsList[0].Type);
+            Assert.AreEqual("1", fetchResultsList[0].Value);
+            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
             Assert.AreEqual("In Fields", fetchResultsList[1].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[1].Type);
-            Assert.AreEqual("=",fetchResultsList[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label,fetchResultsList[2].Type);
+            Assert.AreEqual("=", fetchResultsList[2].Value);
+            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[2].Type);
 
-            Assert.AreEqual("[[recset1(1).field2]]",fetchResultsList[3].Value);
-            Assert.AreEqual(DebugItemResultType.Variable,fetchResultsList[3].Type);
+            Assert.AreEqual("[[recset1(1).field2]]", fetchResultsList[3].Value);
+            Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[3].Type);
             Assert.AreEqual("=", fetchResultsList[4].Value);
             Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[4].Type);
             Assert.AreEqual("a", fetchResultsList[5].Value);
@@ -484,7 +485,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("b", fetchResultsList[8].Value);
             Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[8].Type);
 
-           
+
             Assert.AreEqual("[[recset1(3).field2]]", fetchResultsList[9].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[9].Type);
             Assert.AreEqual("=", fetchResultsList[10].Value);
@@ -515,7 +516,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> debugOutput = outRes[0].FetchResultsList();
             Assert.AreEqual(10, debugOutput.Count);
-           
+
             Assert.AreEqual("1", debugOutput[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutput[0].Type);
             Assert.AreEqual("[[recset2(1).id]]", debugOutput[1].Value);
@@ -531,7 +532,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Label, debugOutput[5].Type);
             Assert.AreEqual("2", debugOutput[6].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[6].Type);
-            
+
             Assert.AreEqual("[[recset2(3).id]]", debugOutput[7].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutput[7].Type);
             Assert.AreEqual("=", debugOutput[8].Value);
@@ -677,11 +678,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string inFields, string resultFields,string result)
+        private void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields,Result = result}
+                Action = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields, Result = result }
             };
 
             CurrentDl = testData;
