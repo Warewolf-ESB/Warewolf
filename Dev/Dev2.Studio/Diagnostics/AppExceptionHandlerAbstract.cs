@@ -26,8 +26,8 @@ namespace Dev2.Studio.Diagnostics
             try
             {
                 _exception = e;
-                _busy = true;
-                Logger.Error(_exception);
+                _busy = true;                
+                this.LogError(_exception);
                 var popupController = CreatePopupController();
                 var exceptionString = ToErrorString(_exception);
                 var lastExceptionSignature = _lastExceptionSignature;

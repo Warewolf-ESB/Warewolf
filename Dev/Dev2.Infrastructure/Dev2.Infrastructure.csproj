@@ -166,6 +166,10 @@
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>
       <Name>Dev2.Diagnostics</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
+      <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
+      <Name>Dev2.Instrumentation</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -66,7 +66,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
             catch(Exception e)
             {
-                Logger.Error(e.Message);
+                this.LogError(e);
             }
         }
 

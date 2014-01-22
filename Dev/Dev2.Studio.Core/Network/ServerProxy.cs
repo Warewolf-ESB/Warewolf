@@ -167,9 +167,9 @@ namespace Dev2.Network
 
         void HandleConnectError(Exception e)
         {
-                Logger.Error(e);
-                StartReconnectTimer();
-            }
+            Logger.LogError(this, e);
+            StartReconnectTimer();
+        }
 
         protected virtual void StartReconnectTimer()
         {
@@ -226,7 +226,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                Logger.Error(e);
+                Logger.LogError(this, e);
                 callback(ConnectResult.ConnectFailed);
             }
         }
@@ -248,7 +248,7 @@ namespace Dev2.Network
 
         void OnHubConnectionError(Exception exception)
         {
-            Logger.Error(exception);
+            Logger.LogError(this, exception);
         }
 
         void OnMemoReceived(string objString)
@@ -410,20 +410,20 @@ namespace Dev2.Network
                     result.AppendFormat("<Error>{0}</Error>", ex.Message);
                     var hex = ex as HttpRequestException;
                     if(hex != null)
-            {
+                    {
                         hasDisconnected = true;
                         return true; // This we know how to handle this
-            }
+                    }
                     var ioex = ex as InvalidOperationException;
                     if(ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
                     {
                         return true; // This we know how to handle this
-        }
-                    Logger.Error(ex);
+                    }
+                    Logger.LogError(this, ex);
                     return false; // Let anything else stop the application.
                 });
                 if(hasDisconnected)
-        {
+                {
                     HasDisconnected();
                 }
             }

@@ -2,57 +2,39 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Dev2.Instrumentation;
 using Newtonsoft.Json;
 
 namespace Dev2.Providers.Logs
 {
     public static class Logger
     {
-        public static void Error(string message = null, [CallerMemberName] string methodName = null)
+        public static void LogError(string className, Exception ex, [CallerMemberName] string methodName = null)
         {
-            // ReSharper disable ExplicitCallerInfoArgument
-            Error(null, message, methodName);
-            // ReSharper restore ExplicitCallerInfoArgument
+            LogError(className, methodName, ex);
         }
 
-        public static void Error(this object obj, string message = null, [CallerMemberName] string methodName = null)
+        public static void LogError(this object obj, Exception exception, [CallerMemberName] string methodName = null)
         {
-            WriteEntry(message, "ERROR", obj, methodName);
+            LogError(obj, methodName, exception);
         }
 
-        public static void Error(Exception exception, [CallerMemberName] string methodName = null)
+        static void LogError(object obj, string methodName, Exception ex)
         {
-            var completeExceptionStackTrace = new StringBuilder();
-            if(exception != null)
+            LogError(obj == null ? "UnknownClass" : obj.GetType().Name, methodName, ex);
+        }
+
+        static void LogError(string className, string methodName, Exception ex)
+        {
+            Tracker.TrackException(className, methodName, ex);
+
+            var errors = new StringBuilder();
+            while(ex != null)
             {
-                completeExceptionStackTrace.AppendLine(JsonConvert.SerializeObject(exception));
-                while(exception.InnerException != null)
-                {
-                    exception = exception.InnerException;
-                    completeExceptionStackTrace.AppendLine(JsonConvert.SerializeObject(exception));
-                }
+                errors.AppendLine(JsonConvert.SerializeObject(ex));
+                ex = ex.InnerException;
             }
-            var exceptionMessage = completeExceptionStackTrace.ToString();
-            WriteEntry(exceptionMessage, "EXCEPTION", null, methodName);
-        }
-
-        public static void Error(Exception exception)
-        {
-            var completeExceptionStackTrace = new StringBuilder();
-            AppendException(exception, completeExceptionStackTrace);
-            while(exception.InnerException != null)
-            {
-                exception = exception.InnerException;
-                AppendException(exception, completeExceptionStackTrace);
-            }
-            var exceptionMessage = completeExceptionStackTrace.ToString();
-            WriteEntry(exceptionMessage, "EXCEPTION", null, "");
-        }
-
-        static void AppendException(Exception exception, StringBuilder completeExceptionStackTrace)
-        {
-            completeExceptionStackTrace.AppendLine(exception.Message);
-            completeExceptionStackTrace.AppendLine(exception.StackTrace);
+            WriteEntry(errors.ToString(), "ERROR", className, methodName);
         }
 
         public static void Warning(string message = null, [CallerMemberName] string methodName = null)
@@ -81,10 +63,15 @@ namespace Dev2.Providers.Logs
 
         static void WriteEntry(string message, string type, object obj, string methodName)
         {
+            WriteEntry(message, type, obj == null ? string.Empty : obj.GetType().Name, methodName);
+        }
+
+        static void WriteEntry(string message, string type, string className, string methodName)
+        {
             var format = string.Format("{0} :: {1} -> {2} {3} : {4}",
                 DateTime.Now.ToString("g"),
                 type,
-                obj == null ? string.Empty : obj.GetType().Name,
+                className,
                 methodName,
                 message);
 

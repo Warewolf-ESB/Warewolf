@@ -505,7 +505,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
                 catch(Exception ex)
                 {
-                    Logger.Error(ex);
+                    this.LogError(ex);
                     throw;
                 }
             }

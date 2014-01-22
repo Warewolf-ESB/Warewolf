@@ -176,10 +176,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error("This is some information");
+            this.LogError(new Exception("This is some information"));
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: ERROR ->  Logger_Error_WithStringValue_StringBuilderContainsMethodNameAndMessage : This is some information\r\n");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithStringValue_StringBuilderContainsMethodNameAndMessage : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -190,10 +190,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error("This is some information", "MyMethodName");
+            this.LogError(new Exception("This is some information"), "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: ERROR ->  MyMethodName : This is some information\r\n");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -204,10 +204,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error((string)null, "MyMethodName");
+            this.LogError(null, "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: ERROR ->  MyMethodName : ");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -218,10 +218,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error((string)null, null);
+            this.LogError(null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: ERROR ->   : ");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNullStringValueWithNullMethodName_NoMehodNameNoMessage : ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -232,10 +232,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error();
+            this.LogError(null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: ERROR ->  Logger_Error_WithNoParameters_MethodNameStillLogged : ");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNoParameters_MethodNameStillLogged : ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -247,10 +247,11 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             var myException = new Exception("This is some information");
             //------------Execute Test---------------------------
-            Logger.Error(myException);
+            this.LogError(myException);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : This is some information\r\n");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithExceptionValue_StringBuilderContainsMethodNameAndMessage : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
+
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -262,10 +263,10 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             var myException = new Exception("This is some information");
             //------------Execute Test---------------------------
-            Logger.Error(myException, "MyMethodName");
+            this.LogError(myException, "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->  MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -276,10 +277,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error((Exception)null, "MyMethodName");
+            this.LogError(null, "MyMethodName");
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->  MyMethodName : ");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -290,10 +291,10 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Error((Exception)null, null);
+            this.LogError(null);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : ");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNullExceptionValueWithNullMethodName_NoMehodNameNoMessage :");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -305,10 +306,14 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             var myException = new Exception("This is some information", new Exception("This is the one inner exception", new Exception("This is another inner exception")));
             //------------Execute Test---------------------------
-            Logger.Error(myException);
+            this.LogError(myException);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: EXCEPTION ->   : This is some information\r\n\r\nThis is the one inner exception\r\n\r\nThis is another inner exception\r\n");
+            StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithExceptionWithInnerExceptionValue_StringBuilderContainsGivenMethodNameAndMessageAndInnerExceptionMessageStackTrace : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"This is the one inner exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"This is another inner exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
+                + "\r\n" +
+                "{\"ClassName\":\"System.Exception\",\"Message\":\"This is the one inner exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"This is another inner exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
+                + "\r\n" +
+                "{\"ClassName\":\"System.Exception\",\"Message\":\"This is another inner exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
