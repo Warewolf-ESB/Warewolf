@@ -22,8 +22,8 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, "Warewolf Studio.log");
             customTextWriter.CloseTraceWriter();
-        }
-
+        } 
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WithEmptyFileName")]
@@ -78,8 +78,8 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Assert Results-------------------------
             StringAssert.Contains(warewolfAppPath, localAppDataPath);
             StringAssert.Contains(warewolfAppPath, "Warewolf");
-        }
-
+        } 
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("CustomTraceListner_WarewolfAppPath")]
@@ -148,7 +148,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             bool hasNewLine = writtenText.Contains(Environment.NewLine);
             Assert.IsFalse(hasNewLine);
             File.Delete(loggingFileName);
-
+            
         }
 
         [TestMethod]

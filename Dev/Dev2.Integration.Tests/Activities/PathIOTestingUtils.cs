@@ -210,7 +210,7 @@ namespace Dev2.Integration.Tests.Activities
 
         public static string CreateTmpDirectory()
         {
-            string dstDir = System.IO.Path.GetTempPath() + Guid.NewGuid() + "_dir";
+            string dstDir = Path.GetTempPath() + Guid.NewGuid() + "_dir";
 
             Directory.CreateDirectory(dstDir);
 
@@ -358,44 +358,36 @@ namespace Dev2.Integration.Tests.Activities
             string remoteDirectoy = basePath + Guid.NewGuid() + "/";
             string path = remoteDirectoy + fileName;
 
-            try
+            if(createDirectory)
             {
-                if(createDirectory)
+                IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(remoteDirectoy, userName,
+                                                                                        password);
+                IActivityIOOperationsEndPoint FTPPro =
+                    ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+
+                FTPPro.CreateDirectory(pathFromString, new Dev2CRUDOperationTO(false));
+
+                byte[] data = null;
+
+                if(string.IsNullOrEmpty(testFile))
                 {
-                    IActivityIOPath pathFromString = ActivityIOFactory.CreatePathFromString(remoteDirectoy, userName,
-                                                                                            password);
-                    IActivityIOOperationsEndPoint FTPPro =
-                        ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
-
-                    FTPPro.CreateDirectory(pathFromString, new Dev2CRUDOperationTO(false));
-
-                    byte[] data = null;
-
-                    if(string.IsNullOrEmpty(testFile))
-                    {
-                        data = Encoding.UTF8.GetBytes(dataString);
-                    }
-                    else
-                    {
-                        var fs = new FileStream(testFile,
+                    data = Encoding.UTF8.GetBytes(dataString);
+                }
+                else
+                {
+                    var fs = new FileStream(testFile,
                                             FileMode.Open,
                                             FileAccess.Read);
-                        var br = new BinaryReader(fs);
-                        long numBytes = new FileInfo(testFile).Length;
-                        data = br.ReadBytes((int)numBytes);
-                    }
-
-                    Stream dataStream = new MemoryStream(data);
-
-                    pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
-                    FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
-                    FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
+                    var br = new BinaryReader(fs);
+                    long numBytes = new FileInfo(testFile).Length;
+                    data = br.ReadBytes((int)numBytes);
                 }
-            }
-            catch(Exception exception)
-            {
-                var ex = exception;
-                throw;
+
+                Stream dataStream = new MemoryStream(data);
+
+                pathFromString = ActivityIOFactory.CreatePathFromString(path, userName, password);
+                FTPPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(pathFromString);
+                FTPPro.Put(dataStream, pathFromString, new Dev2CRUDOperationTO(true), null);
             }
 
             return path;

@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         ///</summary>
         public TestContext TestContext { get; set; }
 
-
+        
         #region JavaScript
 
         #region Should execute valid javascript
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
                     string.Format("The following errors occured while retrieving datalist items\r\nerrors:{0}",
                                     error));
             }
-
+            
         }
 
         [TestMethod]
@@ -485,7 +485,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
             Assert.AreEqual("return [[Numeric(1).num]],[[Numeric(2).num]];", inRes[0].FetchResultsList()[1].Value);
             Assert.AreEqual("=", inRes[0].FetchResultsList()[2].Value);
-            Assert.AreEqual("return 654,668416154;", inRes[0].FetchResultsList()[3].Value);
+            Assert.AreEqual("return 654,668416154;", inRes[0].FetchResultsList()[3].Value);            
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
             Assert.AreEqual("[[res]]", outRes[0].FetchResultsList()[0].Value);
@@ -502,7 +502,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             List<DebugItem> outRes;
 
             var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
+            
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 

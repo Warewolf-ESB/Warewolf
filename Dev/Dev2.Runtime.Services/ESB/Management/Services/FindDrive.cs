@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             StringBuilder tmp;
 
             values.TryGetValue("Username", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 username = tmp.ToString();
             }
@@ -117,10 +117,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
                                              int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
-        private string GetDriveInfoAsJSON(IEnumerable<DriveInfo> drives)
+        private static string GetDriveInfoAsJSON(IEnumerable<DriveInfo> drives)
         {
             string json = "[";
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(DriveInfo drive in drives)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(drive.DriveType == DriveType.Fixed || drive.DriveType == DriveType.Network)
                 {

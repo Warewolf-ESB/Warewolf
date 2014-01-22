@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nuane.Net;
 
 namespace Dev2.Integration.Tests.Activities
 {
@@ -10,6 +12,10 @@ namespace Dev2.Integration.Tests.Activities
     public class Dev2ActivityIOBrokerTestCases
     {
         private static string _zipFile = "";
+        private static SftpServer server;
+        private static readonly object serverLock = new object();
+
+
         [ClassInitialize]
         public static void Initializer(TestContext context)
         {
@@ -20,14 +26,50 @@ namespace Dev2.Integration.Tests.Activities
             {
                 if(stream != null)
                 {
-                    byte[] buf = new byte[stream.Length];  
+                    byte[] buf = new byte[stream.Length];
                     stream.Read(buf, 0, buf.Length);
                     File.WriteAllBytes(fileName, buf);
                 }
             }
 
             _zipFile = fileName;
+
+            StartSftpServer();
         }
+
+        [ClassCleanup]
+        public static void TearDown()
+        {
+            // stop the server                                                                        
+            server.Stop();
+        }
+
+        /// <summary>
+        /// Starts the SFTP server.
+        /// </summary>
+        private static void StartSftpServer()
+        {
+            lock(serverLock)
+            {
+                if(server == null)
+                {
+                    SshKey rsaKey = SshKey.Generate(SshKeyAlgorithm.RSA, 1024);
+                    SshKey dssKey = SshKey.Generate(SshKeyAlgorithm.DSS, 1024);
+
+                    // add keys, bindings and users
+                    server = new SftpServer();
+                    server.Log = Console.Out;
+                    server.Keys.Add(rsaKey);
+                    server.Keys.Add(dssKey);
+                    server.Bindings.Add(IPAddress.Any, 22);
+                    server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp"));
+                    // start the server                                                    
+                    server.Start();
+                }
+            }
+
+        }
+
 
         #region Delete Tests
         [TestMethod]

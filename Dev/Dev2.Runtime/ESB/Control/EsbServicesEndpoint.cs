@@ -248,7 +248,17 @@ namespace Dev2.Runtime.ESB.Control
                 DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
             }
 
-            ServerLogger.LogMessage("FINAL MEMORY USAGE AFTER DISPOSE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
+            var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMB();
+            var logMemoryValue = memoryUse.ToString("####.####");
+
+            // ReSharper disable CompareOfFloatsByEqualityOperator
+            if(memoryUse == 0.0)
+            // ReSharper restore CompareOfFloatsByEqualityOperator
+            {
+                logMemoryValue = "0.0";
+            }
+            ServerLogger.LogMessage("FINAL MEMORY USAGE AFTER DISPOSE [ " + logMemoryValue + " MBs ]");
+
             return resultID;
         }
 

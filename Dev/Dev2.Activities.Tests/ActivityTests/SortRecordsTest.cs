@@ -448,7 +448,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("1988/09/23", outRes[0].ResultsList[26].Value);
             Assert.AreEqual("[[Customers(10).DOB]]", outRes[0].ResultsList[27].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[28].Value);
-            Assert.AreEqual("1988/10/14", outRes[0].ResultsList[29].Value);
+            Assert.AreEqual("1988/10/14", outRes[0].ResultsList[29].Value);    
         }
 
         #endregion

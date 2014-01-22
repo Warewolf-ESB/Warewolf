@@ -663,7 +663,7 @@ namespace Dev2.Integration.Tests {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sftp://sftp.theunlimited.co.za.
+        ///   Looks up a localized string similar to sftp://localhost.
         /// </summary>
         internal static string PathOperations_SFTP_Path {
             get {

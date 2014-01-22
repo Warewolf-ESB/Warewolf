@@ -681,10 +681,10 @@ namespace Dev2.Data.Storage
             return (removedItems - _runningRemoveCnt);
         }
 
-        public void CompactMemory()
+        public void CompactMemory(bool force = false)
         {
             // compact when we get to a set size ;)
-            if(_runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
+            if(force || _runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
             {
                 CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
                 _runningRemoveCnt = 0;

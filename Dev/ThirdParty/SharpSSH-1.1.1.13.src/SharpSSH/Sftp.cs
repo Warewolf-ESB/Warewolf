@@ -181,7 +181,7 @@ namespace Tamir.SharpSsh
 	        var fileList = GetFileList(path);
 	        foreach(String filePath in fileList)
 	        {
-	            if(filePath.Contains(".."))
+	            if(filePath.Contains("..") || filePath.Contains("."))
 	            {
 	                continue;	                
 	            }

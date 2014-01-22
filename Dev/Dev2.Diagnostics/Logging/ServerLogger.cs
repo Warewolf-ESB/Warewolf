@@ -5,7 +5,6 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Diagnostics;
@@ -21,7 +20,7 @@ namespace Dev2.Common
 
         #region private fields
 
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         private static LoggingSettings _loggingSettings;
         private static IDictionary<Guid, string> _workflowsToLog;
@@ -250,6 +249,7 @@ namespace Dev2.Common
         /// Logs a message.
         /// </summary>
         /// <param name="message">The message.</param>
+        /// <param name="typeOf">The type of.</param>
         private static void InternalLogMessage(string message, string typeOf)
         {
             try
@@ -263,7 +263,9 @@ namespace Dev2.Common
                 }
 
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // We do not care, best effort 
             }
@@ -532,7 +534,6 @@ namespace Dev2.Common
             var request = WebRequest.Create(postData);
 
             request.Method = "POST";
-            var response = request.GetResponse();
         }
 
         private static void Remove(IDebugState debugState)
@@ -654,8 +655,14 @@ namespace Dev2.Common
         {
             var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            return Path.Combine(rootDir, "Logs");
+            if(rootDir != null)
+            {
+                return Path.Combine(rootDir, "Logs");
+            }
+
+            return string.Empty;
         }
+
         #endregion
 
         #endregion LogDebug

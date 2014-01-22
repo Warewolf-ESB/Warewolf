@@ -1,15 +1,16 @@
 ﻿using System;
-using Dev2.Data.SystemTemplates;
-using System.Text;
 using System.Linq;
+using System.Text;
+using Dev2.Common;
+using Dev2.Data.SystemTemplates;
 
 namespace Dev2.Data.Storage.ProtocolBuffers
 {
     [Serializable]
-    public class BinaryDataListRow : AProtocolBuffer 
+    public class BinaryDataListRow : AProtocolBuffer
     {
         private short _colCnt;
-        
+
         private int _storageCapacity;
         private int _usedStorage;
 
@@ -20,7 +21,8 @@ namespace Dev2.Data.Storage.ProtocolBuffers
         private int[] _startIdx;
         private int[] _columnLen;
 
-        public BinaryDataListRow() : this(1)
+        public BinaryDataListRow()
+            : this(1)
         {
         }
 
@@ -54,7 +56,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             int rowBytesLen = rowBytes.Length;
 
             // calc len of object ;)
-            var len = sizeof(int) + sizeof (short) + (sizeof (int)*2) + (rowBytesLen) + ((sizeof(int) * _colCnt)*2);
+            var len = sizeof(int) + sizeof(short) + (sizeof(int) * 2) + (rowBytesLen) + ((sizeof(int) * _colCnt) * 2);
             byte[] result = new byte[len];
 
             var offSet = 0;
@@ -64,7 +66,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             // copy over _colCnt
             offSet += 4;
-            Buffer.BlockCopy(BitConverter.GetBytes(_colCnt),0,result,offSet,2);
+            Buffer.BlockCopy(BitConverter.GetBytes(_colCnt), 0, result, offSet, 2);
 
 
             // copy over _storageCapacity
@@ -99,7 +101,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         public override void ToObject(byte[] bytes)
         {
-            
+
             var offSet = 0;
 
             // unpack _rowBytesLen
@@ -125,22 +127,31 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             // unpack _rowData
             var charSize = packedRowBytesLen;
-            var charBytes = new byte[charSize];
-            offSet += 4;
-            Buffer.BlockCopy(bytes, offSet, charBytes, 0, charSize);
-            _rowData = Encoding.UTF8.GetString(charBytes).ToCharArray();
+            try
+            {
+                var charBytes = new byte[charSize];
+                offSet += 4;
+                Buffer.BlockCopy(bytes, offSet, charBytes, 0, charSize);
+                _rowData = Encoding.UTF8.GetString(charBytes).ToCharArray();
+            }
+            catch(Exception ae)
+            {
+                // we may have a flipping huge issue ;)
+                ServerLogger.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ]");
+                ServerLogger.LogError(ae);
+            }
 
             // unpack _startIdx
-            var intSize = _colCnt*sizeof (int);
-            var intArrayBytes = new byte[sizeof (int)];
+            var intSize = _colCnt * sizeof(int);
+            var intArrayBytes = new byte[sizeof(int)];
             offSet += charSize;
             _startIdx = new int[_colCnt];
 
             // process a block at a time ;)
             int pos = 0;
-            for (int i = 0; i < intSize; i += 4)
+            for(int i = 0; i < intSize; i += 4)
             {
-                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof (int));
+                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
                 int val = BitConverter.ToInt32(intArrayBytes, 0);
                 _startIdx[pos] = val;
                 pos++;
@@ -152,15 +163,14 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             _columnLen = new int[_colCnt];
 
             // process a block at a time ;)
-            for (int i = 0; i < intSize; i += 4)
+            for(int i = 0; i < intSize; i += 4)
             {
-                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof (int));
+                Buffer.BlockCopy(bytes, offSet, intArrayBytes, 0, sizeof(int));
                 var val = BitConverter.ToInt32(intArrayBytes, 0);
                 _columnLen[pos] = val;
                 pos++;
                 offSet += 4;
             }
-
         }
 
         #endregion
@@ -172,21 +182,21 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                 // ensure capacity at the meta-data level ;)
 
                 // NOTE : this is for the case when both the parent row and child row exist, 
-                // in a federated key AND the parent row has a reduced inital view 
+                // in a federated key AND the parent row has a reduced initial view 
                 // this causes upsert actions to result in overflow issues ;)
 
-                var dif = targetColumnCount - _colCnt; 
-                if (dif == 0)
+                var dif = targetColumnCount - _colCnt;
+                if(dif == 0)
                 {
                     dif = 1; // add 1 to account for current pos we want, it is >= after all
                 }
                 var amt = _colCnt + dif;
 
                 // adjust the start indexes
-                Array.Resize<int>(ref _startIdx, amt);
+                Array.Resize(ref _startIdx, amt);
 
                 // adjust the column length data
-                Array.Resize<int>(ref _columnLen, amt);
+                Array.Resize(ref _columnLen, amt);
 
                 // now init the new stuff ;)
                 for(int i = _colCnt; i < amt; i++)
@@ -204,19 +214,19 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             // adjust for master and child view differences ;)
             AdjustStorage(masterViewColumnCount);
 
-            if (idx < _startIdx.Length)
+            if(idx < _startIdx.Length)
             {
                 int start = _startIdx[idx];
-                if (start > DataListConstants.EmptyRowStartIdx)
+                if(start > DataListConstants.EmptyRowStartIdx)
                 {
                     // we have data cool beans ;)   
                     int len = _columnLen[idx];
-                    if (len > 0)
+                    if(len > 0)
                     {
                         StringBuilder result = new StringBuilder();
                         int end = (start + len);
 
-                        for (int i = start; i < end; i++)
+                        for(int i = start; i < end; i++)
                         {
                             result.Append(_rowData[i]);
                         }
@@ -231,31 +241,31 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         public void UpdateValue(string val, int idx, int masterViewColumnCount)
         {
-            if (val != string.Empty)
+            if(val != string.Empty)
             {
                 // adjust for master and child view differences ;)
                 AdjustStorage(masterViewColumnCount);
 
                 int start = _startIdx[idx];
-                if (start > DataListConstants.EmptyRowStartIdx)
+                if(start > DataListConstants.EmptyRowStartIdx)
                 {
                     // we have data, cool beans ;)   
                     int candiateLen = val.Length;
                     int len = _columnLen[idx];
 
-                    // if candiate is larger then prev value, we need to append to end of storage ;)   
-                    if (candiateLen > len)
+                    // if candidate is larger then prev value, we need to append to end of storage ;)   
+                    if(candiateLen > len)
                     {
 
                         // first clear the old storage location ;)
-                        for (int i = start; i < len; i++)
+                        for(int i = start; i < len; i++)
                         {
                             _rowData[i] = '\0';
                         }
 
                         // do we have space
                         int requiredSize = (_usedStorage + candiateLen);
-                        if (requiredSize >= _storageCapacity)
+                        if(requiredSize >= _storageCapacity)
                         {
                             // Nope, grow array
                             GrowRow(requiredSize);
@@ -266,7 +276,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                         int pos = 0;
                         int iterationLen = (start + candiateLen);
 
-                        for (int i = start; i < iterationLen; i++)
+                        for(int i = start; i < iterationLen; i++)
                         {
                             _rowData[i] = val[pos];
                             pos++;
@@ -284,7 +294,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                         // first update data
                         int pos = 0;
                         int overWriteLen = (start + candiateLen);
-                        for (int i = start; i < overWriteLen; i++)
+                        for(int i = start; i < overWriteLen; i++)
                         {
                             _rowData[i] = val[pos];
                             pos++;
@@ -301,7 +311,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                     int canidateLen = val.Length;
                     int storageReq = _usedStorage + canidateLen;
 
-                    if (storageReq >= _storageCapacity)
+                    if(storageReq >= _storageCapacity)
                     {
                         // sad panda, we need to grow the storage
                         GrowRow(storageReq);
@@ -311,7 +321,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                     start = FetchStorageStartIdx();
                     CharEnumerator itr = val.GetEnumerator();
                     int iterateLen = (start + canidateLen);
-                    for (int i = start; i < iterateLen; i++)
+                    for(int i = start; i < iterateLen; i++)
                     {
                         itr.MoveNext();
                         _rowData[i] = itr.Current;
@@ -330,12 +340,11 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             else
             {
                 // clear the existing storage requirements out ;)
-                if (idx < _colCnt)
+                if(idx < _colCnt)
                 {
                     _startIdx[idx] = 0;
                     _columnLen[idx] = 0;
                 }
-                // TODO : Blank the data too ;)
             }
         }
 
@@ -349,7 +358,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
         private void Init()
         {
             // init start indexes and length
-            for (int i = 0; i < _colCnt; i++)
+            for(int i = 0; i < _colCnt; i++)
             {
                 _startIdx[i] = DataListConstants.EmptyRowStartIdx;
                 _columnLen[i] = DataListConstants.EmptyRowStartIdx;
@@ -362,14 +371,15 @@ namespace Dev2.Data.Storage.ProtocolBuffers
         /// <param name="targetSize">Size of the target.</param>
         private void GrowRow(int targetSize)
         {
-
-            // TODO : Get fancy and reclaim storage ;)
-
             // grow it by a factor of 1.5 of the target size to avoid growing too often ;)
             int growthSize = (int)(targetSize * DataListConstants.RowGrowthFactor);
-
             char[] tmp = new char[growthSize];
 
+            // Buffer.BlockCopy();
+            if(_rowData.Length >= GlobalConstants.MAX_BUFFER_SIZE || _usedStorage >= GlobalConstants.MAX_BUFFER_SIZE || tmp.Length >= GlobalConstants.MAX_BUFFER_SIZE)
+            {
+                ServerLogger.LogMessage("*** Row Data Size Warning [ " + _rowData.Length + " ], New Data Size [ " + tmp.Length + " ],  Used Storage Size [ " + _usedStorage + " ]");
+            }
 
             Array.Copy(_rowData, tmp, _usedStorage);
 
@@ -379,13 +389,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
         private int FetchStorageStartIdx()
         {
-            if (_usedStorage == 0)
-            {
-                return 0;
-            }
-
-            return (_usedStorage);
-
+            return _usedStorage == 0 ? 0 : (_usedStorage);
         }
 
         /// <summary>

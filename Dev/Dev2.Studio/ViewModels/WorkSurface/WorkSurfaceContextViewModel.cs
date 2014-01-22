@@ -536,7 +536,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return;
             }
-            
+
             if(resource.IsNewWorkflow && !isLocalSave)
             {
                 ShowSaveDialog(resource, addToTabManager);

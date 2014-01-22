@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(10, outRes.Count);
-
+            
             var fetchResultsList = outRes[0].FetchResultsList();
             Assert.AreEqual(3, fetchResultsList.Count);
             Assert.AreEqual(fetchResultsList[0].Type, DebugItemResultType.Variable);
@@ -403,7 +403,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(fetchResultsList[5].GroupIndex, 2);
             Assert.AreEqual(fetchResultsList[5].Type, DebugItemResultType.Value);
             Assert.AreEqual(fetchResultsList[5].Value, "668416154.00");
-
+            
             Assert.AreEqual(fetchResultsList[6].GroupName, "[[Numeric(*).num]]");
             Assert.AreEqual(fetchResultsList[6].GroupIndex, 3);
             Assert.AreEqual(fetchResultsList[6].Type, DebugItemResultType.Variable);
@@ -429,7 +429,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(fetchResultsList[11].GroupIndex, 4);
             Assert.AreEqual(fetchResultsList[11].Type, DebugItemResultType.Value);
             Assert.AreEqual(fetchResultsList[11].Value, "21.00");
-
+            
             Assert.AreEqual(fetchResultsList[12].GroupName, "[[Numeric(*).num]]");
             Assert.AreEqual(fetchResultsList[12].GroupIndex, 5);
             Assert.AreEqual(fetchResultsList[12].Type, DebugItemResultType.Variable);
@@ -481,7 +481,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(fetchResultsList[23].GroupIndex, 8);
             Assert.AreEqual(fetchResultsList[23].Type, DebugItemResultType.Value);
             Assert.AreEqual(fetchResultsList[23].Value, "2135.00");
-
+            
             Assert.AreEqual(fetchResultsList[24].GroupName, "[[Numeric(*).num]]");
             Assert.AreEqual(fetchResultsList[24].GroupIndex, 9);
             Assert.AreEqual(fetchResultsList[24].Type, DebugItemResultType.Variable);
@@ -507,8 +507,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(fetchResultsList[29].GroupIndex, 10);
             Assert.AreEqual(fetchResultsList[29].Type, DebugItemResultType.Value);
             Assert.AreEqual(fetchResultsList[29].Value, "110.00");
-        }
-
+        } 
+        
         #endregion
 
         // ReSharper disable InconsistentNaming

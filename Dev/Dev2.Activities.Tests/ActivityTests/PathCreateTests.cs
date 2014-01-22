@@ -79,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -118,10 +118,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes.Count);
             Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);
+            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
 
             Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
+            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
         }
 
         #endregion
@@ -161,8 +161,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(outputPath, act.OutputPath);
-        }
-
+        } 
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfPathCreate_UpdateForEachInputs")]

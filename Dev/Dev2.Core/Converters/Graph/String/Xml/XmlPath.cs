@@ -9,16 +9,16 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Class Members
 
-        private static readonly string _nodeSeperatorSymbol = ".";
-        private static readonly string _attributeSeperatorSymbol = ":";
-        private static readonly string _enumerableSymbol = "()";
+        const string _nodeSeperatorSymbol = ".";
+        const string _attributeSeperatorSymbol = ":";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
         #region Constructors
 
-        public XmlPath() 
-            : this("","","", "")
+        public XmlPath()
+            : this("", "", "", "")
         {
         }
 
@@ -49,16 +49,16 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         {
             List<IPathSegment> segments = new List<IPathSegment>();
 
-            foreach (string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
+            foreach(string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
             {
                 string[] nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
 
-                if (nestedSegments.Length >= 1)
+                if(nestedSegments.Length >= 1)
                 {
                     segments.Add(CreatePathSegment(nestedSegments[0]));
                 }
 
-                if (nestedSegments.Length >= 2)
+                if(nestedSegments.Length >= 2)
                 {
                     segments.Add(CreateAttributePathSegment(nestedSegments[1]));
                 }
@@ -70,7 +70,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             XmlPathSegment xmlPathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
+            if(pathSegmentString.EndsWith(EnumerableSymbol))
             {
                 xmlPathSegment = new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
             }

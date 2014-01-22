@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 
-namespace Dev2 {
+namespace Dev2
+{
 
     #region Field Enums
 
-    public enum PaddingDirection {
+    public enum PaddingDirection
+    {
         Left,
         Right,
         None
@@ -15,48 +14,57 @@ namespace Dev2 {
 
     #endregion
 
-    public class Field {
+    public class Field
+    {
 
         #region Protected Fields
-           
+
         protected string delimiter;
 
         #endregion
 
         #region Public Properties
 
-        public string Name {
+        public string Name
+        {
             get;
             set;
         }
 
-        public int Length {
+        public int Length
+        {
             get;
             set;
         }
 
         public string RegularExpressionValidator { get; set; }
 
-        public PaddingDirection Padding {
+        public PaddingDirection Padding
+        {
             get;
             set;
         }
 
-        public int PaddingLength {
+        public int PaddingLength
+        {
             get;
             set;
         }
 
-        public char PaddingCharacter {
+        public char PaddingCharacter
+        {
             get;
             set;
         }
 
-        public string Delimiter {
-            get {
-                return this.delimiter;
+        public string Delimiter
+        {
+            get
+            {
+                return delimiter;
             }
-            set {
+            set
+            {
                 StringBuilder b = new StringBuilder(value);
                 b.Replace(@"\0", "\0");
                 b.Replace(@"\a", "\a");
@@ -66,7 +74,7 @@ namespace Dev2 {
                 b.Replace(@"\r", "\r");
                 b.Replace(@"\t", "\t");
                 b.Replace(@"\v", "\v");
-                this.delimiter = b.ToString();
+                delimiter = b.ToString();
             }
         }
 
@@ -74,35 +82,41 @@ namespace Dev2 {
 
         #region Public Methods
 
-        public string ParseValue(string value) {
+        public string ParseValue(string value)
+        {
 
-            if (Padding == PaddingDirection.Left && PaddingCharacter != '\0') {
-                value = value.TrimStart(new char[] { PaddingCharacter });
+            if(Padding == PaddingDirection.Left && PaddingCharacter != '\0')
+            {
+                value = value.TrimStart(new[] { PaddingCharacter });
             }
 
-            if (Padding == PaddingDirection.Right && PaddingCharacter != '\0') {
-                value = value.TrimEnd(new char[] { PaddingCharacter });
+            if(Padding == PaddingDirection.Right && PaddingCharacter != '\0')
+            {
+                value = value.TrimEnd(new[] { PaddingCharacter });
             }
 
-            if (Length > 0 && Length < value.Length) {
+            if(Length > 0 && Length < value.Length)
+            {
 
 
                 return System.Security.SecurityElement.Escape(value.Substring(0, Length));
             }
-            else {
-                return System.Security.SecurityElement.Escape(value);
-            }
+
+            return System.Security.SecurityElement.Escape(value);
         }
 
-        public string FormatValue(string value) {
-            if (PaddingCharacter != '\0' && Length > 0) {
-                switch (Padding) {
+        public string FormatValue(string value)
+        {
+            if(PaddingCharacter != '\0' && Length > 0)
+            {
+                switch(Padding)
+                {
                     case PaddingDirection.Left:
-                    value = value.PadLeft(Length, PaddingCharacter);
-                    break;
+                        value = value.PadLeft(Length, PaddingCharacter);
+                        break;
                     case PaddingDirection.Right:
-                    value = value.PadRight(Length, PaddingCharacter);
-                    break;
+                        value = value.PadRight(Length, PaddingCharacter);
+                        break;
                 }
             }
 

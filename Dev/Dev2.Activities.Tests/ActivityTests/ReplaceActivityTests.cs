@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
-                Assert.AreEqual("It Worked", replacedRes);
+                Assert.AreEqual("It Worked", replacedRes);                
             }
             else
             {
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetScalarValueFromDataList(result.DataListID, "CompanyName", out actual, out error);
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
-
+                
                 Assert.AreEqual("TheUnlimted", actual);
             }
             else
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("barney", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-
+                
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetRecordSetFieldValueFromDataList(result.DataListID, "recset1", "field1", out dataListItems, out error);
                 Assert.AreEqual("Wallis", dataListItems[0].TheValue);
                 GetRecordSetFieldValueFromDataList(result.DataListID, "Customers", "FirstName", out dataListItems, out error);
-
+                
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -279,7 +279,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Assert.AreEqual(expected, actual);
                 GetScalarValueFromDataList(result.DataListID, "Thing", out actual, out error);
-
+                
                 // remove test datalist ;)
                 DataListRemoval(result.DataListID);
 
@@ -420,7 +420,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
-
+            
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 

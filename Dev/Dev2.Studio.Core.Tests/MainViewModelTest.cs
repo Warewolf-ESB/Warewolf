@@ -117,7 +117,7 @@ namespace Dev2.Core.Tests
 
             var actual = _mainViewModel.SettingsCommand.CanExecute(null);
             Assert.AreEqual(expected, actual);
-        }
+        }       
 
         #region Constructor
 

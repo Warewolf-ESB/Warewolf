@@ -27,9 +27,9 @@ namespace Dev2.Data.Storage
 
             var sizeOf = segmentSize;
 
-            for (int i = 0; i < _numOfSegments; i++)
+            for(int i = 0; i < _numOfSegments; i++)
             {
-                _scalableCache[i] = new Dev2BinaryStorage<T>(Guid.NewGuid().ToString()+".data",sizeOf);
+                _scalableCache[i] = new Dev2BinaryStorage<T>(Guid.NewGuid().ToString() + ".data", sizeOf);
             }
 
             // fire up the scrub region ;)
@@ -73,7 +73,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public double UsedMemoryStorageInMB()
         {
-            return _scalableCache.Values.Sum(container => (container.UsedMemoryMB()/(1024*1024)));
+            return _scalableCache.Values.Sum(container => (container.UsedMemoryMB() / (1024 * 1024)));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public double CapacityMemoryStorageInMB()
         {
-            return _scalableCache.Values.Sum(container => (container.CapacityMemoryMB()/(1024*1024)));
+            return _scalableCache.Values.Sum(container => (container.CapacityMemoryMB() / (1024 * 1024)));
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace Dev2.Data.Storage
         {
             int totalLeft = 0;
 
-            foreach (var container in _scalableCache.Values)
+            foreach(var container in _scalableCache.Values)
             {
                 totalLeft += container.RemoveAll(key);
             }
@@ -120,11 +120,11 @@ namespace Dev2.Data.Storage
             return totalLeft;
         }
 
-        public void CompactMemory()
-        {            
+        public void CompactMemory(bool force = false)
+        {
             foreach(var container in _scalableCache.Values)
             {
-                container.CompactMemory();
+                container.CompactMemory(force);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Dev2.Data.Storage
         /// </summary>
         public void DisposeOnExit()
         {
-            foreach (var tmp in _scalableCache.Values)
+            foreach(var tmp in _scalableCache.Values)
             {
                 tmp.Dispose();
             }
@@ -145,7 +145,7 @@ namespace Dev2.Data.Storage
 
         private int GetSegmentKey(StorageKey sk)
         {
-            return Math.Abs(sk.FragmentID%_numOfSegments);
+            return Math.Abs(sk.FragmentID % _numOfSegments);
         }
 
         #endregion

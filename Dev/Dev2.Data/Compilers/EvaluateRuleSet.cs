@@ -11,7 +11,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 namespace Dev2.Data.Compilers
 {
     /// <summary>
-    /// Used to configure and evalaute a Dev2 data language piece.
+    /// Used to configure and evaluate a Dev2 data language piece.
     /// </summary>
     public class EvaluateRuleSet
     {
@@ -68,18 +68,18 @@ namespace Dev2.Data.Compilers
         #endregion
 
 
-        // build result namespace ;)
-        private string ns = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
-        private IBinaryDataListEntry result = null;
-        private IDictionary<int, IIntellisenseResult> _internalMap = new Dictionary<int, IIntellisenseResult>(); 
-        private IDictionary<IIntellisenseResult, IBinaryDataListEntry> _internalKeyMap = new Dictionary<IIntellisenseResult, IBinaryDataListEntry>(); 
+        // build result name space ;)
+        private readonly string ns = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+        private IBinaryDataListEntry result;
+        private readonly IDictionary<int, IIntellisenseResult> _internalMap = new Dictionary<int, IIntellisenseResult>();
+        private readonly IDictionary<IIntellisenseResult, IBinaryDataListEntry> _internalKeyMap = new Dictionary<IIntellisenseResult, IBinaryDataListEntry>();
 
         public EvaluateRuleSet()
         {
             Errors = new ErrorResultTO();
         }
 
-        public EvaluateRuleSet(EvaluateRuleSet prevIter) 
+        public EvaluateRuleSet(EvaluateRuleSet prevIter)
         {
             Errors = new ErrorResultTO();
             Errors.MergeErrors(prevIter.Errors);
@@ -87,7 +87,7 @@ namespace Dev2.Data.Compilers
             ns = prevIter.ns;
             IsDebug = prevIter.IsDebug;
             EvaluateToRootOnly = prevIter.EvaluateToRootOnly;
-            
+
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Dev2.Data.Compilers
         /// <returns></returns>
         public IList<IDev2DataLanguageIntellisensePart> FetchIntellisenseParts()
         {
-            if (BinaryDataList == null)
+            if(BinaryDataList == null)
             {
                 return null;
             }
@@ -110,12 +110,12 @@ namespace Dev2.Data.Compilers
         /// <param name="tokens">The tokens.</param>
         public void ProcessErrorTokens(IEnumerable<IIntellisenseResult> tokens)
         {
-            if (tokens == null)
+            if(tokens == null)
             {
                 return;
             }
 
-            foreach (var err in tokens)
+            foreach(var err in tokens)
             {
                 Errors.AddError(err.Message);
             }
@@ -137,7 +137,7 @@ namespace Dev2.Data.Compilers
         /// <param name="binding">The binding.</param>
         public void AddBoundItem(IIntellisenseResult token, IBinaryDataListEntry binding)
         {
-            if (binding == null)
+            if(binding == null)
             {
                 Errors.AddError("Could not evalaute { " + token.Option.DisplayValue + " }");
 
@@ -155,34 +155,34 @@ namespace Dev2.Data.Compilers
         {
 
             // very short curcit if no items ;)
-            if (_internalKeyMap.Keys.Count == 0)
+            if(_internalKeyMap.Keys.Count == 0)
             {
                 CompiledExpression = null;
                 return null;
             }
 
             // short curcit the long eval for mix mode data ;)
-            if (_internalMap.Keys.Count <= 1 && FetchEvaluationIterationCount(Expression) == 1 && CompiledExpression.Length == 3)
+            if(_internalMap.Keys.Count <= 1 && FetchEvaluationIterationCount(Expression) == 1 && CompiledExpression.Length == 3)
             {
                 return _internalKeyMap.Values.FirstOrDefault();
             }
-           
+
             // Right now we assume there are not ;)
-            foreach (var idx in _internalMap.Keys)
+            foreach(var idx in _internalMap.Keys)
             {
                 var token = BuildSubToken(idx);
                 var otherKey = _internalMap[idx];
                 IBinaryDataListEntry value;
-                if (_internalKeyMap.TryGetValue(otherKey, out value))
+                if(_internalKeyMap.TryGetValue(otherKey, out value))
                 {
-                    if (value != null)
+                    if(value != null)
                     {
-                        if (!value.IsRecordset)
+                        if(!value.IsRecordset)
                         {
                             var scalar = value.FetchScalar();
-                            if (scalar != null)
+                            if(scalar != null)
                             {
-                                if (result == null)
+                                if(result == null)
                                 {
                                     var toReplace = scalar.TheValue;
                                     CompiledExpression = CompiledExpression.Replace(token, toReplace);
@@ -190,14 +190,14 @@ namespace Dev2.Data.Compilers
                                 else
                                 {
                                     var itr = result.FetchRecordsetIndexes();
-                                    string error;
                                     var replaceVal = scalar.TheValue;
 
-                                    while (itr.HasMore())
+                                    while(itr.HasMore())
                                     {
                                         var val = itr.FetchNextIndex();
-                                        
+
                                         // Fetch the next value from result ;)
+                                        string error;
                                         var template = result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
                                         Errors.AddError(error);
 
@@ -214,27 +214,30 @@ namespace Dev2.Data.Compilers
                         {
                             string error;
                             // build up the complex expression result - this means debug will be out of sync of complex expressions ;)
-                            if (result == null)
+                            if(result == null)
                             {
-                                IList<Dev2Column> cols = new List<Dev2Column>{ new Dev2Column(GlobalConstants.EvaluationRsField, enDev2ColumnArgumentDirection.Both)};
+                                IList<Dev2Column> cols = new List<Dev2Column> { new Dev2Column(GlobalConstants.EvaluationRsField, enDev2ColumnArgumentDirection.Both) };
                                 result = Dev2BinaryDataListFactory.CreateEntry(ns, string.Empty, cols, BinaryDataList.UID);
 
                                 var max = _internalKeyMap.Values.OrderByDescending(c => c.ItemCollectionSize()).FirstOrDefault();
 
-                                var itrToVal = max.ItemCollectionSize();
-                                if (itrToVal == 0)
+                                if(max != null)
                                 {
-                                    itrToVal = 1;
+                                    var itrToVal = max.ItemCollectionSize();
+                                    if(itrToVal == 0)
+                                    {
+                                        itrToVal = 1;
+                                    }
+
+                                    for(int i = 0; i < itrToVal; i++)
+                                    {
+                                        int idxT = (i + 1);
+                                        result.TryPutRecordItemAtIndex(new BinaryDataListItem(CompiledExpression, ns, GlobalConstants.EvaluationRsField, idxT), idxT, out error);
+                                        Errors.AddError(error);
+                                    }
                                 }
 
-                                for (int i = 0; i < itrToVal; i++)
-                                {
-                                    int idxT = (i + 1);
-                                    result.TryPutRecordItemAtIndex(new BinaryDataListItem(CompiledExpression, ns, GlobalConstants.EvaluationRsField, idxT), idxT, out error);
-                                    Errors.AddError(error);
-                                }
-
-                                if (IsDebug)
+                                if(IsDebug)
                                 {
                                     // attach audit object for debug ;)
                                     result.ComplexExpressionAuditor = new ComplexExpressionAuditor();
@@ -245,12 +248,12 @@ namespace Dev2.Data.Compilers
                             int expIdx = 1;
 
                             // we need to treat this as a scalar ;)
-                            if (idxItr.Count == 1)
+                            if(idxItr.Count == 1)
                             {
                                 int curVal = idxItr.FetchNextIndex();
                                 int amt = result.ItemCollectionSize();
                                 // ensure we always iterate once ;)
-                                if (amt == 0)
+                                if(amt == 0)
                                 {
                                     amt = 1;
                                 }
@@ -259,7 +262,7 @@ namespace Dev2.Data.Compilers
                             }
 
                             // else iterate across the recordset cuz it had a star ;)
-                            while (idxItr.HasMore())
+                            while(idxItr.HasMore())
                             {
                                 var val = idxItr.FetchNextIndex();
 
@@ -272,18 +275,18 @@ namespace Dev2.Data.Compilers
                                 Errors.AddError(error);
 
                                 // now bind this result row with the correct data list data ;)
-                                if (binaryValue != null)
+                                if(binaryValue != null)
                                 {
                                     var preTemplate = template;
                                     var toReplace = binaryValue.TheValue;
                                     template = template.Replace(token, toReplace);
-                                    result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField,expIdx), expIdx, out error);
+                                    result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
                                     Errors.AddError(error);
 
-                                    if (IsDebug)
+                                    if(IsDebug)
                                     {
                                         var displayValue = DataListUtil.AddBracketsToValueIfNotExist(binaryValue.DisplayValue);
-                                        result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template,Expression);
+                                        result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template, Expression);
                                         result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
                                     }
                                 }
@@ -301,7 +304,7 @@ namespace Dev2.Data.Compilers
                     }
                 }
             }
-            
+
             return result;
         }
 
@@ -312,19 +315,23 @@ namespace Dev2.Data.Compilers
         public void CompileExpression(IEnumerable<IIntellisenseResult> tokens)
         {
             // first pass binding ;)
-            if (!string.IsNullOrEmpty(Expression) && tokens != null && tokens.Any())
+            // ReSharper disable PossibleMultipleEnumeration
+            if(!string.IsNullOrEmpty(Expression) && tokens != null && tokens.Any())
+            // ReSharper restore PossibleMultipleEnumeration
             {
                 int subVar = 0;
                 var compiledExpression = Expression;
                 HashSet<string> _usedTokens = new HashSet<string>();
 
+                // ReSharper disable PossibleMultipleEnumeration
                 foreach(var token in tokens)
+                // ReSharper restore PossibleMultipleEnumeration
                 {
                     var subToken = token.Option.DisplayValue;
                     // we may have dups avoid them ;)
-                    if (!_usedTokens.Contains(subToken))
+                    if(!_usedTokens.Contains(subToken))
                     {
-                        if (compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
+                        if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
                         {
                             _usedTokens.Add(subToken);
                             compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
@@ -338,17 +345,17 @@ namespace Dev2.Data.Compilers
                     }
                 }
 
-                if (subVar == 0)
+                if(subVar == 0)
                 {
                     CompiledExpression = null;
-                    Errors.ClearErrors(); // clear for relavent errors ;)
+                    Errors.ClearErrors(); // clear for relevant errors ;)
                 }
                 else
                 {
                     // save the compiled expression ;)
-                    CompiledExpression = compiledExpression;    
+                    CompiledExpression = compiledExpression;
                 }
-                
+
             }
             else
             {
@@ -357,32 +364,34 @@ namespace Dev2.Data.Compilers
             }
 
             // multi-phase binding ;)
-            if (tokens != null && result != null && CompiledExpression != null)
+            if(tokens != null && result != null && CompiledExpression != null)
             {
                 int subVar = 0;
 
                 var idxItr = result.FetchRecordsetIndexes();
-                string error;
 
                 // foreach result to far ;)
-                while (idxItr.HasMore())
+                while(idxItr.HasMore())
                 {
                     var val = idxItr.FetchNextIndex();
 
                     // Fetch the next value from result ;)
+                    string error;
                     var compiledExpression = result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
                     Errors.AddError(error);
 
                     HashSet<string> _usedTokens = new HashSet<string>();
 
                     // now process each token ;)
-                    foreach (var token in tokens)
+                    // ReSharper disable PossibleMultipleEnumeration
+                    foreach(var token in tokens)
+                    // ReSharper restore PossibleMultipleEnumeration
                     {
                         var subToken = token.Option.DisplayValue;
                         // we may have dups avoid them ;)
-                        if (!_usedTokens.Contains(subToken))
+                        if(!_usedTokens.Contains(subToken))
                         {
-                            if (compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
+                            if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
                             {
                                 _usedTokens.Add(subToken);
                                 compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
@@ -420,27 +429,27 @@ namespace Dev2.Data.Compilers
         /// <returns></returns>
         private int FetchEvaluationIterationCount(string expression)
         {
-            int result = 1;
+            int fetchEvaluationIterationCount = 1;
 
             char[] parts = expression.ToCharArray();
 
             int hits = 0;
             int pos = 0;
-            while (pos < parts.Length)
+            while(pos < parts.Length)
             {
-                if (parts[pos] == GlobalConstants.EvaluationToken)
+                if(parts[pos] == GlobalConstants.EvaluationToken)
                 {
                     hits++;
                 }
                 pos++;
             }
 
-            if (hits > 0)
+            if(hits > 0)
             {
-                result = (hits / 2);
+                fetchEvaluationIterationCount = (hits / 2);
             }
 
-            return result;
+            return fetchEvaluationIterationCount;
         }
     }
 }

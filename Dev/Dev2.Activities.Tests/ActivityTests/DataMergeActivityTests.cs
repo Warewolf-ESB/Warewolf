@@ -129,6 +129,35 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region New Line Merge Tests
 
+
+        [TestMethod]
+        public void Merge_Two_Fields_In_Recordsets_NewLine_Merge_Expected_Data_Merged_Together_Success1()
+        {
+            _mergeCollection.Add(new DataMergeDTO("abc", "New Line", "", 1, "", "Left"));
+            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
+
+
+            for(int i = 0; i < 5500; i++)
+            {
+                var result = ExecuteProcess();
+                string actual;
+                string error;
+                GetScalarValueFromDataList(result.DataListID, @"res", out actual, out error);
+            }
+
+
+
+            //string actual;
+            //string error;
+            //GetScalarValueFromDataList(result.DataListID, @"res", out actual, out error);
+            //// remove test datalist ;)
+            //DataListRemoval(result.DataListID);
+
+
+            //Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
+        }
+
+
         [TestMethod]
         public void Merge_Two_Fields_In_Recordsets_NewLine_Merge_Expected_Data_Merged_Together_Success()
         {

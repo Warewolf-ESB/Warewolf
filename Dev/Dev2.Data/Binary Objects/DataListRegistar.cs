@@ -38,7 +38,6 @@ namespace Dev2.Data.Binary_Objects
         public static void RegisterDataListInScope(int transactionScopeID, Guid dataListID)
         {
             IList<Guid> theList;
-            ServerLogger.LogTrace("REGESTIRATION - Transanctional scope ID = " + transactionScopeID);
             int keyID = transactionScopeID;
 
             // now we can correctly scope the data list creation ;)
@@ -51,6 +50,7 @@ namespace Dev2.Data.Binary_Objects
             }
             else
             {
+                ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeID);
                 // its new, add it ;)
                 _registrationRoster[keyID] = new List<Guid> { dataListID };
             }
@@ -64,12 +64,12 @@ namespace Dev2.Data.Binary_Objects
         /// <param name="doCompact">if set to <c>true</c> [document compact].</param>
         public static void DisposeScope(int transactionScopeID, Guid rootRequestID, bool doCompact = true)
         {
-            ServerLogger.LogTrace("DISPOSING - Transanctional scope ID = " + transactionScopeID);
+            ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeID);
             try
             {
                 IList<Guid> theList;
                 if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
-                {                   
+                {
                     theList.Remove(rootRequestID);
                     BinaryDataListStorageLayer.RemoveAll(theList);
 
@@ -97,7 +97,7 @@ namespace Dev2.Data.Binary_Objects
                 // now we need to pack memory to reclaim space ;)
                 if(doCompact)
                 {
-                    BinaryDataListStorageLayer.CompactMemory();
+                    BinaryDataListStorageLayer.CompactMemory(true);
                 }
             }
         }

@@ -60,38 +60,38 @@ namespace ActivityUnitTests.ActivityTests
         {
             myTestContext = testContext;
         }
-
-        //Use ClassCleanup to run code after all tests in a class have run
-        [ClassCleanup()]
-        public static void MyClassCleanup()
-        {
-            if(tempFile != null)
-            {
-                try
-                {
-                    File.Delete(tempFile);
-                }
-                catch(Exception e)
-                {
+        
+         //Use ClassCleanup to run code after all tests in a class have run
+         [ClassCleanup()]
+         public static void MyClassCleanup()
+         {
+             if(tempFile != null)
+             {
+                 try
+                 {
+                     File.Delete(tempFile);
+                 }
+                 catch(Exception e)
+                 {
                     if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                    {
-                        throw;
-                    }
-                }
+                     {
+                         throw;
+                     }
+                 }
 
-                try
-                {
-                    File.Delete(Path.GetTempPath() + NewFileName + ".zip");
-                }
-                catch(Exception e)
-                {
-                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                    {
-                        throw;
-                    }
-                }
-            }
-        }
+                 try
+                 {
+                     File.Delete(Path.GetTempPath() + NewFileName + ".zip");
+                 }
+                 catch(Exception e)
+                 {
+                     if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                     {
+                         throw;
+                     }
+                 }
+             }
+         }
 
         #endregion
 
@@ -160,7 +160,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[7].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[8].FetchResultsList().Count);
-
+            
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
         }
@@ -228,7 +228,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[3].Value));
             Assert.AreEqual("[[ZipNames(2).Zips]]", inRes[3].ResultsList[4].Value);
             Assert.AreEqual("=", inRes[3].ResultsList[5].Value);
-            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[6].Value));
+            Assert.IsFalse(string.IsNullOrEmpty(inRes[3].ResultsList[6].Value)); 
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual("Username", inRes[4].ResultsList[0].Value);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
@@ -241,7 +241,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
             Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
             Assert.AreEqual("Success", outRes[0].ResultsList[2].Value);
-
+      
         }
 
         #endregion
@@ -270,7 +270,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.IsTrue(File.Exists(zipPathName));
             readAllBytes = File.ReadAllBytes(zipPathName);
             Assert.AreNotEqual(0, readAllBytes.Count());
-
+            
         }
 
         [TestMethod]

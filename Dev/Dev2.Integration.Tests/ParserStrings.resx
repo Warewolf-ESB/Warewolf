@@ -1081,7 +1081,7 @@
     <value>Q/ulw&amp;]</value>
   </data>
   <data name="PathOperations_SFTP_Path" xml:space="preserve">
-    <value>sftp://sftp.theunlimited.co.za</value>
+    <value>sftp://localhost</value>
   </data>
   <data name="PathOperations_SFTP_Username" xml:space="preserve">
     <value>dev2</value>

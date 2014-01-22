@@ -18,6 +18,9 @@ namespace Dev2.Common
         // Max String Size
         public const double MAX_SIZE_FOR_STRING = 1 << 12; // = 4K
 
+        // Max storage buffer size to avoid LOH ;)
+        public const int MAX_BUFFER_SIZE = 35000;
+
         // Force Webserver Constants
         public const int ViewInBrowserForceDownloadSize = 51200; // 500 KB and a file must be downloaded
 

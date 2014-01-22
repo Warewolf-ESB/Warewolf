@@ -27,10 +27,10 @@ namespace Dev2.Runtime.Hosting
     /// </summary>
     public class ResourceCatalogBuilder
     {
-        private List<IResource> _resources = new List<IResource>();
-        private HashSet<Guid> _addedResources = new HashSet<Guid>();
+        private readonly List<IResource> _resources = new List<IResource>();
+        private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
 
-        private object addLock = new object();
+        private readonly object addLock = new object();
 
         public IList<IResource> ResourceList { get { return _resources; } }
 
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.Hosting
                         // Use the FileStream class, which has an option that causes asynchronous I/O to occur at the operating system level.  
                         // In many cases, this will avoid blocking a ThreadPool thread.  
                         var sourceStream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, 4096, true);
-                        streams.Add(new ResourceBuilderTO() { FilePath = file, FileStream = sourceStream });
+                        streams.Add(new ResourceBuilderTO { FilePath = file, FileStream = sourceStream });
 
                     }
                 }

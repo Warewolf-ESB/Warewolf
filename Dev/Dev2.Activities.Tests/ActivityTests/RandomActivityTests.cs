@@ -500,7 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[recset2(3).field2]]", inRes[1].FetchResultsList()[7].Value);
             Assert.AreEqual("=", inRes[1].FetchResultsList()[8].Value);
             Assert.AreEqual("-30", inRes[1].FetchResultsList()[9].Value);
-            Assert.AreEqual("[[recset2(4).field2]]", inRes[1].FetchResultsList()[10].Value);
+            Assert.AreEqual("[[recset2(4).field2]]", inRes[1].FetchResultsList()[10].Value);            
             Assert.AreEqual("=", inRes[1].FetchResultsList()[11].Value);
             Assert.AreEqual("-40", inRes[1].FetchResultsList()[12].Value);
             Assert.AreEqual("[[recset2(5).field2]]", inRes[1].FetchResultsList()[13].Value);

@@ -129,7 +129,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
             const string dataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
@@ -175,7 +175,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecordsetWithWithMulitpleRecordsInRecSetExpectedUniqueAndAppendRecords()
         {
-            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string dataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";            
             const string dataListWithData = "<ADL>" +
                                             "<recset1>" +
                                             "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
@@ -209,7 +209,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            CollectionAssert.AreEqual(expectedID, actualRet, comparer); 
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
@@ -356,12 +356,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "</recset1>" +
                                             "<OutVar1/></ADL>";
 
-            var result = CheckActivityDebugInputOutput(act, dataList,
-                 dataListWithData, out inRes, out outRes);
+           var result = CheckActivityDebugInputOutput(act, dataList,
+                dataListWithData, out inRes, out outRes);
 
 
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
+           // remove test datalist ;)
+           DataListRemoval(result.DataListID);
 
 
             Assert.AreEqual(2, inRes.Count);
@@ -388,7 +388,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("b", fetchResultsList[8].Value);
             Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[8].Type);
 
-
+           
             Assert.AreEqual("[[recset1(3).field2]]", fetchResultsList[9].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[9].Type);
             Assert.AreEqual("=", fetchResultsList[10].Value);
@@ -485,7 +485,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("b", fetchResultsList[8].Value);
             Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[8].Type);
 
-
+           
             Assert.AreEqual("[[recset1(3).field2]]", fetchResultsList[9].Value);
             Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[9].Type);
             Assert.AreEqual("=", fetchResultsList[10].Value);
@@ -516,7 +516,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> debugOutput = outRes[0].FetchResultsList();
             Assert.AreEqual(10, debugOutput.Count);
-
+           
             Assert.AreEqual("1", debugOutput[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutput[0].Type);
             Assert.AreEqual("[[recset2(1).id]]", debugOutput[1].Value);
@@ -532,7 +532,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Label, debugOutput[5].Type);
             Assert.AreEqual("2", debugOutput[6].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[6].Type);
-
+            
             Assert.AreEqual("[[recset2(3).id]]", debugOutput[7].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutput[7].Type);
             Assert.AreEqual("=", debugOutput[8].Value);

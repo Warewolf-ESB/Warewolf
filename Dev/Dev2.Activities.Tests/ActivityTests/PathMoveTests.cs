@@ -20,10 +20,10 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class PathMoveTests : BaseActivityUnitTest
     {
-#pragma warning disable 649
+        #pragma warning disable 649
         static string _tempFile;
-#pragma warning restore 649
-
+        #pragma warning restore 649
+        
         const string _newFileName = "MovedTempFile";
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-
+        
         //
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup]
@@ -160,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);      
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             List<string> fileNames = new List<string>();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder", Guid.NewGuid() + ".txt"));            
 
             List<string> directoryNames = new List<string>();
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
@@ -215,7 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
             Assert.AreEqual(1, inRes[4].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[5].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);
+            Assert.AreEqual(2, inRes[6].FetchResultsList().Count);  
 
             Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(3, outRes[0].FetchResultsList().Count);

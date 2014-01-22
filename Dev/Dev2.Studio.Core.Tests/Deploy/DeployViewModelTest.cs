@@ -512,7 +512,7 @@ namespace Dev2.Core.Tests
 
             var remoteConnection = new Mock<IEnvironmentConnection>();
             remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
-
+            
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
             mockDestinationServer.Setup(server => server.IsConnected).Returns(true);

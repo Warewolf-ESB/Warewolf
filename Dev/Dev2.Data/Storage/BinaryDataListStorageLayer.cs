@@ -31,14 +31,14 @@ namespace Dev2.Data.Storage
 
         #endregion
 
-        #region Disposal 
+        #region Disposal
         /// <summary>
         /// Clears the cache from the BinaryDataListEntry level ;)
         /// </summary>
         /// <returns></returns>
         public int DisposeCache(string overrideKey = "")
-            {
-            if (string.IsNullOrEmpty(overrideKey))
+        {
+            if(string.IsNullOrEmpty(overrideKey))
             {
                 throw new ArgumentNullException("overrideKey");
             }
@@ -67,9 +67,9 @@ namespace Dev2.Data.Storage
             return LevelZeroCache.RemoveAll(uniqueKey);
         }
 
-        public static void CompactMemory()
+        public static void CompactMemory(bool force = false)
         {
-            LevelZeroCache.CompactMemory();
+            LevelZeroCache.CompactMemory(force);
         }
 
         public void Dispose()
@@ -87,25 +87,25 @@ namespace Dev2.Data.Storage
         void Dispose(bool disposing)
         // ReSharper restore UnusedParameter.Local
         {
-            if (_disposed)
+            if(_disposed)
             {
                 return;
             }
 
             _disposed = true;
-            }
+        }
 
         /// <summary>
         /// Disposes all static objects on exit ;)
         /// </summary>
         public static void DisposeOnExit()
         {
-            if (LevelZeroCache != null)
+            if(LevelZeroCache != null)
             {
                 LevelZeroCache.DisposeOnExit();
             }
 
-            }
+        }
 
         #endregion
 
@@ -117,7 +117,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public static double GetUsedMemoryInMB()
         {
-            if (LevelZeroCache != null)
+            if(LevelZeroCache != null)
             {
                 return LevelZeroCache.UsedMemoryStorageInMB();
             }
@@ -131,7 +131,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public static double GetCapacityMemoryInMB()
         {
-            if (LevelZeroCache != null)
+            if(LevelZeroCache != null)
             {
                 return LevelZeroCache.CapacityMemoryStorageInMB();
             }
@@ -147,7 +147,7 @@ namespace Dev2.Data.Storage
         /// Bootstraps this instance.
         /// </summary>
         public static void Setup()
-            {
+        {
             if(LevelZeroCache == null)
             {
                 LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentCount(), StorageSettingManager.GetSegmentSize());
@@ -155,23 +155,23 @@ namespace Dev2.Data.Storage
         }
 
         public static void Teardown()
-            {
+        {
             LevelZeroCache.DisposeOnExit();
-            }
+        }
 
         #endregion
 
         #region General
 
         public bool TryGetValue(StorageKey key, short missSize, out BinaryDataListRow value)
-            {
+        {
             value = LevelZeroCache[key] ?? new BinaryDataListRow(missSize);
 
             return true;
-                }
+        }
 
         public bool TrySetValue(StorageKey sk, short missSize, BinaryDataListRow value)
-                {
+        {
 
             LevelZeroCache[sk] = value;
 
@@ -191,7 +191,7 @@ namespace Dev2.Data.Storage
                 // fetch a fixed segment at a time ;)
                 var idx = keys.FetchNextIndex();
 
-                StorageKey tmpKey = new StorageKey(sk.UID, idx+sk.UniqueKey);
+                StorageKey tmpKey = new StorageKey(sk.UID, idx + sk.UniqueKey);
 
                 var tmp = LevelZeroCache[tmpKey];
 
@@ -266,7 +266,7 @@ namespace Dev2.Data.Storage
 
             foreach(var compareCol in _compareCols)
             {
-                hashCode+=obj.Row.FetchValue(compareCol, -1).GetHashCode();
+                hashCode += obj.Row.FetchValue(compareCol, -1).GetHashCode();
             }
             return hashCode;
         }
@@ -276,9 +276,9 @@ namespace Dev2.Data.Storage
 
     public struct IndexBasedBinaryDataListRow
     {
-       public  BinaryDataListRow Row { get; set; }
-       public  int Index { get; set; }
-        
+        public BinaryDataListRow Row { get; set; }
+        public int Index { get; set; }
+
 
     }
 }

@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
     {
-        public TestContext TestContext { get; set; }
+        public TestContext TestContext { get; set; }    
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNull(returnedDataTable);
+            Assert.IsNull(returnedDataTable);            
         }
 
         [TestMethod]
@@ -103,12 +103,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));
-            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));  
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));  
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));  
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.TableLock));  
+            Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));  
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(0, returnedSqlBulkCopy.BulkCopyTimeout);
             Assert.AreEqual(0, returnedSqlBulkCopy.BatchSize);
@@ -147,8 +147,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
-            Assert.IsNotNull(returnedSqlBulkCopy);
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
+            Assert.IsNotNull(returnedSqlBulkCopy);  
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
-                    InputMappings = null,
+                    InputMappings = null, 
                     Database = new DbSource(),
                     TableName = "TestTable",
                     CheckConstraints = true,
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -202,7 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(120, returnedSqlBulkCopy.BulkCopyTimeout);
-            Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize);
+            Assert.AreEqual(10, returnedSqlBulkCopy.BatchSize); 
         }
 
         [TestMethod]
@@ -219,7 +219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 Action = new DsfSqlBulkInsertActivity
                 {
-                    InputMappings = null,
+                    InputMappings = null, 
                     BatchSize = "[[batchsize]]",
                     Database = new DbSource(),
                     TableName = "TestTable",
@@ -240,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess();
             //------------Assert Results-------------------------
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
-            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);
+            Assert.IsNotNull(mockSqlBulkInserter.Object.CurrentOptions);  
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.CheckConstraints));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.FireTriggers));
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepIdentity));
@@ -248,7 +248,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.UseInternalTransaction));
             Assert.IsFalse(mockSqlBulkInserter.Object.CurrentOptions.HasFlag(SqlBulkCopyOptions.KeepNulls));
             Assert.AreEqual(240, returnedSqlBulkCopy.BulkCopyTimeout);
-            Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize);
+            Assert.AreEqual(100, returnedSqlBulkCopy.BatchSize); 
         }
 
         [TestMethod]
@@ -360,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.IsNotNull(returnedDataTable);
             Assert.AreEqual(4, returnedDataTable.Columns.Count);
-
+            
             Assert.AreEqual("TestCol", returnedDataTable.Columns[0].ColumnName);
             Assert.AreEqual(typeof(String), returnedDataTable.Columns[0].DataType);
             Assert.AreEqual(100, returnedDataTable.Columns[0].MaxLength); // Max Length Only applies to strings            
@@ -495,7 +495,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
             Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
         }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -558,7 +558,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual('Z', returnedDataTable.Rows[2]["field3"]);
             Assert.AreEqual(60m, returnedDataTable.Rows[2]["field4"]);
         }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -631,7 +631,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Z", returnedDataTable.Rows[4]["field3"]);
             Assert.AreEqual("60", returnedDataTable.Rows[4]["field4"]);
         }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfSqlBulkInsertActivity_Execute")]
@@ -977,7 +977,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("C", returnedDataTable.Rows[0]["TestCol3"]);
             Assert.AreEqual("21.2", returnedDataTable.Rows[0]["TestCol4"]);
             Assert.AreEqual("", returnedDataTable.Rows[0]["Val"]);
-
+            
             Assert.AreEqual("Jill", returnedDataTable.Rows[1]["TestCol"]);
             Assert.AreEqual("1999", returnedDataTable.Rows[1]["TestCol2"]);
             Assert.AreEqual("Z", returnedDataTable.Rows[1]["TestCol3"]);
@@ -1140,7 +1140,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.AreEqual(22, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
-
+            
             Assert.AreEqual(1, debugInputs.Count);
 
             Assert.AreEqual("Check Constraints: YES", debugInputs[0].Value);
@@ -1195,8 +1195,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
             Assert.AreEqual("Jane", debugInputs[7].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
-
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type); 
+            
             Assert.AreEqual("[[recset1(3).field1]]", debugInputs[8].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[8].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[9].Value);
@@ -1211,90 +1211,90 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TestCol varchar (100)", debugInputs[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            debugInputs = inRes[10].FetchResultsList();
+           debugInputs = inRes[10].FetchResultsList();
 
-            Assert.AreEqual("2", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("2", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+            
+           Assert.AreEqual("[[recset1(3).field2]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("1999", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("[[recset1(3).field2]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("1999", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
+           debugInputs = inRes[11].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            debugInputs = inRes[11].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           debugInputs = inRes[14].FetchResultsList();
 
-            debugInputs = inRes[14].FetchResultsList();
+           Assert.AreEqual("4", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("4", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+            
+           Assert.AreEqual("[[val]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("Hello", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+           debugInputs = inRes[15].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("[[val]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("Hello", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
+           Assert.AreEqual("Val varchar (100)", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            debugInputs = inRes[15].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           debugInputs = inRes[16].FetchResultsList();
 
-            Assert.AreEqual("Val varchar (100)", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           Assert.AreEqual("5", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            debugInputs = inRes[16].FetchResultsList();
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
 
-            Assert.AreEqual("5", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("[[rec(1).f1]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("JJU", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
-
-            Assert.AreEqual("[[rec(1).f1]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("JJU", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
-
-            Assert.AreEqual("[[rec(2).f1]]", debugInputs[5].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
-            Assert.AreEqual("KKK", debugInputs[7].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
-
+           Assert.AreEqual("[[rec(2).f1]]", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
+           Assert.AreEqual("KKK", debugInputs[7].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
+            
             debugInputs = inRes[17].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("Col1 varchar (100)", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
-
-            Assert.AreEqual(1, outRes.Count);
-            var debugOutputs = outRes[0].FetchResultsList();
-
-            Assert.AreEqual("3", debugOutputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
-            Assert.AreEqual("[[result]]", debugOutputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
-            Assert.AreEqual("Success", debugOutputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
+           Assert.AreEqual("Col1 varchar (100)", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+         
+           Assert.AreEqual(1, outRes.Count);
+           var debugOutputs = outRes[0].FetchResultsList();
+           
+           Assert.AreEqual("3", debugOutputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
+           Assert.AreEqual("[[result]]", debugOutputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
+           Assert.AreEqual("Success", debugOutputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
 
             DataListRemoval(result.DataListID);
         }
@@ -1335,7 +1335,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             mockSqlBulkInserter.Verify(inserter => inserter.Insert(It.IsAny<SqlBulkCopy>(), It.IsAny<DataTable>()), Times.Once());
             Assert.AreEqual(16, inRes.Count);
             var debugInputs = inRes[0].FetchResultsList();
-
+            
             Assert.AreEqual(1, debugInputs.Count);
 
             Assert.AreEqual("Check Constraints: YES", debugInputs[0].Value);
@@ -1390,8 +1390,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
             Assert.AreEqual("Jane", debugInputs[7].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
-
+            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type); 
+            
             Assert.AreEqual("[[recset1(3).field1]]", debugInputs[8].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[8].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[9].Value);
@@ -1406,92 +1406,92 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TestCol varchar (100)", debugInputs[1].Value);
             Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            debugInputs = inRes[10].FetchResultsList();
+           debugInputs = inRes[10].FetchResultsList();
 
-            Assert.AreEqual("2", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("2", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+            
+           Assert.AreEqual("[[recset1(1).field2]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("2", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("[[recset1(1).field2]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("2", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
+           debugInputs = inRes[11].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            debugInputs = inRes[11].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            Assert.AreEqual("TestCol2 int", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           debugInputs = inRes[12].FetchResultsList();
 
-            debugInputs = inRes[12].FetchResultsList();
+           Assert.AreEqual("3", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("3", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+           Assert.AreEqual("[[recset1(1).field3]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("C", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("[[recset1(1).field3]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("C", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
+           Assert.AreEqual("[[recset1(2).field3]]", debugInputs[5].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
+           Assert.AreEqual("G", debugInputs[7].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
 
-            Assert.AreEqual("[[recset1(2).field3]]", debugInputs[5].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[5].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[6].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[6].Type);
-            Assert.AreEqual("G", debugInputs[7].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[7].Type);
+           debugInputs = inRes[13].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            debugInputs = inRes[13].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("TestCol3 char (100)", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
-            Assert.AreEqual("TestCol3 char (100)", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           debugInputs = inRes[14].FetchResultsList();
 
-            debugInputs = inRes[14].FetchResultsList();
+           Assert.AreEqual("4", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("4", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
+           Assert.AreEqual("Insert", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+            
+           Assert.AreEqual("[[recset1(1).field4]]", debugInputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
+           Assert.AreEqual("21.2", debugInputs[4].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
 
-            Assert.AreEqual("Insert", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[1].Type);
+           debugInputs = inRes[15].FetchResultsList();
+           Assert.AreEqual("Into", debugInputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
 
-            Assert.AreEqual("[[recset1(1).field4]]", debugInputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugInputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[3].Type);
-            Assert.AreEqual("21.2", debugInputs[4].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugInputs[4].Type);
-
-            debugInputs = inRes[15].FetchResultsList();
-            Assert.AreEqual("Into", debugInputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugInputs[0].Type);
-
-            Assert.AreEqual("TestCol4 decimal", debugInputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
+           Assert.AreEqual("TestCol4 decimal", debugInputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugInputs[1].Type);
 
 
-
-            Assert.AreEqual(1, outRes.Count);
-            var debugOutputs = outRes[0].FetchResultsList();
-
-            Assert.AreEqual("3", debugOutputs[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
-            Assert.AreEqual("[[result]]", debugOutputs[1].Value);
-            Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
-            Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
-            Assert.AreEqual("Success", debugOutputs[3].Value);
-            Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
+         
+           Assert.AreEqual(1, outRes.Count);
+           var debugOutputs = outRes[0].FetchResultsList();
+           
+           Assert.AreEqual("3", debugOutputs[0].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[0].Type);
+           Assert.AreEqual("[[result]]", debugOutputs[1].Value);
+           Assert.AreEqual(DebugItemResultType.Variable, debugOutputs[1].Type);
+           Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputs[2].Value);
+           Assert.AreEqual(DebugItemResultType.Label, debugOutputs[2].Type);
+           Assert.AreEqual("Success", debugOutputs[3].Value);
+           Assert.AreEqual(DebugItemResultType.Value, debugOutputs[3].Type);
 
             DataListRemoval(result.DataListID);
         }
@@ -1815,7 +1815,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[recset1(*).field3]]", dsfForEachItems[8].Value);
             Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Name);
             Assert.AreEqual("[[recset1(*).field4]]", dsfForEachItems[9].Value);
-
+            
         }
 
         [TestMethod]
@@ -1867,7 +1867,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
             if(dbSource == null)
             {
-                dbSource = new DbSource();
+                dbSource = new DbSource();                
             }
             if(destinationTableName == null)
             {
@@ -1879,7 +1879,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     Database = dbSource,
                     TableName = destinationTableName,
-                    InputMappings = inputMappings,
+                    InputMappings = inputMappings, 
                     SqlBulkInserter = sqlBulkInserter,
                     Result = resultString,
                     IgnoreBlankRows = ignoreBlankRows
