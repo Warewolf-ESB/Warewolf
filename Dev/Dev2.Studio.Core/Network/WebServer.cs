@@ -109,7 +109,7 @@ namespace Dev2.Studio.Core.Network
             var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.ResourceName);
             if(isXml)
             {
-                relativeUrl += "DataList=" + xmlData;
+                relativeUrl += xmlData;
             }
             else
             {

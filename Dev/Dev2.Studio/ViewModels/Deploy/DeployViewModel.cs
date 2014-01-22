@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Instrumentation;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -518,6 +519,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
+            Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.Deploy);
             if(_deployStatsCalculator != null
                 && _deployStatsCalculator.ConflictingResources != null
                 && _deployStatsCalculator.ConflictingResources.Count > 0)

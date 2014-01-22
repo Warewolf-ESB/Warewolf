@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
+using Dev2.Instrumentation;
 using Dev2.Providers.Logs;
 using Dev2.Security;
 using Dev2.Services.Events;
@@ -969,7 +970,7 @@ namespace Dev2.Studio.ViewModels
         {
             _previousActive = ActiveItem;
             base.ActivateItem(item);
-            if (item == null || item.ContextualResourceModel == null) return;
+            if(item == null || item.ContextualResourceModel == null) return;
 
             if(ExplorerViewModel != null)
             {
@@ -1220,6 +1221,7 @@ namespace Dev2.Studio.ViewModels
                 WorkSurfaceContextViewModel context = WorkSurfaceContextFactory.CreateDeployViewModel(input);
                 Items.Add(context);
                 ActivateItem(context);
+                Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.OpenDeploy);
             }
         }
 
@@ -1272,7 +1274,14 @@ namespace Dev2.Studio.ViewModels
             bool exists = ActivateWorkSurfaceIfPresent(key, initParms);
 
             if(!exists)
+            {
+                if(typeof(T) == typeof(SettingsViewModel))
+                {
+                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.OpenSettings);
+                }
+
                 CreateAndActivateUniqueWorkSurface<T>(context, initParms);
+            }
         }
 
         private bool ActivateWorkSurfaceIfPresent(IContextualResourceModel resource,

@@ -11,6 +11,7 @@ using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Instrumentation;
 using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
@@ -56,6 +57,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.Debug);
             var handler = DebugExecutionStart;
             if(handler != null)
             {
@@ -292,6 +294,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ViewInBrowser()
         {
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowser);
             DoSaveActions();
             var isXml = false;
             string payload;

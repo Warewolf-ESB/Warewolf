@@ -1239,6 +1239,10 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
+      <Project>{52F26184-CB50-4D82-B8A2-83F73D2B5011}</Project>
+      <Name>Dev2.Instrumentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
       <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
       <Name>Dev2.Intellisense</Name>

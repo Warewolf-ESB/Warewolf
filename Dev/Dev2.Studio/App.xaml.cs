@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Dev2.Diagnostics;
+using Dev2.Instrumentation;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
@@ -52,6 +53,7 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
+            Tracker.StartStudio();
             bool createdNew;
             // ReSharper disable once UnusedVariable
             var localprocessGuard = e.Args.Length > 0
@@ -86,6 +88,7 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
+            Tracker.Stop();
             if(_mainViewModel != null)
             {
                 _mainViewModel.PersistTabs();
@@ -155,6 +158,7 @@ namespace Dev2.Studio
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
             e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
         }
     }

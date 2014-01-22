@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Instrumentation;
 using Dev2.Services.Events;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
@@ -310,6 +311,7 @@ namespace Dev2.Settings
 
         void SaveSettings()
         {
+            Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveSettings);
             // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
             ResetIsDirtyForChildren();
             ClearErrors();
