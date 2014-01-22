@@ -8,19 +8,30 @@ namespace Dev2.Instrumentation
     public static class Tracker
     {
         /// <summary>
-        /// This signals that your application has started. 
+        /// This signals that Server has started. 
         /// This should be placed before calling any other <see cref="Tracker"/> method.
         /// </summary>
-        public static void Start()
+        public static void StartServer()
         {
-            const string ProductID = "2385158467";
-            const string CallHomeUrl = "http://27504.tbnet1.com";
+            Start("2385158467", "http://27504.tbnet1.com");
+        }
 
+        /// <summary>
+        /// This signals that Studio has started. 
+        /// This should be placed before calling any other <see cref="Tracker"/> method.
+        /// </summary>
+        public static void StartStudio()
+        {
+            Start("2385158467", "http://27504.tbnet1.com");
+        }
+
+        static void Start(string productID, string callHomeUrl)
+        {
             var version = Assembly.GetExecutingAssembly().GetName().Version;
             var productVersion = version.ToString();
             var productBuildNumber = version.Build.ToString(CultureInfo.InvariantCulture);
 
-            var config = new TBConfig(CallHomeUrl, ProductID, productVersion, productBuildNumber, false);
+            var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
             App.Start(config);
         }
 

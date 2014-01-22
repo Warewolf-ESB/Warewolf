@@ -263,7 +263,7 @@ namespace Dev2
             int result = 0;
             bool didBreak = false;
 
-            Tracker.Start();
+            Tracker.StartServer();
 
             if(!SetWorkingDirectory())
             {
