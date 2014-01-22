@@ -178,7 +178,7 @@
     <value>Recordset - Find Records</value>
   </data>
   <data name="DsfBaseConvertActivity" xml:space="preserve">
-    <value>Utility - Base Conversion</value>
+    <value>Data - Base Conversion</value>
   </data>
   <data name="DsfExecuteCommandLineActivity" xml:space="preserve">
     <value>Scripting - CMD Line</value>
@@ -208,18 +208,21 @@
     <value>Loop Constructs - For Each</value>
   </data>
   <data name="DsfCaseConvertActivity" xml:space="preserve">
-    <value>Utility - Case Conversion</value>
+    <value>Data - Case Conversion</value>
   </data>
   <data name="DsfDataMergeActivity" xml:space="preserve">
-    <value>Utility - Data Merge</value>
+    <value>Data - Data Merge</value>
   </data>
   <data name="DsfDataSplitActivity" xml:space="preserve">
-    <value>Utility - Data Split</value>
+    <value>Data - Data Split</value>
   </data>
   <data name="DsfGatherSystemInformationActivity" xml:space="preserve">
     <value>Utility - System Information</value>
   </data>
   <data name="DsfXPathActivity" xml:space="preserve">
     <value>Utility - XPath</value>
+  </data>
+  <data name="DsfSqlBulkInsertActivity" xml:space="preserve">
+    <value>Recordset - SQL Bulk Insert</value>
   </data>
 </root>

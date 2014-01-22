@@ -61,7 +61,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Base Conversion.
+        ///   Looks up a localized string similar to Data - Base Conversion.
         /// </summary>
         internal static string DsfBaseConvertActivity {
             get {
@@ -79,7 +79,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Case Conversion.
+        ///   Looks up a localized string similar to Data - Case Conversion.
         /// </summary>
         internal static string DsfCaseConvertActivity {
             get {
@@ -106,7 +106,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Data Merge.
+        ///   Looks up a localized string similar to Data - Data Merge.
         /// </summary>
         internal static string DsfDataMergeActivity {
             get {
@@ -115,7 +115,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Data Split.
+        ///   Looks up a localized string similar to Data - Data Split.
         /// </summary>
         internal static string DsfDataSplitActivity {
             get {
@@ -327,6 +327,15 @@ namespace Dev2 {
         internal static string DsfSortRecordsActivity {
             get {
                 return ResourceManager.GetString("DsfSortRecordsActivity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recordset - SQL Bulk Insert.
+        /// </summary>
+        internal static string DsfSqlBulkInsertActivity {
+            get {
+                return ResourceManager.GetString("DsfSqlBulkInsertActivity", resourceCulture);
             }
         }
         
