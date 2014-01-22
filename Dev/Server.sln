@@ -72,9 +72,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Specs", "De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services.Specs", "Dev2.Runtime.Services.Specs\Dev2.Runtime.Services.Specs.csproj", "{DD7772F4-E445-48F6-B594-B4C31E962336}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 31
+		SccNumberOfProjects = 32
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -168,6 +170,9 @@ Global
 		SccProjectUniqueName30 = Dev2.Runtime.Services.Specs\\Dev2.Runtime.Services.Specs.csproj
 		SccProjectName30 = Dev2.Runtime.Services.Specs
 		SccLocalPath30 = Dev2.Runtime.Services.Specs
+		SccProjectUniqueName31 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
+		SccProjectName31 = Dev2.Instrumentation
+		SccLocalPath31 = Dev2.Instrumentation
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
@@ -562,6 +567,18 @@ Global
 		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x64.ActiveCfg = Release|Any CPU
 		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x86.ActiveCfg = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|x64.ActiveCfg = Release|Any CPU
+		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
