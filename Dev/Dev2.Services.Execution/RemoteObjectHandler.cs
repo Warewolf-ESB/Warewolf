@@ -343,7 +343,7 @@ namespace Dev2.Services.Execution
             catch(Exception ex)
             {
                 // trapped because if it fails we assume no input into method 
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             return result;

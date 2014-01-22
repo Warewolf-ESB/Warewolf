@@ -69,7 +69,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-               ServerLogger.LogError(string.Format("SaveAllInstanceData Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return isExistingInstance;
@@ -105,7 +105,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-                ServerLogger.LogError(string.Format("SaveAllMetaData Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -200,7 +200,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-                ServerLogger.LogError(string.Format("LoadInstance Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return result;
@@ -288,7 +288,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-                ServerLogger.LogError(string.Format("PersistInstanceAssociation Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -315,7 +315,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-                ServerLogger.LogError(string.Format("GetInstanceAssociation Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return instanceId;
@@ -336,7 +336,7 @@ namespace Dev2.DynamicServices
             }
             catch (Exception exception)
             {
-                ServerLogger.LogError(string.Format("DeleteInstanceAssociation Exception: {0}", exception.Message));
+                this.LogError(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }

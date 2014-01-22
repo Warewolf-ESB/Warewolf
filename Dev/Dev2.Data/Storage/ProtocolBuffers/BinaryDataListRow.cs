@@ -137,8 +137,8 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             catch(Exception ae)
             {
                 // we may have a flipping huge issue ;)
-                ServerLogger.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ]");
-                ServerLogger.LogError(ae);
+                this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ]");
+                this.LogError(ae);
             }
 
             // unpack _startIdx

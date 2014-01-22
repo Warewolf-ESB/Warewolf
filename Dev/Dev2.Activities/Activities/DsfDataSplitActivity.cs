@@ -407,7 +407,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         catch(Exception ex)
                         {
-                            ServerLogger.LogError(ex);
+                            this.LogError(ex);
                         }
                         break;
 

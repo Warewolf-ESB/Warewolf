@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch (Exception e)
             {
-                ServerLogger.LogError(e);
+                ServerLogger.LogError("RemoteDebugItemParser", e);
             }
 
             return null;

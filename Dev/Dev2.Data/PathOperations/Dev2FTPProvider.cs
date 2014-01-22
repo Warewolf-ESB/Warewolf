@@ -52,7 +52,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 var message = string.Format("{0} ,  [{1}]", ex.Message, path.Path);
                 throw new Exception(message, ex);
             }
@@ -214,7 +214,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     ok = true;
                 }
             }
@@ -227,7 +227,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     throw;
                 }
             }
@@ -325,7 +325,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw new Exception(ex.Message, ex);
             }
 
@@ -401,7 +401,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
             finally
@@ -444,7 +444,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
             finally
@@ -513,7 +513,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
             finally
             {
@@ -538,7 +538,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 result = false;
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
             finally
             {
@@ -596,7 +596,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
@@ -618,7 +618,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
@@ -745,7 +745,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
             finally
@@ -781,7 +781,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 sftp.Close();
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
             }
             return result.ToString();
@@ -1016,12 +1016,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                ServerLogger.LogError(wex);
+                this.LogError(wex);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
             finally
@@ -1048,7 +1048,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 isAlive = false;
             }
             return isAlive;
@@ -1107,12 +1107,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                ServerLogger.LogError(wex);
+                this.LogError(wex);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
             finally
@@ -1141,7 +1141,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 isAlive = false;
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
             finally
             {

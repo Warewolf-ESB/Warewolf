@@ -5,9 +5,11 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Diagnostics;
+using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.Settings;
 
 namespace Dev2.Common
@@ -20,17 +22,17 @@ namespace Dev2.Common
 
         #region private fields
 
-        private static readonly object _lock = new object();
+        static object _lock = new object();
 
-        private static LoggingSettings _loggingSettings;
-        private static IDictionary<Guid, string> _workflowsToLog;
-        private static IDictionary<Guid, string> _currentExecutionLogs;
-        private static IDictionary<Guid, StreamWriter> _currentLogStreams;
-        private static IDictionary<Guid, int> _nestedLevels;
-        private static IDictionary<Guid, GuidTree> _lastNested;
-        private static IDictionary<Guid, DateTime> _startTimes;
+        static LoggingSettings _loggingSettings;
+        static IDictionary<Guid, string> _workflowsToLog;
+        static IDictionary<Guid, string> _currentExecutionLogs;
+        static IDictionary<Guid, StreamWriter> _currentLogStreams;
+        static IDictionary<Guid, int> _nestedLevels;
+        static IDictionary<Guid, GuidTree> _lastNested;
+        static IDictionary<Guid, DateTime> _startTimes;
 
-        private static IDictionary<Guid, DateTime> StartTimes
+        static IDictionary<Guid, DateTime> StartTimes
         {
             get
             {
@@ -38,7 +40,7 @@ namespace Dev2.Common
                        (_startTimes = new Dictionary<Guid, DateTime>());
             }
         }
-        private static IDictionary<Guid, string> CurrentExecutionLogs
+        static IDictionary<Guid, string> CurrentExecutionLogs
         {
             get
             {
@@ -47,7 +49,7 @@ namespace Dev2.Common
             }
         }
 
-        private static IDictionary<Guid, StreamWriter> CurrentLogStreams
+        static IDictionary<Guid, StreamWriter> CurrentLogStreams
         {
             get
             {
@@ -56,7 +58,7 @@ namespace Dev2.Common
             }
         }
 
-        private static IDictionary<Guid, int> NestedLevels
+        static IDictionary<Guid, int> NestedLevels
         {
             get
             {
@@ -65,7 +67,7 @@ namespace Dev2.Common
             }
         }
 
-        private static IDictionary<Guid, GuidTree> LastNested
+        static IDictionary<Guid, GuidTree> LastNested
         {
             get
             {
@@ -112,7 +114,7 @@ namespace Dev2.Common
         /// </value>
         public static bool EnableInfoOutput { get; set; }
 
-        public static void LogCallStack(string className, [CallerMemberName]string methodName = null)
+        public static void LogCallStack(string className, [CallerMemberName] string methodName = null)
         {
             if(EnableInfoOutput)
             {
@@ -121,12 +123,12 @@ namespace Dev2.Common
             }
         }
 
-        public static void LogDebugStart(string className, [CallerMemberName]string methodName = null)
+        public static void LogDebugStart(string className, [CallerMemberName] string methodName = null)
         {
             LogDebug(string.Format("{0}.{1}.START", className, methodName));
         }
 
-        public static void LogDebugEnd(string className, [CallerMemberName]string methodName = null)
+        public static void LogDebugEnd(string className, [CallerMemberName] string methodName = null)
         {
             LogDebug(string.Format("{0}.{1}.END", className, methodName));
         }
@@ -165,31 +167,6 @@ namespace Dev2.Common
             if(EnableTraceOutput)
             {
                 InternalLogMessage(message, "TRACE");
-            }
-        }
-
-        /// <summary>
-        /// Logs the error.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public static void LogError(string message)
-        {
-            if(EnableErrorOutput)
-            {
-                InternalLogMessage(message, "ERROR");
-            }
-        }
-
-        public static void LogError(Exception e)
-        {
-            if(EnableErrorOutput)
-            {
-                InternalLogMessage(e.Message + Environment.NewLine + e.StackTrace, "ERROR");
-                while(e.InnerException != null)
-                {
-                    e = e.InnerException;
-                    InternalLogMessage(e.Message + Environment.NewLine + e.StackTrace, "ERROR");
-                }
             }
         }
 
@@ -245,12 +222,7 @@ namespace Dev2.Common
 
         #region private methods
 
-        /// <summary>
-        /// Logs a message.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="typeOf">The type of.</param>
-        private static void InternalLogMessage(string message, string typeOf)
+        static void InternalLogMessage(string message, string typeOf)
         {
             try
             {
@@ -263,9 +235,8 @@ namespace Dev2.Common
                 }
 
             }
-            // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable once EmptyGeneralCatchClause
             catch
-            // ReSharper restore EmptyGeneralCatchClause
             {
                 // We do not care, best effort 
             }
@@ -277,7 +248,8 @@ namespace Dev2.Common
 
         public static void LogDebug(IDebugState idebugState)
         {
-            if(!ShouldLog(idebugState)) return;
+            if(!ShouldLog(idebugState))
+                return;
 
             var debugState = (DebugState)idebugState;
 
@@ -324,7 +296,7 @@ namespace Dev2.Common
         /// <param name="state">The state.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/21</date>
-        private static void Serialize(DebugState debugState, string workflowName, StateType state)
+        static void Serialize(DebugState debugState, string workflowName, StateType state)
         {
             //Check nesting levels - if zero this is not applicable
             if(LoggingSettings.NestedLevelCount > 0)
@@ -358,7 +330,7 @@ namespace Dev2.Common
             SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
         }
 
-        private static void UnNestThis(DebugState debugState)
+        static void UnNestThis(DebugState debugState)
         {
             GuidTree lastNested = LastNested[debugState.OriginalInstanceID];
             if(lastNested != null)
@@ -367,7 +339,7 @@ namespace Dev2.Common
             }
         }
 
-        private static void NestThis(DebugState debugState)
+        static void NestThis(DebugState debugState)
         {
             GuidTree previousNested;
             LastNested.TryGetValue(debugState.OriginalInstanceID, out previousNested);
@@ -389,7 +361,7 @@ namespace Dev2.Common
         /// <param name="workflowName">Name of the workflow.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/21</date>
-        private static void Serialize(DebugState debugState, string workflowName)
+        static void Serialize(DebugState debugState, string workflowName)
         {
             //Do not log if lastnested is not the parent
             GuidTree lastNested;
@@ -440,7 +412,8 @@ namespace Dev2.Common
         #endregion serialization
 
         #region Initialization
-        private static void Initialize(DebugState debugState, string workflowName)
+
+        static void Initialize(DebugState debugState, string workflowName)
         {
             if(!debugState.IsFirstStep())
             {
@@ -457,7 +430,7 @@ namespace Dev2.Common
             SerializeToXML(debugState, writer, new[] { typeof(DebugItem) });
         }
 
-        private static string InitLogPath(string workflowName, IDebugState debugState)
+        static string InitLogPath(string workflowName, IDebugState debugState)
         {
             var dirPath = GetDirectoryPath(LoggingSettings);
             var dateTime = DateTime.Now;
@@ -469,7 +442,7 @@ namespace Dev2.Common
             return logPath;
         }
 
-        private static void InitLogStream(string logPath, IDebugState debugState)
+        static void InitLogStream(string logPath, IDebugState debugState)
         {
             var filestream = new FileStream(logPath, FileMode.Append);
             var writer = new StreamWriter(filestream);
@@ -481,7 +454,7 @@ namespace Dev2.Common
 
         #region Finalization
 
-        private static void Finalize(DebugState debugState, string workflowName)
+        static void Finalize(DebugState debugState, string workflowName)
         {
             //Remove the stored information if it is final step
             if(debugState.IsFinalStep())
@@ -502,7 +475,7 @@ namespace Dev2.Common
             }
         }
 
-        private static void RunPostWorkflow(Guid originaInstanceID, Guid originatingResourceID)
+        static void RunPostWorkflow(Guid originaInstanceID, Guid originatingResourceID)
         {
             if(!LoggingSettings.RunPostWorkflow)
             {
@@ -536,7 +509,7 @@ namespace Dev2.Common
             request.Method = "POST";
         }
 
-        private static void Remove(IDebugState debugState)
+        static void Remove(IDebugState debugState)
         {
             var writer = CurrentLogStreams[debugState.OriginalInstanceID];
             writer.WriteLine("</Workflow>");
@@ -667,22 +640,53 @@ namespace Dev2.Common
 
         #endregion LogDebug
 
-        public static void LogError(this object obj, string message = null, [CallerMemberName] string methodName = null)
+        public static void LogError(string className, Exception ex, [CallerMemberName] string methodName = null)
         {
-            LogError(CreateMessage(obj, message, methodName));
+            LogError(className, methodName, ex);
+        }
+
+        public static void LogError(this object obj, Exception ex, [CallerMemberName] string methodName = null)
+        {
+            LogError(obj, methodName, ex);
+        }
+
+        public static void LogError(this object obj, string message, [CallerMemberName] string methodName = null)
+        {
+            LogError(obj, methodName, new Exception(message));
         }
 
         public static void LogTrace(this object obj, string message = null, [CallerMemberName] string methodName = null)
         {
-            LogTrace(CreateMessage(obj, message, methodName));
+            LogTrace(CreateMessage(obj == null ? string.Empty : obj.GetType().Name, methodName, message));
         }
 
-        static string CreateMessage(object obj, string message, string methodName)
+        static void LogError(object obj, string methodName, Exception e)
         {
-            return string.Format("{0} {1} : {2}",
-                obj == null ? string.Empty : obj.GetType().Name,
-                methodName,
-                message);
+            LogError(obj == null ? "UnknownClass" : obj.GetType().Name, methodName, e);
+        }
+
+        static void LogError(string className, string methodName, Exception e)
+        {
+            Tracker.TrackException(className, methodName, e);
+            if(EnableErrorOutput)
+            {
+                var errors = new StringBuilder();
+                errors.AppendLine(CreateMessage(className, methodName, e.Message));
+                errors.AppendLine(e.StackTrace);
+                var ex = e.InnerException;
+                while(ex != null)
+                {
+                    errors.AppendFormat("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
+                    errors.AppendLine();
+                    ex = e.InnerException;
+                }
+                InternalLogMessage(errors.ToString(), "ERROR");
+            }
+        }
+
+        static string CreateMessage(string className, string methodName, string message)
+        {
+            return string.Format("{0}.{1} : {2}", className, methodName, message);
         }
     }
 

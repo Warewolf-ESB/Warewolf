@@ -321,7 +321,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                             catch(Exception ex)
                             {
-                                ServerLogger.LogError(ex);
+                                ServerLogger.LogError("AbstractWebRequestHandler", ex);
                                 data = "";
                             }
                         }
@@ -363,7 +363,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                     }
                                     catch(Exception ex)
                                     {
-                                        ServerLogger.LogError(ex);
+                                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
                                     }
                                     formData.CreateElement(keyValue[0]).SetValue(formFieldValue);
                                 }
@@ -372,7 +372,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
                     }
                 }
             }

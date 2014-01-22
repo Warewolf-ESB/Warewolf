@@ -166,7 +166,7 @@ namespace Dev2.Runtime.ESB
                         
                         if(errors.HasErrors())
                         {
-                            ServerLogger.LogError(errors.MakeDisplayReady());
+                            this.LogError(errors.MakeDisplayReady());
                         }
                     }
                 }

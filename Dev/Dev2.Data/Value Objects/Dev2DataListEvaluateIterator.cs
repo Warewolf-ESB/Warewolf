@@ -4,14 +4,15 @@ using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
 using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract.Value_Objects
 {
     public class Dev2DataListEvaluateIterator : IDev2DataListEvaluateIterator
     {
 
         private readonly IBinaryDataListEntry _entry;
-        private int _iterIdx = 0;
-        private IIndexIterator _idxItr;
+        private int _iterIdx;
+        private readonly IIndexIterator _idxItr;
 
         internal Dev2DataListEvaluateIterator(IBinaryDataListEntry entry)
         {
@@ -30,11 +31,11 @@ namespace Dev2.DataList.Contract.Value_Objects
         /// <returns></returns>
         public IList<IBinaryDataListItem> FetchNextRowData()
         {
-            string error = string.Empty;
             IList<IBinaryDataListItem> result = new List<IBinaryDataListItem>();
 
             if (_entry.IsRecordset)
             {
+                string error;
                 if (_idxItr.HasMore())
                 {
                     var idx = _idxItr.FetchNextIndex();
@@ -53,7 +54,7 @@ namespace Dev2.DataList.Contract.Value_Objects
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     // We trap because we want the result if successful else default to empty list
                 }
                 _iterIdx++;

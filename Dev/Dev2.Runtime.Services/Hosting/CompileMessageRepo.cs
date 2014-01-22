@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
@@ -21,8 +20,7 @@ namespace Dev2.Runtime.Hosting
         // used for storing message about resources ;) 
         readonly IDictionary<Guid, IList<CompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<CompileMessageTO>>();
         static Subject<IList<CompileMessageTO>> _allMessages = new Subject<IList<CompileMessageTO>>();
-        IObservable<IList<CompileMessageTO>> _observableMessages = _allMessages.AsObservable();
-        private static object _lock = new object();
+        private static readonly object Lock = new object();
         private static bool _changes;
         private static readonly Timer PersistTimer = new Timer(1000 * 5); // wait 5 seconds to fire ;)
 
@@ -109,7 +107,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="path">The path.</param>
         private void HydrateFromDisk(string path)
         {
-            lock(_lock)
+            lock(Lock)
             {
                 try
                 {
@@ -140,13 +138,13 @@ namespace Dev2.Runtime.Hosting
                                         }
                                         else
                                         {
-                                            ServerLogger.LogError("Failed to parse message ID");
+                                            this.LogError("Failed to parse message ID");
                                         }
                                     }
                                 }
                                 catch(Exception e)
                                 {
-                                    ServerLogger.LogError(e);
+                                    this.LogError(e);
                                 }
                             }
                         }
@@ -154,7 +152,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
             }
         }
@@ -189,7 +187,7 @@ namespace Dev2.Runtime.Hosting
         {
             if(_changes)
             {
-                lock(_lock)
+                lock(Lock)
                 {
                     try
                     {
@@ -213,7 +211,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogError(e);
+                        this.LogError(e);
                     }
                 }
             }
@@ -228,7 +226,7 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         public bool AddMessage(Guid workspaceID, IList<CompileMessageTO> msgs)
         {
-            lock(_lock)
+            lock(Lock)
             {
                 IList<CompileMessageTO> messages;
                 if(!_messageRepo.TryGetValue(workspaceID, out messages))
@@ -265,7 +263,7 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         public bool RemoveMessages(Guid workspaceID, Guid serviceID)
         {
-            lock(_lock)
+            lock(Lock)
             {
                 IList<CompileMessageTO> messages;
                 if(_messageRepo.TryGetValue(workspaceID, out messages))
@@ -298,7 +296,7 @@ namespace Dev2.Runtime.Hosting
             IList<CompileMessageTO> messages;
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
-            lock(_lock)
+            lock(Lock)
             {
                 if(_messageRepo.TryGetValue(workspaceID, out messages))
                 {
@@ -334,18 +332,12 @@ namespace Dev2.Runtime.Hosting
             return new CompileMessageList { MessageList = result, ServiceID = serviceID };
         }
 
-        /// <summary>
-        /// Fetches the messages.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="serviceID">The service ID.</param>
-        /// <returns></returns>
         public CompileMessageList FetchMessages(Guid workspaceID, Guid serviceID, IList<string> dependants, CompileMessageType[] filter = null)
         {
             IList<CompileMessageTO> messages;
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
-            lock(_lock)
+            lock(Lock)
             {
                 if(_messageRepo.TryGetValue(workspaceID, out messages))
                 {
@@ -367,7 +359,7 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
             }
-            var compileMessageList = new CompileMessageList() { MessageList = result, ServiceID = serviceID, Dependants = dependants };
+            var compileMessageList = new CompileMessageList { MessageList = result, ServiceID = serviceID, Dependants = dependants };
             RemoveMessages(workspaceID, serviceID);
             return compileMessageList;
         }
@@ -390,7 +382,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
             }
         }

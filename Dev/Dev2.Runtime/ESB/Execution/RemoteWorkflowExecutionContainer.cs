@@ -107,8 +107,8 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch(Exception e)
-            {
-                ServerLogger.LogError(e);
+            {                
+                this.LogError(e);
                 errors.AddError(e.Message);
             }
 

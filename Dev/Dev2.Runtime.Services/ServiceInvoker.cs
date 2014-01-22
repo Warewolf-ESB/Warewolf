@@ -58,7 +58,7 @@ namespace Dev2.Runtime
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 return false;
             }
         }

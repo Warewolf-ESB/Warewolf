@@ -55,7 +55,7 @@ namespace Dev2.DataList.Contract.Persistence {
             }
             catch (Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 /* Fail safe */
             }
 

@@ -69,7 +69,7 @@ namespace Dev2.Data.Binary_Objects
             {
                 IList<Guid> theList;
                 if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
-                {
+                {                   
                     theList.Remove(rootRequestID);
                     BinaryDataListStorageLayer.RemoveAll(theList);
 
@@ -90,7 +90,7 @@ namespace Dev2.Data.Binary_Objects
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                ServerLogger.LogError("DataListRegistar", e);
             }
             finally
             {

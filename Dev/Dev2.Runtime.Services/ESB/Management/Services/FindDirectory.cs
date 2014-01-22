@@ -55,7 +55,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             IntPtr accessToken = IntPtr.Zero;
+            // ReSharper disable once InconsistentNaming
             const int LOGON32_PROVIDER_DEFAULT = 0;
+            // ReSharper disable once InconsistentNaming
             const int LOGON32_LOGON_INTERACTIVE = 2;
 
             StringBuilder result = new StringBuilder();
@@ -86,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             var directory = new DirectoryInfo(dir);
 
                             result.Append("<JSON>");
-                            result.Append(GetDirectoryInfoAsJSON(directory));
+                            result.Append(GetDirectoryInfoAsJson(directory));
                             result.Append("</JSON>");
                         }
                         else
@@ -117,7 +119,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var directory = new DirectoryInfo(dir);
                         result.Append("<JSON>");
-                        result.Append(GetDirectoryInfoAsJSON(directory));
+                        result.Append(GetDirectoryInfoAsJson(directory));
                         result.Append("</JSON>");
                     }
                     else
@@ -174,10 +176,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// </summary>
         /// <param name="directory">The directory.</param>
         /// <returns></returns>
-        private string GetDirectoryInfoAsJSON(DirectoryInfo directory)
+        private string GetDirectoryInfoAsJson(DirectoryInfo directory)
         {
             int count = 0;
-            string name = string.Empty;
+            string name;
             string json = "[";
             try
             {
@@ -206,7 +208,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
             json += "]";
             return json;

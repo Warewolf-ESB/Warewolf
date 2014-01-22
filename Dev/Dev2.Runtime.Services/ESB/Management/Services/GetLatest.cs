@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch (Exception ex)
             {
                 res.SetMessage("Error updating workspace " + DateTime.Now);
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

@@ -267,7 +267,7 @@ namespace Dev2.Runtime.Security
                 }
                 catch (Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
             }
             else
@@ -286,12 +286,12 @@ namespace Dev2.Runtime.Security
                 bool invoke = ProcessHost.Invoke(null, "netsh.exe", args);
                 if (!invoke)
                 {
-                    ServerLogger.LogError(string.Format("There was an error adding url: {0}", url));
+                    this.LogError(string.Format("There was an error adding url: {0}", url));
                 }
             }
             catch (Exception e)
             {
-                ServerLogger.LogError(e);
+                this.LogError(e);
             }
             
         }

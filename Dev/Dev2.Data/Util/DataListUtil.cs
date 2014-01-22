@@ -404,7 +404,7 @@ namespace Dev2.Data.Util
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                ServerLogger.LogError("DataListUtil", ex);
                 //TODO, EMPTY CATCH, Please add reasoning
             }
 
@@ -544,7 +544,7 @@ namespace Dev2.Data.Util
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        ServerLogger.LogError("DataListUtil", ex);
                         result = true;
                     }
                 }
@@ -583,7 +583,7 @@ namespace Dev2.Data.Util
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    ServerLogger.LogError("DataListUtil", ex);
                     result = true;
                 }
             }
@@ -1227,7 +1227,7 @@ namespace Dev2.Data.Util
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    ServerLogger.LogError("DataListUtil", ex);
                 }
             }
 
@@ -1323,7 +1323,7 @@ namespace Dev2.Data.Util
             }
             catch(FormatException fex)
             {
-                ServerLogger.LogError(fex);
+                ServerLogger.LogError("DataListUtil", fex);
                 return false;
             }
         }
@@ -1390,7 +1390,7 @@ namespace Dev2.Data.Util
                         }
                         catch(Exception ex)
                         {
-                            ServerLogger.LogError(ex);
+                            ServerLogger.LogError("DataListUtil", ex);
                             tr.Close();
                             reader.Close();
                             isFragment = false;

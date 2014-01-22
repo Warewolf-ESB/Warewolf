@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.Common;
-using Infragistics.Calculations;
-using Infragistics.Calculations.Engine;
 using Infragistics.Calculations.CalcManager;
+using Infragistics.Calculations.Engine;
 
-namespace Dev2.MathOperations {
+namespace Dev2.MathOperations
+{
     // PBI: 1214
     //This repository will contain a collection of all the functions available to the Function Manager 
     // to perform evaluations on
-    public class FunctionRepository : IFrameworkRepository<IFunction> {
+    public class FunctionRepository : IFrameworkRepository<IFunction>
+    {
         private List<IFunction> _functions;
         private static IDev2CalculationManager _calcManager = new Dev2CalculationManager();
         private bool _isDisposed;
 
-        internal FunctionRepository() {
+        internal FunctionRepository()
+        {
             _functions = new List<IFunction>();
         }
 
@@ -24,27 +25,27 @@ namespace Dev2.MathOperations {
         /// Returns the entire collection of functions.
         /// </summary>
         /// <returns></returns>
-        public ICollection<IFunction> All() {
-            if(_functions != null) {
+        public ICollection<IFunction> All()
+        {
+            if(_functions != null)
+            {
                 return _functions;
             }
-            else return new List<IFunction>();
+            return new List<IFunction>();
         }
-
 
         /// <summary>
         /// Finds a collection of functions that satisfy a condition specified by the expression passed in
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public ICollection<IFunction> Find(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression) {
-            if(expression != null) {
+        public ICollection<IFunction> Find(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression)
+        {
+            if(expression != null)
+            {
                 return _functions.AsQueryable().Where(expression).ToList();
             }
-            else {
-                throw new ArgumentNullException("Expression cannot be null");
-            }
-
+            throw new ArgumentNullException(@"Expression cannot be null");
         }
 
         /// <summary>
@@ -52,14 +53,18 @@ namespace Dev2.MathOperations {
         /// </summary>
         /// <param name="expression"></param>
         /// <returns></returns>
-        public IFunction FindSingle(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression) {
-            if(expression != null) {
+        public IFunction FindSingle(System.Linq.Expressions.Expression<Func<IFunction, bool>> expression)
+        {
+            if(expression != null)
+            {
 
-                try {
+                try
+                {
                     return _functions.AsQueryable().First(expression);
                 }
-                catch(InvalidOperationException ioex) {
-                    ServerLogger.LogError(ioex);
+                catch(InvalidOperationException ioex)
+                {
+                    this.LogError(ioex);
                     IFunction func = MathOpsFactory.CreateFunction();
                     return func;
                 }
@@ -71,10 +76,12 @@ namespace Dev2.MathOperations {
         /// <summary>
         /// // Load the Repository of all the functions from the CalculationManager.
         /// </summary>
-        public void Load() {
+        public void Load()
+        {
             IEnumerable<CalculationFunction> calcFunctions = _calcManager.GetAllFunctions();
 
-            foreach(CalculationFunction calcFunction in calcFunctions) {
+            foreach(CalculationFunction calcFunction in calcFunctions)
+            {
                 _functions.Add(MathOpsFactory.CreateFunction(calcFunction.Name, calcFunction.ArgList, calcFunction.ArgDescriptors, calcFunction.Description));
             }
 
@@ -84,13 +91,17 @@ namespace Dev2.MathOperations {
         /// Removes a collection of functions from the function repository
         /// </summary>
         /// <param name="instanceObjs"></param>
-        public void Remove(ICollection<IFunction> instanceObjs) {
-            if(instanceObjs != null) {
-                foreach(IFunction func in instanceObjs) {
+        public void Remove(ICollection<IFunction> instanceObjs)
+        {
+            if(instanceObjs != null)
+            {
+                foreach(IFunction func in instanceObjs)
+                {
                     _functions.Remove(func);
                 }
             }
-            else {
+            else
+            {
                 throw new ArgumentNullException("Cannot remove null List of functions");
             }
         }
@@ -99,11 +110,14 @@ namespace Dev2.MathOperations {
         /// Removes a function from the function repository
         /// </summary>
         /// <param name="instanceObj"></param>
-        public void Remove(IFunction instanceObj) {
-            if(instanceObj != null) {
+        public void Remove(IFunction instanceObj)
+        {
+            if(instanceObj != null)
+            {
                 _functions.Remove(instanceObj);
             }
-            else {
+            else
+            {
                 throw new ArgumentNullException("Function cannot be null");
             }
         }
@@ -112,11 +126,14 @@ namespace Dev2.MathOperations {
         /// Save A collection of new functions to the function library
         /// </summary>
         /// <param name="instanceObjs"></param>
-        public void Save(ICollection<IFunction> instanceObjs) {
-            if(instanceObjs != null) {
+        public void Save(ICollection<IFunction> instanceObjs)
+        {
+            if(instanceObjs != null)
+            {
                 _functions.AddRange(instanceObjs);
             }
-            else {
+            else
+            {
                 throw new ArgumentNullException("Cannot Save a Null list of functions");
             }
         }
@@ -124,11 +141,14 @@ namespace Dev2.MathOperations {
         /// Save a collection of new user-defined functions to the function library
         /// </summary>
         /// <param name="instanceObj"></param>
-        public string Save(IFunction instanceObj) {
-            if(instanceObj != null) {
+        public string Save(IFunction instanceObj)
+        {
+            if(instanceObj != null)
+            {
                 _functions.Add(instanceObj);
             }
-            else {
+            else
+            {
                 throw new ArgumentNullException("Function cannot be null");
             }
             return "Saved";
@@ -138,7 +158,7 @@ namespace Dev2.MathOperations {
 
         protected void OnItemAdded()
         {
-            if (ItemAdded != null)
+            if(ItemAdded != null)
             {
                 ItemAdded(this, new EventArgs());
             }

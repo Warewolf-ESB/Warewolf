@@ -144,7 +144,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 _users.Remove(userName);
             }
         }
@@ -165,7 +165,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 throw;
             }
         }
@@ -205,7 +205,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
                     return resultID;
                 }
@@ -614,7 +614,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                     errors.AddError(e.Message);
                 }
             }
@@ -635,7 +635,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                     errors.AddError(e.Message);
                 }
             }

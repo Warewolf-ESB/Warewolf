@@ -60,7 +60,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }
@@ -81,7 +81,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

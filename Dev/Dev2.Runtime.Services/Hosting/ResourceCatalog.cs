@@ -1395,7 +1395,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 else
                 {
-                    ServerLogger.LogError(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
+                    this.LogTrace(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {

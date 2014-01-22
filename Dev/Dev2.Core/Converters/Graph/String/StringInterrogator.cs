@@ -76,7 +76,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 result = false;
             }
 
@@ -93,7 +93,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 result = false;
             }
 

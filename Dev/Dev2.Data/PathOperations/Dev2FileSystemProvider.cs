@@ -47,8 +47,10 @@ namespace Dev2.PathOperations
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
 
+        // ReSharper disable once InconsistentNaming
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
+        // ReSharper disable once InconsistentNaming
         const int LOGON32_LOGON_INTERACTIVE = 2;
 
         public IActivityIOPath IOPath
@@ -109,7 +111,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     throw new Exception(ex.Message, ex);
                 }
 
@@ -119,16 +121,16 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut)
         {
             //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
             if(!Path.IsPathRooted(dst.Path))
             {
                 //get just the directory path to put into
-                if(WhereToPut != null)
+                if(whereToPut != null)
                 {
                     //Make the destination directory equal to that directory
-                    dst = ActivityIOFactory.CreatePathFromString(WhereToPut + "\\" + dst.Path, dst.Username, dst.Password);
+                    dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
                 }
             }
 
@@ -176,7 +178,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         throw;
                     }
                 }
@@ -257,7 +259,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         throw;
                     }
                 }
@@ -307,7 +309,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         throw;
                     }
                 }
@@ -328,7 +330,7 @@ namespace Dev2.PathOperations
             return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
         }
 
-        public string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        public string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
         {
             return "";
         }
@@ -392,7 +394,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     throw;
                 }
             }
@@ -458,7 +460,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         throw;
                     }
                 }
@@ -506,7 +508,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         throw;
                     }
                 }
@@ -765,7 +767,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     throw;
                 }
 

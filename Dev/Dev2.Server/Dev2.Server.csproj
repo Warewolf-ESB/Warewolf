@@ -226,6 +226,10 @@
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Instrumentation\Dev2.Instrumentation.csproj">
+      <Project>{52f26184-cb50-4d82-b8a2-83f73d2b5011}</Project>
+      <Name>Dev2.Instrumentation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Network\Dev2.Network.csproj">
       <Project>{14f1e4aa-b9a8-45dd-af2a-059eff29201b}</Project>
       <Name>Dev2.Network</Name>

@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch (Exception e)
                     {
-                        ServerLogger.LogError(e.Message);
+                        this.LogError(e.Message);
                     }
                 }
 

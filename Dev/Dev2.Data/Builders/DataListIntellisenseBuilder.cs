@@ -65,7 +65,7 @@ namespace Dev2.DataList.Contract
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                 }
 
                 if(tmpRootNl != null)
@@ -167,7 +167,7 @@ namespace Dev2.DataList.Contract
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             return result;

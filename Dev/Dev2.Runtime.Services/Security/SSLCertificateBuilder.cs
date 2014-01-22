@@ -46,7 +46,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                this.LogError(e);
             }
             finally
             {

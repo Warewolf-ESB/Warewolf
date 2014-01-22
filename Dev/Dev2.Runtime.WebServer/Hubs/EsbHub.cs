@@ -150,7 +150,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                                 if(!ResultCache.TryAdd(future.ToKey(), value))
                                 {
-                                    ServerLogger.LogError("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]");
+                                    this.LogError(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
                                 }
 
                                 startIdx += len;
@@ -163,7 +163,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogError(e);
+                        this.LogError(e);
                     }
                     return null;
                 });
@@ -172,7 +172,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                this.LogError(e);
             }
             return null;
         }

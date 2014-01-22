@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 result = new ExecuteMessage { HasError = true };
                 result.SetMessage("Error writing settings configuration.");
             }

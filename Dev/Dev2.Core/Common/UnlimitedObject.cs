@@ -187,8 +187,8 @@ namespace Unlimited.Framework
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
-                    throw ex;
+                    this.LogError(ex);
+                    throw;
                 }
 
                 return val;
@@ -360,7 +360,7 @@ namespace Unlimited.Framework
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 return false;
             }
 
@@ -630,7 +630,7 @@ namespace Unlimited.Framework
                             }
                             catch(XmlException ex)
                             {
-                                ServerLogger.LogError(ex);
+                                ServerLogger.LogError("UnlimitedObject", ex);
                                 xmlconformance.Add(new Tuple<string, bool>(test, false));
                             }
                         }
@@ -655,7 +655,7 @@ namespace Unlimited.Framework
             }
             catch(XmlException ex)
             {
-                ServerLogger.LogError(ex);
+                ServerLogger.LogError("UnlimitedObject", ex);
                 return xml;
             }
         }
@@ -817,7 +817,7 @@ namespace Unlimited.Framework
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 return false;
             }
             return result == "Success";
@@ -959,7 +959,7 @@ namespace Unlimited.Framework
                     }
                     catch(XmlException ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         match.SetValue(value.ToString());
                     }
                 }

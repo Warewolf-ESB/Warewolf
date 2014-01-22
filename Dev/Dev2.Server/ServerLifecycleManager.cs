@@ -20,6 +20,7 @@ using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using Dev2.DynamicServices;
+using Dev2.Instrumentation;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -262,6 +263,7 @@ namespace Dev2
             int result = 0;
             bool didBreak = false;
 
+            Tracker.Start();
 
             if(!SetWorkingDirectory())
             {
@@ -320,7 +322,7 @@ namespace Dev2
                 result = 98; // ????
                 didBreak = true;
             }
-            
+
             if(!didBreak && !StartWebServer())
             {
                 result = 4;
@@ -365,6 +367,8 @@ namespace Dev2
 
             // PBI 1018 - Settings Framework (TWR: 2013.03.07)
             UnloadSettingsProvider();
+
+            Tracker.Stop();
 
             if(!didBreak)
             {
@@ -439,7 +443,7 @@ namespace Dev2
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogError(e);
+                        LogException(e);
                     }
 
                     return false;
@@ -447,7 +451,7 @@ namespace Dev2
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                LogException(e);
             }
 
             return true;
@@ -525,7 +529,7 @@ namespace Dev2
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    LogException(ex);
                     result = false;
                 }
             }
@@ -1287,7 +1291,7 @@ namespace Dev2
                     var httpUrl = string.Format("http://*:{0}/", webServerPort);
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
-                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);                    
+                    EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
 
 
                     // start SSL traffic if it is enabled ;)
@@ -1352,7 +1356,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                LogException(ex);
                 result = false;
             }
 
@@ -1363,7 +1367,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                LogException(ex);
                 result = false;
             }
 
@@ -1374,7 +1378,7 @@ namespace Dev2
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                LogException(e);
             }
 
             TerminateGCManager();
@@ -1687,10 +1691,10 @@ namespace Dev2
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 
-                Write("done.");
-                WriteLine("");
-                return true;
-            }
+            Write("done.");
+            WriteLine("");
+            return true;
+        }
 
 
 
@@ -1708,7 +1712,7 @@ namespace Dev2
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogError(e);
+                        LogException(e);
                     }
                     EnvironmentVariables.IsServerOnline = true; // flag server as active
                     WriteLine("\r\nWeb Server Started");
@@ -1761,6 +1765,11 @@ namespace Dev2
         }
 
         #endregion Output Handling
+
+        static void LogException(Exception ex)
+        {
+            ServerLogger.LogError("Dev2.ServerLifecycleManager", ex);
+        }
     }
 
 }

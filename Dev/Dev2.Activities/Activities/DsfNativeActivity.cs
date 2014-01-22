@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Xml;
 using Dev2;
@@ -158,8 +159,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 DataListExecutionID.Set(context, dataObject.DataListID);
             }
 
-            _previousParentInstanceID = dataObject.ParentInstanceID;
-            _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
+                _previousParentInstanceID = dataObject.ParentInstanceID;
+                _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
 
             OnBeforeExecute(context);
 
@@ -490,21 +491,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(_debugState != null)
                 {
-                    _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
-                    _debugState.StateType = stateType;
-                    _debugState.EndTime = DateTime.Now;
-                    _debugState.HasError = hasError;
-                    _debugState.ErrorMessage = errorMessage;
-                    try
-                    {
-                        Copy(GetDebugOutputs(dataList), _debugState.Outputs);
-                    }
-                    catch(Exception e)
-                    {
-                        _debugState.ErrorMessage = e.Message;
-                        _debugState.HasError = true;
-                    }
+                _debugState.NumberOfSteps = IsWorkflow ? dataObject.NumberOfSteps : 0;
+                _debugState.StateType = stateType;
+                _debugState.EndTime = DateTime.Now;
+                _debugState.HasError = hasError;
+                _debugState.ErrorMessage = errorMessage;
+                try
+                {
+                    Copy(GetDebugOutputs(dataList), _debugState.Outputs);
                 }
+                catch(Exception e)
+                {
+                    _debugState.ErrorMessage = e.Message;
+                    _debugState.HasError = true;
+                }
+            }
             }
 
             if(_debugState != null && (!(_debugState.ActivityType == ActivityType.Workflow || _debugState.Name == "DsfForEachActivity") && remoteID == Guid.Empty))
@@ -523,32 +524,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(_debugState != null)
                 {
-                    _debugState.ActivityType = ActivityType.Service;
-                }
+                _debugState.ActivityType = ActivityType.Service;
+            }
             }
 
             if(_debugState != null)
             {
-                switch(_debugState.StateType)
-                {
-                    case StateType.Before:
-                        _debugState.Outputs.Clear();
-                        break;
-                    case StateType.After:
-                        _debugState.Inputs.Clear();
-                        break;
-                }
-
-                // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
-                _debugState.ClientID = dataObject.ClientID;
-                _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-
-                if(stateType == StateType.After)
-                {
-                    // Free up debug state
-                    _debugState = null;
-                }
+            switch(_debugState.StateType)
+            {
+                case StateType.Before:
+                    _debugState.Outputs.Clear();
+                    break;
+                case StateType.After:
+                    _debugState.Inputs.Clear();
+                    break;
             }
+
+            // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
+            _debugState.ClientID = dataObject.ClientID;
+            _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+
+            if(stateType == StateType.After)
+            {
+                // Free up debug state
+                _debugState = null;
+            }
+        }
         }
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
@@ -599,10 +600,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected static void DisplayAndWriteError(string serviceName, ErrorResultTO errors)
         {
+            var errorBuilder = new StringBuilder();
             foreach(var e in errors.FetchErrors())
             {
-                ServerLogger.LogError(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
+                errorBuilder.AppendLine(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
             }
+            ServerLogger.LogError("DsfNativeActivity", new Exception(errorBuilder.ToString()));
         }
 
         protected static string DisplayAndWriteError(string serviceName, Exception ex, string dataList)
@@ -621,7 +624,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 resultObj.GetElement("Error").SetValue(@"<![CDATA[" + ex.Message + "]]>");
             }
 
-            ServerLogger.LogError(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} " + "\r\nStack Trace = {2}\r\nDataList = {3}\r\n--[ End Execution Exception ]--", serviceName, ex.Message, ex.StackTrace, dataList));
+            ServerLogger.LogError("DsfNativeActivity", new Exception(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} " + "\r\nStack Trace = {2}\r\nDataList = {3}\r\n--[ End Execution Exception ]--", serviceName, ex.Message, ex.StackTrace, dataList)));
 
             var result = resultObj.XmlString.Replace("&lt;", "<").Replace("&gt;", ">");
 

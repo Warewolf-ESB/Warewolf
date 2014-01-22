@@ -65,7 +65,7 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> arguments, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
+        public void CreateCustomFunction(string functionName, List<string> args, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             CustomCalculationFunction calcFunction;
             if(CreateCustomFunction(functionName, function, out calcFunction))
@@ -74,7 +74,7 @@ namespace Dev2.MathOperations
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
                     _functionName = functionName;
-                    _arguments = arguments;
+                    _arguments = args;
                     _argumentDescriptions = new List<string>();
                     _description = description;
                 }
@@ -93,7 +93,7 @@ namespace Dev2.MathOperations
 
         }
 
-        public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
+        public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             CustomCalculationFunction calcFunction;
             if(CreateCustomFunction(functionName, function, out calcFunction))
@@ -102,7 +102,7 @@ namespace Dev2.MathOperations
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
                     SetFunctionName(functionName);
-                    SetArguments(arguments);
+                    SetArguments(args);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
                 }
@@ -127,12 +127,7 @@ namespace Dev2.MathOperations
 
         private static bool CreateCustomFunction(string functionName, Func<double[], double> func, out CustomCalculationFunction custCalculation)
         {
-            bool isSucessfullyCreated = false;
-            if(func == null)
-            {
-                isSucessfullyCreated = false;
-                custCalculation = null;
-            }
+            bool isSucessfullyCreated;            
             try
             {
                 custCalculation = new CustomCalculationFunction(functionName, func, 0, 1);
@@ -140,7 +135,7 @@ namespace Dev2.MathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                ServerLogger.LogError("Function", ex);
                 custCalculation = null;
                 isSucessfullyCreated = false;
             }
@@ -156,44 +151,24 @@ namespace Dev2.MathOperations
             }
             else
             {
+                // ReSharper disable once NotResolvedInText
                 throw new ArgumentNullException("Cannot set Function Name to an empty string");
             }
         }
 
-        private void SetArguments(IList<string> arguments)
+        private void SetArguments(IList<string> args)
         {
-            if(arguments != null)
-            {
-                _arguments = arguments;
-            }
-            else
-            {
-                _arguments = new List<string>();
-            }
+            _arguments = args ?? new List<string>();
         }
 
         private void SetArgumentDescriptions(IList<string> argumentDescriptions)
         {
-            if(argumentDescriptions != null)
-            {
-                _argumentDescriptions = argumentDescriptions;
-            }
-            else
-            {
-                _argumentDescriptions = new List<string>();
-            }
+            _argumentDescriptions = argumentDescriptions ?? new List<string>();
         }
 
         private void SetDescription(string description)
         {
-            if(!(string.IsNullOrEmpty(description)))
-            {
-                _description = description;
-            }
-            else
-            {
-                _description = string.Empty;
-            }
+            _description = !(string.IsNullOrEmpty(description)) ? description : string.Empty;
         }
 
         #endregion Private Methods

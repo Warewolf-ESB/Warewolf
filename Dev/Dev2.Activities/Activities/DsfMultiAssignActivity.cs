@@ -140,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                ServerLogger.LogError(e);
+                this.LogError(e);
                 allErrors.AddError(e.Message);
             }
             finally

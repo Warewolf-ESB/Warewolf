@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.DynamicServices;
 
@@ -44,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management
                 }
                 else
                 {
-                    ServerLogger.LogError("Failed to load management service [ " + endpoint.HandlesType() + " ]");
+                    ServerLogger.LogError("EsbManagementServiceLocator", new Exception("Failed to load management service [ " + endpoint.HandlesType() + " ]"));
                 }
             }
 

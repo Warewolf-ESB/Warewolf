@@ -18,12 +18,12 @@ namespace Dev2.Session
 
         #region Static Conts
         private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        const string _savePath = @"Warewolf\DebugData\PersistSettings.dat";
+        const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
         private string _debugPersistPath;
-        private static readonly DataListFormat binaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
+        private static readonly DataListFormat BinaryFormat = DataListFormat.CreateFormat(GlobalConstants._BINARY);
         // the settings lock object
-        private readonly static object _settingsLock = new object();
-        private readonly static object _initLock = new object();
+        private readonly static object SettingsLock = new object();
+        private readonly static object InitLock = new object();
         #endregion
 
         private IActivityIOPath _debugPath;
@@ -110,7 +110,7 @@ namespace Dev2.Session
         public DebugTO PersistDebugSession(DebugTO to)
         {
 
-            lock(_settingsLock)
+            lock(SettingsLock)
             {
 
                 if(to.DataList != null) to.DataListHash = to.DataList.GetHashCode(); // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
@@ -172,7 +172,7 @@ namespace Dev2.Session
                     bf.Serialize(ms, datalist);
 
                     ErrorResultTO errors;
-                    Guid pushID = compiler.ConvertTo(binaryFormat, ms.ToArray(), string.Empty, out errors);
+                    Guid pushID = compiler.ConvertTo(BinaryFormat, ms.ToArray(), string.Empty, out errors);
 
                     if(errors.HasErrors())
                     {
@@ -237,7 +237,7 @@ namespace Dev2.Session
         private void BootstrapPersistence(string baseDir)
         {
 
-            lock(_initLock)
+            lock(InitLock)
             {
                 if(_debugPath == null)
                 {
@@ -248,11 +248,11 @@ namespace Dev2.Session
 
                     if(_rootPath.EndsWith("\\"))
                     {
-                        _debugPersistPath = _rootPath + _savePath;
+                        _debugPersistPath = _rootPath + SavePath;
                     }
                     else
                     {
-                        _debugPersistPath = _rootPath + "\\" + _savePath;
+                        _debugPersistPath = _rootPath + "\\" + SavePath;
                     }
 
                     _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
@@ -268,7 +268,7 @@ namespace Dev2.Session
         private void InitPersistSettings()
         {
 
-            lock(_settingsLock)
+            lock(SettingsLock)
             {
 
                 if(!_debugOptsEndPoint.PathExist(_debugPath))
@@ -306,12 +306,12 @@ namespace Dev2.Session
                             }
                             catch(Exception e)
                             {
-                                ServerLogger.LogError(e);
+                                this.LogError(e);
                             }
                         }
                         else
                         {
-                            ServerLogger.LogError("No debug data stream [ " + _debugPath + " ] ");
+                            this.LogError("No debug data stream [ " + _debugPath + " ] ");
                         }
 
                         s.Close();

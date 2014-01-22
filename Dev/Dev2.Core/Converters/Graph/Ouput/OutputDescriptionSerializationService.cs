@@ -81,7 +81,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
                         }
                         catch (Exception ex)
                         {
-                            ServerLogger.LogError(ex);
+                            this.LogError(ex);
                             // we want to return null                    
                         }
                     }

@@ -763,12 +763,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     int remainingEntryCnt = cleanEntry.DisposeCache();
 
-                    ServerLogger.LogTrace("There are [ " + remainingEntryCnt + " ] entries left for [ " + UID + " ]");
-
+                    this.LogTrace("There are [ " + remainingEntryCnt + " ] entries left for [ " + UID + " ]");
                 }
                 else
                 {
-                    ServerLogger.LogError("Null removal entry for [ " + UID + " ]");
+                    this.LogError("Null removal entry for [ " + UID + " ]");
                 }
             }
         }

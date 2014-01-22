@@ -224,7 +224,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             if(serviceExists)
@@ -256,7 +256,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             if(serviceExists)

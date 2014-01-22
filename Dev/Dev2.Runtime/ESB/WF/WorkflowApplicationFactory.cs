@@ -10,6 +10,7 @@ using Dev2.Diagnostics;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
+using Dev2.Instrumentation;
 using Dev2.Network.Execution;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Hosting;
@@ -141,6 +142,8 @@ namespace Dev2.Runtime.ESB.WF
         /// <returns></returns>
         private IDSFDataObject InvokeWorkflowImpl(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug, out ErrorResultTO errors)
         {
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.Execute);
+
             if(AllErrors == null)
             {
                 AllErrors = new ErrorResultTO();
@@ -315,7 +318,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
 
                 ExecutableServiceRepository.Instance.Remove(this);
@@ -335,7 +338,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
                 finally
                 {
@@ -428,7 +431,7 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                     ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 }
                 finally
@@ -443,7 +446,7 @@ namespace Dev2.Runtime.ESB.WF
                     catch(Exception e)
                     {
                         // Best effort ;)
-                        ServerLogger.LogError(e);
+                        this.LogError(e);
                     }
                 }
 

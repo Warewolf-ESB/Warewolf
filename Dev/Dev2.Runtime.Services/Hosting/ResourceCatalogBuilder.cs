@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogError("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
+                        this.LogError("Resource [ " + currentItem.FilePath + " ] caused " + e.Message);
                     }
 
                     StringBuilder result = xml.ToStringBuilder();
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     else
                     {
-                        ServerLogger.LogError(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
+                        this.LogTrace(string.Format("'{0}' wasn't loaded because it isn't signed or has modified since it was signed.", currentItem.FilePath));
                     }
                 });
             }
@@ -168,14 +168,14 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if(dupRes != null)
                 {
-                    ServerLogger.LogError(
+                    this.LogTrace(
                         string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded from file '{2}'.",
                             res.ResourceName, filePath, dupRes.ResourceName));
                 }
                 else
                 {
-                    ServerLogger.LogError(
+                    this.LogTrace(
                         string.Format(
                             "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
                             res.ResourceName, filePath));

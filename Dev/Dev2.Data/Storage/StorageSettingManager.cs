@@ -115,9 +115,10 @@ namespace Dev2.Data.Storage
 
                 if(result < _minSlabSize)
                 {
-                    const string msg = "Too little memory to start server, at least 128 MB should be free.";
-                    ServerLogger.LogError(msg);
-                    throw new Exception(msg);
+                    const string Msg = "Too little memory to start server, at least 128 MB should be free.";
+                    var ex = new Exception(Msg);
+                    ServerLogger.LogError("StorageSettingManager", ex);
+                    throw ex;
                 }
 
                 return result;
@@ -150,14 +151,13 @@ namespace Dev2.Data.Storage
             {
                 return true;
             }
-            else // 32-bit programs run on both 32-bit and 64-bit Windows
-            {
-                // Detect whether the current process is a 32-bit process 
-                // running on a 64-bit system.
-                bool flag;
-                return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
-                         IsWow64Process(GetCurrentProcess(), out flag)) && flag);
-            }
+
+            // 32-bit programs run on both 32-bit and 64-bit Windows
+            // Detect whether the current process is a 32-bit process 
+            // running on a 64-bit system.
+            bool flag;
+            return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
+                     IsWow64Process(GetCurrentProcess(), out flag)) && flag);
         }
 
         /// <summary>

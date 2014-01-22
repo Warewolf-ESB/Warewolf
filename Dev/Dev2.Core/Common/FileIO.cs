@@ -89,7 +89,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
                 Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
@@ -512,7 +512,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                ServerLogger.LogError("FileIO", ex);
                 throw;
             }
             return result;

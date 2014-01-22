@@ -116,7 +116,7 @@ namespace Dev2.Data.Parsers
                     throw new Exception("The XPath expression provided is not valid.");
                 }
 
-                ServerLogger.LogError(exception);
+                this.LogError(exception);
                 throw;
             }
         }

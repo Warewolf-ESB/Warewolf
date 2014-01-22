@@ -103,7 +103,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch(Exception ex)
             {
                 result.SetMessage(string.Concat("Error reloading '", resourceID, "'..."));
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

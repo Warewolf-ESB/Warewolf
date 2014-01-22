@@ -202,7 +202,7 @@ namespace Dev2.Data.Storage
                             catch(Exception e)
                             {
                                 // Best effort ;)
-                                ServerLogger.LogError(e);
+                                this.LogError(e);
                             }
                             startupCleaned = true;
                         }
@@ -298,7 +298,7 @@ namespace Dev2.Data.Storage
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
 
                 return null;
@@ -585,7 +585,7 @@ namespace Dev2.Data.Storage
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError(e);
+                    this.LogError(e);
                 }
 
             }
@@ -725,7 +725,7 @@ namespace Dev2.Data.Storage
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError(ex);
+                this.LogError(ex);
             }
         }
 

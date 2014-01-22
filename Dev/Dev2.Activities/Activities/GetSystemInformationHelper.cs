@@ -99,7 +99,7 @@ namespace Dev2.Activities
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });
@@ -117,7 +117,7 @@ namespace Dev2.Activities
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });

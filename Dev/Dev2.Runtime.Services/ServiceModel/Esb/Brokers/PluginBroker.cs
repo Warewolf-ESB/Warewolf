@@ -103,11 +103,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return serviceMethodList;
         }
 
-        /// <summary>
-        /// Validates the plugin.
-        /// </summary>
-        /// <param name="toLoad">To load.</param>
-        /// <returns></returns>
         public bool ValidatePlugin(string toLoad, out string error)
         {
             bool result = true;
@@ -123,7 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 catch (Exception e)
                 {
                     result = false;
-                    ServerLogger.LogError(e.Message);
+                    this.LogError(e);
                     error = e.Message;
                 }
             }
@@ -142,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     catch (Exception e)
                     {
                         result = false;
-                        ServerLogger.LogError(e.Message);
+                        this.LogError(e);
                         error = e.Message;
                     }
                 }
@@ -227,7 +222,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             // System.Diagnostics.SymbolStore.SymVariable - NAME
             // GAC:ISymWrapper - LOCATION
 
-            object loadedObject = null;
             loadedAssembly = null;
             if (assemblyLocation.StartsWith(GlobalConstants.GACPrefix))
             {
@@ -242,7 +236,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
                 catch (Exception e)
                 {
-                    ServerLogger.LogError(e.Message);
+                    this.LogError(e.Message);
                 }
             }
             else
@@ -263,20 +257,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     }
                     catch (Exception e)
                     {
-                        ServerLogger.LogError(e.Message);
+                        this.LogError(e);
                     }
                 }
                 try
                 {
                     var objHAndle = Activator.CreateInstanceFrom(assemblyLocation, assemblyName);
-                    loadedObject = objHAndle.Unwrap();
+                    var loadedObject = objHAndle.Unwrap();
                     loadedAssembly = Assembly.GetAssembly(loadedObject.GetType());
                     LoadDepencencies(loadedAssembly, assemblyLocation);
                     return true;
                 }
                 catch (Exception e)
                 {
-                    ServerLogger.LogError(e.Message);
+                    this.LogError(e);
                 }
             }
             return false;

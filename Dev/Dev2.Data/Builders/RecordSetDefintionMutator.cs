@@ -34,7 +34,7 @@ namespace Dev2.DataList.Contract
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    this.LogError(ex);
                 }
             }
 

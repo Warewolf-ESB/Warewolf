@@ -66,7 +66,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         propertyData = null;
                     }
 
@@ -86,7 +86,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        this.LogError(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

@@ -25,7 +25,7 @@ namespace Dev2.Runtime.WebServer
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError(ex);
+                    ServerLogger.LogError("Dev2.Runtime.WebServer.Extensions", ex);
                 }
             }
             return Encoding.UTF8;

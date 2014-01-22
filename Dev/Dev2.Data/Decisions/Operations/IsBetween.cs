@@ -29,7 +29,7 @@ namespace Dev2.Data.Decisions.Operations
                 {
                     try
                     {
-                        DateTime dt = new DateTime();
+                        DateTime dt;
                         if (DateTime.TryParse(c, out dt))
                         {
                             dtVal[pos] = dt;
@@ -37,7 +37,8 @@ namespace Dev2.Data.Decisions.Operations
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError(ex);
+                        
+                        this.LogError(ex);
                         // Best effort ;)
                     }
                 }
@@ -46,8 +47,8 @@ namespace Dev2.Data.Decisions.Operations
             }
 
 
-            double left = 0.0;
-            double right = 0.0;
+            double left;
+            double right;
 
             if(dVal.Length == 3)
             {
