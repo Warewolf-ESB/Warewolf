@@ -39,7 +39,11 @@ namespace Dev2.Network
             VerifyArgument.IsNotNull("serverUri", serverUri);
             ServerEvents = EventPublishers.Studio;
 
-            var uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
+            var uriString = serverUri;
+            if(!serverUri.EndsWith("dsf"))
+            {
+                uriString = serverUri + (serverUri.EndsWith("/") ? "" : "/") + "dsf";
+            }
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
 
