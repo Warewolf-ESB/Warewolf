@@ -585,7 +585,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 return false;
             };
 
-        public Action<object> ShowDialog = (deployDialogViewModel) =>
+        public Action<object> ShowDialog = deployDialogViewModel =>
             {
                 var dialog = new DeployViewDialog();
                 dialog.DataContext = deployDialogViewModel;

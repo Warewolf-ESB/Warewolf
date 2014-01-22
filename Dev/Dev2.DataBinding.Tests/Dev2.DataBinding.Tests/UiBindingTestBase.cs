@@ -5,24 +5,43 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Dev2.Studio;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.DataBinding.Tests
 {
+    [TestClass]
     public class UiBindingTestBase
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public UiBindingTestBase()
+        Window _window;
+
+        [TestInitialize]
+        public void TestSetUp()
         {
             if(Application.Current == null)
             {
                 var app = new App();
                 app.InitializeComponent();
+            }
+            if(SynchronizationContext.Current == null)
+            {
                 SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             }
         }
 
+        [ClassCleanup]
+        public void TestClassCleanUp()
+        {
+            if(_window != null)
+            {
+                _window.Dispatcher.InvokeShutdown();
+                _window.Close();
+            }
+            System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown();
+            if(Application.Current != null)
+            {
+                Application.Current.Shutdown();
+            }
+        }
         /// <summary>
         /// Gets the bindings.
         /// </summary>
@@ -30,12 +49,12 @@ namespace Dev2.DataBinding.Tests
         /// <returns></returns>
         protected List<Binding> GetBindings(UIElement sqlBulkInsertDesigner)
         {
-            var window = new Window();
+            var bindingList = new List<Binding>();
+            _window = new Window();
             Grid content = new Grid();
             content.Children.Add(sqlBulkInsertDesigner);
-            window.Content = content;
-            window.Show();
-            var bindingList = new List<Binding>();
+            _window.Content = content;
+            _window.Show();
             GetBindingsRecursive(sqlBulkInsertDesigner, bindingList);
             return bindingList;
         }
