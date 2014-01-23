@@ -174,9 +174,6 @@ Global
 		SccProjectName31 = Dev2.Instrumentation
 		SccLocalPath31 = Dev2.Instrumentation
 	EndGlobalSection
-	GlobalSection(CodealikeProperties) = postSolution
-		SolutionGuid = d52ae47b-ad35-419e-96de-386fe8d486d1
-	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
 	EndGlobalSection

@@ -5,7 +5,6 @@ namespace Dev2.Instrumentation
     {
         Workflows,
         ActivityExecution,       
-        Tabs,
         Deploy,
         Settings
     }
