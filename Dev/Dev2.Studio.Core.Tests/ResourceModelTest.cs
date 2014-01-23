@@ -18,6 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -75,12 +76,12 @@ namespace Dev2.Core.Tests
             // Setup();
             var environmentModel = CreateMockEnvironment(new EventPublisher());
             var resourceModel = new ResourceModel(environmentModel.Object);
-            var category = "TestCat";
-            var comment = "TestComment";
-            var displayName = "DisplayName";
-            var resourceName = "TestResourceName";
+            const string category = "TestCat";
+            const string comment = "TestComment";
+            const string displayName = "DisplayName";
+            const string resourceName = "TestResourceName";
             var id = Guid.NewGuid();
-            var tags = "TestTags";
+            const string tags = "TestTags";
             resourceModel.Category = category;
             resourceModel.Comment = comment;
             resourceModel.DisplayName = displayName;
@@ -89,8 +90,7 @@ namespace Dev2.Core.Tests
             resourceModel.Tags = tags;
             resourceModel.WorkflowXaml = new StringBuilder("new xaml");
             //------------Execute Test---------------------------
-            var updateResourceModel = new ResourceModel(environmentModel.Object);
-            updateResourceModel.WorkflowXaml = new StringBuilder("old xaml");
+            var updateResourceModel = new ResourceModel(environmentModel.Object) { WorkflowXaml = new StringBuilder("old xaml") };
             updateResourceModel.Update(resourceModel);
             //------------Assert Results-------------------------
             Assert.AreEqual("new xaml", updateResourceModel.WorkflowXaml.ToString());
@@ -104,12 +104,12 @@ namespace Dev2.Core.Tests
             var environmentModel = CreateMockEnvironment(new EventPublisher());
             var resourceModel = new ResourceModel(environmentModel.Object);
             const Permissions UserPermissions = Permissions.Contribute;
-            var category = "TestCat";
-            var comment = "TestComment";
-            var displayName = "DisplayName";
-            var resourceName = "TestResourceName";
+            const string category = "TestCat";
+            const string comment = "TestComment";
+            const string displayName = "DisplayName";
+            const string resourceName = "TestResourceName";
             var id = Guid.NewGuid();
-            var tags = "TestTags";
+            const string tags = "TestTags";
             resourceModel.Category = category;
             resourceModel.Comment = comment;
             resourceModel.DisplayName = displayName;
@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests
         public void ResourceModel_DataList_Setter_UpdatedDataListSectionInServiceDefinition()
         {
             Setup();
-            string newDataList = @"<DataList>
+            const string newDataList = @"<DataList>
   <Country />
   <State />
   <City>
@@ -440,7 +440,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            var serviceDefinition = model.ToServiceDefinition().ToString();
+            model.ToServiceDefinition();
 
             //------------Assert Results-------------------------
             repo.Verify(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
@@ -454,21 +454,23 @@ namespace Dev2.Core.Tests
         {
             const string TestCategory = "Test2";
             const string TestXaml = "current xaml";
-            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, (serviceElement) =>
+            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, serviceElement =>
             {
                 var actionElement = serviceElement.Element("Action");
+                Assert.IsNotNull(actionElement, "actionElement = null");
                 var xamlDefinition = actionElement.Element("XamlDefinition");
+                Assert.IsNotNull(xamlDefinition, "xamlDefinition == null");
                 Assert.AreEqual(TestXaml, xamlDefinition.Value);
 
             });
-            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Source, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, (serviceElement) =>
+            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Source, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, serviceElement =>
             {
                 var category = serviceElement.ElementSafe("Category");
                 var source = serviceElement.ElementSafe("Source");
                 Assert.AreEqual(TestCategory, category);
                 Assert.AreEqual(TestXaml, source);
             });
-            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Service, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, (serviceElement) =>
+            Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Service, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, serviceElement =>
             {
                 var category = serviceElement.ElementSafe("Category");
                 var source = serviceElement.ElementSafe("Source");
@@ -515,19 +517,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             //Setup();
-            var eventPublisher = new EventPublisher();
-            var environmentModel = CreateMockEnvironment(eventPublisher);
-
-            var repo = new Mock<IResourceRepository>();
-            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage("resource xaml"));
-
-            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
-
-            var instanceID = Guid.NewGuid();
-            var model = new ResourceModel(environmentModel.Object)
-            {
-                ID = instanceID
-            };
+            var model = CreateResourceModel();
             model.AddError(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
             model.AddError(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = Guid.NewGuid(), FixData = "Some fix data" });
             //------------Execute Test---------------------------
@@ -543,6 +533,60 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Warning error.", xElements[1].Attribute("Message").Value);
         }
 
+        static ResourceModel CreateResourceModel(string resourceDefintion = "resource xaml")
+        {
+            var eventPublisher = new EventPublisher();
+            var environmentModel = CreateMockEnvironment(eventPublisher);
+
+            var repo = new Mock<IResourceRepository>();
+            repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(MakeMessage(resourceDefintion));
+
+            environmentModel.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var instanceID = Guid.NewGuid();
+            var model = new ResourceModel(environmentModel.Object)
+            {
+                ID = instanceID
+            };
+            return model;
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_WhenServiceType_ShouldHaveFullServiceDefinition()
+        {
+            //------------Setup for test--------------------------
+            XElement element = new XElement("Action");
+            var resourceModel = CreateResourceModel(element.ToStringBuilder().ToString());
+            resourceModel.ResourceType = ResourceType.Service;
+            resourceModel.ServerResourceType = "WebService";
+            resourceModel.WorkflowXaml = null;
+
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(serviceDefinition, "ResourceType=\"WebService\"");
+            StringAssert.Contains(serviceDefinition, "Service ID=");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_WhenSourceType_ShouldHaveFullServiceDefinition()
+        {
+            //------------Setup for test--------------------------
+            XElement element = new XElement("Action");
+            var resourceModel = CreateResourceModel("from resource definition");
+            resourceModel.ResourceType = ResourceType.Source;
+            resourceModel.ServerResourceType = "WebSource";
+            resourceModel.WorkflowXaml = null;
+
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(serviceDefinition, "from resource definition");
+        }
         public static Mock<IEnvironmentModel> CreateMockEnvironment()
         {
             return CreateMockEnvironment(new EventPublisher());
@@ -622,7 +666,7 @@ namespace Dev2.Core.Tests
 
         public static ExecuteMessage MakeMessage(string msg)
         {
-            var result = new ExecuteMessage() { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg);
 
             return result;
@@ -852,11 +896,7 @@ namespace Dev2.Core.Tests
             };
             Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
 
-            model.OnPermissionsModifiedReceived += (sender, memo) =>
-            {
-                //------------Assert Results-------------------------
-                Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
-            };
+            model.OnPermissionsModifiedReceived += (sender, memo) => Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
 
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
@@ -889,18 +929,7 @@ namespace Dev2.Core.Tests
             };
             Assert.AreEqual(ResourcePermissions, model.UserPermissions);
 
-            model.OnPermissionsModifiedReceived += (sender, memo) =>
-            {
-                //------------Assert Results-------------------------
-                if(instanceID == Guid.Empty)
-                {
-                    Assert.AreEqual(ExpectedPermissions, model.UserPermissions);
-                }
-                else
-                {
-                    Assert.AreEqual(ResourcePermissions, model.UserPermissions);
-                }
-            };
+            model.OnPermissionsModifiedReceived += (sender, memo) => Assert.AreEqual(instanceID == Guid.Empty ? ExpectedPermissions : ResourcePermissions, model.UserPermissions);
 
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);

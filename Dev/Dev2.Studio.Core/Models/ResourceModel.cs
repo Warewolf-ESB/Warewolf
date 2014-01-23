@@ -561,7 +561,7 @@ namespace Dev2.Studio.Core.Models
 
             if(ResourceType == ResourceType.WorkflowService)
             {
-                XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
+
 
                 var xaml = WorkflowXaml;
 
@@ -571,29 +571,7 @@ namespace Dev2.Studio.Core.Models
                     xaml = msg.Message;
                 }
 
-                XElement service = new XElement("Service",
-                    new XAttribute("ID", ID),
-                    new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
-                    new XAttribute("ServerID", ServerID.ToString()),
-                    new XAttribute("Name", ResourceName ?? string.Empty),
-                    new XAttribute("ResourceType", ResourceType),
-                    new XAttribute("IsValid", IsValid),
-                    new XElement("DisplayName", ResourceName ?? string.Empty),
-                    new XElement("Category", Category ?? string.Empty),
-                    new XElement("IsNewWorkflow", IsNewWorkflow),
-                    new XElement("AuthorRoles", string.Empty),
-                    new XElement("Comment", Comment ?? string.Empty),
-                    new XElement("Tags", Tags ?? string.Empty),
-                    new XElement("IconPath", IconPath ?? string.Empty),
-                    new XElement("HelpLink", HelpLink ?? string.Empty),
-                    new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
-                    dataList,
-                    new XElement("Action",
-                        new XAttribute("Name", "InvokeWorkflow"),
-                        new XAttribute("Type", "Workflow"),
-                        new XElement("XamlDefinition", xaml)),
-                        new XElement("ErrorMessages", WriteErrors())
-                    );
+                var service = CreateWorkflowXElement(xaml);
 
                 // save to the string builder ;)
 
@@ -611,7 +589,16 @@ namespace Dev2.Studio.Core.Models
                 if(result == null)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
-                    result = msg.Message;
+                    var actionDefintion = msg.Message;
+                    if(ResourceType == ResourceType.Source)
+                    {
+                        result = actionDefintion;
+                    }
+                    else
+                    {
+                        var completeDefintion = CreateServiceXElement(actionDefintion);
+                        result = completeDefintion.ToStringBuilder();
+                    }
                 }
 
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
@@ -633,6 +620,60 @@ namespace Dev2.Studio.Core.Models
             }
 
             return result;
+        }
+
+        XElement CreateWorkflowXElement(StringBuilder xaml)
+        {
+            XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
+            XElement service = new XElement("Service",
+                new XAttribute("ID", ID),
+                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("ServerID", ServerID.ToString()),
+                new XAttribute("Name", ResourceName ?? string.Empty),
+                new XAttribute("ResourceType", ResourceType),
+                new XAttribute("IsValid", IsValid),
+                new XElement("DisplayName", ResourceName ?? string.Empty),
+                new XElement("Category", Category ?? string.Empty),
+                new XElement("IsNewWorkflow", IsNewWorkflow),
+                new XElement("AuthorRoles", string.Empty),
+                new XElement("Comment", Comment ?? string.Empty),
+                new XElement("Tags", Tags ?? string.Empty),
+                new XElement("IconPath", IconPath ?? string.Empty),
+                new XElement("HelpLink", HelpLink ?? string.Empty),
+                new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
+                dataList,
+                new XElement("Action",
+                    new XAttribute("Name", "InvokeWorkflow"),
+                    new XAttribute("Type", "Workflow"),
+                    new XElement("XamlDefinition", xaml)),
+                new XElement("ErrorMessages", WriteErrors())
+                );
+            return service;
+        }
+
+        XElement CreateServiceXElement(StringBuilder xaml)
+        {
+            XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
+            XElement service = new XElement("Service",
+                new XAttribute("ID", ID),
+                new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
+                new XAttribute("ServerID", ServerID.ToString()),
+                new XAttribute("Name", ResourceName ?? string.Empty),
+                new XAttribute("ResourceType", ServerResourceType),
+                new XAttribute("IsValid", IsValid),
+                new XElement("DisplayName", ResourceName ?? string.Empty),
+                new XElement("Category", Category ?? string.Empty),
+                new XElement("AuthorRoles", string.Empty),
+                new XElement("Comment", Comment ?? string.Empty),
+                new XElement("Tags", Tags ?? string.Empty),
+                new XElement("IconPath", IconPath ?? string.Empty),
+                new XElement("HelpLink", HelpLink ?? string.Empty),
+                new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
+                dataList,
+                new XElement("Actions", xaml.ToXElement()),
+                new XElement("ErrorMessages", WriteErrors())
+                );
+            return service;
         }
 
         List<XElement> WriteErrors()
