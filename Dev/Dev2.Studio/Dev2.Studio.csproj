@@ -340,6 +340,7 @@
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
     <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
+    <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
     <Compile Include="Views\Deploy\DeployViewDialog.xaml.cs">
       <DependentUpon>DeployViewDialog.xaml</DependentUpon>
     </Compile>

@@ -15,6 +15,7 @@ using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Browsers;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -1905,6 +1906,51 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.Verify(v => v.Debug(), showDebugWindowOnLoad ? Times.Once() : Times.Never());
 
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_HandleAddWorkSurfaceMessage")]
+        public void MainViewModel_AddWorkSurfaceContext_AddTheSameResourceACoupleOfTimes_ReloadResourceIsWillBeCalledOnce()
+        {
+            var vm = new MainViewModel();
+
+            var resourceId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+            var environmentId = Guid.NewGuid();
+            var workspaceId = Guid.NewGuid();
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.SetupGet(r => r.ID).Returns(resourceId);
+            resourceModel.SetupGet(r => r.ServerID).Returns(serverId);
+            resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
+           
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.SetupGet(e => e.ID) .Returns(environmentId);
+
+            var environmentConnection = new Mock<IEnvironmentConnection>();
+            environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
+
+            environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
+
+            var resourceRepository = new Mock<IResourceRepository>();
+            resourceRepository.Setup(re => re.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<ResourceModelEqualityComparer>(), It.IsAny<bool>())).Verifiable();
+
+            environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
+            resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
+
+            vm.GetWorkSurfaceContextViewModel = (r, c) => new Mock<IWorkSurfaceContextViewModel>().Object;
+
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+            vm.AddWorkSurfaceContext(resourceModel.Object);
+
+            resourceRepository.Verify(re => re.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<ResourceModelEqualityComparer>(), It.IsAny<bool>()), Times.Once());
         }
     }
 }

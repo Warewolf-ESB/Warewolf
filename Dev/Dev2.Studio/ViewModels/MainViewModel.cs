@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -46,6 +38,14 @@ using Dev2.Studio.Webs;
 using Dev2.Threading;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable once CheckNamespace
@@ -98,6 +98,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showStartPageCommand;
         readonly IAsyncWorker _asyncWorker;
         bool _hasActiveConnection;
+        readonly List<WorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<WorkSurfaceKey>();
 
         #endregion
 
@@ -1327,12 +1328,16 @@ namespace Dev2.Studio.ViewModels
             }
 
             //Activates if exists
-            var exists = ActivateWorkSurfaceIfPresent(resourceModel);
+            var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
+
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);
 
             if(exists)
             {
                 return;
             }
+
+            _resourcesCurrentlyInOpeningState.Add(workSurfaceKey);
 
             //This is done for when the app starts up because the item isnt open but it must load it from the server or the user will lose all thier changes
             IWorkspaceItem workspaceItem = WorkspaceItemRepository.Instance.WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
@@ -1342,13 +1347,29 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, _createDesigners));
+            AddAndActivateWorkSurface(GetWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel);
+
+            _resourcesCurrentlyInOpeningState.Remove(workSurfaceKey);
+        }
+
+        public Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> GetWorkSurfaceContextViewModel = (resourceModel, createDesigner) =>
+            {
+                return WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
+            };
+
+        private bool IsInOpeningState(IContextualResourceModel resource)
+        {
+            WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(resource);
+            return _resourcesCurrentlyInOpeningState.Any(c => WorkSurfaceKeyEqualityComparer.Current.Equals(key, c));
         }
 
         private void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context)
         {
-            Items.Add(context);
-            ActivateItem(context);
+            if(context != null)
+            {
+                Items.Add(context);
+                ActivateItem(context);
+            }
         }
 
         private void AddWorkSurface(IWorkSurfaceObject obj)

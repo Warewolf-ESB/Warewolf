@@ -1,8 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.View;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Messages;
@@ -24,10 +20,13 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
-
 using Dev2.Studio.Webs;
 using Dev2.Utils;
 using Dev2.Workspaces;
+using System;
+using System.Activities.Presentation.View;
+using System.Linq;
+using System.Windows.Input;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -39,7 +38,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>, IHandle<DebugResourceMessage>,
                                  IHandle<ExecuteResourceMessage>,
-                                 IHandle<UpdateWorksurfaceDisplayName>
+                                 IHandle<UpdateWorksurfaceDisplayName>, IWorkSurfaceContextViewModel
     {
         #region private fields
 
