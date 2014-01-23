@@ -13,11 +13,13 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartServer()
         {
+#if !TEST
 #if DEBUG
             Start("2385158467", "http://27504.tbnet1.com");
 #else
             // RELEASE
             Start("2385158467", "http://27504.tbnet1.com");
+#endif
 #endif
         }
 
@@ -27,11 +29,13 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartStudio()
         {
+#if !TEST
 #if DEBUG
             Start("2385158467", "http://27504.tbnet1.com");
 #else
             // RELEASE
             Start("2385158467", "http://27504.tbnet1.com");
+#endif
 #endif
         }
 
@@ -41,7 +45,7 @@ namespace Dev2.Instrumentation
             var productVersion = version.ToString();
             var productBuildNumber = version.Build.ToString(CultureInfo.InvariantCulture);
             var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
-            App.Start(config);         
+            App.Start(config);
         }
 
         /// <summary>
@@ -51,10 +55,9 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void Stop()
         {
-            if(App.IsConfigLoaded)
-            {
-                App.Stop();
-            }
+#if !TEST
+            App.Stop();
+#endif
         }
 
         /// <summary>
@@ -65,10 +68,9 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, double? eventValue = null)
         {
-            if(App.IsConfigLoaded)
-            {
-                TrackEvent(eventGroup, eventName.ToString(), eventValue);
-            }
+#if !TEST
+            TrackEvent(eventGroup, eventName.ToString(), eventValue);
+#endif
         }
 
         /// <summary>
@@ -79,10 +81,9 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, double? eventValue = null)
         {
-            if(App.IsConfigLoaded)
-            {
-                App.EventTrack(eventGroup.ToString(), customText, eventValue);
-            }
+#if !TEST
+            App.EventTrack(eventGroup.ToString(), customText, eventValue);
+#endif
         }
 
         /// <summary>
@@ -93,10 +94,9 @@ namespace Dev2.Instrumentation
         /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
-            if(App.IsConfigLoaded)
-            {
-                App.ExceptionTrack(className, methodName, ex);
-            }
+#if !TEST
+            App.ExceptionTrack(className, methodName, ex);
+#endif
         }
     }
 }
