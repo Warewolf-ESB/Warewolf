@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Communication;
@@ -1906,65 +1907,6 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.Verify(v => v.Debug(), showDebugWindowOnLoad ? Times.Once() : Times.Never());
 
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("MainViewModel_AddWorkSurfaceContext")]
-        public void MainViewModel_AddWorkSurfaceContext_AddTheSameResourceACoupleOfTimes_ReloadResourceIsWillBeCalledOnce()
-        {
-            var resourceId = Guid.NewGuid();
-            var serverId = Guid.NewGuid();
-            var environmentId = Guid.NewGuid();
-            var workspaceId = Guid.NewGuid();
-
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            resourceModel.SetupGet(r => r.ID).Returns(resourceId);
-            resourceModel.SetupGet(r => r.ServerID).Returns(serverId);
-            resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
-           
-            var environmentModel = new Mock<IEnvironmentModel>();
-            environmentModel.SetupGet(e => e.ID) .Returns(environmentId);
-
-            var environmentConnection = new Mock<IEnvironmentConnection>();
-            environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
-
-            environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
-
-            var resourceRepository = new Mock<IResourceRepository>();
-            resourceRepository.Setup(re => re.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<ResourceModelEqualityComparer>(), It.IsAny<bool>())).Verifiable();
-
-            environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
-            resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
-
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
-            environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
-            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
-            environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
-
-            var vm = new MainViewModel(new Mock<IEventAggregator>().Object,
-                                       AsyncWorkerTests.CreateSynchronousAsyncWorker().Object,
-                                       environmentRepository.Object,
-                                       new Mock<IVersionChecker>().Object,
-                                       false,
-                                       new Mock<IBrowserPopupController>().Object,
-                                       new Mock<IPopupController>().Object,
-                                       new Mock<IWindowManager>().Object,
-                                       new Mock<IWebController>().Object,
-                                       new Mock<IFeedbackInvoker>().Object);
-
-            vm.GetWorkSurfaceContextViewModel = (r, c) => new Mock<IWorkSurfaceContextViewModel>().Object;
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-            vm.AddWorkSurfaceContext(resourceModel.Object);
-
-            resourceRepository.Verify(re => re.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<ResourceModelEqualityComparer>(), It.IsAny<bool>()), Times.Once());
         }
     }
 }
