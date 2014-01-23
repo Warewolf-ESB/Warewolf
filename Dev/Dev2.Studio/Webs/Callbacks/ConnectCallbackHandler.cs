@@ -68,9 +68,8 @@ namespace Dev2.Studio.Webs.Callbacks
             }
 
             var resourceID = Guid.Parse(connectionID);
-            var activeEnvironment = CurrentEnvironmentRepository.ActiveEnvironment;
             var connection = new ServerProxy(new Uri(connectionUri));
-            var newEnvironment = new EnvironmentModel(resourceID, connection, activeEnvironment.ResourceRepository) { Name = connectionName, Category = category };
+            var newEnvironment = new EnvironmentModel(resourceID, connection) { Name = connectionName, Category = category };
 
             if(defaultEnvironment != null)
             {
