@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.Deploy
 
             var deployStatsCalculator = new DeployStatsCalculator();
 
-            deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, deployStatsCalculator)
+            deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, deployStatsCalculator)
             {
                 SelectedSourceServer = source.Object,
                 SelectedDestinationServer = destination.Object
@@ -96,7 +96,7 @@ namespace Dev2.Core.Tests.Deploy
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, statsCalc.Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, statsCalc.Object);
             return deployViewModel;
         }
 
@@ -116,7 +116,7 @@ namespace Dev2.Core.Tests.Deploy
             {
                 mockEventAggregator = new Mock<IEventAggregator>();
             }
-            vm = new DeployViewModel(serverProvider.Object, repo.Object, mockEventAggregator.Object);
+            vm = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo.Object, mockEventAggregator.Object);
             return envID;
         }
 

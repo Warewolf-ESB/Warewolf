@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests
 
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object);
 
             // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
             deployViewModel.Source.Environments.Clear();
@@ -113,7 +113,7 @@ namespace Dev2.Core.Tests
             int calcStats;
             mockDeployStatsCalculator.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats)).Verifiable();
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockDeployStatsCalculator.Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockDeployStatsCalculator.Object);
 
             // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
             deployViewModel.Source.Environments.Clear();
@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests
             var statsCalc = new Mock<IDeployStatsCalculator>();
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ITreeNode>())).Returns(true);
 
-            var deployViewModel = new DeployViewModel(serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
 
             Assert.IsTrue(source.Object.IsConnected);
             Assert.IsTrue(s1.IsConnected);
@@ -424,7 +424,7 @@ namespace Dev2.Core.Tests
             //Setup Server Resources
             server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));
 
-            var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
             {
                 Source = mockedSource
             };

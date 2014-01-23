@@ -100,7 +100,7 @@ namespace Dev2.Core.Tests.Deploy
             resourceTreeNode.IsChecked = true;
             server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(resourceTreeNode));
 
-            var deployViewModel = new DeployViewModel(provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
             {
                 Source = mockedSource
             };

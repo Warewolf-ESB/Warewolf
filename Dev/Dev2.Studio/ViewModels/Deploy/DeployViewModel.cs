@@ -72,20 +72,22 @@ namespace Dev2.Studio.ViewModels.Deploy
         #region Constructor
 
         public DeployViewModel()
-            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator)
         {
         }
 
-        public DeployViewModel(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
             : base(eventAggregator)
         {
+            VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
+
             _initialItemEnvironment = environment;
             _initialItemDisplayName = displayName;
-            Initialize(serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
+            Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
         }
 
         public DeployViewModel(string displayName, IEnvironmentModel environment)
-            : this(ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
+            : this(new AsyncWorker(),  ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
         {
         }
 
@@ -335,7 +337,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Private Methods
 
-        private void Initialize(IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
+        private void Initialize(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
         {
             EnvironmentRepository = environmentRepository;
 
@@ -346,8 +348,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(eventAggregator, new AsyncWorker(), DestinationContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployTo) { Parent = this };
-            Source = new NavigationViewModel(eventAggregator, new AsyncWorker(), SourceContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployFrom) { Parent = this };
+            Target = new NavigationViewModel(eventAggregator, asyncWorker, DestinationContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployTo) { Parent = this };
+            Source = new NavigationViewModel(eventAggregator, asyncWorker, SourceContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployFrom) { Parent = this };
 
             SetupPredicates();
             SetupCommands();
