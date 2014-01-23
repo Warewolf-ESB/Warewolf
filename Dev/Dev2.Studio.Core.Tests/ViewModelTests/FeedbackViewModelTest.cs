@@ -9,7 +9,6 @@ using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Help;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Win32;
 using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests
@@ -17,7 +16,8 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for FeedbackViewModelTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FeedbackViewModelTest
     {
         #region Static Class Init
@@ -115,6 +115,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_IsOutlookInstalled")]
+        [Ignore]
         public void FeedbackViewModel_IsOutlookInstalled_IsTrue_SendMessageButtonCaptionIsSetToOpenMail()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
@@ -141,6 +142,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_IsOutlookInstalled")]
+        [Ignore]
         public void FeedbackViewModel_IsOutlookInstalled_IsFalse_SendMessageButtonCaptionIsSetToGotoCommunity()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
@@ -167,6 +169,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_Send")]
+        [Ignore]
         public void FeedbackViewModel_Send_OutlookIsNotInstalled_BrowserIsOpenedToCommunity()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
@@ -198,6 +201,7 @@ OS version : ");
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FeedbackViewModel_Send")]
+        [Ignore]
         public void FeedbackViewModel_Send_OutlookIsInstalled_BrowserIsNotOpenedToCommunity()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
@@ -224,7 +228,7 @@ OS version : ");
             feedbackViewModel.Send();
 
             popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
-       }
+        }
 
         //[TestMethod]
         //[Owner("Tshepo Ntlhokoa")]
@@ -254,7 +258,7 @@ OS version : ");
         //    feedbackViewModel.BrowserPopupController = popupController.Object;
         //    var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
         //    object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
-           
+
         //    //Assert that the outlook is the default mail client only if its installed on the machine
         //    if(isOutlookInstalled)
         //    {
@@ -319,7 +323,7 @@ OS version : ");
             Assert.AreEqual(attachmentPath3, viewModel.StudioLogAttachmentPath);
             Assert.IsTrue(viewModel.HasServerLogAttachment);
             Assert.IsTrue(viewModel.HasRecordingAttachment);
-           
+
             viewModel.Send(mockCommService.Object);
             mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>())
                                  , Times.Once()
@@ -358,7 +362,7 @@ OS version : ");
             var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
             File.WriteAllText(attachmentPath, "test text");
 
-            var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath }};
+            var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath } };
 
             var feedbackViewModel = new FeedbackViewModel(attachedFiles);
 

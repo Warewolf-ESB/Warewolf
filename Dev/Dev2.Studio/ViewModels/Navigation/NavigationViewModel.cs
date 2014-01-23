@@ -304,7 +304,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             if(returnNavigationItemViewModel == null && createIfMissing)
             {
-                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment, new AsyncWorker());
+                returnNavigationItemViewModel = new EnvironmentTreeViewModel(_eventPublisher, Root, environment, _asyncWorker);
             }
 
             return returnNavigationItemViewModel;

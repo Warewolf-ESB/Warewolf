@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Dev2.Common;
 
 namespace Dev2.Services.Security
 {
