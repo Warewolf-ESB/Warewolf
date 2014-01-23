@@ -154,7 +154,6 @@ Ashley,Lewis
 Sashen,Naidoo
 Wallis,Buchan
 ";
-
             Assert.AreEqual(expected.Replace("\r\n", "\n"), actual);
         }
 
