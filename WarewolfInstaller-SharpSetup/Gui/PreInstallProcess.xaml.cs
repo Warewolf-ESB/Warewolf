@@ -228,9 +228,12 @@ namespace Gui
 
                 sc.Dispose();
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception e)
+            // ReSharper restore EmptyGeneralCatchClause
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
+                // Avoid showing message here, cancel is just cancel ;)
             }
 
         }
