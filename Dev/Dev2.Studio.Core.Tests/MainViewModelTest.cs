@@ -1909,12 +1909,10 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("MainViewModel_HandleAddWorkSurfaceMessage")]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("MainViewModel_AddWorkSurfaceContext")]
         public void MainViewModel_AddWorkSurfaceContext_AddTheSameResourceACoupleOfTimes_ReloadResourceIsWillBeCalledOnce()
         {
-            var vm = new MainViewModel();
-
             var resourceId = Guid.NewGuid();
             var serverId = Guid.NewGuid();
             var environmentId = Guid.NewGuid();
@@ -1940,8 +1938,24 @@ namespace Dev2.Core.Tests
             environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
             resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
 
-            vm.GetWorkSurfaceContextViewModel = (r, c) => new Mock<IWorkSurfaceContextViewModel>().Object;
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
+            environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
+            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
+            environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
 
+            var vm = new MainViewModel(new Mock<IEventAggregator>().Object,
+                                       AsyncWorkerTests.CreateSynchronousAsyncWorker().Object,
+                                       environmentRepository.Object,
+                                       new Mock<IVersionChecker>().Object,
+                                       false,
+                                       new Mock<IBrowserPopupController>().Object,
+                                       new Mock<IPopupController>().Object,
+                                       new Mock<IWindowManager>().Object,
+                                       new Mock<IWebController>().Object,
+                                       new Mock<IFeedbackInvoker>().Object);
+
+            vm.GetWorkSurfaceContextViewModel = (r, c) => new Mock<IWorkSurfaceContextViewModel>().Object;
             vm.AddWorkSurfaceContext(resourceModel.Object);
             vm.AddWorkSurfaceContext(resourceModel.Object);
             vm.AddWorkSurfaceContext(resourceModel.Object);
