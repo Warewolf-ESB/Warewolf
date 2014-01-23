@@ -6,7 +6,8 @@ namespace Dev2.Instrumentation
         Workflows,
         ActivityExecution,       
         Deploy,
-        Settings
+        Settings,
+        Installations
     }
 
     public enum TrackerEventName

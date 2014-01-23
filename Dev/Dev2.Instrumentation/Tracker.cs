@@ -13,7 +13,12 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartServer()
         {
+#if DEBUG
             Start("2385158467", "http://27504.tbnet1.com");
+#else
+            // RELEASE
+            Start("2385158467", "http://27504.tbnet1.com");
+#endif
         }
 
         /// <summary>
@@ -22,7 +27,12 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartStudio()
         {
+#if DEBUG
             Start("2385158467", "http://27504.tbnet1.com");
+#else
+            // RELEASE
+            Start("2385158467", "http://27504.tbnet1.com");
+#endif
         }
 
         static void Start(string productID, string callHomeUrl)

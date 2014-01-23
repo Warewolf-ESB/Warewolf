@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Configuration.Install;
 using System.ServiceProcess;
 using Dev2.Common;
+using Dev2.Instrumentation;
 
 namespace Dev2
 {
@@ -41,6 +42,8 @@ namespace Dev2
 
         public static bool Install()
         {
+            Tracker.StartServer();
+
             bool result = true;
 
             InstallContext context = null;
@@ -59,9 +62,11 @@ namespace Dev2
                     {
                         inst.Install(state);
                         inst.Commit(state);
+                        Tracker.TrackEvent(TrackerEventGroup.Installations, "Installed");
                     }
                     catch(Exception err)
                     {
+                        Tracker.TrackException("WindowsServiceManager", "Install", err);
                         try
                         {
                             inst.Rollback(state);
@@ -79,12 +84,18 @@ namespace Dev2
                 result = false;
                 WriteExceptions(ex, context);
             }
+            finally
+            {
+                Tracker.Stop();
+            }
 
             return result;
         }
 
         public static bool Uninstall()
         {
+            Tracker.StartServer();
+
             bool result = true;
 
             InstallContext context = null;
@@ -99,9 +110,11 @@ namespace Dev2
                     try
                     {
                         inst.Uninstall(state);
+                        Tracker.TrackEvent(TrackerEventGroup.Installations, "Uninstalled");
                     }
                     catch(Exception err)
                     {
+                        Tracker.TrackException("WindowsServiceManager", "Uninstall", err);
                         try
                         {
                             inst.Rollback(state);
@@ -119,7 +132,10 @@ namespace Dev2
                 result = false;
                 WriteExceptions(ex, context);
             }
-
+            finally
+            {
+                Tracker.Stop();
+            }
             return result;
         }
 
