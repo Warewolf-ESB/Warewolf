@@ -415,7 +415,6 @@ namespace Dev2.Core.Tests
         public void ResourceModel_ToServiceDefinition_GivenXamlNull_ExpectFetchOfXaml()
         {
             Verify_ToServiceDefinition_GivenXamlNull(ResourceType.WorkflowService);
-            Verify_ToServiceDefinition_GivenXamlNull(ResourceType.Service);
             Verify_ToServiceDefinition_GivenXamlNull(ResourceType.Source);
         }
 
