@@ -57,7 +57,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.Debug);
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
             var handler = DebugExecutionStart;
             if(handler != null)
             {
@@ -294,7 +294,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ViewInBrowser()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowser);
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
             DoSaveActions();
             var isXml = false;
             string payload;

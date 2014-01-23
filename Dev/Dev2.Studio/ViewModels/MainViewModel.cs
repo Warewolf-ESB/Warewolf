@@ -1221,7 +1221,7 @@ namespace Dev2.Studio.ViewModels
                 WorkSurfaceContextViewModel context = WorkSurfaceContextFactory.CreateDeployViewModel(input);
                 Items.Add(context);
                 ActivateItem(context);
-                Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.OpenDeploy);
+                Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.Opened);
             }
         }
 
@@ -1277,7 +1277,7 @@ namespace Dev2.Studio.ViewModels
             {
                 if(typeof(T) == typeof(SettingsViewModel))
                 {
-                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.OpenSettings);
+                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.Opened);
                 }
 
                 CreateAndActivateUniqueWorkSurface<T>(context, initParms);

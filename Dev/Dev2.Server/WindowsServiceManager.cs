@@ -62,7 +62,7 @@ namespace Dev2
                     {
                         inst.Install(state);
                         inst.Commit(state);
-                        Tracker.TrackEvent(TrackerEventGroup.Installations, "Installed");
+                        Tracker.TrackEvent(TrackerEventGroup.Installations, TrackerEventName.Installed);
                     }
                     catch(Exception err)
                     {
@@ -110,7 +110,7 @@ namespace Dev2
                     try
                     {
                         inst.Uninstall(state);
-                        Tracker.TrackEvent(TrackerEventGroup.Installations, "Uninstalled");
+                        Tracker.TrackEvent(TrackerEventGroup.Installations, TrackerEventName.Uninstalled);
                     }
                     catch(Exception err)
                     {

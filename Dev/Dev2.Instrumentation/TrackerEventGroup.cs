@@ -3,21 +3,22 @@ namespace Dev2.Instrumentation
 {
     public enum TrackerEventGroup
     {
+        Installations,
         Workflows,
-        ActivityExecution,       
+        ActivityExecution,
         Deploy,
         Settings,
-        Installations
     }
 
     public enum TrackerEventName
     {
-        Execute,
-        OpenSettings,
-        SaveSettings,
-        OpenDeploy,
-        Deploy,
-        ViewInBrowser,
-        Debug
+        Installed,
+        Uninstalled,
+        Executed,
+        Opened,
+        SaveClicked,
+        DeployClicked,
+        ViewInBrowserClicked,
+        DebugClicked,
     }
 }

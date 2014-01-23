@@ -311,7 +311,7 @@ namespace Dev2.Settings
 
         void SaveSettings()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveSettings);
+            Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
             // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
             ResetIsDirtyForChildren();
             ClearErrors();

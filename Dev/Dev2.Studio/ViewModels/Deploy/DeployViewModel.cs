@@ -525,7 +525,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void Deploy()
         {
-            Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.Deploy);
+            Tracker.TrackEvent(TrackerEventGroup.Deploy, TrackerEventName.DeployClicked);
             if(_deployStatsCalculator != null
                 && _deployStatsCalculator.ConflictingResources != null
                 && _deployStatsCalculator.ConflictingResources.Count > 0)
