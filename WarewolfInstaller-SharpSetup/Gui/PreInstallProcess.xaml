@@ -16,107 +16,77 @@
     <Border>
         <DockPanel HorizontalAlignment="Stretch"
                    Margin="0,0,0,-26">
-            <StackPanel>
+            <Grid Background="Transparent"
+                  DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <TextBlock Style="{StaticResource TextBlockStyle}"
+                           Background="White"
+                           Padding="10"
+                           Height="35"
+                           Grid.Row="0"
+                           Grid.Column="0"
                            FontSize="14"
+                           Margin="0"
                            FontWeight="Bold"
-                           DockPanel.Dock="Top"
-                           Height="53"
-                           Margin="0,10,0,10"
                            TextWrapping="Wrap"
                            Text="{x:Static props:Resources.PreInstallProcess_Title}" />
-                <StackPanel Orientation="Horizontal"
-                            Height="20">
-                    <TextBlock Style="{StaticResource TextBlockStyle}"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Top"
-                               Name="PreInstallMsg"
-                               TextWrapping="Wrap"
-                               Text="{x:Static props:Resources.PreInstallProcess_MessageMain}"
-                               Width="269"
-                               Height="25" />
-                    <Image Visibility="Visible"
-                           Source="pack://application:,,,/Resourcefiles/Images/tick.png"
-                           Name="preInstallStatusImg"
-                           Margin="0,-2,0,0"
-                           Width="16"
-                           Height="16"
-                           RenderTransformOrigin="1.651,2.784" />
-                    <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar" Margin="0,-2,0,0" Height="20" Width="20"/>
-                </StackPanel>
-                <StackPanel Orientation="Vertical"
-                            Margin="0,10,0,5" >
-                    <CheckBox Style="{StaticResource CheckBoxStyle}"
-                              VerticalAlignment="Bottom"
-                              IsChecked="true"
-                              Content="{x:Static props:Resources.PreInstall_InstallShortcuts}"
-                              Margin="0,10,0,0"
-                              Click="BtnInstallShortcuts"
-                              Visibility="Visible"
-                              Name="cbInstallShortcuts" />
-                    <CheckBox Style="{StaticResource CheckBoxStyle}"
-                              VerticalAlignment="Bottom"
-                              IsChecked="true"
-                              Content="{x:Static props:Resources.PreInstall_UseLocalSystemAccount}"
-                              Margin="0,5,0,5"
-                              Click="BtnUseLocalSystemAccount"
-                              Visibility="Visible"
-                              x:Name="cbLocalSystemAccount">
-                    </CheckBox>
+                <Rectangle Grid.Row="1"
+                           Fill="#F3700D"
+                           Margin="-10,0,0,0"></Rectangle>
+                <StackPanel Grid.Row="2"
+                            Margin="0,10,0,0">
                     <StackPanel Orientation="Horizontal"
-                                Margin="0,10,0,0">
-                        <Label Style="{StaticResource LabelStyle}"
-                               Width="70"
-                               Content="Username"
-                               Margin="0,0,30,0"></Label>
-                        <TextBox Style="{StaticResource TextBoxStyle}"
-                                 x:Name="TxtUserName"
-                                 IsEnabled="{Binding ElementName=cbLocalSystemAccount,Path=IsChecked,Converter={StaticResource InverseBooleanConverter}}"
-                                 Height="25"
-                                 Width="300"></TextBox>
+                                Height="20">
+                        <TextBlock Style="{StaticResource TextBlockStyle}"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Name="PreInstallMsg"
+                                   TextWrapping="Wrap"
+                                   Text="{x:Static props:Resources.PreInstallProcess_MessageMain}"
+                                   Width="269"
+                                   Height="25" />
+                        <Image Visibility="Visible"
+                               Source="pack://application:,,,/Resourcefiles/Images/tick.png"
+                               Name="preInstallStatusImg"
+                               Margin="0,-2,0,0"
+                               Width="16"
+                               Height="16"
+                               RenderTransformOrigin="1.651,2.784" />
+                        <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar"
+                                                            Margin="0,-2,0,0"
+                                                            Height="20"
+                                                            Width="20" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"
-                                Margin="0,5,0,5">
-                        <Label Style="{StaticResource LabelStyle}"
-                               Width="70"
-                               Content="Password"
-                               Margin="0,0,30,0"></Label>
-                        <PasswordBox Style="{StaticResource PasswordBoxStyle}"
-                                     x:Name="PassPassword"
-                                     IsEnabled="{Binding ElementName=cbLocalSystemAccount,Path=IsChecked,Converter={StaticResource InverseBooleanConverter}}"
-                                     Height="25"
-                                     Width="300"></PasswordBox>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"
-                            Height="60"
-                            Width="400">
-                    <TextBlock Style="{StaticResource TextBlockStyle}"
-                               FontSize="10"
-                               FontWeight="Bold"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Bottom"
-                               Name="StatsCollectionMessasge"
-                               TextWrapping="Wrap"
-                               Text="{x:Static props:Resources.PreInstall_StatsCollection_Msg}"
-                               Width="298"
-                               Height="32"
-                               Margin="0,18,0,10" />
-                </StackPanel>
+                    <StackPanel Orientation="Vertical"
+                                Margin="0,10,0,5">
+                        <CheckBox Style="{StaticResource CheckBoxStyle}"
+                                  VerticalAlignment="Bottom"
+                                  IsChecked="true"
+                                  Content="{x:Static props:Resources.PreInstall_InstallShortcuts}"
+                                  Margin="0,10,0,0"
+                                  Click="BtnInstallShortcuts"
+                                  Visibility="Visible"
+                                  Name="cbInstallShortcuts" />                      
+                    </StackPanel>                 
 
-                <Button Style="{StaticResource ButtonStyle}"
-                        x:Name="btnRerun"
-                        Content="Try Again"
-                        Padding="16,2,16,2"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Left"
-                        VerticalContentAlignment="Stretch"
-                        Height="16"
-                        Visibility="Visible"
-                        Width="287"
-                        Click="BtnRerun_OnClick" />
-                <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
-            </StackPanel>
+                    <Button Style="{StaticResource ButtonStyle}"
+                            x:Name="btnRerun"
+                            Content="Try Again"
+                            Padding="16,2,16,2"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            VerticalContentAlignment="Stretch"
+                            Height="16"
+                            Visibility="Visible"
+                            Width="287"
+                            Click="BtnRerun_OnClick" />
+                    <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
+                </StackPanel>
+            </Grid>
 
         </DockPanel>
     </Border>

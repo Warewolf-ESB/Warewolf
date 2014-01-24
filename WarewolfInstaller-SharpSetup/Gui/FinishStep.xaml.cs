@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows;
 
 namespace Gui
@@ -7,10 +8,9 @@ namespace Gui
     /// </summary>
     public partial class FinishStep
     {
-        public FinishStep(int stepNumber, int totalSteps)
+        public FinishStep(int stepNumber, List<string> listOfStepNames)
         {
-            InitializeComponent();
-
+            InitializeComponent();            
             // swap text at end if not install mode ;)
             if(!InstallVariables.IsInstallMode)
             {
@@ -25,7 +25,7 @@ namespace Gui
                 // Force a studio start ;)
                 InstallVariables.StartStudioOnExit = true;
             }
-            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
+            DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
         void BtnExitWithStart(object sender, RoutedEventArgs e)

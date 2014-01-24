@@ -8,12 +8,12 @@ namespace Gui
     /// <summary>
     /// Interaction logic for LicenseStep.xaml
     /// </summary>
-    public partial class LicenseStep
+    public partial class PrivacyStatmentStep
     {
-        public LicenseStep(int stepNumber, List<string> listOfStepNames)
+        public PrivacyStatmentStep(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
-            rtbLicense.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.WAREWOLF_EULA_EN)), DataFormats.Rtf);
+            rtbStatement.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.WAREWOLF_EULA_EN)), DataFormats.Rtf);
             Loaded += (o, e) => cbAccept.Focus();
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }

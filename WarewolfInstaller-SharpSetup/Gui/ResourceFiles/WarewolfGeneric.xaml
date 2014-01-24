@@ -3,7 +3,9 @@
                     xmlns:controls="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
                     xmlns:p="clr-namespace:SharpSetup.UI.Wpf.Properties;assembly=SharpSetup.Wpf"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:converters="clr-namespace:Gui.ResourceFiles.Converters">
+                    xmlns:converters="clr-namespace:Gui.ResourceFiles.Converters"
+                    xmlns:customControls="clr-namespace:Gui.ResourceFiles.Custom_Controls"
+                    xmlns:props="clr-namespace:Gui.Properties">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/CommonMetro.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Gui;component/ResourceFiles/ButtonBrushes.xaml" />
@@ -628,6 +630,69 @@
         </Setter>
     </Style>
 
+    <Style  x:Key="DefaultDataGridCellStyle"
+            TargetType="{x:Type DataGridCell}">
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="BorderBrush"
+                Value="Transparent" />
+        <Setter Property="VerticalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalAlignment"
+                Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Focusable"
+                Value="False"></Setter>
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Border x:Name="border"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Unfocused" />
+                                <VisualState x:Name="Focused" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CurrentStates">
+                                <VisualState x:Name="Regular" />
+                                <VisualState x:Name="Current">
+                                    <Storyboard>
+                                        <ColorAnimationUsingKeyFrames Storyboard.TargetName="border"
+                                                                      Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                            <EasingColorKeyFrame KeyTime="0"
+                                                                 Value="Gray" />
+                                        </ColorAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsSelected"
+                     Value="True">
+                <Setter Property="Foreground"
+                        Value="{StaticResource ForegroundBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="{x:Type controls:ModernWizard}"
            x:Uid="Style_1"
            TargetType="{x:Type controls:ModernWizard}">
@@ -655,17 +720,10 @@
                 <ControlTemplate x:Uid="ControlTemplate_1"
                                  TargetType="{x:Type controls:ModernWizard}">
                     <Border BorderBrush="{TemplateBinding Control.BorderBrush}"
-                            Width="502"
-                            Height="389"
-                            CornerRadius="15"
+                            Width="510"
+                            Height="370"
                             BorderThickness="{TemplateBinding Control.BorderThickness}"
                             Background="LightGray">
-                        <Border.Effect>
-                            <DropShadowEffect Color="Black"
-                                              Direction="270"
-                                              BlurRadius="10"
-                                              ShadowDepth="3" />
-                        </Border.Effect>
                         <DockPanel x:Uid="DockPanel_1">
                             <Grid x:Uid="Grid_1"
                                   Margin="8"
@@ -802,71 +860,65 @@
         <Setter Property="Page.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
-                    <Border CornerRadius="15,15,0,0">
-                        <Border.Background>
-                            <LinearGradientBrush>
-                                <GradientStop Color="#7F7F7F"
-                                              Offset="0.0" />
-                                <GradientStop Color="White"
-                                              Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Grid HorizontalAlignment="Stretch"
-                              Margin="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="80" />
-                            </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"></ContentPresenter>
-                            <Image Grid.Column="1"
-                                   x:Name="WarewolfIcon"
-                                   Height="70"
-                                   Width="70"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Top"
-                                   Source="/Gui;component/Warewolf.ico">
-                                <Image.Triggers>
-                                    <EventTrigger RoutedEvent="MouseEnter">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                                 From="70"
-                                                                 To="80"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                                 From="70"
-                                                                 To="80"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="MouseLeave">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                                 From="80"
-                                                                 To="70"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                                 From="80"
-                                                                 To="70"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                </Image.Triggers>
-                            </Image>
-                            <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Bottom"
-                                       HorizontalAlignment="Right"
-                                       FontWeight="Bold"
-                                       Style="{StaticResource TextBlockStyle}"
-                                       Text="{Binding StepsString}"></TextBlock>
-                        </Grid>
+                    <Border Background="White">
+                        <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Background="#7F7F7F"
+                                            Grid.Column="0">
+                                    <Image Height="70"
+                                           Width="70"
+                                           Margin="10"
+                                           x:Name="WarewolfIcon"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Source="/Gui;component/Warewolf.ico">
+                                    </Image>
+                                    <DataGrid ItemsSource="{Binding StepsCollection}"
+                                              GridLinesVisibility="None"
+                                              BorderThickness="0"
+                                              Margin="5"
+                                              AutoGenerateColumns="False"
+                                              Background="Transparent"
+                                              CanUserAddRows="False"
+                                              HeadersVisibility="None"
+                                              RowBackground="Transparent"
+                                              CellStyle="{StaticResource DefaultDataGridCellStyle}">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="20"
+                                                                    IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Gui;component/ResourceFiles/Images/tick.png"
+                                                                   Height="15"
+                                                                   Width="15"
+                                                                   Visibility="{Binding TickVisibility}"></Image>
+                                                            <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar"
+                                                                                                Height="15"
+                                                                                                Width="15"
+                                                                                                Visibility="{Binding SpinnerVisibility}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="*"
+                                                                    IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Foreground="White"
+                                                               Background="Transparent"
+                                                               Content="{Binding StepName}"></Label>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                                <ContentPresenter Grid.Column="1" />
+                            </Grid>
                     </Border>
                 </ControlTemplate>
 
@@ -879,75 +931,68 @@
         <Setter Property="Page.Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernInfoStep}">
-                    <Border CornerRadius="15,15,0,0">
-                        <Border.Background>
-                            <LinearGradientBrush>
-                                <GradientStop Color="#7F7F7F"
-                                              Offset="0.0" />
-                                <GradientStop Color="White"
-                                              Offset="1.0" />
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Grid HorizontalAlignment="Stretch"
-                              Margin="10">
+                    <Border Background="White">
+                        <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
-                            <ContentPresenter Grid.Column="0"></ContentPresenter>
-                            <Image Grid.Column="1"
-                                   Height="70"
-                                   Width="70"
-                                   x:Name="WarewolfIcon"
-                                   HorizontalAlignment="Right"
-                                   VerticalAlignment="Top"
-                                   Source="/Gui;component/Warewolf.ico">
-                                <Image.Triggers>
-                                    <EventTrigger RoutedEvent="MouseEnter">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                                 From="70"
-                                                                 To="80"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                                 From="70"
-                                                                 To="80"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>
-                                    <EventTrigger RoutedEvent="MouseLeave">
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Width"
-                                                                 From="80"
-                                                                 To="70"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                                <DoubleAnimation Storyboard.TargetProperty="Height"
-                                                                 From="80"
-                                                                 To="70"
-                                                                 AutoReverse="False"
-                                                                 Duration="0:0:0.2"></DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </EventTrigger>                                  
-                                </Image.Triggers>
-                                
-                            </Image>
-                            <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Bottom"
-                                       HorizontalAlignment="Right"
-                                       FontWeight="Bold"
-                                       Style="{StaticResource TextBlockStyle}"
-                                       Text="{Binding StepsString}"></TextBlock>
+                            <StackPanel Background="#7F7F7F"
+                                        Grid.Column="0">
+                                <Image Height="70"
+                                       Width="70"
+                                       Margin="10"
+                                       x:Name="WarewolfIcon"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Top"
+                                       Source="/Gui;component/Warewolf.ico">
+                                </Image>
+                                <DataGrid ItemsSource="{Binding StepsCollection}"
+                                          GridLinesVisibility="None"
+                                          BorderThickness="0"
+                                          Margin="5"
+                                          AutoGenerateColumns="False"
+                                          Background="Transparent"
+                                          CanUserAddRows="False"
+                                          HeadersVisibility="None"
+                                          RowBackground="Transparent"
+                                          CellStyle="{StaticResource DefaultDataGridCellStyle}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Width="20"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Source="/Gui;component/ResourceFiles/Images/tick.png"
+                                                               Height="15"
+                                                               Width="15"
+                                                               Visibility="{Binding TickVisibility}"></Image>
+                                                        <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar"
+                                                                                            Height="15"
+                                                                                            Width="15"
+                                                                                            Visibility="{Binding SpinnerVisibility}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Width="*"
+                                                                IsReadOnly="True">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Foreground="White"
+                                                           Background="Transparent"
+                                                           Content="{Binding StepName}"></Label>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                            <ContentPresenter Margin="10,0,0,0"
+                                              Grid.Column="1"></ContentPresenter>
                         </Grid>
                     </Border>
                 </ControlTemplate>
-
             </Setter.Value>
         </Setter>
     </Style>
@@ -958,36 +1003,64 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:ModernActionStep}">
                     <DockPanel>
-                        <Border BorderThickness="5"
-                                BorderBrush="#C1C3C5"
-                                CornerRadius="15,15,0,0">
-                            <Grid Background="Transparent"
-                                  DockPanel.Dock="Top">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="55" />
-                                    <RowDefinition Height="1" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <StackPanel Orientation="Vertical"
-                                            Grid.Row="0">
-                                    <Label Content="{TemplateBinding Page.Title}"
-                                           Height="30"
-                                           Background="#C1C3C5"
-                                           FontWeight="Bold" />
-                                    <Label Background="#C1C3C5"
-                                           Height="25">
-                                        <TextBlock TextWrapping="Wrap"
-                                                   Text="{TemplateBinding controls:ModernActionStep.Subtitle}" />
-                                    </Label>
+                        <Border BorderBrush="White">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Background="#7F7F7F"
+                                            Grid.Column="0">
+                                    <Image Height="70"
+                                           Width="70"
+                                           Margin="10"
+                                           x:Name="WarewolfIcon"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Source="/Gui;component/Warewolf.ico">
+                                    </Image>
+                                    <DataGrid ItemsSource="{Binding StepsCollection}"
+                                              GridLinesVisibility="None"
+                                              BorderThickness="0"
+                                              Margin="5"
+                                              AutoGenerateColumns="False"
+                                              Background="Transparent"
+                                              CanUserAddRows="False"
+                                              HeadersVisibility="None"
+                                              RowBackground="Transparent"
+                                              CellStyle="{StaticResource DefaultDataGridCellStyle}">
+                                        <DataGrid.Columns>
+                                            <DataGridTemplateColumn Width="20"
+                                                                    IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Source="/Gui;component/ResourceFiles/Images/tick.png"
+                                                                   Height="15"
+                                                                   Width="15"
+                                                                   Visibility="{Binding TickVisibility}"></Image>
+                                                            <customControls:CircularProgressBar x:Name="postInstallStatusCircularProgressBar"
+                                                                                                Height="15"
+                                                                                                Width="15"
+                                                                                                Visibility="{Binding SpinnerVisibility}" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                            <DataGridTemplateColumn Width="*"
+                                                                    IsReadOnly="True">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Foreground="White"
+                                                               Background="Transparent"
+                                                               Content="{Binding StepName}"></Label>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
                                 </StackPanel>
-                                <Rectangle Grid.Row="1"
-                                           Fill="#F3700D"
-                                           Margin="-5,0,-5,0"></Rectangle>
-                                <Border Grid.Row="2"
-                                        Padding="10"
-                                        Background="#C1C3C5">
-                                    <ContentPresenter />
-                                </Border>
+                                <ContentPresenter Grid.Column="1" />
                             </Grid>
                         </Border>
                     </DockPanel>

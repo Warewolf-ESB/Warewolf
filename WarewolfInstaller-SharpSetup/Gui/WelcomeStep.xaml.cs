@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
 using SharpSetup.UI.Wpf.Forms.Modern;
@@ -11,12 +12,12 @@ namespace Gui
     {
 
         readonly InstallationMode mode;
-        public WelcomeStep(InstallationMode mode)
+        public WelcomeStep(InstallationMode mode, int stepNumber, List<string> listOfStepNames)
         {
             this.mode = mode;
             InitializeComponent();
-            lblMode.Text = Properties.Resources.ResourceManager.GetString("WelcomeStepGreeting" + mode) ?? lblMode.Text;
-            DataContext = new InfoStepDataContext();
+            //lblMode.Text = Properties.Resources.ResourceManager.GetString("WelcomeStepGreeting" + mode) ?? lblMode.Text;
+            DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
         private void WelcomeStep_MoveNext(object sender, ChangeStepRoutedEventArgs e)

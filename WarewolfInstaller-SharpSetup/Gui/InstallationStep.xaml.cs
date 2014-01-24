@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using SharpSetup.Base;
@@ -12,11 +13,11 @@ namespace Gui
     public partial class InstallationStep
     {
         readonly InstallationMode mode;
-        public InstallationStep(InstallationMode mode, int stepNumber, int totalSteps)
+        public InstallationStep(InstallationMode mode, int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
             this.mode = mode;
-            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
+            DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
         /// <summary>

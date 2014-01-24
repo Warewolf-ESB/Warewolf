@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -11,12 +12,12 @@ namespace Gui
     /// </summary>
     public partial class PreInstallProcess
     {
-        public PreInstallProcess(int stepNumber, int totalSteps)
+        public PreInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
             // enable shortcut install
             InstallVariables.InstallShortcuts = true;
-            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
+            DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
         /// <summary>

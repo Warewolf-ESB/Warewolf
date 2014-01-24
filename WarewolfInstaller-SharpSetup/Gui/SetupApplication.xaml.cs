@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using SharpSetup.Base;
 
 namespace Gui
@@ -57,10 +57,10 @@ namespace Gui
         {
             MainWindow = new SetupWizard();
             MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
-            MainWindow.WindowStyle = WindowStyle.None;
+            MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
             MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            MainWindow.AllowsTransparency = true;
-            MainWindow.Background = new SolidColorBrush(Colors.Transparent);
+            MainWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Warewolf.ico",
+                                        UriKind.RelativeOrAbsolute));
             MainWindow.Show();
 
             // Hi-jack the exit event to start the studio ;)

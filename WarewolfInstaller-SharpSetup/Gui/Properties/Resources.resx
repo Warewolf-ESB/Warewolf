@@ -235,7 +235,7 @@
     <value>Press Finish to exit installer.</value>
   </data>
   <data name="PostInstallProcess_MessageMain" xml:space="preserve">
-    <value>In Progress....</value>
+    <value>Starting server service....</value>
   </data>
   <data name="PostInstallProcess_Title" xml:space="preserve">
     <value>Post-Install Configuration</value>
@@ -268,5 +268,26 @@ No personally identifiable information will be sent.</value>
   </data>
   <data name="PreInstall_UseLocalSystemAccount" xml:space="preserve">
     <value>Use Local System Account</value>
+  </data>
+  <data name="PreInstallProcess_ChangingAccountText" xml:space="preserve">
+    <value>The Installer will start the Warewolf Server service as the 
+LocalSystem user. 
+To change the account Warewolf runs as please use the 
+service manager.</value>
+  </data>
+  <data name="PreUnInstallProcess_MessageMain" xml:space="preserve">
+    <value>Stopping server service....</value>
+  </data>
+  <data name="InformationProcess_Title" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="PrivacyStatement_AcceptStatement" xml:space="preserve">
+    <value>I understand why this information is collected and necessary.</value>
+  </data>
+  <data name="PrivacyStatment_Statement" xml:space="preserve">
+    <value>Test statement text</value>
+  </data>
+  <data name="PrivacyStatment_Title" xml:space="preserve">
+    <value>Privacy Statement</value>
   </data>
 </root>

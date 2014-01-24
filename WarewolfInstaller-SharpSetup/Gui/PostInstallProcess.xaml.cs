@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -21,10 +22,10 @@ namespace Gui
         private bool _serviceInstalled;
         private bool _serviceInstallException;
 
-        public PostInstallProcess(int stepNumber, int totalSteps)
+        public PostInstallProcess(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
-            DataContext = new InfoStepDataContext(stepNumber, totalSteps);
+            DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
         /// <summary>
@@ -328,7 +329,8 @@ namespace Gui
             Cancel += delegate
                     {
                         SetCleanupMessage();
-                        var trans = new PreUnInstallProcess(2, 6);
+                        List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
+                        var trans = new PreUnInstallProcess(2, listOfStepNames);
 
                         if(!trans.Rollback())
                         {

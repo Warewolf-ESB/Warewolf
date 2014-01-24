@@ -142,6 +142,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information.
+        /// </summary>
+        public static string InformationProcess_Title {
+            get {
+                return ResourceManager.GetString("InformationProcess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please wait while installer is initializing....
         /// </summary>
         public static string InitializationStep_MessageMain {
@@ -259,7 +268,7 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to In Progress.....
+        ///   Looks up a localized string similar to Starting server service.....
         /// </summary>
         public static string PostInstallProcess_MessageMain {
             get {
@@ -359,6 +368,18 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The Installer will start the Warewolf Server service as the 
+        ///LocalSystem user. 
+        ///To change the account Warewolf runs as please use the 
+        ///service manager..
+        /// </summary>
+        public static string PreInstallProcess_ChangingAccountText {
+            get {
+                return ResourceManager.GetString("PreInstallProcess_ChangingAccountText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press Finish to exit installer..
         /// </summary>
         public static string PreInstallProcess_MessageBottom {
@@ -413,11 +434,47 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stopping server service.....
+        /// </summary>
+        public static string PreUnInstallProcess_MessageMain {
+            get {
+                return ResourceManager.GetString("PreUnInstallProcess_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pre-Uninstall Configuration.
         /// </summary>
         public static string PreUnInstallProcess_Title {
             get {
                 return ResourceManager.GetString("PreUnInstallProcess_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I understand why this information is collected and necessary..
+        /// </summary>
+        public static string PrivacyStatement_AcceptStatement {
+            get {
+                return ResourceManager.GetString("PrivacyStatement_AcceptStatement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test statement text.
+        /// </summary>
+        public static string PrivacyStatment_Statement {
+            get {
+                return ResourceManager.GetString("PrivacyStatment_Statement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy Statement.
+        /// </summary>
+        public static string PrivacyStatment_Title {
+            get {
+                return ResourceManager.GetString("PrivacyStatment_Title", resourceCulture);
             }
         }
         
@@ -431,8 +488,8 @@ namespace Gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch31506\stshfhich31506\stshfbi31506\deflang7177\deflangfe7177\themelang7177\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fbidi \fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
-        ///{\f2\fbidi \fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}{\f3\fbidi \froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f10\fbidi \fnil\ [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to {\rtf1\adeflang1025\ansi\ansicpg1252\uc1\adeff0\deff0\stshfdbch0\stshfloch31506\stshfhich31506\stshfbi31506\deflang7177\deflangfe7177\themelang7177\themelangfe0\themelangcs0{\fonttbl{\f0\fbidi \froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f2\fbidi \fmodern\fcharset0\fprq1{\*\panose 02070309020205020404}Courier New;}
+        ///{\f3\fbidi \froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f10\fbidi \fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings;}{\f10\fbidi \fn [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WAREWOLF_EULA_EN {
             get {

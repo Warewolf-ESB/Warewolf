@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows;
 using SharpSetup.Base;
 
@@ -31,6 +32,8 @@ namespace Gui
 
         public override void LifecycleAction(string type, object argument)
         {
+            List<string> listOfStepNames;
+            listOfStepNames = new List<string> { "Welcome", "Privacy Statement", "License Agreement", "Pre Install", "Installation", "Post Install", "Finish" };
             if(type == LifecycleActionType.Initialization)
             {
                 AddStep(new InitializationStep());
@@ -41,8 +44,9 @@ namespace Gui
                 SetupHelper.ApplyMsiProperties();
                 if(MsiConnection.Instance.IsRestored)
                 {
-                    AddStep(new InstallationStep(InstallationMode.Install, 1, 2));
-                    AddStep(new FinishStep(2, 2));
+                    listOfStepNames = new List<string> { "License Agreement", "Pre Install" };
+                    AddStep(new InstallationStep(InstallationMode.Install, 1, listOfStepNames));
+                    AddStep(new FinishStep(2, listOfStepNames));
                 }
                 var modes = GetInstallationModes(MsiConnection.Instance.Mode);
                 if(modes.Contains(InstallationMode.Downgrade))
@@ -50,46 +54,48 @@ namespace Gui
                 else if(modes.Count > 1)
                     AddStep(new InstallationModeStep(modes));
                 else if(modes.Count == 1)
-                    AddStep(new WelcomeStep(modes[0]));
+                    AddStep(new WelcomeStep(modes[0], 1, listOfStepNames));
             }
             else if(type == LifecycleActionType.ModeSelected)
             {
 
                 // Set install mode variable ;)
                 InstallVariables.IsInstallMode = true;
-
                 switch((InstallationMode)argument)
                 {
                     case InstallationMode.Install:
-
-                        AddStep(new LicenseStep(1, 5));
-                        AddStep(new PreInstallProcess(2, 5));
-                        AddStep(new InstallationStep(InstallationMode.Install, 3, 5));
-                        AddStep(new PostInstallProcess(4, 5));
-                        AddStep(new FinishStep(5, 5));
+                        AddStep(new PrivacyStatmentStep(2, listOfStepNames));
+                        AddStep(new LicenseStep(3, listOfStepNames));
+                        AddStep(new PreInstallProcess(4, listOfStepNames));
+                        AddStep(new InstallationStep(InstallationMode.Install, 5, listOfStepNames));
+                        AddStep(new PostInstallProcess(6, listOfStepNames));
+                        AddStep(new FinishStep(7, listOfStepNames));
                         break;
                     case InstallationMode.Uninstall:
                         // Set install mode variable ;)
                         InstallVariables.IsInstallMode = false;
-
-                        AddStep(new PreUnInstallProcess(1, 3));
-                        AddStep(new InstallationStep(InstallationMode.Uninstall, 2, 3));
-                        AddStep(new FinishStep(3, 3));
+                        listOfStepNames = new List<string> { "Pre Uninstall", "Uninstall", "Finish" };
+                        AddStep(new PreUnInstallProcess(1, listOfStepNames));
+                        AddStep(new InstallationStep(InstallationMode.Uninstall, 2, listOfStepNames));
+                        AddStep(new FinishStep(3, listOfStepNames));
                         break;
                     case InstallationMode.Upgrade:
-                        AddStep(new LicenseStep(1, 6));
-                        AddStep(new PreUnInstallProcess(2, 6));
-                        AddStep(new InstallationStep(InstallationMode.Uninstall, 3, 6));
-                        AddStep(new InstallationStep(InstallationMode.Install, 4, 6));
-                        AddStep(new PostInstallProcess(5, 6));
-                        AddStep(new FinishStep(6, 6));
+                        listOfStepNames = new List<string> { "Privacy Statement", "License Agreement", "Pre UnInstall", "Uninstall", "Installation", "Post Install", "Finish" };
+                        AddStep(new PrivacyStatmentStep(1, listOfStepNames));
+                        AddStep(new LicenseStep(2, listOfStepNames));
+                        AddStep(new PreUnInstallProcess(3, listOfStepNames));
+                        AddStep(new InstallationStep(InstallationMode.Uninstall, 4, listOfStepNames));
+                        AddStep(new InstallationStep(InstallationMode.Install, 5, listOfStepNames));
+                        AddStep(new PostInstallProcess(6, listOfStepNames));
+                        AddStep(new FinishStep(7, listOfStepNames));
                         break;
                     case InstallationMode.Reinstall:
-                        AddStep(new LicenseStep(1, 5));
-                        AddStep(new PreInstallProcess(2, 5));
-                        AddStep(new InstallationStep(InstallationMode.Install, 3, 5));
-                        AddStep(new PostInstallProcess(4, 5));
-                        AddStep(new FinishStep(5, 5));
+                        AddStep(new PrivacyStatmentStep(2, listOfStepNames));
+                        AddStep(new LicenseStep(3, listOfStepNames));
+                        AddStep(new PreInstallProcess(4, listOfStepNames));
+                        AddStep(new InstallationStep(InstallationMode.Install, 5, listOfStepNames));
+                        AddStep(new PostInstallProcess(6, listOfStepNames));
+                        AddStep(new FinishStep(7, listOfStepNames));
                         break;
                     default:
                         MessageBox.Show("Mode not supported: " + (InstallationMode)argument);
