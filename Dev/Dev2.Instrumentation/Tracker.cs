@@ -5,8 +5,11 @@ using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation
 {
+    /// <summary>
+    /// Tracks feature and event usage.
+    /// </summary>
     public static class Tracker
-    {
+    { 
         /// <summary>
         /// This signals that Server has started. 
         /// This should be placed before calling any other <see cref="Tracker"/> method.
