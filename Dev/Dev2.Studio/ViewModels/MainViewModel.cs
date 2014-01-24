@@ -23,6 +23,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Enums;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
@@ -558,7 +559,7 @@ namespace Dev2.Studio.ViewModels
             var wfscvm = FindWorkSurfaceContextViewModel(message.ResourceToRemove);
             //DeactivateItem(wfscvm, true);
             base.DeactivateItem(wfscvm, true);
-            WorkspaceItemRepository.Instance.Remove(message.ResourceToRemove);
+            GetWorkspaceItemRepository().Remove(message.ResourceToRemove);
             _previousActive = null;
 
             var res = message.ResourceToRemove.Environment
@@ -1104,17 +1105,19 @@ namespace Dev2.Studio.ViewModels
 
         private void SaveWorkspaceItems()
         {
-            WorkspaceItemRepository.Instance.Write();
+            GetWorkspaceItemRepository().Write();
         }
 
         private void AddWorkspaceItem(IContextualResourceModel model)
         {
-            WorkspaceItemRepository.Instance.AddWorkspaceItem(model);
+            GetWorkspaceItemRepository().AddWorkspaceItem(model);
         }
+
+        public Func<IWorkspaceItemRepository> GetWorkspaceItemRepository = () => WorkspaceItemRepository.Instance;
 
         private void RemoveWorkspaceItem(IDesignerViewModel viewModel)
         {
-            WorkspaceItemRepository.Instance.Remove(viewModel.ResourceModel);
+            GetWorkspaceItemRepository().Remove(viewModel.ResourceModel);
         }
 
         protected virtual void AddWorkspaceItems()
@@ -1124,12 +1127,12 @@ namespace Dev2.Studio.ViewModels
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
 
             // ReSharper disable once ForCanBeConvertedToForeach
-            for(int i = 0; i < WorkspaceItemRepository.Instance.WorkspaceItems.Count; i++)
+            for(int i = 0; i < GetWorkspaceItemRepository().WorkspaceItems.Count; i++)
             {
                 //
                 // Get the environment for the workspace item
                 //
-                IWorkspaceItem item = WorkspaceItemRepository.Instance.WorkspaceItems[i];
+                IWorkspaceItem item = GetWorkspaceItemRepository().WorkspaceItems[i];
                 IEnvironmentModel environment = null;
                 foreach(var env in EnvironmentRepository.All())
                 {
@@ -1172,7 +1175,7 @@ namespace Dev2.Studio.ViewModels
                         if(resource.ResourceType == ResourceType.WorkflowService)
                         {
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                            resource.OnResourceSaved += model => WorkspaceItemRepository.Instance.UpdateWorkspaceItemIsWorkflowSaved(model);
+                            resource.OnResourceSaved += model => GetWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
 
                             // We need to load the correct version of the service ;)
                             var resourceDef = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
@@ -1194,7 +1197,7 @@ namespace Dev2.Studio.ViewModels
 
             foreach(IWorkspaceItem workspaceItem in workspaceItemsToRemove)
             {
-                WorkspaceItemRepository.Instance.WorkspaceItems.Remove(workspaceItem);
+                GetWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
             }
         }
 
@@ -1340,7 +1343,7 @@ namespace Dev2.Studio.ViewModels
             _resourcesCurrentlyInOpeningState.Add(workSurfaceKey);
 
             //This is done for when the app starts up because the item isnt open but it must load it from the server or the user will lose all thier changes
-            IWorkspaceItem workspaceItem = WorkspaceItemRepository.Instance.WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
+            IWorkspaceItem workspaceItem = GetWorkspaceItemRepository().WorkspaceItems.FirstOrDefault(c => c.ID == resourceModel.ID);
             if(workspaceItem == null)
             {
                 resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
