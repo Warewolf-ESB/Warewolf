@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
@@ -34,7 +36,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             activity.CommandFileName = randomString;
             //------------Assert Results-------------------------
-            Assert.AreEqual(randomString,activity.CommandFileName);
+            Assert.AreEqual(randomString, activity.CommandFileName);
         }
 
         static string GetRandomString()
@@ -52,14 +54,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             activity.CommandResult = randomString;
             //------------Assert Results-------------------------
             Assert.AreEqual(randomString, activity.CommandResult);
-         }
+        }
 
         [TestMethod]
         public void OnExecuteWhereConsoleDoesNothingExpectNothingForResult()
         {
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = "\""+TestContext.DeploymentDirectory+"\\ConsoleAppToTestExecuteCommandLineActivity.exe\"";
+            var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\"";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
@@ -77,16 +79,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            StringAssert.Contains(actual,"");
+            StringAssert.Contains(actual, "");
         }
 
         [TestMethod]
         public void OnExecuteWhereConsolePathHasSpacesIsNotWrappedInQuotesExpectError()
         {
             //------------Setup for test--------------------------
+            const string ExeName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
+            var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
+
+            var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
+            var destFile = Path.Combine(destDir, ExeName);
+
+            Directory.CreateDirectory(destDir);
+            File.Copy(sourceFile, destFile, true);
+
             var activity = new DsfExecuteCommandLineActivity();
-            var randomString = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            activity.CommandFileName = randomString;
+
+            activity.CommandFileName = destFile;
             activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
             {
@@ -127,7 +138,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail(fetchErrors);
             }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -159,13 +170,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail(fetchErrors);
             }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
 
-        } 
+        }
 
         [TestMethod]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResult()
@@ -186,19 +197,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             var fetchErrors = Compiler.FetchErrors(result.DataListID);
-            if (fetchErrors != string.Empty)
+            if(fetchErrors != string.Empty)
             {
                 Assert.Fail(fetchErrors);
             }
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             StringAssert.Contains(actual, "This is output from the user");
-           
-        } 
-        
+
+        }
+
         [TestMethod]
         public void OnExecuteWhereConsoleOutputsExpectOutputForResultCmddirc()
         {
@@ -221,7 +232,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
-           
+
         }
 
 
@@ -252,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void OnExecuteWhereConsoleErrorsExpectErrorInDatalist()
         {
-           // ------------Setup for test--------------------------
+            // ------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var randomString = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" error";
             activity.CommandFileName = randomString;
@@ -274,7 +285,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
             StringAssert.Contains(fetchErrors, "The console errored");
-            
+
         }
 
         [TestMethod]
@@ -306,10 +317,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-          
+
         }
-      
-    
+
+
         [TestMethod]
         public void OnExecuteWhereOutputToRecordWithStarIndexWithConsoleOutputsExpectOutputForResultOverwriteToRecordsets()
         {
@@ -330,7 +341,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -340,9 +351,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             actual.AddRange(actualArray.Select(s => s.Trim()));
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-           
-        } 
-        
+
+        }
+
         [TestMethod]
         public void OnExecuteWhereOutputToRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
@@ -358,7 +369,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            
+
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -369,9 +380,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
 
-          
+
         }
-        
+
         [TestMethod]
         public void OnExecuteWhereInputFromRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
         {
@@ -440,11 +451,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             GetScalarValueFromDataList(result.DataListID, "OutVar1", out actual, out error);
 
-            StringAssert.Contains(actual,expected);
+            StringAssert.Contains(actual, expected);
         }
 
         [TestMethod]
-        public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()       
+        public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()
         {
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
@@ -466,13 +477,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(1, outRes.Count);
             IList<DebugItemResult> debugOutputResults = outRes[0].FetchResultsList();
-            Assert.AreEqual(3, debugOutputResults.Count);            
+            Assert.AreEqual(3, debugOutputResults.Count);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutputResults[0].Type);
-            Assert.AreEqual("[[OutVar1]]", debugOutputResults[0].Value);             
+            Assert.AreEqual("[[OutVar1]]", debugOutputResults[0].Value);
             Assert.AreEqual(DebugItemResultType.Label, debugOutputResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutputResults[2].Type);
-            Assert.AreEqual("This is output from the user", debugOutputResults[2].Value);            
+            Assert.AreEqual("This is output from the user", debugOutputResults[2].Value);
         }
 
         // ReSharper disable InconsistentNaming
@@ -484,12 +495,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
+            Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
         }
 
         [TestMethod]
@@ -499,14 +511,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             var tuple2 = new Tuple<string, string>(command1, "Test2");
+            var tuple3 = new Tuple<string, string>(ProcessPriorityClass.RealTime.ToString(), ProcessPriorityClass.High.ToString());
+
             //------------Execute Test---------------------------
-            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2 }, null);
+            act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1, tuple2, tuple3 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual("Test2", act.CommandFileName);
+            Assert.AreEqual(ProcessPriorityClass.High, act.CommandPriority);
         }
 
         [TestMethod]
@@ -516,13 +531,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = ProcessPriorityClass.RealTime };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(new List<Tuple<string, string>> { tuple1 }, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(command1, act.CommandFileName);
+            Assert.AreEqual(ProcessPriorityClass.RealTime, act.CommandPriority);
         }
 
         [TestMethod]
@@ -581,15 +597,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfExecuteCommandLineActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
+            const ProcessPriorityClass commandPriority = ProcessPriorityClass.RealTime;
             var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
-            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
+            var act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]", CommandPriority = commandPriority };
 
             //------------Execute Test---------------------------
             var dsfForEachItems = act.GetForEachInputs();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, dsfForEachItems.Count);
+            Assert.AreEqual(2, dsfForEachItems.Count);
             Assert.AreEqual(command1, dsfForEachItems[0].Name);
             Assert.AreEqual(command1, dsfForEachItems[0].Value);
+            Assert.AreEqual(commandPriority.ToString(), dsfForEachItems[1].Name);
+            Assert.AreEqual(commandPriority.ToString(), dsfForEachItems[1].Value);
         }
 
         [TestMethod]
@@ -620,6 +639,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = testData;
             CurrentDl = currentDl;
         }
-    }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DsfExecuteCommandLineActivity_Priority")]
+        public void DsfExecuteCommandLineActivity_Priority_Initialization_Normal()
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfExecuteCommandLineActivity();
+
+            //------------Execute Test---------------------------
+            ProcessPriorityClass priority = activity.CommandPriority;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ProcessPriorityClass.Normal, priority);
+
+        }
+    }
 }

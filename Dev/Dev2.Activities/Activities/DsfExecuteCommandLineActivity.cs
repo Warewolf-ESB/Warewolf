@@ -28,6 +28,7 @@ namespace Dev2.Activities
         string _commandResult;
         Process _process;
         NativeActivityContext _nativeActivityContext;
+        ProcessPriorityClass _commandPriority = ProcessPriorityClass.Normal;
 
         #endregion
 
@@ -47,6 +48,9 @@ namespace Dev2.Activities
                 _commandFileName = value;
             }
         }
+
+        [Inputs("CommandPriority")]
+        public ProcessPriorityClass CommandPriority { get { return _commandPriority; } set { _commandPriority = value; } }
 
         [Outputs("CommandResult")]
         [FindMissing]
@@ -69,11 +73,6 @@ namespace Dev2.Activities
         {
         }
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-
         /// <summary>
         /// When overridden runs the activity's execution logic
         /// </summary>
@@ -86,7 +85,7 @@ namespace Dev2.Activities
 
             var dlID = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
-            var errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
 
             var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
@@ -208,8 +207,7 @@ namespace Dev2.Activities
                     return false;
                 }
 
-                // TODO : Make this a user option on the expanded tool ;)
-                _process.PriorityClass = ProcessPriorityClass.RealTime; // Force it to run quick ;)
+                _process.PriorityClass = CommandPriority;
                 _process.StandardInput.Close();
 
                 // bubble user termination down the chain ;)
@@ -288,7 +286,7 @@ namespace Dev2.Activities
             if(val.Contains("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
             if(val.Contains("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
 
-            ProcessStartInfo psi = null;
+            ProcessStartInfo psi;
 
             if(val.StartsWith("\""))
             {
@@ -389,6 +387,10 @@ namespace Dev2.Activities
                 {
                     CommandFileName = t.Item2;
                 }
+                else if(t.Item1 == CommandPriority.ToString())
+                {
+                    CommandPriority = (ProcessPriorityClass)Enum.Parse(typeof(ProcessPriorityClass), t.Item2, true);
+                }
             }
         }
 
@@ -422,7 +424,7 @@ namespace Dev2.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            return GetForEachItems(CommandFileName);
+            return GetForEachItems(CommandFileName, CommandPriority.ToString());
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
