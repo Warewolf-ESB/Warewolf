@@ -19,14 +19,12 @@ using Dev2.Data;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
 using Dev2.Instrumentation;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Workspaces;
-using Unlimited.Framework;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
 namespace Dev2
@@ -197,8 +195,6 @@ namespace Dev2
         AssemblyReference[] _externalDependencies;
         readonly Dictionary<string, WorkflowEntry[]> _workflowGroups;
         Dev2Endpoint[] _endpoints;
-        EsbServicesEndpoint _esbEndpoint;
-
 
         string _configFile;
 
@@ -460,8 +456,13 @@ namespace Dev2
         static bool IsElevated()
         {
             WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            if(currentIdentity != null)
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(currentIdentity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+
+            return false;
         }
 
         #endregion
@@ -592,7 +593,7 @@ namespace Dev2
             return result;
         }
 
-        bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
+        internal bool ReadBooleanSection(XmlNode section, string sectionName, ref bool result, ref bool setter)
         {
             bool output = false;
 
@@ -940,7 +941,7 @@ namespace Dev2
                                             return false;
                                         }
 
-                                        string value = currentArg.InnerText ?? "";
+                                        string value = currentArg.InnerText;
 
                                         if(arguments.ContainsKey(key))
                                         {
@@ -1116,8 +1117,7 @@ namespace Dev2
                 _lastKnownWorkingSet = -1L;
                 _nextForcedCollection = DateTime.Now.AddSeconds(5.0);
                 _gcmRunning = true;
-                _gcmThread = new Thread(_gcmThreadStart);
-                _gcmThread.IsBackground = false;
+                _gcmThread = new Thread(_gcmThreadStart) { IsBackground = false };
                 _gcmThread.Start();
             }
             else
@@ -1188,9 +1188,9 @@ namespace Dev2
 
             if(_arguments.Any())
             {
-                for(int i = 0; i < _arguments.Length; i++)
+                foreach(string t in _arguments)
                 {
-                    string[] arg = _arguments[i].Split(new[] { '=' });
+                    string[] arg = t.Split(new[] { '=' });
 
                     if(arg.Length == 2)
                     {
@@ -1226,9 +1226,9 @@ namespace Dev2
 
                 if(_arguments.Any())
                 {
-                    for(int i = 0; i < _arguments.Length; i++)
+                    foreach(string t in _arguments)
                     {
-                        string[] arg = _arguments[i].Split(new[] { '=' });
+                        string[] arg = t.Split(new[] { '=' });
                         if(arg.Length == 2)
                         {
                             arguments.Add(arg[0].Replace("/", string.Empty), arg[1]);
@@ -1263,7 +1263,7 @@ namespace Dev2
 
                 GlobalConstants.WebServerPort = webServerPort = webServerPort ?? ConfigurationManager.AppSettings["webServerPort"];
                 GlobalConstants.WebServerSslPort = webServerSslPort = webServerSslPort ?? ConfigurationManager.AppSettings["webServerSslPort"];
-                _esbEndpoint = new EsbServicesEndpoint();
+                new EsbServicesEndpoint();
 
                 _isWebServerEnabled = false;
 
@@ -1342,7 +1342,7 @@ namespace Dev2
         /// workflow execution.
         /// </summary>
         /// <returns>false if the cleanup failed, otherwise true</returns>
-        bool CleanupServer()
+        internal bool CleanupServer()
         {
             bool result = true;
 
@@ -1390,6 +1390,7 @@ namespace Dev2
 
         #region Workflow Handling
 
+        /*
         /// <summary>
         /// Executes each workflow contained in the group indicated by <paramref name="groupName"/> in the same order that
         /// they were specified in the configuration file.
@@ -1402,9 +1403,8 @@ namespace Dev2
 
             if(_workflowGroups.TryGetValue(groupName, out entries))
             {
-                for(int i = 0; i < entries.Length; i++)
+                foreach(WorkflowEntry entry in entries)
                 {
-                    WorkflowEntry entry = entries[i];
                     StringBuilder builder = new StringBuilder();
 
                     if(entry.Arguments.Length > 0)
@@ -1412,9 +1412,9 @@ namespace Dev2
                         builder.AppendLine("<XmlData>");
                         builder.AppendLine("  <ADL>");
 
-                        for(int k = 0; k < entry.Arguments.Length; k++)
+                        foreach(KeyValuePair<string, string> t in entry.Arguments)
                         {
-                            builder.AppendLine("<" + entry.Arguments[k].Key + ">" + entry.Arguments[k].Value + "</" + entry.Arguments[k].Key + ">");
+                            builder.AppendLine("<" + t.Key + ">" + t.Value + "</" + t.Key + ">");
                         }
 
                         builder.AppendLine("  </ADL>");
@@ -1446,6 +1446,7 @@ namespace Dev2
 
             return true;
         }
+*/
 
         #endregion
 
@@ -1526,8 +1527,6 @@ namespace Dev2
             }
 
             _owinServer = null;
-            _esbEndpoint = null;
-
         }
 
         #endregion
@@ -1538,11 +1537,11 @@ namespace Dev2
         {
             public static readonly AssemblyReference[] EmptyReferences = new AssemblyReference[0];
 
-            string _name;
-            string _version;
-            string _culture;
-            string _publicKeyToken;
-            string _path;
+            readonly string _name;
+            readonly string _version;
+            readonly string _culture;
+            readonly string _publicKeyToken;
+            readonly string _path;
 
             public string Name { get { return _name; } }
             public string Version { get { return _version; } }
@@ -1572,11 +1571,12 @@ namespace Dev2
 
         sealed class WorkflowEntry
         {
-            string _name;
-            KeyValuePair<string, string>[] _arguments;
-
+            readonly string _name;
+            readonly KeyValuePair<string, string>[] _arguments;
             public string Name { get { return _name; } }
+
             public KeyValuePair<string, string>[] Arguments { get { return _arguments; } }
+
 
             public WorkflowEntry(string name, KeyValuePair<string, string>[] arguments)
             {
@@ -1599,7 +1599,9 @@ namespace Dev2
         {
             Write("Loading resource catalog...  ");
             // First call initializes instance
+#pragma warning disable 168
             var catalog = ResourceCatalog.Instance;
+#pragma warning restore 168
             WriteLine("done.");
             return true;
         }
