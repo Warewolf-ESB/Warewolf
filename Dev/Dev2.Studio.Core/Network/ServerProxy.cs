@@ -219,16 +219,9 @@ namespace Dev2.Network
             {
                 return;
             }
-            try
-            {
-                Connect();
-                callback(ConnectResult.Success);
-            }
-            catch(Exception e)
-            {
-                Logger.LogError(this, e);
-                callback(ConnectResult.ConnectFailed);
-            }
+            ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
+            HubConnection.Start().Wait(10000);
+            callback(HubConnection.State == ConnectionState.Connected ? ConnectResult.Success : ConnectResult.ConnectFailed);
         }
 
         public void StartAutoConnect()
