@@ -67,7 +67,7 @@
                                 <DataTrigger Binding="{Binding IsOverwrite}"
                                              Value="true">
                                     <Setter Property="Background"
-                                            Value="Red"></Setter>
+                                            Value="#F3700D"></Setter>
                                     <Setter Property="Foreground"
                                             Value="White"></Setter>
                                 </DataTrigger>
@@ -177,7 +177,7 @@
                                 <DataTrigger Binding="{Binding IsOverwrite}"
                                              Value="true">
                                     <Setter Property="Background"
-                                            Value="Red"></Setter>
+                                            Value="#F3700D"></Setter>
                                     <Setter Property="Foreground"
                                             Value="White"></Setter>
                                 </DataTrigger>
