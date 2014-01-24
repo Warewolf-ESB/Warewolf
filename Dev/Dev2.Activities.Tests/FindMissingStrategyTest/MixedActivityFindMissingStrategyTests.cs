@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.Enums;
 using Dev2.Factories;
@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for MixedActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class MixedActivityFindMissingStrategyTests
     {
         public MixedActivityFindMissingStrategyTests()
