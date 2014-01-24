@@ -18,7 +18,7 @@ namespace Dev2
 
         #endregion
 
-        #region Contructor
+        #region Constructor
 
         public WindowsServiceManager()
         {

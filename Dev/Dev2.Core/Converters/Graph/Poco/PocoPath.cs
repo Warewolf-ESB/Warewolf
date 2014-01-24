@@ -10,15 +10,15 @@ namespace Unlimited.Framework.Converters.Graph.Poco
     {
         #region Class Members
 
-        private static readonly string _seperatorSymbol = ".";
-        private static readonly string _enumerableSymbol = "()";
+        const string _seperatorSymbol = ".";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
         #region Constructors
 
-        public PocoPath() 
-            : this("","","", "")
+        public PocoPath()
+            : this("", "", "", "")
         {
         }
 
@@ -46,20 +46,13 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         public override IEnumerable<IPathSegment> GetSegements()
         {
-            List<IPathSegment> segments = new List<IPathSegment>();
-
-            foreach (string segment in ActualPath.Split(SeperatorSymbol.ToCharArray()))
-            {
-                segments.Add(CreatePathSegment(segment));
-            }
-
-            return segments;
+            return ActualPath.Split(SeperatorSymbol.ToCharArray()).Select(CreatePathSegment).ToList();
         }
 
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             PocoPathSegment pathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
+            if(pathSegmentString.EndsWith(EnumerableSymbol))
             {
                 pathSegment = new PocoPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
             }

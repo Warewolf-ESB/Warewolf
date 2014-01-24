@@ -16,11 +16,10 @@ namespace Dev2.Util
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Framework;assembly=Warewolf Studio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Warewolf Studio""",
                                                             @"xmlns:[A-Za-z0-9]+=""clr-namespace:System;assembly=System.ComponentModel.Composition""",
-                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities""",
-                                                           
-                                                        };
+                                                            @"xmlns:[A-Za-z0-9]+=""clr-namespace:Dev2.Studio.Core.Activities;assembly=Dev2.Studio.Core.Activities"""
+        };
 
-        private static readonly string replacePrefix = "assembly=";
+        const string replacePrefix = "assembly=";
 
         public static readonly string[,] replaceNamespaces = { 
                                                                 { "Unlimited.Applications.BusinessDesignStudio.Activities","Dev2.Activities" },
@@ -54,9 +53,9 @@ namespace Dev2.Util
         private StringBuilder ReplaceChangedNamespaces(StringBuilder def)
         {
             var result = def;
-            for(int i = 0; i < (replaceNamespaces.Length/2); i++)
+            for(int i = 0; i < (replaceNamespaces.Length / 2); i++)
             {
-                result = result.Replace((replacePrefix + replaceNamespaces[i,0]), (replacePrefix + replaceNamespaces[i,1]));
+                result = result.Replace((replacePrefix + replaceNamespaces[i, 0]), (replacePrefix + replaceNamespaces[i, 1]));
             }
 
             return result;
