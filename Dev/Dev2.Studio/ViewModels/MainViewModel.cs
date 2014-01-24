@@ -100,6 +100,7 @@ namespace Dev2.Studio.ViewModels
         readonly IAsyncWorker _asyncWorker;
         bool _hasActiveConnection;
         readonly List<WorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<WorkSurfaceKey>();
+        bool _canDebug = true;
 
         #endregion
 
@@ -496,9 +497,13 @@ namespace Dev2.Studio.ViewModels
         {
             this.TraceInfo(message.GetType().Name);
             AddWorkSurface(message.WorkSurfaceObject);
+           
             if(message.ShowDebugWindowOnLoad)
             {
-                ActiveItem.DebugCommand.Execute(null);
+                if(ActiveItem != null && _canDebug)
+                {
+                    ActiveItem.DebugCommand.Execute(null);
+                }
             }
         }
 
@@ -1340,6 +1345,7 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
+            _canDebug = false;
             _resourcesCurrentlyInOpeningState.Add(workSurfaceKey);
 
             //This is done for when the app starts up because the item isnt open but it must load it from the server or the user will lose all thier changes
@@ -1353,6 +1359,7 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(GetWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel);
 
             _resourcesCurrentlyInOpeningState.Remove(workSurfaceKey);
+            _canDebug = true;
         }
 
         public Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> GetWorkSurfaceContextViewModel = (resourceModel, createDesigner) =>
