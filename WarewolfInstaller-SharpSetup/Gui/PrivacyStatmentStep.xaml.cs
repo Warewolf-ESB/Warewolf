@@ -13,7 +13,7 @@ namespace Gui
         public PrivacyStatmentStep(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
-            rtbStatement.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.WAREWOLF_EULA_EN)), DataFormats.Rtf);
+            rtbStatement.Selection.Load(new MemoryStream(Encoding.Default.GetBytes(Properties.Resources.PrivacyStatement)), DataFormats.Rtf);
             Loaded += (o, e) => cbAccept.Focus();
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }

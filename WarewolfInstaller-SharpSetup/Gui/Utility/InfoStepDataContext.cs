@@ -43,15 +43,21 @@ namespace Gui
                 {
                     if(i < stepNumber - 1)
                     {
-                        _stepsCollection.Add(new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Collapsed, TickVisibility = Visibility.Visible });
+                        _stepsCollection.Add(new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Collapsed, TickVisibility = Visibility.Visible, StepNameFontWeight = FontWeights.Normal });
                     }
-                    else if(i == stepNumber - 1 && (listOfStepNames[i] == "Installation" || listOfStepNames[i] == "Uninstall"))
+                    else if(i == stepNumber - 1)
                     {
-                        _stepsCollection.Add(new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Visible, TickVisibility = Visibility.Collapsed });
+                        StepTO spetToAdd = new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Collapsed, TickVisibility = Visibility.Collapsed, StepNameFontWeight = FontWeights.Bold };
+                        if((listOfStepNames[i] == "Installation" || listOfStepNames[i] == "Uninstall"))
+                        {
+                            spetToAdd.SpinnerVisibility = Visibility.Visible;
+                            spetToAdd.TickVisibility = Visibility.Collapsed;
+                        }
+                        _stepsCollection.Add(spetToAdd);
                     }
                     else
                     {
-                        _stepsCollection.Add(new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Collapsed, TickVisibility = Visibility.Collapsed });
+                        _stepsCollection.Add(new StepTO { StepName = listOfStepNames[i], SpinnerVisibility = Visibility.Collapsed, TickVisibility = Visibility.Collapsed, StepNameFontWeight = FontWeights.Normal });
                     }
                 }
                 _stepNumber = stepNumber;
@@ -65,5 +71,6 @@ namespace Gui
         public string StepName { get; set; }
         public Visibility SpinnerVisibility { get; set; }
         public Visibility TickVisibility { get; set; }
+        public FontWeight StepNameFontWeight { get; set; }
     }
 }

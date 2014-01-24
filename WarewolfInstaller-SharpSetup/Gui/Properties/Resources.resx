@@ -253,6 +253,9 @@
   <data name="WAREWOLF_EULA_EN" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resourcefiles\warewolf_eula_en.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="PrivacyStatement" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resourcefiles\PrivacyStatement.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="FinishStep_Start_Studio_Text" xml:space="preserve">
     <value>Start Warewolf Studio</value>
   </data>
@@ -282,7 +285,7 @@ service manager.</value>
     <value>Information</value>
   </data>
   <data name="PrivacyStatement_AcceptStatement" xml:space="preserve">
-    <value>I understand why this information is collected and necessary.</value>
+    <value>I agree to this information being collected.</value>
   </data>
   <data name="PrivacyStatment_Statement" xml:space="preserve">
     <value>Test statement text</value>

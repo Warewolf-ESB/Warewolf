@@ -910,6 +910,7 @@
                                                     <DataTemplate>
                                                         <Label Foreground="White"
                                                                Background="Transparent"
+                                                               FontWeight="{Binding StepNameFontWeight}"
                                                                Content="{Binding StepName}"></Label>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>
@@ -981,6 +982,7 @@
                                                 <DataTemplate>
                                                     <Label Foreground="White"
                                                            Background="Transparent"
+                                                           FontWeight="{Binding StepNameFontWeight}"
                                                            Content="{Binding StepName}"></Label>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
@@ -1053,6 +1055,7 @@
                                                     <DataTemplate>
                                                         <Label Foreground="White"
                                                                Background="Transparent"
+                                                               FontWeight="{Binding StepNameFontWeight}"
                                                                Content="{Binding StepName}"></Label>
                                                     </DataTemplate>
                                                 </DataGridTemplateColumn.CellTemplate>

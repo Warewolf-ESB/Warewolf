@@ -42,11 +42,12 @@
                     
                     <RichTextBox Name="rtbStatement"
                                  Grid.Row="0"
-                                 Height="242"
+                                 BorderThickness="0"
+                                 Height="222"
                                  Margin="0,5,0,15"
                                  IsReadOnly="True"
                                  FontFamily="{StaticResource DefaultFontFamily}"
-                                 ScrollViewer.VerticalScrollBarVisibility="Auto" />                                    
+                                 ScrollViewer.VerticalScrollBarVisibility="Hidden" />                                    
                     <CheckBox Grid.Row="1"
                               Style="{StaticResource CheckBoxStyle}"
                               Name="cbAccept"

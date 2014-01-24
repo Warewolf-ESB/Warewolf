@@ -17,6 +17,7 @@ namespace Gui
             InitializeComponent();
             // enable shortcut install
             InstallVariables.InstallShortcuts = true;
+            cbInstallShortcuts.Focus();
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
@@ -243,11 +244,5 @@ namespace Gui
         {
             InstallVariables.InstallShortcuts = !(InstallVariables.InstallShortcuts);
         }
-
-        void BtnUseLocalSystemAccount(object sender, RoutedEventArgs e)
-        {
-            //TODO: Trav implement
-        }
-
     }
 }

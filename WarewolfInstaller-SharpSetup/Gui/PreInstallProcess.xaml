@@ -14,8 +14,7 @@
                    CanGoNext="True"
                    Style="{StaticResource {x:Type ss:ModernInfoStep}}">
     <Border>
-        <DockPanel HorizontalAlignment="Stretch"
-                   Margin="0,0,0,-26">
+        <DockPanel HorizontalAlignment="Stretch">
             <Grid Background="Transparent"
                   DockPanel.Dock="Top">
                 <Grid.RowDefinitions>
@@ -81,7 +80,7 @@
                             HorizontalAlignment="Left"
                             VerticalContentAlignment="Stretch"
                             Height="16"
-                            Visibility="Visible"
+                            Visibility="Collapsed"
                             Width="287"
                             Click="BtnRerun_OnClick" />
                     <!--<TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Name="PreInstallMsgList" TextWrapping="Wrap" Text="" Width="491" Height="173" />-->
