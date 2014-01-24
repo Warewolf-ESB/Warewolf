@@ -32,6 +32,7 @@
     <converters:DebugItemResultTypeToColorConverter x:Key="DebugItemResultTypeToColorConverter" />
     <converters:BooleanInvertConverter x:Key="BooleanInvertConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <converters:DeployViewConnectedToVisiblityConverter x:Key="DeployViewConnectedToVisiblityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
     <converters3:NavigationViewModelToImageConverter x:Key="NavigationViewModelToImageConverter" />

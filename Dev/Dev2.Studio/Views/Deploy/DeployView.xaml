@@ -337,7 +337,7 @@
                     <Image Grid.Column="0"
                            Grid.Row="0"
                            Style="{StaticResource ImageTickStyle}"
-                           Visibility="{Binding SelectedSourceServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" />
+                           Visibility="{Binding SelectedSourceServer, Converter={StaticResource DeployViewConnectedToVisiblityConverter}}" />
                     <TextBlock Grid.Column="1"
                                Grid.Row="0"
                                Foreground="White"
@@ -349,7 +349,7 @@
                     <Image Grid.Column="0"
                            Grid.Row="1"
                            Style="{StaticResource ImageTickStyle}"
-                           Visibility="{Binding SelectedDestinationServer, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}" />
+                           Visibility="{Binding SelectedDestinationServer, Converter={StaticResource DeployViewConnectedToVisiblityConverter}}" />
                     <TextBlock Grid.Column="1"
                                Grid.Row="1"
                                Foreground="White"

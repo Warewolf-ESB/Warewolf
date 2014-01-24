@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Instrumentation;
 using Dev2.Messages;
@@ -24,6 +18,12 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
+using System.Linq;
+using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -87,7 +87,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         public DeployViewModel(string displayName, IEnvironmentModel environment)
-            : this(new AsyncWorker(),  ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
         {
         }
 
@@ -303,12 +303,24 @@ namespace Dev2.Studio.ViewModels.Deploy
             set
             {
                 _selectedSourceServer = value;
+
+                if(_selectedSourceServer != null)
+                {
+                    _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
+                    _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
+                }
+
                 LoadSourceEnvironment(_selectedSourceServer);
-                NotifyOfPropertyChange(() => SelectedDestinationServer);
+                NotifyOfPropertyChange(() => SelectedSourceServer);
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
                 NotifyOfPropertyChange(() => ServersAreNotTheSame);
             }
+        }
+
+        void SelectedSourceServerIsConnectedChanged(object sender, ConnectedEventArgs e)
+        {
+            NotifyOfPropertyChange(() => SelectedSourceServer);
         }
 
         public IEnvironmentModel SelectedDestinationServer
@@ -324,6 +336,13 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // ReSharper restore PossibleUnintendedReferenceComparison
                 {
                     _selectedDestinationServer = value;
+
+                    if(_selectedDestinationServer != null)
+                    {
+                        _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
+                        _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
+                    }
+
                     LoadDestinationEnvironment(_selectedDestinationServer);
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
@@ -331,6 +350,11 @@ namespace Dev2.Studio.ViewModels.Deploy
                     NotifyOfPropertyChange(() => ServersAreNotTheSame);
                 }
             }
+        }
+
+        void SelectedDestinationServerIsConnectedChanged(object sender, ConnectedEventArgs args)
+        {
+            NotifyOfPropertyChange(() => SelectedDestinationServer);
         }
 
         #endregion
