@@ -115,6 +115,9 @@
       <DependentUpon>CommandLineDesigner.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\CommandLine\CommandLineDesignerViewModel.cs" />
+    <Compile Include="Designers2\CommandLine\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\CommandLine\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
@@ -616,6 +619,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\CommandLine\CommandLineDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CommandLine\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

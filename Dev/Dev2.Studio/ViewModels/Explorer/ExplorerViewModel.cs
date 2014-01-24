@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -38,16 +37,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         #endregion Class Members
 
         #region Constructor
-
-        public ExplorerViewModel(bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(Core.EnvironmentRepository.Instance, isFromActivityDrop, activityType)
-        {
-        }
-
-        public ExplorerViewModel(IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
-            : this(EventPublishers.Aggregator, new AsyncWorker(), environmentRepository, isFromActivityDrop, activityType)
-        {
-        }
 
         public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
             : base(eventPublisher)
