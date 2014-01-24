@@ -10,7 +10,7 @@ namespace Gui
     {
         public FinishStep(int stepNumber, List<string> listOfStepNames)
         {
-            InitializeComponent();            
+            InitializeComponent();
             // swap text at end if not install mode ;)
             if(!InstallVariables.IsInstallMode)
             {

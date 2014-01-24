@@ -748,7 +748,8 @@
                                         Margin="10,2,0,0"
                                         Grid.Column="1"
                                         Padding="16,2,16,2"
-                                        Command="controls:CommandLibrary.MoveBack" />
+                                        Command="controls:CommandLibrary.MoveBack"
+                                        Visibility="{Binding IsEnabled,ElementName=btnFinish,Converter={StaticResource invertedBoolToVisibility}}"/>
                                 <Button Style="{StaticResource ButtonStyle}"
                                         Name="btnNext"
                                         x:Uid="btnNext"
