@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security.AccessControl;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using SharpSetup.Base;
 
@@ -29,6 +30,12 @@ namespace Gui
             //}
         }
 
+        void MainWindow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            // Begin dragging the window 
+            MainWindow.DragMove();
+        }
+
         /// <summary>
         /// Handles the SilentInstall event of the SetupHelper control.
         /// </summary>
@@ -49,6 +56,7 @@ namespace Gui
         void SetupHelper_Install(object sender, EventArgs e)
         {
             MainWindow = new SetupWizard();
+            MainWindow.MouseLeftButtonDown += MainWindow_MouseLeftButtonDown;
             MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
             MainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             MainWindow.Icon = new BitmapImage(new Uri("pack://application:,,,/Warewolf.ico",
