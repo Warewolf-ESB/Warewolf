@@ -25,12 +25,12 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
             Assert.IsNotNull(viewModel.CommandPriorities);
 
             // Ensure order is correct
-            Assert.AreEqual(ProcessPriorityClass.Normal, viewModel.CommandPriorities[0].Key);
-            Assert.AreEqual(ProcessPriorityClass.Idle, viewModel.CommandPriorities[1].Key);
-            Assert.AreEqual(ProcessPriorityClass.High, viewModel.CommandPriorities[2].Key);
-            Assert.AreEqual(ProcessPriorityClass.RealTime, viewModel.CommandPriorities[3].Key);
-            Assert.AreEqual(ProcessPriorityClass.BelowNormal, viewModel.CommandPriorities[4].Key);
-            Assert.AreEqual(ProcessPriorityClass.AboveNormal, viewModel.CommandPriorities[5].Key);
+            Assert.AreEqual(ProcessPriorityClass.BelowNormal, viewModel.CommandPriorities[0].Key);
+            Assert.AreEqual(ProcessPriorityClass.Normal, viewModel.CommandPriorities[1].Key);
+            Assert.AreEqual(ProcessPriorityClass.AboveNormal, viewModel.CommandPriorities[2].Key);
+            Assert.AreEqual(ProcessPriorityClass.Idle, viewModel.CommandPriorities[3].Key);
+            Assert.AreEqual(ProcessPriorityClass.High, viewModel.CommandPriorities[4].Key);
+            Assert.AreEqual(ProcessPriorityClass.RealTime, viewModel.CommandPriorities[5].Key);
         }
 
         [TestMethod]

@@ -64,6 +64,7 @@
                                 MinHeight="53"
                                 FilterType="All" 
                                 WrapInBrackets="False" 
+                                HorizontalScrollBarVisibility="Auto"
                                 ToolTip="{x:Static help:HelpTextResources.CommandLineToolTipCMD}"
                                 Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"

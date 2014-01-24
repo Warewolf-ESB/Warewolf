@@ -49,12 +49,12 @@ namespace Dev2.Activities.Designers2.CommandLine
         {
             CommandPriorities = new List<KeyValuePair<ProcessPriorityClass, string>>
             {
-                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.Normal, "Normal"),
-                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.Idle, "Idle"),
-                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.High, "Below Normal"),
-                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.RealTime, "Real Time"),
                 new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.BelowNormal, "Below Normal"),
+                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.Normal, "Normal"),
                 new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.AboveNormal, "Above Normal"),
+                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.Idle, "Idle"),
+                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.High, "High"),
+                new KeyValuePair<ProcessPriorityClass, string>(ProcessPriorityClass.RealTime, "Real Time"),
             };
         }
 
