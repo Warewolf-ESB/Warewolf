@@ -1,21 +1,27 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
 using Dev2.Tests.Properties;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework.Parsing {
-    [TestClass][ExcludeFromCodeCoverage]
-    public class LanguageParserTest {
+namespace Unlimited.UnitTest.Framework.Parsing
+{
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class LanguageParserTest
+    {
 
         #region Additional Test Attributes
 
         [TestInitialize]
-        public void LanguageTestInitialize() {
-        
+        public void LanguageTestInitialize()
+        {
+
         }
 
         [TestCleanup]
-        public void LanguageTestCleanup() {
+        public void LanguageTestCleanup()
+        {
         }
 
         #endregion Additional Test Attributes
@@ -24,7 +30,8 @@ namespace Unlimited.UnitTest.Framework.Parsing {
 
         // Travis Added : PBI 5779
         [TestMethod]
-        public void Parse_InputMappingWithEmptyToNullTrue_Expected_InputCreateWithPropertyEmptyToNullSetTrue() {
+        public void Parse_InputMappingWithEmptyToNullTrue_Expected_InputCreateWithPropertyEmptyToNullSetTrue()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullTrue);
 
             Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == true);
@@ -32,7 +39,8 @@ namespace Unlimited.UnitTest.Framework.Parsing {
 
         // Travis Added : PBI 5779
         [TestMethod]
-        public void InputMappingWithEmptyToNullFalse_Expected_InputCreateWithPropertyEmptyToNullSetFalse() {
+        public void InputMappingWithEmptyToNullFalse_Expected_InputCreateWithPropertyEmptyToNullSetFalse()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullFalse);
 
             Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == false);
@@ -40,35 +48,40 @@ namespace Unlimited.UnitTest.Framework.Parsing {
 
         // Sashen Added : PBI 5779
         [TestMethod]
-        public void Parse_EmptyToNullAttributeNotInXML_InputMappingWithEmptyToFalse() {
+        public void Parse_EmptyToNullAttributeNotInXML_InputMappingWithEmptyToFalse()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputsWithEmptyToNullNotInXML);
 
             Assert.IsTrue(inputs.Count == 2 && inputs[0].EmptyToNull == false);
         }
 
         [TestMethod]
-        public void TestInputMappingExtactScalars() {
+        public void TestInputMappingExtactScalars()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.sampleActivityInputScalar);
 
             Assert.IsTrue(inputs.Count == 2 && inputs[0].Name == "fname");
         }
 
         [TestMethod]
-        public void TestInputMappingExtractRecordSet() {
+        public void TestInputMappingExtractRecordSet()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.sampleActivityInputRecordSet);
 
             Assert.IsTrue(inputs.Count == 1 && inputs[0].Name == "Person");
         }
 
         [TestMethod]
-        public void TestInputMappingExtractMixed() {
+        public void TestInputMappingExtractMixed()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.sampleActivityInputMixed);
 
             Assert.IsTrue(inputs.Count == 2);
         }
 
         [TestMethod]
-        public void TestInputMappingExtractRequiredRegions() {
+        public void TestInputMappingExtractRequiredRegions()
+        {
             IList<IDev2Definition> inputs = DataListFactory.CreateInputParser().Parse(TestStrings.inputMappingRequiredRegion);
 
             Assert.IsTrue(inputs.Count == 7 && inputs[0].Name == "Host" && inputs[0].DefaultValue == "mail.bellevuenet.co.za" && inputs[0].IsRequired);
