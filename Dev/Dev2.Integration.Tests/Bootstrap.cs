@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests
 
                 var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
 
-                if(serverLoc.Contains("\\out\\"))//Ashley - If tests are executing from a test results out directory
+                if(serverLoc.Contains("\\Out\\"))//Ashley - If tests are executing from a test results out directory
                 {
                     serverLoc = "C:\\TestRunWorkspace\\Binaries\\Warewolf Server.exe";
                 }
