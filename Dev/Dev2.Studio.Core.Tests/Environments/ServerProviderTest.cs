@@ -4,6 +4,7 @@ using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -11,7 +12,8 @@ namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServerProviderTest
     {
 
@@ -27,6 +29,7 @@ namespace Dev2.Core.Tests.Environments
         public void MyTestInitialize()
         {
             ImportService.CurrentContext = EnviromentRepositoryTest.EnviromentRepositoryImportServiceContext;
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         #endregion

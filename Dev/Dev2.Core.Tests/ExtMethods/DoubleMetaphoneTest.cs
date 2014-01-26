@@ -7,7 +7,8 @@ namespace Dev2.Tests.ExtMethods
     /// <summary>
     /// Summary description for DoubleMetaphoneTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DoubleMetaphoneTest
     {
         /// <summary>
@@ -45,7 +46,7 @@ namespace Dev2.Tests.ExtMethods
         {
             //------------Setup for test--------------------------
             string variable = "foobar1";
-            
+
 
             //------------Execute Test---------------------------
             var result = variable.GenerateDoubleMetaphone();

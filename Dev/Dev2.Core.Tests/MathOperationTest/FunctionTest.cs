@@ -1,34 +1,41 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 using Dev2.MathOperations;
-using Infragistics.Calculations.Engine;
 using Infragistics.Calculations.CalcManager;
+using Infragistics.Calculations.Engine;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.MathOperationTest {
+namespace Dev2.Tests.MathOperationTest
+{
     /// <summary>
     /// Summary description for FunctionTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class FunctionTest {
-        public FunctionTest() {
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class FunctionTest
+    {
+        public FunctionTest()
+        {
             //
             // TODO: Add constructor logic here
             //
         }
-        
+
         private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -58,35 +65,40 @@ namespace Dev2.Tests.MathOperationTest {
         #region Ctor
 
         [TestMethod]
-        public void Function_AllInputsValid_Expected_ValidFunctionCreated() {
+        public void Function_AllInputsValid_Expected_ValidFunctionCreated()
+        {
             string functionName = "Test Function";
             List<string> arguments = new List<string>();
             List<string> argumentDescriptions = new List<string>();
             string description = "Some Test Function";
-            
+
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             Assert.IsNotNull(func);
         }
 
         [TestMethod]
-        public void Function_NullFunctionName_Expected_ExceptionReturned() {
+        public void Function_NullFunctionName_Expected_ExceptionReturned()
+        {
             string functionName = null;
             List<string> arguments = new List<string>();
             List<string> argumentDescriptions = new List<string>();
             string description = "Some Test Function";
-            try {
+            try
+            {
                 IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             }
-            catch(ArgumentNullException) {
+            catch(ArgumentNullException)
+            {
                 // If we get this exception, it is expected.
                 Assert.IsTrue(true);
             }
         }
 
         [TestMethod]
-        public void Function_NullListOfArguments_Expected_EmptyListofArguments() {
+        public void Function_NullListOfArguments_Expected_EmptyListofArguments()
+        {
             string functionName = "Test Function";
-            List<string> arguments = null ;
+            List<string> arguments = null;
             List<string> argumentDescriptions = null;
             string description = "Some Test Function";
 
@@ -95,7 +107,8 @@ namespace Dev2.Tests.MathOperationTest {
         }
 
         [TestMethod]
-        public void Function_NullDescription_Expected_EmptyDescription() {
+        public void Function_NullDescription_Expected_EmptyDescription()
+        {
             string functionName = "Test Function";
             List<string> arguments = new List<string>() { "arg1" };
             List<string> argumentDescriptions = new List<string>() { "the first argument" };
@@ -106,7 +119,8 @@ namespace Dev2.Tests.MathOperationTest {
         }
 
         [TestMethod]
-        public void Function_NullDescriptionAndArguments_Expected_FunctionStillCreated() {
+        public void Function_NullDescriptionAndArguments_Expected_FunctionStillCreated()
+        {
             string functionName = "Test Function";
             List<string> arguments = null;
             List<string> argumentDescriptions = null;
@@ -122,7 +136,8 @@ namespace Dev2.Tests.MathOperationTest {
 
 
         [TestMethod]
-        public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager() {
+        public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
+        {
             string functionName = "TestFunction";
             List<string> arguments = new List<string>() { "x", "y" };
             List<string> argumentDescriptions = new List<string>() { "the first argument", "the second argument" };
@@ -138,7 +153,8 @@ namespace Dev2.Tests.MathOperationTest {
         }
 
         [TestMethod]
-        public void CreateCustomFunction_NullXamCalculationManager_Expected_ExceptionReturned() {
+        public void CreateCustomFunction_NullXamCalculationManager_Expected_ExceptionReturned()
+        {
             string functionName = "TestFunction";
             List<string> arguments = new List<string>() { "x", "y" };
             List<string> argumentDescriptions = new List<string>() { "the first argument", "the second argument" };
@@ -147,10 +163,12 @@ namespace Dev2.Tests.MathOperationTest {
             IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IDev2CalculationManager manager = null;
             Func<double[], double> function = new Func<double[], double>(AddAbs);
-            try {
+            try
+            {
                 func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
             }
-            catch(NullReferenceException) {
+            catch(NullReferenceException)
+            {
                 // since this exception is thrown we have our answer.
                 Assert.IsTrue(true);
             }
@@ -195,7 +213,8 @@ namespace Dev2.Tests.MathOperationTest {
 
         #region Private Test Methods
 
-        private static double AddAbs(double[] x) {
+        private static double AddAbs(double[] x)
+        {
             return 123123423423;
         }
 

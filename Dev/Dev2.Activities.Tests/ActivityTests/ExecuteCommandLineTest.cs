@@ -475,7 +475,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Value, debugInputResults[1].Type);
             StringAssert.Contains(command1, debugInputResults[1].Value);
 
-            Assert.AreEqual(1, outRes.Count);
+            Assert.AreEqual(1, outRes.Count, command1 + " did not output any results");
             IList<DebugItemResult> debugOutputResults = outRes[0].FetchResultsList();
             Assert.AreEqual(3, debugOutputResults.Count);
             Assert.AreEqual(DebugItemResultType.Variable, debugOutputResults[0].Type);

@@ -320,8 +320,8 @@ Global
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Any CPU.Build.0 = Test|Any CPU
-		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Mixed Platforms.ActiveCfg = Test|x86
-		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Mixed Platforms.Build.0 = Test|x86
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
+		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|Mixed Platforms.Build.0 = Test|Any CPU
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x64.ActiveCfg = Test|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x64.Build.0 = Test|x64
 		{2C7F0E32-C4C4-422D-A767-92F3B3510392}.Test|x86.ActiveCfg = Test|x86
@@ -1137,8 +1137,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

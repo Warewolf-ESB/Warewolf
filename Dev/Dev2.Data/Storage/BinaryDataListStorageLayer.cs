@@ -156,7 +156,10 @@ namespace Dev2.Data.Storage
 
         public static void Teardown()
         {
-            LevelZeroCache.DisposeOnExit();
+            if(LevelZeroCache != null)
+            {
+                LevelZeroCache.DisposeOnExit();
+            }
         }
 
         #endregion

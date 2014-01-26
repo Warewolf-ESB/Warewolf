@@ -3,12 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.StartupResources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
     /// <summary>
     /// Summary description for SplashScreenTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class SplashScreenTest {
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class SplashScreenTest
+    {
 
         private TestContext testContextInstance;
 
@@ -16,11 +19,14 @@ namespace Dev2.Core.Tests {
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -39,8 +45,9 @@ namespace Dev2.Core.Tests {
         //
         // Use TestInitialize to run code before running each test 
         [TestInitialize()]
-        public void MyTestInitialize() {
-            
+        public void MyTestInitialize()
+        {
+
         }
         //
         // Use TestCleanup to run code after each test has run
@@ -49,17 +56,20 @@ namespace Dev2.Core.Tests {
         //f
         #endregion
 
-        #region Show Tests 
+        #region Show Tests
 
         /// <summary>
         /// Tests that the splash image is never removed from the Studio project
         /// </summary>
         [TestMethod]
-        public void SplashScreenTest_ImageAvailable_Test() {
-            try {
+        public void SplashScreenTest_ImageAvailable_Test()
+        {
+            try
+            {
                 Dev2SplashScreen.Show();
             }
-            catch(TypeInitializationException) {
+            catch(TypeInitializationException)
+            {
                 Assert.Fail("Splash Screen on startup failed");
             }
             Dev2SplashScreen.Close(TimeSpan.FromSeconds(1));

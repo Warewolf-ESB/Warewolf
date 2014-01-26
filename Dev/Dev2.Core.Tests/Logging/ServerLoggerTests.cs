@@ -1,13 +1,4 @@
-﻿using System.Data;
-using System.Linq;
-using System.Network;
-using System.Threading;
-using Dev2.Common;
-using Dev2.Diagnostics;
-using Dev2.Runtime.Configuration.Settings;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Moq;
-
+﻿
 
 
 
@@ -17,7 +8,8 @@ namespace Dev2.Tests.Logging
     ///// <summary>
     ///// Summary description for UnitTest1
     ///// </summary>
-    //[TestClass][ExcludeFromCodeCoverage]
+    //[TestClass]
+    //[ExcludeFromCodeCoverage]
     //public class ServerLoggerTests
     //{
     //    public static object SyncLock = new object();
@@ -59,21 +51,21 @@ namespace Dev2.Tests.Logging
     //    // Use ClassCleanup to run code after all tests in a class have run
     //    // [ClassCleanup()]
     //    // public static void MyClassCleanup() { }
-        
+
     //    // Use TestInitialize to run code before running each test 
     //     [TestInitialize()]
     //     public void MyTestInitialize()
     //     {
     //         Monitor.Enter(SyncLock);
     //     }
-        
+
     //    // Use TestCleanup to run code after each test has run
     //     [TestCleanup()]
     //     public void MyTestCleanup()
     //     {
     //         Monitor.Exit(SyncLock);
     //     }
-        
+
     //    #endregion
 
     //    [TestMethod]

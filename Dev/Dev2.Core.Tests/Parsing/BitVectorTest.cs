@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Parsing
@@ -8,7 +8,8 @@ namespace Dev2.Tests.Parsing
     /// <summary>
     /// Summary description for BitVectorTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BitVectorTest
     {
         public BitVectorTest()
@@ -65,13 +66,13 @@ namespace Dev2.Tests.Parsing
             bool[] sArray = new bool[32];
             Random random = new Random(15);
 
-            for (int i = 0; i < sArray.Length; i++)
+            for(int i = 0; i < sArray.Length; i++)
             {
                 sArray[i] = random.Next(0, 2) == 1;
                 bArray[i] = sArray[i];
             }
 
-            for (int i = 0; i < sArray.Length; i++)
+            for(int i = 0; i < sArray.Length; i++)
             {
                 Assert.AreEqual(sArray[i], bArray[i]);
             }

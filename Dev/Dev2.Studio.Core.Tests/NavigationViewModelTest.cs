@@ -1,4 +1,6 @@
-﻿#region
+﻿using Dev2.Util;
+
+#region
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
-using Dev2.Services;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -69,8 +70,9 @@ namespace Dev2.Core.Tests
         #region Test Setup and Cleanup
 
         [TestInitialize]
-        public void MyTestInitialize()
+        public void TestInitialize()
         {
+            AppSettings.LocalHost = "http://localhost:3142";
         }
 
         [TestCleanup]

@@ -7,7 +7,8 @@ using Moq;
 
 namespace Unlimited.UnitTest.Framework.Diagnostics
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DebugDispatcherTest
     {
 
@@ -16,26 +17,26 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void AddWithNull()
         {
-           
-                var workspaceID = Guid.NewGuid();
-                var countBefore = DebugDispatcher.Instance.Count;
-                DebugDispatcher.Instance.Add(workspaceID, null);
-                Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-            
+
+            var workspaceID = Guid.NewGuid();
+            var countBefore = DebugDispatcher.Instance.Count;
+            DebugDispatcher.Instance.Add(workspaceID, null);
+            Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
+
         }
 
         [TestMethod]
         public void AddWithWriter()
         {
 
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
 
-                var countBefore = DebugDispatcher.Instance.Count;
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
-                IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
-                Assert.AreEqual(writer.Object, theWriter);
-            
+            var countBefore = DebugDispatcher.Instance.Count;
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+            IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
+            Assert.AreEqual(writer.Object, theWriter);
+
         }
 
         #endregion
@@ -45,30 +46,30 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         [TestMethod]
         public void RemoveWithInvalidID()
         {
-   
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-                var countBefore = DebugDispatcher.Instance.Count;
-                DebugDispatcher.Instance.Remove(Guid.NewGuid());
-                Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
-            
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+
+            var countBefore = DebugDispatcher.Instance.Count;
+            DebugDispatcher.Instance.Remove(Guid.NewGuid());
+            Assert.AreEqual(countBefore, DebugDispatcher.Instance.Count);
+
         }
 
         [TestMethod]
         public void RemoveWithValidID()
         {
 
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-                var countBefore = DebugDispatcher.Instance.Count;
-                DebugDispatcher.Instance.Remove(workspaceID);
-                IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
-                Assert.IsNull(theWriter);
-     
+            var countBefore = DebugDispatcher.Instance.Count;
+            DebugDispatcher.Instance.Remove(workspaceID);
+            IDebugWriter theWriter = DebugDispatcher.Instance.Get(workspaceID);
+            Assert.IsNull(theWriter);
+
         }
 
         #endregion
@@ -79,12 +80,12 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         public void GetWithInvalidID()
         {
 
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-                var result = DebugDispatcher.Instance.Get(Guid.NewGuid());
-                Assert.IsNull(result);
+            var result = DebugDispatcher.Instance.Get(Guid.NewGuid());
+            Assert.IsNull(result);
 
         }
 
@@ -92,13 +93,13 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         public void GetWithValidID()
         {
 
-                var workspaceID = Guid.NewGuid();
-                var writer = new Mock<IDebugWriter>();
-                DebugDispatcher.Instance.Add(workspaceID, writer.Object);
+            var workspaceID = Guid.NewGuid();
+            var writer = new Mock<IDebugWriter>();
+            DebugDispatcher.Instance.Add(workspaceID, writer.Object);
 
-                var result = DebugDispatcher.Instance.Get(workspaceID);
-                Assert.AreSame(writer.Object, result);
-  
+            var result = DebugDispatcher.Instance.Get(workspaceID);
+            Assert.AreSame(writer.Object, result);
+
         }
 
         #endregion
@@ -109,11 +110,11 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
         public void WriteWithNull()
         {
 
-                DebugDispatcher.Instance.Write(null);
+            DebugDispatcher.Instance.Write(null);
 
-                // No exception thrown
-                Assert.IsTrue(true);
-        
+            // No exception thrown
+            Assert.IsTrue(true);
+
         }
 
         [TestMethod]
@@ -132,7 +133,7 @@ namespace Unlimited.UnitTest.Framework.Diagnostics
             // Write happens asynchronously on a separate thread
             Thread.Sleep(50);
             state.Verify(s => s.Write(writer.Object), Times.Exactly(1));
-         
+
         }
 
         #endregion

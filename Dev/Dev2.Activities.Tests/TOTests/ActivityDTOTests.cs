@@ -9,9 +9,10 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable ImplicitlyCapturedClosure
 namespace Dev2.Tests.Activities.TOTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActivityDtoTests
-    {   
+    {
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
@@ -21,13 +22,13 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             var activityDTO = new ActivityDTO();
             //------------Assert Results-------------------------
-            Assert.AreEqual("[[Variable]]",activityDTO.FieldName);
-            Assert.AreEqual("Expression",activityDTO.FieldValue);
-            Assert.AreEqual(0,activityDTO.IndexNumber);
-            Assert.AreEqual(false,activityDTO.Inserted);
+            Assert.AreEqual("[[Variable]]", activityDTO.FieldName);
+            Assert.AreEqual("Expression", activityDTO.FieldValue);
+            Assert.AreEqual(0, activityDTO.IndexNumber);
+            Assert.AreEqual(false, activityDTO.Inserted);
             Assert.IsNotNull(activityDTO.Errors);
-        }       
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
@@ -39,15 +40,15 @@ namespace Dev2.Tests.Activities.TOTests
             const int indexNumber = 2;
             const bool inserted = true;
             //------------Execute Test---------------------------
-            var activityDTO = new ActivityDTO(fieldName,fieldValue,indexNumber,inserted);
+            var activityDTO = new ActivityDTO(fieldName, fieldValue, indexNumber, inserted);
             //------------Assert Results-------------------------
-            Assert.AreEqual(fieldName,activityDTO.FieldName);
-            Assert.AreEqual(fieldValue,activityDTO.FieldValue);
-            Assert.AreEqual(indexNumber,activityDTO.IndexNumber);
-            Assert.AreEqual(inserted,activityDTO.Inserted);
+            Assert.AreEqual(fieldName, activityDTO.FieldName);
+            Assert.AreEqual(fieldValue, activityDTO.FieldValue);
+            Assert.AreEqual(indexNumber, activityDTO.IndexNumber);
+            Assert.AreEqual(inserted, activityDTO.Inserted);
             Assert.IsNotNull(activityDTO.Errors);
-        }  
-        
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ActivityDTO_Constructor")]
@@ -59,9 +60,9 @@ namespace Dev2.Tests.Activities.TOTests
             const int indexNumber = 2;
             const bool inserted = true;
             //------------Execute Test---------------------------
-            var activityDTO = new ActivityDTO(fieldName,fieldValue,indexNumber,inserted);
+            var activityDTO = new ActivityDTO(fieldName, fieldValue, indexNumber, inserted);
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(activityDTO,typeof(IPerformsValidation));
+            Assert.IsInstanceOfType(activityDTO, typeof(IPerformsValidation));
         }
 
         [TestMethod]
@@ -73,7 +74,7 @@ namespace Dev2.Tests.Activities.TOTests
             var activityDTO = new ActivityDTO();
             const string value = "value";
             //------------Execute Test---------------------------
-            
+
             var propertyChangedFired = TestUtils.PropertyChangedTester(activityDTO, () => activityDTO.FieldName, () => activityDTO.FieldName = value);
             //------------Assert Results-------------------------
             Assert.IsTrue(propertyChangedFired);
@@ -225,8 +226,8 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             activityDTO.ClearRow();
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty,activityDTO.FieldName);
-            Assert.AreEqual(string.Empty,activityDTO.FieldValue);
+            Assert.AreEqual(string.Empty, activityDTO.FieldName);
+            Assert.AreEqual(string.Empty, activityDTO.FieldValue);
         }
 
         [TestMethod]
@@ -236,11 +237,11 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO();
-            
+
             //------------Execute Test---------------------------
             var convertToOutputTO = activityDTO.ConvertToOutputTO();
             //------------Assert Results-------------------------
-            Assert.IsNotNull(convertToOutputTO);            
+            Assert.IsNotNull(convertToOutputTO);
         }
 
         [TestMethod]
@@ -250,12 +251,12 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO();
-            var expectedOutList = new List<string>{"TestValue"};
+            var expectedOutList = new List<string> { "TestValue" };
             activityDTO.OutList = expectedOutList;
             //------------Execute Test---------------------------
             var outList = activityDTO.OutList;
             //------------Assert Results-------------------------
-            CollectionAssert.AreEqual(expectedOutList,outList);   
+            CollectionAssert.AreEqual(expectedOutList, outList);
         }
 
         [TestMethod]
@@ -268,7 +269,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             var validate = activityDTO.Validate("FieldName", null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(validate);            
+            Assert.IsTrue(validate);
         }
 
         [TestMethod]
@@ -279,7 +280,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO();
             //------------Execute Test---------------------------
-            bool isValid = activityDTO.Validate("FieldName",new RuleSet());
+            bool isValid = activityDTO.Validate("FieldName", new RuleSet());
             //------------Assert Results-------------------------
             Assert.IsTrue(isValid);
         }
@@ -326,7 +327,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,activityDTO.Errors.Count);
+            Assert.AreEqual(1, activityDTO.Errors.Count);
         }
 
         [TestMethod]
@@ -352,9 +353,9 @@ namespace Dev2.Tests.Activities.TOTests
             var activityDTO = new ActivityDTO();
             activityDTO.FieldName = "1";
             //------------Execute Test---------------------------
-            activityDTO.Validate(()=>activityDTO.FieldName);
+            activityDTO.Validate(() => activityDTO.FieldName);
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,activityDTO.Errors.Count);
+            Assert.AreEqual(1, activityDTO.Errors.Count);
         }
     }
 }
