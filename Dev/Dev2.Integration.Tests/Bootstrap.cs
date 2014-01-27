@@ -33,86 +33,103 @@ namespace Dev2.Integration.Tests
             {
                 if(Directory.Exists("C:\\Users\\IntegrationTester"))
                 {
-                    if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log"))
-                    {
-                        File.Delete("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log");
-                    }
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var loc = assembly.Location;
+                if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log"))
+                {
+                    File.Delete("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log");
+                }
 
-                    var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
-
-                    if(serverLoc.Contains("\\Out\\"))//Ashley - If tests are executing from a test results out directory
-                    {
-                        serverLoc = "C:\\TestRunWorkspace\\Binaries\\Warewolf Server.exe";
-                    }
-
-                    //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
-
-                    ServerLogger.LogMessage("Server Loc -> " + serverLoc);
-                    ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
-
-                    var args = "-t";
-
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.CreateNoWindow = false;
-                    startInfo.UseShellExecute = true;
-                    startInfo.FileName = serverLoc;
-                    //startInfo.RedirectStandardOutput = true;
-                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    startInfo.Arguments = args;
-
-                    var started = false;
-                    var startCnt = 0;
-
-                    // term any existing server processes ;)
-                    TerminateProcess(_serverProcName);
-
-                    while(!started && startCnt < 5)
+                string userName = string.Empty;
+                var windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
+                if(windowsIdentity != null)
+                {
+                    userName = windowsIdentity.Name;
+                }
+                if(userName != "DEV2\\IntegrationTester")
+                {
+                    if(Directory.Exists("C:\\Users\\IntegrationTester"))
                     {
                         try
                         {
-                            Thread.Sleep(1000);
-                            _serverProc = Process.Start(startInfo);
-
-                            // Wait for server to start
-                            Thread.Sleep(15000); // wait up to 15 seconds for server to start ;)
-                            if(!_serverProc.HasExited)
-                            {
-                                started = true;
-                                ServerLogger.LogMessage("** Server Started for Integration Test Run");
-                            }
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Failed to bootstrap, user not recognized : " + userName);
                         }
-                        catch(Exception e)
+                        // ReSharper disable once EmptyGeneralCatchClause
+                        catch
                         {
-                            ServerLogger.LogMessage("Exception : " + e.Message);
+                        }
+                    }
+                    return;
+                }
+
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
+
+                var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+
+                //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
+
+                ServerLogger.LogMessage("Server Loc -> " + serverLoc);
+                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+
+                var args = "-t";
+
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.UseShellExecute = true;
+                startInfo.FileName = serverLoc;
+                //startInfo.RedirectStandardOutput = true;
+                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.Arguments = args;
+
+                var started = false;
+                var startCnt = 0;
+
+                // term any existing server processes ;)
+                TerminateProcess(_serverProcName);
+
+                while(!started && startCnt < 5)
+                {
+                    try
+                    {
+                        _serverProc = Process.Start(startInfo);
+
+                        // Wait for server to start
+                        Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
+                        if(!_serverProc.HasExited)
+                        {
+                            started = true;
+                            ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        ServerLogger.LogMessage("Exception : " + e.Message);
 
                             try
                             {
-                                File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Exception : " + e.Message + " " + serverLoc);
+                        File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Exception : " + e.Message + " " + serverLoc);
                             }
                             // ReSharper disable once EmptyGeneralCatchClause
                             catch
                             {
                             }
 
-                            // most likely a server is already running, kill it and try again ;)
-                            startCnt++;
+                        // most likely a server is already running, kill it and try again ;)
+                        startCnt++;
 
 
-                        }
-                        finally
+                    }
+                    finally
+                    {
+                        if(!started)
                         {
-                            if(!started)
-                            {
-                                ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
-                                // term any existing server processes ;)
-                                TerminateProcess(_serverProcName);
-                            }
+                            ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                            // term any existing server processes ;)
+                            TerminateProcess(_serverProcName);
                         }
                     }
                 }
             }
+        }
         }
 
         /// <summary>

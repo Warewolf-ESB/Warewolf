@@ -462,15 +462,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             var assembly = Assembly.GetExecutingAssembly();
             var loc = assembly.Location;
             var toolLoc = Path.Combine(Path.GetDirectoryName(loc), _commandLineToolName);
+            var deployedToolLoc = Path.Combine(TestContext.DeploymentDirectory, _commandLineToolName);
 
-            string command1;
+            string command1 = null;
             if(File.Exists(toolLoc))
             {
                 command1 = "\"" + toolLoc + "\" output";
             }
             else
             {
-                command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+                if(File.Exists(deployedToolLoc))
+                {
+                    command1 = "\"" + deployedToolLoc + "\" output";
+                }
+                else
+                {
+                    Assert.Fail("Tool cannot be found in \"" + toolLoc + "\" nor at \"" + deployedToolLoc + "\"");
+                }
             }
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
 
