@@ -17,7 +17,6 @@
     <DeploymentItem filename="Dev2.Integration.Tests\bin\Debug\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts cleanupScript="\\RSAKLFSVRTFSBLD\Automated Builds\TestRunStaging\clean - RemoteTestDeploy.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="0" />
