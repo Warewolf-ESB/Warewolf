@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Security.Principal;
-using Caliburn.Micro;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
