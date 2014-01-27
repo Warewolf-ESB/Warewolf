@@ -31,74 +31,84 @@ namespace Dev2.Integration.Tests
         {
             lock(_tumbler)
             {
-                if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log"))
+                if(Directory.Exists("C:\\Users\\IntegrationTester"))
                 {
-                    File.Delete("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log");
-                }
-                var assembly = Assembly.GetExecutingAssembly();
-                var loc = assembly.Location;
-
-                var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
-
-                if(serverLoc.Contains("\\Out\\"))//Ashley - If tests are executing from a test results out directory
-                {
-                    serverLoc = "C:\\TestRunWorkspace\\Binaries\\Warewolf Server.exe";
-                }
-
-                //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
-
-                ServerLogger.LogMessage("Server Loc -> " + serverLoc);
-                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
-
-                var args = "-t";
-
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = false;
-                startInfo.UseShellExecute = true;
-                startInfo.FileName = serverLoc;
-                //startInfo.RedirectStandardOutput = true;
-                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.Arguments = args;
-
-                var started = false;
-                var startCnt = 0;
-
-                // term any existing server processes ;)
-                TerminateProcess(_serverProcName);
-
-                while(!started && startCnt < 5)
-                {
-                    try
+                    if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log"))
                     {
-                        Thread.Sleep(3000);
-                        _serverProc = Process.Start(startInfo);
+                        File.Delete("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log");
+                    }
+                    var assembly = Assembly.GetExecutingAssembly();
+                    var loc = assembly.Location;
 
-                        // Wait for server to start
-                        Thread.Sleep(10000); // wait up to 10 seconds for server to start ;)
-                        if(!_serverProc.HasExited)
+                    var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+
+                    if(serverLoc.Contains("\\Out\\"))//Ashley - If tests are executing from a test results out directory
+                    {
+                        serverLoc = "C:\\TestRunWorkspace\\Binaries\\Warewolf Server.exe";
+                    }
+
+                    //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
+
+                    ServerLogger.LogMessage("Server Loc -> " + serverLoc);
+                    ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+
+                    var args = "-t";
+
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = false;
+                    startInfo.UseShellExecute = true;
+                    startInfo.FileName = serverLoc;
+                    //startInfo.RedirectStandardOutput = true;
+                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.Arguments = args;
+
+                    var started = false;
+                    var startCnt = 0;
+
+                    // term any existing server processes ;)
+                    TerminateProcess(_serverProcName);
+
+                    while(!started && startCnt < 5)
+                    {
+                        try
                         {
-                            started = true;
-                            ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                            Thread.Sleep(1000);
+                            _serverProc = Process.Start(startInfo);
+
+                            // Wait for server to start
+                            Thread.Sleep(15000); // wait up to 15 seconds for server to start ;)
+                            if(!_serverProc.HasExited)
+                            {
+                                started = true;
+                                ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                            }
                         }
-                    }
-                    catch(Exception e)
-                    {
-                        ServerLogger.LogMessage("Exception : " + e.Message);
-
-                        File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Exception : " + e.Message + " " + serverLoc);
-
-                        // most likely a server is already running, kill it and try again ;)
-                        startCnt++;
-
-
-                    }
-                    finally
-                    {
-                        if(!started)
+                        catch(Exception e)
                         {
-                            ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
-                            // term any existing server processes ;)
-                            TerminateProcess(_serverProcName);
+                            ServerLogger.LogMessage("Exception : " + e.Message);
+
+                            try
+                            {
+                                File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Exception : " + e.Message + " " + serverLoc);
+                            }
+                            // ReSharper disable once EmptyGeneralCatchClause
+                            catch
+                            {
+                            }
+
+                            // most likely a server is already running, kill it and try again ;)
+                            startCnt++;
+
+
+                        }
+                        finally
+                        {
+                            if(!started)
+                            {
+                                ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                                // term any existing server processes ;)
+                                TerminateProcess(_serverProcName);
+                            }
                         }
                     }
                 }
