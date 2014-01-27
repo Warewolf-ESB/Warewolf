@@ -82,24 +82,28 @@ namespace Dev2.Data.PathOperations
                 request.Credentials = new NetworkCredential(path.Username, path.Password);
             }
 
-            var response = (FtpWebResponse)request.GetResponse();
-            var ftpStream = response.GetResponseStream();
-
-            if(ftpStream != null && ftpStream.CanRead)
+            using(var response = (FtpWebResponse)request.GetResponse())
             {
-                byte[] data = ftpStream.ToByteArray();
-                result = new MemoryStream(data);
-                response.Close();
-                ftpStream.Close();
-            }
-            else
-            {
-                response.Close();
-                if(ftpStream != null)
+                using(var ftpStream = response.GetResponseStream())
                 {
-                    ftpStream.Close();
+
+                    if(ftpStream != null && ftpStream.CanRead)
+                    {
+                        byte[] data = ftpStream.ToByteArray();
+                        result = new MemoryStream(data);
+                        response.Close();
+                        ftpStream.Close();
+                    }
+                    else
+                    {
+                        response.Close();
+                        if(ftpStream != null)
+                        {
+                            ftpStream.Close();
+                        }
+                        throw new Exception("Fail");
+                    }
                 }
-                throw new Exception("Fail");
             }
         }
 
@@ -264,10 +268,12 @@ namespace Dev2.Data.PathOperations
 
             var result = (int)request.ContentLength;
 
-            var response = (FtpWebResponse)request.GetResponse();
-            if(response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData)
+            using(var response = (FtpWebResponse)request.GetResponse())
             {
-                throw new Exception("File was not created");
+                if(response.StatusCode != FtpStatusCode.FileActionOK && response.StatusCode != FtpStatusCode.ClosingData)
+                {
+                    throw new Exception("File was not created");
+                }
             }
             return result;
         }
@@ -361,26 +367,28 @@ namespace Dev2.Data.PathOperations
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
 
-                response = (FtpWebResponse)request.GetResponse();
-
-                using(Stream responseStream = response.GetResponseStream())
+                using(response = (FtpWebResponse)request.GetResponse())
                 {
-                    if(responseStream != null)
+
+                    using(Stream responseStream = response.GetResponseStream())
                     {
-                        using(StreamReader reader = new StreamReader(responseStream))
+                        if(responseStream != null)
                         {
-                            while(!reader.EndOfStream)
+                            using(StreamReader reader = new StreamReader(responseStream))
                             {
-                                string uri = BuildValidPathForFTP(src, reader.ReadLine());
-                                result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true));
+                                while(!reader.EndOfStream)
+                                {
+                                    string uri = BuildValidPathForFTP(src, reader.ReadLine());
+                                    result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true));
+                                }
+
+                                reader.Close();
+                                reader.Dispose();
                             }
 
-                            reader.Close();
-                            reader.Dispose();
+                            responseStream.Close();
+                            responseStream.Dispose();
                         }
-
-                        responseStream.Close();
-                        responseStream.Dispose();
                     }
                 }
             }
@@ -505,10 +513,12 @@ namespace Dev2.Data.PathOperations
                 {
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
-                response = (FtpWebResponse)request.GetResponse();
-                if(response.StatusCode != FtpStatusCode.PathnameCreated)
+                using(response = (FtpWebResponse)request.GetResponse())
                 {
-                    throw new Exception("Fail");
+                    if(response.StatusCode != FtpStatusCode.PathnameCreated)
+                    {
+                        throw new Exception("Fail");
+                    }
                 }
             }
             catch(Exception ex)
@@ -727,19 +737,21 @@ namespace Dev2.Data.PathOperations
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
 
-                resp = (FtpWebResponse)req.GetResponse();
-
-                using(Stream stream = resp.GetResponseStream())
+                using(resp = (FtpWebResponse)req.GetResponse())
                 {
-                    if(stream != null)
+
+                    using(Stream stream = resp.GetResponseStream())
                     {
-                        var reader = new StreamReader(stream, Encoding.UTF8);
-                        result = reader.ReadToEnd();
-                    }
-                    if(stream != null)
-                    {
-                        stream.Close();
-                        stream.Dispose();
+                        if(stream != null)
+                        {
+                            var reader = new StreamReader(stream, Encoding.UTF8);
+                            result = reader.ReadToEnd();
+                        }
+                        if(stream != null)
+                        {
+                            stream.Close();
+                            stream.Dispose();
+                        }
                     }
                 }
             }
@@ -912,10 +924,12 @@ namespace Dev2.Data.PathOperations
                     request.Credentials = new NetworkCredential(src.Username, src.Password);
                 }
 
-                response = (FtpWebResponse)request.GetResponse();
-                if(response.StatusCode != FtpStatusCode.FileActionOK)
+                using(response = (FtpWebResponse)request.GetResponse())
                 {
-                    throw new Exception("Fail");
+                    if(response.StatusCode != FtpStatusCode.FileActionOK)
+                    {
+                        throw new Exception("Fail");
+                    }
                 }
             }
             catch(Exception exception)
@@ -994,20 +1008,22 @@ namespace Dev2.Data.PathOperations
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
 
-                response = (FtpWebResponse)request.GetResponse();
-
-                using(Stream responseStream = response.GetResponseStream())
+                using(response = (FtpWebResponse)request.GetResponse())
                 {
-                    if(responseStream != null)
-                    {
-                        StreamReader reader = new StreamReader(responseStream);
 
-                        if(reader.EndOfStream)
+                    using(Stream responseStream = response.GetResponseStream())
+                    {
+                        if(responseStream != null)
                         {
-                            // just check for exception, slow I know, but not sure how else to tackle this                  
+                            StreamReader reader = new StreamReader(responseStream);
+
+                            if(reader.EndOfStream)
+                            {
+                                // just check for exception, slow I know, but not sure how else to tackle this                  
+                            }
+                            reader.Close();
+                            reader.Dispose();
                         }
-                        reader.Close();
-                        reader.Dispose();
                     }
                 }
 
@@ -1085,20 +1101,22 @@ namespace Dev2.Data.PathOperations
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
 
-                response = (FtpWebResponse)request.GetResponse();
-
-                using(Stream responseStream = response.GetResponseStream())
+                using(response = (FtpWebResponse)request.GetResponse())
                 {
-                    if(responseStream != null)
-                    {
-                        StreamReader reader = new StreamReader(responseStream);
 
-                        if(reader.EndOfStream)
+                    using(Stream responseStream = response.GetResponseStream())
+                    {
+                        if(responseStream != null)
                         {
-                            // just check for exception, slow I know, but not sure how else to tackle this                  
+                            StreamReader reader = new StreamReader(responseStream);
+
+                            if(reader.EndOfStream)
+                            {
+                                // just check for exception, slow I know, but not sure how else to tackle this                  
+                            }
+                            reader.Close();
+                            reader.Dispose();
                         }
-                        reader.Close();
-                        reader.Dispose();
                     }
                 }
 
