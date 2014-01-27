@@ -143,8 +143,9 @@ namespace Dev2.Studio.Core.Models
                     _permissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
                 }
                 NotifyOfPropertyChange("Environment");
-                // ReSharper disable once NotResolvedInText
+                // ReSharper disable NotResolvedInText
                 NotifyOfPropertyChange("CanExecute");
+                // ReSharper restore NotResolvedInText
             }
         }
 

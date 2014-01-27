@@ -453,7 +453,9 @@ namespace Dev2.Core.Tests
         {
             const string TestCategory = "Test2";
             const string TestXaml = "current xaml";
+            // ReSharper disable ImplicitlyCapturedClosure
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, serviceElement =>
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 var actionElement = serviceElement.Element("Action");
                 Assert.IsNotNull(actionElement, "actionElement = null");
