@@ -1370,7 +1370,7 @@ namespace Dev2.Core.Tests.Workflows
             DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
-            Assert.IsTrue(testAct.ServiceUri == "https://localhost:3143/" || testAct.ServiceUri == "http://localhost:3142/", "Expected https://localhost:3143/ or https://localhost:3142/ but got: " + testAct.ServiceUri);
+            Assert.IsTrue(testAct.ServiceUri == "https://localhost:3143/" || testAct.ServiceUri == "http://localhost:3142/" || testAct.ServiceUri == "http://127.0.0.1:3142/", "Expected https://localhost:3143/ or http://localhost:3142/ or http://127.0.0.1:3142/ but got: " + testAct.ServiceUri);
             Assert.IsTrue(testAct.ServiceServer == envId2);
 
             var activity = new DsfActivity();
@@ -1735,7 +1735,7 @@ namespace Dev2.Core.Tests.Workflows
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
                 Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
-        }
+            }
         }
 
         #region TestModelServiceModelChangedNextReference
@@ -1810,62 +1810,62 @@ namespace Dev2.Core.Tests.Workflows
             #region Setup viewModel
             new Thread(() =>
             {
-            var workflow = new ActivityBuilder();
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+                var workflow = new ActivityBuilder();
+                var resourceRep = new Mock<IResourceRepository>();
+                resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+                resourceModel.Setup(r => r.ResourceName).Returns("Test");
                 StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
                 resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
                 workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+                var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+                viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
 
-            #region setup Mock ModelItem
+                #region setup Mock ModelItem
 
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+                var properties = new Dictionary<string, Mock<ModelProperty>>();
+                var propertyCollection = new Mock<ModelPropertyCollection>();
+                var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-            prop.Setup(p => p.ComputedValue).Returns(testAct);
-            properties.Add("Action", prop);
+                var prop = new Mock<ModelProperty>();
+                prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+                prop.Setup(p => p.ComputedValue).Returns(testAct);
+                properties.Add("Action", prop);
 
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+                propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-            var source = new Mock<ModelItem>();
-            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+                var source = new Mock<ModelItem>();
+                source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+                source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-            #endregion
+                #endregion
 
-            #region setup mock to change properties
+                #region setup mock to change properties
 
-            //mock item adding - this is obsolote functionality but not refactored due to overhead
-            var args = new Mock<ModelChangedEventArgs>();
+                //mock item adding - this is obsolote functionality but not refactored due to overhead
+                var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+                args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-            #endregion
+                #endregion
 
-            //Execute
-            viewModel.TestWorkflowDesignerModelChangedWithNullSender();
+                //Execute
+                viewModel.TestWorkflowDesignerModelChangedWithNullSender();
 
-            viewModel.Dispose();
+                viewModel.Dispose();
 
-            //Verify
-            prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
-            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
+                //Verify
+                prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
+                Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
             });
         }
 
@@ -1875,63 +1875,63 @@ namespace Dev2.Core.Tests.Workflows
         {
             new Thread(() =>
             {
-            var workflow = new ActivityBuilder();
+                var workflow = new ActivityBuilder();
 
-            #region Setup viewModel
+                #region Setup viewModel
 
-            var resourceRep = new Mock<IResourceRepository>();
-            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+                var resourceRep = new Mock<IResourceRepository>();
+                resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-            resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            resourceModel.SetupProperty(model => model.IsWorkflowSaved);
+                var resourceModel = new Mock<IContextualResourceModel>();
+                resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+                resourceModel.Setup(r => r.ResourceName).Returns("Test");
+                resourceModel.SetupProperty(model => model.IsWorkflowSaved);
                 StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
                 resourceModel.Setup(res => res.WorkflowXaml).Returns(xamlBuilder);
 
-            var workflowHelper = new Mock<IWorkflowHelper>();
-            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+                var workflowHelper = new Mock<IWorkflowHelper>();
+                workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
                 workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
 
                 var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+                viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
-            #endregion
+                #endregion
 
 
-            #region setup Mock ModelItem
+                #region setup Mock ModelItem
 
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
+                var properties = new Dictionary<string, Mock<ModelProperty>>();
+                var propertyCollection = new Mock<ModelPropertyCollection>();
+                var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true);
 
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-            prop.Setup(p => p.ComputedValue).Returns(testAct);
-            properties.Add("Action", prop);
+                var prop = new Mock<ModelProperty>();
+                prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+                prop.Setup(p => p.ComputedValue).Returns(testAct);
+                properties.Add("Action", prop);
 
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+                propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-            var source = new Mock<ModelItem>();
-            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+                var source = new Mock<ModelItem>();
+                source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+                source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-            #endregion
+                #endregion
 
-            #region setup mock to change properties
+                #region setup mock to change properties
 
-            //mock item adding - this is obsolote functionality but not refactored due to overhead
-            var args = new Mock<ModelChangedEventArgs>();
+                //mock item adding - this is obsolote functionality but not refactored due to overhead
+                var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+                args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-            #endregion
+                #endregion
 
-            viewModel.Dispose();
+                viewModel.Dispose();
 
-            //Verify
-            Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
+                //Verify
+                Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
             });
 
         }
