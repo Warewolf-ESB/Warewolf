@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.Annotations;
 using Dev2.Data.ServiceModel;
@@ -16,8 +15,8 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.Webs;
 using Dev2.Threading;
-using Action = System.Action;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.UI
 {
     /// <summary>

@@ -575,7 +575,6 @@ namespace Dev2.Core.Tests
         public void ResourceModel_ToServiceDefinition_WhenSourceType_ShouldHaveFullServiceDefinition()
         {
             //------------Setup for test--------------------------
-            XElement element = new XElement("Action");
             var resourceModel = CreateResourceModel("from resource definition");
             resourceModel.ResourceType = ResourceType.Source;
             resourceModel.ServerResourceType = "WebSource";

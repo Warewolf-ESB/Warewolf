@@ -22,7 +22,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Action = System.Action;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
     public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
