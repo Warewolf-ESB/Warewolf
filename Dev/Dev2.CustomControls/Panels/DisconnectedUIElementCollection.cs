@@ -27,16 +27,13 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
-using System.Windows;
-using System.Collections.ObjectModel;
 using System.Collections;
-using System.Windows.Media;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace WPF.JoshSmith.Panels
 {
@@ -180,7 +177,10 @@ namespace WPF.JoshSmith.Panels
 
         public override UIElement this[int index]
         {
+            // ReSharper disable RedundantCast
             get { return _elements[index] as UIElement; }
+            // ReSharper restore RedundantCast
+
             set
             {
                 VerifyWriteAccess();
@@ -224,17 +224,6 @@ namespace WPF.JoshSmith.Panels
             base.RemoveAt(index);
         }
 
-        private UIElement EnsureUIElement(object value)
-        {
-            if (value == null)
-                throw new ArgumentException("Cannot add a null value to a DisconnectedUIElementCollection");
-
-            if (!(value is UIElement))
-                throw new ArgumentException("Only objects of type UIElement can be added to a DisconnectedUIElementCollection");
-
-            return value as UIElement;
-        }
-
         /// <summary>
         /// If the owner is an items host, we need to enforce the rule that elements
         /// cannot be explicitly added to the disconnected collection.  However, it is still
@@ -247,10 +236,10 @@ namespace WPF.JoshSmith.Panels
         private void VerifyWriteAccess()
         {
             // if the owner is not a panel, just return
-            if (_ownerPanel == null) return;
+            if(_ownerPanel == null) return;
 
             // check whether the owner is an items host for an ItemsControl
-            if (_ownerPanel.IsItemsHost && ItemsControl.GetItemsOwner(_ownerPanel) != null)
+            if(_ownerPanel.IsItemsHost && ItemsControl.GetItemsOwner(_ownerPanel) != null)
                 throw new InvalidOperationException("Disconnected children cannot be explicitly added to this "
                     + "collection while the panel is serving as an items host. However, visual children can "
                     + "be added by simply calling the AddVisualChild method.");
@@ -268,7 +257,7 @@ namespace WPF.JoshSmith.Panels
         public event NotifyCollectionChangedEventHandler CollectionChanged;
         private void RaiseCollectionChanged(NotifyCollectionChangedAction action, object changedItem, int index)
         {
-            if (CollectionChanged != null)
+            if(CollectionChanged != null)
                 CollectionChanged(this, new NotifyCollectionChangedEventArgs(action, changedItem, index));
         }
 
@@ -290,7 +279,9 @@ namespace WPF.JoshSmith.Panels
                 get { return _element; }
             }
 
+            // ReSharper disable FieldCanBeMadeReadOnly.Local
             private UIElement _element;
+            // ReSharper restore FieldCanBeMadeReadOnly.Local
         }
 
         #endregion
@@ -307,13 +298,13 @@ namespace WPF.JoshSmith.Panels
             protected override void OnVisualChildrenChanged(DependencyObject visualAdded, DependencyObject visualRemoved)
             {
                 // avoid reentrancy during internal updates
-                if (_internalUpdate) return;
+                if(_internalUpdate) return;
 
                 _internalUpdate = true;
                 try
                 {
                     // when a UIElement is added, replace it with its degenerate sibling
-                    if (visualAdded != null)
+                    if(visualAdded != null)
                     {
                         Debug.Assert(!(visualAdded is DegenerateSibling),
                             "Unexpected addition of degenerate... All degenerates should be added during internal updates.");
@@ -323,13 +314,16 @@ namespace WPF.JoshSmith.Panels
                         int index = _owner.BaseIndexOf(element);
                         _owner.BaseRemoveAt(index);
                         _owner.BaseInsert(index, sibling);
-                        _owner._degenerateSiblings[element] = sibling;
-                        _owner._elements.Insert(index, element);
-                        _owner.RaiseCollectionChanged(NotifyCollectionChangedAction.Add, element, index);
+                        if(element != null)
+                        {
+                            _owner._degenerateSiblings[element] = sibling;
+                            _owner._elements.Insert(index, element);
+                            _owner.RaiseCollectionChanged(NotifyCollectionChangedAction.Add, element, index);
+                        }
                     }
 
                     // when a degenerate sibling is removed, remove its corresponding element
-                    if (visualRemoved != null)
+                    if(visualRemoved != null)
                     {
                         Debug.Assert(visualRemoved is DegenerateSibling,
                             "Unexpected removal of UIElement... All non degenerates should be removed during internal updates.");
@@ -348,7 +342,7 @@ namespace WPF.JoshSmith.Panels
             }
 
             private DisconnectedUIElementCollection _owner;
-            private bool _internalUpdate = false;
+            private bool _internalUpdate;
         }
 
         #endregion
@@ -357,10 +351,10 @@ namespace WPF.JoshSmith.Panels
 
         #region fields
 
-        private Dictionary<UIElement, DegenerateSibling> _degenerateSiblings = new Dictionary<UIElement, DegenerateSibling>();
-        private Collection<UIElement> _elements = new Collection<UIElement>();
-        private Panel _ownerPanel;
-        private SurrogateVisualParent _surrogateVisualParent;
+        private readonly Dictionary<UIElement, DegenerateSibling> _degenerateSiblings = new Dictionary<UIElement, DegenerateSibling>();
+        private readonly Collection<UIElement> _elements = new Collection<UIElement>();
+        private readonly Panel _ownerPanel;
+        private readonly SurrogateVisualParent _surrogateVisualParent;
 
         #endregion
     }
