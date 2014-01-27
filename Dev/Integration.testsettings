@@ -6,6 +6,7 @@
     <DeploymentItem filename="packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll" />
     <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
     <DeploymentItem filename="BPM Resources\Sources\" outputDirectory="Sources" />
+    <DeploymentItem filename="C:\Builds\TestRunWorkspace\Binaries\" />
     <DeploymentItem filename="packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll" />
     <DeploymentItem filename="Binaries\System.Reactive.Core.dll" />
     <DeploymentItem filename="Dev2.Server\bin\Debug\Webs\" />
