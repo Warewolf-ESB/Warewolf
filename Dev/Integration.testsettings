@@ -2,18 +2,15 @@
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
+    <DeploymentItem filename="BPM Resources\Services\" outputDirectory="Services" />
     <DeploymentItem filename="packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll" />
-    <DeploymentItem filename="Dev2.Activities.Specs\Toolbox\Scripting\Script\testfiles\" />
-    <DeploymentItem filename="Binaries\System.Reactive.Core.dll" />
-    <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
+    <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
     <DeploymentItem filename="BPM Resources\Sources\" outputDirectory="Sources" />
     <DeploymentItem filename="packages\Microsoft.Owin.Host.HttpListener.2.0.2\lib\net45\Microsoft.Owin.Host.HttpListener.dll" />
+    <DeploymentItem filename="Binaries\System.Reactive.Core.dll" />
     <DeploymentItem filename="Dev2.Server\bin\Debug\Webs\" />
-    <DeploymentItem filename="BPM Resources\Services\" outputDirectory="Services" />
-    <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="\\RSAKLFSVRTFSBLD\Automated Builds\TestRunStaging\clean - RemoteTestDeploy.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts testTimeout="120000" />
