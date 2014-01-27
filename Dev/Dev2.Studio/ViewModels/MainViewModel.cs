@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -39,14 +47,6 @@ using Dev2.Studio.Webs;
 using Dev2.Threading;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable once CheckNamespace
@@ -396,8 +396,9 @@ namespace Dev2.Studio.ViewModels
         #endregion
 
         // PBI 9512 - 2013.06.07 - TWR: added
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
         public ILatestGetter LatestGetter { get; private set; }
+        // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         // PBI 9941 - 2013.07.07 - TWR: added
         public IVersionChecker Version { get; private set; }
@@ -458,8 +459,9 @@ namespace Dev2.Studio.ViewModels
             }
 
             // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
-            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ShowStartPage();
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         #endregion ctor
@@ -497,7 +499,7 @@ namespace Dev2.Studio.ViewModels
         {
             this.TraceInfo(message.GetType().Name);
             AddWorkSurface(message.WorkSurfaceObject);
-           
+
             if(message.ShowDebugWindowOnLoad)
             {
                 if(ActiveItem != null && _canDebug)
@@ -727,6 +729,12 @@ namespace Dev2.Studio.ViewModels
             if(isedit && resourceModel.ServerResourceType == ResourceType.WorkflowService.ToString())
             {
                 PersistTabs();
+            }
+
+            // we need to load it so we can extract the sourceID ;)
+            if(resourceModel.WorkflowXaml == null)
+            {
+                resourceModel.Environment.ResourceRepository.ReloadResource(resourceModel.ID, resourceModel.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
 
             WebController.DisplayDialogue(resourceModel, isedit);

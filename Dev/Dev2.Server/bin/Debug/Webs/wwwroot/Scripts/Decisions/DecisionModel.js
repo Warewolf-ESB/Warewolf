@@ -22,7 +22,7 @@ function DecisionViewModel() {
 
         /* The data here must match the server's decision functions */
         decisionFunctions: ko.observableArray([
-			/* Not a valid type, here for user friendlyness */
+			/* Not a valid type, here for user friendliness */
 			{ displayValue: "Choose...", optionValue: "Choose...", columnCount: 1 },
 			/* Start valid types */
             { displayValue: "There Is An Error", optionValue: "IsError", columnCount: 0 },

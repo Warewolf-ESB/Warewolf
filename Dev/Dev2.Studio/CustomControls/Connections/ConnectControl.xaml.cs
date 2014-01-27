@@ -257,12 +257,12 @@ namespace Dev2.UI
 
         void OnEditClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, ViewModel.SelectedServer.ID.ToString(), Context);
+            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, ViewModel.SelectedServer.ID.ToString(),null, Context);
         }
 
         void OnNewClick(object sender, RoutedEventArgs e)
         {
-            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, null, Context);
+            RootWebSite.ShowDialog(ViewModel.ActiveEnvironment, ResourceType.Server, null, null, null, Context);
         }
 
         #endregion

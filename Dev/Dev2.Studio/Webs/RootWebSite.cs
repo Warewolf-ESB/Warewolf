@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -12,6 +13,9 @@ namespace Dev2.Studio.Webs
 {
     public static class RootWebSite
     {
+
+        public static bool IsTestMode { get; set; }
+        public static string TestModeRelativeURI { get; set; }
         public const string SiteName = "wwwroot";
 
         #region ShowSwitchDragDialog
@@ -126,14 +130,22 @@ namespace Dev2.Studio.Webs
                 Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
             }
 
-            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID);
+            // we need to take the SourceID out and pass along ;)
+            var srcID = Guid.Empty.ToString();
+            if(resourceModel.WorkflowXaml != null)
+            {
+                var xe = resourceModel.WorkflowXaml.ToXElement();
+                srcID = xe.AttributeSafe("SourceID");
+            }
+
+            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID);
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, Guid? context = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, Guid? context = null)
         {
             const int ServiceDialogHeight = 557;
             const int ServiceDialogWidth = 941;
@@ -143,7 +155,7 @@ namespace Dev2.Studio.Webs
                 throw new ArgumentNullException("environment");
             }
 
-            // Silly people not checking for nulls on properties that wraper other properties?! ;)
+            // Silly people not checking for nulls on properties that warper other properties?! ;)
             if(environment.Connection == null)
             {
                 if(!environment.IsConnected)
@@ -231,8 +243,18 @@ namespace Dev2.Studio.Webs
 
                 var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
                 resourcePath = HttpUtility.UrlEncode(resourcePath);
-                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath);
-                environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height);
+                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}&sourceID={5}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath, srcID);
+
+                if(!IsTestMode)
+                {
+                    // this must be a property ;)
+                    environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height);
+                }
+                else
+                {
+                    // TODO : return the relativeUriString generated ;)
+                    TestModeRelativeURI = relativeUriString;
+                }
             }
             return true;
         }

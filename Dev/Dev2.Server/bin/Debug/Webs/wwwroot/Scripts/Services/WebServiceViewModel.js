@@ -1,7 +1,7 @@
 ﻿// Make this available to chrome debugger
 //@ sourceURL=WebServiceViewModel.js  
 
-function WebServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {
+function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment, resourcePath) {
     var self = this;
     var srcUrl = 0;
     var srcBody = 1;
@@ -9,6 +9,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
 
     var srcBodyPrev = "";
     var srcHeaderPrev = "";
+    var initLoad = true;
     
     var $tabs = $("#tabs");
     var $sourceAddress = $("#sourceAddress");
@@ -21,13 +22,16 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     $("#addResponseButton").length > 0 ? $("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
-      // ReSharper disable once WrongExpressionStatement
+      // ReSharper disable WrongExpressionStatement
       .button() : null;
+      // ReSharper restore WrongExpressionStatement
     
     $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/jsonpath.png" />')
+      // ReSharper disable WrongExpressionStatement
       .button() : null;
+      // ReSharper restore WrongExpressionStatement
 	  
 	$("#requestMethod").change(function(){
 		if($(this).val() == "GET"){
@@ -92,6 +96,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         self.isCut(e.ctrlKey && e.keyCode == 88); // CTRL+X
         return true;
     };
+    
     self.RequestUrlOnKeyUpEvent = function (elem, e) {
         self.isBackspacePressed = false;
         self.isEqualPressed = false;
@@ -419,8 +424,6 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                     self.data.method.Parameters.splice(i, 1);
                 } else {
                     for (var z = 0; z < forceRemoveItems.length; z++) {
-                        //alert("here");
-
                         for (var c = 0; c < self.data.method.Parameters().length; c++) {
                             var tmp = self.data.method.Parameters()[c];
                             if("[["+tmp.Name+"]]" == forceRemoveItems[z]) {
@@ -503,14 +506,20 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
     self.onSourceChanged = function (newValue) {
         self.hasSourceSelectionChanged = true;
         try {
-            self.data.requestBody("");
-            self.data.requestResponse("");
-            self.data.requestHeaders("");
-            self.clearRequestVariables();
-            self.data.recordsets.removeAll();
-            self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
-            self.hasTestResults(false);
-            self.sourceAddress(newValue ? newValue.Address : "");
+            if (!initLoad) {
+                self.data.requestBody("");
+                self.data.requestResponse("");
+                self.data.requestHeaders("");
+                self.clearRequestVariables();
+                self.data.recordsets.removeAll();
+                self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
+                self.hasTestResults(false);
+                self.sourceAddress(newValue ? newValue.Address : "");
+            }else {
+                initLoad = false;
+                self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
+                self.sourceAddress(newValue ? newValue.Address : "");
+            }
 
             var addressWidth = 0;
             if (newValue) {
@@ -524,17 +533,25 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         }
     };
 
+
+    // sources have not loaded at this point in time ;(
+
     self.selectSourceByID = function (theID) {
-        theID = theID.toLowerCase();
+        theID = theID.toLowerCase().trim()+"";
         var found = false;
         $.each(self.sources(), function (index, source) {
-            if (source.ResourceID.toLowerCase() === theID) {
+            
+            var matchID = source.ResourceID.toLowerCase().trim() + "";
+
+            if (matchID === theID) {
                 found = true;
                 self.data.source(source);
                 return false;
             }
+            
             return true;
         });
+        
         return found;
     };
 
@@ -635,13 +652,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         return self.data.jsonPathResult(data);
     };
 	
-	self.setDisplayData = function(data){
-		return self.data.displayData(data);
-	}
+	self.setDisplayData = function (data) {
+	    return self.data.displayData(data);
+	};
 
     self.load = function () {
-        self.loadSources(
-            self.loadService());
+        self.loadSources();
+        self.loadService();
         utils.isReadOnly(resourceID, function (isReadOnly) {
             self.isReadOnly = isReadOnly;
         });
@@ -653,6 +670,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             resourceType: "WebService"
         });
         
+
         $.post("Service/WebServices/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
             self.data.resourceType(result.ResourceType);
@@ -661,7 +679,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
             self.data.jsonPath(result.JsonPath);
 			self.data.requestMessage(result.RequestMessage);
 			self.data.displayData("");
-
+            
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
@@ -672,7 +690,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                     self.data.method.Name(result.Method.Name);
                     self.data.method.Parameters(result.Method.Parameters);
                 }
-
+                
                 self.data.requestUrl(result.RequestUrl);
                 self.data.requestMethod(result.RequestMethod.toUpperCase());
                 self.data.requestHeaders(result.RequestHeaders);
@@ -680,22 +698,48 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
                 self.data.requestBody(result.RequestBody);
                 srcBodyPrev = result.RequestBody;
                 self.data.requestResponse(result.RequestResponse);
-
                 self.pushRecordsets(result);
                 self.onLoadSourceCompleted = null;
+                
             };
             
-            var found = sourceName && self.selectSourceByName(sourceName);           
+            /*
+                The issue is that some times !found route is triggered
+            */
+
+            var found = self.selectSourceByID(sourceID);
+            
+            if (found) {
+                
+                if (result.Method) {
+                    self.data.method.Name(result.Method.Name);
+                    self.data.method.Parameters(result.Method.Parameters);
+                }
+
+                self.data.requestUrl(result.RequestUrl);
+                self.data.requestMethod(result.RequestMethod.toUpperCase());
+                self.data.requestHeaders(result.RequestHeaders);
+                srcHeaderPrev = result.RequestHeaders;
+                self.data.requestBody(result.RequestBody); 
+                srcBodyPrev = result.RequestBody;
+                self.data.requestResponse(result.RequestResponse);
+                self.pushRecordsets(result);
+                self.onLoadSourceCompleted = null;
+            }
+
             if (!found) {
                 found = utils.IsNullOrEmptyGuid(result.Source.ResourceID)
                     ? self.selectSourceByName(result.Source.ResourceName)
                     : self.selectSourceByID(result.Source.ResourceID);
             }
             
+            // fucking src change event is clearing this out!!!!
+
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (!found) {
                 self.onLoadSourceCompleted();
             }
+            
             self.title(self.isEditing ? "Edit Web Service - " + result.ResourceName : "New Web Service");
         });
     };
@@ -711,7 +755,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceName, environmen
         });
     };
     
+    // ReSharper disable DuplicatingLocalDeclaration
     self.loadSource = function (sourceID) {
+    // ReSharper restore DuplicatingLocalDeclaration
         $.post("Service/WebSources/Get" + window.location.search, sourceID, function (result) {
             // Need to set this just in case this is the first time!
             self.data.source().Address = result.Address;
@@ -805,7 +851,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
     $("button").button();
     $("#tabs").tabs();
 
-    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceName"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
+    var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceID"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(webServiceViewModel, document.getElementById(webServiceContainerID));
     

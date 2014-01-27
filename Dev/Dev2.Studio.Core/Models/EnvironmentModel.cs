@@ -204,8 +204,7 @@ namespace Dev2.Studio.Core.Models
 
 
             var result = new StringBuilder();
-            XmlWriterSettings xws = new XmlWriterSettings();
-            xws.OmitXmlDeclaration = true;
+            XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
             using(XmlWriter xw = XmlWriter.Create(result, xws))
             {
                 xml.Save(xw);

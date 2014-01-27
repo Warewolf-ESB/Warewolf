@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -20,13 +18,13 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage res = new ExecuteMessage {HasError = false};
-            
+            ExecuteMessage res = new ExecuteMessage { HasError = false };
+
             string editedItemsXml = null;
 
             StringBuilder tmp;
             values.TryGetValue("EditedItemsXml", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 editedItemsXml = tmp.ToString();
             }
@@ -34,8 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var editedItems = new List<string>();
-                
-                if (!string.IsNullOrWhiteSpace(editedItemsXml))
+
+                if(!string.IsNullOrWhiteSpace(editedItemsXml))
                 {
                     editedItems.AddRange(XElement.Parse(editedItemsXml)
                         .Elements()
@@ -45,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 WorkspaceRepository.Instance.GetLatest(theWorkspace, editedItems);
                 res.SetMessage("Workspace updated " + DateTime.Now);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 res.SetMessage("Error updating workspace " + DateTime.Now);
                 this.LogError(ex);
@@ -57,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var getLatestAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType()};
+            var getLatestAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             var getLatestService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><EditedItemsXml/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             getLatestService.Actions.Add(getLatestAction);
