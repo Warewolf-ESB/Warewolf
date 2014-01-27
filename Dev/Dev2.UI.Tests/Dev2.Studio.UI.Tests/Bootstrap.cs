@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Management;
 using System.Reflection;
 using System.Threading;
-using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests
@@ -16,8 +14,9 @@ namespace Dev2.Integration.Tests
     public class Bootstrap
     {
         private static Process _serverProc;
+        private static Process _studioProc;
         private const string _serverName = "Warewolf Server.exe";
-        private const string _serverProcName = "Warewolf Server";
+        private const string _studioName = "Warewolf Studio.exe";
 
 
         private static object _tumbler = new object();
@@ -31,9 +30,9 @@ namespace Dev2.Integration.Tests
         {
             lock(_tumbler)
             {
-                if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log"))
+                if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\uitest.log"))
                 {
-                    File.Delete("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log");
+                    File.Delete("C:\\Users\\IntegrationTester\\Desktop\\uitest.log");
                 }
 
                 string userName = string.Empty;
@@ -48,7 +47,7 @@ namespace Dev2.Integration.Tests
                     {
                         try
                         {
-                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Failed to bootstrap, user not recognized : " + userName);
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Failed to bootstrap, user not recognized : " + userName);
                         }
                         // ReSharper disable once EmptyGeneralCatchClause
                         catch
@@ -62,11 +61,9 @@ namespace Dev2.Integration.Tests
                 var loc = assembly.Location;
 
                 var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+                var studioLoc = Path.Combine(Path.GetDirectoryName(loc), _studioName);
 
                 //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
-
-                ServerLogger.LogMessage("Server Loc -> " + serverLoc);
-                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
 
                 var args = "-t";
 
@@ -81,9 +78,6 @@ namespace Dev2.Integration.Tests
                 var started = false;
                 var startCnt = 0;
 
-                // term any existing server processes ;)
-                TerminateProcess(_serverProcName);
-
                 while(!started && startCnt < 5)
                 {
                     try
@@ -92,38 +86,57 @@ namespace Dev2.Integration.Tests
 
                         // Wait for server to start
                         Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
-                        if(!_serverProc.HasExited)
+                        if(_serverProc != null && !_serverProc.HasExited)
                         {
                             started = true;
-                            ServerLogger.LogMessage("** Server Started for Integration Test Run");
                         }
                     }
                     catch(Exception e)
                     {
-                        ServerLogger.LogMessage("Exception : " + e.Message);
-
-                            try
-                            {
-                        File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\integrationtest.log", "Exception : " + e.Message + " " + serverLoc);
-                            }
-                            // ReSharper disable once EmptyGeneralCatchClause
-                            catch
-                            {
-                            }
+                        try
+                        {
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
+                        }
+                        // ReSharper disable once EmptyGeneralCatchClause
+                        catch
+                        {
+                        }
 
                         // most likely a server is already running, kill it and try again ;)
                         startCnt++;
-
-
                     }
-                    finally
+                }
+
+                started = false;
+                startCnt = 0;
+                startInfo.FileName = studioLoc;
+
+                while(!started && startCnt < 5)
+                {
+                    try
                     {
-                        if(!started)
+                        _studioProc = Process.Start(startInfo);
+
+                        // Wait for studio to start
+                        Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
+                        if(_studioProc != null && !_studioProc.HasExited)
                         {
-                            ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
-                            // term any existing server processes ;)
-                            TerminateProcess(_serverProcName);
+                            started = true;
                         }
+                    }
+                    catch(Exception e)
+                    {
+                        try
+                        {
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
+                        }
+                        // ReSharper disable once EmptyGeneralCatchClause
+                        catch
+                        {
+                        }
+
+                        // most likely a studio is already running, kill it and try again ;)
+                        startCnt++;
                     }
                 }
             }
@@ -138,52 +151,10 @@ namespace Dev2.Integration.Tests
             if(_serverProc != null)
             {
                 _serverProc.Kill();
-                ServerLogger.LogMessage("Server Terminated");
             }
-        }
-
-
-        private static void TerminateProcess(string procName)
-        {
-            ServerLogger.LogMessage("** Kill Process LIKE { " + procName + " }");
-            var processName = procName;
-            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
-            //initialize the searcher with the query it is
-            //supposed to execute
-            using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            if(_studioProc != null)
             {
-                //execute the query
-                ManagementObjectCollection processes = searcher.Get();
-                if(processes.Count <= 0)
-                {
-                    ServerLogger.LogMessage("No processes");
-                }
-                else
-                {
-
-                    foreach(ManagementObject process in processes)
-                    {
-                        //print process properties
-
-                        process.Get();
-                        PropertyDataCollection processProperties = process.Properties;
-
-                        var pid = processProperties["ProcessID"].Value.ToString();
-
-                        ServerLogger.LogMessage("Killed Process { " + pid + " }");
-
-                        var proc = Process.GetProcessById(Int32.Parse(pid));
-
-                        try
-                        {
-                            proc.Kill();
-                        }
-                        catch
-                        {
-                            // Do nothing
-                        }
-                    }
-                }
+                _studioProc.Kill();
             }
         }
     }

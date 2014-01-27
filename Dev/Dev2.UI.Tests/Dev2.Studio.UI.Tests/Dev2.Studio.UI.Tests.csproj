@@ -85,6 +85,7 @@
     <Compile Include="AdornerTests.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
+    <Compile Include="Bootstrap.cs" />
     <Compile Include="WrapperClasses\ManageSecuritySecuritySettingsTestWrapper.cs" />
     <Compile Include="SecuritySettingsUiTests.cs" />
     <Compile Include="DebugUITests.cs" />

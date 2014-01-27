@@ -1,20 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
-  <Deployment enabled="false">
-    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
-    <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
-    <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
-    <DeploymentItem filename="Binaries\IronRuby.Libraries.dll" />
-    <DeploymentItem filename="Binaries\Microsoft.Dynamic.dll" />
-    <DeploymentItem filename="Binaries\IronPython.dll" />
-    <DeploymentItem filename="Binaries\CefSharp\" />
-    <DeploymentItem filename="Binaries\IronRuby.Libraries.Yaml.dll" />
-    <DeploymentItem filename="Dev2.PluginTester\bin\Debug\Dev2.PluginTester.dll" />
-    <DeploymentItem filename="Binaries\IronRuby.dll" />
+  <Deployment>
+      <DeploymentItem filename="C:\Builds\TestRunWorkspace\Binaries\" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Execution>
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
     <Timeouts runTimeout="5400000" testTimeout="300000" />
     <TestTypeSpecific>
@@ -34,7 +26,7 @@
         </Browser>
       </WebTestRunConfiguration>
     </TestTypeSpecific>
-    <AgentRule name="LocalMachineDefaultRole">
+    <AgentRule name="AllAgentsDefaultRole">
     </AgentRule>
   </Execution>
 </TestSettings>
