@@ -2,7 +2,6 @@
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="BPM Resources\Services\" outputDirectory="Services" />
     <DeploymentItem filename="packages\Microsoft.Owin.Security.2.0.2\lib\net45\Microsoft.Owin.Security.dll" />
     <DeploymentItem filename="Dev2.Activities.Specs\Toolbox\Scripting\Script\testfiles\" />
     <DeploymentItem filename="Binaries\System.Reactive.Core.dll" />
