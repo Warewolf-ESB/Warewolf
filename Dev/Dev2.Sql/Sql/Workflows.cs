@@ -213,6 +213,7 @@ namespace Warewolf.Sql
                 return new XElement("DataList");
             }
             var webClient = new WebClient();
+            webClient.Credentials = CredentialCache.DefaultCredentials;
             var result = webClient.DownloadString(requestUri);
             return XElement.Parse(result);
         }
