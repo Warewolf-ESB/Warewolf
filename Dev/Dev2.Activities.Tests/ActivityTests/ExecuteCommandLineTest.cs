@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common;
@@ -26,6 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         ///information about and functionality for the current test run.
         ///</summary>
         public TestContext TestContext { get; set; }
+        public string _commandLineToolName = "ConsoleAppToTestExecuteCommandLineActivity.exe";
 
         [TestMethod]
         public void ExecuteCommandLineShouldHaveInputProperty()
@@ -457,7 +459,19 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()
         {
-            var command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            var assembly = Assembly.GetExecutingAssembly();
+            var loc = assembly.Location;
+            var toolLoc = Path.Combine(Path.GetDirectoryName(loc), _commandLineToolName);
+
+            string command1;
+            if(File.Exists(toolLoc))
+            {
+                command1 = "\"" + toolLoc + "\" output";
+            }
+            else
+            {
+                command1 = "\"" + TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe\" output";
+            }
             DsfExecuteCommandLineActivity act = new DsfExecuteCommandLineActivity { CommandFileName = command1, CommandResult = "[[OutVar1]]" };
 
             List<DebugItem> inRes;
