@@ -5,6 +5,8 @@ using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
+using Dev2.Core.Tests.Network;
+using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -429,10 +431,10 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Equals_OtherIsNull_False()
         {
             //------------Setup for test--------------------------
-            var environmentModel = CreateEnvironmentModel(Guid.NewGuid(), CreateConnection().Object);
+            var environment = CreateEqualityEnvironmentModel(Guid.NewGuid(), "Test", new Guid(), "https://myotherserver1:3143");
 
             //------------Execute Test---------------------------
-            var actual = environmentModel.Equals(null);
+            var actual = environment.Equals(null);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(actual);
@@ -444,16 +446,16 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentModel_Equals_OtherIsSame_True()
         {
             //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+            const string ServerUri = "https://myotherserver1:3143";
             const string Name = "test";
 
-            var environmentModel = CreateEnvironmentModel(id, CreateConnection().Object);
-            environmentModel.Name = Name;
-            var other = CreateEnvironmentModel(id, CreateConnection().Object);
-            other.Name = Name;
+            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, ServerUri);
+            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, ServerUri);
 
             //------------Execute Test---------------------------
-            var actual = environmentModel.Equals(other);
+            var actual = environment1.Equals(environment2);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(actual);
@@ -466,14 +468,11 @@ namespace Dev2.Core.Tests.Environments
         {
             //------------Setup for test--------------------------
             const string Name = "test";
+            var serverID = Guid.NewGuid();
+            const string ServerUri = "https://myotherserver1:3143";
 
-            var connection1 = CreateConnection();
-            connection1.Setup(c => c.DisplayName).Returns(Name);
-            var environment1 = CreateEnvironmentModel(Guid.NewGuid(), connection1.Object);
-
-            var connection2 = CreateConnection();
-            connection1.Setup(c => c.DisplayName).Returns(Name);
-            var environment2 = CreateEnvironmentModel(Guid.NewGuid(), connection2.Object);
+            var environment1 = CreateEqualityEnvironmentModel(Guid.NewGuid(), Name, serverID, ServerUri);
+            var environment2 = CreateEqualityEnvironmentModel(Guid.NewGuid(), Name, serverID, ServerUri);
 
             //------------Execute Test---------------------------
             var actual = environment1.Equals(environment2);
@@ -485,19 +484,56 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EnvironmentModel_Equals")]
-        public void EnvironmentModel_Equals_OtherHasDifferentName_False()
+        public void EnvironmentModel_Equals_OtherHasDifferentName_True()
         {
             //------------Setup for test--------------------------
-            var id = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+            const string ServerUri = "https://myotherserver1:3143";
             const string Name = "test";
 
-            var connection1 = CreateConnection();
-            connection1.Setup(c => c.DisplayName).Returns(Name);
-            var environment1 = CreateEnvironmentModel(id, connection1.Object);
+            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name + "1", serverID, ServerUri);
+            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name + "1", serverID, ServerUri);
 
-            var connection2 = CreateConnection();
-            connection1.Setup(c => c.DisplayName).Returns(Name + "1");
-            var environment2 = CreateEnvironmentModel(id, connection2.Object);
+            //------------Execute Test---------------------------
+            var actual = environment1.Equals(environment2);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherHasDifferentServerID_False()
+        {
+            //------------Setup for test--------------------------
+            const string Name = "test";
+            var resourceID = Guid.NewGuid();
+            const string ServerUri = "https://myotherserver1:3143";
+
+            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name, Guid.NewGuid(), ServerUri);
+            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name, Guid.NewGuid(), ServerUri);
+
+            //------------Execute Test---------------------------
+            var actual = environment1.Equals(environment2);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EnvironmentModel_Equals")]
+        public void EnvironmentModel_Equals_OtherHasDifferentServerUri_False()
+        {
+            //------------Setup for test--------------------------
+            const string Name = "test";
+            var resourceID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+
+            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, "https://myotherserver1:3143");
+            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, "https://myotherserver2:3143");
 
             //------------Execute Test---------------------------
             var actual = environment1.Equals(environment2);
@@ -557,6 +593,47 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
 
             return new EnvironmentModel(id, connection, repo.Object, false);
+        }
+
+        //[TestMethod]
+        //[Owner("Trevor Williams-Ros")]
+        //[TestCategory("ConnectControlViewModel_Servers")]
+        //public void EnvironmentModel_Equality_Diction_ItemWithSameKeyAdded_NotAddedAndNoExceptionThrown()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var serverID = Guid.NewGuid();
+        //    const string ServerUri = "https://myotherserver:3143";
+
+        //    var servers = new List<IEnvironmentModel>
+        //    {
+        //        CreateConnectControlServer(Guid.Empty, "Server1", serverID, ServerUri),
+        //        CreateConnectControlServer(Guid.Empty, "Server2", serverID, ServerUri),
+        //    };
+
+        //    var testDictionary = new Dictionary<IEnvironmentModel, IEnvironmentModel>();
+        //    testDictionary.Add(servers[0], servers[0]);
+
+
+        //    //------------Execute Test---------------------------
+        //    testDictionary.Add(servers[1], servers[1]);
+
+        //    //------------Assert Results-------------------------
+        //}
+
+        public static IEnvironmentModel CreateEqualityEnvironmentModel(Guid resourceID, string resourceName, Guid serverID, string serverUri)
+        {
+            // See .. EnvironmentRepository.CreateEnvironmentModel()
+            var proxy = new TestEqualityConnection(serverID, serverUri);
+            return new EnvironmentModel(resourceID, proxy) { Name = resourceName };
+        }
+    }
+
+    public class TestEqualityConnection : ServerProxy
+    {
+        public TestEqualityConnection(Guid serverID, string serverUri)
+            : base(serverUri)
+        {
+            ServerID = serverID;
         }
     }
 }

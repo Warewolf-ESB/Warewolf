@@ -261,7 +261,7 @@ namespace Dev2.Network
             RaisePermissionsChanged();
         }
 
-        public Guid ServerID { get; private set; }
+        public Guid ServerID { get; protected set; }
         public Guid WorkspaceID { get; private set; }
         public Uri AppServerUri { get; private set; }
         public Uri WebServerUri { get; private set; }

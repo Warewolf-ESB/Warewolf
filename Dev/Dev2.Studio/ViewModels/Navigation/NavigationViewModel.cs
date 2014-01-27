@@ -225,7 +225,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 LoadEnvironmentResources(environment);
             }
-            if(Equals(environment, EnvironmentRepository.Source) && environment.Connection != null)
+            if(environment.Equals(EnvironmentRepository.Source) && environment.Connection != null)
             {
                 // BUG 10106 - 2013.08.13 - TWR - start localhost auto-connect if server not connected
                 environment.Connection.StartAutoConnect();

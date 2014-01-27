@@ -50,10 +50,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var firstResource = new Mock<IContextualResourceModel>();
             var secondResource = new Mock<IContextualResourceModel>();
             var sameEnvironment = new Mock<IEnvironmentModel>();
-            var mockedConnection = new Mock<IEnvironmentConnection>();
+            sameEnvironment.Setup(e => e.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
-            mockedConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
-            sameEnvironment.Setup(env => env.Connection).Returns(mockedConnection.Object);
             firstResource.Setup(res => res.Environment).Returns(sameEnvironment.Object);
             firstResource.Setup(res => res.ResourceName).Returns(resourceName);
             secondResource.Setup(res => res.Environment).Returns(sameEnvironment.Object);

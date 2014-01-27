@@ -89,6 +89,7 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
             _mockEnvironmentModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
             _mockEnvironmentModel.Setup(e => e.Connection).Returns(_testConnection);
+            _mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             _mockResourceModel = new Mock<IContextualResourceModel>();
             _mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);

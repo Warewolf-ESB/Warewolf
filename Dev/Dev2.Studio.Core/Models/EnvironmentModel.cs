@@ -276,7 +276,8 @@ namespace Dev2.Studio.Core.Models
 
             // BUG 9276 : TWR : 2013.04.19 - refactored to use deleted EnvironmentModelEqualityComparer logic instead!           
             return ID == other.ID
-                   && Name == other.Name;
+                   && Connection.ServerID == other.Connection.ServerID
+                   && Connection.AppServerUri.AbsoluteUri.Equals(other.Connection.AppServerUri.AbsoluteUri);
         }
 
         public override bool Equals(object obj)

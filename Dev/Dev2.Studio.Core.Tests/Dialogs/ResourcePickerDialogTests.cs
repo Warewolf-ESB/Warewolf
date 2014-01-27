@@ -165,6 +165,8 @@ namespace Dev2.Core.Tests.Dialogs
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
             mockEnvironmentModel.Setup(model => model.CanStudioExecute).Returns(true);
+            mockEnvironmentModel.Setup(model => model.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(connection => connection.AppServerUri).Returns(new Uri("http://localhost"));
             mockEnvironmentConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);

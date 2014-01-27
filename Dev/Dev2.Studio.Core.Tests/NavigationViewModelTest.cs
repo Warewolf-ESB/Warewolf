@@ -367,6 +367,8 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
             environment.Setup(env => env.Connection).Returns(mockConnection.Object);
+            environment.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+
             new EnvironmentTreeViewModel(eventAggregator, _vm.Root, environment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(res => res.Category).Returns("Expected Category");
@@ -1139,6 +1141,7 @@ namespace Dev2.Core.Tests
             localhost.Setup(e => e.IsConnected).Returns(false);
             localhost.Setup(e => e.CanStudioExecute).Returns(false);
             localhost.Setup(e => e.Connection).Returns(localhostConnection.Object);
+            localhost.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
@@ -1242,6 +1245,7 @@ namespace Dev2.Core.Tests
             localhost.Setup(e => e.Name).Returns("localhost");
             localhost.Setup(e => e.IsConnected).Returns(true);
             localhost.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
+            localhost.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             localhost.Setup(e => e.CanStudioExecute).Returns(true);
 
@@ -1251,6 +1255,7 @@ namespace Dev2.Core.Tests
             envModel.Setup(e => e.IsConnected).Returns(true);
             envModel.Setup(e => e.CanStudioExecute).Returns(true);
             envModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.2/"));
+            envModel.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             var envList = new List<IEnvironmentModel> { localhost.Object, envModel.Object };
             var envRepo = new Mock<IEnvironmentRepository>();
@@ -1305,6 +1310,8 @@ namespace Dev2.Core.Tests
             eventPublisher.Setup(p => p.GetEvent<DesignValidationMemo>()).Returns(designValidationEvents.Object);
 
             var mock = new Mock<IEnvironmentModel>();
+
+            mock.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
             mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://localhost:3142/dsf"));
             mock.SetupGet(x => x.IsConnected).Returns(true);
             mock.Setup(x => x.Connection.ServerEvents).Returns(eventPublisher.Object);
@@ -1334,6 +1341,8 @@ namespace Dev2.Core.Tests
         Mock<IEnvironmentModel> GetSecondMockEnvironment()
         {
             var mock = new Mock<IEnvironmentModel>();
+            mock.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+            //mock.SetupGet(x => x.Connection.ServerID).Returns(Guid.NewGuid);
             mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.2/"));
             mock.SetupGet(x => x.ID).Returns(Guid.NewGuid);
             mock.SetupGet(x => x.IsConnected).Returns(false);
@@ -1433,6 +1442,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.Connection.Alias).Returns("Expected Environment");
             env.Setup(e => e.Connection.AppServerUri).Returns(new Uri("http://10.0.0.1"));
             env.Setup(e => e.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            env.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             var newResource = new Mock<IContextualResourceModel>();
             newResource.Setup(res => res.Category).Returns("Expected Category");

@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             {
                 return false;
             }
-            return x.Connection.AppServerUri.AbsoluteUri == y.Connection.AppServerUri.AbsoluteUri;
+            return x.Equals(y);
         }
 
         public int GetHashCode(IEnvironmentModel obj)
@@ -36,25 +36,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 
         public bool Equals(IEnvironmentModel x, object y)
         {
-            var environment = y as IEnvironmentModel;
-            if(environment == null)
-            {
-                return false;
-            }
-            if(x == null)
-            {
-                return false;
-            }
-            if(environment.ID == x.ID)
-            {
-                return true;
-            }
-            if(environment.Connection.AppServerUri == null || x.Connection.AppServerUri == null)
-            {
-                return false;
-            }
-
-            return x.Connection.AppServerUri.AbsoluteUri == environment.Connection.AppServerUri.AbsoluteUri;
+            return Equals(x, y as IEnvironmentModel);
         }
 
         #endregion Methods
