@@ -31,11 +31,12 @@
                    Margin="0,0,0,10"
                    FontWeight="Bold" />
             <TextBlock TextWrapping="Wrap"
-                       Margin="0,0,0,10"
-                       Text="The following resources will be overwritten on the destination server would you like to continue?" />
+                       Margin="5,0,0,10"
+                       Text="The following resources will be overwritten on the destination server. Would you like to continue?" />
         </StackPanel>
         <DataGrid ItemsSource="{Binding ConflictingItems}"
                   BorderBrush="{StaticResource Brush03b}"
+                  Margin="5,5,5,0"
                   CanUserReorderColumns="False"
                   AutoGenerateColumns="False"
                   VerticalGridLinesBrush="Transparent"
