@@ -1,10 +1,10 @@
-﻿using System.Activities.Presentation.Model;
+﻿using Dev2.Activities.Designers2.DataMerge;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Activities.Designers2.DataMerge;
-using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DataMerge
@@ -23,6 +23,18 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var expected = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
 
             CollectionAssert.AreEqual(expected, viewModel.ItemsList.ToList());
+        } //AlignmentTypes
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataMergeDesignerViewModel_Constructor")]
+        public void DataMergeDesignerViewModel_Constructor__ModelItemIsValid_AlignmentTypesHasTwoItems()
+        {
+            var items = new List<DataMergeDTO> { new DataMergeDTO("", "None", "", 0, "", "Left", false) };
+            var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
+            var expected = new List<string> { "Left", "Right" };
+
+            CollectionAssert.AreEqual(expected, viewModel.AlignmentTypes.ToList());
         }
 
         [TestMethod]

@@ -1,9 +1,9 @@
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataMerge
@@ -11,14 +11,17 @@ namespace Dev2.Activities.Designers2.DataMerge
     public class DataMergeDesignerViewModel : ActivityCollectionDesignerViewModel<DataMergeDTO>
     {
         public IList<string> ItemsList { get; private set; }
+        public IList<string> AlignmentTypes { get; private set; }
 
         public DataMergeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
 
             ItemsList = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
+            AlignmentTypes = new List<string> { "Left", "Right" };
             MergeTypeUpdatedCommand = new RelayCommand(OnMergeTypeChanged, o => true);
 
             dynamic mi = ModelItem;
@@ -33,7 +36,7 @@ namespace Dev2.Activities.Designers2.DataMerge
         public override string CollectionName { get { return "MergeCollection"; } }
 
         public ICommand MergeTypeUpdatedCommand { get; private set; }
-
+        
         void OnMergeTypeChanged(object indexObj)
         {
             var index = (int)indexObj;
@@ -55,6 +58,11 @@ namespace Dev2.Activities.Designers2.DataMerge
                 mi.SetProperty("At", string.Empty);
                 mi.SetProperty("EnableAt", false);
             }
+        }
+
+        public override void Validate()
+        {
+            Errors = null;
         }
     }
 }
