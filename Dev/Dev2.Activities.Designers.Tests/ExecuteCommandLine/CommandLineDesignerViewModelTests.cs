@@ -40,7 +40,9 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
         {
             //------------Setup for test--------------------------
             const string CommandFileName = null;
+            // ReSharper disable RedundantArgumentDefaultValue
             var viewModel = new CommandLineDesignerViewModel(CreateModelItem(CommandFileName));
+            // ReSharper restore RedundantArgumentDefaultValue
 
             //------------Execute Test---------------------------
             viewModel.Validate();
@@ -111,7 +113,7 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
             {
                 Errors = new List<IActionableErrorInfo>
                 {
-                    new ActionableErrorInfo() { Message = "Previous Error", ErrorType = ErrorType.Warning}
+                    new ActionableErrorInfo { Message = "Previous Error", ErrorType = ErrorType.Warning}
                 }
             };
 
@@ -130,7 +132,7 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
 
         static ModelItem CreateModelItem(string commandFileName = null)
         {
-            return ModelItemUtils.CreateModelItem(new DsfExecuteCommandLineActivity { CommandFileName = commandFileName});
+            return ModelItemUtils.CreateModelItem(new DsfExecuteCommandLineActivity { CommandFileName = commandFileName });
         }
     }
 }

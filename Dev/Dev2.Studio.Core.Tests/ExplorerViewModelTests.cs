@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
@@ -22,13 +21,9 @@ namespace Dev2.Core.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsNullExceptionForEnvironmentRepo()
         {
+            // ReSharper disable ObjectCreationAsStatement
             new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null);
-        }
-
-        static void Setup()
-        {
-            ImportServiceContext ctx = CompositionInitializer.InitializeMockedMainViewModel();
-            ImportService.CurrentContext = ctx;
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -49,7 +44,7 @@ namespace Dev2.Core.Tests
         public void HandlesRemoveEnvironmentMessage()
         {
             //------Setup---------
-           // Setup();
+            // Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
             var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();

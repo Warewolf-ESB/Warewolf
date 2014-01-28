@@ -224,7 +224,9 @@ namespace Dev2.Studio.ViewModels.Explorer
         public void Handle(SetSelectedItemInExplorerTree message)
         {
             this.TraceInfo(message.GetType().Name);
+            // ReSharper disable OperatorIsCanBeUsed
             List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
+            // ReSharper restore OperatorIsCanBeUsed
             if(treeNodes.Count == 1)
             {
                 treeNodes[0].IsSelected = true;
