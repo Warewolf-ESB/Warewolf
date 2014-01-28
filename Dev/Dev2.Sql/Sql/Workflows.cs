@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlTypes;
 using System.Net;
-using System.Security.Principal;
 using System.Xml.Linq;
 using Microsoft.SqlServer.Server;
 
@@ -17,7 +16,7 @@ namespace Warewolf.Sql
     {
         #region RunWorkflowForXml
 
-        [SqlFunction(DataAccess = DataAccessKind.Read)]
+        [SqlFunction]
         public static SqlXml RunWorkflowForXml(SqlString serverUri, SqlString rootName)
         {
             var xml = new Workflows().RunWorkflowForXmlImpl(
@@ -214,47 +213,6 @@ namespace Warewolf.Sql
                 return new XElement("DataList");
             }
 
-            if(!SqlContext.IsAvailable)
-            {
-                return Download(requestUri);
-            }
-
-            XElement result = null;
-
-            var clientId = SqlContext.WindowsIdentity;
-            WindowsImpersonationContext impersonatedUser = null;
-
-            // This outer try block is used to thwart exception filter 
-            // attacks which would prevent the inner finally 
-            // block from executing and resetting the impersonation.
-            try
-            {
-                try
-                {
-                    if(clientId != null)
-                    {
-                        impersonatedUser = clientId.Impersonate();
-                        result = Download(requestUri);
-                    }
-                }
-                finally
-                {
-                    // Undo impersonation.
-                    if(impersonatedUser != null)
-                    {
-                        impersonatedUser.Undo();
-                    }
-                }
-            }
-            catch
-            {
-                throw;
-            }
-            return result ?? Download(requestUri);
-        }
-
-        static XElement Download(string requestUri)
-        {
             var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             var result = webClient.DownloadString(requestUri);
             return XElement.Parse(result);

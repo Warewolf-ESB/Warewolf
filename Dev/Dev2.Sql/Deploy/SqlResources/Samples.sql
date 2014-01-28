@@ -2,6 +2,15 @@ USE [AdventureWorks2008R2]
 GO
 
 ------------------------------------------------------------------------------------------------
+-- NOTE: Requests from SQL Server are made using this account: DomainName\DatabaseServerName$
+------------------------------------------------------------------------------------------------
+-- To grant permissions for the SQL Server do the following:
+-- In Warewolf, click Settings, then add the Windows Group to which the database server belongs 
+-- (typically Domain Computers) and select the Execute checkbox, and then click Save.
+------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------
 -- RunWorkflowForXml 
 ------------------------------------------------------------------------------------------------
 -- This method runs the given workflow and returns it's results as XML, 
