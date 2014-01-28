@@ -1698,8 +1698,6 @@ namespace Dev2
             return true;
         }
 
-
-
         bool StartWebServer()
         {
             bool result = true;
@@ -1711,16 +1709,18 @@ namespace Dev2
                     try
                     {
                         _owinServer = WebServerStartup.Start(_endpoints);
+                        EnvironmentVariables.IsServerOnline = true; // flag server as active
+                        WriteLine("\r\nWeb Server Started");
+                        foreach(var endpoint in _endpoints)
+                        {
+                            WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
+                        }
                     }
                     catch(Exception e)
                     {
                         LogException(e);
-                    }
-                    EnvironmentVariables.IsServerOnline = true; // flag server as active
-                    WriteLine("\r\nWeb Server Started");
-                    foreach(var endpoint in _endpoints)
-                    {
-                        WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
+                        Fail("Webserver failed to start", e);
+                        Console.ReadLine();
                     }
                 }
                 catch(Exception e)
@@ -1728,6 +1728,7 @@ namespace Dev2
                     result = false;
                     EnvironmentVariables.IsServerOnline = false; // flag server as inactive
                     Fail("Webserver failed to start", e);
+                    Console.ReadLine();
                 }
             }
 

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using Dev2.Instrumentation;
 using Newtonsoft.Json;
 
@@ -26,15 +27,21 @@ namespace Dev2.Providers.Logs
 
         static void LogError(string className, string methodName, Exception ex)
         {
-            Tracker.TrackException(className, methodName, ex);
-
-            var errors = new StringBuilder();
-            while(ex != null)
+            Task.Run(() =>
             {
-                errors.AppendLine(JsonConvert.SerializeObject(ex));
-                ex = ex.InnerException;
-            }
-            WriteEntry(errors.ToString(), "ERROR", className, methodName);
+                Tracker.TrackException(className, methodName, ex);
+
+                var errors = new StringBuilder();
+                while(ex != null)
+                {
+                    errors.AppendLine(JsonConvert.SerializeObject(ex));
+                    ex = ex.InnerException;
+                }
+
+                WriteEntry(errors.ToString(), "ERROR", className, methodName);
+
+            });
+
         }
 
         public static void Warning(string message = null, [CallerMemberName] string methodName = null)
@@ -68,14 +75,18 @@ namespace Dev2.Providers.Logs
 
         static void WriteEntry(string message, string type, string className, string methodName)
         {
-            var format = string.Format("{0} :: {1} -> {2} {3} : {4}",
-                DateTime.Now.ToString("g"),
-                type,
-                className,
-                methodName,
-                message);
+            Task.Run(() =>
+            {
+                var format = string.Format("{0} :: {1} -> {2} {3} : {4}",
+                    DateTime.Now.ToString("g"),
+                    type,
+                    className,
+                    methodName,
+                    message);
 
-            Trace.WriteLine(format);
+                Trace.WriteLine(format);
+            });
+
         }
     }
 }

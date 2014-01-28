@@ -708,7 +708,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             */
 
             var found = self.selectSourceByID(sourceID);
-
+            
             if (found) {
                 
                 if (result.Method) {

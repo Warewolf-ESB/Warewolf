@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Threading;
 using Dev2.Providers.Logs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -37,6 +38,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo("This is some information");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithStringValue_StringBuilderContainsMethodNameAndMessage : This is some information\r\n");
@@ -51,6 +53,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo("This is some information", "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : This is some information\r\n");
@@ -65,6 +68,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo(null, "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  MyMethodName : ");
@@ -79,6 +83,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo(null, null);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->   : ");
@@ -93,6 +98,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo();
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: INFORMATION ->  Logger_TraceInfo_WithNoParameters_MethodNameStillLogged : ");
@@ -107,6 +113,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.Warning("This is some information");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->  Logger_Warning_WithStringValue_StringBuilderContainsMethodNameAndMessage : This is some information\r\n");
@@ -121,6 +128,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.Warning("This is some information", "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->  MyMethodName : This is some information\r\n");
@@ -135,6 +143,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.Warning(null, "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->  MyMethodName : ");
@@ -149,6 +158,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.Warning(null, null);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->   : ");
@@ -163,6 +173,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             Logger.Warning();
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: WARNING ->  Logger_Warning_WithNoParameters_MethodNameStillLogged : ");
@@ -177,6 +188,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(new Exception("This is some information"));
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithStringValue_StringBuilderContainsMethodNameAndMessage : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some");
@@ -191,6 +203,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(new Exception("This is some information"), "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some");
@@ -205,6 +218,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(null, "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : ");
@@ -219,6 +233,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(null);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNullStringValueWithNullMethodName_NoMehodNameNoMessage : ");
@@ -233,6 +248,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(null);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNoParameters_MethodNameStillLogged : ");
@@ -248,6 +264,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             var myException = new Exception("This is some information");
             //------------Execute Test---------------------------
             this.LogError(myException);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithExceptionValue_StringBuilderContainsMethodNameAndMessage : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
@@ -265,6 +282,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Execute Test---------------------------
             this.LogError(myException, "MyMethodName");
             //------------Assert Results-------------------------
+            Thread.Sleep(500);
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
             VerifyDateTimeIsLogged(currentlyLogged);
@@ -278,6 +296,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(null, "MyMethodName");
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests MyMethodName : ");
@@ -292,6 +311,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             this.LogError(null);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithNullExceptionValueWithNullMethodName_NoMehodNameNoMessage :");
@@ -307,6 +327,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             var myException = new Exception("This is some information", new Exception("This is the one inner exception", new Exception("This is another inner exception")));
             //------------Execute Test---------------------------
             this.LogError(myException);
+            Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
             StringAssert.Contains(currentlyLogged, ":: ERROR -> LoggerTests Logger_Error_WithExceptionWithInnerExceptionValue_StringBuilderContainsGivenMethodNameAndMessageAndInnerExceptionMessageStackTrace : {\"ClassName\":\"System.Exception\",\"Message\":\"This is some information\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"This is the one inner exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"This is another inner exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
