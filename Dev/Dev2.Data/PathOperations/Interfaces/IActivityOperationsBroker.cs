@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 
 namespace Dev2.PathOperations
 {
@@ -21,10 +20,7 @@ namespace Dev2.PathOperations
         /// <summary>
         /// Gets the raw.
         /// </summary>
-        /// <param name="path">The path.</param>
         /// <returns></returns>
-        Stream GetRaw(IActivityIOOperationsEndPoint path);
-
         /// <summary>
         /// Dump a payload to a location as per the value of args
         /// </summary>
@@ -46,7 +42,7 @@ namespace Dev2.PathOperations
         /// <param name="src"></param>
         /// <param name="readTypes"></param>
         /// <returns></returns>
-        IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src,ReadTypes readTypes);
+        IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes);
 
         /// <summary>
         /// Create a directory or file per the value of args
@@ -71,7 +67,7 @@ namespace Dev2.PathOperations
         /// <param name="src"></param>
         /// <param name="dst"></param>
         /// <param name="args"></param>
-        string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,Dev2CRUDOperationTO args);
+        string Rename(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, Dev2CRUDOperationTO args);
 
         /// <summary>
         /// Move a file from src to dst as per the value of args

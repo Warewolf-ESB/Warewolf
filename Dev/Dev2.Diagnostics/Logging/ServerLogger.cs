@@ -6,8 +6,10 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Dev2.Common.Common;
 using Dev2.Diagnostics;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.Settings;
@@ -22,7 +24,7 @@ namespace Dev2.Common
 
         #region private fields
 
-        static object _lock = new object();
+        static readonly object _lock = new object();
 
         static LoggingSettings _loggingSettings;
         static IDictionary<Guid, string> _workflowsToLog;
@@ -194,28 +196,32 @@ namespace Dev2.Common
 
         public static void UpdateSettings(LoggingSettings loggingSettings)
         {
-            LoggingSettings = loggingSettings;
-
-            EnableLogOutput = LoggingSettings.IsLoggingEnabled;
-
-            //Unnecessary to continue if logging is turned off
-            if(!EnableLogOutput)
+            Task.Run(() =>
             {
-                return;
-            }
+                LoggingSettings = loggingSettings;
 
-            var dirPath = GetDirectoryPath(LoggingSettings);
-            var dirExists = Directory.Exists(dirPath);
-            if(!dirExists)
-            {
-                Directory.CreateDirectory(dirPath);
-            }
+                EnableLogOutput = LoggingSettings.IsLoggingEnabled;
 
-            _workflowsToLog = new Dictionary<Guid, string>();
-            foreach(var wf in LoggingSettings.Workflows)
-            {
-                _workflowsToLog.Add(Guid.Parse(wf.ResourceID), wf.ResourceName);
-            }
+                //Unnecessary to continue if logging is turned off
+                if(!EnableLogOutput)
+                {
+                    return;
+                }
+
+                var dirPath = GetDirectoryPath(LoggingSettings);
+                var dirExists = Directory.Exists(dirPath);
+                if(!dirExists)
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+
+                _workflowsToLog = new Dictionary<Guid, string>();
+                foreach(var wf in LoggingSettings.Workflows)
+                {
+                    _workflowsToLog.Add(Guid.Parse(wf.ResourceID), wf.ResourceName);
+                }
+
+            });
         }
 
         #endregion public methods
@@ -224,22 +230,26 @@ namespace Dev2.Common
 
         static void InternalLogMessage(string message, string typeOf)
         {
-            try
+            Task.Run(() =>
             {
-
-                lock(_lock)
+                try
                 {
-                    File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
-                                           string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message,
-                                                         Environment.NewLine));
-                }
 
-            }
-                // ReSharper disable once EmptyGeneralCatchClause
-            catch
-            {
-                // We do not care, best effort 
-            }
+                    lock(_lock)
+                    {
+                        File.AppendAllText(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"),
+                                                string.Format("{0} :: {1} -> {2}{3}", DateTime.Now, typeOf, message,
+                                                                Environment.NewLine));
+                    }
+
+                }
+                // ReSharper disable EmptyGeneralCatchClause
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // We do not care, best effort 
+                }
+            });
         }
 
         #endregion private methods
@@ -248,40 +258,44 @@ namespace Dev2.Common
 
         public static void LogDebug(IDebugState idebugState)
         {
-            if(!ShouldLog(idebugState))
-                return;
-
-            var debugState = (DebugState)idebugState;
-
-            string workflowName = GetWorkflowName(debugState);
-
-            if(String.IsNullOrWhiteSpace(workflowName))
+            Task.Run(() =>
             {
-                throw new NoNullAllowedException("Only workflows with valid names can be logged");
-            }
+                if(!ShouldLog(idebugState))
+                    return;
 
-            switch(debugState.StateType)
-            {
-                case StateType.Start:
-                    Initialize(debugState, workflowName);
-                    break;
+                var debugState = (DebugState)idebugState;
 
-                case StateType.Before:
-                    Serialize(debugState, workflowName, StateType.Before);
-                    break;
+                string workflowName = GetWorkflowName(debugState);
 
-                case StateType.End:
-                    Finalize(debugState, workflowName);
-                    break;
+                if(String.IsNullOrWhiteSpace(workflowName))
+                {
+                    throw new NoNullAllowedException("Only workflows with valid names can be logged");
+                }
 
-                case StateType.After:
-                    Serialize(debugState, workflowName, StateType.After);
-                    break;
+                switch(debugState.StateType)
+                {
+                    case StateType.Start:
+                        Initialize(debugState, workflowName);
+                        break;
 
-                default:
-                    Serialize(debugState, workflowName);
-                    break;
-            }
+                    case StateType.Before:
+                        Serialize(debugState, workflowName, StateType.Before);
+                        break;
+
+                    case StateType.End:
+                        Finalize(debugState, workflowName);
+                        break;
+
+                    case StateType.After:
+                        Serialize(debugState, workflowName, StateType.After);
+                        break;
+
+                    default:
+                        Serialize(debugState, workflowName);
+                        break;
+                }
+            });
+
         }
 
         #region Serialization
@@ -667,21 +681,27 @@ namespace Dev2.Common
 
         static void LogError(string className, string methodName, Exception e)
         {
-            Tracker.TrackException(className, methodName, e);
-            if(EnableErrorOutput)
+            Task.Run(() =>
             {
-                var errors = new StringBuilder();
-                errors.AppendLine(CreateMessage(className, methodName, e.Message));
-                errors.AppendLine(e.StackTrace);
-                var ex = e.InnerException;
-                while(ex != null)
+                Tracker.TrackException(className, methodName, e);
+
+                if(EnableErrorOutput)
                 {
-                    errors.AppendFormat("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
-                    errors.AppendLine();
-                    ex = e.InnerException;
+                    var errors = new StringBuilder();
+                    errors.AppendLine(CreateMessage(className, methodName, e.Message));
+                    errors.AppendLine(e.GetAllMessages());
+                    //e.GetAllMessages();
+                    //var ex = e.InnerException;
+                    //while(ex != null)
+                    //{
+                    //    errors.AppendFormat("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
+                    //    errors.AppendLine();
+                    //    ex = e.InnerException;
+                    //}
+                    InternalLogMessage(errors.ToString(), "ERROR");
                 }
-                InternalLogMessage(errors.ToString(), "ERROR");
-            }
+            });
+
         }
 
         static string CreateMessage(string className, string methodName, string message)

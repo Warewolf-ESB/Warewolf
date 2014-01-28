@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,15 +11,18 @@ namespace Dev2.Data.Tests.PathOperations
     {
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]        
+        [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetOperation_NonExistingPath_FriendlyError()
         {
             bool pass = false;
             var testProvider = new Dev2FileSystemProvider();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf",false);
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
             {
-                testProvider.Get(path);    
+                using(testProvider.Get(path))
+                {
+                    // foo ;)
+                }
             }
             catch(Exception ex)
             {
@@ -29,8 +31,8 @@ namespace Dev2.Data.Tests.PathOperations
             }
             if(!pass)
             {
-                Assert.Fail("The corrrect error wasnt returned");    
-            }            
+                Assert.Fail("The corrrect error wasnt returned");
+            }
         }
 
         [TestMethod]

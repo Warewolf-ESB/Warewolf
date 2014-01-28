@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Xml.Linq;
@@ -10,6 +11,29 @@ namespace Dev2.Common.Common
 {
     public static class ExtensionMethods
     {
+        #region Exception Unrolling
+
+        public static string GetAllMessages(this Exception exception)
+        {
+            var messages = exception.FromHierarchy(ex => ex.InnerException).Select(ex => ex.Message);
+            return String.Join(Environment.NewLine, messages);
+        }
+
+        // a.k.a., linked list style enumerator
+        public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem, Func<TSource, bool> canContinue)
+        {
+            for(var current = source; canContinue(current); current = nextItem(current))
+            {
+                yield return current;
+            }
+        }
+
+        public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem) where TSource : class
+        {
+            return FromHierarchy(source, nextItem, s => s != null);
+        }
+
+        #endregion
 
         #region StringBuilder Methods
 
@@ -48,20 +72,20 @@ namespace Dev2.Common.Common
             // remove the darn header ;)
             sb = sb.CleanEncodingHeaderForXmlSave();
 
-            if (!File.Exists(fileName))
+            if(!File.Exists(fileName))
             {
-                using (File.Create(fileName))
+                using(File.Create(fileName))
                 {
                     // Ensure it gets closed ;)
                 }
             }
 
-            using(FileStream fs = new FileStream(fileName, FileMode.Truncate, FileAccess.Write, FileShare.ReadWrite,4096,true))
+            using(FileStream fs = new FileStream(fileName, FileMode.Truncate, FileAccess.Write, FileShare.ReadWrite, 4096, true))
             {
-                for (int i = 0; i < rounds; i++)
+                for(int i = 0; i < rounds; i++)
                 {
                     var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if (len > (sb.Length - startIdx))
+                    if(len > (sb.Length - startIdx))
                     {
                         len = (sb.Length - startIdx);
                     }
@@ -87,14 +111,14 @@ namespace Dev2.Common.Common
                 // first try utf8, if that fails then unicode. 
                 // some test where kicking up issues with utf8 ;)
 
-                using (var result = sb.EncodeStream(Encoding.UTF8))
+                using(var result = sb.EncodeStream(Encoding.UTF8))
                 {
                     return XElement.Load(result);
                 }
             }
             catch
             {
-                using (var result = sb.EncodeStream(Encoding.Unicode))
+                using(var result = sb.EncodeStream(Encoding.Unicode))
                 {
                     return XElement.Load(result);
                 }
@@ -128,16 +152,16 @@ namespace Dev2.Common.Common
 
         private static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
-            if (sb != null)
+            if(sb != null)
             {
                 var length = sb.Length;
                 var startIdx = 0;
-                var rounds = (int) Math.Ceiling(length/GlobalConstants.MAX_SIZE_FOR_STRING);
+                var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
                 MemoryStream ms = new MemoryStream(length);
-                for (int i = 0; i < rounds; i++)
+                for(int i = 0; i < rounds; i++)
                 {
-                    var len = (int) GlobalConstants.MAX_SIZE_FOR_STRING;
-                    if (len > (sb.Length - startIdx))
+                    var len = (int)GlobalConstants.MAX_SIZE_FOR_STRING;
+                    if(len > (sb.Length - startIdx))
                     {
                         len = (sb.Length - startIdx);
                     }
@@ -164,7 +188,7 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder Escape(this StringBuilder sb)
         {
-            if (sb != null)
+            if(sb != null)
             {
                 sb = sb.Replace("&", "&amp;");
                 sb = sb.Replace("\"", "&quot;");
@@ -184,7 +208,7 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder Unescape(this StringBuilder sb)
         {
-            if (sb != null)
+            if(sb != null)
             {
                 sb = sb.Replace("&quot;", "\"");
                 sb = sb.Replace("&apos;", "'");
@@ -230,7 +254,7 @@ namespace Dev2.Common.Common
         {
             var result = -1;
             var startIndex = -1;
-            while ((startIndex = IndexOf(sb, value, (startIndex+1), ignoreCase)) >= 0)
+            while((startIndex = IndexOf(sb, value, (startIndex + 1), ignoreCase)) >= 0)
             {
                 result = startIndex;
             }
@@ -259,12 +283,12 @@ namespace Dev2.Common.Common
                     if(Char.ToLower(sb[i]) == Char.ToLower(value[0]))
                     {
                         index = 1;
-                        while ((index < length) && (Char.ToLower(sb[i + index]) == Char.ToLower(value[index])))
+                        while((index < length) && (Char.ToLower(sb[i + index]) == Char.ToLower(value[index])))
                         {
                             ++index;
                         }
 
-                        if (index == length)
+                        if(index == length)
                         {
                             return i;
                         }
@@ -279,12 +303,12 @@ namespace Dev2.Common.Common
                 if(sb[i] == value[0])
                 {
                     index = 1;
-                    while ((index < length) && (sb[i + index] == value[index]))
+                    while((index < length) && (sb[i + index] == value[index]))
                     {
                         ++index;
                     }
 
-                    if (index == length)
+                    if(index == length)
                     {
                         return i;
                     }
@@ -303,10 +327,10 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
-            if (elm != null)
+            if(elm != null)
             {
                 StringBuilder result = new StringBuilder();
-                using (StringWriter sw = new StringWriter(result))
+                using(StringWriter sw = new StringWriter(result))
                 {
                     elm.Save(sw, SaveOptions.DisableFormatting);
                 }
@@ -338,7 +362,7 @@ namespace Dev2.Common.Common
             var child = elem.Element(name);
             return child == null ? string.Empty : child.Value;
         }
-        
+
         public static string ElementStringSafe(this XElement elem, string name)
         {
             var child = elem.Element(name);

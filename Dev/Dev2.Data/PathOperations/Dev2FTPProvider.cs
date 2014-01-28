@@ -91,16 +91,9 @@ namespace Dev2.Data.PathOperations
                     {
                         byte[] data = ftpStream.ToByteArray();
                         result = new MemoryStream(data);
-                        response.Close();
-                        ftpStream.Close();
                     }
                     else
                     {
-                        response.Close();
-                        if(ftpStream != null)
-                        {
-                            ftpStream.Close();
-                        }
                         throw new Exception("Fail");
                     }
                 }
@@ -213,8 +206,10 @@ namespace Dev2.Data.PathOperations
                 // try and fetch the file, if not found ok because we not in Overwrite mode
                 try
                 {
-                    Get(dst).Close();
-                    ok = false;
+                    using(Get(dst))
+                    {
+                        ok = false;
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -259,11 +254,12 @@ namespace Dev2.Data.PathOperations
             request.ContentLength = src.Length;
             using(Stream requestStream = request.GetRequestStream())
             {
-                byte[] payload = src.ToByteArray();
-                int writeLen = payload.Length;
-                requestStream.Write(payload, 0, writeLen);
-                requestStream.Close();
-                requestStream.Dispose();
+                using(src)
+                {
+                    byte[] payload = src.ToByteArray();
+                    int writeLen = payload.Length;
+                    requestStream.Write(payload, 0, writeLen);
+                }
             }
 
             var result = (int)request.ContentLength;
@@ -381,13 +377,7 @@ namespace Dev2.Data.PathOperations
                                     string uri = BuildValidPathForFTP(src, reader.ReadLine());
                                     result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true));
                                 }
-
-                                reader.Close();
-                                reader.Dispose();
                             }
-
-                            responseStream.Close();
-                            responseStream.Dispose();
                         }
                     }
                 }
@@ -643,6 +633,11 @@ namespace Dev2.Data.PathOperations
             set;
         }
 
+        /// <summary>
+        /// Converts the SSL automatic plain.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         private string ConvertSSLToPlain(string path)
         {
             string result = path;
@@ -744,13 +739,10 @@ namespace Dev2.Data.PathOperations
                     {
                         if(stream != null)
                         {
-                            var reader = new StreamReader(stream, Encoding.UTF8);
-                            result = reader.ReadToEnd();
-                        }
-                        if(stream != null)
-                        {
-                            stream.Close();
-                            stream.Dispose();
+                            using(var reader = new StreamReader(stream, Encoding.UTF8))
+                            {
+                                result = reader.ReadToEnd();
+                            }
                         }
                     }
                 }
@@ -1015,14 +1007,14 @@ namespace Dev2.Data.PathOperations
                     {
                         if(responseStream != null)
                         {
-                            StreamReader reader = new StreamReader(responseStream);
-
-                            if(reader.EndOfStream)
+                            using(StreamReader reader = new StreamReader(responseStream))
                             {
-                                // just check for exception, slow I know, but not sure how else to tackle this                  
+
+                                if(reader.EndOfStream)
+                                {
+                                    // just check for exception, slow I know, but not sure how else to tackle this                  
+                                }
                             }
-                            reader.Close();
-                            reader.Dispose();
                         }
                     }
                 }
@@ -1108,14 +1100,14 @@ namespace Dev2.Data.PathOperations
                     {
                         if(responseStream != null)
                         {
-                            StreamReader reader = new StreamReader(responseStream);
-
-                            if(reader.EndOfStream)
+                            using(StreamReader reader = new StreamReader(responseStream))
                             {
-                                // just check for exception, slow I know, but not sure how else to tackle this                  
+
+                                if(reader.EndOfStream)
+                                {
+                                    // just check for exception, slow I know, but not sure how else to tackle this                  
+                                }
                             }
-                            reader.Close();
-                            reader.Dispose();
                         }
                     }
                 }

@@ -289,7 +289,7 @@ namespace Dev2.Session
                             {
                                 List<SaveDebugTO> settings = (List<SaveDebugTO>)bf.Deserialize(s);
 
-                                // now push back into the Dictonary
+                                // now push back into the Dictionary
                                 foreach(SaveDebugTO dto in settings)
                                 {
                                     if(dto.ServiceName.Length > 0)

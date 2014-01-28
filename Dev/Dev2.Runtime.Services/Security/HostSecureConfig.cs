@@ -21,9 +21,16 @@ namespace Dev2.Runtime.Security
 
         public HostSecureConfig()
         {
-            EnsureSecureConfigFileExists();
-            var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
-            Initialize(settings, true);
+            try
+            {
+                EnsureSecureConfigFileExists();
+                var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
+                Initialize(settings, true);
+            }
+            catch(Exception e)
+            {
+                this.LogError(e);
+            }
         }
 
         public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig = true)
@@ -56,14 +63,14 @@ namespace Dev2.Runtime.Security
         /// <exception cref="System.ArgumentNullException">settings</exception>
         protected void Initialize(NameValueCollection settings, bool shouldProtectConfig)
         {
-            if (settings == null)
+            if(settings == null)
             {
                 throw new ArgumentNullException("settings");
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
             Guid serverID;
-            if (Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -86,7 +93,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if (shouldProtectConfig)
+                if(shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -101,7 +108,7 @@ namespace Dev2.Runtime.Security
         {
             ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
-            if (!File.Exists(FileName))
+            if(!File.Exists(FileName))
             {
                 ServerLogger.LogMessage("File not found: " + FileName);
                 var newSettings = new NameValueCollection();
@@ -123,7 +130,7 @@ namespace Dev2.Runtime.Security
         protected virtual void SaveConfig(NameValueCollection secureSettings)
         {
             var config = new XElement(SectionName);
-            foreach (string key in secureSettings.Keys)
+            foreach(string key in secureSettings.Keys)
             {
                 config.Add(new XElement("add",
                                         new XAttribute("key", key),
@@ -148,11 +155,11 @@ namespace Dev2.Runtime.Security
             {
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = config.GetSection(SectionName);
-                if (section != null)
+                if(section != null)
                 {
-                    if (!section.SectionInformation.IsProtected)
+                    if(!section.SectionInformation.IsProtected)
                     {
-                        if (!section.ElementInformation.IsLocked)
+                        if(!section.ElementInformation.IsLocked)
                         {
                             section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
                             section.SectionInformation.ForceSave = true;
@@ -161,7 +168,7 @@ namespace Dev2.Runtime.Security
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 this.LogError(e);
                 throw;

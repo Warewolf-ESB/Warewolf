@@ -123,68 +123,71 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut)
         {
-            //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
-            if(!Path.IsPathRooted(dst.Path))
-            {
-                //get just the directory path to put into
-                if(whereToPut != null)
-                {
-                    //Make the destination directory equal to that directory
-                    dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
-                }
-            }
-
             int result = -1;
-
-            if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+            using(src)
             {
-                if(!RequiresAuth(dst))
+                //2013.05.29: Ashley Lewis for bug 9507 - default destination to source directory when destination is left blank or if it is not a rooted path
+                if(!Path.IsPathRooted(dst.Path))
                 {
-                    File.WriteAllBytes(dst.Path, src.ToByteArray());
-                    result = (int)src.Length;
-                }
-                else
-                {
-                    try
+                    //get just the directory path to put into
+                    if(whereToPut != null)
                     {
-                        // handle UNC path
-                        SafeTokenHandle safeTokenHandle;
-                        bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+                        //Make the destination directory equal to that directory
+                        dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password);
+                    }
+                }
 
 
-                        if(loginOk)
+
+                if((args.Overwrite) || (!args.Overwrite && !FileExist(dst)))
+                {
+                    if(!RequiresAuth(dst))
+                    {
+                        File.WriteAllBytes(dst.Path, src.ToByteArray());
+                        result = (int)src.Length;
+                    }
+                    else
+                    {
+                        try
                         {
-                            using(safeTokenHandle)
+                            // handle UNC path
+                            SafeTokenHandle safeTokenHandle;
+                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+
+                            if(loginOk)
                             {
-
-                                WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                using(safeTokenHandle)
                                 {
-                                    // Do the operation here
 
-                                    File.WriteAllBytes(dst.Path, src.ToByteArray());
-                                    result = (int)src.Length;
+                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                    using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                    {
+                                        // Do the operation here
 
-                                    // remove impersonation now
-                                    impersonatedUser.Undo();
+                                        File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                        result = (int)src.Length;
+
+
+                                        // remove impersonation now
+                                        impersonatedUser.Undo();
+                                    }
                                 }
                             }
+                            else
+                            {
+                                // login failed
+                                throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            }
                         }
-                        else
+                        catch(Exception ex)
                         {
-                            // login failed
-                            throw new Exception("Failed to authenticate with user [ " + dst.Username + " ] for resource [ " + dst.Path + " ] ");
+                            this.LogError(ex);
+                            throw;
                         }
-                    }
-                    catch(Exception ex)
-                    {
-                        this.LogError(ex);
-                        throw;
                     }
                 }
             }
-
-            src.Close();
 
             return result;
         }
@@ -193,9 +196,9 @@ namespace Dev2.PathOperations
         public bool Delete(IActivityIOPath src)
         {
             bool result = false;
-
             try
             {
+
                 if(!RequiresAuth(src))
                 {
                     if(File.Exists(src.Path))
@@ -315,10 +318,11 @@ namespace Dev2.PathOperations
                 }
             }
 
+
             return result;
         }
 
-        void DisplayAndWriteError(string path)
+        static void DisplayAndWriteError(string path)
         {
             var msg = string.Format("Attempt to delete: {0}", path);
             ServerLogger.LogTrace(msg);
@@ -403,7 +407,7 @@ namespace Dev2.PathOperations
         }
 
         /*
-         * Check for the existance of each directory?!
+         * Check for the existence of each directory?!
          */
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool CreateDirectory(IActivityIOPath dst, Dev2CRUDOperationTO args)
