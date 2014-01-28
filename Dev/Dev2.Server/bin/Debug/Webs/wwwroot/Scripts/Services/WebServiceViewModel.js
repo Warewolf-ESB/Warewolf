@@ -685,7 +685,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             }
 
             // This will be invoked by loadSource 
-            self.onLoadSourceCompleted = function () {
+            /*self.onLoadSourceCompleted = function () {
                 if (result.Method) {
                     self.data.method.Name(result.Method.Name);
                     self.data.method.Parameters(result.Method.Parameters);
@@ -701,14 +701,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.pushRecordsets(result);
                 self.onLoadSourceCompleted = null;
                 
-            };
+            };*/
             
             /*
                 The issue is that some times !found route is triggered
             */
 
             var found = self.selectSourceByID(sourceID);
-            
+
             if (found) {
                 
                 if (result.Method) {
@@ -727,17 +727,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.onLoadSourceCompleted = null;
             }
 
-            if (!found) {
-                found = utils.IsNullOrEmptyGuid(result.Source.ResourceID)
-                    ? self.selectSourceByName(result.Source.ResourceName)
-                    : self.selectSourceByID(result.Source.ResourceID);
-            }
-            
-            // fucking src change event is clearing this out!!!!
-
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (!found) {
-                self.onLoadSourceCompleted();
+                //self.onLoadSourceCompleted();
+				//self.selectSourceByID(sourceID);
             }
             
             self.title(self.isEditing ? "Edit Web Service - " + result.ResourceName : "New Web Service");
@@ -745,10 +738,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     };
 
     self.loadSources = function (callback) {
+		// force sync to avoid race condition ;)
+		$.ajaxSetup({async: false});
         $.post("Service/Resources/Sources" + window.location.search, ko.toJSON({ resourceType: "WebSource" }), function (result) {
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
         }).done(function () {
+			// reset behavior
+			$.ajaxSetup({async: true});
             if (callback) {
                 callback();
             }
