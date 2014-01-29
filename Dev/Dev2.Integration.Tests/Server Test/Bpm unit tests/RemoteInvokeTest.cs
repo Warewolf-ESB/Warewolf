@@ -27,7 +27,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void DoesWorkflowWithNoStartNodeEmitCorrectDebugInfo()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9484");
-            
+
             Guid id = Guid.NewGuid();
             TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
 
@@ -35,6 +35,27 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             Assert.AreEqual(1, debugItems.Count);
             Assert.AreEqual("The workflow must have at least one service or activity connected to the Start Node.", debugItems[0].ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DbServices_Execute")]
+        public void DbServices_Execute_WithRecordsetOutput_CorrectDebugOutput()
+        {
+            //------------Setup for test--------------------------
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_10996");
+
+            Guid id = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
+
+            var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Afghanistan", debugItems[0].Outputs[1].ResultsList[3].Value);
+            Assert.AreEqual("1", debugItems[0].Outputs[0].ResultsList[3].Value);
+            Assert.AreEqual("Azerbaijan", debugItems[0].Outputs[1].ResultsList[30].Value);
+            Assert.AreEqual("10", debugItems[0].Outputs[0].ResultsList[30].Value);
         }
 
         [TestMethod]
@@ -52,4 +73,4 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             Assert.AreEqual(5, debugItems.Count);
         }
     }
-}   
+}

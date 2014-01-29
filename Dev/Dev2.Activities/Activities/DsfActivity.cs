@@ -208,7 +208,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             // ???? Why is this here....
-            context.Properties.ToObservableCollection(); 
+            context.Properties.ToObservableCollection();
 
             IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -232,13 +232,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 compiler.ClearErrors(dataObject.DataListID);
 
-                    if(ServiceServer != Guid.Empty)
-                    {
-                        // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
-                        dataObject.RemoteInvokerID = ServiceServer.ToString();
-                    }
+                if(ServiceServer != Guid.Empty)
+                {
+                    // we need to adjust the originating server id so debug reflect remote server instead of localhost ;)
+                    dataObject.RemoteInvokerID = ServiceServer.ToString();
+                }
 
-                    dataObject.RemoteServiceType = context.GetValue(Type);
+                dataObject.RemoteServiceType = context.GetValue(Type);
 
                 if(dataObject.IsDebugMode())
                 {
@@ -304,6 +304,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             dataObject.DataListID = datalistID; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
+                        if(dataObject.IsDebugMode())
+                        {
+                            //Dont remove this it is here to fix the data not being returned correctly
+                            compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+                        }
 
                     }
 
@@ -313,8 +318,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     HasError.Set(context, whereErrors);
                     IsValid.Set(context, whereErrors);
 
-                    }
                 }
+            }
             finally
             {
                 dataObject.ResourceID = oldResourceID;
@@ -385,7 +390,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected virtual Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
         {
             ServerLogger.LogMessage("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
-            
+
             var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
 
             ServerLogger.LogMessage("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
@@ -559,13 +564,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(tmpEntry != null)
                 {
-                DebugItem itemToAdd = new DebugItem();
+                    DebugItem itemToAdd = new DebugItem();
 
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
+                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
 
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
-                results.Add(itemToAdd);
-            }
+                    itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
+                    results.Add(itemToAdd);
+                }
                 else
                 {
                     if(errors.HasErrors())
