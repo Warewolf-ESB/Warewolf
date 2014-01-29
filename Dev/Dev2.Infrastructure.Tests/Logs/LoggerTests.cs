@@ -340,7 +340,7 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         static void VerifyDateTimeIsLogged(string currentlyLogged)
         {
-            StringAssert.Contains(currentlyLogged, DateTime.Now.ToString("g"));
+            StringAssert.Contains(currentlyLogged, DateTime.Now.ToString("d"));
         }
         #endregion
     }

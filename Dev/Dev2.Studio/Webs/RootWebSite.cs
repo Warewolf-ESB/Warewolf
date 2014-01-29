@@ -15,7 +15,7 @@ namespace Dev2.Studio.Webs
     {
 
         public static bool IsTestMode { get; set; }
-        public static string TestModeRelativeURI { get; set; }
+        public static string TestModeRelativeUri { get; set; }
         public const string SiteName = "wwwroot";
 
         #region ShowSwitchDragDialog
@@ -134,7 +134,7 @@ namespace Dev2.Studio.Webs
             var srcID = Guid.Empty.ToString();
             if(resourceModel.WorkflowXaml != null)
             {
-                var xe = resourceModel.WorkflowXaml.ToXElement();
+                var xe = resourceModel.WorkflowXaml.Replace("&", "&amp;").ToXElement();
                 srcID = xe.AttributeSafe("SourceID");
             }
 
@@ -253,7 +253,7 @@ namespace Dev2.Studio.Webs
                 else
                 {
                     // TODO : return the relativeUriString generated ;)
-                    TestModeRelativeURI = relativeUriString;
+                    TestModeRelativeUri = relativeUriString;
                 }
             }
             return true;
