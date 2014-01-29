@@ -34,7 +34,7 @@ namespace Dev2
     /// Application Server Life-cycle Manager
     /// Facilitates start-up, execution and tear-down of the application server.
     /// </summary>
-    internal sealed class ServerLifecycleManager : IDisposable
+    sealed class ServerLifecycleManager : IDisposable
     {
         #region Constants
 
