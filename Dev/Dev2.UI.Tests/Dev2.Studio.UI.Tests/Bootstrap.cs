@@ -28,33 +28,13 @@ namespace Dev2.Integration.Tests
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
+            if(textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
+
             lock(_tumbler)
             {
                 if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\uitest.log"))
                 {
                     File.Delete("C:\\Users\\IntegrationTester\\Desktop\\uitest.log");
-                }
-
-                string userName = string.Empty;
-                var windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
-                if(windowsIdentity != null)
-                {
-                    userName = windowsIdentity.Name;
-                }
-                if(userName != "DEV2\\IntegrationTester")
-                {
-                    if(Directory.Exists("C:\\Users\\IntegrationTester"))
-                    {
-                        try
-                        {
-                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Failed to bootstrap, user not recognized : " + userName);
-                        }
-                        // ReSharper disable once EmptyGeneralCatchClause
-                        catch
-                        {
-                        }
-                    }
-                    return;
                 }
 
                 var assembly = Assembly.GetExecutingAssembly();
