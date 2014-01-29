@@ -97,8 +97,8 @@ namespace Dev2.Common
 
         // Storage Cache Constants
         public const int DefaultColumnSizeLvl1 = 10;
-        public const int DefaultStorageSegments = 8;
-        public const int DefaultStorageSegmentSize = 32 * 1024 * 1024; // 64 MB default buffer size ;)
+        public const int DefaultStorageSegments = 1;
+        public const int DefaultStorageSegmentSize = 16 * 1024 * 1024; // 16 MB default buffer size ;)
         public const int DefaultAliasCacheSize = 32 * 1024; // 32KB of alias cache ;)
         public const string DefaultStorageZipEntry = "Dev2Storage";
 
