@@ -13,7 +13,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                               MinWidth="350"
+                               MinWidth="400"
                                Width="350"
                                MaxWidth="600"
                                MaxHeight="500"
@@ -111,6 +111,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Width=".5*"
+                                    MinWidth="75"
                                     Header="With"
                                     d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                 <DataGridTemplateColumn.CellTemplate>
