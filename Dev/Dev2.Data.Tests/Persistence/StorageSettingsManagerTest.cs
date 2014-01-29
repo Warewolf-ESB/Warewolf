@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Dev2.Common;
 using Dev2.Data.Storage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,8 +49,8 @@ namespace Dev2.Data.Tests.Persistence
         public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresent_ExpectConfigurationValue()
         {
             //------------Setup for test--------------------------
-
-
+            
+            
             //------------Execute Test---------------------------
             var segmentCount = StorageSettingManager.GetSegmentSize();
 
@@ -77,6 +78,9 @@ namespace Dev2.Data.Tests.Persistence
         [TestCategory("StorageSettingManager_GetSegmentCount")]
         public void StorageSettingManager_GetSegmentCount_WhenNoConfigurationFilePresent_ExpectDefaultValue()
         {
+            // give env sometime to clean up ;)
+            Thread.Sleep(500);
+
             var restoreSegmentCount = StorageSettingManager.StorageLayerSegments;
             var restoreSegmentSize = StorageSettingManager.StorageLayerSegmentSize;
             try
@@ -84,6 +88,7 @@ namespace Dev2.Data.Tests.Persistence
                 //------------Setup for test--------------------------
                 StorageSettingManager.StorageLayerSegments = () => null;
                 StorageSettingManager.StorageLayerSegmentSize = () => null;
+                StorageSettingManager.TotalFreeMemory = () => 134217728; // 128 MB
 
                 //------------Execute Test---------------------------
                 var segmentCount = StorageSettingManager.GetSegmentCount();
@@ -117,13 +122,13 @@ namespace Dev2.Data.Tests.Persistence
             StorageSettingManager.TotalFreeMemory = () => 1;
 
             //------------Execute Test---------------------------
-
+            
             StorageSettingManager.GetSegmentSize();
 
             //------------Assert Results-------------------------
 
         }
 
-
+        
     }
 }

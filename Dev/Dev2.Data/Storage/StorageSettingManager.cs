@@ -13,7 +13,6 @@ namespace Dev2.Data.Storage
     public static class StorageSettingManager
     {
         const double _pressureFactor = 0.8;
-        const int _minSlabSize = 16777216; // ~ 16MB
 
         public static Func<ulong> TotalFreeMemory { get; set; }
 
@@ -107,7 +106,7 @@ namespace Dev2.Data.Storage
 
                 int result = (int)(usableMemeory / totalSegments);
 
-                if(result < _minSlabSize)
+                if(result < GlobalConstants.DefaultStorageSegmentSize)
                 {
                     const string Msg = "Too little memory to start server, at least 16 MB should be free.";
                     var ex = new Exception(Msg);
@@ -147,12 +146,12 @@ namespace Dev2.Data.Storage
             }
 
             // 32-bit programs run on both 32-bit and 64-bit Windows
-            // Detect whether the current process is a 32-bit process 
-            // running on a 64-bit system.
-            bool flag;
-            return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
-                     IsWow64Process(GetCurrentProcess(), out flag)) && flag);
-        }
+                // Detect whether the current process is a 32-bit process 
+                // running on a 64-bit system.
+                bool flag;
+                return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
+                         IsWow64Process(GetCurrentProcess(), out flag)) && flag);
+            }
 
         /// <summary>
         /// The function determines whether a method exists in the export 
