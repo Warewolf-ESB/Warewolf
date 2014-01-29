@@ -161,7 +161,6 @@ namespace Dev2.Runtime.ServiceModel.Data
             result.Add(new XElement("UnitTestTargetWorkflowService", string.Empty));
             result.Add(new XElement("BizRule", string.Empty));
             result.Add(new XElement("WorkflowActivityDef", string.Empty));
-            result.Add(new XElement("XamlDefinition", string.Empty));
             return result;
         }
 

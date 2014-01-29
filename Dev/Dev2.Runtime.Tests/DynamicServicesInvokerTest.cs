@@ -256,7 +256,7 @@ namespace Dev2.Tests.Runtime
             workspace.Setup(m => m.ID).Returns(_workspaceID);
 
             IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
-            
+
             Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
             data["ResourceID"] = new StringBuilder("b2b0cc87-32ba-4504-8046-79edfb18d5fd");
             //data["ResourceType"] = new StringBuilder();
@@ -269,6 +269,39 @@ namespace Dev2.Tests.Runtime
             var obj = ConvertToMsg(xaml.ToString());
 
             Assert.AreEqual(expected, obj.Message.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("FetchResourceDefinition_Execute")]
+        public void FetchResourceDefinition_Execute_WhenSourceDefintionExist_ResourceDefinition()
+        {
+
+            //------------Setup for test--------------------------
+
+            var workspace = new Mock<IWorkspace>();
+            workspace.Setup(m => m.ID).Returns(_workspaceID);
+
+            var sourceXML = XmlResource.Fetch(SourceName);
+            var nameAttribute = sourceXML.Attribute("Name");
+            var serverIDAttribute = sourceXML.Attribute("ServerID");
+            ResourceCatalog.Instance.SaveResource(_workspaceID, sourceXML.ToStringBuilder());
+            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, SourceName);
+            IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
+
+            Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
+            data["ResourceID"] = new StringBuilder(resource.ResourceID.ToString());
+
+            //------------Execute Test---------------------------
+            var xaml = endPoint.Execute(data, workspace.Object);
+
+            //------------Assert Results-------------------------
+            var obj = ConvertToMsg(xaml.ToString());
+            var actual = obj.Message.ToString();
+            Assert.IsFalse(String.IsNullOrWhiteSpace(actual));
+            Assert.IsNotNull(nameAttribute);
+            StringAssert.Contains(actual, nameAttribute.ToString());
+            StringAssert.Contains(actual, serverIDAttribute.ToString());
         }
 
 

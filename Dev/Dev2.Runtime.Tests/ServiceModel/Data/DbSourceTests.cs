@@ -11,7 +11,8 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DbSourceTests
     {
         #region ToString Tests
@@ -41,12 +42,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void ToXmlAllPropertiesSetupExpectedXElementContainingAllObjectInformation()
         {
-
-            DbSource testDbSource = SetupDefaultDbSource();
-            XElement expectedXml = testDbSource.ToXml();
-
-            IEnumerable<XAttribute> attrib = expectedXml.Attributes();
-            IEnumerator<XAttribute> attribEnum = attrib.GetEnumerator();
+            var testDbSource = SetupDefaultDbSource();
+            var expectedXml = testDbSource.ToXml();
+            var workflowXamlDefintion = expectedXml.Element("XamlDefinition");
+            var attrib = expectedXml.Attributes();
+            var attribEnum = attrib.GetEnumerator();
             while(attribEnum.MoveNext())
             {
                 if(attribEnum.Current.Name == "Name")
@@ -55,6 +55,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     break;
                 }
             }
+            Assert.IsNull(workflowXamlDefintion);
         }
 
         [TestMethod]

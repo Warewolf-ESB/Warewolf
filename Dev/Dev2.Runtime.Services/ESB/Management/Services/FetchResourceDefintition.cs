@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Common;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
@@ -23,13 +24,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            var res = new ExecuteMessage {HasError = false};
+            var res = new ExecuteMessage { HasError = false };
 
             string serviceID = null;
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
-            
-            if (tmp != null)
+
+            if(tmp != null)
             {
                 serviceID = tmp.ToString();
             }
@@ -38,37 +39,25 @@ namespace Dev2.Runtime.ESB.Management.Services
             Guid.TryParse(serviceID, out resourceID);
 
             var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceID);
-            var startIdx = result.IndexOf(payloadStart, 0, false);
+            var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceID);
 
-            if(startIdx >= 0)
+            if(resource != null && resource.ResourceType == ResourceType.DbSource)
             {
-                // remove begingin junk
-                startIdx += payloadStart.Length;
-                result = result.Remove(0, startIdx);
-
-                startIdx = result.IndexOf(payloadEnd,0, false);
-
-                if(startIdx > 0)
-                {
-                    var len = result.Length - startIdx;
-                    result = result.Remove(startIdx, len);
-                    
-                    res.Message.Append(result.Unescape());
-                }
+                res.Message.Append(result);
             }
             else
             {
-                // handle services ;)
-                startIdx = result.IndexOf(altPayloadStart, 0, false);
-                if (startIdx >= 0)
+                var startIdx = result.IndexOf(payloadStart, 0, false);
+
+                if(startIdx >= 0)
                 {
                     // remove begingin junk
-                    startIdx += altPayloadStart.Length;
+                    startIdx += payloadStart.Length;
                     result = result.Remove(0, startIdx);
 
-                    startIdx = result.IndexOf(altPayloadEnd, 0, false);
+                    startIdx = result.IndexOf(payloadEnd, 0, false);
 
-                    if (startIdx > 0)
+                    if(startIdx > 0)
                     {
                         var len = result.Length - startIdx;
                         result = result.Remove(startIdx, len);
@@ -78,8 +67,29 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    // send the entire thing ;)
-                    res.Message.Append(result);
+                    // handle services ;)
+                    startIdx = result.IndexOf(altPayloadStart, 0, false);
+                    if(startIdx >= 0)
+                    {
+                        // remove begingin junk
+                        startIdx += altPayloadStart.Length;
+                        result = result.Remove(0, startIdx);
+
+                        startIdx = result.IndexOf(altPayloadEnd, 0, false);
+
+                        if(startIdx > 0)
+                        {
+                            var len = result.Length - startIdx;
+                            result = result.Remove(startIdx, len);
+
+                            res.Message.Append(result.Unescape());
+                        }
+                    }
+                    else
+                    {
+                        // send the entire thing ;)
+                        res.Message.Append(result);
+                    }
                 }
             }
 
