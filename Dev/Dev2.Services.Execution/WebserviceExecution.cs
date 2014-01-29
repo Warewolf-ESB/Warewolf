@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Util;
+﻿using System;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -34,10 +35,9 @@ namespace Dev2.Services.Execution
 
         protected override object ExecuteService(out ErrorResultTO errors)
         {
-            errors = new ErrorResultTO();
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);
-            var result = Scrubber.Scrub(Service.RequestResponse);
+            string result = String.IsNullOrEmpty(Service.JsonPath) || String.IsNullOrEmpty(Service.JsonPathResult) ? Scrubber.Scrub(Service.RequestResponse) : Scrubber.Scrub(Service.JsonPathResult);
             Service.RequestResponse = null;
             return result;
         }

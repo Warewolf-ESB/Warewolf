@@ -485,10 +485,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<DebugItem> inRes;
             List<DebugItem> outRes;
 
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+            var result = CheckActivityDebugInputOutput(act, "<ADL><recset1><rec1></rec1></recset1><OutVar1/></ADL>",
+                                                                "", out inRes, out outRes);
 
-
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            Assert.IsTrue(String.IsNullOrEmpty(fetchErrors), fetchErrors);
             Assert.AreEqual(1, inRes.Count);
             IList<DebugItemResult> debugInputResults = inRes[0].FetchResultsList();
             Assert.AreEqual(2, debugInputResults.Count);
