@@ -104,6 +104,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         if(resourceToUpdate != null)
                         {
                             resourceToUpdate.Update(resource);
+                            Logger.foobar(); // force vs to stop removing the damn references ;)
                             this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                             // For some daft reason we have two model versions?!
                             var resourceWithContext = new ResourceModel(targetEnviroment);
@@ -557,8 +558,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                     }
                 }
-                // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Ignore malformed resource
                 }
@@ -851,8 +853,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     return FileHelper.CreateATemporaryFile(serverLogData.Message, uniqueOutputPath);
                 }
             }
-                // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // Server unavailable!
             }

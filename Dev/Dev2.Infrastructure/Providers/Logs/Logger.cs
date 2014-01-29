@@ -10,6 +10,8 @@ namespace Dev2.Providers.Logs
 {
     public static class Logger
     {
+        public static void foobar(){}
+
         public static void LogError(string className, Exception ex, [CallerMemberName] string methodName = null)
         {
             LogError(className, methodName, ex);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -10,7 +9,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     public partial class OutputUIMap
     {
         UITestControl _outputPane;
-        private UITestControl _outputSearch;
         private UITestControl _outputStatus;
 
         public OutputUIMap()
@@ -18,7 +16,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var vstw = new VisualTreeWalker();
 
             _outputPane = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput");
-            _outputSearch = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
+            vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
             _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
 
         }
@@ -44,10 +42,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public string GetStatusBarStatus()
         {
             var statusBarChildren = _outputStatus.GetChildren();
-            if (statusBarChildren != null)
+            if(statusBarChildren != null)
             {
                 var statusBar = statusBarChildren.FirstOrDefault(child => child.ClassName == "Uia.Text") as WpfText;
-                if (statusBar != null)
+                if(statusBar != null)
                 {
                     return statusBar.DisplayText;
                 }
@@ -80,9 +78,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             UITestControlCollection coll = outputWindow.GetChildren();
             UITestControlCollection results = new UITestControlCollection();
-            foreach (var child in coll)
+            foreach(var child in coll)
             {
-                if (child.Name.Equals(stepToFind))
+                if(child.Name.Equals(stepToFind))
                 {
                     results.Add(child);
                 }
@@ -107,9 +105,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public UITestControl GetStepDetails(UITestControl outputWindow, string stepInformationToFind)
         {
             UITestControlCollection coll = outputWindow.GetChildren();
-            for (int i = 0; i <= coll.Count; i++)
+            for(int i = 0; i <= coll.Count; i++)
             {
-                if (coll[i].Name.Equals(stepInformationToFind + " : "))
+                if(coll[i].Name.Equals(stepInformationToFind + " : "))
                 {
                     return coll[i + 1];
                 }
@@ -125,7 +123,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             for(int i = 0; i <= coll.Count; i++)
             {
                 if(coll[i].Name.Contains(workflowNamePrefix))
-                {                    
+                {
                     return coll[i + 1].FriendlyName;
                 }
             }
@@ -133,17 +131,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         public static UITestControlCollection GetInputDetailsDetails(UITestControl outputWindow)
-        {           
+        {
             var coll = outputWindow.GetChildren();
             var results = new UITestControlCollection();
-            for (int i = 0; i <= coll.Count; i++)
+            for(int i = 0; i <= coll.Count; i++)
             {
-                if (coll[i].Name.Equals("Inputs : "))
+                if(coll[i].Name.Equals("Inputs : "))
                 {
                     int j = 1;
-                    while (!coll[i + j].Name.Equals("Outputs : "))
+                    while(!coll[i + j].Name.Equals("Outputs : "))
                     {
-                        if (coll[i + j].ControlType != ControlType.Button)
+                        if(coll[i + j].ControlType != ControlType.Button)
                             results.Add(coll[i + j]);
                         j++;
                     }
@@ -232,7 +230,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                                       .ToList()
                                       .Where(c => c.FriendlyName.Equals("Error : "))
                                       .ToList();
-            
+
             if(errorResults.Count == 0)
             {
                 return false;
@@ -280,7 +278,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void WaitForExecution()
         {
             Playback.Wait(1000);
-            while (IsSpinnerSpinning())
+            while(IsSpinnerSpinning())
             {
                 Playback.Wait(200);
             }

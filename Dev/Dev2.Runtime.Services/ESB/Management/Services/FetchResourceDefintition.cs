@@ -16,10 +16,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchResourceDefintition : IEsbManagementEndpoint
     {
-        private static string payloadStart = "<XamlDefinition>";
-        private static string payloadEnd = "</XamlDefinition>";
-        private static string altPayloadStart = "<Actions>";
-        private static string altPayloadEnd = "</Actions>";
+        const string payloadStart = "<XamlDefinition>";
+        const string payloadEnd = "</XamlDefinition>";
+        const string altPayloadStart = "<Actions>";
+        const string altPayloadEnd = "</Actions>";
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serviceID = null;
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
-
+            
             if(tmp != null)
             {
                 serviceID = tmp.ToString();
@@ -47,17 +47,37 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                var startIdx = result.IndexOf(payloadStart, 0, false);
+            var startIdx = result.IndexOf(payloadStart, 0, false);
 
-                if(startIdx >= 0)
-                {
-                    // remove begingin junk
-                    startIdx += payloadStart.Length;
-                    result = result.Remove(0, startIdx);
+            if(startIdx >= 0)
+            {
+                // remove beginning junk
+                startIdx += payloadStart.Length;
+                result = result.Remove(0, startIdx);
 
                     startIdx = result.IndexOf(payloadEnd, 0, false);
 
-                    if(startIdx > 0)
+                if(startIdx > 0)
+                {
+                    var len = result.Length - startIdx;
+                    result = result.Remove(startIdx, len);
+                    
+                    res.Message.Append(result.Unescape());
+                }
+            }
+            else
+            {
+                // handle services ;)
+                startIdx = result.IndexOf(altPayloadStart, 0, false);
+                    if(startIdx >= 0)
+                {
+                    // remove begging junk
+                    startIdx += altPayloadStart.Length;
+                    result = result.Remove(0, startIdx);
+
+                    startIdx = result.IndexOf(altPayloadEnd, 0, false);
+
+                        if(startIdx > 0)
                     {
                         var len = result.Length - startIdx;
                         result = result.Remove(startIdx, len);
@@ -67,30 +87,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    // handle services ;)
-                    startIdx = result.IndexOf(altPayloadStart, 0, false);
-                    if(startIdx >= 0)
-                    {
-                        // remove begingin junk
-                        startIdx += altPayloadStart.Length;
-                        result = result.Remove(0, startIdx);
-
-                        startIdx = result.IndexOf(altPayloadEnd, 0, false);
-
-                        if(startIdx > 0)
-                        {
-                            var len = result.Length - startIdx;
-                            result = result.Remove(startIdx, len);
-
-                            res.Message.Append(result.Unescape());
-                        }
-                    }
-                    else
-                    {
-                        // send the entire thing ;)
-                        res.Message.Append(result);
-                    }
+                    // send the entire thing ;)
+                    res.Message.Append(result);
                 }
+            }
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

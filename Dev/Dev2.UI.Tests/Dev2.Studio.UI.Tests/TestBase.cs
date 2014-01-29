@@ -64,17 +64,6 @@ namespace Dev2.CodedUI.Tests
             Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
         }
 
-        [TestMethod]
-        public void ClickNewWorkflowExpectedWorkflowOpens()
-        {
-            var preCount = TabManagerUIMap.GetTabCount();
-            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabWorkflowBtn_AutoID");
-            string activeTabName = TabManagerUIMap.GetActiveTabName();
-            var postCount = TabManagerUIMap.GetTabCount();
-            Assert.IsTrue(postCount == preCount + 1, "Tab quantity has not been increased");
-            Assert.IsTrue(activeTabName.Contains("Unsaved"), "Active workflow is not an unsaved workflow");
-        }
-
         #endregion New PBI Tests
 
         [TestMethod]
@@ -160,9 +149,16 @@ namespace Dev2.CodedUI.Tests
 
             Playback.Wait(500);
             var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
-            string text = leftTextBoxInRowLastRow.Text;
+            if(leftTextBoxInRowLastRow != null)
+            {
+                string text = leftTextBoxInRowLastRow.Text;
 
-            Assert.IsFalse(string.IsNullOrEmpty(text));
+                Assert.IsFalse(string.IsNullOrEmpty(text));
+            }
+            else
+            {
+                Assert.Fail("Null last row");
+            }
 
             // Yet if it did not crash the act of copy and paste should provide something ;)
             //StringAssert.Contains(text, "[[theVar19]]");

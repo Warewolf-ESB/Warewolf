@@ -11,13 +11,16 @@ using MouseButtons = System.Windows.Forms.MouseButtons;
 // ReSharper disable once CheckNamespace
 namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 {
+    // ReSharper disable RedundantExtendsListEntry
     public partial class TabManagerUIMap : UIMapBase
+    // ReSharper restore RedundantExtendsListEntry
     {
-        readonly UIUI_TabManager_AutoIDTabList1 _tabManager;
+        // UI_DocManager_AutoID
+        readonly UIUI_TabManager _tabManager;
 
         public TabManagerUIMap()
         {
-            _tabManager = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
+            _tabManager = new UIUI_TabManager(StudioWindow);
         }
 
         public string GetActiveTabName()
@@ -100,15 +103,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             const int TotalTimeOut = 10;
             UITestControl control = FindTabByName(tabName);
-            UITestControl close = null;
-            foreach(var child in control.GetChildren())
-            {
-                if(child.GetProperty("AutomationID").ToString() == "closeBtn")
-                {
-                    close = child;
-                    break;
-                }
-            }
+            UITestControl close = control.GetChildren().FirstOrDefault(child => child.GetProperty("AutomationID").ToString() == "closeBtn");
             Point point;
             var timeout = 0;
             while(close != null && (!close.TryGetClickablePoint(out point) && timeout < TotalTimeOut))
@@ -153,8 +148,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                     }
                 }
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 // just do it ;)
             }
@@ -240,12 +236,19 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             Playback.Wait(500);
             StudioWindow.WaitForControlEnabled();
-            var tabMgr = new UIUI_TabManager_AutoIDTabList1(StudioWindow);
+            var tabMgr = new UIUI_TabManager(StudioWindow);
             var idx = tabMgr.SelectedIndex;
 
+            // to do remove below once performance is sorted!
             if(idx == -1)
             {
-                throw new Exception("The selected tab index was -1");
+                Playback.Wait(2000);
+                idx = tabMgr.SelectedIndex;
+
+                if(idx == -1)
+                {
+                    throw new Exception("The selected tab index was -1 :: This means the studio has performance issues!!!!!!!");
+                }
             }
 
             if(idx >= tabMgr.Tabs.Count)

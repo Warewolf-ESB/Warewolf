@@ -8,7 +8,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -20,14 +19,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
-            ExecuteMessage result = new ExecuteMessage() {HasError = false};
+            ExecuteMessage result = new ExecuteMessage { HasError = false };
 
             string resourceID = null;
             string resourceType = null;
 
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceID = tmp.ToString();
             }
@@ -117,14 +116,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService reloadResourceServicesBinder = new DynamicService();
-            reloadResourceServicesBinder.Name = HandlesType();
-            reloadResourceServicesBinder.DataListSpecification = "<DataList><ResourceID/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService reloadResourceServicesBinder = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceID/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction reloadResourceServiceActionBinder = new ServiceAction();
-            reloadResourceServiceActionBinder.Name = HandlesType();
-            reloadResourceServiceActionBinder.SourceMethod = HandlesType();
-            reloadResourceServiceActionBinder.ActionType = enActionType.InvokeManagementDynamicService;
+            ServiceAction reloadResourceServiceActionBinder = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
             reloadResourceServicesBinder.Actions.Add(reloadResourceServiceActionBinder);
 
