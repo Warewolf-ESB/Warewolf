@@ -25,7 +25,7 @@ DECLARE
 
 -- Set parameter values
 SELECT 
-	@ServerUri = 'http://MyServerNameorIPAddress:1234/services/SampleEmployeesWorkflow?ResultType=Managers'
+	@ServerUri = 'http://MyServerNameorIPAddress:3142/services/SampleEmployeesWorkflow?ResultType=Managers'
 				--http://"SERVER NAME":"PORT"/services/"WORKFLOW NAME"?"WORKFLOW DECLARED INPUT VARIABLE"="INPUT VALUE"
 	,@RootName = 'Sample'  -- The root element will now be called this
 
@@ -62,7 +62,7 @@ DECLARE
 
 -- Set parameter values
 SELECT 
-	@ServerUri = 'http://MyServerNameorIPAddress:1234/services/SampleEmployeesWorkflow?ResultType=Managers'
+	@ServerUri = 'http://MyServerNameorIPAddress:3142/services/SampleEmployeesWorkflow?ResultType=Managers'
 				--http://"SERVER NAME":"PORT"/services/"WORKFLOW NAME"?"WORKFLOW DECLARED INPUT VARIABLE"="INPUT VALUE"
 	,@RecordsetName = 'Employees'  -- The name of the recordset to be returned
 
@@ -88,7 +88,7 @@ DECLARE
 
 -- Set parameter values
 SELECT 
-	@ServerUri = 'http://MyServerNameorIPAddress:1234/services/SampleEmployeesWorkflow?ResultType=Managers'
+	@ServerUri = 'http://MyServerNameorIPAddress:3142/services/SampleEmployeesWorkflow?ResultType=Managers'
 				--http://"SERVER NAME":"PORT"/services/"WORKFLOW NAME"?"WORKFLOW DECLARED INPUT VARIABLE"="INPUT VALUE"
 	,@RecordsetName = NULL  -- NULL so that the XML is returned as a 'flattened' table.
 
@@ -114,7 +114,7 @@ AS
 RETURN 
 SELECT  * 
 FROM OPENROWSET ('SQLNCLI','Server=(local);TRUSTED_CONNECTION=YES;',
-	'set fmtonly off exec [AdventureWorks2008R2].[Warewolf].[RunWorkflowForSql] ''http://MyServerNameorIPAddress:1234/services/SampleEmployeesWorkflow?ResultType=Managers'', ''Employees'' ')
+	'set fmtonly off exec [AdventureWorks2008R2].[Warewolf].[RunWorkflowForSql] ''http://MyServerNameorIPAddress:3142/services/SampleEmployeesWorkflow?ResultType=Managers'', ''Employees'' ')
 	-- http://"SERVER NAME":"PORT"/services/"WORKFLOW NAME"?"WORKFLOW DECLARED INPUT VARIABLE"="INPUT VALUE"
 	-- 'Employees' = The name of the recordset to be returned
 GO
