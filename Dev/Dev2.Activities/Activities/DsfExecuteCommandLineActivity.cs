@@ -206,8 +206,10 @@ namespace Dev2.Activities
                 {
                     return false;
                 }
-
-                _process.PriorityClass = CommandPriority;
+                if(!_process.HasExited)
+                {
+                    _process.PriorityClass = CommandPriority;
+                }
                 _process.StandardInput.Close();
 
                 // bubble user termination down the chain ;)

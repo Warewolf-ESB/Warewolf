@@ -92,8 +92,8 @@ namespace Dev2.Core.Tests.Diagnostics
             //------------Execute Test---------------------------
             var actual = mockHandler.Object.Handle(e);
             //------------Assert Results-------------------------
-            Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
             Thread.Sleep(500);
+            Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
             StringAssert.Contains(testTraceListner.CurrentlyLogged, ":: ERROR -> AppExceptionHandlerAbstractProxy Handle : {\"ClassName\":\"System.Exception\",\"Message\":\"Test Exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
                 + "\r\n" +
                 "{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
