@@ -506,7 +506,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(DebugItemResultType.Label, debugOutputResults[1].Type);
             Assert.AreEqual(GlobalConstants.EqualsExpression, debugOutputResults[1].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutputResults[2].Type);
-            Assert.AreEqual("This is output from the user", debugOutputResults[2].Value);
         }
 
         // ReSharper disable InconsistentNaming
