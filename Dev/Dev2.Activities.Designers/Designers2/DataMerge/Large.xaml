@@ -13,10 +13,8 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                               MinWidth="400"
-                               Width="350"
-                               MaxWidth="600"
-                               MaxHeight="500"
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               MinWidth="350"                                                             
                                MinHeight="250"
                                Padding="7"
                                mc:Ignorable="d"
@@ -82,8 +80,7 @@
                                     d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
@@ -152,15 +149,14 @@
                                     d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
-                                                    Margin="0"
                                                     WrapInBrackets="False"
                                                     IsEnabled="{Binding EnableAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipUsing}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpUsing}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -187,14 +183,13 @@
                                     d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                            <ui:IntellisenseTextBox AllowUserInsertLine="False"
-                                                    MaxHeight="52"
+                            <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
-                                                    Margin="0"
                                                     WrapInBrackets="False"
                                                     Text="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipPadding}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpPadding}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -248,8 +243,8 @@
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="125" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
 
             <Label  Content="Result"

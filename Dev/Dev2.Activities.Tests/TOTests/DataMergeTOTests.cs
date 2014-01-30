@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -28,7 +25,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(1, dataMergeDTO.IndexNumber);
             Assert.AreEqual(string.Empty, dataMergeDTO.Padding);
             Assert.AreEqual("Left", dataMergeDTO.Alignment);
-            Assert.IsNull(dataMergeDTO.Errors);
+            Assert.IsNotNull(dataMergeDTO.Errors);
         }
 
         #region CanAdd Tests
@@ -54,7 +51,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             var dataMergeDTO = new DataMergeDTO(string.Empty, null, "|", 1, null, null);
             //------------Assert Results-------------------------
-            Assert.IsTrue(dataMergeDTO.CanAdd());            
+            Assert.IsTrue(dataMergeDTO.CanAdd());
         }
 
         [TestMethod]

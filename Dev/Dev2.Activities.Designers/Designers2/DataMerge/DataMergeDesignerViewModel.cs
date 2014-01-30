@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.DataMerge
         public override string CollectionName { get { return "MergeCollection"; } }
 
         public ICommand MergeTypeUpdatedCommand { get; private set; }
-        
+
         void OnMergeTypeChanged(object indexObj)
         {
             var index = (int)indexObj;
@@ -58,11 +58,6 @@ namespace Dev2.Activities.Designers2.DataMerge
                 mi.SetProperty("At", string.Empty);
                 mi.SetProperty("EnableAt", false);
             }
-        }
-
-        public override void Validate()
-        {
-            Errors = null;
         }
     }
 }
