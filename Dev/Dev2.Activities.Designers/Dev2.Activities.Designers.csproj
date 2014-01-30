@@ -209,6 +209,9 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Designers2\DataSplit\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DataSplit\DataSplitDesigner.xaml.cs">
       <DependentUpon>DataSplitDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -700,6 +703,10 @@
     <Page Include="Designers2\DataMerge\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DataSplit\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\DataSplit\DataSplitDesigner.xaml">
       <SubType>Designer</SubType>

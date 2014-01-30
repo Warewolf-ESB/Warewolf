@@ -72,12 +72,12 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void GetActivityFieldsOffDataSplitActivityExpectedAllFindMissingFieldsToBeReturned()
         {
             DsfDataSplitActivity dataSplitActivity = new DsfDataSplitActivity();
-            dataSplitActivity.ResultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[OutputVariable1]]", "Index", "[[At1]]", 1), new DataSplitDTO("[[OutputVariable2]]", "Index", "[[At2]]", 2) };
+            dataSplitActivity.ResultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[OutputVariable1]]", "Index", "[[At1]]", 1) { EscapeChar = "[[Escaped1]]" }, new DataSplitDTO("[[OutputVariable2]]", "Index", "[[At2]]", 2) { EscapeChar = "[[Escaped2]]" } };
             dataSplitActivity.SourceString = "[[SourceString]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
             List<string> actual = strategy.GetActivityFields(dataSplitActivity);
-            List<string> expected = new List<string> { "[[OutputVariable1]]", "[[At1]]", "[[OutputVariable2]]", "[[At2]]", "[[SourceString]]" };
+            List<string> expected = new List<string> { "[[Escaped1]]", "[[OutputVariable1]]", "[[At1]]", "[[Escaped2]]", "[[OutputVariable2]]", "[[At2]]",  "[[SourceString]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
 

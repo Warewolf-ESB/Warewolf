@@ -81,7 +81,7 @@ namespace Dev2.Activities.Designers2.Core
         public override void Validate()
         {
             var errors = new List<IActionableErrorInfo>();
-            foreach(var error in ModelItemCollection.SelectMany(mi => ((TDev2TOFn)mi.GetCurrentValue()).Errors))
+            foreach(var error in ModelItemCollection.SelectMany(mi => ((TDev2TOFn)mi.GetCurrentValue()).Errors ?? new Dictionary<string, List<IActionableErrorInfo>>()))
             {
                 errors.AddRange(error.Value);
             }

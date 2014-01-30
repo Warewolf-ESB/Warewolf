@@ -207,7 +207,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Assert.Fail("Couldnt find DsfDataSplitActivity.");
             }
             PropertyInfo[] properties = GetPropertyInfo(type);
-            Assert.IsTrue(properties.Count() == 3);
+            Assert.AreEqual(4, properties.Count());
         }
 
         [TestMethod]

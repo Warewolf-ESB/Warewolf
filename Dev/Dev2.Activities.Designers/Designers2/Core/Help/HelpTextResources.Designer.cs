@@ -783,15 +783,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You can reverse the direction that the string is split by selecting Backward. By Default, the processing direction is Forward..
-        /// </summary>
-        public static string DataSplitDirectionHelpText {
-            get {
-                return ResourceManager.GetString("DataSplitDirectionHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters..
         /// </summary>
         public static string DataSplitHelpEscape {
@@ -810,6 +801,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left)..
+        /// </summary>
+        public static string DataSplitHelpProcessDirection {
+            get {
+                return ResourceManager.GetString("DataSplitHelpProcessDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Only variables go in here.
         ///Returns the split data in the pattern as described by the results.
         ///The variable pattern will be repeated until the end of the input data.
@@ -819,6 +819,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DataSplitHelpResult {
             get {
                 return ResourceManager.GetString("DataSplitHelpResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards..
+        /// </summary>
+        public static string DataSplitHelpSkipBlankRows {
+            get {
+                return ResourceManager.GetString("DataSplitHelpSkipBlankRows", resourceCulture);
             }
         }
         
@@ -854,49 +863,6 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you want to include the item you  are splitting on in the result, make sure the checkbox is selected. The defaults for these are to not include unless its an index..
-        /// </summary>
-        public static string DataSplitIncludeHelpText {
-            get {
-                return ResourceManager.GetString("DataSplitIncludeHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to At least one result must be present. You can use [[Scalar]] or [[Recordset().Fields]] notation.
-        ///If you use a recordset the split pattern will be repeated untill the end of the file, putting each row into a new record. If you dont want a piece of the data being split, leave that result blank..
-        /// </summary>
-        public static string DataSplitResultHelpText {
-            get {
-                return ResourceManager.GetString("DataSplitResultHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Select the criteria for the split. This will be the pattern used to repeat against the String input untill no more splits can occur or, you use END.
-        ///Char will split on the characters you specify, like comma or | &lt;/.
-        ///Index will split on the numeric index from the previouse split.
-        ///New Line will split on carriage return.
-        ///Space will split on blank space. (You can use this to trim data)
-        ///Tab splits on a tab character.
-        ///End splits at the end of the string..
-        /// </summary>
-        public static string DataSplitSplitAtHelpText {
-            get {
-                return ResourceManager.GetString("DataSplitSplitAtHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Required field. Use any variable or data or combination of the two that you want to split. For file processing consider splitting first into headers, body and footers, then resplitting each of those independantly..
-        /// </summary>
-        public static string DataSplitStringToSplitHelpText {
-            get {
-                return ResourceManager.GetString("DataSplitStringToSplitHelpText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
@@ -919,6 +885,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Which direction would you like to process in?.
+        /// </summary>
+        public static string DataSplitToolTipProcessDirection {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipProcessDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [[Scalar]]   
         ///[[Recordset(n).Field]]   
         ///[[Recordset(*).Field]]   
@@ -927,6 +902,15 @@ namespace Dev2.Activities.Designers2.Core.Help {
         public static string DataSplitToolTipResult {
             get {
                 return ResourceManager.GetString("DataSplitToolTipResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blank rows will be ignored.
+        /// </summary>
+        public static string DataSplitToolTipSkipBlankRows {
+            get {
+                return ResourceManager.GetString("DataSplitToolTipSkipBlankRows", resourceCulture);
             }
         }
         

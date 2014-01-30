@@ -19,6 +19,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private bool _include;
         private List<string> _outList;
         Dictionary<string, List<IActionableErrorInfo>> _errors;
+        string _escapeChar;
 
         public DataSplitDTO()
         {
@@ -93,6 +94,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 _include = value;
                 OnPropertyChanged("Include");
+            }
+        }
+
+        [FindMissing]
+        public string EscapeChar
+        {
+            get { return _escapeChar; }
+            set
+            {
+                _escapeChar = value;
+                OnPropertyChanged("EscapeChar");
             }
         }
 
@@ -186,6 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             SplitType = "Char";
             At = string.Empty;
             Include = false;
+            EscapeChar = string.Empty;
         }
 
         public bool Inserted { get; set; }

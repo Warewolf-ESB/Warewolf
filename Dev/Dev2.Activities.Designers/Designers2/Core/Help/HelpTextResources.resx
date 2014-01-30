@@ -183,27 +183,8 @@ To assign a value to a variable, put the variable here.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
-  <data name="DataSplitDirectionHelpText" xml:space="preserve">
-    <value>You can reverse the direction that the string is split by selecting Backward. By Default, the processing direction is Forward.</value>
-  </data>
-  <data name="DataSplitIncludeHelpText" xml:space="preserve">
-    <value>If you want to include the item you  are splitting on in the result, make sure the checkbox is selected. The defaults for these are to not include unless its an index.</value>
-  </data>
-  <data name="DataSplitResultHelpText" xml:space="preserve">
-    <value>At least one result must be present. You can use [[Scalar]] or [[Recordset().Fields]] notation.
-If you use a recordset the split pattern will be repeated untill the end of the file, putting each row into a new record. If you dont want a piece of the data being split, leave that result blank.</value>
-  </data>
-  <data name="DataSplitSplitAtHelpText" xml:space="preserve">
-    <value>Select the criteria for the split. This will be the pattern used to repeat against the String input untill no more splits can occur or, you use END.
-Char will split on the characters you specify, like comma or | &lt;/.
-Index will split on the numeric index from the previouse split.
-New Line will split on carriage return.
-Space will split on blank space. (You can use this to trim data)
-Tab splits on a tab character.
-End splits at the end of the string.</value>
-  </data>
-  <data name="DataSplitStringToSplitHelpText" xml:space="preserve">
-    <value>Required field. Use any variable or data or combination of the two that you want to split. For file processing consider splitting first into headers, body and footers, then resplitting each of those independantly.</value>
+  <data name="DataSplitHelpProcessDirection" xml:space="preserve">
+    <value>Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).</value>
   </data>
   <data name="BaseConvertResultHelpText" xml:space="preserve">
     <value>The variable where the result will be output to.</value>
@@ -1760,5 +1741,14 @@ Leaving the Archive Password blank will result in no password being required to 
   </data>
   <data name="FindRecordsToHelpText" xml:space="preserve">
     <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+  </data>
+  <data name="DataSplitHelpSkipBlankRows" xml:space="preserve">
+    <value>For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.</value>
+  </data>
+  <data name="DataSplitToolTipProcessDirection" xml:space="preserve">
+    <value>Which direction would you like to process in?</value>
+  </data>
+  <data name="DataSplitToolTipSkipBlankRows" xml:space="preserve">
+    <value>Blank rows will be ignored</value>
   </data>
 </root>
