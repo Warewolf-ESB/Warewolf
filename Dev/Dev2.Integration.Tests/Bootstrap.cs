@@ -12,7 +12,7 @@ namespace Dev2.Integration.Tests
     /// <summary>
     /// Used to bootstrap the server for integration test runs ;)
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class Bootstrap
     {
         private static Process _serverProc;
@@ -20,16 +20,16 @@ namespace Dev2.Integration.Tests
         private const string _serverProcName = "Warewolf Server";
 
 
-        private static object _tumbler = new object();
+        private static readonly object _tumbler = new object();
 
         /// <summary>
         /// Inits the specified text CTX.
         /// </summary>
         /// <param name="textCtx">The text CTX.</param>
-        [AssemblyInitialize()]
+        [AssemblyInitialize]
         public static void Init(TestContext textCtx)
         {
-            if(textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
+            if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
 
             lock(_tumbler)
             {
