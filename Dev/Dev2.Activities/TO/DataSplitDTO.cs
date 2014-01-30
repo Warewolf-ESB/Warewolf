@@ -192,6 +192,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DataListFactory.CreateOutputTO(OutputVariable, OutList);
         }
 
+        public bool IsEmpty()
+        {
+            return OutputVariable == string.Empty && SplitType == "Index" && string.IsNullOrEmpty(At)
+                   || OutputVariable == string.Empty && SplitType == "Chars" && string.IsNullOrEmpty(At)
+                   || OutputVariable == string.Empty && SplitType == "None" && string.IsNullOrEmpty(At);
+        }
+
         public override void Validate()
         {
             Validate("OutputVariable");
@@ -202,6 +209,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override RuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
+            if(IsEmpty())
+            {
+                return ruleSet;
+            }
             switch(propertyName)
             {
                 case "OutputVariable":
@@ -211,7 +222,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "At":
                     if(SplitType == "Index")
                     {
-                        ruleSet.Add(new StringCannotBeInvalidExpressionRule(OutputVariable, () => IsAtFocused = true));
+                        ruleSet.Add(new StringCannotBeInvalidExpressionRule(At, () => IsAtFocused = true));
+                        ruleSet.Add(new IsNumericRule(At, () => IsAtFocused = true));
                     }
                     break;
                 case "EscapeChar":
