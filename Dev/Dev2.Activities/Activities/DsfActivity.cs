@@ -17,6 +17,7 @@ using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
