@@ -12,5 +12,7 @@ namespace Dev2.Providers.Validation
         bool Validate(string propertyName, RuleSet ruleSet);
 
         bool Validate(string propertyName);
+
+        void Validate();
     }
 }

@@ -15,6 +15,8 @@ namespace Dev2.TO
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors; } set { OnPropertyChanged(ref _errors, value); } }
 
+        public abstract void Validate();
+
         public bool Validate(string propertyName, RuleSet ruleSet)
         {
             if(ruleSet == null)

@@ -226,6 +226,10 @@ namespace Dev2
             return Validate(propertyName, ruleSet);
         }
 
+        public void Validate()
+        {
+        }
+
         RuleSet GetFieldNameRuleSet()
         {
             var ruleSet = new RuleSet();

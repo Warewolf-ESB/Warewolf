@@ -206,6 +206,10 @@ namespace Dev2
             return false;
         }
 
+        public void Validate()
+        {
+        }
+
         #endregion
     }
 }

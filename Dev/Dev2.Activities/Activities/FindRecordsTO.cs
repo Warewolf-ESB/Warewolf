@@ -229,6 +229,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return Validate(propertyName, new RuleSet());
         }
 
+        public void Validate()
+        {
+        }
+
         #endregion
     }
 }

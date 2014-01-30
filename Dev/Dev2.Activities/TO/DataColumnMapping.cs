@@ -36,5 +36,13 @@ namespace Dev2.TO
         public bool Inserted { get; set; }
 
         #endregion
+
+        #region Overrides of ValidatedObject
+
+        public override void Validate()
+        {
+        }
+
+        #endregion
     }
 }
