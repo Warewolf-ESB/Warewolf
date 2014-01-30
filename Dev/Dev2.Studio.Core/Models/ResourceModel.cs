@@ -562,8 +562,6 @@ namespace Dev2.Studio.Core.Models
 
             if(ResourceType == ResourceType.WorkflowService)
             {
-
-
                 var xaml = WorkflowXaml;
 
                 if(xaml == null || xaml.Length == 0)
@@ -575,7 +573,6 @@ namespace Dev2.Studio.Core.Models
                 var service = CreateWorkflowXElement(xaml);
 
                 // save to the string builder ;)
-
                 XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
                 using(XmlWriter xwriter = XmlWriter.Create(result, xws))
                 {
@@ -590,16 +587,14 @@ namespace Dev2.Studio.Core.Models
                 if(result == null)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID);
-                    var actionDefintion = msg.Message;
-                    if(ResourceType == ResourceType.Source)
-                    {
-                        result = actionDefintion;
-                    }
-                    else
-                    {
-                        var completeDefintion = CreateServiceXElement(actionDefintion);
-                        result = completeDefintion.ToStringBuilder();
-                    }
+                    result = msg.Message;
+
+                }
+
+                if(ResourceType == ResourceType.Service)
+                {
+                    var completeDefintion = CreateServiceXElement(result);
+                    result = completeDefintion.ToStringBuilder();
                 }
 
                 //2013.07.05: Ashley Lewis for bug 9487 - category may have changed!
@@ -660,7 +655,7 @@ namespace Dev2.Studio.Core.Models
                 new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
-                new XAttribute("ResourceType", ServerResourceType),
+                new XAttribute("ResourceType", ServerResourceType ?? ResourceType.ToString()),
                 new XAttribute("IsValid", IsValid),
                 new XElement("DisplayName", ResourceName ?? string.Empty),
                 new XElement("Category", Category ?? string.Empty),
@@ -671,7 +666,7 @@ namespace Dev2.Studio.Core.Models
                 new XElement("HelpLink", HelpLink ?? string.Empty),
                 new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                 dataList,
-                new XElement("Actions", xaml.ToXElement()),
+                new XElement("Actions", xaml),
                 new XElement("ErrorMessages", WriteErrors())
                 );
             return service;

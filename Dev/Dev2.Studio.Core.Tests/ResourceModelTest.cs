@@ -474,9 +474,7 @@ namespace Dev2.Core.Tests
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Service, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, serviceElement =>
             {
                 var category = serviceElement.ElementSafe("Category");
-                var source = serviceElement.ElementSafe("Source");
                 Assert.AreEqual(TestCategory, category);
-                Assert.AreEqual(TestXaml, source);
             });
         }
 
@@ -587,6 +585,55 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             StringAssert.Contains(serviceDefinition, "from resource definition");
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_Workflow_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = CreateResourceModel();
+            resourceModel.ResourceType = ResourceType.WorkflowService;
+            resourceModel.ServerResourceType = "Workflow";
+            resourceModel.WorkflowXaml = new StringBuilder("this has a &");
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(serviceDefinition, "this has a &amp;");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_Service_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = CreateResourceModel();
+            resourceModel.ResourceType = ResourceType.Service;
+            resourceModel.ServerResourceType = "WebService";
+            resourceModel.WorkflowXaml = new StringBuilder("this has a &");
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(serviceDefinition, "this has a &amp;");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ToServiceDefinition")]
+        public void ResourceModel_ToServiceDefinition_Source_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = CreateResourceModel();
+            resourceModel.ResourceType = ResourceType.Source;
+            resourceModel.ServerResourceType = "DbSource";
+            resourceModel.WorkflowXaml = new StringBuilder("this has a &");
+            //------------Execute Test---------------------------
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            //------------Assert Results-------------------------
+            StringAssert.Contains(serviceDefinition, "this has a &");
+        }
+
         public static Mock<IEnvironmentModel> CreateMockEnvironment()
         {
             return CreateMockEnvironment(new EventPublisher());
