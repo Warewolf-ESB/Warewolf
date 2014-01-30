@@ -231,15 +231,13 @@ namespace Dev2.Settings.Security
         void OnPermissionPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             IsDirty = true;
+            UpdateOverridingPermission(sender as WindowsGroupPermission, args.PropertyName);
             if(args.PropertyName == "WindowsGroup" || args.PropertyName == "ResourceName")
             {
                 var permission = (WindowsGroupPermission)sender;
 
                 if(permission.IsNew)
                 {
-                    //var isEmpty = permission.IsServer
-                    //    ? string.IsNullOrEmpty(permission.WindowsGroup)
-                    //    : string.IsNullOrEmpty(permission.WindowsGroup) && string.IsNullOrEmpty(permission.ResourceName);
                     if(permission.IsValid)
                     {
                         permission.IsNew = false;
@@ -271,6 +269,57 @@ namespace Dev2.Settings.Security
                     }
                 }
             }
+        }
+
+        void UpdateOverridingPermission(WindowsGroupPermission windowsGroupPermission, string propertyName)
+        {
+            if(windowsGroupPermission == null)
+            {
+                return;
+            }
+
+            SwitchAdminPermissionsOff(windowsGroupPermission, propertyName);
+            SwitchContributePermissionsOff(windowsGroupPermission, propertyName);
+            if(windowsGroupPermission.Administrator && propertyName == "Administrator")
+            {
+                UpdateForAdministratorPermissions(windowsGroupPermission);
+            }
+            if(windowsGroupPermission.Contribute && propertyName == "Contribute")
+            {
+                UpdateForContributePermissions(windowsGroupPermission);
+            }
+        }
+
+        static void SwitchContributePermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
+        {
+            if((!windowsGroupPermission.View && propertyName == "View")
+               || (!windowsGroupPermission.Execute && propertyName == "Execute"))
+            {
+                windowsGroupPermission.Contribute = false;
+            }
+        }
+
+        static void SwitchAdminPermissionsOff(WindowsGroupPermission windowsGroupPermission, string propertyName)
+        {
+            if((!windowsGroupPermission.DeployTo && propertyName == "DeployTo")
+               || (!windowsGroupPermission.DeployFrom && propertyName == "DeployFrom")
+               || (!windowsGroupPermission.Contribute && propertyName == "Contribute"))
+            {
+                windowsGroupPermission.Administrator = false;
+            }
+        }
+
+        static void UpdateForContributePermissions(WindowsGroupPermission windowsGroupPermission)
+        {
+            windowsGroupPermission.View = true;
+            windowsGroupPermission.Execute = true;
+        }
+
+        static void UpdateForAdministratorPermissions(WindowsGroupPermission windowsGroupPermission)
+        {
+            windowsGroupPermission.DeployFrom = true;
+            windowsGroupPermission.DeployTo = true;
+            windowsGroupPermission.Contribute = true;
         }
 
         WindowsGroupPermission CreateNewPermission(bool isServer)
