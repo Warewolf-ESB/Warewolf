@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.CommandLine
 {
@@ -34,7 +35,7 @@ namespace Dev2.Activities.Designers2.CommandLine
             System.Action onError = () => IsCommandFileNameFocused = true;
 
             string commandValue;
-            errors.AddRange(CommandFileName.TryParseVariables(out commandValue, onError));
+            errors.AddError(CommandFileName.TryParseVariables(out commandValue, onError));
 
             if(string.IsNullOrWhiteSpace(commandValue))
             {

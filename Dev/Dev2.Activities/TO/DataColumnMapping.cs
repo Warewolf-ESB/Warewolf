@@ -1,4 +1,5 @@
 ﻿using Dev2.Interfaces;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 
@@ -37,12 +38,13 @@ namespace Dev2.TO
 
         #endregion
 
-        #region Overrides of ValidatedObject
-
         public override void Validate()
         {
         }
 
-        #endregion
+        protected override RuleSet GetRuleSet(string propertyName)
+        {
+            return null;
+        }
     }
 }

@@ -84,7 +84,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         {
             //------------Setup for test--------------------------
             var ruleSet = new RuleSet();
-            ruleSet.Add(new TestRule("value", new ErrorInfo()));
+            ruleSet.Add(new TestRule("value", new ActionableErrorInfo()));
             //------------Execute Test---------------------------
             var validateRules = ruleSet.ValidateRules();
             //------------Assert Results-------------------------
@@ -94,21 +94,22 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 
     class TestRule : Rule
     {
-        internal TestRule(string value):base(value)
+        internal TestRule(string value, Action onInvalid = null)
+            : base(value, onInvalid)
         {
         }
 
-        internal TestRule(string value, IErrorInfo checkValue)
-            : base(value)
+        internal TestRule(string value, IActionableErrorInfo checkValue, Action onInvalid = null)
+            : base(value, onInvalid)
         {
             CheckValue = checkValue;
         }
 
-        public IErrorInfo CheckValue { get; set; }
+        public IActionableErrorInfo CheckValue { get; set; }
 
         #region Overrides of Rule
 
-        public override IErrorInfo Check()
+        public override IActionableErrorInfo Check()
         {
             return CheckValue;
         }

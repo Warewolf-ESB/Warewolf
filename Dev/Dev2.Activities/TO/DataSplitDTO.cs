@@ -1,15 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
+using Dev2.TO;
 using Dev2.Util;
+using Dev2.Validation;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
-    public class DataSplitDTO : IDev2TOFn, IOutputTOConvert, IPerformsValidation
+    // ReSharper disable InconsistentNaming
+    public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
+    // ReSharper restore InconsistentNaming
     {
         private string _outputVariable;
         private string _splitType;
@@ -17,13 +20,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private int _indexNum;
         private bool _enableAt;
         private bool _include;
-        private List<string> _outList;
-        Dictionary<string, List<IActionableErrorInfo>> _errors;
         string _escapeChar;
+        bool _isEscapeCharFocused;
+        bool _isOutputVariableFocused;
+        bool _isAtFocused;
 
         public DataSplitDTO()
         {
-            Errors = new Dictionary<string, List<IActionableErrorInfo>>();
         }
 
         public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
@@ -35,15 +38,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IndexNumber = indexNum;
             Include = include;
             _enableAt = true;
-            _outList = new List<string>();
+            OutList = new List<string>();
         }
 
         public string WatermarkTextVariable { get; set; }
 
         void RaiseCanAddRemoveChanged()
         {
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public bool EnableAt
@@ -55,7 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _enableAt = value;
-                OnPropertyChanged("EnableAt");
+                OnPropertyChanged();
             }
         }
 
@@ -68,21 +73,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _indexNum = value;
-                OnPropertyChanged("IndexNum");
+                OnPropertyChanged();
             }
         }
 
-        public List<string> OutList
-        {
-            get
-            {
-                return _outList;
-            }
-            set
-            {
-                _outList = value;
-            }
-        }
+        public List<string> OutList { get; set; }
 
         public bool Include
         {
@@ -93,20 +88,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _include = value;
-                OnPropertyChanged("Include");
+                OnPropertyChanged();
             }
         }
 
         [FindMissing]
-        public string EscapeChar
-        {
-            get { return _escapeChar; }
-            set
-            {
-                _escapeChar = value;
-                OnPropertyChanged("EscapeChar");
-            }
-        }
+        public string EscapeChar { get { return _escapeChar; } set { OnPropertyChanged(ref _escapeChar, value); } }
+
+        public bool IsEscapeCharFocused { get { return _isEscapeCharFocused; } set { OnPropertyChanged(ref _isEscapeCharFocused, value); } }
 
         [FindMissing]
         public string OutputVariable
@@ -118,10 +107,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set
             {
                 _outputVariable = value;
-                OnPropertyChanged("OutputVariable");
+                OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
             }
         }
+
+        public bool IsOutputVariableFocused { get { return _isOutputVariableFocused; } set { OnPropertyChanged(ref _isOutputVariableFocused, value); } }
 
         public string SplitType
         {
@@ -134,7 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(value != null)
                 {
                     _splitType = value;
-                    OnPropertyChanged("SplitType");
+                    OnPropertyChanged();
                     RaiseCanAddRemoveChanged();
                 }
             }
@@ -149,21 +140,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             set
             {
+
                 _at = value;
-                OnPropertyChanged("At");
+                OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
 
         public bool CanRemove()
         {
@@ -208,89 +192,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DataListFactory.CreateOutputTO(OutputVariable, OutList);
         }
 
-        #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        /// Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        /// The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] { get { return null; } }
-
-        /// <summary>
-        /// Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        /// An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        public string Error { get; private set; }
-
-        #endregion
-
-        #region Implementation of IPerformsValidation
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        public override void Validate()
         {
-            get
-            {
-                return _errors;
-            }
-            set
-            {
-                _errors = value;
-                OnPropertyChanged("Errors");
-            }
+            Validate("OutputVariable");
+            Validate("At");
+            Validate("EscapeChar");
         }
 
-        public bool Validate(string propertyName, RuleSet ruleSet)
-        {
-            if(ruleSet == null)
-            {
-                Errors[propertyName] = new List<IActionableErrorInfo>();
-            }
-            else
-            {
-                var errorsTos = ruleSet.ValidateRules();
-                var actionableErrorInfos = errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                {
-                    //
-                }));
-                Errors[propertyName] = actionableErrorInfos;
-            }
-            OnPropertyChanged("Errors");
-            List<IActionableErrorInfo> errorList;
-            if(Errors.TryGetValue(propertyName, out errorList))
-            {
-                return errorList.Count == 0;
-            }
-            return false;
-        }
-
-        public bool Validate(string propertyName)
-        {
-            RuleSet ruleSet = null;
-            switch(propertyName)
-            {
-                case "FieldName":
-                    ruleSet = GetFieldNameRuleSet();
-                    break;
-                case "FieldValue":
-                    break;
-            }
-            return Validate(propertyName, ruleSet);
-        }
-
-        public void Validate()
-        {
-        }
-
-        RuleSet GetFieldNameRuleSet()
+        protected override RuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
+            switch(propertyName)
+            {
+                case "OutputVariable":
+                    ruleSet.Add(new StringCannotBeEmptyOrNullRule(OutputVariable, () => IsOutputVariableFocused = true));
+                    ruleSet.Add(new StringCannotBeInvalidExpressionRule(OutputVariable, () => IsOutputVariableFocused = true));
+                    break;
+                case "At":
+                    if(SplitType == "Index")
+                    {
+                        ruleSet.Add(new StringCannotBeInvalidExpressionRule(OutputVariable, () => IsAtFocused = true));
+                    }
+                    break;
+                case "EscapeChar":
+                    break;
+            }
             return ruleSet;
         }
-        #endregion
     }
 }

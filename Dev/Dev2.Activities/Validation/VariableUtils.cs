@@ -1,15 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 
-namespace Dev2.Activities.Designers2.Core
+namespace Dev2.Validation
 {
     public static class VariableUtils
     {
-        public static List<IActionableErrorInfo> TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+        public static void AddError(this List<IActionableErrorInfo> errors, IActionableErrorInfo error)
+        {
+            if(errors != null && error != null)
+            {
+                errors.Add(error);
+            }
+        }
+
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             outputValue = inputValue;
 
@@ -41,13 +49,10 @@ namespace Dev2.Activities.Designers2.Core
 
                 if(!isValid)
                 {
-                    return new List<IActionableErrorInfo>
-                    {
-                        new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Invalid expression: opening and closing brackets don't match." }
-                    };
+                    return new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Invalid expression: opening and closing brackets don't match." };
                 }
             }
-            return new List<IActionableErrorInfo>();
+            return null;
         }
     }
 }

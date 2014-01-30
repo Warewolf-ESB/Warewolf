@@ -3,6 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Providers.Errors;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -81,12 +82,12 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
 
             string userName;
-            errors.AddRange(userNameValue.TryParseVariables(out userName, onUserNameError));
+            errors.AddError(userNameValue.TryParseVariables(out userName, onUserNameError));
 
             if(errors.Count == 0)
             {
                 string password;
-                errors.AddRange(passwordValue.TryParseVariables(out password, onPasswordError));
+                errors.AddError(passwordValue.TryParseVariables(out password, onPasswordError));
 
                 if(!string.IsNullOrWhiteSpace(userName))
                 {

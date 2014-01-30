@@ -167,6 +167,7 @@
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipResult}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsOutputVariableFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpResult}"
@@ -236,6 +237,7 @@
                                                     IsEnabled="{Binding EnableAt,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipUsing}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsAtFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpUsing}"
@@ -294,6 +296,7 @@
                             <ui:IntellisenseTextBox WrapInBrackets="False"                                                   
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipEscape}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsEscapeCharFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMapppingDataGridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpEscape}"

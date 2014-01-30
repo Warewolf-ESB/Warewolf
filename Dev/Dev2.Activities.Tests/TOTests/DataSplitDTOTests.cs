@@ -25,8 +25,10 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Assert Results-------------------------
             Assert.AreEqual("Index", dataSplitDTO.SplitType);
             Assert.AreEqual(string.Empty, dataSplitDTO.At);
-            Assert.AreEqual(1, dataSplitDTO.IndexNumber);   
-            Assert.IsNull(dataSplitDTO.Errors);
+            Assert.AreEqual(1, dataSplitDTO.IndexNumber);
+            Assert.IsNull(dataSplitDTO.EscapeChar);
+            Assert.AreEqual(false, dataSplitDTO.Include);
+            Assert.IsNotNull(dataSplitDTO.Errors);
         }
 
         #region CanAdd Tests

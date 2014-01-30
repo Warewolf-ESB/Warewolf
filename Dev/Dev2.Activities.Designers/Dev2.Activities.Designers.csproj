@@ -174,7 +174,6 @@
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
-    <Compile Include="Designers2\Core\VariableUtils.cs" />
     <Compile Include="Designers2\Core\ZIndexPosition.cs" />
     <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs">
       <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>

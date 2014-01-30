@@ -252,6 +252,8 @@
     <Compile Include="Utilities\Inputs.cs" />
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
+    <Compile Include="Validation\StringCannotBeInvalidExpressionRule.cs" />
+    <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTO.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>

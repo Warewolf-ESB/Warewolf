@@ -6,6 +6,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataSplit
@@ -77,7 +78,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             const string SourceLabel = "String To Split";
             string sourceValue;
-            errors.AddRange(SourceString.TryParseVariables(out sourceValue, onError));
+            errors.AddError(SourceString.TryParseVariables(out sourceValue, onError));
             foreach(var error in errors)
             {
                 error.Message = SourceLabel + " - " + error.Message;

@@ -7,13 +7,13 @@ namespace Dev2.TO
 {
     public abstract class ValidatedObject : ObservableObject, IPerformsValidation
     {
-        Dictionary<string, List<IActionableErrorInfo>> _errors = new Dictionary<string, List<IActionableErrorInfo>>();
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         public string Error { get { return string.Empty; } }
 
         public string this[string columnName] { get { return null; } }
 
-        public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors; } set { OnPropertyChanged(ref _errors, value); } }
+        public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors ?? (_errors = new Dictionary<string, List<IActionableErrorInfo>>()); } set { OnPropertyChanged(ref _errors, value); } }
 
         public abstract void Validate();
 
@@ -23,8 +23,15 @@ namespace Dev2.TO
             {
                 Errors[propertyName] = new List<IActionableErrorInfo>();
             }
+            else
+            {
+                var errorsTos = ruleSet.ValidateRules();
+                Errors[propertyName] = errorsTos;
+            }
 
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("Errors");
+            // ReSharper restore ExplicitCallerInfoArgument
 
             List<IActionableErrorInfo> errorList;
             if(Errors.TryGetValue(propertyName, out errorList))
@@ -34,9 +41,12 @@ namespace Dev2.TO
             return false;
         }
 
-        public bool Validate(string propertyName)
+        public virtual bool Validate(string propertyName)
         {
-            return false;
+            var ruleSet = GetRuleSet(propertyName);
+            return Validate(propertyName, ruleSet);
         }
+
+        protected abstract RuleSet GetRuleSet(string propertyName);
     }
 }

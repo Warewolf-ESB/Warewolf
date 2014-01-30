@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using Dev2.Providers.Errors;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -73,7 +74,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
 
             string pathValue;
-            errors.AddRange(path.TryParseVariables(out pathValue, onError, ValidUriSchemes[0] + "://temp"));
+            errors.AddError(path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp"));
 
             if(errors.Count == 0)
             {

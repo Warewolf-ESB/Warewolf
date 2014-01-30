@@ -85,20 +85,20 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
 
     public class ValueCannotBeNumberRule : Rule<String>
     {
-        public ValueCannotBeNumberRule(string valueToCheck)
-            : base(valueToCheck)
+        public ValueCannotBeNumberRule(string valueToCheck, Action onInvalid = null)
+            : base(valueToCheck, onInvalid)
         {
         }
 
         #region Overrides of RuleBase
 
-        public override IErrorInfo Check()
+        public override IActionableErrorInfo Check()
         {
             if(String.IsNullOrEmpty(ValueToCheck))
                 return null;
             if(ValueToCheck.Contains("1"))
             {
-                return new ErrorInfo
+                return new ActionableErrorInfo(OnInvalid)
                 {
                     Message = "Value cannot be a number.",
                     FixData = "Variable values cannot be numbers"
@@ -117,17 +117,17 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public StringValueCannotContainTestRule(string valueToCheck)
-            : base(valueToCheck)
+        public StringValueCannotContainTestRule(string valueToCheck, Action onInvalid = null)
+            : base(valueToCheck, onInvalid)
         {
         }
 
-        public override IErrorInfo Check()
+        public override IActionableErrorInfo Check()
         {
             if(String.IsNullOrEmpty(ValueToCheck)) return null;
             if(ValueToCheck.Contains("Test"))
             {
-                return new ErrorInfo
+                return new ActionableErrorInfo(OnInvalid)
                 {
                     Message = "The value cannot have 'Test' keyword.",
                     FixData = "Please rename this field so that it does not contain the word 'Test'."

@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
@@ -16,10 +17,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string outputValue;
 
             //------------Execute Test---------------------------
-            var errors = VariableUtils.TryParseVariables(null, out outputValue, () => { });
+            var error = VariableUtils.TryParseVariables(null, out outputValue, () => { });
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, errors.Count);
+            Assert.IsNull(error);
         }
 
         [TestMethod]
@@ -31,11 +32,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string outputValue;
 
             //------------Execute Test---------------------------
-            var errors = VariableUtils.TryParseVariables("a]]", out outputValue, () => { });
+            var error = VariableUtils.TryParseVariables("a]]", out outputValue, () => { });
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, errors.Count);
-            Assert.AreEqual("Invalid expression: opening and closing brackets don't match.", errors[0].Message);
+            Assert.IsNotNull(error);
+            Assert.AreEqual("Invalid expression: opening and closing brackets don't match.", error.Message);
         }
 
         [TestMethod]
@@ -48,10 +49,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             string variableValue = "xxx";
 
             //------------Execute Test---------------------------
-            var errors = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, variableValue);
+            var error = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, variableValue: variableValue);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, errors.Count);
+            Assert.IsNull(error);
             Assert.AreEqual(variableValue, outputValue);
         }
 
@@ -68,10 +69,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
 
             //------------Execute Test---------------------------
-            var errors = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, "a", inputs);
+            var error = VariableUtils.TryParseVariables("[[a]]", out outputValue, () => { }, variableValue: "a", inputs: inputs);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(0, errors.Count);
+            Assert.IsNull(error);
             Assert.AreEqual(variableValue, outputValue);
         }
     }

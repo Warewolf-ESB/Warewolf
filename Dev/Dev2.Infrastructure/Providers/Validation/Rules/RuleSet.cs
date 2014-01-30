@@ -26,7 +26,7 @@ namespace Dev2.Providers.Validation.Rules
 
         internal List<RuleBase> Rules { get; set; }
 
-        public List<IErrorInfo> ValidateRules()
+        public List<IActionableErrorInfo> ValidateRules()
         {
             var errors = from rule in Rules
                     let errorTO = rule.Check()
