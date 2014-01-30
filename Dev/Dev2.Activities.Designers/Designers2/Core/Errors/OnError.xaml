@@ -44,6 +44,7 @@
                    Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox Grid.Row="0"
                                     Grid.Column="1"
+                                    x:Name="ErrorVariable"
                                     DefaultText="[[Errors().Message]]"
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.OnErrorVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

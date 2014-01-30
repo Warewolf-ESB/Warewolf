@@ -10,14 +10,23 @@ namespace Dev2.Activities.Designers2.Service
         public Large()
         {
             InitializeComponent();
-            DataGrid = InputsDataGrid;
             Loaded += (sender, args) => InitializeHeight();
             SetInitialFocus();
         }
 
         protected override IInputElement GetInitialFocusElement()
         {
-            return DataGrid.GetFocusElement(0);
+            if(InputsDataGrid.Items.Count > 0)
+            {
+                DataGrid = InputsDataGrid;
+                return DataGrid.GetFocusElement(0);
+            }
+            if(OutputsDataGrid.Items.Count > 0)
+            {
+                DataGrid = OutputsDataGrid;
+                return DataGrid.GetFocusElement(0);
+            }
+            return OnErrorControl.ErrorVariable;
         }
 
         void InitializeHeight()
@@ -62,7 +71,7 @@ namespace Dev2.Activities.Designers2.Service
         static double CalcPercentage(int itemCount, double totalCount)
         {
             const double Weight = 100; // Otherwize vertical scrollbar disappears behind errors control
-            var p = (int) ((itemCount / totalCount) * 100);
+            var p = (int)((itemCount / totalCount) * 100);
             return p + Weight;
         }
 
