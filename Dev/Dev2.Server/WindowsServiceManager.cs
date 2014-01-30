@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
+using System.Diagnostics;
 using System.ServiceProcess;
 using Dev2.Common;
 using Dev2.Instrumentation;
@@ -154,6 +155,9 @@ namespace Dev2
 
                 controller.Start();
                 LogMessage("Service started successfully.", context);
+                LogMessage("Setting Recovery Options.", null);
+                SetRecoveryOptions();
+                LogMessage("Recovery Options successfully set.", null);
             }
             catch(Exception ex)
             {
@@ -163,6 +167,32 @@ namespace Dev2
             }
 
             return result;
+        }
+
+        static void SetRecoveryOptions()
+        {
+            int exitCode;
+            using(var process = new Process())
+            {
+                var startInfo = process.StartInfo;
+                startInfo.FileName = "sc";
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                // tell Windows that the service should restart if it fails
+                var arguments = string.Format("failure \"{0}\" reset= 0 actions= restart/60000", "Warewolf Server");
+                startInfo.Arguments = arguments;
+
+                process.Start();
+                process.WaitForExit();
+
+                exitCode = process.ExitCode;
+
+                process.Close();
+            }
+            if(exitCode != 0)
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         public static bool StopService(InstallContext context)
