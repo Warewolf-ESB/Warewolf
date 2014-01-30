@@ -1402,6 +1402,15 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Help\ServerDisconnected.htm.
+        /// </summary>
+        public static string Uri_Studio_ServerDisconnected {
+            get {
+                return ResourceManager.GetString("Uri_Studio_ServerDisconnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Help\StudioShortCutKeys.htm.
         /// </summary>
         public static string Uri_Studio_Shortcut_Keys_Document {

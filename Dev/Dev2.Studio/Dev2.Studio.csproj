@@ -1152,6 +1152,9 @@
     <Resource Include="Images\ToolSwitch-32.png" />
     <Resource Include="Images\ToolSequence-32.png" />
     <Resource Include="Images\ToolBaseConversion-32.png" />
+    <Content Include="Help\ServerDisconnected.htm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Help\PageForbidden.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

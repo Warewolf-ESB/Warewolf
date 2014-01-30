@@ -36,7 +36,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         #region OnLoadError
 
         [TestMethod]
-        public void BrowserHandlerOnLoadErrorExpectedRedirectsToPageNotFound()
+        public void BrowserHandler_OnLoadError_UrlContainsStudioHomePage_RedirectsToPageNotFound()
         {
             var browser = new Mock<IWebBrowser>();
             browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageNotFound)))).Verifiable();
@@ -45,11 +45,25 @@ namespace Dev2.Core.Tests.AppResources.Browsers
 
             var handler = new BrowserHandler(popupController.Object);
             var errorText = "Not found";
-            var result = handler.OnLoadError(browser.Object, "myfake.url", 404, ref errorText);
+            var result = handler.OnLoadError(browser.Object, "StudioHomePage.url", 404, ref errorText);
             Assert.IsTrue(result);
             browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_PageNotFound))), Times.Once());
         }
 
+        [TestMethod]
+        public void BrowserHandler_OnLoadError_UrlDoesNotContainStudioHomePage_RedirectsToServerDisconnected()
+        {
+            var browser = new Mock<IWebBrowser>();
+            browser.Setup(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_ServerDisconnected)))).Verifiable();
+
+            var popupController = new Mock<IBrowserPopupController>();
+
+            var handler = new BrowserHandler(popupController.Object);
+            var errorText = "Not found";
+            var result = handler.OnLoadError(browser.Object, "myfake.url", 404, ref errorText);
+            Assert.IsTrue(result);
+            browser.Verify(b => b.Load(It.Is<string>(s => s.EndsWith(StringResources.Uri_Studio_ServerDisconnected))), Times.Once());
+        }
         #endregion
 
         #region OnBeforePopup

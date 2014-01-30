@@ -27,11 +27,17 @@
     <script src="Scripts/warewolf-studio.js"></script>
     <link href="Content/themes/warewolf/jquery-ui.css" rel="stylesheet" />
     <link href="Content/Site.css" rel="stylesheet" />
-	<style>
-		.ui-autocomplete-loading {
-			background: white url('Images/ajax-loader.gif') right center no-repeat;
-		}
-	</style>
+    <style>   
+        
+        html, body {
+            height: 100%;
+            margin: 0px;
+        }
+
+        .ui-autocomplete-loading {
+            background: white url('Images/ajax-loader.gif') right center no-repeat;
+        }
+    </style>
     <script>		
         $(function () {
             // Remove default messages - we use a global validation handler
@@ -49,11 +55,39 @@
                 }
             });            
         });
+
+        function closeDeadPage() {
+            if (typeof Dev2Awesomium != 'undefined') {
+                Dev2Awesomium.Close();
+            }
+        }
     </script>
 </head>
 <body>
-    <div id="content">
-        Hello World!
-    </div>
+    <div id="content" style="height: 100%">
+        <div id="wrap" style="height: 100%">
+            <div id="main" style=" overflow: auto; padding-bottom: 50px">
+                <div style="padding: 20px; color: #171717; font-size: 15px; font-family: 'Open Sans', sans-serif;">
+                    <h3 style="color: #171717; font-size: 30px; font-weight: bold; font-family: 'Open Sans', sans-serif; display: inline;">Oops - unable to locate the server - <span id="errorUrl"></span></h3>
+                    <p>You can try the following to resolve this:</p>
+                    <ol>
+                        <li>Open <b>Services</b> in <b>Administrative Tools</b> and check that the Warewolf Server service is started.</li>
+                        <li>Check that the <b>network connection</b> is fully operational.</li>
+                        <li>Open <b>Windows Firewall</b> and check that the correct <b>ports</b> are open for the <b>TCP</b> protocol.</li>
+                        <li>Open the <b>server’s configuration</b> file and check that the <b>web server ports</b> are correct.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div id="footer" style="position: relative;margin-top: -50px;height: 50px;clear: both;padding-right: 20px;">
+            <button tabindex="1" type="button" name="close" id="closeButton" onclick="javascript: closeDeadPage();" 
+                    style="float: right;-webkit-appearance: none;-webkit-background-clip: border-box;-webkit-background-origin: padding-box;-webkit-background-size: auto;-webkit-writing-mode: horizontal-tb;align-items: flex-start;background-attachment: scroll;background-clip: border-box;background-color: rgb(249, 249, 249);background-image: none;background-origin: padding-box;background-size: auto;border-bottom-color: rgb(185, 185, 185);border-bottom-left-radius: 0px;border-bottom-right-radius: 0px;border-bottom-style: solid;border-bottom-width: 1px;border-image-outset: 0px;border-image-repeat: stretch;border-image-slice: 100%;border-image-source: none;border-image-width: 1;border-left-color: rgb(185, 185, 185);border-left-style: solid;border-left-width: 1px;border-right-color: rgb(185, 185, 185);border-right-style: solid;border-right-width: 1px;border-top-color: rgb(185, 185, 185);border-top-left-radius: 0px;border-top-right-radius: 0px;border-top-style: solid;border-top-width: 1px;box-sizing: border-box;color: rgb(63, 63, 63);cursor: pointer;display: inline-block;font-family: Arial, 'Sans Serif MS', sans-serif;font-size: 12px;font-weight: bold;height: 27.59375px;letter-spacing: normal;line-height: normal;margin-bottom: 2px;margin-left: 2px;margin-right: 1.2000000476837158px;margin-top: 2px;min-width: 90px;overflow-x: visible;overflow-y: visible;padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;position: relative;text-align: center;text-decoration: none solid rgb(63, 63, 63);text-indent: 0px;text-shadow: none;text-transform: none;vertical-align: middle;width: 90px;word-spacing: 0px;writing-mode: lr-tb;zoom: 1;font-family: Arial, 'Sans Serif MS', sans-serif;"
+                >Close</button>
+        </div>
+        <script type="text/javascript">
+            var url = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+            $("#errorUrl").text(url);
+        </script>
+    </div>    
 </body>
 </html>

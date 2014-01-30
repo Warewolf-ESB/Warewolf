@@ -764,4 +764,7 @@ Would you like to start the setup now?</value>
   <data name="String1" xml:space="preserve">
     <value />
   </data>
+  <data name="Uri_Studio_ServerDisconnected" xml:space="preserve">
+    <value>Help\ServerDisconnected.htm</value>
+  </data>
 </root>

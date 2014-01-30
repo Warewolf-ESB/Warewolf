@@ -37,7 +37,14 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         // PBI 9644 - 2013.06.21 - TWR: merged
         public bool OnLoadError(IWebBrowser browser, string url, int errorCode, ref string errorText)
         {
-            ShowErrorPage(browser, StringResources.Uri_Studio_PageNotFound);
+            if(string.IsNullOrEmpty(url) || url.ToLower().Contains("studiohomepage"))
+            {
+                ShowErrorPage(browser, StringResources.Uri_Studio_PageNotFound);
+            }
+            else
+            {
+                ShowErrorPage(browser, StringResources.Uri_Studio_ServerDisconnected);
+            }
             return true;
         }
 

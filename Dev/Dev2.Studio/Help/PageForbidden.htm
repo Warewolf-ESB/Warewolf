@@ -112,7 +112,7 @@
         }
     </style>
     <script type="text/javascript" language="javascript">
-        function closePage() {
+        function closeDeadPage() {
             if (typeof Dev2Awesomium != 'undefined') {
                 Dev2Awesomium.Close();
             }
@@ -123,7 +123,6 @@
     <div id="wrap">
         <div id="main">
             <div style="padding: 20px;">
-                <img style="vertical-align: text-bottom; padding-right: 15px;" src="PopupError-32.png" alt="Error" />
                 <h3>You are not authorized to perform this task...</h3>
                 <p>Please ensure that you've configured your <b>Internet Options</b> correctly:</p>
                 <ol>
@@ -145,7 +144,7 @@
         </div>
     </div>
     <div id="footer">
-        <button tabindex="1" type="button" name="close" id="closeButton" onclick="javascript: closePage();">Close</button>
+        <button tabindex="1" type="button" name="close" id="closeButton" onclick="javascript: closeDeadPage();">Close</button>
     </div>
 </body>
 </html>
