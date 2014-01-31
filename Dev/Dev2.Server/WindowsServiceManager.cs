@@ -50,8 +50,6 @@ namespace Dev2
             InstallContext context = null;
             try
             {
-                //ServiceProcessInstaller spl = new ServiceProcessInstaller();
-                //spl.Account
                 using(AssemblyInstaller inst = new AssemblyInstaller(typeof(ServerLifecycleManager).Assembly, null))
                 {
                     context = inst.Context;
