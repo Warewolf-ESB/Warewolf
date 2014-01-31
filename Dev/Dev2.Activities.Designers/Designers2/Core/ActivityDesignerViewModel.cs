@@ -3,12 +3,14 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core.Converters;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Activities.Designers2.Service;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -125,6 +127,16 @@ namespace Dev2.Activities.Designers2.Core
         {
             get { return (bool)GetValue(ShowLargeProperty); }
             set { SetValue(ShowLargeProperty, value); }
+        }
+
+        protected void RemoveHelpToggle()
+        {
+            ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
+            if(activityDesignerToggle != null)
+            {
+                TitleBarToggles.Remove(activityDesignerToggle);
+                ShowHelp = false;
+            }
         }
 
         public static readonly DependencyProperty ShowLargeProperty =
@@ -298,6 +310,23 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnToggleCheckedChanged(string propertyName, bool isChecked)
         {
+            if(this is ServiceDesignerViewModel && propertyName == "ShowLarge")
+            {
+                if(isChecked)
+                {
+                    ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
+                    if(activityDesignerToggle == null)
+                    {
+                        AddTitleBarHelpToggle();
+                    }
+                }
+                else
+                {
+                    RemoveHelpToggle();
+                }
+
+            }
+
             var isSelectedOrMouseOver = IsSelectedOrMouseOver;
             var showSmall = ShowSmall;
             ThumbVisibility = isSelectedOrMouseOver && !showSmall ? Visibility.Visible : Visibility.Collapsed;

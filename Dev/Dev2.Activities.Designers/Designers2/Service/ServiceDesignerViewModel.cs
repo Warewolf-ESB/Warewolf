@@ -54,7 +54,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             AddTitleBarEditToggle();
             AddTitleBarMappingToggle();
-            AddTitleBarHelpToggle();
 
             // PBI 6690 - 2013.07.04 - TWR : added
             // BUG 9634 - 2013.07.17 - TWR : resourceModel may be null if it is a remote resource whose environment is not connected!

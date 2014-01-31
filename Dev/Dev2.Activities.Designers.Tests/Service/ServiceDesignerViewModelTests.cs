@@ -78,12 +78,12 @@ namespace Dev2.Activities.Designers.Tests.Service
             new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
-            
+
             // No exception it passed ;)
         }
 
 
-        
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
-            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -226,7 +226,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsNotNull(viewModel.ResourceModel);
             Assert.IsNotNull(viewModel.ImageSource);
 
-            Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
+            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]
@@ -241,8 +241,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.ShowLarge);
             Assert.IsFalse(IsItemDragged.Instance.IsDragged);
-        }     
-        
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ServiceDesignerViewModel_Constructor")]
@@ -467,7 +467,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, mockedEnvironmentRepository.Object, new Mock<IEventAggregator>().Object);
 
             // Assert Resource ID Used To Find Resource
-            Assert.IsTrue((actual.Body as BinaryExpression).Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
+            var binaryExpression = actual.Body as BinaryExpression;
+            Assert.IsTrue(binaryExpression != null && binaryExpression.Right.Type.FullName.Contains("Guid"), "Resource ID was not used to identify resource");
         }
 
         #endregion
@@ -599,7 +600,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             //------------Assert Results-------------------------
 
             // No exception, all is good ;)
-           
+
         }
 
 
@@ -950,7 +951,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             modelProperties[startIndex++] = CreateModelProperty("UniqueID", uniqueID.ToString()).Object;
             modelProperties[startIndex++] = CreateModelProperty("ResourceID", serviceID).Object;
-            modelProperties[startIndex++] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
+            modelProperties[startIndex] = CreateModelProperty("EnvironmentID", new InArgument<Guid>(environmentID)).Object;
 
             var properties = new Mock<ModelPropertyCollection>();
 

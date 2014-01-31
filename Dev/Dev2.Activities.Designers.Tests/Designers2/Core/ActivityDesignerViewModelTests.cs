@@ -6,6 +6,11 @@ using System.Windows;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Service;
+using Dev2.Collections;
+using Dev2.Core.Tests;
+using Dev2.Providers.Errors;
+using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
@@ -129,6 +134,34 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.IsSmallViewActive);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("ActivityDesignerViewModel_Collapse")]
+        public void ActivityDesignerViewModel_Collapse_HelpButtonGetsRemovedOnCollapse()
+        {
+            //------------Setup for test--------------------------
+            var mockModelItem = GenerateMockModelItem();
+            Mock<IContextualResourceModel> setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
+            ErrorInfo errorInfo = new ErrorInfo { InstanceID = new Guid() };
+
+            IObservableReadOnlyList<IErrorInfo> testErrors = new ObservableReadOnlyList<IErrorInfo> { errorInfo };
+            setupResourceModelMock.Setup(c => c.Errors).Returns(testErrors);
+            setupResourceModelMock.Setup(c => c.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo> { errorInfo });
+            var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object);
+
+            Assert.IsTrue(viewModel.TitleBarToggles.Count == 2);
+
+            viewModel.ShowLarge = true;
+
+            Assert.IsTrue(viewModel.TitleBarToggles.Count == 3);
+
+            //------------Execute Test---------------------------
+            viewModel.Collapse();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.TitleBarToggles.Count == 2);
         }
 
         [TestMethod]
