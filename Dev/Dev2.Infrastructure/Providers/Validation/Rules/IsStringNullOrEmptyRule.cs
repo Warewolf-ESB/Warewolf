@@ -5,8 +5,8 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class IsStringNullOrEmptyRule : Rule<string>
     {
-        public IsStringNullOrEmptyRule(Func<string> getValue, Action onInvalid = null)
-            : base(getValue, onInvalid)
+        public IsStringNullOrEmptyRule(Func<string> getValue)
+            : base(getValue)
         {
         }
 
@@ -15,10 +15,9 @@ namespace Dev2.Providers.Validation.Rules
             var value = GetValue();
             if(string.IsNullOrEmpty(value))
             {
-                return new ActionableErrorInfo(OnInvalid)
+                return new ActionableErrorInfo(DoError)
                 {
-                    Message = "The value cannot be empty or null.",
-                    FixData = "Please provide a value for this field."
+                    Message = LabelText + " value cannot be empty or null."
                 };
             }
             return null;

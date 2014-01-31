@@ -38,13 +38,9 @@ namespace Dev2.TO
 
         #endregion
 
-        public override void Validate()
+        public override RuleSet GetRuleSet(string propertyName)
         {
-        }
-
-        protected override RuleSet GetRuleSet(string propertyName)
-        {
-            return null;
+            return new RuleSet();
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Dev2.Providers.Validation.Rules
 {
     public class IsPositiveNumberRule : Rule<string>
     {
-        public IsPositiveNumberRule(Func<string> getValue, Action onInvalid = null)
-            : base(getValue, onInvalid)
+        public IsPositiveNumberRule(Func<string> getValue)
+            : base(getValue)
         {
         }
 
@@ -17,10 +17,9 @@ namespace Dev2.Providers.Validation.Rules
             {
                 if(value < 0)
                 {
-                    return new ActionableErrorInfo(OnInvalid)
+                    return new ActionableErrorInfo(DoError)
                     {
-                        Message = "The value must be a positive whole number.",
-                        FixData = "Please provide a positive whole number for this field."
+                        Message = LabelText + " value must be a positive whole number."
                     };
                 }
             }

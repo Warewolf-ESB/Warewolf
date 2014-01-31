@@ -17,7 +17,7 @@ namespace Dev2.Validation
             }
         }
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string labelText = null, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             outputValue = inputValue;
 
@@ -49,7 +49,11 @@ namespace Dev2.Validation
 
                 if(!isValid)
                 {
-                    return new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Invalid expression: opening and closing brackets don't match." };
+                    return new ActionableErrorInfo(onError)
+                    {
+                        ErrorType = ErrorType.Critical, Message = (string.IsNullOrEmpty(labelText) ? "" : labelText + " - ")
+                                                                  + "Invalid expression: opening and closing brackets don't match."
+                    };
                 }
             }
             return null;

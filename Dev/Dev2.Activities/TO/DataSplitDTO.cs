@@ -7,19 +7,20 @@ using Dev2.Util;
 using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+    // ReSharper restore CheckNamespace
 {
     // ReSharper disable InconsistentNaming
     public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
-    // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     {
-        private string _outputVariable;
-        private string _splitType;
-        private string _at;
-        private int _indexNum;
-        private bool _enableAt;
-        private bool _include;
+        string _outputVariable;
+        string _splitType;
+        string _at;
+        int _indexNum;
+        bool _enableAt;
+        bool _include;
         string _escapeChar;
         bool _isEscapeCharFocused;
         bool _isOutputVariableFocused;
@@ -51,46 +52,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public bool EnableAt
-        {
-            get
-            {
-                return _enableAt;
-            }
-            set
-            {
-                _enableAt = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
 
-        public int IndexNumber
-        {
-            get
-            {
-                return _indexNum;
-            }
-            set
-            {
-                _indexNum = value;
-                OnPropertyChanged();
-            }
-        }
+        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
 
         public List<string> OutList { get; set; }
 
-        public bool Include
-        {
-            get
-            {
-                return _include;
-            }
-            set
-            {
-                _include = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool Include { get { return _include; } set { OnPropertyChanged(ref _include, value); } }
 
         [FindMissing]
         public string EscapeChar { get { return _escapeChar; } set { OnPropertyChanged(ref _escapeChar, value); } }
@@ -100,14 +68,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string OutputVariable
         {
-            get
-            {
-                return _outputVariable;
-            }
+            get { return _outputVariable; }
             set
             {
-                _outputVariable = value;
-                OnPropertyChanged();
+                OnPropertyChanged(ref _outputVariable, value);
                 RaiseCanAddRemoveChanged();
             }
         }
@@ -116,16 +80,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string SplitType
         {
-            get
-            {
-                return _splitType;
-            }
+            get { return _splitType; }
             set
             {
                 if(value != null)
                 {
-                    _splitType = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(ref _splitType, value);
                     RaiseCanAddRemoveChanged();
                 }
             }
@@ -134,15 +94,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string At
         {
-            get
-            {
-                return _at;
-            }
+            get { return _at; }
             set
             {
-
-                _at = value;
-                OnPropertyChanged();
+                OnPropertyChanged(ref _at, value);
                 RaiseCanAddRemoveChanged();
             }
         }
@@ -199,14 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    || OutputVariable == string.Empty && SplitType == "None" && string.IsNullOrEmpty(At);
         }
 
-        public override void Validate()
-        {
-            Validate("OutputVariable");
-            Validate("At");
-            Validate("EscapeChar");
-        }
-
-        protected override RuleSet GetRuleSet(string propertyName)
+        public override RuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
             if(IsEmpty())
@@ -217,19 +165,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, () => IsOutputVariableFocused = true, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, "1");
                     ruleSet.Add(outputExprRule);
-
-                    ruleSet.Add(new IsStringNullOrEmptyRule(() => outputExprRule.ExpressionValue, () => IsOutputVariableFocused = true));
+                    ruleSet.Add(new IsStringNullOrEmptyRule(() => outputExprRule.ExpressionValue));
                     break;
 
                 case "At":
                     if(SplitType == "Index")
                     {
-                        var atExprRule = new IsValidExpressionRule(() => At, () => IsAtFocused = true, "1");
+                        var atExprRule = new IsValidExpressionRule(() => At, "1");
                         ruleSet.Add(atExprRule);
-
-                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
+                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue));
                     }
                     break;
 

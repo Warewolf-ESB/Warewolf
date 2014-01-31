@@ -15,8 +15,6 @@ namespace Dev2.TO
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get { return _errors ?? (_errors = new Dictionary<string, List<IActionableErrorInfo>>()); } set { OnPropertyChanged(ref _errors, value); } }
 
-        public abstract void Validate();
-
         public bool Validate(string propertyName, RuleSet ruleSet)
         {
             if(ruleSet == null)
@@ -47,6 +45,6 @@ namespace Dev2.TO
             return Validate(propertyName, ruleSet);
         }
 
-        protected abstract RuleSet GetRuleSet(string propertyName);
+        public abstract RuleSet GetRuleSet(string propertyName);
     }
 }

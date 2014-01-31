@@ -167,10 +167,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return Validate(propertyName, ruleSet);
         }
 
-        public void Validate()
-        {
-        }
-
         RuleSet GetFieldNameRuleSet()
         {
             var ruleSet = new RuleSet();

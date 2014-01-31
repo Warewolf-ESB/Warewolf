@@ -3,9 +3,9 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class IsNullRule : Rule<object>
+    public class IsStringNullOrWhiteSpaceRule : Rule<string>
     {
-        public IsNullRule(Func<object> getValue)
+        public IsStringNullOrWhiteSpaceRule(Func<string> getValue)
             : base(getValue)
         {
         }
@@ -13,11 +13,11 @@ namespace Dev2.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            if(value == null)
+            if(string.IsNullOrWhiteSpace(value))
             {
                 return new ActionableErrorInfo(DoError)
                 {
-                    Message = LabelText + " value cannot be null."
+                    Message = LabelText + " value cannot be empty, null or white space only."
                 };
             }
             return null;

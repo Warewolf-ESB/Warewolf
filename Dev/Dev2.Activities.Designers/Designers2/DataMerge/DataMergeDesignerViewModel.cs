@@ -1,4 +1,5 @@
 using Dev2.Activities.Designers2.Core;
+using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
 using System.Activities.Presentation.Model;
@@ -57,6 +58,29 @@ namespace Dev2.Activities.Designers2.DataMerge
             {
                 mi.SetProperty("At", string.Empty);
                 mi.SetProperty("EnableAt", false);
+            }
+        }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            yield break;
+        }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
+        {
+            var dto = mi.GetCurrentValue() as DataMergeDTO;
+            if(dto == null)
+            {
+                yield break;
+            }
+
+            foreach(var error in dto.GetRuleSet("At").ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            {
+                yield return error;
+            }
+            foreach(var error in dto.GetRuleSet("Padding").ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
+            {
+                yield return error;
             }
         }
     }

@@ -1,3 +1,10 @@
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Parsers;
@@ -15,13 +22,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -462,19 +462,17 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             return table == null ? null : table.TableName;
         }
 
-        public override void Validate()
+        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            base.Validate();
-
             var errors = new List<IActionableErrorInfo>();
-            if(Errors != null)
-            {
-                errors.AddRange(Errors);
-            }
             errors.AddRange(ValidateValues());
             errors.AddRange(ValidateVariables());
+            return errors;
+        }
 
-            Errors = errors.Count == 0 ? null : errors;
+        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
+        {
+            yield break;
         }
 
         IEnumerable<IActionableErrorInfo> ValidateValues()

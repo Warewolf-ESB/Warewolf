@@ -6,18 +6,24 @@ namespace Dev2.Providers.Validation.Rules
     public abstract class Rule<T> : RuleBase
     {
         protected readonly Func<T> GetValue;
-        protected Action OnInvalid { get; private set; }
 
-        protected Rule(Func<T> getValue, Action onInvalid)
+        protected Rule(Func<T> getValue)
         {
             VerifyArgument.IsNotNull("getValue", getValue);
             GetValue = getValue;
-            OnInvalid = onInvalid;
         }
     }
 
     public abstract class RuleBase
     {
+        protected RuleBase()
+        {
+            LabelText = "The";
+        }
+
         public abstract IActionableErrorInfo Check();
+
+        public string LabelText { get; set; }
+        public Action DoError { get; set; }
     }
 }

@@ -207,10 +207,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return Validate(propertyName, ruleSet);
         }
 
-        public void Validate()
-        {
-        }
-
         /// <summary>
         /// Validates the property name with the default rule set in <value>ActivityDTO</value>
         /// </summary>

@@ -78,33 +78,18 @@ namespace Dev2.Activities.Designers2.Core
             DisplayName = currentName;
         }
 
-        public override void Validate()
+        public sealed override void Validate()
         {
-            var errors = new List<IActionableErrorInfo>();
-            foreach(var mi in ModelItemCollection)
-            {
-                var dto = mi.GetCurrentValue() as TDev2TOFn;
-                if(dto == null)
-                {
-                    continue;
-                }
-                dto.Validate();
-                if(dto.Errors == null)
-                {
-                    continue;
-                }
-                foreach(var error in dto.Errors)
-                {
-                    errors.AddRange(
-                        (from errorInfo in error.Value
-                         let info = errorInfo
-                         let currentModelItem = mi
-                         select new ActionableErrorInfo(errorInfo,
-                             () => currentModelItem.SetProperty(info.PropertyNameValuePair.Key, info.PropertyNameValuePair.Value))));
-                }
-            }
-            Errors = errors.Count == 0 ? null : errors;
+            var result = new List<IActionableErrorInfo>();
+            result.AddRange(ValidateThis());
+            ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
+
+            Errors = result.Count == 0 ? null : result;
         }
+
+        protected abstract IEnumerable<IActionableErrorInfo> ValidateThis();
+
+        protected abstract IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi);
 
         public override bool CanRemoveAt(int indexNumber)
         {
@@ -173,7 +158,6 @@ namespace Dev2.Activities.Designers2.Core
             // Restore 
             _initialDto = new TDev2TOFn();
         }
-
 
         /// <summary>
         /// Gets the insert index for <see cref="AddToCollection"/>. 

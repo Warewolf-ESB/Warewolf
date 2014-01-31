@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Dev2.Providers.Errors
 {
@@ -28,12 +27,6 @@ namespace Dev2.Providers.Errors
             InstanceID = input.InstanceID;
         }
 
-        #region Implementation of IActionableErrorInfo
-        public KeyValuePair<string, object> PropertyNameValuePair
-        {
-            get;
-            set;
-        }
         public void Do()
         {
             if(_do != null)
@@ -41,7 +34,5 @@ namespace Dev2.Providers.Errors
                 _do();
             }
         }
-
-        #endregion
     }
 }

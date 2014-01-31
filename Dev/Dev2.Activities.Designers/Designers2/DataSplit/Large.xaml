@@ -242,7 +242,7 @@
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpUsing}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    <errors:ErrorsSetter Source="{Binding}"
+                                    <errors:ErrorsSetter Source="{Binding .}"
                                                          SourcePropertyName="At"
                                                          SourcePropertyValue="{Binding At, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />

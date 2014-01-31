@@ -7,12 +7,13 @@ using Dev2.Util;
 using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+    // ReSharper restore CheckNamespace
 {
     // ReSharper disable InconsistentNaming
     public class DataMergeDTO : ValidatedObject, IDev2TOFn
-    // ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
     {
         #region Fields
 
@@ -28,6 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Ctor
+
         public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted = false)
         {
             Inserted = inserted;
@@ -49,29 +51,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        public bool IsPaddingFocused
-        {
-            get
-            {
-                return _isPaddingFocused;
-            }
-            set
-            {
-                OnPropertyChanged(ref _isPaddingFocused, value);
-            }
-        }
+        public bool IsPaddingFocused { get { return _isPaddingFocused; } set { OnPropertyChanged(ref _isPaddingFocused, value); } }
 
-        public bool IsAtFocused
-        {
-            get
-            {
-                return _isAtFocused;
-            }
-            set
-            {
-                OnPropertyChanged(ref _isAtFocused, value);
-            }
-        }
+        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
 
         public bool Inserted { get; set; }
 
@@ -90,10 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string Alignment
         {
-            get
-            {
-                return _alignment;
-            }
+            get { return _alignment; }
             set
             {
                 if(value != null)
@@ -103,23 +82,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool EnableAt
-        {
-            get { return _enableAt; }
-            set
-            {
-                _enableAt = value;
-            }
-        }
+        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
 
-        public int IndexNumber
-        {
-            get { return _indexNum; }
-            set
-            {
-                _indexNum = value;
-            }
-        }
+        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
 
         [FindMissing]
         public string InputVariable
@@ -127,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _inputVariable; }
             set
             {
-                _inputVariable = value;
+                OnPropertyChanged(ref _inputVariable, value);
                 RaiseCanAddRemoveChanged();
             }
         }
@@ -139,7 +104,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(value != null)
                 {
-                    _mergeType = value;
+                    OnPropertyChanged(ref _mergeType, value);
                     RaiseCanAddRemoveChanged();
                 }
             }
@@ -151,7 +116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get { return _at; }
             set
             {
-                _at = value;
+                OnPropertyChanged(ref _at, value);
                 RaiseCanAddRemoveChanged();
             }
         }
@@ -211,44 +176,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region Implementation of IPerformsValidation
-
-        protected override RuleSet GetRuleSet(string propertyName)
+        public override RuleSet GetRuleSet(string propertyName)
         {
             RuleSet ruleSet = new RuleSet();
+            if(IsEmpty())
+            {
+                return ruleSet;
+            }
             switch(propertyName)
             {
                 case "At":
-                    if(MergeType == "Index" && !IsEmpty())
+                    if(MergeType == "Index")
                     {
-                        var atExprRule = new IsValidExpressionRule(() => At, () => IsAtFocused = true, "1");
+                        var atExprRule = new IsValidExpressionRule(() => At, "1");
                         ruleSet.Add(atExprRule);
 
-                        ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
-                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
-                        ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
-                        }
+                        ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue));
+                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue));
+                        ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue));
+                    }
                     break;
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
                     {
-                        var paddingExprRule = new IsValidExpressionRule(() => Padding, () => IsPaddingFocused = true, "1");
+                        var paddingExprRule = new IsValidExpressionRule(() => Padding, "1");
                         ruleSet.Add(paddingExprRule);
 
-                        ruleSet.Add(new IsNumericRule(() => paddingExprRule.ExpressionValue, () => IsPaddingFocused = true));
-                        ruleSet.Add(new IsPositiveNumberRule(() => paddingExprRule.ExpressionValue, () => IsPaddingFocused = true));
+                        ruleSet.Add(new IsNumericRule(() => paddingExprRule.ExpressionValue));
+                        ruleSet.Add(new IsPositiveNumberRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
             }
             return ruleSet;
         }
-
-        public override void Validate()
-        {
-            Validate("At");
-            Validate("Padding");
-        }
-
-        #endregion
     }
 }

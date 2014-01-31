@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
+using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Validation;
@@ -65,37 +66,47 @@ namespace Dev2.Activities.Designers2.DataSplit
             }
         }
 
-        public override void Validate()
+        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            base.Validate();
-
-            var baseErrors = Errors;
-
-            Errors = null;
-            var errors = new List<IActionableErrorInfo>();
-
-            System.Action onError = () => IsSourceStringFocused = true;
-
-            const string SourceLabel = "String To Split";
-            string sourceValue;
-            errors.AddError(SourceString.TryParseVariables(out sourceValue, onError));
-            foreach(var error in errors)
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(var error in GetRuleSet("SourceString").ValidateRules("'String to Split'", () => IsSourceStringFocused = true))
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
-                error.Message = SourceLabel + " - " + error.Message;
+                yield return error;
+            }
+        }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
+        {
+            var dto = mi.GetCurrentValue() as DataSplitDTO;
+            if(dto == null)
+            {
+                yield break;
             }
 
-            if(string.IsNullOrWhiteSpace(sourceValue))
+            foreach(var error in dto.GetRuleSet("OutputVariable").ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
-                errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = SourceLabel + " must have a value" });
+                yield return error;
             }
-
-            if(baseErrors != null)
+            foreach(var error in dto.GetRuleSet("At").ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
-                errors.AddRange(baseErrors);
+                yield return error;
             }
+        }
 
-            // Always assign property otherwise binding does not update!
-            Errors = errors;
+        RuleSet GetRuleSet(string propertyName)
+        {
+            var ruleSet = new RuleSet();
+
+            switch(propertyName)
+            {
+                case "SourceString":
+                    var sourceExprRule = new IsValidExpressionRule(() => SourceString);
+                    ruleSet.Add(sourceExprRule);
+                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => sourceExprRule.ExpressionValue));
+                    break;
+            }
+            return ruleSet;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Activities.Presentation.Model;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
+using Dev2.Providers.Errors;
 
 namespace Dev2.Activities.Designers2.CaseConvert
 {
@@ -27,5 +29,15 @@ namespace Dev2.Activities.Designers2.CaseConvert
         }
 
         public override string CollectionName { get { return "ConvertCollection"; } }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            yield break;
+        }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
+        {
+            yield break;
+        }
     }
 }

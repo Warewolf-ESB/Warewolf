@@ -11,8 +11,8 @@ namespace Dev2.Validation
         readonly ObservableCollection<ObservablePair<string, string>> _inputs;
         string _outputValue;
 
-        public IsValidExpressionRule(Func<string> getValue, Action onInvalid = null, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
-            : base(getValue, onInvalid)
+        public IsValidExpressionRule(Func<string> getValue, string variableValue = "a", ObservableCollection<ObservablePair<string, string>> inputs = null)
+            : base(getValue)
         {
             _variableValue = variableValue;
             _inputs = inputs;
@@ -23,7 +23,7 @@ namespace Dev2.Validation
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            return value.TryParseVariables(out _outputValue, OnInvalid, _variableValue, _inputs);
+            return value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
         }
 
     }

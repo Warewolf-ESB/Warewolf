@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Data.Enums;
+using Dev2.Providers.Errors;
 
 namespace Dev2.Activities.Designers2.GatherSystemInformation
 {
@@ -27,5 +28,15 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             ItemsList = Dev2EnumConverter.ConvertEnumsTypeToStringList<enTypeOfSystemInformationToGather>();
         }
         public override string CollectionName { get { return "SystemInformationCollection"; } }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            yield break;
+        }
+
+        protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
+        {
+            yield break;
+        }
     }
 }
