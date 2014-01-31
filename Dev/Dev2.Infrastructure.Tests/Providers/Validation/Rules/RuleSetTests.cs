@@ -92,15 +92,15 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         }
     }
 
-    class TestRule : Rule
+    class TestRule : Rule<object>
     {
         internal TestRule(string value, Action onInvalid = null)
-            : base(value, onInvalid)
+            : base(() => value, onInvalid)
         {
         }
 
         internal TestRule(string value, IActionableErrorInfo checkValue, Action onInvalid = null)
-            : base(value, onInvalid)
+            : base(() => value, onInvalid)
         {
             CheckValue = checkValue;
         }

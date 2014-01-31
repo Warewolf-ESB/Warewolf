@@ -1,10 +1,7 @@
-﻿using System;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.MultiAssign;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation.Rules;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -83,59 +80,4 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
         }
     }
 
-    public class ValueCannotBeNumberRule : Rule<String>
-    {
-        public ValueCannotBeNumberRule(string valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
-        {
-        }
-
-        #region Overrides of RuleBase
-
-        public override IActionableErrorInfo Check()
-        {
-            if(String.IsNullOrEmpty(ValueToCheck))
-                return null;
-            if(ValueToCheck.Contains("1"))
-            {
-                return new ActionableErrorInfo(OnInvalid)
-                {
-                    Message = "Value cannot be a number.",
-                    FixData = "Variable values cannot be numbers"
-                };
-            }
-            return null;
-        }
-
-        #endregion
-    }
-
-    public class StringValueCannotContainTestRule : Rule<String>
-    {
-        #region Overrides of Rule
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public StringValueCannotContainTestRule(string valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
-        {
-        }
-
-        public override IActionableErrorInfo Check()
-        {
-            if(String.IsNullOrEmpty(ValueToCheck)) return null;
-            if(ValueToCheck.Contains("Test"))
-            {
-                return new ActionableErrorInfo(OnInvalid)
-                {
-                    Message = "The value cannot have 'Test' keyword.",
-                    FixData = "Please rename this field so that it does not contain the word 'Test'."
-                };
-            }
-            return null;
-        }
-
-        #endregion
-    }
 }

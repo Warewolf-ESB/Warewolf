@@ -3,22 +3,17 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class IsPositiveNumberRule : Rule
+    public class IsPositiveNumberRule : Rule<string>
     {
-        #region Overrides of Rule
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public IsPositiveNumberRule(string valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
+        public IsPositiveNumberRule(Func<string> getValue, Action onInvalid = null)
+            : base(getValue, onInvalid)
         {
         }
 
         public override IActionableErrorInfo Check()
         {
             int value;
-            if(int.TryParse(ValueToCheck.ToString(), out value))
+            if(int.TryParse(GetValue(), out value))
             {
                 if(value < 0)
                 {
@@ -31,8 +26,6 @@ namespace Dev2.Providers.Validation.Rules
             }
             return null;
         }
-
-        #endregion
     }
 }
 

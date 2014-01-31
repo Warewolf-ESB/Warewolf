@@ -197,7 +197,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-
         #region Implementation of IPerformsValidation
 
         protected override RuleSet GetRuleSet(string propertyName)
@@ -208,30 +207,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "At":
                     if(MergeType == "Index" && !IsEmpty())
                     {
-                        ruleSet.Add(new StringCannotBeEmptyOrNullRule(At, () => IsAtFocused = true));
-                        if(At.StartsWith("[[") && At.EndsWith("]]"))
-                        {
-                            ruleSet.Add(new StringCannotBeInvalidExpressionRule(At, () => IsAtFocused = true));
-                        }
-                        else
-                        {
-                            ruleSet.Add(new IsNumericRule(At, () => IsAtFocused = true));
-                            ruleSet.Add(new IsPositiveNumberRule(At, () => IsAtFocused = true));
-                        }
+                        var atExprRule = new IsValidExpressionRule(() => At, () => IsAtFocused = true, "1");
+                        ruleSet.Add(atExprRule);
+
+                        ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
+                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
+                        ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
                     }
                     break;
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
                     {
-                        if(Padding.StartsWith("[[") && Padding.EndsWith("]]"))
-                        {
-                            ruleSet.Add(new StringCannotBeInvalidExpressionRule(Padding, () => IsPaddingFocused = true));
-                        }
-                        else
-                        {
-                            ruleSet.Add(new IsNumericRule(Padding, () => IsPaddingFocused = true));
-                            ruleSet.Add(new IsPositiveNumberRule(Padding, () => IsPaddingFocused = true));
-                        }
+                        var paddingExprRule = new IsValidExpressionRule(() => Padding, () => IsPaddingFocused = true, "1");
+                        ruleSet.Add(paddingExprRule);
+
+                        ruleSet.Add(new IsNumericRule(() => paddingExprRule.ExpressionValue, () => IsPaddingFocused = true));
+                        ruleSet.Add(new IsPositiveNumberRule(() => paddingExprRule.ExpressionValue, () => IsPaddingFocused = true));
                     }
                     break;
             }

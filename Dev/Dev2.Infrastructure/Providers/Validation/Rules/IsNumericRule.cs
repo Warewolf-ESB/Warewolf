@@ -3,24 +3,17 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-
-
-    public class IsNumericRule : Rule
+    public class IsNumericRule : Rule<string>
     {
-        #region Overrides of Rule
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        public IsNumericRule(string valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
+        public IsNumericRule(Func<string> getValue, Action onInvalid = null)
+            : base(getValue, onInvalid)
         {
         }
 
         public override IActionableErrorInfo Check()
         {
             int value;
-            if(!int.TryParse(ValueToCheck.ToString(), out value))
+            if(!int.TryParse(GetValue(), out value))
             {
                 return new ActionableErrorInfo(OnInvalid)
                 {
@@ -30,8 +23,6 @@ namespace Dev2.Providers.Validation.Rules
             }
             return null;
         }
-
-        #endregion
     }
 }
 

@@ -3,20 +3,21 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class ValueCannotBeNullRule : Rule
+    public class IsStringNullOrEmptyRule : Rule<string>
     {
-        public ValueCannotBeNullRule(object valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
+        public IsStringNullOrEmptyRule(Func<string> getValue, Action onInvalid = null)
+            : base(getValue, onInvalid)
         {
         }
 
         public override IActionableErrorInfo Check()
         {
-            if(ValueToCheck == null)
+            var value = GetValue();
+            if(string.IsNullOrEmpty(value))
             {
                 return new ActionableErrorInfo(OnInvalid)
                 {
-                    Message = "The value cannot be null.",
+                    Message = "The value cannot be empty or null.",
                     FixData = "Please provide a value for this field."
                 };
             }

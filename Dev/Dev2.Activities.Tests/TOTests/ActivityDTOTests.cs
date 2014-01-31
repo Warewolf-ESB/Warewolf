@@ -293,7 +293,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO { FieldName = null };
             var ruleSet = new RuleSet();
-            ruleSet.Add(new ValueCannotBeNullRule(activityDTO.FieldName));
+            ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
             bool isValid = activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------
@@ -308,7 +308,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO { FieldName = "FeildName" };
             var ruleSet = new RuleSet();
-            ruleSet.Add(new ValueCannotBeNullRule(activityDTO.FieldName));
+            ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
             bool isValid = activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------
@@ -323,7 +323,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO { FieldName = null };
             var ruleSet = new RuleSet();
-            ruleSet.Add(new ValueCannotBeNullRule(activityDTO.FieldName));
+            ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
             activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------

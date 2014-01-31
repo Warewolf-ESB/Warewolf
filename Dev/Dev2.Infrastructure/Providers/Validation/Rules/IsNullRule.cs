@@ -3,16 +3,17 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class StringCannotBeEmptyOrNullRule : Rule<string>
+    public class IsNullRule : Rule<object>
     {
-        public StringCannotBeEmptyOrNullRule(string valueToCheck, Action onInvalid = null)
-            : base(valueToCheck, onInvalid)
+        public IsNullRule(Func<object> getValue, Action onInvalid = null)
+            : base(getValue, onInvalid)
         {
         }
 
         public override IActionableErrorInfo Check()
         {
-            if(ValueToCheck == null)
+            var value = GetValue();
+            if(value == null)
             {
                 return new ActionableErrorInfo(OnInvalid)
                 {

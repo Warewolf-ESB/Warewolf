@@ -213,19 +213,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 return ruleSet;
             }
+
             switch(propertyName)
             {
                 case "OutputVariable":
-                    ruleSet.Add(new StringCannotBeEmptyOrNullRule(OutputVariable, () => IsOutputVariableFocused = true));
-                    ruleSet.Add(new StringCannotBeInvalidExpressionRule(OutputVariable, () => IsOutputVariableFocused = true));
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, () => IsOutputVariableFocused = true, "1");
+                    ruleSet.Add(outputExprRule);
+
+                    ruleSet.Add(new IsStringNullOrEmptyRule(() => outputExprRule.ExpressionValue, () => IsOutputVariableFocused = true));
                     break;
+
                 case "At":
                     if(SplitType == "Index")
                     {
-                        ruleSet.Add(new StringCannotBeInvalidExpressionRule(At, () => IsAtFocused = true));
-                        ruleSet.Add(new IsNumericRule(At, () => IsAtFocused = true));
+                        var atExprRule = new IsValidExpressionRule(() => At, () => IsAtFocused = true, "1");
+                        ruleSet.Add(atExprRule);
+
+                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
                     }
                     break;
+
                 case "EscapeChar":
                     break;
             }

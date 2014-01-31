@@ -5,21 +5,14 @@ namespace Dev2.Providers.Validation.Rules
 {
     public abstract class Rule<T> : RuleBase
     {
-        public T ValueToCheck { get; private set; }
-        public Action OnInvalid { get; private set; }
+        protected readonly Func<T> GetValue;
+        protected Action OnInvalid { get; private set; }
 
-        protected Rule(T valueToCheck, Action onInvalid)
+        protected Rule(Func<T> getValue, Action onInvalid)
         {
-            ValueToCheck = valueToCheck;
+            VerifyArgument.IsNotNull("getValue", getValue);
+            GetValue = getValue;
             OnInvalid = onInvalid;
-        }
-    }
-
-    public abstract class Rule : Rule<object>
-    {
-        protected Rule(object valueToCheck, Action onInvalid)
-            : base(valueToCheck, onInvalid)
-        {
         }
     }
 
