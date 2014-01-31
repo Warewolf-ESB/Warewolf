@@ -14,8 +14,8 @@
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
-                               MinWidth="350"
-                               Width="350"
+                               MinWidth="351"
+                               Width="351"
                                MinHeight="250"
                                Padding="7"
                                mc:Ignorable="d"
@@ -211,7 +211,7 @@
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width=".5*"
+            <DataGridTemplateColumn Width=".6*"
                                         Header="Align"
                                         d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>

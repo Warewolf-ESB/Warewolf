@@ -23,6 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _enableAt;
         bool _isAtFocused;
         bool _isPaddingFocused;
+        string _alignment;
 
         #endregion
 
@@ -87,7 +88,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string Padding { get; set; }
 
-        public string Alignment { get; set; }
+        public string Alignment
+        {
+            get
+            {
+                return _alignment;
+            }
+            set
+            {
+                if(value != null)
+                {
+                    OnPropertyChanged(ref _alignment, value);
+                }
+            }
+        }
 
         public bool EnableAt
         {
@@ -213,7 +227,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
                         ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
                         ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue, () => IsAtFocused = true));
-                    }
+                        }
                     break;
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
