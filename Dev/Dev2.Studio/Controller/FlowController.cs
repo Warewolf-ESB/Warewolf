@@ -252,21 +252,25 @@ namespace Dev2.Studio.Controller
 
         public void Handle(ConfigureDecisionExpressionMessage message)
         {
+            this.TraceInfo(message.GetType().Name);
             ConfigureDecisionExpression(message);
         }
 
         public void Handle(ConfigureSwitchExpressionMessage message)
         {
+            this.TraceInfo(message.GetType().Name);
             ConfigureSwitchExpression(message);
         }
 
         public void Handle(ConfigureCaseExpressionMessage message)
         {
+            this.TraceInfo(message.GetType().Name);
             ConfigureSwitchCaseExpression(message);
         }
 
         public void Handle(EditCaseExpressionMessage message)
         {
+            this.TraceInfo(message.GetType().Name);
             EditSwitchCaseExpression(message);
         }
 

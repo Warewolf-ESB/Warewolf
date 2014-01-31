@@ -1324,6 +1324,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
+            this.TraceInfo(message.GetType().Name, GetType().Name);
             foreach(var modelItem in ModelService.Find(ModelService.Root, typeof(DsfActivity)))
             {
                 var currentName = ModelItemUtils.GetProperty("ServiceName", modelItem);
@@ -1368,23 +1369,32 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
 
                     // Handle Case Edits
-                    if(itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) && !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
+                    if(itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink",
+                           StringComparison.Ordinal)
+                       &&
+                       !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink",
+                           StringComparison.Ordinal))
                     {
                         if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                         {
+                            this.TraceInfo("Publish message of type - " + typeof(EditCaseExpressionMessage));
                             EventPublisher.Publish(new EditCaseExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                         }
                     }
 
                     // Handle Switch Edits
-                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowSwitch<string>))
+                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                       item.ItemType == typeof(FlowSwitch<string>))
                     {
+                        this.TraceInfo("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage));
                         EventPublisher.Publish(new ConfigureSwitchExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
 
                     // Handle Decision Edits
-                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) && item.ItemType == typeof(FlowDecision))
+                    if(dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
+                       item.ItemType == typeof(FlowDecision))
                     {
+                        this.TraceInfo("Publish message of type - " + typeof(ConfigureDecisionExpressionMessage));
                         EventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = item, EnvironmentModel = _resourceModel.Environment });
                     }
                 }

@@ -50,7 +50,6 @@ namespace Dev2.Studio.UI.Tests
 
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            Playback.Wait(1500);
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible
@@ -161,6 +160,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'All Tools' workflow: The workflow is openned. Select items on grided tools. Open and close QVI. Selected items are preserved")]
         [Owner("Tshepo Ntlhokoa")]
+        [Ignore]
         // ReSharper disable InconsistentNaming
         public void QuickVariableInput_GriddedToolsWithComboboxes_OpenAndCloseQVI_SelectedValueIsPreserved()
         // ReSharper restore InconsistentNaming

@@ -236,17 +236,20 @@ namespace Dev2.Studio.Core.ViewModels
                     {
                         var resourceWithContext = new ResourceModel(_resource.Environment);
                         resourceWithContext.Update(resource);
+                        this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                         _eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
                     }
                 }
                 else
                 {
                     _resource.Environment.ResourceRepository.Save(_resource);
+                    this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
                     _eventPublisher.Publish(new UpdateResourceMessage(_resource));
                 }
 
                 if(newResource && _resource.ResourceType == ResourceType.WorkflowService)
                 {
+                    this.TraceInfo("Publish message of type - " + typeof(AddWorkSurfaceMessage));
                     _eventPublisher.Publish(new AddWorkSurfaceMessage(_resource));
                 }
             }

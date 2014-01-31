@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
+using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Messages;
@@ -173,6 +174,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             //
             if(SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
             {
+                this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
             }
 
@@ -192,6 +194,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     //
                     if(OpenOnDoubleClick && clickCount == 2)
                     {
+                        this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
                         if(!DontAllowDoubleClick)
                         {
@@ -208,12 +211,14 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                     else if(OpenOnDoubleClick && clickCount == 1)
                     {
+                        this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                         _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false));
                     }
                 }
             }
             else
             {
+                this.TraceInfo("Publish message of type - " + typeof(SetSelectedIContextualResourceModel));
                 _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
             }
             return false;

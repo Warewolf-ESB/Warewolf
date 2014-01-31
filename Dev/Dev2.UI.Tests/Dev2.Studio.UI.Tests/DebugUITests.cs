@@ -62,6 +62,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DebugInput_whenRun10Time")]
+        [Ignore]
         public void DebugInput_WhenRun10Times_ExpectInputsPersistAndXMLRemainsLinked_InputsAndXMLRemainPersisted()
         {
 
@@ -148,6 +149,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Debug_QuickDebug")]
+        [Ignore]
         public void Debug_WhenUsingQuickDebugCommand_ExpectSavedInputsUsedInExecution()
         {
 
@@ -197,6 +199,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DebugOutput_whenRun10Time")]
+        [Ignore]
         public void DebugOutput_WhenRun10Times_NormalExecution_CloseTagsReturned10Times()
         {
             try
@@ -205,7 +208,6 @@ namespace Dev2.Studio.UI.Tests
                 //Open the correct workflow
                 ExplorerUIMap.EnterExplorerSearchText("TravsTestFlow");
                 ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TRAV", "TravsTestFlow");
-                Playback.Wait(1000);
 
                 //------------Assert Results-------------------------
 
@@ -214,7 +216,6 @@ namespace Dev2.Studio.UI.Tests
                 {
                     RibbonUIMap.ClickRibbonMenuItem("Debug");
                     PopupDialogUIMap.WaitForDialog();
-                    Playback.Wait(1000);
 
                     DebugUIMap.ClickExecute();
                     OutputUIMap.WaitForExecution();

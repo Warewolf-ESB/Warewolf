@@ -81,9 +81,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         [TestMethod]
         [Ignore]
-        // manually verified
-        // issue with test construction
-        // and issue with external resource!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
         {
             //Initialization
@@ -93,7 +90,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var serviceName = "codeduitest" + serviceNameId;
 
-            // I flipping hate everything packed into a single method. Way too hard to understand where the failure is ;(
             WebServiceWizardUIMap.InitializeFullTestServiceAndSource(serviceName, sourceName);
 
             //Assert
@@ -111,8 +107,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         //2013.03.14: Ashley Lewis - Bug 9217
         [TestMethod]
         [Ignore]
-        // test setup issue!!!!!!!!!!!!!!!!!!!!!!!!
-        // manually verified
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization
@@ -175,8 +169,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         [Owner("Travis Frisinger")]
         [Ignore]
-        // Coded UI setup failure
-        // Manually verified
         public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
         {
             //Initialization

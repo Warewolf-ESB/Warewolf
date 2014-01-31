@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
-
+        
         #region Large View Tests
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace Dev2.Studio.UI.Tests
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
 
             //Click the done button
-            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
+            LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);            
 
             //Get the first error control
             var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,
@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Tests
                                                                                   "Destination Password must have a value");
 
             //Make sure that the error controls arnt null
-            Assert.IsNotNull(errorControl, "The error didnt show up");
+            Assert.IsNotNull(errorControl,"The error didnt show up");
             Assert.IsNotNull(desErrorControl, "The error didnt show up");
 
             //Enter data into the password boxes
@@ -94,8 +94,8 @@ namespace Dev2.Studio.UI.Tests
                                                                                   "Destination Password must have a value");
 
             //Make sure that the error controls are null
-            Assert.IsNull(errorControl, "The error showed up");
-            Assert.IsNull(desErrorControl, "The error didnt showed up");
+            Assert.IsNull(errorControl,"The error showed up");
+            Assert.IsNull(desErrorControl,"The error didnt showed up");
 
 
             //Check each textbox contains the right text
@@ -105,7 +105,7 @@ namespace Dev2.Studio.UI.Tests
                 WpfEdit textbox = uiTestControl as WpfEdit;
                 if(textbox != null && !textbox.IsPassword)
                 {
-                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text, "the wrong text was in the textbox");
+                    Assert.AreEqual("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]", textbox.Text,"the wrong text was in the textbox");
                 }
 
                 counter++;
@@ -126,7 +126,7 @@ namespace Dev2.Studio.UI.Tests
                 Playback.Wait(50);
             }
             //Assert that the focus is in the last textbox
-            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
+            Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus,"The tabbing is out of order");
 
             #endregion
         }
@@ -203,7 +203,7 @@ namespace Dev2.Studio.UI.Tests
                 counter++;
             }
 
-            #endregion
+        #endregion
 
             #region Test tabbing
 
@@ -339,7 +339,7 @@ namespace Dev2.Studio.UI.Tests
             LargeViewUtilMethods.ClickDoneButton(theTab, ToolName);
 
             //Get the first error control
-            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Password must have a value");
+            var errorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab,"Password must have a value");
 
             //Get the second error control
             var desErrorControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Destination Password must have a value");
@@ -502,17 +502,13 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ExternalService_EditService")]
-        [Ignore]
-        // - Test has problems finding the tab of the dialog. Sometimes its the second dialog others its the third.
-        // ClickMappingTab() has the problem 
-        // Manually verified
         public void ExternalService_EditService_EditWithNoSecondSaveDialog_ExpectOneDialog()
         {
             //------------Setup for test--------------------------
             ExplorerUIMap.EnterExplorerSearchText("Edit Service Workflow");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", "Edit Service Workflow");
 
-            var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
+            var newMapping = "ZZZ"+Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
 
             //------------Execute Test---------------------------
 
@@ -588,26 +584,26 @@ namespace Dev2.Studio.UI.Tests
             SendKeys.SendWait("{TAB}{TAB}");
             Playback.Wait(500);
             SendKeys.SendWait("{ENTER}");
-
+            
             //------------Assert Results-------------------------
 
             // check services for warning icon to incidate mappings out of date ;)
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService"))
+            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "TravsTestService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
             WorkflowDesignerUIMap.TryCloseMappings("TravsTestService");
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
+            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "FetchCities"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
 
             WorkflowDesignerUIMap.TryCloseMappings("FetchCities");
 
-            if(!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
+            if (!WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, "DummyService"))
             {
                 Assert.Fail("'Fix Errors' button not visible");
             }
@@ -621,35 +617,35 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Tshepo")]
         public void AdornerHelpButtonOpenAnExampleWorlkflowTest()
         {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-            // Get some design surface
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            //Get a point
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            //Drag a control to the design surface
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
-            //Get Adorner buttons
-            var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Help");
-            Mouse.Click(button);
-            //Get 'View Sample' link button
-            var findViewSampleLink = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "View Sample Workflow");
-            Mouse.Click(findViewSampleLink.GetChildren()[0]);
+                // Create the workflow
+                RibbonUIMap.CreateNewWorkflow();
+                // Get some design surface
+                UITestControl theTab = TabManagerUIMap.GetActiveTab();
+                //Get a point
+                Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
+                //Drag a control to the design surface
+                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
+                //Get Adorner buttons
+                var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Help");
+                Mouse.Click(button);
+                //Get 'View Sample' link button
+                var findViewSampleLink = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "View Sample Workflow");
+                Mouse.Click(findViewSampleLink.GetChildren()[0]);
 
-            //Wait for sample workflow
-            UITestControl waitForTabToOpen = null;
-            var count = 10;
-            while(waitForTabToOpen == null && count > 0)
-            {
-                waitForTabToOpen = TabManagerUIMap.FindTabByName("Utility - Assign");
-                Playback.Wait(500);
-                count--;
-            }
+                //Wait for sample workflow
+                UITestControl waitForTabToOpen = null;
+                var count = 10;
+                while (waitForTabToOpen == null && count > 0)
+                {
+                    waitForTabToOpen = TabManagerUIMap.FindTabByName("Utility - Assign");
+                    Playback.Wait(500);
+                    count--;
+                }
 
-            //Assert workflow opened after a time out.
-            Assert.IsNotNull(waitForTabToOpen);
+                //Assert workflow opened after a time out.
+                Assert.IsNotNull(waitForTabToOpen);
         }
-
+        
         [TestMethod]
         public void ResizeAdornerMappings_Expected_AdornerMappingIsResized()
         {
@@ -667,7 +663,7 @@ namespace Dev2.Studio.UI.Tests
             var mappingsBtn =
                 WorkflowDesignerUIMap.Adorner_GetButton(theTab, innerResource, "Open Mapping") as WpfToggleButton;
 
-            if(mappingsBtn == null)
+            if (mappingsBtn == null)
             {
                 Assert.Fail("Could not find mapping button");
             }
@@ -678,9 +674,9 @@ namespace Dev2.Studio.UI.Tests
             Point initialResizerPoint = new Point();
             // Validate the assumption that the last child is the resizer
             var resizeThumb = controlCollection[controlCollection.Count - 1];
-            if(resizeThumb.ControlType.ToString() == "Indicator")
+            if (resizeThumb.ControlType.ToString() == "Indicator")
             {
-                if(resizeThumb.BoundingRectangle.X == -1)
+                if (resizeThumb.BoundingRectangle.X == -1)
                 {
                     Assert.Fail("Resize indicator is not visible");
                 }
@@ -702,13 +698,13 @@ namespace Dev2.Studio.UI.Tests
 
             // Check position to see it dragged
             Point newResizerPoint = new Point();
-            if(resizeThumb.ControlType.ToString() == "Indicator")
+            if (resizeThumb.ControlType.ToString() == "Indicator")
             {
                 newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
                 newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
 
-            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
+            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y < initialResizerPoint.Y))
             {
                 Assert.Fail("The control was not resized properly.");
             }
@@ -718,6 +714,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("DsfActivityTests")]
         [Description("Testing when a DsfActivity is dropped onto the design surface that the mapping auto expands and the resize control is visible")]
         [Owner("Travis Frisinger")]
+        [Ignore] // Bug in code
         public void ResizeAdornerMappingsOnDrop_Expected_AdornerMappingIsResized()
         {
             const string resourceToUse = "NewForeachUpgradeDifferentExecutionTests";
@@ -733,7 +730,7 @@ namespace Dev2.Studio.UI.Tests
             // Get a sample workflow
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse, workflowPoint1);
-
+            
             Playback.Wait(100);
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
@@ -743,9 +740,9 @@ namespace Dev2.Studio.UI.Tests
             Point initialResizerPoint = new Point();
             // Validate the assumption that the last child is the resizer
             var resizeThumb = controlCollection[controlCollection.Count - 1];
-            if(resizeThumb.ControlType.ToString() == "Indicator")
+            if (resizeThumb.ControlType.ToString() == "Indicator")
             {
-                if(resizeThumb.BoundingRectangle.X == -1)
+                if (resizeThumb.BoundingRectangle.X == -1)
                 {
                     Assert.Fail("Resize indicator is not visible");
                 }
@@ -767,13 +764,13 @@ namespace Dev2.Studio.UI.Tests
 
             // Check position to see it dragged
             Point newResizerPoint = new Point();
-            if(resizeThumb.ControlType.ToString() == "Indicator")
+            if (resizeThumb.ControlType.ToString() == "Indicator")
             {
                 newResizerPoint.X = resizeThumb.BoundingRectangle.X + 5;
                 newResizerPoint.Y = resizeThumb.BoundingRectangle.Y + 5;
             }
 
-            if(!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
+            if (!(newResizerPoint.X > initialResizerPoint.X) || !(newResizerPoint.Y > initialResizerPoint.Y))
             {
                 Assert.Fail("The control was not resized properly.");
             }
