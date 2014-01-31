@@ -3,16 +3,14 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-
-
-    public class IsNumericRule : Rule
+    public class IsPositiveNumberRule : Rule
     {
         #region Overrides of Rule
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public IsNumericRule(string valueToCheck, Action onInvalid = null)
+        public IsPositiveNumberRule(string valueToCheck, Action onInvalid = null)
             : base(valueToCheck, onInvalid)
         {
         }
@@ -20,13 +18,16 @@ namespace Dev2.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             int value;
-            if(!int.TryParse(ValueToCheck.ToString(), out value))
+            if(int.TryParse(ValueToCheck.ToString(), out value))
             {
-                return new ActionableErrorInfo(OnInvalid)
+                if(value < 0)
                 {
-                    Message = "The value must be a whole number.",
-                    FixData = "Please provide a whole number for this field."
-                };
+                    return new ActionableErrorInfo(OnInvalid)
+                    {
+                        Message = "The value must be a positive whole number.",
+                        FixData = "Please provide a positive whole number for this field."
+                    };
+                }
             }
             return null;
         }

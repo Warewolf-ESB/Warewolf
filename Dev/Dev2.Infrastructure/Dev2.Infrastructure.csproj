@@ -117,6 +117,7 @@
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
     <Compile Include="Providers\Validation\Rules\Rule.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSet.cs" />
     <Compile Include="Providers\Validation\Rules\StringCannotBeEmptyOrNullRule.cs" />

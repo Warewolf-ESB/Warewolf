@@ -4,6 +4,7 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -205,17 +206,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "At":
-                    if(MergeType == "Index")
+                    if(MergeType == "Index" && !IsEmpty())
                     {
                         ruleSet.Add(new StringCannotBeEmptyOrNullRule(At, () => IsAtFocused = true));
-                        ruleSet.Add(new IsNumericRule(At, () => IsAtFocused = true));
-
+                        if(At.StartsWith("[[") && At.EndsWith("]]"))
+                        {
+                            ruleSet.Add(new StringCannotBeInvalidExpressionRule(At, () => IsAtFocused = true));
+                        }
+                        else
+                        {
+                            ruleSet.Add(new IsNumericRule(At, () => IsAtFocused = true));
+                            ruleSet.Add(new IsPositiveNumberRule(At, () => IsAtFocused = true));
+                        }
                     }
                     break;
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
                     {
-                        ruleSet.Add(new IsNumericRule(Padding, () => IsPaddingFocused = true));
+                        if(Padding.StartsWith("[[") && Padding.EndsWith("]]"))
+                        {
+                            ruleSet.Add(new StringCannotBeInvalidExpressionRule(Padding, () => IsPaddingFocused = true));
+                        }
+                        else
+                        {
+                            ruleSet.Add(new IsNumericRule(Padding, () => IsPaddingFocused = true));
+                            ruleSet.Add(new IsPositiveNumberRule(Padding, () => IsPaddingFocused = true));
+                        }
                     }
                     break;
             }
