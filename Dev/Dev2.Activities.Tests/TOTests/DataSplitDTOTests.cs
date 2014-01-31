@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
-using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -15,20 +14,49 @@ namespace Dev2.Tests.Activities.TOTests
     public class DataSplitDTOTests
     {
         [TestMethod]
-        [Owner("Massimo Guerrera")]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_Constructor")]
-        public void DataSplitDTO_Constructor_FullConstructor_DefaultValues()
+        public void DataSplitDTO_Constructor_Default_PropertiesInitializedCorrectly()
         {
             //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var dataSplitDTO = new DataSplitDTO(string.Empty,null,null,1);
+
+            //------------Execute Test---------------------------            
+            var dto = new DataSplitDTO();
+
             //------------Assert Results-------------------------
-            Assert.AreEqual("Index", dataSplitDTO.SplitType);
-            Assert.AreEqual(string.Empty, dataSplitDTO.At);
-            Assert.AreEqual(1, dataSplitDTO.IndexNumber);
-            Assert.IsNull(dataSplitDTO.EscapeChar);
-            Assert.AreEqual(false, dataSplitDTO.Include);
-            Assert.IsNotNull(dataSplitDTO.Errors);
+            Assert.AreEqual(DataSplitDTO.SplitTypeIndex, dto.SplitType);
+            Assert.IsNull(dto.At);
+            Assert.AreEqual(true, dto.EnableAt);
+            Assert.AreEqual(0, dto.IndexNumber);
+            Assert.IsNull(dto.EscapeChar);
+            Assert.AreEqual(false, dto.Include);
+            Assert.IsNotNull(dto.Errors);
+            Assert.AreEqual(false, dto.IsAtFocused);
+            Assert.AreEqual(false, dto.IsOutputVariableFocused);
+            Assert.AreEqual(false, dto.IsEscapeCharFocused);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_Constructor")]
+        public void DataSplitDTO_Constructor_FullConstructor_PropertiesInitializedCorrectly()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var dto = new DataSplitDTO(string.Empty, null, null, 1);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(DataSplitDTO.SplitTypeIndex, dto.SplitType);
+            Assert.AreEqual(string.Empty, dto.At);
+            Assert.AreEqual(true, dto.EnableAt);
+            Assert.AreEqual(1, dto.IndexNumber);
+            Assert.IsNull(dto.EscapeChar);
+            Assert.AreEqual(false, dto.Include);
+            Assert.IsNotNull(dto.Errors);
+            Assert.AreEqual(false, dto.IsAtFocused);
+            Assert.AreEqual(false, dto.IsOutputVariableFocused);
+            Assert.AreEqual(false, dto.IsEscapeCharFocused);
         }
 
         #region CanAdd Tests
@@ -134,5 +162,205 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         #endregion
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_IsEmpty")]
+        public void DataSplitDTO_IsEmpty_PropertiesAreEmpty_True()
+        {
+            Verify_IsEmpty(DataSplitDTO.SplitTypeIndex);
+            Verify_IsEmpty(DataSplitDTO.SplitTypeChars);
+            Verify_IsEmpty(DataSplitDTO.SplitTypeNone);
+        }
+
+        void Verify_IsEmpty(string splitType)
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { SplitType = splitType };
+
+            //------------Execute Test---------------------------
+            var actual = dto.IsEmpty();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_IsEmpty")]
+        public void DataSplitDTO_IsEmpty_PropertiesAreNotEmpty_False()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "xxx" };
+
+            //------------Execute Test---------------------------
+            var actual = dto.IsEmpty();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(actual);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_ClearRow")]
+        public void DataSplitDTO_ClearRow_PropertiesAreEmpty()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "xxx", SplitType = DataSplitDTO.SplitTypeNone, Include = true, EscapeChar = "'"};
+
+            Assert.IsFalse(dto.IsEmpty());
+
+            //------------Execute Test---------------------------
+            dto.ClearRow();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dto.IsEmpty());
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_ConvertToOutputTO")]
+        public void DataSplitDTO_ConvertToOutputTO_OutputTOPropertiesInitialized()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[h]]", OutList = new List<string>(new[] { "hello" }) };
+
+            //------------Execute Test---------------------------
+            var outputTO = dto.ConvertToOutputTO();
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(outputTO);
+            Assert.AreEqual("[[h]]", outputTO.OutPutDescription);
+            Assert.AreSame(dto.OutList, outputTO.OutputStrings);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_IsEmptyIsTrue_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO();
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", null);
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_OutputVariableExpressionIsInvalid_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "h]]" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", "Invalid expression: opening and closing brackets don't match");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_OutputVariableExpressionIsValid_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[h]]" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_OutputVariableIsNullOrEmpty_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "", At = "1"};
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", "value cannot be empty or null");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_OutputVariableIsNotNullOrEmpty_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[h]]", At = "1" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_AtExpressionIsInvalid_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { At = "h]]" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_AtExpressionIsValid_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { At = "[[h]]" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_AtIsNotNumeric_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { At = "h" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", "value must be a whole number");
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSet_AtIsNumeric_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { At = "1" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        static void Verify_RuleSet(DataSplitDTO dto, string propertyName, string expectedErrorMessage)
+        {
+            
+            //------------Execute Test---------------------------
+            var ruleSet = dto.GetRuleSet(propertyName);
+            var errors = ruleSet.ValidateRules(null, null);
+
+            //------------Assert Results-------------------------
+            if(expectedErrorMessage == null)
+            {
+                Assert.AreEqual(0, errors.Count);
+            }
+            else
+            {
+                var err = errors.FirstOrDefault(e => e.Message.Contains(expectedErrorMessage));
+                Assert.IsNotNull(err);
+            }
+        }
     }
 }

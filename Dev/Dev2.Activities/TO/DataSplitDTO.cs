@@ -9,12 +9,16 @@ using Dev2.Validation;
 // ReSharper disable CheckNamespace
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     // ReSharper disable InconsistentNaming
     public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
-        // ReSharper restore InconsistentNaming
+    // ReSharper restore InconsistentNaming
     {
+        public const string SplitTypeIndex = "Index";
+        public const string SplitTypeChars = "Chars";
+        public const string SplitTypeNone = "None";
+
         string _outputVariable;
         string _splitType;
         string _at;
@@ -28,13 +32,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public DataSplitDTO()
         {
+            SplitType = SplitTypeIndex;
+            _enableAt = true;
         }
 
         public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
-            SplitType = string.IsNullOrEmpty(splitType) ? "Index" : splitType;
+            SplitType = string.IsNullOrEmpty(splitType) ? SplitTypeIndex : splitType;
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             Include = include;
@@ -106,7 +112,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(SplitType == "Index" || SplitType == "Chars")
+            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
                 if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
@@ -121,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool CanAdd()
         {
             bool result = true;
-            if(SplitType == "Index" || SplitType == "Chars")
+            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
                 if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
@@ -134,7 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public void ClearRow()
         {
             OutputVariable = string.Empty;
-            SplitType = "Char";
+            SplitType = SplitTypeChars;
             At = string.Empty;
             Include = false;
             EscapeChar = string.Empty;
@@ -149,9 +155,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsEmpty()
         {
-            return OutputVariable == string.Empty && SplitType == "Index" && string.IsNullOrEmpty(At)
-                   || OutputVariable == string.Empty && SplitType == "Chars" && string.IsNullOrEmpty(At)
-                   || OutputVariable == string.Empty && SplitType == "None" && string.IsNullOrEmpty(At);
+            return string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeIndex && string.IsNullOrEmpty(At)
+                   || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeChars && string.IsNullOrEmpty(At)
+                   || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeNone && string.IsNullOrEmpty(At);
         }
 
         public override RuleSet GetRuleSet(string propertyName)
@@ -171,7 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
 
                 case "At":
-                    if(SplitType == "Index")
+                    if(SplitType == SplitTypeIndex)
                     {
                         var atExprRule = new IsValidExpressionRule(() => At, "1");
                         ruleSet.Add(atExprRule);
@@ -179,8 +185,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
 
-                case "EscapeChar":
-                    break;
+                //case "EscapeChar":
+                //    break;
             }
             return ruleSet;
         }
