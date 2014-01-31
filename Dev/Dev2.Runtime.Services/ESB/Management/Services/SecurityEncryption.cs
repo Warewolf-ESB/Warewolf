@@ -92,30 +92,32 @@ namespace Dev2.Runtime.ESB.Management.Services
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            var memoryStream = new MemoryStream();
+            using(var memoryStream = new MemoryStream())
+            {
 
-            // Define cryptographic stream (always use Write mode for encryption).
-            var cryptoStream = new CryptoStream(memoryStream,
-                encryptor,
-                CryptoStreamMode.Write);
-            // Start encrypting.
-            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                // Define cryptographic stream (always use Write mode for encryption).
+                using(var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                {
+                    // Start encrypting.
+                    cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
 
-            // Finish encrypting.
-            cryptoStream.FlushFinalBlock();
+                    // Finish encrypting.
+                    cryptoStream.FlushFinalBlock();
 
-            // Convert our encrypted data from a memory stream into a byte array.
-            var cipherTextBytes = memoryStream.ToArray();
+                    // Convert our encrypted data from a memory stream into a byte array.
+                    var cipherTextBytes = memoryStream.ToArray();
 
-            // Close both streams.
-            memoryStream.Close();
-            cryptoStream.Close();
+                    // Close both streams.
+                    memoryStream.Close();
+                    cryptoStream.Close();
 
-            // Convert encrypted data into a base64-encoded string.
-            var cipherText = Convert.ToBase64String(cipherTextBytes);
+                    // Convert encrypted data into a base64-encoded string.
+                    var cipherText = Convert.ToBase64String(cipherTextBytes);
 
-            // Return encrypted string.
-            return cipherText;
+                    // Return encrypted string.
+                    return cipherText;
+                }
+            }
         }
 
         /// <summary>
@@ -175,35 +177,37 @@ namespace Dev2.Runtime.ESB.Management.Services
                 initVectorBytes);
 
             // Define memory stream which will be used to hold encrypted data.
-            var memoryStream = new MemoryStream(cipherTextBytes);
+            using(var memoryStream = new MemoryStream(cipherTextBytes))
+            {
 
-            // Define cryptographic stream (always use Read mode for encryption).
-            var cryptoStream = new CryptoStream(memoryStream,
-                decryptor,
-                CryptoStreamMode.Read);
+                // Define cryptographic stream (always use Read mode for encryption).
+                using(var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
+                {
 
-            // Since at this point we don't know what the size of decrypted data
-            // will be, allocate the buffer long enough to hold ciphertext;
-            // plaintext is never longer than ciphertext.
-            var plainTextBytes = new byte[cipherTextBytes.Length];
+                    // Since at this point we don't know what the size of decrypted data
+                    // will be, allocate the buffer long enough to hold ciphertext;
+                    // plaintext is never longer than ciphertext.
+                    var plainTextBytes = new byte[cipherTextBytes.Length];
 
-            // Start decrypting.
-            var decryptedByteCount = cryptoStream.Read(plainTextBytes,
-                0,
-                plainTextBytes.Length);
+                    // Start decrypting.
+                    var decryptedByteCount = cryptoStream.Read(plainTextBytes,
+                        0,
+                        plainTextBytes.Length);
 
-            // Close both streams.
-            memoryStream.Close();
-            cryptoStream.Close();
+                    // Close both streams.
+                    memoryStream.Close();
+                    cryptoStream.Close();
 
-            // Convert decrypted data into a string. 
-            // Let us assume that the original plaintext string was UTF8-encoded.
-            var plainText = Encoding.UTF8.GetString(plainTextBytes,
-                0,
-                decryptedByteCount);
+                    // Convert decrypted data into a string. 
+                    // Let us assume that the original plaintext string was UTF8-encoded.
+                    var plainText = Encoding.UTF8.GetString(plainTextBytes,
+                        0,
+                        decryptedByteCount);
 
-            // Return decrypted string.   
-            return plainText;
+                    // Return decrypted string.   
+                    return plainText;
+                }
+            }
         }
     }
 }

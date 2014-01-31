@@ -12,6 +12,7 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
+    [Ignore]
     public class RemoteServerUiTests : UIMapBase
     {
         #region Fields

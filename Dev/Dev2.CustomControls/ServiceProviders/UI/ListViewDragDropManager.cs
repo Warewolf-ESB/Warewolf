@@ -102,10 +102,10 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             get { return dragAdornerOpacity; }
             set
             {
-                if (IsDragInProgress)
+                if(IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the DragAdornerOpacity property during a drag operation.");
 
-                if (value < 0.0 || value > 1.0)
+                if(value < 0.0 || value > 1.0)
                     throw new ArgumentOutOfRangeException("DragAdornerOpacity", value, "Must be between 0 and 1.");
 
                 dragAdornerOpacity = value;
@@ -139,10 +139,10 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             get { return listView; }
             set
             {
-                if (IsDragInProgress)
+                if(IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the ListView property during a drag operation.");
 
-                if (listView != null)
+                if(listView != null)
                 {
                     #region Unhook Events
 
@@ -158,9 +158,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
                 listView = value;
 
-                if (listView != null)
+                if(listView != null)
                 {
-                    if (!listView.AllowDrop)
+                    if(!listView.AllowDrop)
                         listView.AllowDrop = true;
 
                     #region Hook Events
@@ -202,7 +202,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             get { return showDragAdorner; }
             set
             {
-                if (IsDragInProgress)
+                if(IsDragInProgress)
                     throw new InvalidOperationException("Cannot set the ShowDragAdorner property during a drag operation.");
 
                 showDragAdorner = value;
@@ -219,7 +219,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (IsMouseOverScrollbar)
+            if(IsMouseOverScrollbar)
             {
                 canInitiateDrag = false;
                 return;
@@ -228,7 +228,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             int index = IndexUnderDragCursor;
             canInitiateDrag = index > -1;
 
-            if (canInitiateDrag)
+            if(canInitiateDrag)
             {
                 // Remember the location and index of the ListViewItem the user clicked on for later.
                 ptMouseDown = MouseUtilities.GetMousePosition(listView);
@@ -247,20 +247,20 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_PreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (!CanStartDragOperation)
+            if(!CanStartDragOperation)
                 return;
 
             // Select the item the user clicked on.
-            if (listView.SelectedIndex != indexToSelect)
+            if(listView.SelectedIndex != indexToSelect)
                 listView.SelectedIndex = indexToSelect;
 
             // If the item at the selected index is null, there's nothing
             // we can do, so just return;
-            if (listView.SelectedItem == null)
+            if(listView.SelectedItem == null)
                 return;
 
             ListViewItem itemToDrag = GetListViewItem(listView.SelectedIndex);
-            if (itemToDrag == null)
+            if(itemToDrag == null)
                 return;
 
             AdornerLayer adornerLayer = ShowDragAdornerResolved ? InitializeAdornerLayer(itemToDrag) : null;
@@ -278,7 +278,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         {
             e.Effects = DragDropEffects.Move;
 
-            if (ShowDragAdornerResolved)
+            if(ShowDragAdornerResolved)
                 UpdateDragAdornerLocation();
 
             // Update the item which is known to be currently under the drag cursor.
@@ -292,12 +292,12 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_DragLeave(object sender, DragEventArgs e)
         {
-            if (!IsMouseOver(listView))
+            if(!IsMouseOver(listView))
             {
-                if (ItemUnderDragCursor != null)
+                if(ItemUnderDragCursor != null)
                     ItemUnderDragCursor = null;
 
-                if (dragAdorner != null)
+                if(dragAdorner != null)
                     dragAdorner.Visibility = Visibility.Collapsed;
             }
         }
@@ -308,7 +308,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_DragEnter(object sender, DragEventArgs e)
         {
-            if (dragAdorner != null && dragAdorner.Visibility != Visibility.Visible)
+            if(dragAdorner != null && dragAdorner.Visibility != Visibility.Visible)
             {
                 // Update the location of the adorner and then show it.				
                 UpdateDragAdornerLocation();
@@ -322,38 +322,38 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_Drop(object sender, DragEventArgs e)
         {
-            if (ItemUnderDragCursor != null)
+            if(ItemUnderDragCursor != null)
                 ItemUnderDragCursor = null;
 
             e.Effects = DragDropEffects.None;
 
-            if (!e.Data.GetDataPresent(typeof(ItemType)))
+            if(!e.Data.GetDataPresent(typeof(ItemType)))
                 return;
 
             // Get the data object which was dropped.
             ItemType data = e.Data.GetData(typeof(ItemType)) as ItemType;
-            if (data == null)
+            if(data == null)
                 return;
 
             // Get the ObservableCollection<ItemType> which contains the dropped data object.
             ObservableCollection<ItemType> itemsSource = listView.ItemsSource as ObservableCollection<ItemType>;
-            if (itemsSource == null)
+            if(itemsSource == null)
                 throw new Exception(
                     "A ListView managed by ListViewDragManager must have its ItemsSource set to an ObservableCollection<ItemType>.");
 
             int oldIndex = itemsSource.IndexOf(data);
             int newIndex = IndexUnderDragCursor;
 
-            if (newIndex < 0)
+            if(newIndex < 0)
             {
                 // The drag started somewhere else, and our ListView is empty
                 // so make the new item the first in the list.
-                if (itemsSource.Count == 0)
+                if(itemsSource.Count == 0)
                     newIndex = 0;
 
                 // The drag started somewhere else, but our ListView has items
                 // so make the new item the last in the list.
-                else if (oldIndex < 0)
+                else if(oldIndex < 0)
                     newIndex = itemsSource.Count;
 
                 // The user is trying to drop an item from our ListView into
@@ -364,10 +364,10 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             }
 
             // Dropping an item back onto itself is not considered an actual 'drop'.
-            if (oldIndex == newIndex)
+            if(oldIndex == newIndex)
                 return;
 
-            if (ProcessDrop != null)
+            if(ProcessDrop != null)
             {
                 // Let the client code process the drop.
                 ProcessDropEventArgs<ItemType> args = new ProcessDropEventArgs<ItemType>(itemsSource, data, oldIndex, newIndex, e.AllowedEffects);
@@ -379,7 +379,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
                 // Move the dragged data object from it's original index to the
                 // new index (according to where the mouse cursor is).  If it was
                 // not previously in the ListBox, then insert the item.
-                if (oldIndex > -1)
+                if(oldIndex > -1)
                     itemsSource.Move(oldIndex, newIndex);
                 else
                     itemsSource.Insert(newIndex, data);
@@ -401,16 +401,16 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         {
             get
             {
-                if (Mouse.LeftButton != MouseButtonState.Pressed)
+                if(Mouse.LeftButton != MouseButtonState.Pressed)
                     return false;
 
-                if (!canInitiateDrag)
+                if(!canInitiateDrag)
                     return false;
 
-                if (indexToSelect == -1)
+                if(indexToSelect == -1)
                     return false;
 
-                if (!HasCursorLeftDragThreshold)
+                if(!HasCursorLeftDragThreshold)
                     return false;
 
                 return true;
@@ -428,11 +428,11 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
             IsDragInProgress = false;
 
-            if (ItemUnderDragCursor != null)
+            if(ItemUnderDragCursor != null)
                 ItemUnderDragCursor = null;
 
             // Remove the drag adorner from the adorner layer.
-            if (adornerLayer != null)
+            if(adornerLayer != null)
             {
                 adornerLayer.Remove(dragAdorner);
                 dragAdorner = null;
@@ -445,7 +445,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         ListViewItem GetListViewItem(int index)
         {
-            if (listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            if(listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
                 return null;
 
             return listView.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
@@ -453,7 +453,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         ListViewItem GetListViewItem(ItemType dataItem)
         {
-            if (listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            if(listView.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
                 return null;
 
             return listView.ItemContainerGenerator.ContainerFromItem(dataItem) as ListViewItem;
@@ -467,7 +467,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         {
             get
             {
-                if (indexToSelect < 0)
+                if(indexToSelect < 0)
                     return false;
 
                 ListViewItem item = GetListViewItem(indexToSelect);
@@ -505,10 +505,10 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             get
             {
                 int index = -1;
-                for (int i = 0; i < listView.Items.Count; ++i)
+                for(int i = 0; i < listView.Items.Count; ++i)
                 {
                     ListViewItem item = GetListViewItem(i);
-                    if (IsMouseOver(item))
+                    if(IsMouseOver(item))
                     {
                         index = i;
                         break;
@@ -585,19 +585,19 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             {
                 Point ptMouse = MouseUtilities.GetMousePosition(listView);
                 HitTestResult res = VisualTreeHelper.HitTest(listView, ptMouse);
-                if (res == null)
+                if(res == null)
                     return false;
 
                 DependencyObject depObj = res.VisualHit;
-                while (depObj != null)
+                while(depObj != null)
                 {
-                    if (depObj is ScrollBar)
+                    if(depObj is ScrollBar)
                         return true;
 
                     // VisualTreeHelper works with objects of type Visual or Visual3D.
                     // If the current object is not derived from Visual or Visual3D,
                     // then use the LogicalTreeHelper to find the parent element.
-                    if (depObj is Visual || depObj is System.Windows.Media.Media3D.Visual3D)
+                    if(depObj is Visual || depObj is System.Windows.Media.Media3D.Visual3D)
                         depObj = VisualTreeHelper.GetParent(depObj);
                     else
                         depObj = LogicalTreeHelper.GetParent(depObj);
@@ -616,20 +616,20 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             get { return itemUnderDragCursor; }
             set
             {
-                if (itemUnderDragCursor == value)
+                if(itemUnderDragCursor == value)
                     return;
 
                 // The first pass handles the previous item under the cursor.
                 // The second pass handles the new one.
-                for (int i = 0; i < 2; ++i)
+                for(int i = 0; i < 2; ++i)
                 {
-                    if (i == 1)
+                    if(i == 1)
                         itemUnderDragCursor = value;
 
-                    if (itemUnderDragCursor != null)
+                    if(itemUnderDragCursor != null)
                     {
                         ListViewItem listViewItem = GetListViewItem(itemUnderDragCursor);
-                        if (listViewItem != null)
+                        if(listViewItem != null)
                             ListViewItemDragState.SetIsUnderDragCursor(listViewItem, i == 1);
                     }
                 }
@@ -644,7 +644,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         {
             ItemType selectedItem = listView.SelectedItem as ItemType;
             DragDropEffects allowedEffects = DragDropEffects.Move | DragDropEffects.Move | DragDropEffects.Link;
-            if (DragDrop.DoDragDrop(listView, selectedItem, allowedEffects) != DragDropEffects.None)
+            if(DragDrop.DoDragDrop(listView, selectedItem, allowedEffects) != DragDropEffects.None)
             {
                 // The item was dropped into a new location,
                 // so make it the new selected item.
@@ -667,7 +667,7 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void UpdateDragAdornerLocation()
         {
-            if (dragAdorner != null)
+            if(dragAdorner != null)
             {
                 Point ptCursor = MouseUtilities.GetMousePosition(ListView);
 

@@ -1,4 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
@@ -8,15 +17,6 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
 
 namespace Dev2
 {

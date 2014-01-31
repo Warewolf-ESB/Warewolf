@@ -191,6 +191,7 @@ namespace Dev2.Studio.Core
             htmlToRender = string.Empty;
 
             var request = WebRequest.Create(postUri) as HttpWebRequest;
+
             if(request != null)
             {
                 request.Method = "POST";

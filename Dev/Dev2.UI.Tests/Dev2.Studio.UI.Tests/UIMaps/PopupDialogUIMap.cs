@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using System;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
@@ -22,7 +22,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForDialog()
         {
-            Playback.Wait(2500);
+            Playback.Wait(3500);
         }
 
         public void AddAResource(string serverName, string serviceType, string folderName, string projectName)
@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl control = GetServiceItem(serverName, serviceType, folderName, projectName);
-            if (control != null)
+            if(control != null)
             {
                 control.DoubleClick();
             }
@@ -62,20 +62,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var args = new List<string> { serverName, serviceType, folderName, projectName };
             var parent = StudioWindow.GetChildren()[0].FindByAutomationId("Navigation");
 
-            foreach (var arg in args)
+            foreach(var arg in args)
             {
-                if (parent != null)
+                if(parent != null)
                 {
                     var kids = parent.GetChildren();
 
                     UITestControl canidate = null;
-                    foreach (var kid in kids)
+                    foreach(var kid in kids)
                     {
-                        if (kid.Exists)
+                        if(kid.Exists)
                         {
                             var id = kid.GetProperty("AutomationID").ToString();
 
-                            if (id.ToUpper().Contains(arg.ToUpper()) ||
+                            if(id.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.FriendlyName.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.ClassName.ToUpper().Contains(arg.ToUpper()))

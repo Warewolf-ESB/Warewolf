@@ -1,14 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Interactivity;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Infragistics.Windows.DockManager;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -167,14 +167,18 @@ namespace Dev2.Studio.AppResources.Behaviors
                 };
             }
 
-            MemoryStream stream = new MemoryStream();
-            AssociatedObject.SaveLayout(stream);
+            using(MemoryStream stream = new MemoryStream())
+            {
+                AssociatedObject.SaveLayout(stream);
 
-            stream.Position = 0;
-            StreamReader sr = new StreamReader(stream);
-            _userInterfaceLayoutModel.MainViewDockingData = sr.ReadToEnd();
+                stream.Position = 0;
+                using(StreamReader sr = new StreamReader(stream))
+                {
+                    _userInterfaceLayoutModel.MainViewDockingData = sr.ReadToEnd();
 
-            UserInterfaceLayoutRepository.Save(_userInterfaceLayoutModel);
+                    UserInterfaceLayoutRepository.Save(_userInterfaceLayoutModel);
+                }
+            }
         }
 
         #endregion Private Methods

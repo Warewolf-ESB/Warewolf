@@ -47,8 +47,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
                     return new StringBuilder(decryptData);
                 }
-                // ReSharper disable once EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
 
                 }

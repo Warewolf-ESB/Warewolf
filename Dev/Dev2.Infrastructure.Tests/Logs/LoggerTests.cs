@@ -35,7 +35,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestCategory("Logger_TraceInfo")]
         public void Logger_TraceInfo_WithStringValue_StringBuilderContainsMethodNameAndMessage()
         {
-            //------------Setup for test--------------------------
+            //------------Setup for test-------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo("This is some information");
             Thread.Sleep(500);
@@ -50,7 +50,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestCategory("Logger_TraceInfo")]
         public void Logger_TraceInfo_WithStringValue_StringBuilderContainsGivenMethodNameAndMessage()
         {
-            //------------Setup for test--------------------------
+            //------------Setup for test-------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo("This is some information", "MyMethodName");
             Thread.Sleep(500);
@@ -65,7 +65,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         [TestCategory("Logger_TraceInfo")]
         public void Logger_TraceInfo_WithNullStringValueWithMethodName_StringBuilderContainsOnlyMehodName()
         {
-            //------------Setup for test--------------------------
+            //------------Setup for test-------------------------
             //------------Execute Test---------------------------
             Logger.TraceInfo(null, "MyMethodName");
             Thread.Sleep(500);
@@ -82,11 +82,11 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.TraceInfo(null, null);
+            Logger.TraceInfo();
             Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: INFORMATION ->   : ");
+            StringAssert.Contains(currentlyLogged, ":: INFORMATION -> ");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 
@@ -157,11 +157,11 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            Logger.Warning(null, null);
+            Logger.Warning();
             Thread.Sleep(500);
             //------------Assert Results-------------------------
             var currentlyLogged = _testTraceListner.CurrentlyLogged;
-            StringAssert.Contains(currentlyLogged, ":: WARNING ->   : ");
+            StringAssert.Contains(currentlyLogged, ":: WARNING ->");
             VerifyDateTimeIsLogged(currentlyLogged);
         }
 

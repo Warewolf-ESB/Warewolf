@@ -132,6 +132,7 @@ namespace Dev2.Providers.Logs
         public void CloseTraceWriter()
         {
             _traceWriter.Close();
+            _traceWriter.Dispose();
             _streamClosed = true;
             FileName = null;
         }

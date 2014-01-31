@@ -25,7 +25,15 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
 
         public string GetActiveTabName()
         {
-            UITestControl tab = _tabManager.Tabs[_tabManager.SelectedIndex];
+            var idx = _tabManager.SelectedIndex;
+            if(idx == -1)
+            {
+                Playback.Wait(2500);
+                idx = _tabManager.SelectedIndex;
+            }
+
+
+            UITestControl tab = _tabManager.Tabs[idx];
             UITestControlCollection tabChildren = tab.GetChildren();
             string selectedTabName = string.Empty;
             foreach(var tabChild in tabChildren)
@@ -242,12 +250,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             // to do remove below once performance is sorted!
             if(idx == -1)
             {
-                Playback.Wait(2000);
+                Playback.Wait(3500);
                 idx = tabMgr.SelectedIndex;
-
                 if(idx == -1)
                 {
-                    throw new Exception("The selected tab index was -1 :: This means the studio has performance issues!!!!!!!");
+                    throw new Exception("The selected tab index was -1");
                 }
             }
 

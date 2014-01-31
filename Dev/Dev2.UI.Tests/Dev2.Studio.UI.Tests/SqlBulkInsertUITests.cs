@@ -210,19 +210,25 @@ namespace Dev2.Studio.UI.Tests
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
-            Playback.Wait(1000);
-            var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            Mouse.Click(databaseName, new Point(5, 5));
+            Playback.Wait(5000);
+            if(dbDropDown != null)
+            {
+                var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
+                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
+                Mouse.Click(databaseName, new Point(5, 5));
+            }
 
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
-            Playback.Wait(1000);
-            var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
-            Playback.Wait(1000);
-            Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
-            Playback.Wait(2000);
+            Playback.Wait(2500);
+            if(tableDropDown != null)
+            {
+                var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
+                Playback.Wait(2500);
+                Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
+            }
+            Playback.Wait(3000);
 
             //Assert that grid is not empty
             var smallDataGrid = GetControlById("SmallDataGrid", theTab);

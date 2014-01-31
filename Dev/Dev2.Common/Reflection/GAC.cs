@@ -413,7 +413,7 @@ namespace Dev2.Common.Reflection
             uint bufferSize = 8;
             IntPtr buffer = Marshal.AllocHGlobal((int)bufferSize);
             name.GetProperty(ASM_NAME.ASM_NAME_PUBLIC_KEY_TOKEN, buffer, ref bufferSize);
-            for (int i = 0; i < 8; i++)
+            for(int i = 0; i < 8; i++)
                 result[i] = Marshal.ReadByte(buffer, i);
             Marshal.FreeHGlobal(buffer);
             return result;
@@ -430,7 +430,7 @@ namespace Dev2.Common.Reflection
             IntPtr buffer = Marshal.AllocHGlobal((int)bufferSize);
             name.GetProperty(ASM_NAME.ASM_NAME_PUBLIC_KEY, buffer, ref bufferSize);
             byte[] result = new byte[bufferSize];
-            for (int i = 0; i < bufferSize; i++)
+            for(int i = 0; i < bufferSize; i++)
                 result[i] = Marshal.ReadByte(buffer, i);
             Marshal.FreeHGlobal(buffer);
             return result;
@@ -534,28 +534,28 @@ namespace Dev2.Common.Reflection
         /// <returns></returns>
         public static string TryResolveGACAssembly(string name, string culture, string version, string publicKeyToken)
         {
-            if (String.IsNullOrEmpty(name)) return null;
+            if(String.IsNullOrEmpty(name)) return null;
             GACAssemblyName[] matchingName = GetGACAssemblies(name);
-            if (matchingName.Length == 0) return null;
+            if(matchingName.Length == 0) return null;
 
-            if (!String.IsNullOrEmpty(publicKeyToken))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (!String.Equals(matchingName[i].PublicKeyToken, publicKeyToken, StringComparison.OrdinalIgnoreCase))
+            if(!String.IsNullOrEmpty(publicKeyToken))
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(!String.Equals(matchingName[i].PublicKeyToken, publicKeyToken, StringComparison.OrdinalIgnoreCase))
                         matchingName[i] = null;
 
-            if (!String.IsNullOrEmpty(culture))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null && !String.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
+            if(!String.IsNullOrEmpty(culture))
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(matchingName[i] != null && !String.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
                         matchingName[i] = null;
 
             GACAssemblyName winner = null;
 
-            if (!String.IsNullOrEmpty(version))
+            if(!String.IsNullOrEmpty(version))
             {
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(matchingName[i] != null)
                     {
-                        if (!String.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase)) matchingName[i] = null;
+                        if(!String.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase)) matchingName[i] = null;
                         else winner = matchingName[i];
                     }
             }
@@ -564,9 +564,9 @@ namespace Dev2.Common.Reflection
                 Version latest = null;
 
                 foreach(GACAssemblyName t in matchingName)
-                    if (t != null)
+                    if(t != null)
                     {
-                        if (latest == null)
+                        if(latest == null)
                         {
                             winner = t;
                             latest = new Version(winner.Version);
@@ -575,7 +575,7 @@ namespace Dev2.Common.Reflection
                         {
                             Version compare = new Version(t.Version);
 
-                            if (latest < compare)
+                            if(latest < compare)
                             {
                                 winner = t;
                                 latest = compare;
@@ -584,7 +584,7 @@ namespace Dev2.Common.Reflection
                     }
             }
 
-            if (winner == null) return null;
+            if(winner == null) return null;
             return winner.ToString();
         }
 
@@ -595,50 +595,50 @@ namespace Dev2.Common.Reflection
         /// <returns></returns>
         public static GACAssemblyName TryResolveGACAssembly(string displayName)
         {
-            if (displayName.StartsWith(GlobalConstants.GACPrefix)) displayName = displayName.Substring(4);
+            if(displayName.StartsWith(GlobalConstants.GACPrefix)) displayName = displayName.Substring(4);
 
             string[] split = displayName.Split(',');
 
             string culture = null, version = null, publicKeyToken = null, name = null;
 
-            foreach (string part in split)
+            foreach(string part in split)
             {
                 int index = part.IndexOf("=", StringComparison.OrdinalIgnoreCase);
-                if (name == null && index == -1)
+                if(name == null && index == -1)
                     name = part.Trim();
                 else
                 {
-                    if (culture == null && (index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase)) != -1)
+                    if(culture == null && (index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase)) != -1)
                         culture = part.Substring(index + 8).Trim();
-                    else if (version == null && (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
+                    else if(version == null && (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
                         version = part.Substring(index + 8).Trim();
-                    else if (publicKeyToken == null && (index = part.IndexOf("PublicKeyToken=", StringComparison.OrdinalIgnoreCase)) != -1)
+                    else if(publicKeyToken == null && (index = part.IndexOf("PublicKeyToken=", StringComparison.OrdinalIgnoreCase)) != -1)
                         publicKeyToken = part.Substring(index + 15).Trim();
                 }
             }
 
-            if (String.IsNullOrEmpty(name)) return null;
+            if(String.IsNullOrEmpty(name)) return null;
             GACAssemblyName[] matchingName = GetGACAssemblies(name);
-            if (matchingName.Length == 0) return null;
+            if(matchingName.Length == 0) return null;
 
-            if (!String.IsNullOrEmpty(publicKeyToken))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (!String.Equals(matchingName[i].PublicKeyToken, publicKeyToken, StringComparison.OrdinalIgnoreCase))
+            if(!String.IsNullOrEmpty(publicKeyToken))
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(!String.Equals(matchingName[i].PublicKeyToken, publicKeyToken, StringComparison.OrdinalIgnoreCase))
                         matchingName[i] = null;
 
-            if (!String.IsNullOrEmpty(culture))
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null && !String.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
+            if(!String.IsNullOrEmpty(culture))
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(matchingName[i] != null && !String.Equals(matchingName[i].Culture, culture, StringComparison.OrdinalIgnoreCase))
                         matchingName[i] = null;
 
             GACAssemblyName winner = null;
 
-            if (!String.IsNullOrEmpty(version))
+            if(!String.IsNullOrEmpty(version))
             {
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
+                for(int i = 0; i < matchingName.Length; i++)
+                    if(matchingName[i] != null)
                     {
-                        if (!String.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase)) matchingName[i] = null;
+                        if(!String.Equals(matchingName[i].Version, version, StringComparison.OrdinalIgnoreCase)) matchingName[i] = null;
                         else winner = matchingName[i];
                     }
             }
@@ -646,22 +646,21 @@ namespace Dev2.Common.Reflection
             {
                 Version latest = null;
 
-
-                for (int i = 0; i < matchingName.Length; i++)
-                    if (matchingName[i] != null)
+                foreach(GACAssemblyName t in matchingName)
+                    if(t != null)
                     {
-                        if (latest == null)
+                        if(latest == null)
                         {
-                            winner = matchingName[i];
+                            winner = t;
                             latest = new Version(winner.Version);
                         }
                         else
                         {
-                            Version compare = new Version(matchingName[i].Version);
+                            Version compare = new Version(t.Version);
 
-                            if (latest < compare)
+                            if(latest < compare)
                             {
-                                winner = matchingName[i];
+                                winner = t;
                                 latest = compare;
                             }
                         }
@@ -678,12 +677,12 @@ namespace Dev2.Common.Reflection
         /// <returns></returns>
         private static GACAssemblyName[] GetGACAssemblies(string name)
         {
-            if (name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) name = name.Remove(name.Length - 4);
+            if(name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) name = name.Remove(name.Length - 4);
 
             List<GACAssemblyName> result = null;
 
-            foreach (GACAssemblyName current in _gacNameCache)
-                if (String.Equals(current.Name, name, StringComparison.OrdinalIgnoreCase))
+            foreach(GACAssemblyName current in _gacNameCache)
+                if(String.Equals(current.Name, name, StringComparison.OrdinalIgnoreCase))
                     (result ?? (result = new List<GACAssemblyName>())).Add(current);
 
             return result == null ? GACAssemblyName.EmptyNames : result.ToArray();
@@ -696,17 +695,17 @@ namespace Dev2.Common.Reflection
         /// <returns></returns>
         public static bool RebuildGACAssemblyCache(bool forceRebuild)
         {
-            if (_gacNameCache.Length != 0 && !forceRebuild) return true;
+            if(_gacNameCache.Length != 0 && !forceRebuild) return true;
 
             IAssemblyEnum iterator = CreateGACEnum();
 
-            if (iterator == null) return false;
+            if(iterator == null) return false;
             IAssemblyName currentName;
             List<GACAssemblyName> gacNames = new List<GACAssemblyName>();
 
-            while (GetNextAssembly(iterator, out currentName) == 0)
+            while(GetNextAssembly(iterator, out currentName) == 0)
             {
-                if (currentName == null) continue;
+                if(currentName == null) continue;
                 string displayName = GetDisplayName(currentName, ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN | ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE);
                 gacNames.Add(new GACAssemblyName(displayName));
             }
@@ -736,16 +735,16 @@ namespace Dev2.Common.Reflection
         {
             string[] split = displayName.Split(',');
 
-            foreach (string part in split)
+            foreach(string part in split)
             {
                 int index = part.IndexOf("Culture=", StringComparison.OrdinalIgnoreCase);
-                if (_culture == null && index != -1)
+                if(_culture == null && index != -1)
                     _culture = part.Substring(index + 8).Trim();
-                else if (_version == null && (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
+                else if(_version == null && (index = part.IndexOf("Version=", StringComparison.OrdinalIgnoreCase)) != -1)
                     _version = part.Substring(index + 8).Trim();
-                else if (_publicKeyToken == null && (index = part.IndexOf("PublicKeyToken=", StringComparison.OrdinalIgnoreCase)) != -1)
+                else if(_publicKeyToken == null && (index = part.IndexOf("PublicKeyToken=", StringComparison.OrdinalIgnoreCase)) != -1)
                     _publicKeyToken = part.Substring(index + 15).Trim();
-                else if (_name == null)
+                else if(_name == null)
                     _name = part.Trim();
             }
         }

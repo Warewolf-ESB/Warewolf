@@ -29,9 +29,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList != null)
+            if(variableList != null)
             {
-                foreach (dynamic variable in variableList)
+                foreach(dynamic variable in variableList)
                 {
                     Build(variable, shape, data);
                     row++;
@@ -40,9 +40,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             List<Tuple<string, string>> emptyRecordset;
             bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-            if (isAdded)
+            if(isAdded)
             {
-                foreach (Tuple<string, string> emptyRecord in emptyRecordset)
+                foreach(Tuple<string, string> emptyRecord in emptyRecordset)
                 {
                     shape.Append(string.Format("<{0}>", emptyRecord.Item1));
                     shape.Append(string.Format("<{0}/>", emptyRecord.Item2));
@@ -59,7 +59,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         private void Build(dynamic variable, StringBuilder shape, StringBuilder data)
         {
-            if (DataListUtil.IsValueRecordset(variable.Item1))
+            if(DataListUtil.IsValueRecordset(variable.Item1))
             {
                 dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable.Item1);
                 dynamic recordField = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable.Item1);
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 List<string> addedRecordsets;
                 ScenarioContext.Current.TryGetValue("addedRecordsets", out addedRecordsets);
 
-                if (addedRecordsets == null)
+                if(addedRecordsets == null)
                 {
                     addedRecordsets = new List<string>();
                     ScenarioContext.Current.Add("addedRecordsets", addedRecordsets);
@@ -76,13 +76,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 List<string> addedFieldset;
                 ScenarioContext.Current.TryGetValue("addedFieldset", out addedFieldset);
 
-                if (addedFieldset == null)
+                if(addedFieldset == null)
                 {
                     addedFieldset = new List<string>();
                     ScenarioContext.Current.Add("addedFieldset", addedFieldset);
                 }
 
-                if (!(addedRecordsets.Contains(recordset) && addedFieldset.Contains(recordField)))
+                if(!(addedRecordsets.Contains(recordset) && addedFieldset.Contains(recordField)))
                 {
                     shape.Append(string.Format("<{0}>", recordset));
                     shape.Append(string.Format("<{0}/>", recordField));
@@ -90,15 +90,15 @@ namespace Dev2.Activities.Specs.BaseTypes
                     addedRecordsets.Add(recordset);
                     addedFieldset.Add(recordField);
                 }
-                
+
                 data.Append(string.Format("<{0}>", recordset));
                 data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
                 data.Append(string.Format("</{0}>", recordset));
-                
+
                 string rec;
                 ScenarioContext.Current.TryGetValue("recordset", out rec);
 
-                if (string.IsNullOrEmpty(rec))
+                if(string.IsNullOrEmpty(rec))
                 {
                     ScenarioContext.Current.Add("recordset", recordset);
                 }
@@ -106,7 +106,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 string field;
                 ScenarioContext.Current.TryGetValue("recordField", out field);
 
-                if (string.IsNullOrEmpty(field))
+                if(string.IsNullOrEmpty(field))
                 {
                     ScenarioContext.Current.Add("recordField", recordField);
                 }
@@ -124,11 +124,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             string rawRef = DataListUtil.StripBracketsFromValue(value);
             string objRef = string.Empty;
 
-            if (partType == enIntellisensePartType.RecorsetsOnly)
+            if(partType == enIntellisensePartType.RecorsetsOnly)
             {
                 objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
             }
-            else if (partType == enIntellisensePartType.RecordsetFields)
+            else if(partType == enIntellisensePartType.RecordsetFields)
             {
                 objRef = DataListUtil.ExtractFieldNameFromValue(rawRef);
             }
@@ -139,15 +139,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         protected string ReadFile(string resourceName)
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
-                if (stream == null)
+                if(stream == null)
                 {
                     return string.Empty;
                 }
 
-                var reader = new StreamReader(stream);
-                return reader.ReadToEnd();
+                using(var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
             }
         }
     }

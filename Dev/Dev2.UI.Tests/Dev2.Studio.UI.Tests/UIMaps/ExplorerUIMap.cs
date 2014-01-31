@@ -74,14 +74,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 if(category.ControlType.ToString() == "TreeItem")
                 {
                     var kids = category.GetChildren();
-                    foreach (var kid in kids)
+                    foreach(var kid in kids)
                     {
-                        if (kid.ControlType.ToString() == "TreeItem")
-    {
+                        if(kid.ControlType.ToString() == "TreeItem")
+                        {
                             categoryCollection.Add(kid);
                         }
                     }
-                    
+
                 }
             }
 
@@ -93,13 +93,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             var kids = _explorerNewConnectionControl.GetChildren();
 
-            if (kids != null)
+            if(kids != null)
             {
                 return kids.FirstOrDefault(c => c.ControlType.Name == controlType);
             }
 
             return null;
-            }
+        }
 
         public UITestControl GetLocalServer()
         {
@@ -139,12 +139,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            if (theControl != null)
+            if(theControl != null)
             {
                 Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 7);
                 Playback.Wait(50);
                 Mouse.Click(p);
-                Playback.Wait(50);
+                Playback.Wait(150);
                 Mouse.DoubleClick(p);
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
                 theControl.WaitForControlReady();
@@ -160,7 +160,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
             var kids = theControl.GetChildren();
 
-            if (kids != null && kids.Count > 0)
+            if(kids != null && kids.Count > 0)
             {
                 return kids.Any(kid => kid.Name == projectName);
             }
@@ -216,7 +216,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public string GetSelectedSeverName()
         {
             UITestControl ddlBase = GetServerDDL();
-          
+
             var theDdl = ddlBase as WpfComboBox;
             var firstItemInDdl = theDdl.Items[theDdl.SelectedIndex] as WpfListItem;
 
@@ -321,7 +321,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Keyboard.SendKeys("{Enter}");
             Playback.Wait(500);
         }
-        
+
         public void Server_RightClick_NewWorkflow(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
@@ -360,7 +360,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
             Keyboard.SendKeys("{Enter}");
         }
-        
+
         public void Server_RightClick_NewPluginService(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
@@ -485,7 +485,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>
         public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p, bool overrideDblClickBehavior = false)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName,overrideDblClickBehavior);
+            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName, overrideDblClickBehavior);
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
             Mouse.StopDragging(p);

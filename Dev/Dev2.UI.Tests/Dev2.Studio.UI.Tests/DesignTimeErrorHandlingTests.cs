@@ -36,7 +36,7 @@ namespace Dev2.Studio.UI.Tests
         {
             TabManagerUIMap.CloseAllTabs();
         }
-        
+
         #endregion
 
         [TestMethod]
@@ -74,13 +74,13 @@ namespace Dev2.Studio.UI.Tests
 
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
-            if (ResourceChangedPopUpUIMap.WaitForDialog(5000))
+            if(ResourceChangedPopUpUIMap.WaitForDialog(5000))
             {
                 ResourceChangedPopUpUIMap.ClickCancel();
             }
 
             // Fix Errors
-            if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
+            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, serviceToUse + "(ServiceDesigner)"))
             {
                 // Assert mapping does not exist
                 Assert.IsFalse(
@@ -98,6 +98,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
+        [Ignore]
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         {
             const string workflowResourceName = "DesignTimeErrorHandlingRequiredMappingUITest";
@@ -119,7 +120,7 @@ namespace Dev2.Studio.UI.Tests
             //set the first input to required
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             wizard.WaitForControlReady();
-            Keyboard.SendKeys(wizard,"{TAB}");
+            Keyboard.SendKeys(wizard, "{TAB}");
             Playback.Wait(150);
             Keyboard.SendKeys(" ");
 
@@ -128,7 +129,7 @@ namespace Dev2.Studio.UI.Tests
             ResourceChangedPopUpUIMap.ClickCancel();
 
             // Fix Errors
-            if (WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, dbResourceName))
+            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, dbResourceName))
             {
                 //Assert mappings are prompting the user to add required mapping
                 var getCloseMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, dbResourceName,

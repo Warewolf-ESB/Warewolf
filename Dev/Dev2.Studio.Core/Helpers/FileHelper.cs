@@ -139,9 +139,11 @@ namespace Dev2.Studio.Core.Helpers
 
                 string fileContent;
                 using(var fs = new FileStream(studioLog, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using(var sr = new StreamReader(fs, Encoding.Default))
                 {
-                    fileContent = sr.ReadToEnd();
+                    using(var sr = new StreamReader(fs, Encoding.Default))
+                    {
+                        fileContent = sr.ReadToEnd();
+                    }
                 }
 
                 string uniqueOutputPath = GetUniqueOutputPath(".txt");

@@ -12,7 +12,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Cleanup
 
-        
+
         [ClassInitialize]
         public static void ClassInit(TestContext tctx)
         {
@@ -37,12 +37,13 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         [TestMethod]
+        [Ignore]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
-            
+
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
-            
+
             Playback.Wait(5000);
             SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();

@@ -106,6 +106,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         //2013.03.14: Ashley Lewis - Bug 9217
         [TestMethod]
+        [Ignore]
         public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
         {
             //Initialization

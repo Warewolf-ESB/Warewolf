@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,8 +18,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class WorkflowDesignerUITests : UIMapBase
     {
-        private readonly DecisionWizardUIMap _decisionWizardUiMap = new DecisionWizardUIMap();
-
         #region Cleanup
 
         [ClassInitialize]
@@ -223,6 +220,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
+        [Ignore]
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
@@ -303,15 +301,13 @@ namespace Dev2.Studio.UI.Tests
             Playback.Wait(3500);
 
             // Switch between tabs ensuring the star is never added to their name
-            UITestControl tryGetTab = null;
+            UITestControl tryGetTab;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
-            tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(firstName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
             Mouse.Click(TabManagerUIMap.FindTabByName(firstName));
-            tryGetTab = null;
             tryGetTab = TabManagerUIMap.FindTabByName(secondName);
             Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
             Mouse.Click(TabManagerUIMap.FindTabByName(secondName));

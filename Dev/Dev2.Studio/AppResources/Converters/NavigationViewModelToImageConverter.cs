@@ -9,7 +9,7 @@ namespace Dev2.Studio.AppResources.Converters
 {
     public class NavigationViewModelToImageConverter : IMultiValueConverter
     {
-  
+
         #region Implementation of IMultiValueConverter
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Dev2.Studio.AppResources.Converters
                     if(iconpath.EndsWith(".png"))
                     {
                         string[] pathParts = iconpath.Split('/');
-                        string resourceName = pathParts[pathParts.Length-1];
+                        string resourceName = pathParts[pathParts.Length - 1];
 
                         resourceName = resourceName.Replace(".png", "");
 
@@ -49,11 +49,12 @@ namespace Dev2.Studio.AppResources.Converters
                         uri = new Uri(new Uri(navigationItemViewModel.EnvironmentModel.Connection.WebServerUri, "icons/"), iconpath);
                     }
 
+
                     return new BitmapImage(uri);
-                }                              
+                }
                 return new BitmapImage();
             }
-            catch (Exception)
+            catch(Exception)
             {
                 return new BitmapImage();
             }

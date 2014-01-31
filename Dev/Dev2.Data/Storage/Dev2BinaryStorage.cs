@@ -394,8 +394,6 @@ namespace Dev2.Data.Storage
                             _lstIndexes.TryRemove(key, out tmp);
                         }
                     }
-
-                    tmpFileStream.Close();
                 }
             }
             catch(Exception e)

@@ -1,6 +1,6 @@
-﻿using Dev2.Studio.UI.Tests.Extensions;
+﻿using System;
+using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using System;
 
 namespace Dev2.Studio.UI.Tests.WrapperClasses
 {
@@ -32,6 +32,7 @@ namespace Dev2.Studio.UI.Tests.WrapperClasses
         {
             RibbonUIMap.ClickManageSecuritySettings();
             _activeTab = TabManagerUIMap.GetActiveTab();
+            Playback.Wait(1500);
         }
 
         public void AddResource(string resourceName, string category, string folder)

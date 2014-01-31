@@ -23,8 +23,12 @@ namespace Dev2.Core.Tests.Utils
             fixedDoc.Pages.Add(pageContent);
 
             var f = new XpsSerializerFactory();
-            var w = f.CreateSerializerWriter(new MemoryStream());
-            w.Write(fixedDoc);
+            using(var s = new MemoryStream())
+            {
+                var w = f.CreateSerializerWriter(s);
+                w.Write(fixedDoc);
+            }
+
         }
     }
 }

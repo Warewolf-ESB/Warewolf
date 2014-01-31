@@ -35,11 +35,7 @@ namespace Dev2.Session
         {
             get
             {
-                if(_xmlData == null)
-                {
-                    _xmlData = DataList;
-                }
-                return _xmlData;
+                return _xmlData ?? (_xmlData = DataList);
             }
             set
             {
@@ -62,16 +58,10 @@ namespace Dev2.Session
 
         public SaveDebugTO CopyToSaveDebugTO()
         {
-            SaveDebugTO that = new SaveDebugTO();
+            SaveDebugTO that = new SaveDebugTO { DataList = DataList, ServiceName = ServiceName, IsDebugMode = IsDebugMode, RememberInputs = RememberInputs, XmlData = XmlData, WorkflowID = WorkflowID };
 
-            that.DataList = this.DataList;
-            that.ServiceName = this.ServiceName;
-            that.IsDebugMode = this.IsDebugMode;
-            that.RememberInputs = this.RememberInputs;
-            that.XmlData = this.XmlData;
-            that.WorkflowID = this.WorkflowID;
-            that.RememberInputs = this.RememberInputs;
-            that.DataListHash = this.DataListHash;
+            that.RememberInputs = RememberInputs;
+            that.DataListHash = DataListHash;
 
             return that;
         }
@@ -79,14 +69,14 @@ namespace Dev2.Session
         public void CopyFromSaveDebugTO(SaveDebugTO that)
         {
 
-            this.DataList = that.DataList;
-            this.ServiceName = that.ServiceName;
-            this.IsDebugMode = that.IsDebugMode;
-            this.RememberInputs = that.RememberInputs;
-            this.XmlData = that.XmlData;
-            this.WorkflowID = that.WorkflowID;
-            this.RememberInputs = that.RememberInputs;
-            this.DataListHash = that.DataListHash;
+            DataList = that.DataList;
+            ServiceName = that.ServiceName;
+            IsDebugMode = that.IsDebugMode;
+            RememberInputs = that.RememberInputs;
+            XmlData = that.XmlData;
+            WorkflowID = that.WorkflowID;
+            RememberInputs = that.RememberInputs;
+            DataListHash = that.DataListHash;
         }
 
 

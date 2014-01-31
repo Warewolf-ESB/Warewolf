@@ -27,14 +27,17 @@ namespace Dev2.Studio.Core
                         long contentLength = response.ContentLength;
                         string contentType = response.ContentType;
 
-                        Stream responseStream = response.GetResponseStream();
-                        if(responseStream != null)
+                        using(Stream responseStream = response.GetResponseStream())
                         {
-                            StreamReader streamReader = new StreamReader(responseStream);
-                            string content = streamReader.ReadToEnd();
+                            if(responseStream != null)
+                            {
+                                using(StreamReader streamReader = new StreamReader(responseStream))
+                                {
+                                    string content = streamReader.ReadToEnd();
 
-                            return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
-                                content);
+                                    return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength, content);
+                                }
+                            }
                         }
                     }
                 }
@@ -64,14 +67,17 @@ namespace Dev2.Studio.Core
                         long contentLength = response.ContentLength;
                         string contentType = response.ContentType;
 
-                        Stream responseStream = response.GetResponseStream();
-                        if(responseStream != null)
+                        using(Stream responseStream = response.GetResponseStream())
                         {
-                            StreamReader streamReader = new StreamReader(responseStream);
-                            string content = streamReader.ReadToEnd();
+                            if(responseStream != null)
+                            {
+                                using(StreamReader streamReader = new StreamReader(responseStream))
+                                {
+                                    string content = streamReader.ReadToEnd();
 
-                            return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength,
-                                content);
+                                    return WebCommunicationResponseFactory.CreateWebCommunicationResponse(contentType, contentLength, content);
+                                }
+                            }
                         }
                     }
                 }

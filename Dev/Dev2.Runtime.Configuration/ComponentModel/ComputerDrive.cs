@@ -60,8 +60,8 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public ObservableCollection<ComputerDrive> Children
         {
-            get 
-            {  
+            get
+            {
                 if(_children == null)
                 {
                     _children = new ObservableCollection<ComputerDrive>();
@@ -104,9 +104,11 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 
         public static List<ComputerDrive> DeserializeJson(Stream stream)
         {
-            TextReader textReader = new StreamReader(stream);
-            var computerDrives = JsonConvert.DeserializeObject<List<ComputerDrive>>(textReader.ReadToEnd());
-            return computerDrives;
+            using(TextReader textReader = new StreamReader(stream))
+            {
+                var computerDrives = JsonConvert.DeserializeObject<List<ComputerDrive>>(textReader.ReadToEnd());
+                return computerDrives;
+            }
         }
 
         public void LoadChildren()
@@ -146,7 +148,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
         private static Uri GetDriveUri()
         {
             var address = AppSettings.LocalHost + "/services/FindDriveService";
-             return new Uri(address);
+            return new Uri(address);
         }
 
         private string PrepareTitleForService()

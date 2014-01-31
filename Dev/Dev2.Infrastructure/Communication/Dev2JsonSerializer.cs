@@ -39,10 +39,12 @@ namespace Dev2.Communication
             {
                 var jsonSerializer = new JsonSerializer();
 
-                var jsonTextWriter = new JsonTextWriter(sw);
-                jsonSerializer.Serialize(jsonTextWriter, obj);
-                jsonTextWriter.Flush();
-                jsonTextWriter.Close();
+                using(var jsonTextWriter = new JsonTextWriter(sw))
+                {
+                    jsonSerializer.Serialize(jsonTextWriter, obj);
+                    jsonTextWriter.Flush();
+                    jsonTextWriter.Close();
+                }
             }
 
             return result;
@@ -85,12 +87,16 @@ namespace Dev2.Communication
                         // finally do the conversion ;)
                         using(StreamReader sr = new StreamReader(ms))
                         {
-                            JsonReader jr = new JsonTextReader(sr);
-                            var result = serializer.Deserialize<T>(jr);
-                            return result;
+                            using(JsonReader jr = new JsonTextReader(sr))
+                            {
+                                var result = serializer.Deserialize<T>(jr);
+                                return result;
+                            }
                         }
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // Do nothing default(T) returned below ;)
                     }

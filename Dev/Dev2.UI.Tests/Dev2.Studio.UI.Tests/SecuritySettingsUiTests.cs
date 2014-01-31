@@ -13,9 +13,10 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SecuritySettingsUiTests")]
+        [Ignore]
         public void SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled()
         {
-            using (var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
+            using(var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
             {
                 //Add resource and set priviledges
                 securityWrapper.AddResource("Utility - Email", "WORKFLOWS", "EXAMPLES");
@@ -45,7 +46,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("SecuritySettingsUiTests")]
         public void SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully()
         {
-            using (var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
+            using(var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
             {
                 //Toggle Server Help
                 securityWrapper.ToggleServerHelpButton();

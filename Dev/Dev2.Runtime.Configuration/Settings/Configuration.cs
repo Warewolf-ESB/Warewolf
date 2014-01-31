@@ -11,7 +11,7 @@ using Action = System.Action;
 namespace Dev2.Runtime.Configuration.Settings
 {
     // ------------------------------------------------------------------------------
-    // - Add new SettingsBase derived class in this namespace
+    // - Add new SettingsBase derived class in this name space
     // - Then add new property for class here and initialize it in constructors
     // - Then add property to ToXml() 
     // ------------------------------------------------------------------------------
@@ -39,8 +39,8 @@ namespace Dev2.Runtime.Configuration.Settings
             {
                 throw new ArgumentNullException("xml");
             }
-           
-          
+
+
             Init(xml);
         }
 
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Configuration.Settings
             {
                 return (Logging != null && Logging.HasChanges) ||
                      (Security != null && Security.HasChanges) ||
-                      (Backup != null && Backup.HasChanges); 
+                      (Backup != null && Backup.HasChanges);
             }
         }
 
@@ -109,7 +109,7 @@ namespace Dev2.Runtime.Configuration.Settings
         public XElement ToXml()
         {
             var result = new XElement("Settings",
-                new XAttribute("WebServerUri",WebServerUri),
+                new XAttribute("WebServerUri", WebServerUri),
                 new XAttribute("Version", Version.ToString()),
                 Logging.ToXml(),
                 Security.ToXml(),
@@ -129,7 +129,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public void Init(XElement xml)
         {
-            if (xml == null)
+            if(xml == null)
             {
                 Version = new Version(1, 0);
                 Logging = new LoggingSettings(WebServerUri);
@@ -142,7 +142,7 @@ namespace Dev2.Runtime.Configuration.Settings
                 Version = new Version(xml.AttributeSafe("Version"));
                 Logging = new LoggingSettings(xml.Element(LoggingSettings.SettingName), WebServerUri);
                 Security = new SecuritySettings(xml.Element(SecuritySettings.SettingName), WebServerUri);
-                Backup = new BackupSettings(xml.Element(BackupSettings.SettingName), WebServerUri);                
+                Backup = new BackupSettings(xml.Element(BackupSettings.SettingName), WebServerUri);
             }
 
             Logging.PropertyChanged += SettingChanged;
@@ -158,13 +158,13 @@ namespace Dev2.Runtime.Configuration.Settings
 
         private void SettingChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "HasError" || e.PropertyName == "Error")
+            if(e.PropertyName == "HasError" || e.PropertyName == "Error")
             {
                 NotifyOfPropertyChange(() => HasError);
                 return;
             }
 
-            if (e.PropertyName == "HasChanges")
+            if(e.PropertyName == "HasChanges")
             {
                 NotifyOfPropertyChange(() => HasChanges);
             }
@@ -179,8 +179,8 @@ namespace Dev2.Runtime.Configuration.Settings
             MainView settingsView = new MainView();
             MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);
             settingsView.DataContext = mainViewModel;
-            
-            if (mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
+
+            if(mainViewModel.SettingsObjects != null && mainViewModel.SettingsObjects.Count > 0)
             {
                 mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
             }

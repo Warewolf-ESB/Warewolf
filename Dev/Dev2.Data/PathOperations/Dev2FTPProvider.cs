@@ -638,7 +638,7 @@ namespace Dev2.Data.PathOperations
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private string ConvertSSLToPlain(string path)
+        private static string ConvertSSLToPlain(string path)
         {
             string result = path;
 
@@ -964,7 +964,7 @@ namespace Dev2.Data.PathOperations
             return true;
         }
 
-        private bool EnableSSL(IActivityIOPath path)
+        private static bool EnableSSL(IActivityIOPath path)
         {
             var result = path.PathType == enActivityIOPathType.FTPS || path.PathType == enActivityIOPathType.FTPES;
             return result;

@@ -27,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
         private readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
-        private int _indexCounter = 0;
+        private int _indexCounter;
 
         #endregion
 
@@ -107,7 +107,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
                         IBaseConversionBroker broker = _fac.CreateBroker(from, to);
 
-                        int indexToUpsertTo = 1;
                         // process result information
                         while(itr.HasMoreRecords())
                         {
@@ -123,11 +122,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 // set up live flushing iterator details
                                 if(c.IsDeferredRead)
                                 {
-                                    toUpsert.HasLiveFlushing = true;
-                                    toUpsert.LiveFlushingLocation = executionId;
+                                    if(toUpsert != null)
+                                    {
+                                        toUpsert.HasLiveFlushing = true;
+                                        toUpsert.LiveFlushingLocation = executionId;
+                                    }
                                 }
 
-                                indexToUpsertTo = c.ItemCollectionIndex;//2013.02.13: Ashley Lewis - Bug 8725, Task 8836
+                                int indexToUpsertTo = c.ItemCollectionIndex;
                                 string val = broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
@@ -140,16 +142,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
-                                    toUpsert.Add(region, val);
+                                    if(toUpsert != null)
+                                    {
+                                        toUpsert.Add(region, val);
+                                    }
                                     if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                     {
                                         AddDebugOutputItem(region, val, executionId);
                                     }
                                 }
 
-
-
-                                if(toUpsert.HasLiveFlushing)
+                                if(toUpsert != null && toUpsert.HasLiveFlushing)
                                 {
                                     try
                                     {
@@ -164,12 +167,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
 
 
-                            if(toUpsert.HasLiveFlushing)
+                            if(toUpsert != null && toUpsert.HasLiveFlushing)
                             {
                                 try
                                 {
-                                    toUpsert.FlushIterationFrame(true);
-                                    toUpsert = null;
+                                    toUpsert.FlushIterationFrame();
                                 }
                                 catch(Exception e)
                                 {
@@ -186,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // Upsert the entire payload                            
                         }
                     }
-                }                
+                }
             }
             catch(Exception e)
             {
@@ -304,46 +306,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs.Add(itemToAdd);
         }
 
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                if(listOfValidRows.Count > 0)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
-                    foreach(string s in listToAdd)
+                    List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                    if(listOfValidRows.Count > 0)
                     {
-                        mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
-                        startIndex++;
+                        int startIndex = ConvertCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        foreach(string s in listToAdd)
+                        {
+                            mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
+                            startIndex++;
+                        }
+                        CleanUpCollection(mic, modelItem, startIndex);
                     }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
-                else
-                {
-                    AddToCollection(listToAdd, modelItem);
+                    else
+                    {
+                        AddToCollection(listToAdd, modelItem);
+                    }
                 }
             }
         }
 
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ConvertCollection"].Collection;
-
-            if(mic != null)
+            var modelProperty = modelItem.Properties["ConvertCollection"];
+            if(modelProperty != null)
             {
-                int startIndex = 0;
-                string firstRowConvertFromType = ConvertCollection[0].FromType;
-                string firstRowConvertToType = ConvertCollection[0].ToType;
-                mic.Clear();
-                foreach(string s in listToAdd)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    mic.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
-                    startIndex++;
+                    int startIndex = 0;
+                    string firstRowConvertFromType = ConvertCollection[0].FromType;
+                    string firstRowConvertToType = ConvertCollection[0].ToType;
+                    mic.Clear();
+                    foreach(string s in listToAdd)
+                    {
+                        mic.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
             }
         }
 
@@ -354,25 +364,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new BaseConvertTO(string.Empty, "Text", "Base 64", string.Empty, startIndex + 1));
-            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            }
         }
 
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if(currentName.Contains("(") && currentName.Contains(")"))
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
             {
-                if(currentName.Contains(" ("))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    if(currentName.Contains(" ("))
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
+
+            return string.Empty;
         }
 
         #endregion
@@ -385,7 +405,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)
@@ -403,7 +424,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // locate all updates for this tuple
                 //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
-                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)
@@ -422,7 +444,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var item in ConvertCollection)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
                 {
@@ -437,7 +461,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var result = new List<DsfForEachItem>();
 
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var item in ConvertCollection)
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
                 {

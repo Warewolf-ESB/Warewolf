@@ -1491,7 +1491,7 @@ namespace Dev2.Data.Util
         /// <param name="scalarList">The scalar list.</param>
         /// <param name="isInput">if set to <c>true</c> [is input].</param>
         /// <returns></returns>
-        private static string BuildDev2ScalarShape(IList<IDev2Definition> scalarList, bool isInput)
+        private static string BuildDev2ScalarShape(IEnumerable<IDev2Definition> scalarList, bool isInput)
         {
             StringBuilder result = new StringBuilder();
 

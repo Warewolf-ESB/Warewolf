@@ -151,9 +151,9 @@ namespace Dev2.CodedUI.Tests
             var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
             if(leftTextBoxInRowLastRow != null)
             {
-                string text = leftTextBoxInRowLastRow.Text;
+            string text = leftTextBoxInRowLastRow.Text;
 
-                Assert.IsFalse(string.IsNullOrEmpty(text));
+            Assert.IsFalse(string.IsNullOrEmpty(text));
             }
             else
             {
@@ -379,6 +379,7 @@ namespace Dev2.CodedUI.Tests
 
         // vi - Can I drop a tool onto the designer?
         [TestMethod]
+        [Ignore]
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -402,7 +403,7 @@ namespace Dev2.CodedUI.Tests
             PopupDialogUIMap.WaitForDialog();
 
             // Wait for refresh
-            Playback.Wait(5000);
+            Playback.Wait(7000);
 
             #region Checking Ok Button enabled property
 
@@ -507,7 +508,7 @@ namespace Dev2.CodedUI.Tests
 
         // Bug 8747
         [TestMethod]
-        // 05/11 - Failure is Intermittent ;)
+        [Ignore]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
             //Open the correct workflow

@@ -238,7 +238,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        private IDateTimeDiffTO ConvertToDateTimeDiffTO(string input1, string input2, string evaledInputFormat, string outputType)
+        private static IDateTimeDiffTO ConvertToDateTimeDiffTO(string input1, string input2, string evaledInputFormat, string outputType)
         {
             return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
         }

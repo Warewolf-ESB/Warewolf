@@ -66,10 +66,9 @@ namespace Dev2.Runtime.ESB.WF
         /// <param name="instanceId">The instance id.</param>
         /// <param name="workspace">The workspace.</param>
         /// <param name="bookmarkName">Name of the bookmark.</param>
-        /// <param name="isDebug">if set to <c>true</c> [is debug].</param>
         /// <returns></returns>
         // ReSharper disable once UnusedParameter.Local // ignored as not sure how this method is invoked and what the knock on effect maybe
-        private WorkflowApplication InitEntryPoint(Activity workflowActivity, IDSFDataObject dataTransferObject, IEnumerable<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug)
+        private WorkflowApplication InitEntryPoint(Activity workflowActivity, IDSFDataObject dataTransferObject, IEnumerable<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName)
         {
             dataTransferObject.WorkspaceID = workspace.ID;
 
@@ -151,7 +150,7 @@ namespace Dev2.Runtime.ESB.WF
             IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
 
             ExecutionStatusCallbackDispatcher.Instance.Post(dataTransferObject.ExecutionCallbackID, ExecutionStatusCallbackMessageType.StartedCallback);
-            WorkflowApplication wfApp = InitEntryPoint(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName, isDebug);
+            WorkflowApplication wfApp = InitEntryPoint(workflowActivity, dataTransferObject, executionExtensions, instanceId, workspace, bookmarkName);
             errors = new ErrorResultTO();
 
             if(wfApp != null)
