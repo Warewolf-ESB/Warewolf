@@ -1,3 +1,10 @@
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Data.Parsers;
@@ -5,7 +12,6 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
@@ -15,13 +21,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.TO;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -360,7 +359,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             // Get Selected values on UI thread BEFORE starting asyncWorker
             var selectedDatabase = SelectedDatabase;
             var selectedTable = SelectedTable;
+            // ReSharper disable ImplicitlyCapturedClosure
             _asyncWorker.Start(() => GetDatabaseTableColumns(selectedDatabase, selectedTable), columnList =>
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 if(columnList.HasErrors)
                 {
@@ -399,7 +400,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             var resourceModel = _environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == SelectedDatabase.ResourceName);
             if(resourceModel != null)
             {
-                this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                 _eventPublisher.Publish(new ShowEditResourceWizardMessage(resourceModel));
                 RefreshDatabases();
             }
@@ -407,7 +407,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void CreateDbSource()
         {
-            this.TraceInfo("Publish message of type - " + typeof(ShowNewResourceWizard));
             _eventPublisher.Publish(new ShowNewResourceWizard("DbSource"));
             RefreshDatabases();
         }

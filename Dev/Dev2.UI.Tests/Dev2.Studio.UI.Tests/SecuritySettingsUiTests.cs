@@ -14,6 +14,8 @@ namespace Dev2.Studio.UI.Tests
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SecuritySettingsUiTests")]
         [Ignore]
+        // coded ui setup issue!!!!!
+        // manually verified 
         public void SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled()
         {
             using(var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())

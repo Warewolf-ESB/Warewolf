@@ -292,6 +292,7 @@ namespace Dev2.CodedUI.Tests
         {
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
+            Playback.Wait(1000);
 
             // Open the Variables tab, and enter the invalid value
             VariablesUIMap.ClickScalarVariableName(0);
@@ -379,7 +380,8 @@ namespace Dev2.CodedUI.Tests
 
         // vi - Can I drop a tool onto the designer?
         [TestMethod]
-        [Ignore]
+        [Ignore] // Broken Automation ID at the localhost level ;) 
+        // MANUALLY VERIFIED
         public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
         {
             // Create the Workflow
@@ -403,7 +405,7 @@ namespace Dev2.CodedUI.Tests
             PopupDialogUIMap.WaitForDialog();
 
             // Wait for refresh
-            Playback.Wait(7000);
+            Playback.Wait(2500);
 
             #region Checking Ok Button enabled property
 
@@ -418,8 +420,7 @@ namespace Dev2.CodedUI.Tests
 
             //Single click a resource in the tree
             ActivityDropUIMap.SingleClickFirstResource();
-            Playback.Wait(300);
-            //get the ok button from the window
+            Playback.Wait(300);            //get the ok button from the window
             buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
 
             //Assert that the button is enabled
@@ -508,7 +509,6 @@ namespace Dev2.CodedUI.Tests
 
         // Bug 8747
         [TestMethod]
-        [Ignore]
         public void DebugBuriedErrors_Expected_OnlyErrorStepIsInError()
         {
             //Open the correct workflow

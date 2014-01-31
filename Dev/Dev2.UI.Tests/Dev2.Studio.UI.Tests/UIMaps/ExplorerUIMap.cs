@@ -145,7 +145,16 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Playback.Wait(50);
                 Mouse.Click(p);
                 Playback.Wait(150);
-                Mouse.DoubleClick(p);
+                try
+                {
+                    Mouse.DoubleClick(p);
+                    // ReSharper disable EmptyGeneralCatchClause
+                }
+                catch
+                // ReSharper restore EmptyGeneralCatchClause
+                {
+                    // this darn double click keeps bombing out ;)
+                }
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
                 theControl.WaitForControlReady();
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;

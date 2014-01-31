@@ -8,32 +8,24 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-using System.Threading;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests;
 using Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 {
-    using System;
     using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Input;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class DatabaseServiceWizardUIMap : UIMapBase
     {
-        
+
         /// <summary>
         /// NewDbSource
         /// </summary>
@@ -42,7 +34,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             // Click image
             Mouse.Click(StudioWindow.GetChildren()[0].GetChildren()[0], new Point(343, 82));
         }
-        
+
         /// <summary>
         /// ClickFirstAction
         /// </summary>
@@ -56,13 +48,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
         /// <summary>
         /// ClickFirstAction
         /// </summary>
-        public void ClickMappingTab()
+        public void ClickMappingTab(int x = 280)
         {
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Playback.Wait(500);
-            Mouse.Click(uIItemImage, new Point(280, 25));
+            Mouse.Click(uIItemImage, new Point(x, 25));
         }
-        
+
         /// <summary>
         /// ClickTestAction
         /// </summary>
@@ -74,7 +66,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             // Click image
             Mouse.Click(control, new Point(889, 84));
         }
-        
+
         /// <summary>
         /// ClickOK
         /// </summary>
@@ -205,13 +197,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Mouse.Click(uIItemImage, new Point(774, 520));
 
         }
-        
+
         #region Properties
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
-                if ((this.mUIBusinessDesignStudioWindow == null))
+                if((this.mUIBusinessDesignStudioWindow == null))
                 {
                     this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
@@ -219,16 +211,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-        
+
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
@@ -236,25 +228,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             #endregion
         }
-        
+
         #region Properties
         public UIZ5bc03f5226434284a36Custom UIZ5bc03f5226434284a36Custom
         {
             get
             {
-                if ((this.mUIZ5bc03f5226434284a36Custom == null))
+                if((this.mUIZ5bc03f5226434284a36Custom == null))
                 {
                     this.mUIZ5bc03f5226434284a36Custom = new UIZ5bc03f5226434284a36Custom(this);
                 }
                 return this.mUIZ5bc03f5226434284a36Custom;
             }
         }
-        
+
         public WpfImage UIItemImage
         {
             get
             {
-                if ((this.mUIItemImage == null))
+                if((this.mUIItemImage == null))
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
@@ -265,20 +257,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIZ5bc03f5226434284a36Custom mUIZ5bc03f5226434284a36Custom;
-        
+
         private WpfImage mUIItemImage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIZ5bc03f5226434284a36Custom : WpfCustom
     {
-        
-        public UIZ5bc03f5226434284a36Custom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIZ5bc03f5226434284a36Custom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.SplitPane";
@@ -286,13 +278,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
         {
             get
             {
-                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                if((this.mUIUI_TabManager_AutoIDTabList == null))
                 {
                     this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
                 }
@@ -300,31 +292,31 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIUI_TabManager_AutoIDTabList : WpfTabList
     {
-        
-        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIStartPageTabPage UIStartPageTabPage
         {
             get
             {
-                if ((this.mUIStartPageTabPage == null))
+                if((this.mUIStartPageTabPage == null))
                 {
                     this.mUIStartPageTabPage = new UIStartPageTabPage(this);
                 }
@@ -332,31 +324,31 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIStartPageTabPage mUIStartPageTabPage;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIStartPageTabPage : WpfTabPage
     {
-        
-        public UIStartPageTabPage(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIStartPageTabPage(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Start Page";
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public UIStartPageCustom UIStartPageCustom
         {
             get
             {
-                if ((this.mUIStartPageCustom == null))
+                if((this.mUIStartPageCustom == null))
                 {
                     this.mUIStartPageCustom = new UIStartPageCustom(this);
                 }
@@ -364,18 +356,18 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIStartPageCustom mUIStartPageCustom;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIStartPageCustom : WpfCustom
     {
-        
-        public UIStartPageCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIStartPageCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -383,13 +375,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public WpfImage UIItemImage
         {
             get
             {
-                if ((this.mUIItemImage == null))
+                if((this.mUIItemImage == null))
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
@@ -400,7 +392,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfImage mUIItemImage;
         #endregion

@@ -442,7 +442,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             if(!IsDeleted)
             {
-                this.TraceInfo("Publish message of type - " + typeof(EditActivityMessage));
                 _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID, null));
             }
         }

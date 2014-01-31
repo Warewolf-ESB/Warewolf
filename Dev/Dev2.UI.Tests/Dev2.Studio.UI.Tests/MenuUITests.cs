@@ -37,7 +37,6 @@ namespace Dev2.Studio.UI.Tests
         #endregion
 
         [TestMethod]
-        [Ignore]
         public void DebugAWorkFlow_EnsureSaveIsEnabledAfterCompletion()
         {
 

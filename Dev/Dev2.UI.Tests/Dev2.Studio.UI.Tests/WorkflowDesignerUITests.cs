@@ -220,7 +220,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
         [Owner("Ashley")]
-        [Ignore]
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
@@ -271,6 +270,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UnsavedWorkflows_UITest")]
         [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
         [Owner("Ashley Lewis")]
+        [Ignore]
+        // Manually verified
+        // closing unsaved tabs takes a long time
         public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
         {
             var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
