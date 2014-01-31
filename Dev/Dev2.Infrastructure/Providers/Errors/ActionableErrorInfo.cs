@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Dev2.Providers.Errors
 {
-    public class ActionableErrorInfo : ErrorInfo,IActionableErrorInfo
+    public class ActionableErrorInfo : ErrorInfo, IActionableErrorInfo
     {
         [NonSerialized]
         readonly Action _do;
@@ -28,7 +29,11 @@ namespace Dev2.Providers.Errors
         }
 
         #region Implementation of IActionableErrorInfo
-
+        public KeyValuePair<string, object> PropertyNameValuePair
+        {
+            get;
+            set;
+        }
         public void Do()
         {
             if(_do != null)

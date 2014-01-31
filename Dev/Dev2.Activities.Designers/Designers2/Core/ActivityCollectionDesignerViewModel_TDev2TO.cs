@@ -40,11 +40,11 @@ namespace Dev2.Activities.Designers2.Core
             switch(modelItemCollection.Count)
             {
                 case 0:
-                    AddDTO(1);
-                    AddDTO(2);
+                    AddDto(1);
+                    AddDto(2);
                     break;
                 case 1:
-                    AddDTO(2);
+                    AddDto(2);
                     break;
             }
 
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers2.Core
                 if(dto != null && dto.CanRemove())
                 {
                     // old row is blank so remove
-                    RemoveDTO(dto);
+                    RemoveDto(dto);
                 }
             }
         }
@@ -81,15 +81,26 @@ namespace Dev2.Activities.Designers2.Core
         public override void Validate()
         {
             var errors = new List<IActionableErrorInfo>();
-            foreach(var dto in ModelItemCollection.Select(mi => mi.GetCurrentValue()).OfType<TDev2TOFn>())
+            foreach(var mi in ModelItemCollection)
             {
-                dto.Validate();
-                if(dto.Errors != null)
+                var dto = mi.GetCurrentValue() as TDev2TOFn;
+                if(dto == null)
                 {
-                    foreach(var error in dto.Errors)
-                    {
-                        errors.AddRange(error.Value);
-                    }
+                    continue;
+                }
+                dto.Validate();
+                if(dto.Errors == null)
+                {
+                    continue;
+                }
+                foreach(var error in dto.Errors)
+                {
+                    errors.AddRange(
+                        (from errorInfo in error.Value
+                         let info = errorInfo
+                         let currentModelItem = mi
+                         select new ActionableErrorInfo(errorInfo,
+                             () => currentModelItem.SetProperty(info.PropertyNameValuePair.Key, info.PropertyNameValuePair.Value))));
                 }
             }
             Errors = errors.Count == 0 ? null : errors;
@@ -115,14 +126,14 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(indexNumber == 1)
                 {
-                    var dto = GetDTO(indexNumber);
+                    var dto = GetDto(indexNumber);
                     dto.ClearRow();
                 }
             }
             else
             {
-                var dto = GetDTO(indexNumber);
-                RemoveDTO(dto);
+                var dto = GetDto(indexNumber);
+                RemoveDto(dto);
             }
         }
 
@@ -132,13 +143,13 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return;
             }
-            AddDTO(indexNumber);
+            AddDto(indexNumber);
             Renumber(indexNumber);
             UpdateDisplayName();
         }
 
         protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
-        {            
+        {
             var firstModelItem = ModelItemCollection.FirstOrDefault();
             if(firstModelItem != null)
             {
@@ -150,7 +161,7 @@ namespace Dev2.Activities.Designers2.Core
             // Always insert items before blank row
             foreach(var s in source.Where(s => !string.IsNullOrWhiteSpace(s)))
             {
-                AddDTO(indexNumber, s);
+                AddDto(indexNumber, s);
                 indexNumber++;
             }
 
@@ -176,22 +187,22 @@ namespace Dev2.Activities.Designers2.Core
                 ModelItemCollection.Clear();
 
                 // Add blank row
-                AddDTO(indexNumber);
+                AddDto(indexNumber);
             }
             else
             {
-                var lastDTO = GetLastDTO();
-                indexNumber = lastDTO.IndexNumber;
+                var lastDto = GetLastDto();
+                indexNumber = lastDto.IndexNumber;
 
                 if(ModelItemCollection.Count == 2)
                 {
                     // Check whether we have 2 blank rows
-                    var firstDTO = GetDTO(1);
-                    if(firstDTO.CanRemove() && lastDTO.CanRemove())
+                    var firstDto = GetDto(1);
+                    if(firstDto.CanRemove() && lastDto.CanRemove())
                     {
-                        RemoveAt(lastDTO.IndexNumber, lastDTO);
+                        RemoveAt(lastDto.IndexNumber, lastDto);
                         indexNumber = indexNumber - 1;
-                    }                    
+                    }
                 }
             }
             return indexNumber;
@@ -202,37 +213,37 @@ namespace Dev2.Activities.Designers2.Core
             return ModelItemCollection[indexNumber - 1];
         }
 
-        TDev2TOFn GetDTO(int indexNumber)
+        TDev2TOFn GetDto(int indexNumber)
         {
             var item = GetModelItem(indexNumber);
             return item.GetCurrentValue() as TDev2TOFn;
         }
 
-        TDev2TOFn GetLastDTO()
+        TDev2TOFn GetLastDto()
         {
-            return GetDTO(ItemCount);
+            return GetDto(ItemCount);
         }
 
         void AddBlankRow()
         {
-            var lastDTO = GetLastDTO();
-            var isLastRowBlank = lastDTO.CanRemove();
+            var lastDto = GetLastDto();
+            var isLastRowBlank = lastDto.CanRemove();
             if(!isLastRowBlank)
             {
-                AddDTO(lastDTO.IndexNumber+1);
+                AddDto(lastDto.IndexNumber + 1);
                 UpdateDisplayName();
             }
         }
 
-        void AddDTO(int indexNumber, string initializeWith = "")
+        void AddDto(int indexNumber, string initializeWith = "")
         {
             //
             // DO NOT invoke Renumber() from here - this method is called MANY times when invoking AddToCollection()!!
             //
-            var dto = CreateDTO(indexNumber, initializeWith);
+            var dto = CreateDto(indexNumber, initializeWith);
             AttachEvents(dto);
 
-            var idx = indexNumber-1;
+            var idx = indexNumber - 1;
             if(idx >= ModelItemCollection.Count)
             {
                 ModelItemCollection.Add(dto);
@@ -243,12 +254,12 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        protected virtual IDev2TOFn CreateDTO(int indexNumber, string initializeWith)
-        {  
+        protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith)
+        {
             return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
         }
 
-        void RemoveDTO(TDev2TOFn dto)
+        void RemoveDto(TDev2TOFn dto)
         {
             if(ModelItemCollection.Count > 2 && dto.IndexNumber >= 0 && dto.IndexNumber < ModelItemCollection.Count)
             {
@@ -260,12 +271,12 @@ namespace Dev2.Activities.Designers2.Core
 
         void RemoveAt(int indexNumber, INotifyPropertyChanged notify)
         {
-            notify.PropertyChanged -= OnDTOPropertyChanged;
+            notify.PropertyChanged -= OnDtoPropertyChanged;
             var idx = indexNumber - 1;
             ModelItemCollection.RemoveAt(idx);
         }
 
-        void OnDTOPropertyChanged(object sender, PropertyChangedEventArgs args)
+        void OnDtoPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if(args.PropertyName != "CanRemove")
             {
@@ -277,8 +288,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(ModelItemCollection.Count == 2)
                 {
-                    var firstDTO = GetDTO(1);
-                    if(!firstDTO.CanRemove())
+                    var firstDto = GetDto(1);
+                    if(!firstDto.CanRemove())
                     {
                         // first row is not blank
                         AddBlankRow();
@@ -308,7 +319,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void AttachEvents(INotifyPropertyChanged dto)
         {
-            dto.PropertyChanged += OnDTOPropertyChanged;
+            dto.PropertyChanged += OnDtoPropertyChanged;
         }
 
         /// <summary>
