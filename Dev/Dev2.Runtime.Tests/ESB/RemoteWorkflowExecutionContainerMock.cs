@@ -2,7 +2,6 @@
 using System.Net;
 using Dev2.Data.ServiceModel;
 using Dev2.Diagnostics;
-using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
@@ -21,6 +20,7 @@ namespace Dev2.Tests.Runtime.ESB
         public string GetRequestUri { get; set; }
         public string FetchRemoteDebugItemsUri { get; set; }
         public string LogExecutionUrl { get; private set; }
+        public WebRequest LogExecutionWebRequest { get; private set; }
 
         protected override string ExecuteGetRequest(Connection connection, string serviceName, string payload)
         {
@@ -33,6 +33,7 @@ namespace Dev2.Tests.Runtime.ESB
         protected override void ExecuteWebRequestAsync(WebRequest buildGetWebRequest)
         {
             LogExecutionUrl = buildGetWebRequest.RequestUri.ToString();
+            LogExecutionWebRequest = buildGetWebRequest;
         }
 
         #endregion

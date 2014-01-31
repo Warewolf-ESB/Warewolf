@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -12,9 +13,11 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RemoteWorkflowExecutionContainerTests
     {
         static XElement _connectionXml;
@@ -82,7 +85,6 @@ namespace Dev2.Tests.Runtime.ESB
             Assert.AreEqual("Server source not found.", errors.MakeDisplayReady(), "Execute did not return an error for a non-existent resource catalog connection.");
         }
 
-        // ReSharper disable InconsistentNaming
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
@@ -91,16 +93,14 @@ namespace Dev2.Tests.Runtime.ESB
             //------------Setup for test--------------------------
             const string LogUri = "http://localhost:3142/Services?Error=Error";
             var resourceCatalog = new Mock<IResourceCatalog>();
-            // resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(_connectionXml.ToString);
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
             var container = CreateExecutionContainer(resourceCatalog.Object);
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
-            Assert.AreEqual(LogUri,container.LogExecutionUrl);
+            Assert.AreEqual(LogUri, container.LogExecutionUrl);
+        }
 
-        }        
-        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
@@ -111,30 +111,35 @@ namespace Dev2.Tests.Runtime.ESB
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
-            var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Err/></DataList>","<ADL><Err>Error Message</Err></ADL>");
+            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Err/></DataList>", "<ADL><Err>Error Message</Err></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
+            Assert.IsFalse(container.LogExecutionWebRequest.UseDefaultCredentials);
+            var credentials = container.LogExecutionWebRequest.Credentials as NetworkCredential;
+            Assert.IsNotNull(credentials);
+            Assert.AreEqual(_connection.UserName, credentials.UserName);
+            Assert.AreEqual(_connection.Password, credentials.Password);
 
-        }     
- 
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RemoteWorkflowExecutionContainer_PerformLogExecution")]
         public void RemoteWorkflowExecutionContainer_PerformLogExecution_WhenRecordsetDataListFragments_HasEvaluatedUriToExecute()
         {
             //------------Setup for test--------------------------
+            EnvironmentVariables.WebServerUri = "http://localhost:3142";
             const string LogUri = "http://localhost:1234/Services?Error=[[Errors().Err]]";
             const string ExpectedLogUri = "http://localhost:1234/Services?Error=Error Message";
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(c => c.GetResourceContents(It.IsAny<Guid>(), It.IsAny<Guid>(), null)).Returns(new StringBuilder(_connectionXml.ToString()));
-            var container = CreateExecutionContainer(resourceCatalog.Object,"<DataList><Errors><Err></Err></Errors></DataList>","<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
+            var container = CreateExecutionContainer(resourceCatalog.Object, "<DataList><Errors><Err></Err></Errors></DataList>", "<ADL><Errors><Err>Error Message</Err></Errors></ADL>");
             //------------Execute Test---------------------------
             container.PerformLogExecution(LogUri);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExpectedLogUri, container.LogExecutionUrl);
-
         }
         #endregion
 

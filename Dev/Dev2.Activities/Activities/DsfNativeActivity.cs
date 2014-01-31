@@ -24,6 +24,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Framework;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity
@@ -65,6 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsEndedOnError { get; set; }
 
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
+
 
         internal readonly IDebugDispatcher _debugDispatcher;
         readonly bool _isExecuteAsync;
@@ -221,6 +224,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             try
             {
+                if(!String.IsNullOrEmpty(OnErrorVariable))
+                {
+                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
+                }
                 if(!String.IsNullOrEmpty(OnErrorWorkflow))
                 {
                     var esbChannel = context.GetExtension<IEsbChannel>();
@@ -238,10 +245,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if(!String.IsNullOrEmpty(OnErrorVariable))
-                {
-                    compiler.Upsert(dataObject.DataListID, OnErrorVariable, currentError, out tmpErrors);
-                }
                 if(IsEndedOnError)
                 {
                     PerformStopWorkflow(context, dataObject);

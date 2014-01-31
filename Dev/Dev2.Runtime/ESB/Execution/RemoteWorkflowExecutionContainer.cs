@@ -107,7 +107,7 @@ namespace Dev2.Runtime.ESB.Execution
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch(Exception e)
-            {                
+            {
                 this.LogError(e);
                 errors.AddError(e.Message);
             }
@@ -135,7 +135,7 @@ namespace Dev2.Runtime.ESB.Execution
             if(data != null)
             {
                 IList<DebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
-                fetchRemoteDebugItems.ForEach(state => state.SessionID=DataObject.DebugSessionID);
+                fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
                 return fetchRemoteDebugItems;
             }
 
@@ -153,7 +153,9 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 if(response != null)
                 {
+                    // ReSharper disable AssignNullToNotNullAttribute
                     using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    // ReSharper restore AssignNullToNotNullAttribute
                     {
                         result = reader.ReadToEnd();
                     }
@@ -180,11 +182,12 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Method = "GET";
 
                 // set header for server to know this is a remote invoke ;)
-                if(DataObject.RemoteInvokerID == Guid.Empty.ToString())
+                var remoteInvokerID = DataObject.RemoteInvokerID;
+                if(remoteInvokerID == Guid.Empty.ToString())
                 {
                     throw new Exception("Remote Server ID Empty");
                 }
-                req.Headers.Add(HttpRequestHeader.From, DataObject.RemoteInvokerID); // Set to remote invoke ID ;)
+                req.Headers.Add(HttpRequestHeader.From, remoteInvokerID); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
                 return req;
             }
@@ -196,9 +199,16 @@ namespace Dev2.Runtime.ESB.Execution
 
         Connection GetConnection(Guid environmentID)
         {
+            if(environmentID == Guid.Empty)
+            {
+                var localhostConnection = new Connection();
+                localhostConnection.Address = EnvironmentVariables.WebServerUri;
+                localhostConnection.AuthenticationType = AuthenticationType.Windows;
+                return localhostConnection;
+            }
             var xml = _resourceCatalog.GetResourceContents(DataObject.WorkspaceID, environmentID);
 
-            if (xml == null || xml.Length == 0)
+            if(xml == null || xml.Length == 0)
             {
                 return null;
             }
