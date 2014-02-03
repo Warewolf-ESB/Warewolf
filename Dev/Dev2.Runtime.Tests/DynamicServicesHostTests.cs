@@ -199,12 +199,14 @@ namespace Dev2.DynamicServices.Test
             FileInfo sourceFile = sourceDirectory.GetFiles()[0];
             FileInfo destFile = new FileInfo(Path.Combine(destinationDirectory.FullName, sourceFile.Name));
 
-            FileStream fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
-            fs.Write(new byte[]
+            using(FileStream fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None))
+            {
+                fs.Write(new byte[]
             {
                 200
             }, 0, 1);
-            fs.Close();
+                fs.Close();
+            }
 
             workspaceSource.Host.SyncTo(workspaceDestination.Host.WorkspacePath, true, false);
 
@@ -228,12 +230,14 @@ namespace Dev2.DynamicServices.Test
             FileInfo sourceFile = sourceDirectory.GetFiles()[0];
             FileInfo destFile = new FileInfo(Path.Combine(destinationDirectory.FullName, sourceFile.Name));
 
-            FileStream fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None);
-            fs.Write(new byte[]
+            using(FileStream fs = sourceFile.Open(FileMode.Append, FileAccess.Write, FileShare.None))
+            {
+                fs.Write(new byte[]
             {
                 200
             }, 0, 1);
-            fs.Close();
+                fs.Close();
+            }
 
             destFile.Refresh();
             long originalFileSize = destFile.Length;

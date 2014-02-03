@@ -23,6 +23,7 @@ namespace Dev2.Runtime.WebServer.Responses
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
+
         }
 
         protected virtual Stream OpenFileStream()

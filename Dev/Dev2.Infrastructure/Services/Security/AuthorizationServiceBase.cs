@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
+using Dev2.Common;
 
 namespace Dev2.Services.Security
 {
@@ -62,6 +63,18 @@ namespace Dev2.Services.Security
         public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
         {
             return IsAuthorized(context, () => GetGroupPermissions(principal, resource));
+        }
+
+        public void DumpPermissionsOnError(IPrincipal principal)
+        {
+            //var permissions = GetGroupPermissions(principal);
+            this.LogError("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+
+            foreach(var perm in _securityService.Permissions)
+            {
+                this.LogError("SERVER PERM -> " +perm.WindowsGroup);
+                this.LogError("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
+            }
         }
 
         static bool IsAuthorized(AuthorizationContext context, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)

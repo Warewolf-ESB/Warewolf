@@ -135,9 +135,11 @@ namespace Dev2.Network
             }
             catch(AggregateException aex)
             {
+
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
+                    Logger.LogError(this, aex);
                     var hex = ex as HttpClientException;
                     if(hex != null)
                     {
@@ -151,6 +153,7 @@ namespace Dev2.Network
                     }
                     //HandleConnectError(ex);
                     //return false; // Let anything else stop the application.
+
                     return true; // This we know how to handle this
                 });
             }

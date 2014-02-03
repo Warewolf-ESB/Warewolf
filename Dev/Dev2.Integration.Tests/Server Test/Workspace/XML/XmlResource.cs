@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using System.Xml.Linq;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML
@@ -25,7 +21,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML
         {
             var resourceName = string.Format("Dev2.Integration.Tests.Server_Test.Workspace.XML.{0}", name);
             var assembly = Assembly.GetExecutingAssembly();
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using(var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 return XElement.Load(stream);
             }

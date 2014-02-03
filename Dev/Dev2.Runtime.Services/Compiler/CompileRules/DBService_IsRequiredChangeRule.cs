@@ -13,6 +13,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Detect IO mapping changes for WFs
     /// </summary>
+    // ReSharper disable InconsistentNaming
     internal class DBService_IsRequiredChangeRule : IServiceCompileRule
     {
         public ServerCompileMessageType HandlesType()
@@ -45,8 +46,22 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         ErrorType = ErrorType.Critical
                     });
             }
-            return null;
+            else
+            {
+                var tmpInput = inputParser.Parse(inputMappingsPost);
 
+                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
+
+                return
+                    (new CompileMessageTO
+                    {
+                        MessageType = CompileMessageType.MappingIsRequiredChanged,
+                        ServiceID = serviceID,
+                        MessageID = Guid.NewGuid(),
+                        MessagePayload = defStr,
+                        ErrorType = ErrorType.None
+                    });
+            }
         }
     }
 }

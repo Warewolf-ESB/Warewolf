@@ -257,6 +257,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                     newValue = newValue.replace(paramName + paramValue, paramName + "=" + varName);
                 }
             }
+
             self.updateVariablesText(varSrc, newValue, newValue.length);
             return true;
         });
@@ -451,7 +452,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     });
 
     self.data.requestUrl.subscribe(function (newValue) {
-        if (!self.isUpdatingVariables) {            
+        if (!self.isUpdatingVariables) {
             self.updateVariables(srcUrl, newValue);
         }
     });
@@ -517,7 +518,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.sourceAddress(newValue ? newValue.Address : "");
             }else {
                 initLoad = false;
-                self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
+                self.data.requestUrl(newValue); // triggers a call updateVariables()
                 self.sourceAddress(newValue ? newValue.Address : "");
             }
 
@@ -715,7 +716,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                     self.data.method.Name(result.Method.Name);
                     self.data.method.Parameters(result.Method.Parameters);
                 }
-
+                
                 self.data.requestUrl(result.RequestUrl);
                 self.data.requestMethod(result.RequestMethod.toUpperCase());
                 self.data.requestHeaders(result.RequestHeaders);

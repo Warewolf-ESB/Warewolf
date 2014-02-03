@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -258,43 +257,45 @@ namespace Dev2.Common
 
         public static void LogDebug(IDebugState idebugState)
         {
-            Task.Run(() =>
-            {
-                if(!ShouldLog(idebugState))
-                    return;
+            // Not stream safe?!
 
-                var debugState = (DebugState)idebugState;
+            //Task.Run(() =>
+            //{
+            //    if(!ShouldLog(idebugState))
+            //        return;
 
-                string workflowName = GetWorkflowName(debugState);
+            //    var debugState = (DebugState)idebugState;
 
-                if(String.IsNullOrWhiteSpace(workflowName))
-                {
-                    throw new NoNullAllowedException("Only workflows with valid names can be logged");
-                }
+            //    string workflowName = GetWorkflowName(debugState);
 
-                switch(debugState.StateType)
-                {
-                    case StateType.Start:
-                        Initialize(debugState, workflowName);
-                        break;
+            //    if(String.IsNullOrWhiteSpace(workflowName))
+            //    {
+            //        throw new NoNullAllowedException("Only workflows with valid names can be logged");
+            //    }
 
-                    case StateType.Before:
-                        Serialize(debugState, workflowName, StateType.Before);
-                        break;
+            //    switch(debugState.StateType)
+            //    {
+            //        case StateType.Start:
+            //            Initialize(debugState, workflowName);
+            //            break;
 
-                    case StateType.End:
-                        Finalize(debugState, workflowName);
-                        break;
+            //        case StateType.Before:
+            //            Serialize(debugState, workflowName, StateType.Before);
+            //            break;
 
-                    case StateType.After:
-                        Serialize(debugState, workflowName, StateType.After);
-                        break;
+            //        case StateType.End:
+            //            Finalize(debugState, workflowName);
+            //            break;
 
-                    default:
-                        Serialize(debugState, workflowName);
-                        break;
-                }
-            });
+            //        case StateType.After:
+            //            Serialize(debugState, workflowName, StateType.After);
+            //            break;
+
+            //        default:
+            //            Serialize(debugState, workflowName);
+            //            break;
+            //    }
+            //});
 
         }
 
@@ -690,14 +691,6 @@ namespace Dev2.Common
                     var errors = new StringBuilder();
                     errors.AppendLine(CreateMessage(className, methodName, e.Message));
                     errors.AppendLine(e.GetAllMessages());
-                    //e.GetAllMessages();
-                    //var ex = e.InnerException;
-                    //while(ex != null)
-                    //{
-                    //    errors.AppendFormat("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace);
-                    //    errors.AppendLine();
-                    //    ex = e.InnerException;
-                    //}
                     InternalLogMessage(errors.ToString(), "ERROR");
                 }
             });

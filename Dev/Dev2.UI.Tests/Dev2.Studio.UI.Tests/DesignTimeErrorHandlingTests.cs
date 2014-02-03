@@ -98,7 +98,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("UITest")]
         [Description("Test for 'Fix Errors' db service activity adorner: A workflow involving a db service is openned, mappings on the service are set to required and hitting the fix errors adorner should prompt the user to add required mappings to the activity instance's mappings")]
         [Owner("Ashley")]
-        [Ignore]
+        // Properly broken functionality
         public void DesignTimeErrorHandling_DesignTimeErrorHandlingUITest_FixErrorsButton_UserIsPromptedToAddRequiredDbServiceMappings()
         {
             const string workflowResourceName = "DesignTimeErrorHandlingRequiredMappingUITest";
@@ -115,14 +115,14 @@ namespace Dev2.Studio.UI.Tests
 
             // Get wizard window
             WizardsUIMap.WaitForWizard();
-            DatabaseServiceWizardUIMap.TabToInputMappings();
+            DatabaseServiceWizardUIMap.ClickMappingTab(450); // over-ride cuz silly chickens like long names in test ;(
 
             //set the first input to required
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             wizard.WaitForControlReady();
-            Keyboard.SendKeys(wizard, "{TAB}");
+            Keyboard.SendKeys(wizard, "+{TAB 2}");
             Playback.Wait(150);
-            Keyboard.SendKeys(" ");
+            Keyboard.SendKeys("{SPACE}");
 
             // Save
             DatabaseServiceWizardUIMap.ClickOK();

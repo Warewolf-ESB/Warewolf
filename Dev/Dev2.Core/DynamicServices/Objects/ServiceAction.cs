@@ -10,7 +10,8 @@ using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Dev2.DynamicServices.Objects {
+namespace Dev2.DynamicServices.Objects
+{
 
 
     #region Service Action Class - Represents a single action within a service
@@ -20,7 +21,8 @@ namespace Dev2.DynamicServices.Objects {
     /// data store or a webservice call or a static Service Method invocation
     /// that will occur locally on the service
     /// </summary>
-    public class ServiceAction : DynamicServiceObjectBase, IDisposable {
+    public class ServiceAction : DynamicServiceObjectBase, IDisposable
+    {
         #region Private Fields
         private bool _resultsToClient = true;
         private bool _terminateServiceOnFault = true;
@@ -37,13 +39,16 @@ namespace Dev2.DynamicServices.Objects {
         #endregion
 
         #region Public Properties
-        public int CommandTimeout {
-            
-            get {
+        public int CommandTimeout
+        {
+
+            get
+            {
                 return _commandTimeout;
             }
 
-            set {
+            set
+            {
                 _commandTimeout = value;
             }
 
@@ -79,10 +84,16 @@ namespace Dev2.DynamicServices.Objects {
             }
             set
             {
-                lock (_poolGuard)
+                lock(_poolGuard)
                 {
                     // Default operation
                     _xamlDefinition = value;
+                    if(_xamlStream != null)
+                    {
+                        _xamlStream.Close();
+                        _xamlStream.Dispose();
+                        _xamlStream = new MemoryStream();
+                    }
 
                     // now load it all up ;)
                     // extracted to avoid memory leak in MS utilities and root references 
@@ -95,8 +106,10 @@ namespace Dev2.DynamicServices.Objects {
         /// <summary>
         /// The activity implementation created from the workflow xaml
         /// </summary>
-        public Activity WorkflowActivity {
-            get {
+        public Activity WorkflowActivity
+        {
+            get
+            {
                 return _workflowActivity;
             }
         }
@@ -136,14 +149,14 @@ namespace Dev2.DynamicServices.Objects {
         /// </summary>
         public IList<IDev2Definition> ServiceActionOutputs
         {
-            get; 
+            get;
             set;
         }
 
         /// <summary>
         /// The information used for format the output of the plugin using an IOutputFormatter. 
         /// </summary>
-        public string OutputDescription { get; set; }        
+        public string OutputDescription { get; set; }
 
         public AppDomain PluginDomain { get; set; }
         #endregion
@@ -152,7 +165,9 @@ namespace Dev2.DynamicServices.Objects {
         /// <summary>
         /// Initializes the Service Action Class
         /// </summary>
-        public ServiceAction() : base(enDynamicServiceObjectType.ServiceAction) {
+        public ServiceAction()
+            : base(enDynamicServiceObjectType.ServiceAction)
+        {
             ServiceActionInputs = new List<ServiceActionInput>();
             ServiceActionOutputs = new List<IDev2Definition>(); // Travis.Frisinger
             ActionType = enActionType.Unknown;
@@ -168,11 +183,11 @@ namespace Dev2.DynamicServices.Objects {
         {
             PooledServiceActivity result;
 
-            lock (_poolGuard)
+            lock(_poolGuard)
             {
-                if (_workflowPool.Count == 0)
+                if(_workflowPool.Count == 0)
                 {
-                    if (_xamlStream == null)
+                    if(_xamlStream == null)
                     {
                         result = new PooledServiceActivity(_generation, _workflowActivity);
                     }
@@ -195,57 +210,65 @@ namespace Dev2.DynamicServices.Objects {
         /// <param name="activity"></param>
         public void PushActivity(PooledServiceActivity activity)
         {
-            if (activity != null)
+            if(activity != null)
             {
-                lock (_poolGuard)
+                lock(_poolGuard)
                 {
-                    if (activity.Generation == _generation)
+                    if(activity.Generation == _generation)
                     {
-                        if (_workflowPool.Count < 10)
-                            if (_xamlStream != null)
+                        if(_workflowPool.Count < 10)
+                            if(_xamlStream != null)
                                 _workflowPool.Enqueue(activity);
                     }
                 }
             }
         }
 
-        public override bool Compile() {
+        public override bool Compile()
+        {
             base.Compile();
 
-            foreach (ServiceActionInput sai in ServiceActionInputs) {
+            foreach(ServiceActionInput sai in ServiceActionInputs)
+            {
                 sai.Compile();
                 sai.CompilerErrors.ToList().ForEach(c => CompilerErrors.Add(c));
             }
 
-            if (CompilerErrors.Count > 0) {
+            if(CompilerErrors.Count > 0)
+            {
                 return IsCompiled;
             }
 
-            switch (ActionType) {
-                
+            switch(ActionType)
+            {
+
                 case enActionType.InvokeDynamicService:
-                    if (string.IsNullOrEmpty(ServiceName)) {
+                    if(string.IsNullOrEmpty(ServiceName))
+                    {
                         WriteCompileError(Resources.CompilerError_MissingServiceName);
                     }
-                break;
+                    break;
 
                 case enActionType.Workflow:
-                break;
+                    break;
 
                 default:
                     //A Source Name is required except in the case of Management Dynamic Services
-                    if(string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService){
+                    if(string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService)
+                    {
                         WriteCompileError(Resources.CompilerError_MissingSourceName);
                     }
-                    if (string.IsNullOrEmpty(SourceMethod)) {
+                    if(string.IsNullOrEmpty(SourceMethod))
+                    {
                         WriteCompileError(Resources.CompilerError_MissingSourceMethod);
                     }
                     //A source is required except in the case of Management Dynamic Services
-                    if (Source == null && ActionType != enActionType.InvokeManagementDynamicService) {
+                    if(Source == null && ActionType != enActionType.InvokeManagementDynamicService)
+                    {
                         WriteCompileError(Resources.CompilerError_SourceNotFound);
                     }
-                break;
-                
+                    break;
+
 
             }
 
@@ -263,9 +286,9 @@ namespace Dev2.DynamicServices.Objects {
         // Picked up hanging references via .net memory profiler ;)
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposing)
+            if(!_disposing)
             {
-                if (disposing)
+                if(disposing)
                 {
                     _xamlStream.Close();
                     _xamlStream.Dispose();

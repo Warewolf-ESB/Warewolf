@@ -13,6 +13,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Detect IO mapping changes for WFs
     /// </summary>
+    // ReSharper disable InconsistentNaming
     internal class PluginService_IsRequiredChangeRule : IServiceCompileRule
     {
         public ServerCompileMessageType HandlesType()
@@ -26,10 +27,10 @@ namespace Dev2.Runtime.Compiler.CompileRules
             var inputMappingsPost = ServiceUtils.ExtractInputMapping(afterAction);
 
             var inputParser = DataListFactory.CreateInputParser();
-            
+
             var postInputs = inputParser.Parse(inputMappingsPost);
 
-            if (postInputs.Any(definition => definition.IsRequired))
+            if(postInputs.Any(definition => definition.IsRequired))
             {
                 var tmpInput = inputParser.Parse(inputMappingsPost);
 
@@ -45,7 +46,22 @@ namespace Dev2.Runtime.Compiler.CompileRules
                         ErrorType = ErrorType.Critical
                     });
             }
-            return null;
+            else
+            {
+                var tmpInput = inputParser.Parse(inputMappingsPost);
+
+                var defStr = "<Args><Input>" + JsonConvert.SerializeObject(tmpInput) + "</Input></Args>";
+
+                return
+                    (new CompileMessageTO
+                    {
+                        MessageType = CompileMessageType.MappingIsRequiredChanged,
+                        ServiceID = serviceID,
+                        MessageID = Guid.NewGuid(),
+                        MessagePayload = defStr,
+                        ErrorType = ErrorType.None
+                    });
+            }
 
         }
     }

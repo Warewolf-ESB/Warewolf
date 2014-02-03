@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Text;
-using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
@@ -41,21 +41,15 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         public TestContext TestContext { get { return _context; } set { _context = value; } }
         #endregion
 
-        #region Constructor
-        public ServerLifecycleManagerTest()
-        {
-        }
-        #endregion
-
         #region Initialization Handling
         [TestInitialize]
         public void InitializeTestSuite()
         {
             string filePath = null;
 
-            lock (_syncLock)
+            lock(_syncLock)
             {
-                if (_hasInitialized) return;
+                if(_hasInitialized) return;
                 _hasInitialized = true;
             }
 
@@ -65,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             Process serverProcess = null;
             List<Process> matches = new List<Process>();
 
-            for (int i = 0; i < allProcess.Length; i++)
+            for(int i = 0; i < allProcess.Length; i++)
             {
                 Process current = allProcess[i];
                 string title = null;
@@ -80,9 +74,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                     title = null;
                 }
 
-                if (title != null)
+                if(title != null)
                 {
-                    if (title.Contains(name))
+                    if(title.Contains(name))
                     {
                         matches.Add(current);
                     }
@@ -91,9 +85,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             bool foundDefinate = false;
 
-            for (int i = 0; i < matches.Count; i++)
+            for(int i = 0; i < matches.Count; i++)
             {
-                if (!foundDefinate)
+                if(!foundDefinate)
                 {
                     Process previousProcess = serverProcess;
                     string previousFilePath = filePath;
@@ -111,17 +105,17 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         // This is not the correct way to search for process information
 
                         //filePath = serverProcess.MainWindowTitle;
-                        
+
                         // This is the correct way to retrieve process information from a 64-bit process using a 32-bit process
                         int processID = serverProcess.Id;
 
                         string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processID.ToString();
-                        using (var searcher = new ManagementObjectSearcher(wmiQueryString))
+                        using(var searcher = new ManagementObjectSearcher(wmiQueryString))
                         {
-                            using (var results = searcher.Get())
+                            using(var results = searcher.Get())
                             {
                                 ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
-                                if (mo != null)
+                                if(mo != null)
                                 {
                                     filePath = (string)mo["ExecutablePath"];
                                 }
@@ -135,11 +129,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         filePath = null;
                     }
 
-                    if (filePath != null)
+                    if(filePath != null)
                     {
-                        if (File.Exists(filePath + ".config"))
+                        if(File.Exists(filePath + ".config"))
                         {
-                            if (filePath.Contains(_integrationTestRoot))
+                            if(filePath.Contains(_integrationTestRoot))
                                 foundDefinate = true;
                         }
                         else
@@ -156,21 +150,21 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 }
             }
 
-            if (serverProcess != null)
+            if(serverProcess != null)
             {
-                if (filePath != null)
+                if(filePath != null)
                 {
                     string dirName = Path.GetDirectoryName(filePath);
                     string parentDirName = Path.GetDirectoryName(dirName);
                     string destinationDirectory = _lifecycleServerRootDirectory = Path.Combine(parentDirName, "LifecycleTestTemp");
                     _lifecycleServerExecutable = Path.Combine(destinationDirectory, Path.GetFileName(filePath));
 
-                    if (_lifecycleServerExecutable.EndsWith(".vshost.exe", StringComparison.OrdinalIgnoreCase))
+                    if(_lifecycleServerExecutable.EndsWith(".vshost.exe", StringComparison.OrdinalIgnoreCase))
                         _lifecycleServerExecutable = _lifecycleServerExecutable.Replace(".vshost.exe", ".exe");
 
                     _lifecycleServerAppConfigFile = _lifecycleServerExecutable + ".config";
 
-                    if (Directory.Exists(destinationDirectory))
+                    if(Directory.Exists(destinationDirectory))
                     {
                         Directory.Delete(destinationDirectory, true);
                     }
@@ -178,7 +172,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                     Directory.CreateDirectory(destinationDirectory);
                     CopyContents(dirName, destinationDirectory);
 
-                    if (File.Exists(_lifecycleServerConfigFile = Path.Combine(destinationDirectory, "LifecycleConfig.xml")))
+                    if(File.Exists(_lifecycleServerConfigFile = Path.Combine(destinationDirectory, "LifecycleConfig.xml")))
                         File.Delete(_lifecycleServerConfigFile);
 
                     File.WriteAllText(_lifecycleServerAppConfigFile, TestResource.LifecycleServerAppConfig);
@@ -189,17 +183,17 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         private static void CopyContents(string sourceDirectory, string destinationDirectory)
         {
-            if (!destinationDirectory.Contains(".svn"))
+            if(!destinationDirectory.Contains(".svn"))
             {
                 string[] allFiles = Directory.GetFiles(sourceDirectory);
                 string[] allSubDirectories = Directory.GetDirectories(sourceDirectory);
 
-                foreach (string file in allFiles)
+                foreach(string file in allFiles)
                 {
                     File.Copy(file, Path.Combine(destinationDirectory, Path.GetFileName(file)));
                 }
 
-                foreach (string directory in allSubDirectories)
+                foreach(string directory in allSubDirectories)
                 {
                     string newDestination = Path.Combine(destinationDirectory, directory.Remove(0, sourceDirectory.Length + 1));
                     Directory.CreateDirectory(newDestination);
@@ -227,14 +221,14 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             StreamWriter writer = serverProcess.StandardInput;
             StreamReader reader = serverProcess.StandardOutput;
             string theLine = "";
-            while (theLine.Contains("Press any key to exit"))
+            while(theLine.Contains("Press any key to exit"))
             {
                 theLine = reader.ReadLine();
             }
 
             writer.WriteLine((char)(13));
 
-            if (!serverProcess.WaitForExit(15000))
+            if(!serverProcess.WaitForExit(15000))
             {
                 Assert.Fail("Server process failed to automatically terminate");
             }
@@ -249,7 +243,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void ExternalDependencies_Test()
         {
-            if (File.Exists(_lifecycleServerConfigFile))
+            if(File.Exists(_lifecycleServerConfigFile))
             {
                 File.Delete(_lifecycleServerConfigFile);
             }
@@ -328,9 +322,9 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [ClassCleanup]
         public static void Cleanup()
         {
-            if (_hasInitialized)
+            if(_hasInitialized)
             {
-                if (Directory.Exists(_lifecycleServerRootDirectory))
+                if(Directory.Exists(_lifecycleServerRootDirectory))
                 {
                     Directory.Delete(_lifecycleServerRootDirectory, true);
                 }

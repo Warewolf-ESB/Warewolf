@@ -99,6 +99,8 @@ namespace Dev2.Runtime.ServiceModel
                         service.Recordsets = preTestRSData;
                         service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
                     }
+
+                    jsonMapTask.Dispose();
                 }
                 else
                 {
@@ -148,7 +150,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         #endregion
-        
+
         #region ExecuteRequest
 
         public static void ExecuteRequest(WebService service, bool throwError, out ErrorResultTO errors)
@@ -184,5 +186,5 @@ namespace Dev2.Runtime.ServiceModel
 
     }
 
-    
+
 }

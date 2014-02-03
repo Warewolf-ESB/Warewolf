@@ -200,6 +200,11 @@ namespace Dev2.Runtime.ServiceModel
                     throw;
                 }
             }
+            finally
+            {
+                // clean up client ;)
+                client.Dispose();
+            }
 
             return string.Empty;
         }

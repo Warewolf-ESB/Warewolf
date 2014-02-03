@@ -55,6 +55,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
             finally
             {
                 outputStream.Close();
+                outputStream.Dispose();
             }
         }
 

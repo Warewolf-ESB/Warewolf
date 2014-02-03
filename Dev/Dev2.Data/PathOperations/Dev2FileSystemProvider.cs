@@ -143,8 +143,11 @@ namespace Dev2.PathOperations
                 {
                     if(!RequiresAuth(dst))
                     {
-                        File.WriteAllBytes(dst.Path, src.ToByteArray());
-                        result = (int)src.Length;
+                        using(src)
+                        {
+                            File.WriteAllBytes(dst.Path, src.ToByteArray());
+                            result = (int)src.Length;
+                        }
                     }
                     else
                     {
@@ -165,8 +168,11 @@ namespace Dev2.PathOperations
                                     {
                                         // Do the operation here
 
-                                        File.WriteAllBytes(dst.Path, src.ToByteArray());
-                                        result = (int)src.Length;
+                                        using(src)
+                                        {
+                                            File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                            result = (int)src.Length;
+                                        }
 
 
                                         // remove impersonation now

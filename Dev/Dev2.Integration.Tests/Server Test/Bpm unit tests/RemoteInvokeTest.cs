@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            Assert.AreEqual(5, debugItems.Count);
+            Assert.AreEqual(6, debugItems.Count);
         }
     }
 }

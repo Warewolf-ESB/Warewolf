@@ -7,7 +7,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     /// Summary description for FindNetworkComputerServiceTest
     /// </summary>
     [TestClass]
-    [Ignore] // StringBuilder re-factor
     public class FindNetworkComputerServiceTest
     {
         /// <summary>

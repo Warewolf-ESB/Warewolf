@@ -292,15 +292,17 @@ namespace Unlimited.Framework
         /// <returns></returns>
         public string Inner()
         {
-            var reader = xmlData.CreateReader();
-            reader.MoveToContent();
-            string data = reader.ReadInnerXml();
-
-            if(DataListUtil.IsXml(data))
+            using(var reader = xmlData.CreateReader())
             {
-                return XElement.Parse(data).ToString();
+                reader.MoveToContent();
+                string data = reader.ReadInnerXml();
+
+                if(DataListUtil.IsXml(data))
+                {
+                    return XElement.Parse(data).ToString();
+                }
+                return data;
             }
-            return data;
         }
 
 

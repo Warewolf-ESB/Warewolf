@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Web;
+using Dev2.Common;
 using Dev2.Services.Security;
 
 namespace Dev2.Runtime.Security
@@ -75,6 +76,13 @@ namespace Dev2.Runtime.Security
                     return IsAuthorized(request.User, AuthorizationContext.Execute, GetResource(request));
 
                 case WebServerRequestType.HubConnect:
+                    var result = IsAuthorizedToConnect(request.User);
+                    if(!result)
+                    {
+                        this.LogError("AUTH ERROR FOR USER : " + request.User.Identity.Name);
+                        DumpPermissionsOnError(request.User);
+                    }
+                    return result;
                 case WebServerRequestType.EsbSendMemo:
                 case WebServerRequestType.EsbAddDebugWriter:
                 case WebServerRequestType.EsbExecuteCommand:

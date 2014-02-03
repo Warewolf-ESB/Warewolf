@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Specialized;
 using System.Net.Http;
 using Dev2.Runtime.WebServer.Responses;
 
 namespace Dev2.Runtime.WebServer
 {
-    public class WebServerContext : ICommunicationContext
+    public class WebServerContext : ICommunicationContext, IDisposable
     {
         readonly HttpRequestMessage _request;
 
@@ -36,5 +37,35 @@ namespace Dev2.Runtime.WebServer
             }
             return result;
         }
+
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            try
+            {
+                if(Request != null && Request.InputStream != null)
+                {
+                    Request.InputStream.Close();
+                    Request.InputStream.Dispose();
+                }
+                if(Response.Response != null)
+                {
+                    ResponseMessage.Dispose();
+                    Response.Response.Dispose();
+                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                // best effort to clean up ;)
+            }
+        }
+
+        #endregion
     }
 }

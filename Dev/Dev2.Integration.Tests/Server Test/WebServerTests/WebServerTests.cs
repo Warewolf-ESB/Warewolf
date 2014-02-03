@@ -24,17 +24,17 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
 
         readonly static string[] ServicesEndPoints =
         {
-            ServerSettings.WebserverURI,
+            ServerSettings.WebserverURI
         };
 
         readonly static string[] WebsiteEndPoints =
         {
-            ServerSettings.WebsiteServerUri,
+            ServerSettings.WebsiteServerUri
         };
 
         static readonly string[] SslEndPoints =
         {
-            ServerSettings.WebserverHttpsURI,
+            ServerSettings.WebserverHttpsURI
         };
 
         [TestMethod]
@@ -267,7 +267,7 @@ function SaveViewModel(saveUri, baseViewModel, saveFormID, environment) {"),
                 new Tuple<string, string>("Services/WebServiceViewModel.js", @"// Make this available to chrome debugger
 //@ sourceURL=WebServiceViewModel.js  
 
-function WebServiceViewModel(saveContainerID, resourceID, sourceName, environment, resourcePath) {"),
+function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment, resourcePath) {"),
                 new Tuple<string, string>("Sources/WebSourceViewModel.js", @"// Make this available to chrome debugger
 //@ sourceURL=WebSourceViewModel.js  
 
@@ -357,6 +357,7 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
         {
             foreach(var endPoint in endpoints)
             {
+                var requestPos = 0;
                 foreach(var request in requests)
                 {
                     //------------Setup for test--------------------------
@@ -391,6 +392,8 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                     {
                         Assert.Fail("{0} - {1}", wex.Message, url);
                     }
+
+                    requestPos++;
                 }
             }
         }

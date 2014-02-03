@@ -134,18 +134,24 @@ namespace Dev2.Runtime.Services.Specs.WebService
             Assert.IsNotNull(result);
             var resultXml = XElement.Parse(result);
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
-            var dataSet = new DataSet();
-            dataSet.ReadXml(dataElements.ToList()[0].CreateReader(), XmlReadMode.Auto);
-            var dataListTable = dataSet.Tables[0];
-            var rowID = 0;
-            foreach(var tableRow in table.Rows)
+            using(var dataSet = new DataSet())
             {
-                var dataRow = dataListTable.Rows[rowID];
-                foreach(var header in table.Header)
+
+                using(var reader = dataElements.ToList()[0].CreateReader())
                 {
-                    Assert.AreEqual(dataRow[header], tableRow[header]);
+                    dataSet.ReadXml(reader, XmlReadMode.Auto);
+                    var dataListTable = dataSet.Tables[0];
+                    var rowID = 0;
+                    foreach(var tableRow in table.Rows)
+                    {
+                        var dataRow = dataListTable.Rows[rowID];
+                        foreach(var header in table.Header)
+                        {
+                            Assert.AreEqual(dataRow[header], tableRow[header]);
+                        }
+                        rowID++;
+                    }
                 }
-                rowID++;
             }
         }
 

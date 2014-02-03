@@ -9,6 +9,8 @@ namespace Dev2.Runtime.WebServer.Controllers
 {
     public abstract class AbstractController : ApiController
     {
+        public WebServerContext Context { get; set; }
+
         protected virtual HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
             where TRequestHandler : class, IRequestHandler, new()
         {
@@ -16,12 +18,14 @@ namespace Dev2.Runtime.WebServer.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            var context = new WebServerContext(Request, requestVariables);
-            context.Request.User = User;
+
+            var context = new WebServerContext(Request, requestVariables) { Request = { User = User } };
             var handler = CreateHandler<TRequestHandler>();
 
             handler.ProcessRequest(context);
+
             return context.ResponseMessage;
+            
         }
 
         protected virtual bool IsAuthenticated()

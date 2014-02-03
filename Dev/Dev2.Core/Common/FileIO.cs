@@ -291,9 +291,11 @@ namespace Dev2
             CreateProvider();
             try
             {
-                var fileStream = _ioProvider.Get(sourceFilePath, userName, password);
-                returnData.FileBase64 = fileStream.ToBase64String();
-                returnData.Result = "File Retrieved";
+                using(var fileStream = _ioProvider.Get(sourceFilePath, userName, password))
+                {
+                    returnData.FileBase64 = fileStream.ToBase64String();
+                    returnData.Result = "File Retrieved";
+                }
             }
             catch(Exception ex)
             {

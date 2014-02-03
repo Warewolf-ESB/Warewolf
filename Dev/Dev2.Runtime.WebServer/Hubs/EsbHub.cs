@@ -105,8 +105,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <returns></returns>
         public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
         {
-            var internalServiceRequestHandler = new InternalServiceRequestHandler();
-            internalServiceRequestHandler.ExecutingUser = Context.User;
+            var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
             try
             {
                 var task = new Task<Receipt>(() =>
@@ -168,6 +167,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     return null;
                 });
                 task.Start();
+
                 return await task;
             }
             catch(Exception e)
