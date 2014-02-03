@@ -18,6 +18,8 @@ namespace Dev2.Studio.Core.Interfaces.DataList
         ObservableCollection<IDataListItemModel> RecsetCollection { get; }
 
         ObservableCollection<IDataListItemModel> DataList { get; }
+        bool HasErrors { get; }
+        string DataListErrorMessage { get; }
 
         /// <summary>
         /// Removes the data list item.

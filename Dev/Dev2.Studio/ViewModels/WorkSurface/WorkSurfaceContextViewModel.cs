@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.View;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Messages;
@@ -8,6 +13,7 @@ using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.Interfaces;
@@ -23,11 +29,8 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Utils;
 using Dev2.Workspaces;
-using System;
-using System.Activities.Presentation.View;
-using System.Linq;
-using System.Windows.Input;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     /// <summary>
@@ -420,9 +423,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
+            var succesfulSave = Save(resourceModel, true);
+            if(!succesfulSave)
+            {
+                return;
+            }
             SetDebugStatus(DebugStatus.Configure);
-
-            Save(resourceModel, true);
             var inputDataViewModel = SetupForDebug(resourceModel, isDebug);
             _windowManager.ShowDialog(inputDataViewModel);
         }
@@ -473,7 +479,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
-            Save(ContextualResourceModel, false);
+            var successfuleSave = Save(ContextualResourceModel, true);
+            if(!successfuleSave)
+            {
+                return;
+            }
             var workflowInputDataViewModel = GetWorkflowInputDataViewModel(ContextualResourceModel, false);
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.ViewInBrowser();
@@ -481,8 +491,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickDebug()
         {
+            var successfuleSave = Save(ContextualResourceModel, true);
+            if(!successfuleSave)
+            {
+                return;
+            }
             SetDebugStatus(DebugStatus.Configure);
-            Save(ContextualResourceModel, true);
             var inputDataViewModel = SetupForDebug(ContextualResourceModel, true);
             inputDataViewModel.LoadWorkflowInputs();
             inputDataViewModel.Save();
@@ -529,17 +543,24 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        protected virtual void Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
         {
             if(resource == null || !resource.UserPermissions.IsContributor())
             {
-                return;
+                return false;
+            }
+
+            if(DataListViewModel!=null && DataListViewModel.HasErrors)
+            {
+                PopupController controller = new PopupController("Error Saving", "Please resolve the variable(s) errors below, before saving." + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage, MessageBoxImage.Error, MessageBoxButton.OK);
+                controller.Show();
+                return false;
             }
 
             if(resource.IsNewWorkflow && !isLocalSave)
             {
                 ShowSaveDialog(resource, addToTabManager);
-                return;
+                return true;
             }
 
             FindMissing();
@@ -561,6 +582,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             this.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
             EventPublisher.Publish(new UpdateDeployMessage());
+            return true;
         }
 
         void CheckForServerMessages(IContextualResourceModel resource)

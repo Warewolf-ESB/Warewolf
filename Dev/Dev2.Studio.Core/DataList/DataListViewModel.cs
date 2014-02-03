@@ -1,7 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Providers.Logs;
@@ -14,11 +20,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
@@ -74,6 +75,24 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get { return CreateFullDataList(); }
         }
+        public bool HasErrors
+        {
+            get
+            {
+                if(DataList == null || DataList.Count == 0)
+                {
+                    return false;
+                }
+                return DataList.Any(model =>
+                {
+                    if(RecordSetHasChildren(model))
+                    {
+                        return model.HasError || model.Children.Any(child => child.HasError);
+                    }
+                    return model.HasError;
+                });
+            }
+        }
 
         public ObservableCollection<IDataListItemModel> ScalarCollection
         {
@@ -109,7 +128,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        //2013.06.04: Ashley Lewis for bug 9280 - sort both ways
         bool _toggleSortOrder = true;
 
         #endregion Properties
@@ -124,7 +142,6 @@ namespace Dev2.Studio.ViewModels.DataList
         public DataListViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-
         }
 
         #endregion
@@ -1225,6 +1242,63 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
             }
             return new List<IDataListVerifyPart>();
+        }
+
+        public string DataListErrorMessage
+        {
+            get
+            {
+                if(HasErrors)
+                {
+                    var allErrorMessages = DataList.Select(model =>
+                    {
+                        string errorMessage;
+                        if(BuildRecordSetErrorMessages(model, out errorMessage))
+                        {
+                            return errorMessage;
+                        }
+                        if(model.HasError)
+                        {
+                            return BuildErrorMessage(model);
+                        }
+                        return null;
+                    });
+                    var completeErrorMessage = string.Join(Environment.NewLine, allErrorMessages.Where(s => !string.IsNullOrEmpty(s)));
+                    return completeErrorMessage;
+                }
+                return "";
+            }
+        }
+
+        static bool BuildRecordSetErrorMessages(IDataListItemModel model, out string errorMessage)
+        {
+            errorMessage = "";
+            if(RecordSetHasChildren(model))
+            {
+                if(model.HasError)
+                {
+                    {
+                        errorMessage = BuildErrorMessage(model);
+                        return true;
+                    }
+                }
+                var childErrors = model.Children.Where(child => child.HasError);
+                {
+                    errorMessage = string.Join(Environment.NewLine, childErrors.Select(BuildErrorMessage));
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool RecordSetHasChildren(IDataListItemModel model)
+        {
+            return model.IsRecordset && model.Children != null && model.Children.Count > 0;
+        }
+
+        static string BuildErrorMessage(IDataListItemModel model)
+        {
+            return DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
         }
     }
 }

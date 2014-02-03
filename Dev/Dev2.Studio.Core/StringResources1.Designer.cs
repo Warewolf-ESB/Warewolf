@@ -501,7 +501,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This variable is duplicating the name of a recordset. You cannot enter any duplicate names in the Data List.
+        ///   Looks up a localized string similar to The recordset name is a duplicate of an existing recordset. Recordset names must be unique..
         /// </summary>
         public static string ErrorMessageDuplicateRecordset {
             get {
@@ -510,7 +510,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You cannot enter duplicate names in the Data List.
+        ///   Looks up a localized string similar to Variable names must be unique..
         /// </summary>
         public static string ErrorMessageDuplicateValue {
             get {
@@ -519,7 +519,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This recordset is duplicating the name of a variable. You cannot enter any duplicate names in the Data List.
+        ///   Looks up a localized string similar to This variable name is a duplicate of an existing variable. Variable names must be unique..
         /// </summary>
         public static string ErrorMessageDuplicateVariable {
             get {
@@ -528,7 +528,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset can not be empty.
+        ///   Looks up a localized string similar to Recordset must contain one or more field(s)..
         /// </summary>
         public static string ErrorMessageEmptyRecordSet {
             get {
@@ -537,7 +537,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You have entered invalid characters.
+        ///   Looks up a localized string similar to Variable names can only contain letters..
         /// </summary>
         public static string ErrorMessageInvalidChar {
             get {

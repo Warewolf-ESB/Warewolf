@@ -13,7 +13,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.ViewModels.Diagnostics;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -40,7 +39,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(null, new Mock<IWorkSurfaceViewModel>().Object);
+            new WorkSurfaceContextViewModel(null, new Mock<IWorkSurfaceViewModel>().Object);
             //------------Assert Results-------------------------
         }
 
@@ -53,7 +52,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new WorkSurfaceKey(), null);
+            new WorkSurfaceContextViewModel(new WorkSurfaceKey(), null);
             //------------Assert Results-------------------------
         }
 
@@ -302,7 +301,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             CompositionInitializer.InitializeForMeflessBaseViewModel();
-            var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -311,8 +309,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
             //workSurfaceContextViewModel.WorkSurfaceViewModel = new Mock<IWorkSurfaceViewModel>().Object;
             //------------Execute Test---------------------------
             var mockServiceDebugInfoModel = new Mock<IServiceDebugInfoModel>();
@@ -326,8 +322,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.SetupGet(p => p.ServerID).Returns(It.IsAny<Guid>);
 
             mockServiceDebugInfoModel.SetupGet(p => p.ResourceModel).Returns(mockResourceModel.Object);
-            var inputDataViewModel = new WorkflowInputDataViewModel(mockServiceDebugInfoModel.Object, workSurfaceContextViewModel.DebugOutputViewModel.SessionID) { Parent = workSurfaceContextViewModel };
-            WorkflowInputDataViewModel temp = inputDataViewModel;
             //------------Assert---------------------------------
             //mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
         }
@@ -609,9 +603,10 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         public int SaveHitCount { get; private set; }
 
-        protected override void Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected override bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
         {
             SaveHitCount++;
+            return true;
         }
 
     }

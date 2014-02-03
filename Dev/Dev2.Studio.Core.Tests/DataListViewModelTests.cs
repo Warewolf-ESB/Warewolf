@@ -213,7 +213,7 @@ namespace Dev2.Core.Tests
 
         #endregion Add Missing Tests
 
-        
+
 
         #region RemoveUnused Tests
 
@@ -260,9 +260,9 @@ namespace Dev2.Core.Tests
             var dataListItemModels = CreateDataListItems(_dataListViewModel, parts, true);
             foreach(var dataListItemModel in dataListItemModels)
             {
-                _dataListViewModel.ScalarCollection.Add(dataListItemModel);    
+                _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             }
-                        
+
             //-------------------------Execute Test ------------------------------------------
             _dataListViewModel.SetUnusedDataListItems(parts);
             //-------------------------Assert Resule------------------------------------------
@@ -628,10 +628,56 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(item);
 
             Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[0].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
             Assert.AreEqual(true, _dataListViewModel.RecsetCollection[0].Children[1].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_FieldNamesDuplicated_HasErrorsTrue()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            _dataListViewModel.RecsetCollection.Clear();
+            _dataListViewModel.ScalarCollection.Clear();
+
+            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
+            var part = new Mock<IDataListVerifyPart>();
+            part.Setup(c => c.Recordset).Returns("ab");
+            part.Setup(c => c.DisplayValue).Returns("[[ab()]]");
+            part.Setup(c => c.Description).Returns("");
+            part.Setup(c => c.IsScalar).Returns(false);
+            part.Setup(c => c.Field).Returns("");
+            parts.Add(part.Object);
+
+            var part2 = new Mock<IDataListVerifyPart>();
+            part2.Setup(c => c.Recordset).Returns("ab");
+            part2.Setup(c => c.DisplayValue).Returns("[[ab().c]]");
+            part2.Setup(c => c.Description).Returns("");
+            part2.Setup(c => c.IsScalar).Returns(false);
+            part2.Setup(c => c.Field).Returns("c");
+            parts.Add(part2.Object);
+
+            _dataListViewModel.AddMissingDataListItems(parts, false);
+
+            IDataListItemModel item = new DataListItemModel("ab().c");
+            item.Name = "c";
+            item.Parent = _dataListViewModel.RecsetCollection[0];
+
+            _dataListViewModel.RecsetCollection[0].Children.Insert(1, item);
+
+            _dataListViewModel.RemoveBlankRows(item);
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+            //------------Execute Test---------------------------
+            _dataListViewModel.ValidateNames(item);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_dataListViewModel.HasErrors);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
+        }
+
 
         [TestMethod]
         public void AddMissingDataListItemsAndThenAddManualy_IsNotField_AddRecordSetWhenDataListContainsRecordsertWithSameName()
@@ -687,9 +733,9 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[1].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
         }
 
         [TestMethod]
@@ -706,9 +752,9 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[0].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[0].ErrorMessage);
             Assert.IsTrue(_dataListViewModel.RecsetCollection[0].Children[1].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.RecsetCollection[0].Children[1].ErrorMessage);
         }
 
         [TestMethod]
@@ -755,9 +801,9 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[0].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[0].ErrorMessage);
             Assert.IsTrue(_dataListViewModel.ScalarCollection[1].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[1].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[1].ErrorMessage);
         }
 
         [TestMethod]
@@ -774,9 +820,9 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(item);
             //------------Assert Results-------------------------
             Assert.IsTrue(_dataListViewModel.ScalarCollection[0].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[0].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[0].ErrorMessage);
             Assert.IsTrue(_dataListViewModel.ScalarCollection[1].HasError);
-            Assert.AreEqual("You cannot enter duplicate names in the Data List", _dataListViewModel.ScalarCollection[1].ErrorMessage);
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, _dataListViewModel.ScalarCollection[1].ErrorMessage);
         }
 
         [TestMethod]
@@ -944,12 +990,12 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------            
             Setup();
-            var child = DataListItemModelFactory.CreateDataListModel("Child");           
+            var child = DataListItemModelFactory.CreateDataListModel("Child");
             var originalchild = DataListItemModelFactory.CreateDataListModel("");
             var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
-            parent.Children.Add(originalchild);           
-            
-            
+            parent.Children.Add(originalchild);
+
+
             //------------Execute Test---------------------------
 
             child.Parent = parent;
@@ -959,7 +1005,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
 
             _dataListViewModel.RecsetCollection.Last().Children[0] = child;
-            _dataListViewModel.ValidateNames(child);            
+            _dataListViewModel.ValidateNames(child);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(parent.HasError);
@@ -1010,7 +1056,7 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(dataListItemModel.Children[0].HasError);
             Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.Children[0].ErrorMessage);
-        }       
+        }
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
@@ -1021,12 +1067,32 @@ namespace Dev2.Core.Tests
 
             var child = DataListItemModelFactory.CreateDataListModel("");
             var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
-            
+
             parent.Children.Add(child);
             _dataListViewModel.RecsetCollection.Add(parent);
             _dataListViewModel.ValidateNames(parent);
             Assert.IsTrue(parent.HasError);
             Assert.AreEqual(StringResources.ErrorMessageEmptyRecordSet, parent.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_RecordSetWithNoItems_HasErrorTrue()
+        {
+            //------------Setup------------------------------------
+            Setup();
+
+            var child = DataListItemModelFactory.CreateDataListModel("");
+            var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
+
+            parent.Children.Add(child);
+            _dataListViewModel.RecsetCollection.Add(parent);
+            //----------------------Execute--------------------------------
+            _dataListViewModel.ValidateNames(parent);
+            //----------------------Assert---------------------------------
+            Assert.IsTrue(_dataListViewModel.HasErrors);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, parent.ErrorMessage);
         }
 
         [TestMethod]
@@ -1039,8 +1105,8 @@ namespace Dev2.Core.Tests
             var child = DataListItemModelFactory.CreateDataListModel("Child");
             var parent = DataListItemModelFactory.CreateDataListModel("RecordSet");
             parent.Children.Add(child);
-             _dataListViewModel.RecsetCollection.Add(parent);
-            _dataListViewModel.ValidateNames(parent);            
+            _dataListViewModel.RecsetCollection.Add(parent);
+            _dataListViewModel.ValidateNames(parent);
             Assert.IsFalse(parent.HasError);
         }
         #endregion
@@ -1061,6 +1127,24 @@ namespace Dev2.Core.Tests
             dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
             Assert.AreEqual(StringResources.ErrorMessageInvalidChar, dataListItemModel.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_ItemHasInvalidChar_ErrorNotRemovedFromDuplicateCheck()
+        {
+            //------------Setup for test--------------------------
+            var dataListViewModel = new DataListViewModel();
+            IDataListItemModel dataListItemModel = new DataListItemModel("test@");
+            dataListItemModel.HasError = true;
+            dataListItemModel.ErrorMessage = StringResources.ErrorMessageInvalidChar;
+            dataListViewModel.ScalarCollection.Add(dataListItemModel);
+            //------------Execute Test---------------------------
+            dataListViewModel.ValidateNames(dataListItemModel);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListViewModel.HasErrors);
+            StringAssert.Contains(dataListViewModel.DataListErrorMessage, dataListItemModel.ErrorMessage);
         }
 
         [TestMethod]
@@ -1139,7 +1223,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListItemModel.HasError);            
+            Assert.IsFalse(dataListItemModel.HasError);
         }
 
         [TestMethod]
@@ -1154,7 +1238,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ScalarCollection.Add(dataListItemModel);
             _dataListViewModel.ValidateNames(dataListItemModel);
             //------------Assert Results-------------------------
-            Assert.IsFalse(dataListItemModel.HasError);            
+            Assert.IsFalse(dataListItemModel.HasError);
         }
 
         [TestMethod]
@@ -1179,6 +1263,28 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_ScalarsWithDuplicateName_ItemHasErrorTrue()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            var dataListItemModel2 = DataListItemModelFactory.CreateDataListModel("TestScalar1");
+            //------------Execute Test---------------------------
+            _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
+            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.ScalarCollection.Add(dataListItemModel2);
+            _dataListViewModel.ValidateNames(dataListItemModel2);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListItemModel1.HasError);
+            Assert.IsTrue(dataListItemModel2.HasError);
+            Assert.IsTrue(_dataListViewModel.HasErrors);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, dataListItemModel1.ErrorMessage);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, dataListItemModel2.ErrorMessage);
+        }
+
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DataListViewModel_ValidateNames")]
         public void DataListViewModel_ValidateNames_RemoveScalarsWithDuplicateName_ItemHasErrorFalse()
@@ -1192,13 +1298,15 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ValidateNames(dataListItemModel1);
             _dataListViewModel.ScalarCollection.Add(dataListItemModel2);
             _dataListViewModel.ValidateNames(dataListItemModel2);
-            
+
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(dataListItemModel2.HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, dataListItemModel1.ErrorMessage);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, dataListItemModel2.ErrorMessage);
 
-            _dataListViewModel.ScalarCollection.FirstOrDefault(c => c.Name == "TestScalar1").Name = "TestScalar2";
+            var dataListItemModel = _dataListViewModel.ScalarCollection.FirstOrDefault(c => c.Name == "TestScalar1");
+            Assert.IsNotNull(dataListItemModel);
+            dataListItemModel.Name = "TestScalar2";
 
 
 
@@ -1229,7 +1337,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(dataListItemModel2.HasError);
         }
 
-        #endregion       
+        #endregion
 
         #region Mixed Scalar and Recordset Tests
 
@@ -1253,7 +1361,29 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListItemModel1.HasError);
             Assert.IsTrue(newItem.HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, dataListItemModel1.ErrorMessage);
-            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, newItem.ErrorMessage);                  
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, newItem.ErrorMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DataListViewModel_HasErrors")]
+        public void DataListViewModel_HasErrors_AddRecordsetWithDuplicateScalar_RecordsetHasDuplicateVariableErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var dataListItemModel1 = DataListItemModelFactory.CreateDataListModel("TestScalar");
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestScalar");
+            IDataListItemModel newItemsChild = DataListItemModelFactory.CreateDataListModel("Field");
+            newItem.Children.Add(newItemsChild);
+            //------------Execute Test---------------------------
+            _dataListViewModel.ScalarCollection.Add(dataListItemModel1);
+            _dataListViewModel.ValidateNames(dataListItemModel1);
+            _dataListViewModel.RecsetCollection.Add(newItem);
+            _dataListViewModel.ValidateNames(newItem);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_dataListViewModel.HasErrors);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, dataListItemModel1.ErrorMessage);
+            StringAssert.Contains(_dataListViewModel.DataListErrorMessage, newItem.ErrorMessage);
         }
 
         [TestMethod]
@@ -1265,9 +1395,9 @@ namespace Dev2.Core.Tests
             Setup();
             IDataListItemModel existingRecordset = DataListItemModelFactory.CreateDataListModel("TestRecordset");
             IDataListItemModel existingRecordsetChild = DataListItemModelFactory.CreateDataListModel("Field");
-            existingRecordset.Children.Add(existingRecordsetChild);            
-            
-            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestRecordset");           
+            existingRecordset.Children.Add(existingRecordsetChild);
+
+            IDataListItemModel newItem = DataListItemModelFactory.CreateDataListModel("TestRecordset");
             //------------Execute Test---------------------------
             _dataListViewModel.RecsetCollection.Add(existingRecordset);
             _dataListViewModel.ValidateNames(existingRecordset);
@@ -1277,7 +1407,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(existingRecordset.HasError);
             Assert.IsTrue(newItem.HasError);
             Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, existingRecordset.ErrorMessage);
-            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, newItem.ErrorMessage);          
+            Assert.AreEqual(StringResources.ErrorMessageDuplicateValue, newItem.ErrorMessage);
         }
 
         [TestMethod]

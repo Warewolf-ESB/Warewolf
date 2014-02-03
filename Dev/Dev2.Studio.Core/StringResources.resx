@@ -374,16 +374,16 @@
     <value>//Outputs</value>
   </data>
   <data name="ErrorMessageDuplicateValue" xml:space="preserve">
-    <value>You cannot enter duplicate names in the Data List</value>
+    <value>Variable names must be unique.</value>
   </data>
   <data name="ErrorMessageDuplicateVariable" xml:space="preserve">
-    <value>This recordset is duplicating the name of a variable. You cannot enter any duplicate names in the Data List</value>
+    <value>This variable name is a duplicate of an existing variable. Variable names must be unique.</value>
   </data>
   <data name="ErrorMessageDuplicateRecordset" xml:space="preserve">
-    <value>This variable is duplicating the name of a recordset. You cannot enter any duplicate names in the Data List</value>
+    <value>The recordset name is a duplicate of an existing recordset. Recordset names must be unique.</value>
   </data>
   <data name="ErrorMessageInvalidChar" xml:space="preserve">
-    <value>You have entered invalid characters</value>
+    <value>Variable names can only contain letters.</value>
   </data>
   <data name="User_Interface_Layouts_Directory" xml:space="preserve">
     <value>UserInterfaceLayouts</value>
@@ -432,7 +432,7 @@ Sofware development by: www.dev2.co.za
     <value>pack://application:,,,/Warewolf Studio;component/images/GenericHelp-16.png</value>
   </data>
   <data name="ErrorMessageEmptyRecordSet" xml:space="preserve">
-    <value>Recordset can not be empty</value>
+    <value>Recordset must contain one or more field(s).</value>
   </data>
   <data name="DefaultEnvironmentName" xml:space="preserve">
     <value>localhost</value>
