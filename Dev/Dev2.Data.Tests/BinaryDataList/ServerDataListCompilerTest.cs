@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
-using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices.Test;
@@ -19,11 +18,11 @@ namespace Dev2.Data.Tests.BinaryDataList
     public class ServerDataListCompilerTest
     {
         private readonly IEnvironmentModelDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();
-        
-        private static readonly string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
-        private static readonly string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
 
-        private static DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
+        const string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
+        const string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
+
+        private static readonly DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
 
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
-            
+
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[rs1(*).f1]] [[rs1(*).f1]]", out errors);
 
             var res1 = (result.FetchRecordAt(1, out error))[0].TheValue;
@@ -101,7 +100,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, _dataListWellformed, out errors);
-            
+
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[scalar1]]", out errors);
 
             var res1 = result.FetchScalar().TheValue;
@@ -217,7 +216,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual("f1.2 some cool static data ;) even more static data ;)", res2);
 
         }
-         
+
         [TestMethod]
         public void EvaluateRecordsetWithStarIndexAndStaticDataAndScalarPreFixExpectStaticDataAppendedToAllRecordsetEntries()
         {
@@ -295,9 +294,8 @@ namespace Dev2.Data.Tests.BinaryDataList
                 Console.WriteLine(myDate);
             }
 
-            IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
+            IBinaryDataListEntry upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = _sdlc.Upsert(null, dlID, "[[scalar1]]", upsertEntry, out errors);
@@ -320,9 +318,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             string error;
 
-            IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
+            IBinaryDataListEntry upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = _sdlc.Upsert(null, dlID, "[[[[scalar1]]]]", upsertEntry, out errors);
@@ -345,9 +342,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             string error;
 
-            IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
+            IBinaryDataListEntry upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = _sdlc.Upsert(null, dlID, "[[rs1(5).f2]]", upsertEntry, out errors);
@@ -370,9 +366,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             string error;
 
-            IBinaryDataListEntry upsertEntry;
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
-            upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
+            IBinaryDataListEntry upsertEntry = Dev2BinaryDataListFactory.CreateEntry("scalar2", string.Empty, dlID);
             upsertEntry.TryPutScalar(toUpsert, out error);
 
             Guid upsertID = _sdlc.Upsert(null, dlID, "[[rs1().f2]]", upsertEntry, out errors);
@@ -456,7 +451,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             Assert.AreEqual("scalar3", res);
             Assert.AreEqual("f1.1", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 1, out error).TheValue);
-            
+
         }
 
         [TestMethod]
@@ -502,8 +497,22 @@ namespace Dev2.Data.Tests.BinaryDataList
             var aliasValue2 = rs2Aliases.Values.FirstOrDefault();
 
             // Check the MasterNamespace
-            Assert.AreEqual("rs1", aliasValue1.MasterNamespace);
-            Assert.AreEqual("rs1a", aliasValue2.MasterNamespace);
+            if(aliasValue1 != null)
+            {
+                Assert.AreEqual("rs1", aliasValue1.MasterNamespace);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+            if(aliasValue2 != null)
+            {
+                Assert.AreEqual("rs1a", aliasValue2.MasterNamespace);
+            }
+            else
+            {
+                Assert.Fail();
+            }
 
             // Finally check the MasterKeyID
             Assert.AreEqual(dlID, aliasValue1.MasterKeyID);
@@ -528,7 +537,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
 
             IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, shapedInputID, out errors);
-            
+
             IBinaryDataListEntry tmp;
             IBinaryDataListEntry tmpRS;
             bdl.TryGetEntry("rs1", out tmpRS, out error);
@@ -614,7 +623,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string inputs = @"<Inputs><Input Name=""scalar1"" Source="""" DefaultValue=""""><Validator Type=""Required"" /></Input></Inputs>";
 
             //------------Execute Test---------------------------
-            Guid shapedInputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
+            _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, inputs, out errors);
 
             //------------Assert Results-------------------------
             Assert.AreEqual("Required input [[scalar1]] cannot be populated", errors.MakeDisplayReady());
@@ -814,7 +823,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
-            
+
             //------------Execute Test---------------------------
             Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, outputs, out errors);
 
@@ -833,7 +842,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Assert Results-------------------------
             Assert.AreEqual("c2", res);
             Assert.AreEqual("rs2.f1.3", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 5, out error).TheValue);
-    
+
         }
 
         [TestMethod]

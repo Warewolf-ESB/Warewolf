@@ -19,12 +19,15 @@ namespace Dev2.Diagnostics
             DebugStates = new List<DebugState>();
             reader.MoveToContent();
             reader.ReadStartElement();
+
             while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugState")
             {
                 var item = new DebugState();
                 item.ReadXml(reader);
                 DebugStates.Add(item);
             }
+
+
             reader.ReadEndElement();
         }
 

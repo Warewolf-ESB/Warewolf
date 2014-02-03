@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Dev2.Studio.Core.Interfaces;
-using Unlimited.Framework;
 
 
 namespace Dev2.Studio.InterfaceImplementors
@@ -27,11 +25,11 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             List<IntellisenseProviderResult> results = new List<IntellisenseProviderResult>();
 
-            foreach (IIntellisenseProvider provider in this)
+            foreach(IIntellisenseProvider provider in this)
             {
-                if (provider.Optional)
+                if(provider.Optional)
                 {
-                    if (results.Where(r => r.IsError == false).Count() == 0 || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
+                    if(results.Where(r => r.IsError == false).Count() == 0 || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                     {
                         IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
                         results.AddRange(subset);
@@ -49,7 +47,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Dispose()
         {
-            for (int i = 0; i < Count; i++) this[i].Dispose();
+            for(int i = 0; i < Count; i++) this[i].Dispose();
             Clear();
         }
 

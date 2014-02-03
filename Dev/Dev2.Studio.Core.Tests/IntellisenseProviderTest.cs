@@ -66,6 +66,28 @@ namespace Dev2.Core.Tests
 
         #region GetIntellisenseResults
 
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
+        public void IntellisenseProvider_GetIntellisenseResults_CommaSeperatedListOfCompleteValuesAndCaretInMiddle_NoResults()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 13,
+                InputText = "[[rec2().s]], [[rec2().e]], [[rec2().t]]",
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
+
+            //------------Execute Test---------------------------
+            var getResults = new DefaultIntellisenseProvider().GetIntellisenseResults(context);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, getResults.Count);
+
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("IntellisenseProvider_GetIntellisenseResults")]
@@ -1087,6 +1109,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("[[City()]]", getResults[0].ToString(), "Intellisense got recordset filtered results incorrectly");
             Assert.AreEqual("Invalid Expression", getResults[1].ToString());
         }
+
         [TestMethod]
         public void PerformResultInsertionWithRecordsetFilterExpectedCompleteResult()
         {

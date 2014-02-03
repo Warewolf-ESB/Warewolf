@@ -635,6 +635,7 @@ namespace Dev2.UI
         #region Events
         public event PropertyChangedEventHandler PropertyChanged;
         #endregion
+
         #region Constructor
         public IntellisenseTextBox()
         {

@@ -28,7 +28,7 @@ namespace Dev2.Utils
         /// <returns></returns>
         public IList<string> FormatDsfActivityField(string activityField)
         {
-            //2013.06.10: Ashley Lewis for bug 9306 - handle the case of missmatched region braces
+            //2013.06.10: Ashley Lewis for bug 9306 - handle the case of miss-matched region braces
 
             IList<string> result = new List<string>();
 
@@ -192,8 +192,6 @@ namespace Dev2.Utils
 
             return missingWorkflowParts;
         }
-
-
 
         public static void EditResource(IResourceModel resource, IEventAggregator eventAggregator)
         {

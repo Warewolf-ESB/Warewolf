@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Parsing.Intellisense;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Data.Enums;
+using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Logs;
@@ -55,7 +55,6 @@ namespace Dev2.Studio.InterfaceImplementors
         private bool _hasCachedDatalist;
         private string _cachedDataList;
         private IntellisenseTextBox _textBox;
-        private readonly SyntaxTreeBuilder _builder = new SyntaxTreeBuilder();
 
         #endregion
 
@@ -129,7 +128,6 @@ namespace Dev2.Studio.InterfaceImplementors
             string postString = string.Empty;
             string subStringToReplace = context.InputText;
             string result = context.InputText;
-            int startIndex = 0;
 
             if(!string.IsNullOrEmpty(input))
             {
@@ -176,6 +174,7 @@ namespace Dev2.Studio.InterfaceImplementors
                     }
                 }
 
+                int startIndex;
                 subStringToReplace = CalculateReplacmentForNonRecordsetIndex(context, subStringToReplace, out startIndex);
 
                 //Need to remove case sensativity ;)
@@ -276,58 +275,67 @@ namespace Dev2.Studio.InterfaceImplementors
 
         private string CleanupInput(string value, int pos, out int newPos)
         {
+
             var result = value;
             newPos = pos;
-            if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
-                {
-                    result = getBetweenBraces(result, pos, out newPos);
-                    pos = newPos;
-                }
 
-            // if empty default back to original value ;)
-            if(string.IsNullOrEmpty(result))
+            // Use language parser to find open parts!
+            var languageParser = new Dev2DataLanguageParser();
+
+            var parts = languageParser.MakeParts(value);
+
+            // continue to la-la land if we need do ;)
+            if(parts.Any(c => c.HangingOpen))
             {
-                result = value;
+                if(!value.StartsWith("{{")) while(IsBetweenBraces(result, pos - 1))
+                    {
+                        result = getBetweenBraces(result, pos, out newPos);
+                        pos = newPos;
+                    }
+
+                // if empty default back to original value ;)
+                if(string.IsNullOrEmpty(result))
+                {
+                    result = value;
+                }
+
+                var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
+
+                // is it recordset notation and the only value present?
+                if(!String.IsNullOrEmpty(rsName))
+                {
+                    var case1Len = 1;
+                    var case2Len = 2;
+
+                    if(result.Length == pos && !result.StartsWith("[["))
+                    {
+                        result = string.Concat("[[", result);
+                        newPos += 2;
+                    }
+                    else
+                    {
+                        // adjust len checks for when [[ already exist ;)
+                        case1Len += 2;
+                        case2Len += 3;
+                    }
+
+                    // we have a rs( case ;)
+                    if(rsName.Length + case1Len == value.Length)
+                    {
+                        // fake it to get recordset field data ;)
+                        result = string.Concat(result, ").");
+                        newPos += 2;
+                    }
+
+                    // we have a rs() case ;)
+                    if(rsName.Length + case2Len == value.Length)
+                    {
+                        // fake it to get recordset field data ;)
+                        result = string.Concat(result, ".");
+                        newPos += 1;
+                    }
+                }
             }
-
-            var rsName = DataListUtil.ExtractRecordsetNameFromValue(result);
-
-            // is it recordset notation and the only value present?
-            if(!String.IsNullOrEmpty(rsName))
-            {
-                var case1Len = 1;
-                var case2Len = 2;
-
-                if(result.Length == pos && !result.StartsWith("[["))
-                {
-                    result = string.Concat("[[", result);
-                    newPos += 2;
-                }
-                else
-                {
-                    // adjust len checks for when [[ already exist ;)
-                    case1Len += 2;
-                    case2Len += 3;
-                }
-
-                // we have a rs( case ;)
-                if(rsName.Length + case1Len == value.Length)
-                {
-                    // fake it to get recordset field data ;)
-                    result = string.Concat(result, ").");
-                    newPos += 2;
-                }
-
-                // we have a rs() case ;)
-                if(rsName.Length + case2Len == value.Length)
-                {
-                    // fake it to get recordset field data ;)
-                    result = string.Concat(result, ".");
-                    newPos += 1;
-                }
-            }
-
-
 
             return result;
         }
@@ -378,7 +386,6 @@ namespace Dev2.Studio.InterfaceImplementors
                         int newPos;
                         inputText = CleanupInput(inputText, context.CaretPosition, out newPos); //2013.01.30: Ashley Lewis Added this part for Bug 6103
                         context.CaretPosition = newPos;
-                        string removeCsv;
                         if(context.CaretPosition > 0 && inputText.Length > 0 && context.CaretPosition < inputText.Length)
                         {
                             char letter = context.InputText[context.CaretPosition];
@@ -396,6 +403,7 @@ namespace Dev2.Studio.InterfaceImplementors
                         {
                             //consider csv input
                             var csv = inputText.Split(',');
+                            string removeCsv;
                             if(csv.Count() < 2)
                             {
                                 //non csv 
@@ -457,7 +465,9 @@ namespace Dev2.Studio.InterfaceImplementors
                                 {
                                     context.State = true;
 
+                                    // ReSharper disable PossibleNullReferenceException
                                     for(int i = 0; i < results.Count; i++)
+                                    // ReSharper restore PossibleNullReferenceException
                                     {
                                         IIntellisenseResult currentResult = results[i];
 
@@ -482,15 +492,16 @@ namespace Dev2.Studio.InterfaceImplementors
             string[] closeParts = Regex.Split(context.InputText, @"\]\]");
             if(openParts.Length != closeParts.Length)
             {
-                results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+                if(results != null)
+                {
+                    results.Add(IntellisenseFactory.CreateCalculateIntellisenseResult(2, 2, "Invalid Expression", "", StringResources.IntellisenseErrorMisMacthingBrackets));
+                }
             }
 
             if(results != null)
             {
-                for(int i = 0; i < results.Count; i++)
+                foreach(IIntellisenseResult currentResult in results)
                 {
-                    IIntellisenseResult currentResult = results[i];
-
                     if(currentResult.ErrorCode != enIntellisenseErrorCode.None)
                     {
                         if(currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
@@ -516,9 +527,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
             CreateDataList();
 
-            IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO();
-            filterTO.FilterType = filterType;
-            filterTO.FilterCondition = FilterCondition;
+            IntellisenseFilterOpsTO filterTO = new IntellisenseFilterOpsTO { FilterType = filterType, FilterCondition = FilterCondition };
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 

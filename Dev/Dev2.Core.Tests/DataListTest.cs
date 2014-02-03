@@ -38,7 +38,7 @@ namespace DataListTset
         public void DataListFactory_CreateRecordSetCollection_WhenTwoRecordsetsArePresent_ExpectTwoRecordsetDefinitions()
         {
             //------------Setup for test--------------------------
-            var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+            const string arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Latitude"" MapsTo=""[[Latitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
             var defs = DataListFactory.CreateOutputParser().Parse(arguments);
 
             //------------Execute Test---------------------------
@@ -65,7 +65,7 @@ namespace DataListTset
         public void DataListFactory_ParseAndAllowBlanks_WhenTwoRecordsetsArePresentWithBlankMapsToAndName_ExpectTwoRecordsetDefinitionsBlankColumnNotIncluded()
         {
             //------------Setup for test--------------------------
-            var arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name="""" MapsTo="""" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
+            const string arguments = @"<Outputs><Output Name=""MapLocationID"" MapsTo=""[[MapLocationID]]"" Value=""[[dbo_proc_GetAllMapLocations(*).MapLocationID]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""StreetAddress"" MapsTo=""[[StreetAddress]]"" Value=""[[dbo_proc_GetAllMapLocations2(*).StreetAddress]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name="""" MapsTo="""" Value=""[[dbo_proc_GetAllMapLocations(*).Latitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /><Output Name=""Longitude"" MapsTo=""[[Longitude]]"" Value=""[[dbo_proc_GetAllMapLocations(*).Longitude]]"" Recordset=""dbo_proc_GetAllMapLocations"" /></Outputs>";
             var defs = DataListFactory.CreateOutputParser().ParseAndAllowBlanks(arguments);
 
             //------------Execute Test---------------------------
@@ -153,7 +153,7 @@ namespace DataListTset
         [TestMethod]
         public void StripDoubleBracketNormal()
         {
-            string canidate = "[[abc()]]";
+            const string canidate = "[[abc()]]";
 
             string result = DataListCleaningUtils.stripDoubleBracketsAndRecordsetNotation(canidate);
 
@@ -163,17 +163,17 @@ namespace DataListTset
         [TestMethod]
         public void StripDoubleBracketNone()
         {
-            string canidate = "abc()";
+            const string canidate = "abc()";
 
             string result = DataListCleaningUtils.stripDoubleBracketsAndRecordsetNotation(canidate);
 
-            Assert.AreEqual(canidate, "abc()");
+            Assert.AreEqual(result, "abc()");
         }
 
         [TestMethod]
         public void StripDoubleBracketRecursiveEval()
         {
-            string canidate = "[[[[abc()]]]]";
+            const string canidate = "[[[[abc()]]]]";
 
             string result = DataListCleaningUtils.stripDoubleBracketsAndRecordsetNotation(canidate);
 
@@ -187,9 +187,9 @@ namespace DataListTset
         [TestMethod]
         public void Extract_Index_From_Recordset()
         {
-            string shape = @"<DL><recset><a/></recset></DL>";
+            const string shape = @"<DL><recset><a/></recset></DL>";
 
-            string exp = "[[recset(1)]]";
+            const string exp = "[[recset(1)]]";
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
             IList<IIntellisenseResult> results = parser.ParseDataLanguageForIntellisense(exp, shape, true);
@@ -201,9 +201,9 @@ namespace DataListTset
         [TestMethod]
         public void Extract_Recordset()
         {
-            string shape = @"<DL><recset><a/></recset></DL>";
+            const string shape = @"<DL><recset><a/></recset></DL>";
 
-            string exp = "[[recset()]]";
+            const string exp = "[[recset()]]";
 
             IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
             IList<IIntellisenseResult> results = parser.ParseDataLanguageForIntellisense(exp, shape, true);

@@ -16,7 +16,6 @@ using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Logs;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
