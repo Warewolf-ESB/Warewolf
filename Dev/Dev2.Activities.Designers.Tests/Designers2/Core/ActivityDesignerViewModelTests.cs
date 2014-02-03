@@ -125,9 +125,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object);
-
-            viewModel.ShowLarge = true;
+            var viewModel = new TestActivityDesignerViewModel(mockModelItem.Object) { ShowLarge = true };
 
             //------------Execute Test---------------------------
             viewModel.Collapse();
@@ -151,17 +149,17 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             setupResourceModelMock.Setup(c => c.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo> { errorInfo });
             var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object);
 
-            Assert.IsTrue(viewModel.TitleBarToggles.Count == 2);
+            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
 
             viewModel.ShowLarge = true;
 
-            Assert.IsTrue(viewModel.TitleBarToggles.Count == 3);
+            Assert.AreEqual(3, viewModel.TitleBarToggles.Count);
 
             //------------Execute Test---------------------------
             viewModel.Collapse();
 
             //------------Assert Results-------------------------
-            Assert.IsTrue(viewModel.TitleBarToggles.Count == 2);
+            Assert.AreEqual(2, viewModel.TitleBarToggles.Count);
         }
 
         [TestMethod]
