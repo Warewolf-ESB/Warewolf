@@ -169,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DataListFactory.CreateOutputTO(FieldName, OutList);
         }
 
-        public bool Validate(string propertyName, RuleSet ruleSet)
+        public bool Validate(string propertyName, IRuleSet ruleSet)
         {
             if(ruleSet == null)
             {

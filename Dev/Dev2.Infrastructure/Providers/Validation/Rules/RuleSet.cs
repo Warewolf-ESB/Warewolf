@@ -5,7 +5,7 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class RuleSet
+    public class RuleSet : IRuleSet
     {
         public RuleSet(IEnumerable<RuleBase> rules = null)
         {

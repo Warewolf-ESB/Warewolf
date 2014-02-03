@@ -196,7 +196,7 @@ namespace Dev2
         #region Implementation of IPerformsValidation
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
-        public bool Validate(string propertyName, RuleSet ruleSet)
+        public bool Validate(string propertyName, IRuleSet ruleSet)
         {
             return false;
         }

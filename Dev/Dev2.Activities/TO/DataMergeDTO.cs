@@ -176,7 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override RuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName)
         {
             RuleSet ruleSet = new RuleSet();
             if(IsEmpty())

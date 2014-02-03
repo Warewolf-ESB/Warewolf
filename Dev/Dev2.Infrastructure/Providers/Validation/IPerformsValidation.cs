@@ -9,7 +9,7 @@ namespace Dev2.Providers.Validation
     {
         Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
 
-        bool Validate(string propertyName, RuleSet ruleSet);
+        bool Validate(string propertyName, IRuleSet ruleSet);
 
         bool Validate(string propertyName);
     }

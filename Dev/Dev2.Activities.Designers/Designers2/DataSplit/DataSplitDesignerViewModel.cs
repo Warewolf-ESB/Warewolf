@@ -94,7 +94,7 @@ namespace Dev2.Activities.Designers2.DataSplit
             }
         }
 
-        RuleSet GetRuleSet(string propertyName)
+        IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 

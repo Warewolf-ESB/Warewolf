@@ -217,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool Validate(string propertyName, RuleSet ruleSet)
+        public bool Validate(string propertyName, IRuleSet ruleSet)
         {
             // TODO: Implement Validate(string propertyName, RuleSet ruleSet) - see ActivityDTO
             return true;

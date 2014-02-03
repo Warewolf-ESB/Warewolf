@@ -176,6 +176,7 @@
     <Compile Include="TOTests\DataMergeTOTests.cs" />
     <Compile Include="TOTests\DataSplitDTOTests.cs" />
     <Compile Include="TOTests\FindRecordsTOTests.cs" />
+    <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="Utils\DsfFakeActivity.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\MockDsfNativeActivity.cs" />

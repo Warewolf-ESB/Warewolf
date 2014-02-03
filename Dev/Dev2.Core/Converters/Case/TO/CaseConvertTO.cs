@@ -188,7 +188,7 @@ namespace Dev2
             }
         }
 
-        public bool Validate(string propertyName, RuleSet ruleSet)
+        public bool Validate(string propertyName, IRuleSet ruleSet)
         {
             if (ruleSet == null)
             {

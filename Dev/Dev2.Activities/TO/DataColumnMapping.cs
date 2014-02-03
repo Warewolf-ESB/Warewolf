@@ -38,7 +38,7 @@ namespace Dev2.TO
 
         #endregion
 
-        public override RuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName)
         {
             return new RuleSet();
         }

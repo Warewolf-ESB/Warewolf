@@ -160,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                    || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeNone && string.IsNullOrEmpty(At);
         }
 
-        public override RuleSet GetRuleSet(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
             if(IsEmpty())
