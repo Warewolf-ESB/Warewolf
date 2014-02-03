@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -10,7 +7,7 @@ namespace Dev2.Diagnostics
 {
     public class Workflow : IXmlSerializable
     {
-        public IList<DebugState> DebugStates { get; set; } 
+        public IList<DebugState> DebugStates { get; set; }
 
         public System.Xml.Schema.XmlSchema GetSchema()
         {
@@ -22,7 +19,7 @@ namespace Dev2.Diagnostics
             DebugStates = new List<DebugState>();
             reader.MoveToContent();
             reader.ReadStartElement();
-            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugState")
+            while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugState")
             {
                 var item = new DebugState();
                 item.ReadXml(reader);
@@ -31,7 +28,7 @@ namespace Dev2.Diagnostics
             reader.ReadEndElement();
         }
 
-        public void WriteXml(System.Xml.XmlWriter writer)
+        public void WriteXml(XmlWriter writer)
         {
             throw new NotImplementedException();
         }

@@ -3,11 +3,8 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993] for details.
 // All other rights reserved.
 
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace System.Windows.Controls
@@ -18,7 +15,7 @@ namespace System.Windows.Controls
     /// etc., and also incorporates proper event semantics when the control is
     /// disabled.
     /// </summary>
-    internal sealed partial class InteractionHelper
+    internal sealed class InteractionHelper
     {
         // TODO: Consult with user experience experts to validate the double
         // click distance and time thresholds.
@@ -71,7 +68,7 @@ namespace System.Windows.Controls
         /// </summary>
         /// <remarks>
         /// The value is stored as Utc time because it is slightly more
-        /// performant than converting to local time.
+        /// per formant than converting to local time.
         /// </remarks>
         private DateTime LastClickTime { get; set; }
 
@@ -80,7 +77,7 @@ namespace System.Windows.Controls
         /// </summary>
         /// <remarks>The value is relative to the control.</remarks>
         private Point LastClickPosition { get; set; }
-        
+
         /// <summary>
         /// Gets the number of times the control was clicked.
         /// </summary>
@@ -89,7 +86,7 @@ namespace System.Windows.Controls
         /// <summary>
         /// Reference used to call UpdateVisualState on the base class.
         /// </summary>
-        private IUpdateVisualState _updateVisualState;
+        private readonly IUpdateVisualState _updateVisualState;
 
         /// <summary>
         /// Initializes a new instance of the InteractionHelper class.
@@ -124,7 +121,7 @@ namespace System.Windows.Controls
         /// </remarks>
         private void UpdateVisualState(bool useTransitions)
         {
-            if (_updateVisualState != null)
+            if(_updateVisualState != null)
             {
                 _updateVisualState.UpdateVisualState(useTransitions);
             }
@@ -140,19 +137,19 @@ namespace System.Windows.Controls
         public void UpdateVisualStateBase(bool useTransitions)
         {
             // Handle the Common states
-            if (!Control.IsEnabled)
+            if(!Control.IsEnabled)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateDisabled, VisualStates.StateNormal);
             }
-            else if (IsReadOnly)
+            else if(IsReadOnly)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateReadOnly, VisualStates.StateNormal);
             }
-            else if (IsPressed)
+            else if(IsPressed)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StatePressed, VisualStates.StateMouseOver, VisualStates.StateNormal);
             }
-            else if (IsMouseOver)
+            else if(IsMouseOver)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateMouseOver, VisualStates.StateNormal);
             }
@@ -162,7 +159,7 @@ namespace System.Windows.Controls
             }
 
             // Handle the Focused states
-            if (IsFocused)
+            if(IsFocused)
             {
                 VisualStates.GoToState(Control, useTransitions, VisualStates.StateFocused, VisualStates.StateUnfocused);
             }
@@ -190,8 +187,8 @@ namespace System.Windows.Controls
         /// <param name="e">Event arguments.</param>
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            bool enabled = (bool) e.NewValue;
-            if (!enabled)
+            bool enabled = (bool)e.NewValue;
+            if(!enabled)
             {
                 IsPressed = false;
                 IsMouseOver = false;
@@ -209,7 +206,7 @@ namespace System.Windows.Controls
         public void OnIsReadOnlyChanged(bool value)
         {
             IsReadOnly = value;
-            if (!value)
+            if(!value)
             {
                 IsPressed = false;
                 IsMouseOver = false;
@@ -237,13 +234,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowGotFocus(RoutedEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 IsFocused = true;
             }
@@ -269,13 +266,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowLostFocus(RoutedEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 IsFocused = false;
             }
@@ -302,13 +299,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowMouseEnter(MouseEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 IsMouseOver = true;
             }
@@ -334,13 +331,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowMouseLeave(MouseEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 IsMouseOver = false;
             }
@@ -366,13 +363,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 // Get the current position and time
                 DateTime now = DateTime.UtcNow;
@@ -387,7 +384,7 @@ namespace System.Windows.Controls
 
                 // Check if the values fall under the sequential click temporal
                 // and spatial thresholds
-                if (timeDelta < SequentialClickThresholdInMilliseconds &&
+                if(timeDelta < SequentialClickThresholdInMilliseconds &&
                     distance < SequentialClickThresholdInPixelsSquared)
                 {
                     // TODO: Does each click have to be within the single time
@@ -434,13 +431,13 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
 
             bool enabled = Control.IsEnabled;
-            if (enabled)
+            if(enabled)
             {
                 IsPressed = false;
             }
@@ -466,7 +463,7 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowKeyDown(KeyEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }
@@ -485,7 +482,7 @@ namespace System.Windows.Controls
         /// </returns>
         public bool AllowKeyUp(KeyEventArgs e)
         {
-            if (e == null)
+            if(e == null)
             {
                 throw new ArgumentNullException("e");
             }

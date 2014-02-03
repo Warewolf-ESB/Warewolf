@@ -9,7 +9,8 @@
 
 using Dev2.DynamicServices.Objects.Base;
 
-namespace Dev2.DynamicServices {
+namespace Dev2.DynamicServices
+{
     #region Using Directives
     using System.Collections.Generic;
     using System.Linq;
@@ -21,7 +22,8 @@ namespace Dev2.DynamicServices {
     /// Provides a representation of the input of a dynamic service
     /// Validates the input
     /// </summary>
-    public class ServiceActionInput : DynamicServiceObjectBase {
+    public class ServiceActionInput : DynamicServiceObjectBase
+    {
         #region Public Properties
 
 
@@ -57,25 +59,30 @@ namespace Dev2.DynamicServices {
         /// <summary>
         /// Initializes the service action input
         /// </summary>
-        public ServiceActionInput() : base(enDynamicServiceObjectType.ServiceActionInput) {
+        public ServiceActionInput()
+            : base(enDynamicServiceObjectType.ServiceActionInput)
+        {
             Validators = new List<Validator>();
         }
         #endregion
 
         #region Public Methods
-        public override bool Compile() {
+        public override bool Compile()
+        {
             base.Compile();
 
-            if (string.IsNullOrEmpty(Source)) {
+            if(string.IsNullOrEmpty(Source))
+            {
                 WriteCompileError(Resources.CompilerError_SourceNotFound);
             }
 
-            Validators.ForEach(c => {
+            Validators.ForEach(c =>
+            {
                 c.Compile();
-                c.CompilerErrors.ToList().ForEach(d => this.CompilerErrors.Add(d));
+                c.CompilerErrors.ToList().ForEach(d => CompilerErrors.Add(d));
             });
 
-            return this.IsCompiled;
+            return IsCompiled;
         }
 
 
@@ -83,13 +90,16 @@ namespace Dev2.DynamicServices {
         /// Runs all the validators in the validator list against the input value
         /// </summary>
         /// <returns>Boolean indicating whether the validation was successful</returns>
-        public virtual bool Validate() {
+        public virtual bool Validate()
+        {
             bool IsValid = !Validators.Any();
-            foreach (Validator validator in Validators) {
-                switch (validator.ValidatorType) {
+            foreach(Validator validator in Validators)
+            {
+                switch(validator.ValidatorType)
+                {
                     case enValidationType.Required:
-                        IsValid = ValidateRequired(Value);
-                    break;
+                        IsValid = ValidateRequired();
+                        break;
                 }
             }
 
@@ -98,12 +108,13 @@ namespace Dev2.DynamicServices {
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Validates a required field against an input value
         /// </summary>
-        /// <param name="value">The value to validate</param>
         /// <returns>Boolean indicating whether the field passed required field validation</returns>
-        private bool ValidateRequired(object value) {
+        private bool ValidateRequired()
+        {
             bool isValid = !string.IsNullOrEmpty(Value.ToString());
 
             return isValid;
@@ -115,11 +126,13 @@ namespace Dev2.DynamicServices {
         /// <param name="value">The value to validate</param>
         /// <param name="regularExpression">The regular expression to use to validate the input</param>
         /// <returns></returns>
-        private bool ValidateRegex(object value, string regularExpression) {
+        private bool ValidateRegex(object value, string regularExpression)
+        {
             bool isValid = false;
 
             Regex regex = new Regex(regularExpression);
-            if (regex.IsMatch(Value.ToString())) {
+            if(regex.IsMatch(Value.ToString()))
+            {
                 isValid = true;
             }
 

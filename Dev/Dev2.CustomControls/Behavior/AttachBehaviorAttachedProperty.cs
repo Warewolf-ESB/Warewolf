@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interactivity;
 
@@ -26,19 +22,19 @@ namespace Dev2.CustomControls.Behavior
 
         private static void PropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            if (args.NewValue == null)
+            if(args.NewValue == null)
             {
                 return;
             }
 
-            if (!(args.NewValue is Type))
+            if(!(args.NewValue is Type))
             {
                 return;
             }
 
-            var behavior = Activator.CreateInstance((Type)args.NewValue) 
+            var behavior = Activator.CreateInstance((Type)args.NewValue)
                 as System.Windows.Interactivity.Behavior;
-            if (behavior != null)
+            if(behavior != null)
             {
                 Interaction.GetBehaviors(o).Add(behavior);
             }

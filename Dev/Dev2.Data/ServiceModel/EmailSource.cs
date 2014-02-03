@@ -85,10 +85,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             var userParts = UserName.Split(new[] { '@' });
             using(var smtp = new SmtpClient(Host, Port)
             {
-                Credentials = new NetworkCredential(userParts[0], this.Password),
-                EnableSsl = this.EnableSsl,
+                Credentials = new NetworkCredential(userParts[0], Password),
+                EnableSsl = EnableSsl,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Timeout = this.Timeout
+                Timeout = Timeout
             })
             {
                 smtp.Send(mailMessage);

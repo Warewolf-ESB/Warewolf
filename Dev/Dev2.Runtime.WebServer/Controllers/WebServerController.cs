@@ -58,20 +58,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ProcessRequest<WebsiteResourceHandler>(requestVariables);
         }
 
-        //        
-        //        [HttpGet]
-        //        [Route("{*path}")]
-        //        public HttpResponseMessage Get(string path)
-        //        {
-        //            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
-        //            var requestVariables = new NameValueCollection
-        //            {
-        //                { "path", string.Format(path) }
-        //            };
-        //
-        //            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        //        }
-
         [HttpGet]
         [Route("{website}/{path}/{folder}/{*file}")]
         public HttpResponseMessage Get(string website, string path, string folder, string file)

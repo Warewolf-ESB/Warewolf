@@ -38,7 +38,7 @@ namespace WPF.JoshSmith.Controls.Validation
         /// <param name="regexText">The regular expression used by the new instance.</param>
         public RegexValidationRule(string regexText)
         {
-            this.RegexText = regexText;
+            RegexText = regexText;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace WPF.JoshSmith.Controls.Validation
         public RegexValidationRule(string regexText, string errorMessage)
             : this(regexText)
         {
-            this.RegexOptions = regexOptions;
+            RegexOptions = regexOptions;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace WPF.JoshSmith.Controls.Validation
         public RegexValidationRule(string regexText, string errorMessage, RegexOptions regexOptions)
             : this(regexText)
         {
-            this.RegexOptions = regexOptions;
+            RegexOptions = regexOptions;
         }
 
         #endregion // Constructors
@@ -75,8 +75,8 @@ namespace WPF.JoshSmith.Controls.Validation
         /// </summary>
         public string ErrorMessage
         {
-            get { return this.errorMessage; }
-            set { this.errorMessage = value; }
+            get { return errorMessage; }
+            set { errorMessage = value; }
         }
 
         /// <summary>
@@ -112,15 +112,15 @@ namespace WPF.JoshSmith.Controls.Validation
 
             // If there is no regular expression to evaluate,
             // then the data is considered to be valid.
-            if (!String.IsNullOrEmpty(this.RegexText))
+            if(!String.IsNullOrEmpty(RegexText))
             {
                 // Cast the input value to a string (null becomes empty string).
                 string text = value as string ?? String.Empty;
 
                 // If the string does not match the regex, return a value
-                // which indicates failure and provide an error mesasge.
-                if (!Regex.IsMatch(text, this.RegexText, this.RegexOptions))
-                    result = new ValidationResult(false, this.ErrorMessage);
+                // which indicates failure and provide an error message.
+                if(!Regex.IsMatch(text, RegexText, RegexOptions))
+                    result = new ValidationResult(false, ErrorMessage);
             }
 
             return result;

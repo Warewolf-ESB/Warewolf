@@ -36,7 +36,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
+        // ReSharper disable ConvertToAutoProperty
         public IList<ActivityDTO> FieldsCollection
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -74,10 +76,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -102,18 +106,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(!errors.HasErrors())
                 {
-                    for(int i = 0; i < FieldsCollection.Count; i++)
+                    foreach(ActivityDTO t in FieldsCollection)
                     {
-                        if(!string.IsNullOrEmpty(FieldsCollection[i].FieldName))
+                        if(!string.IsNullOrEmpty(t.FieldName))
                         {
-                            string eval = FieldsCollection[i].FieldValue;
+                            string eval = t.FieldValue;
 
                             if(eval.StartsWith("@"))
                             {
                                 eval = GetEnviromentVariable(dataObject, context, eval);
                             }
 
-                            toUpsert.Add(FieldsCollection[i].FieldName, eval);
+                            toUpsert.Add(t.FieldName, eval);
                         }
                     }
 
@@ -168,7 +172,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)
@@ -184,7 +189,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // locate all updates for this tuple
-                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t.Item1));
+                Tuple<string, string> t1 = t;
+                var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t1.Item1));
 
                 // issues updates
                 foreach(var a in items)
@@ -200,10 +206,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IBinaryDataList GetWizardData()
         {
-            string error = string.Empty;
+            string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            string recordsetName = "FieldsCollection";
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
+            const string recordsetName = "FieldsCollection";
+            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
             foreach(ActivityDTO item in FieldsCollection)
             {
                 result.TryCreateRecordsetValue(item.FieldName, "FieldName", recordsetName, item.IndexNumber, out error);
@@ -246,32 +252,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
-            var result = new List<DsfForEachItem>();
-
-            foreach(var item in FieldsCollection)
-            {
-                if(!string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[["))
-                {
-                    result.Add(new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue });
-                }
-            }
-
-            return result;
+            return (from item in FieldsCollection
+                    where !string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[[")
+                    select new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue }).ToList();
         }
 
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
-            var result = new List<DsfForEachItem>();
-
-            foreach(var item in FieldsCollection)
-            {
-                if(!string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[["))
-                {
-                    result.Add(new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName });
-                }
-            }
-
-            return result;
+            return (from item in FieldsCollection
+                    where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
+                    select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
 
         #endregion
@@ -280,22 +270,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void RemoveItem()
         {
-            List<int> BlankCount = new List<int>();
-            foreach(dynamic item in FieldsCollection)
+            List<int> BlankCount = (from dynamic item in FieldsCollection
+                                    where String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue)
+                                    select item.IndexNumber).Cast<int>().ToList();
+
+            if(BlankCount.Count <= 1 || FieldsCollection.Count <= 2)
             {
-                if(String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue))
-                {
-                    BlankCount.Add(item.IndexNumber);
-                }
+                return;
             }
-            if(BlankCount.Count > 1 && FieldsCollection.Count > 2)
+
+            FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
+            for(int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
             {
-                FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
-                for(int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
-                {
-                    dynamic tmp = FieldsCollection[i] as dynamic;
-                    tmp.IndexNumber = i + 1;
-                }
+                // ReSharper disable RedundantCast
+                dynamic tmp = FieldsCollection[i] as dynamic;
+                // ReSharper restore RedundantCast
+                tmp.IndexNumber = i + 1;
             }
         }
 
@@ -309,7 +299,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 string bookmarkName = Guid.NewGuid().ToString();
                 eval = eval.Replace("@Service", dataObject.ServiceName).Replace("@Instance", context.WorkflowInstanceId.ToString()).Replace("@Bookmark", bookmarkName).Replace("@AppPath", Directory.GetCurrentDirectory());
-                Uri hostUri = null;
+                Uri hostUri;
                 if(Uri.TryCreate(ServiceHost, UriKind.Absolute, out hostUri))
                 {
                     eval = eval.Replace("@Host", ServiceHost);

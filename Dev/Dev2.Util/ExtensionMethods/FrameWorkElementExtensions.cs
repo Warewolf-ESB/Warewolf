@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,17 +9,17 @@ namespace Dev2.Util.ExtensionMethods
     {
         public static void BringToFront(this FrameworkElement element)
         {
-            if (element == null) return;
+            if(element == null) return;
 
             var parent = element.Parent as Panel;
-            if (parent == null) return;
+            if(parent == null) return;
 
             var maxZ = parent.Children.OfType<UIElement>()
               .Where(x => !Equals(x, element))
               .Select(Panel.GetZIndex)
               .ToList();
 
-            if (!maxZ.Any())
+            if(!maxZ.Any())
             {
                 return;
             }
@@ -32,7 +29,7 @@ namespace Dev2.Util.ExtensionMethods
 
         public static void BringToMaxFront(this FrameworkElement element)
         {
-            if (element == null)
+            if(element == null)
             {
                 return;
             }
@@ -42,7 +39,7 @@ namespace Dev2.Util.ExtensionMethods
 
         public static void SendToBack(this FrameworkElement element)
         {
-            if (element == null)
+            if(element == null)
             {
                 return;
             }

@@ -41,7 +41,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         /// </summary>
         public ValueConverterGroup()
         {
-            this.converters.CollectionChanged += this.OnConvertersCollectionChanged;
+            converters.CollectionChanged += OnConvertersCollectionChanged;
         }
 
         #endregion // Constructor
@@ -53,7 +53,7 @@ namespace WPF.JoshSmith.Data.ValueConverters
         /// </summary>
         public ObservableCollection<IValueConverter> Converters
         {
-            get { return this.converters; }
+            get { return converters; }
         }
 
         #endregion // Converters
@@ -64,14 +64,14 @@ namespace WPF.JoshSmith.Data.ValueConverters
         {
             object output = value;
 
-            for (int i = 0; i < this.Converters.Count; ++i)
+            for(int i = 0; i < Converters.Count; ++i)
             {
-                IValueConverter converter = this.Converters[i];
-                Type currentTargetType = this.GetTargetType(i, targetType, true);
+                IValueConverter converter = Converters[i];
+                Type currentTargetType = GetTargetType(i, targetType, true);
                 output = converter.Convert(output, currentTargetType, parameter, culture);
 
                 // If the converter returns 'DoNothing' then the binding operation should terminate.
-                if (output == Binding.DoNothing)
+                if(output == Binding.DoNothing)
                     break;
             }
 
@@ -82,14 +82,14 @@ namespace WPF.JoshSmith.Data.ValueConverters
         {
             object output = value;
 
-            for (int i = this.Converters.Count - 1; i > -1; --i)
+            for(int i = Converters.Count - 1; i > -1; --i)
             {
-                IValueConverter converter = this.Converters[i];
-                Type currentTargetType = this.GetTargetType(i, targetType, false);
+                IValueConverter converter = Converters[i];
+                Type currentTargetType = GetTargetType(i, targetType, false);
                 output = converter.ConvertBack(output, currentTargetType, parameter, culture);
 
                 // When a converter returns 'DoNothing' the binding operation should terminate.
-                if (output == Binding.DoNothing)
+                if(output == Binding.DoNothing)
                     break;
             }
 
@@ -113,12 +113,12 @@ namespace WPF.JoshSmith.Data.ValueConverters
             // If the current converter is not the last/first in the list, 
             // get a reference to the next/previous converter.
             IValueConverter nextConverter = null;
-            if (convert)
+            if(convert)
             {
-                if (converterIndex < this.Converters.Count - 1)
+                if(converterIndex < Converters.Count - 1)
                 {
-                    nextConverter = this.Converters[converterIndex + 1];
-                    if (nextConverter == null)
+                    nextConverter = Converters[converterIndex + 1];
+                    if(nextConverter == null)
                         throw new InvalidOperationException(
                             "The Converters collection of the ValueConverterGroup contains a null reference at index: "
                             + (converterIndex + 1));
@@ -126,17 +126,17 @@ namespace WPF.JoshSmith.Data.ValueConverters
             }
             else
             {
-                if (converterIndex > 0)
+                if(converterIndex > 0)
                 {
-                    nextConverter = this.Converters[converterIndex - 1];
-                    if (nextConverter == null)
+                    nextConverter = Converters[converterIndex - 1];
+                    if(nextConverter == null)
                         throw new InvalidOperationException(
                             "The Converters collection of the ValueConverterGroup contains a null reference at index: "
                             + (converterIndex - 1));
                 }
             }
 
-            if (nextConverter != null)
+            if(nextConverter != null)
             {
                 ValueConversionAttribute conversionAttribute = cachedAttributes[nextConverter];
 
@@ -160,32 +160,32 @@ namespace WPF.JoshSmith.Data.ValueConverters
             // contains is decorated with ValueConversionAttribute and then cache the attribute value.
 
             IList convertersToProcess = null;
-            if (e.Action == NotifyCollectionChangedAction.Add ||
+            if(e.Action == NotifyCollectionChangedAction.Add ||
                 e.Action == NotifyCollectionChangedAction.Replace)
             {
                 convertersToProcess = e.NewItems;
             }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            else if(e.Action == NotifyCollectionChangedAction.Remove)
             {
-                foreach (IValueConverter converter in e.OldItems)
-                    this.cachedAttributes.Remove(converter);
+                foreach(IValueConverter converter in e.OldItems)
+                    cachedAttributes.Remove(converter);
             }
-            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            else if(e.Action == NotifyCollectionChangedAction.Reset)
             {
-                this.cachedAttributes.Clear();
-                convertersToProcess = this.converters;
+                cachedAttributes.Clear();
+                convertersToProcess = converters;
             }
 
-            if (convertersToProcess != null && convertersToProcess.Count > 0)
+            if(convertersToProcess != null && convertersToProcess.Count > 0)
             {
-                foreach (IValueConverter converter in convertersToProcess)
+                foreach(IValueConverter converter in convertersToProcess)
                 {
                     object[] attributes = converter.GetType().GetCustomAttributes(typeof(ValueConversionAttribute), false);
 
-                    if (attributes.Length != 1)
+                    if(attributes.Length != 1)
                         throw new InvalidOperationException("All value converters added to a ValueConverterGroup must be decorated with the ValueConversionAttribute attribute exactly once.");
 
-                    this.cachedAttributes.Add(converter, attributes[0] as ValueConversionAttribute);
+                    cachedAttributes.Add(converter, attributes[0] as ValueConversionAttribute);
                 }
             }
         }

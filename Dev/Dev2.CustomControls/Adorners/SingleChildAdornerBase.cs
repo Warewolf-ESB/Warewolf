@@ -1,10 +1,8 @@
 // Copyright (C) Josh Smith - February 2007
-using System;
-using System.Collections.Generic;
-using System.Text;
+
+using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using System.Windows;
 
 namespace WPF.JoshSmith.Adorners
 {
@@ -26,8 +24,8 @@ namespace WPF.JoshSmith.Adorners
         /// The child element displayed in the adorner.
         /// </summary>
         protected UIElement child = null;
-        private double offsetLeft = 0;
-        private double offsetTop = 0;
+        private double offsetLeft;
+        private double offsetTop;
 
         #endregion // Data
 
@@ -57,7 +55,7 @@ namespace WPF.JoshSmith.Adorners
         {
             GeneralTransformGroup result = new GeneralTransformGroup();
             result.Children.Add(base.GetDesiredTransform(transform));
-            result.Children.Add(new TranslateTransform(this.offsetLeft, this.offsetTop));
+            result.Children.Add(new TranslateTransform(offsetLeft, offsetTop));
             return result;
         }
 
@@ -70,10 +68,10 @@ namespace WPF.JoshSmith.Adorners
         /// </summary>
         public double OffsetLeft
         {
-            get { return this.offsetLeft; }
+            get { return offsetLeft; }
             set
             {
-                this.offsetLeft = value;
+                offsetLeft = value;
                 UpdateLocation();
             }
         }
@@ -89,9 +87,9 @@ namespace WPF.JoshSmith.Adorners
         /// <param name="top"></param>
         public void SetOffsets(double left, double top)
         {
-            this.offsetLeft = left;
-            this.offsetTop = top;
-            this.UpdateLocation();
+            offsetLeft = left;
+            offsetTop = top;
+            UpdateLocation();
         }
 
         #endregion // SetOffsets
@@ -103,10 +101,10 @@ namespace WPF.JoshSmith.Adorners
         /// </summary>
         public double OffsetTop
         {
-            get { return this.offsetTop; }
+            get { return offsetTop; }
             set
             {
-                this.offsetTop = value;
+                offsetTop = value;
                 UpdateLocation();
             }
         }
@@ -124,8 +122,8 @@ namespace WPF.JoshSmith.Adorners
         /// <returns></returns>
         protected override Size MeasureOverride(Size constraint)
         {
-            this.child.Measure(constraint);
-            return this.child.DesiredSize;
+            child.Measure(constraint);
+            return child.DesiredSize;
         }
 
         /// <summary>
@@ -135,7 +133,7 @@ namespace WPF.JoshSmith.Adorners
         /// <returns></returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.child.Arrange(new Rect(finalSize));
+            child.Arrange(new Rect(finalSize));
             return finalSize;
         }
 
@@ -146,7 +144,7 @@ namespace WPF.JoshSmith.Adorners
         /// <returns></returns>
         protected override Visual GetVisualChild(int index)
         {
-            return this.child;
+            return child;
         }
 
         /// <summary>
@@ -163,9 +161,9 @@ namespace WPF.JoshSmith.Adorners
 
         private void UpdateLocation()
         {
-            AdornerLayer adornerLayer = this.Parent as AdornerLayer;
-            if (adornerLayer != null)
-                adornerLayer.Update(this.AdornedElement);
+            AdornerLayer adornerLayer = Parent as AdornerLayer;
+            if(adornerLayer != null)
+                adornerLayer.Update(AdornedElement);
         }
 
         #endregion // Private Helpers

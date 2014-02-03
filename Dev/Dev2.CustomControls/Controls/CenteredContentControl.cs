@@ -20,10 +20,10 @@ namespace WPF.JoshSmith.Controls
         {
             // When the element first loads, initialize 
             // the two dependency properties.
-            this.Loaded += delegate
+            Loaded += delegate
             {
-                this.UpdateCenterX();
-                this.UpdateCenterY();
+                UpdateCenterX();
+                UpdateCenterY();
             };
         }
 
@@ -93,17 +93,17 @@ namespace WPF.JoshSmith.Controls
             // If the property that changed does not affect the element's size
             // and it is not an attached property of Canvas, then there is 
             // nothing to do.
-            if (!sizeChanged &&
+            if(!sizeChanged &&
                 !typeof(Canvas).IsAssignableFrom(e.Property.OwnerType))
                 return;
 
-            if (e.Property.Name == "Left" || e.Property.Name == "ActualWidth")
+            if(e.Property.Name == "Left" || e.Property.Name == "ActualWidth")
             {
-                this.UpdateCenterX();
+                UpdateCenterX();
             }
-            else if (e.Property.Name == "Top" || e.Property.Name == "ActualHeight")
+            else if(e.Property.Name == "Top" || e.Property.Name == "ActualHeight")
             {
-                this.UpdateCenterY();
+                UpdateCenterY();
             }
         }
 
@@ -114,15 +114,15 @@ namespace WPF.JoshSmith.Controls
         void UpdateCenterX()
         {
             double left = Canvas.GetLeft(this);
-            double offset = left + this.ActualWidth / 2;
-            this.SetValue(CenterXPropertyKey, offset);
+            double offset = left + ActualWidth / 2;
+            SetValue(CenterXPropertyKey, offset);
         }
 
         void UpdateCenterY()
         {
             double top = Canvas.GetTop(this);
-            double offset = top + this.ActualHeight / 2;
-            this.SetValue(CenterYPropertyKey, offset);
+            double offset = top + ActualHeight / 2;
+            SetValue(CenterYPropertyKey, offset);
         }
 
         #endregion // Private Helpers

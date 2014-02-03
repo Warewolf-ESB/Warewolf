@@ -32,7 +32,6 @@ namespace Dev2.Runtime.ESB
         #region Fields
         private readonly IEsbChannel _esbChannel;
 
-        private readonly IFrameworkDuplexDataChannel _managementChannel;
         private readonly IWorkspace _workspace;
 
         private readonly EsbExecuteRequest _request;
@@ -59,7 +58,6 @@ namespace Dev2.Runtime.ESB
             _esbChannel = esbChannel;
             if(managementChannel != null)
             {
-                _managementChannel = managementChannel;
             }
 
             // 2012.10.17 - 5782: TWR - Added workspace parameter
@@ -70,9 +68,10 @@ namespace Dev2.Runtime.ESB
 
         public DynamicServicesInvoker(IEsbChannel esbChannel,
                                       IFrameworkDuplexDataChannel managementChannel,
-                                      IWorkspace workspace) : this(esbChannel, managementChannel, workspace, null)
+                                      IWorkspace workspace)
+            : this(esbChannel, managementChannel, workspace, null)
         {
-           
+
         }
 
         #endregion
@@ -133,15 +132,15 @@ namespace Dev2.Runtime.ESB
                             #region Execute ESB container
 
                             ServiceAction theStart = theService.Actions.FirstOrDefault();
-                            if((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
-                                theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer)
+                            if(theStart != null && ((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
+                                                     theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer))
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
 
                             MapServiceActionDependencies(theStart, sl);
 
-                            ErrorResultTO invokeErrors = new ErrorResultTO();
+                            ErrorResultTO invokeErrors;
                             // Invoke based upon type ;)
                             EsbExecutionContainer container = GenerateContainer(theStart, dataObject, _workspace);
                             result = container.Execute(out invokeErrors);
@@ -163,7 +162,7 @@ namespace Dev2.Runtime.ESB
                         ErrorResultTO tmpErrors;
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error,
                         errors.MakeDataListReady(), out tmpErrors);
-                        
+
                         if(errors.HasErrors())
                         {
                             this.LogError(errors.MakeDisplayReady());
@@ -171,14 +170,10 @@ namespace Dev2.Runtime.ESB
                     }
                 }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
             finally
             {
                 // BUG 9706 - 2013.06.22 - TWR : added
-                DispatchDebugErrors(errors, dataObject, StateType.End);                
+                DispatchDebugErrors(errors, dataObject, StateType.End);
             }
             return result;
         }
@@ -209,12 +204,9 @@ namespace Dev2.Runtime.ESB
 
                 return executionContainer;
             }
-            else
-            {
-                // we need a remote container ;)
-                // TODO : Set Output description for shaping ;)
-                return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
-            }
+            // we need a remote container ;)
+            // TODO : Set Output description for shaping ;)
+            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
         /// <summary>
@@ -243,12 +235,9 @@ namespace Dev2.Runtime.ESB
 
                 return executionContainer;
             }
-            else
-            {
-                // we need a remote container ;)
-                // TODO : Set Output description for shaping ;)
-                return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
-            }
+            // we need a remote container ;)
+            // TODO : Set Output description for shaping ;)
+            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
         private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
@@ -289,11 +278,11 @@ namespace Dev2.Runtime.ESB
 
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
-            
-            if (serviceAction.ServiceID == Guid.Empty)
+
+            if(serviceAction.ServiceID == Guid.Empty)
             {
-            if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
-            {
+                if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
+                {
                     serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceName, _workspace.ID);
                 }
             }

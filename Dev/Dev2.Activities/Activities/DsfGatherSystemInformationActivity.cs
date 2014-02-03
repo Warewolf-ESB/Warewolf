@@ -21,21 +21,20 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities
 {
     public class DsfGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
-
     {
         #region Fields
 
         IGetSystemInformation _getSystemInformation;
-        private int _indexCounter = 0;
+        private int _indexCounter;
 
         #endregion
 
         /// <summary>
-        /// The property that holds all the convertions
+        /// The property that holds all the conversions
         /// </summary>
         public IList<GatherSystemInformationTO> SystemInformationCollection { get; set; }
 
-       public IGetSystemInformation GetSystemInformation
+        public IGetSystemInformation GetSystemInformation
         {
             get
             {
@@ -45,7 +44,7 @@ namespace Dev2.Activities
             {
                 _getSystemInformation = value;
             }
-        }       
+        }
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -55,17 +54,19 @@ namespace Dev2.Activities
             SystemInformationCollection = new List<GatherSystemInformationTO>();
         }
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         private void CleanArgs()
         {
             int count = 0;
-            while (count < SystemInformationCollection.Count)
+            while(count < SystemInformationCollection.Count)
             {
-                if (string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
+                if(string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
                 {
                     SystemInformationCollection.RemoveAt(count);
                 }
@@ -85,39 +86,38 @@ namespace Dev2.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             try
             {
                 CleanArgs();
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                foreach (GatherSystemInformationTO item in SystemInformationCollection)
+                foreach(GatherSystemInformationTO item in SystemInformationCollection)
                 {
                     _indexCounter++;
 
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
                     allErrors.MergeErrors(errors);
-                    if (tmp != null)
+                    if(tmp != null)
                     {
                         IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
-                        int indexToUpsertTo = 1;
-                        while (itr.HasMoreRecords())
+                        while(itr.HasMoreRecords())
                         {
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                            foreach (IBinaryDataListItem c in cols)
+                            foreach(IBinaryDataListItem c in cols)
                             {
-                                indexToUpsertTo = c.ItemCollectionIndex;//2013.02.13: Ashley Lewis - Bug 8725, Task 8836
+                                int indexToUpsertTo = c.ItemCollectionIndex;
                                 string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                                 string expression = item.Result;
 
-                                if (DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)
+                                if(DataListUtil.IsValueRecordset(item.Result) && DataListUtil.GetRecordsetIndexType(item.Result) == enRecordsetIndexType.Star)
                                 {
                                     expression = item.Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
-                                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                                     {
                                         AddDebugOutputItem(region, val, item.EnTypeOfSystemInformation);
                                     }
@@ -137,19 +137,19 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                
-                if (allErrors.HasErrors())
+
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
                 {
-                    DispatchDebugState(context,StateType.Before);
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
-           
+
         }
 
         public string GetCorrectSystemInformation(enTypeOfSystemInformationToGather enTypeOfSystemInformation)
@@ -254,7 +254,7 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -269,83 +269,102 @@ namespace Dev2.Activities
         {
             DebugItem itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = expression});
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = expression });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = informationToGather.GetDescription() });
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value =value });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = value });
             _debugOutputs.Add(itemToAdd);
         }
 
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["SystemInformationCollection"].Collection;
-
-            if (mic != null)
+            var modelProperty = modelItem.Properties["SystemInformationCollection"];
+            if(modelProperty != null)
             {
-                List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
-                if (listOfValidRows.Count > 0)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    int startIndex = SystemInformationCollection.Last(c => !c.CanRemove()).IndexNumber;
-                    foreach (string s in listToAdd)
+                    List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+                    if(listOfValidRows.Count > 0)
                     {
-                        mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
-                        startIndex++;
+                        int startIndex = SystemInformationCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        foreach(string s in listToAdd)
+                        {
+                            mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
+                            startIndex++;
+                        }
+                        CleanUpCollection(mic, modelItem, startIndex);
                     }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
-                else
-                {
-                    AddToCollection(listToAdd, modelItem);
+                    else
+                    {
+                        AddToCollection(listToAdd, modelItem);
+                    }
                 }
             }
         }
 
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["SystemInformationCollection"].Collection;
-
-            if (mic != null)
+            var modelProperty = modelItem.Properties["SystemInformationCollection"];
+            if(modelProperty != null)
             {
-                int startIndex = 0;
-                enTypeOfSystemInformationToGather enTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
-                mic.Clear();
-                foreach (string s in listToAdd)
+                ModelItemCollection mic = modelProperty.Collection;
+
+                if(mic != null)
                 {
-                    mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformation, s, startIndex + 1));
-                    startIndex++;
+                    int startIndex = 0;
+                    const enTypeOfSystemInformationToGather enTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
+                    mic.Clear();
+                    foreach(string s in listToAdd)
+                    {
+                        mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformation, s, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
             }
         }
 
         private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if (startIndex < mic.Count)
+            if(startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
-            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            }
         }
 
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if (currentName.Contains("(") && currentName.Contains(")"))
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
             {
-                if (currentName.Contains(" ("))
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    if(currentName.Contains(" ("))
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
+
+            return string.Empty;
         }
+
         #endregion
 
         #endregion
@@ -359,7 +378,7 @@ namespace Dev2.Activities
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
-            if (!overwrite)
+            if(!overwrite)
             {
                 InsertToCollection(listToAdd, modelItem);
             }
@@ -372,5 +391,5 @@ namespace Dev2.Activities
         #endregion
     }
 
-    
+
 }

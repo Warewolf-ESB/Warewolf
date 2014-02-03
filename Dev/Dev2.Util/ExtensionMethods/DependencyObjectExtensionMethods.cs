@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 
@@ -14,13 +11,13 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         public static IEnumerable<DependencyObject> Descendents(this DependencyObject root, int depth)
         {
             int count = VisualTreeHelper.GetChildrenCount(root);
-            for (int i = 0; i < count; i++)
+            for(int i = 0; i < count; i++)
             {
                 var child = VisualTreeHelper.GetChild(root, i);
                 yield return child;
-                if (depth > 0)
+                if(depth > 0)
                 {
-                    foreach (var descendent in Descendents(child, --depth))
+                    foreach(var descendent in Descendents(child, --depth))
                         yield return descendent;
                 }
             }
@@ -34,7 +31,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         public static IEnumerable<DependencyObject> Ancestors(this DependencyObject root)
         {
             DependencyObject current = VisualTreeHelper.GetParent(root);
-            while (current != null)
+            while(current != null)
             {
                 yield return current;
                 current = VisualTreeHelper.GetParent(current);
@@ -43,12 +40,12 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
 
         public static DependencyObject FindChildByToString(this DependencyObject parent, string criteria, bool partialMatch = false)
         {
-            if (parent != null)
+            if(parent != null)
             {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+                for(int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
                 {
                     var child = VisualTreeHelper.GetChild(parent, i) as UIElement;
-                    if (child != null && (child.ToString() == criteria || (partialMatch && child.ToString().Contains(criteria))))
+                    if(child != null && (child.ToString() == criteria || (partialMatch && child.ToString().Contains(criteria))))
                         return child;
                 }
             }
@@ -68,16 +65,16 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         /// </returns>
         public static AdornerLayer GetAdornerLayer(this DependencyObject visual)
         {
-            if (visual == null)
+            if(visual == null)
             {
                 throw new ArgumentNullException("visual");
             }
 
             var parent = VisualTreeHelper.GetParent(visual) as Visual;
-            while (parent != null)
+            while(parent != null)
             {
                 var adornerDecorator = parent as AdornerDecorator;
-                if (adornerDecorator != null)
+                if(adornerDecorator != null)
                 {
                     return adornerDecorator.AdornerLayer;
                 }
@@ -103,31 +100,31 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
         /// </exception>
         public static UIElement GetContainingElement(this DependencyObject element)
         {
-            if (element == null)
+            if(element == null)
             {
                 throw new ArgumentNullException("element");
             }
 
             var uiElement = element as UIElement;
-            if (uiElement != null)
+            if(uiElement != null)
             {
                 return uiElement;
             }
 
             var contentElement = element as ContentElement;
-            if (contentElement != null)
+            if(contentElement != null)
             {
                 var parent = ContentOperations.GetParent(contentElement)
                     ?? LogicalTreeHelper.GetParent(contentElement);
-                if (parent != null)
+                if(parent != null)
                 {
                     return GetContainingElement(parent);
                 }
             }
 
             return null;
-        } 
-        
+        }
+
         /// <summary>
         /// Finds a parent of a given item on the visual tree.
         /// </summary>
@@ -142,34 +139,32 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             DependencyObject parentObject = VisualTreeHelper.GetParent(child);
 
             // we’ve reached the end of the tree
-            if (parentObject == null) return null;
+            if(parentObject == null) return null;
 
             // check if the parent matches the type we’re looking for
             T parent = parentObject as T;
-            if (parent != null)
+            if(parent != null)
             {
                 return parent;
             }
-            else
-            {
-                // use recursion to proceed with next level
-                return FindVisualParent<T>(parentObject);
-            }
+
+            // use recursion to proceed with next level
+            return FindVisualParent<T>(parentObject);
         }
 
         public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject depObj) where T : DependencyObject
         {
-            if (depObj != null)
+            if(depObj != null)
             {
-                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+                for(int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
-                    if (child is T)
+                    if(child is T)
                     {
                         yield return (T)child;
                     }
 
-                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    foreach(T childOfChild in FindVisualChildren<T>(child))
                     {
                         yield return childOfChild;
                     }
@@ -259,27 +254,27 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                     dataGridRowsPresenter
                                                                                         .FindChildByToString(
                                                                                             "DataGridRow", true);
-                                                                                if (dataGridRow == null && !lookinOutput)
+                                                                                if(dataGridRow == null && !lookinOutput)
                                                                                 {
                                                                                     return activity
                                                                                         .TryFindFirstTextBoxInActivity(
                                                                                             true);
                                                                                 }
-                                                                                if (dataGridRow != null)
+                                                                                if(dataGridRow != null)
                                                                                 {
                                                                                     var fourthBorder =
                                                                                         dataGridRow
                                                                                             .FindChildByToString(
                                                                                                 "Border",
                                                                                                 true);
-                                                                                    if (fourthBorder != null)
+                                                                                    if(fourthBorder != null)
                                                                                     {
                                                                                         var selectiveScrollingGrid =
                                                                                             fourthBorder
                                                                                                 .FindChildByToString
                                                                                                 ("SelectiveScrollingGrid",
                                                                                                     true);
-                                                                                        if (
+                                                                                        if(
                                                                                             selectiveScrollingGrid !=
                                                                                             null)
                                                                                         {
@@ -289,7 +284,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                         .FindChildByToString
                                                                                                         ("DataGridCellsPresenter",
                                                                                                             true);
-                                                                                            if (
+                                                                                            if(
                                                                                                 dataGridCellsPresenter !=
                                                                                                 null)
                                                                                             {
@@ -300,7 +295,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                             .FindChildByToString
                                                                                                             ("ItemsPresenter",
                                                                                                                 true);
-                                                                                                if (
+                                                                                                if(
                                                                                                     secondItemsPresenter !=
                                                                                                     null)
                                                                                                 {
@@ -311,13 +306,13 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                                 .FindChildByToString
                                                                                                                 ("DataGridCellsPanel",
                                                                                                                     true);
-                                                                                                    if (
+                                                                                                    if(
                                                                                                         dataGridCellsPanel !=
                                                                                                         null)
                                                                                                     {
                                                                                                         DependencyObject
                                                                                                             dataGridCell;
-                                                                                                        if (
+                                                                                                        if(
                                                                                                             !lookinOutput)
                                                                                                         {
                                                                                                             dataGridCell
@@ -338,7 +333,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                                     as
                                                                                                                     UIElement;
                                                                                                         }
-                                                                                                        if (
+                                                                                                        if(
                                                                                                             dataGridCell !=
                                                                                                             null)
                                                                                                         {
@@ -349,7 +344,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                                         .FindChildByToString
                                                                                                                         ("Border",
                                                                                                                             true);
-                                                                                                            if (
+                                                                                                            if(
                                                                                                                 fifthBorder !=
                                                                                                                 null)
                                                                                                             {
@@ -360,7 +355,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                                                                                                                             .FindChildByToString
                                                                                                                             ("ContentPresenter",
                                                                                                                                 true);
-                                                                                                                if (
+                                                                                                                if(
                                                                                                                     firstContentPresenter !=
                                                                                                                     null)
                                                                                                                 {

@@ -11,7 +11,7 @@ namespace Dev2.DynamicServices
 {
     public class WebServiceInvoker
     {
-        Dictionary<string, Type> availableTypes;
+        readonly Dictionary<string, Type> availableTypes;
 
         /// <summary>
         /// Text description of the available services within this web service.
@@ -121,8 +121,7 @@ namespace Dev2.DynamicServices
             ServiceDescription serviceDescription = ServiceDescription.Read(xmlreader);
 
             // build an importer, that assumes the SOAP protocol, client binding, and generates properties
-            ServiceDescriptionImporter descriptionImporter = new ServiceDescriptionImporter();
-            descriptionImporter.ProtocolName = "Soap";
+            ServiceDescriptionImporter descriptionImporter = new ServiceDescriptionImporter { ProtocolName = "Soap" };
             descriptionImporter.AddServiceDescription(serviceDescription, null, null);
             descriptionImporter.Style = ServiceDescriptionImportStyle.Client;
             descriptionImporter.CodeGenerationOptions = System.Xml.Serialization.CodeGenerationOptions.GenerateProperties;
@@ -158,9 +157,8 @@ namespace Dev2.DynamicServices
                 // compile into assembly
                 CompilerResults results = compiler.CompileAssemblyFromDom(parameters, codeUnit);
 
-                foreach(CompilerError oops in results.Errors)
+                if(results.Errors.Cast<CompilerError>().Any())
                 {
-                    // trap these errors and make them available to exception object
                     throw new Exception("Compilation Error Creating Assembly");
                 }
 
@@ -196,8 +194,8 @@ namespace Dev2.DynamicServices
             }
         }
 
-        private Assembly webServiceAssembly;
-        private List<string> services;
+        private readonly Assembly webServiceAssembly;
+        private readonly List<string> services;
     }
 
 }

@@ -106,10 +106,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -139,7 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    string tmp;
 
                     bool singleInnerIteration = ArePureScalarTargets(ResultsCollection);
                     bool exit = false;
@@ -152,20 +153,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             toUpsert.HasLiveFlushing = true;
                             toUpsert.LiveFlushingLocation = dlID;
 
+#pragma warning disable 219
+                            int opCnt = 0;
+#pragma warning restore 219
                             if(!string.IsNullOrEmpty(c.TheValue))
                             {
                                 string val = c.TheValue;
                                 IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, compiler, dlID, dataObject.IsDebug);
-                                int opCnt = 0;
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
-                                
+
                                 // track used tokens so we can adjust flushing ;)
                                 HashSet<string> usedTokens = new HashSet<string>();
 
                                 while(tokenizer.HasMoreOps() && !exit)
                                 {
-                                    tmp = tokenizer.NextToken();
+                                    string tmp = tokenizer.NextToken();
 
                                     var dataSplitDto = ResultsCollection[pos];
                                     var outputVariable = dataSplitDto.OutputVariable;
@@ -179,7 +182,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             {
                                                 toUpsert.FlushIterationFrame();
                                             }
-                                            
+
                                             toUpsert.Add(region, tmp);
                                         }
                                     }
@@ -188,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     if(pos == end)
                                     {
                                         pos = 0;
-                                        opCnt++;                                     
+                                        opCnt++;
 
                                         // clear token cache
                                         usedTokens.Clear();
@@ -217,10 +220,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         var outputVariable = ResultsCollection[innerCount - 1].OutputVariable;
                                         if(outputVariable.Contains("()."))
-                                    {
+                                        {
                                             outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
                                             outputVariable = outputVariable.Replace("()", "(*)") + "]]";
-                                    }
+                                        }
                                         IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                         string expression = dataSplitDto.OutputVariable;
                                         if(expression.Contains("()."))
@@ -231,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount, dlID);
                                         innerCount++;
                                     }
-                                    
+
                                 }
 
                                 toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -271,18 +274,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private bool ArePureScalarTargets(IList<DataSplitDTO> args)
+        private bool ArePureScalarTargets(IEnumerable<DataSplitDTO> args)
         {
-
-            foreach(var arg in args)
-            {
-                if(DataListUtil.IsValueRecordset(arg.OutputVariable))
-                {
-                    return false;
-                }    
-            }
-
-            return true;
+            return args.All(arg => !DataListUtil.IsValueRecordset(arg.OutputVariable));
         }
 
         private void AddSourceStringDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
@@ -322,46 +316,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs.Add(itemToAdd);
         }
 
-        private void InsertToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
+            var modelProperty = modelItem.Properties["ResultsCollection"];
+            if(modelProperty != null)
+            {
+                ModelItemCollection mic = modelProperty.Collection;
 
                 if(mic != null)
-            {
-                List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+                {
+                    List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
-                {
-                    int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
-                        foreach(string s in listToAdd)
                     {
-                        mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
-                        startIndex++;
+                        int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
+                        foreach(string s in listToAdd)
+                        {
+                            mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+                            startIndex++;
+                        }
+                        CleanUpCollection(mic, modelItem, startIndex);
                     }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
-                else
-                {
-                    AddToCollection(listToAdd, modelItem);
+                    else
+                    {
+                        AddToCollection(listToAdd, modelItem);
+                    }
                 }
             }
         }
 
-        private void AddToCollection(IList<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
-            ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
+            var modelProperty = modelItem.Properties["ResultsCollection"];
+            if(modelProperty != null)
+            {
+                ModelItemCollection mic = modelProperty.Collection;
 
                 if(mic != null)
-            {
-                int startIndex = 0;
-                string firstRowSplitType = ResultsCollection[0].SplitType;
-                string firstRowAt = ResultsCollection[0].At;
-                mic.Clear();
-                    foreach(string s in listToAdd)
                 {
-                    mic.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
-                    startIndex++;
+                    int startIndex = 0;
+                    string firstRowSplitType = ResultsCollection[0].SplitType;
+                    string firstRowAt = ResultsCollection[0].At;
+                    mic.Clear();
+                    foreach(string s in listToAdd)
+                    {
+                        mic.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
+                        startIndex++;
+                    }
+                    CleanUpCollection(mic, modelItem, startIndex);
                 }
-                CleanUpCollection(mic, modelItem, startIndex);
             }
         }
 
@@ -372,43 +374,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new DataSplitDTO(string.Empty, "Chars", string.Empty, startIndex + 1));
-            modelItem.Properties["DisplayName"].SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
+            {
+                modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
+            }
         }
 
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
-            string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
-            if(currentName.Contains("(") && currentName.Contains(")"))
+            var modelProperty = modelItem.Properties["DisplayName"];
+            if(modelProperty != null)
             {
+                string currentName = modelProperty.ComputedValue as string;
+                if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
+                {
                     if(currentName.Contains(" ("))
-                {
-                    currentName = currentName.Remove(currentName.IndexOf(" ("));
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
+                    }
+                    else
+                    {
+                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
+                    }
                 }
-                else
-                {
-                    currentName = currentName.Remove(currentName.IndexOf("("));
-                }
+                currentName = currentName + " (" + (count - 1) + ")";
+                return currentName;
             }
-            currentName = currentName + " (" + (count - 1) + ")";
-            return currentName;
+
+            return string.Empty;
         }
 
-        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IList<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID, bool isDebug = false)
+        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IEnumerable<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID, bool isDebug = false)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
-            ErrorResultTO errors = new ErrorResultTO();
-            string error = string.Empty;
-            dtb.ToTokenize = StringToSplit;
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = StringToSplit };
 
-            for(int i = 0; i < Args.Count; i++)
+            foreach(DataSplitDTO t in Args)
             {
                 IBinaryDataListEntry entry = null;
-                switch(Args[i].SplitType)
+                ErrorResultTO errors;
+                string error;
+                switch(t.SplitType)
                 {
                     case "Index":
                         try
                         {
-                            entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
+                            entry = compiler.Evaluate(DlID, enActionType.User, t.At, true, out errors);
                             string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             int indexNum = Convert.ToInt32(index);
                             if(indexNum > 0)
@@ -427,45 +438,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         break;
 
                     case "Space":
-                        dtb.AddTokenOp(" ", Args[i].Include);
+                        dtb.AddTokenOp(" ", t.Include);
                         break;
 
                     case "Tab":
-                        dtb.AddTokenOp("\t", Args[i].Include);
+                        dtb.AddTokenOp("\t", t.Include);
                         break;
 
                     case "New Line":
                         if(StringToSplit.Contains("\r\n"))
                         {
-                            dtb.AddTokenOp("\r\n", Args[i].Include);
+                            dtb.AddTokenOp("\r\n", t.Include);
                         }
                         else if(StringToSplit.Contains("\n"))
                         {
-                            dtb.AddTokenOp("\n", Args[i].Include);
+                            dtb.AddTokenOp("\n", t.Include);
                         }
                         else if(StringToSplit.Contains("\r"))
                         {
-                            dtb.AddTokenOp("\r", Args[i].Include);
+                            dtb.AddTokenOp("\r", t.Include);
                         }
                         break;
 
                     case "Chars":
-                        if(!string.IsNullOrEmpty(Args[i].At))
+                        if(!string.IsNullOrEmpty(t.At))
                         {
-                            entry = compiler.Evaluate(DlID, enActionType.User, Args[i].At, true, out errors);
+                            entry = compiler.Evaluate(DlID, enActionType.User, t.At, true, out errors);
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
-                            dtb.AddTokenOp(val, Args[i].Include);
+                            dtb.AddTokenOp(val, t.Include);
                         }
                         break;
                 }
 
                 if(isDebug)
                 {
-                    AddDebugInputItem(Args[i].At, Args[i].SplitType, entry, DlID);
+                    AddDebugInputItem(t.At, t.SplitType, entry, DlID);
                 }
 
                 _indexCounter++;
-
             }
 
             return dtb.Generate();
@@ -493,14 +503,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IBinaryDataList GetWizardData()
         {
-            string error = string.Empty;
+            string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            string recordsetName = "ResultsCollection";
+            const string recordsetName = "ResultsCollection";
             result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
             result.TryCreateScalarValue(SourceString, "SourceString", out error);
             result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
             result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column>() { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
+            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
             foreach(DataSplitDTO item in ResultsCollection)
             {
                 result.TryCreateRecordsetValue(item.SplitType, "SplitType", recordsetName, item.IndexNumber, out error);
@@ -552,7 +562,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t.Item1));
+                    Tuple<string, string> t1 = t;
+                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t1.Item1));
 
                     // issues updates
                     foreach(var a in items)
@@ -575,7 +586,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t.Item1));
+                    Tuple<string, string> t1 = t;
+                    var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t1.Item1));
 
                     // issues updates
                     foreach(var a in items)

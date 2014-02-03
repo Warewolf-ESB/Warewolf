@@ -1,8 +1,8 @@
-﻿using Dev2.DataList.Contract;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.DataList.Contract;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
@@ -63,15 +63,15 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             // Go through each group, selecting values from the data and building XML from it
             //
             XElement rootNode = new XElement(RootNodeName);
-            foreach (IList<IPath> paths in groupedPaths.Values)
+            foreach(IList<IPath> paths in groupedPaths.Values)
             {
                 //
                 // Determine the type of select to perform
                 //
-                if (paths.Count == 1)
+                if(paths.Count == 1)
                 {
                     //TODO Check if there is existing, more reliable, logic to detemine if an output expression is a recordset/scalar.
-                    if (paths[0].OutputExpression.Contains("()"))
+                    if(paths[0].OutputExpression.Contains("()"))
                     {
                         rootNode.Add(SelectEnumerable(paths[0], data));
                     }
@@ -80,7 +80,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                         rootNode.Add(SelectScalar(paths[0], data));
                     }
                 }
-                else if (paths.Count > 1)
+                else if(paths.Count > 1)
                 {
                     rootNode.Add(SelectEnumerableAsRelated(paths, data));
                 }
@@ -112,9 +112,9 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             string recordsetNodeName = GetRecordsetNodeName(path.OutputExpression);
             string nodeName = GetNodeName(path.OutputExpression);
 
-            if (selectResults.Count > 0)
+            if(selectResults.Count > 0)
             {
-                foreach (object result in selectResults)
+                foreach(object result in selectResults)
                 {
                     XElement recordsetNode = new XElement(recordsetNodeName);
                     recordsetNode.Add(new XElement(nodeName, result));
@@ -141,19 +141,19 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         {
             IList<XElement> returnNodes = new List<XElement>();
 
-            if (paths.Count > 0)
+            if(paths.Count > 0)
             {
                 Dictionary<IPath, IList<object>> selectResults = DataBrowser.SelectEnumerablesAsRelated(paths, data);
                 string recordsetNodeName = GetRecordsetNodeName(paths[0].OutputExpression);
                 Dictionary<IPath, string> nodeNames = new Dictionary<IPath, string>();
                 long resultCount = selectResults[paths[0]].Count;
 
-                foreach (IPath path in paths)
+                foreach(IPath path in paths)
                 {
                     //
                     // Check that there are the same number of results for every path
                     //
-                    if (selectResults[path].Count != resultCount)
+                    if(selectResults[path].Count != resultCount)
                     {
                         throw new Exception("The number of results for the paths representing the '" + path.OutputExpression + "' expression didn't match.");
                     }
@@ -164,11 +164,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                     nodeNames.Add(path, GetNodeName(path.OutputExpression));
                 }
 
-                for (int i = 0; i < resultCount; i++)
+                for(int i = 0; i < resultCount; i++)
                 {
                     XElement recordsetNode = new XElement(recordsetNodeName);
 
-                    foreach (IPath path in paths)
+                    foreach(IPath path in paths)
                     {
                         recordsetNode.Add(new XElement(nodeNames[path], selectResults[path][i]));
                     }
@@ -187,21 +187,20 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         {
             Dictionary<string, IList<IPath>> groupedPaths = new Dictionary<string, IList<IPath>>();
 
-            foreach (IPath path in dataSourceShape.Paths)
+            foreach(IPath path in dataSourceShape.Paths)
             {
-                if (!string.IsNullOrWhiteSpace(path.OutputExpression))
+                if(!string.IsNullOrWhiteSpace(path.OutputExpression))
                 {
                     string key = GetOutputDescriptionKey(path.OutputExpression);
                     IList<IPath> dataSourceShapePaths;
 
-                    if (groupedPaths.TryGetValue(key, out dataSourceShapePaths))
+                    if(groupedPaths.TryGetValue(key, out dataSourceShapePaths))
                     {
                         dataSourceShapePaths.Add(path);
                     }
                     else
                     {
-                        dataSourceShapePaths = new List<IPath>();
-                        dataSourceShapePaths.Add(path);
+                        dataSourceShapePaths = new List<IPath> { path };
                         groupedPaths.Add(key, dataSourceShapePaths);
                     }
                 }
@@ -215,18 +214,18 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// </summary>
         private string GetOutputDescriptionKey(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
+            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
-            if (parts.Count <= 0)
+            if(parts.Count <= 0)
             {
                 throw new Exception("Invalid output description '" + outputDescription + "'.");
             }
 
-            string key = "";
+            string key;
 
-            if (parts[0].Option.IsScalar)
+            if(parts[0].Option.IsScalar)
             {
                 key = parts[0].Option.Field;
             }
@@ -243,11 +242,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// </summary>
         private string GetNodeName(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
+            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
-            if (parts.Count <= 0)
+            if(parts.Count <= 0)
             {
                 throw new Exception("Invalid output description '" + outputDescription + "'.");
             }
@@ -260,11 +259,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// </summary>
         private string GetRecordsetNodeName(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser(); 
+            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "", addCompleteParts: false);
+            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
-            if (parts.Count <= 0)
+            if(parts.Count <= 0)
             {
                 throw new Exception("Invalid output description '" + outputDescription + "'.");
             }
