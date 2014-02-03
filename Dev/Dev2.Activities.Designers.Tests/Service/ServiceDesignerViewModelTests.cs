@@ -62,12 +62,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             rootModel.Setup(m => m.Errors.Count).Returns(0);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
 
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
-            activity.ServiceName = ExpectedName;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
 
             var modelItem = CreateModelItem(activity);
 
@@ -75,7 +70,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(displayName.Contains("Dsf"));
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
 
@@ -115,14 +112,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
 
             var resourceID = Guid.NewGuid();
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
-            activity.ServiceName = "TestService";
-            activity.Type = type;
-            activity.ServiceUri = serviceUri;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = "TestService", Type = type, ServiceUri = serviceUri };
 
             var modelItem = CreateModelItem(activity);
 
@@ -148,12 +138,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             rootModel.Setup(m => m.Errors.Count).Returns(0);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
 
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
-            activity.ServiceName = ExpectedName;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
 
             var modelItem = CreateModelItem(activity);
 
@@ -162,7 +147,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -184,13 +171,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             rootModel.Setup(m => m.Errors.Count).Returns(0);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
 
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
-            activity.ServiceName = "TestServiceName";
-            activity.DisplayName = ExpectedName;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = "TestServiceName", DisplayName = ExpectedName };
 
             var modelItem = CreateModelItem(activity);
 
@@ -199,7 +180,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             //------------Execute Test---------------------------
-            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            // ReSharper disable ObjectCreationAsStatement
+            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -264,7 +247,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullModelItem_ThrowsArgumentNullException()
         {
-            var model = new ServiceDesignerViewModel(null, null, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new ServiceDesignerViewModel(null, null, null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -274,7 +259,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullRootModel_ThrowsArgumentNullException()
         {
-            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -284,7 +271,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEnvironmentRepository_ThrowsArgumentNullException()
         {
-            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -293,7 +282,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEventPublisher_ThrowsArgumentNullException()
         {
-            var model = new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IEnvironmentRepository>().Object, null);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -464,7 +455,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             // ReSharper disable once ObjectCreationAsStatement
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, mockedEnvironmentRepository.Object, new Mock<IEventAggregator>().Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             // Assert Resource ID Used To Find Resource
             var binaryExpression = actual.Body as BinaryExpression;
@@ -567,26 +560,23 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var resourceID = Guid.NewGuid();
 
-            var errors = new List<IErrorInfo>();
-            errors.Add(new ErrorInfo()
-            {
-                FixData = null,
-                FixType = FixType.ReloadMapping,
-                ErrorType = ErrorType.Critical,
-                InstanceID = Guid.NewGuid(),
-                Message = "Message Data"
-            });
+            var errors = new List<IErrorInfo>
+                {
+                    new ErrorInfo
+                        {
+                            FixData = null,
+                            FixType = FixType.ReloadMapping,
+                            ErrorType = ErrorType.Critical,
+                            InstanceID = Guid.NewGuid(),
+                            Message = "Message Data"
+                        }
+                };
 
             var rootModel = new Mock<IContextualResourceModel>();
             rootModel.Setup(m => m.Errors.Count).Returns(0);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
 
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
-            activity.ServiceName = ExpectedName;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
 
             var modelItem = CreateModelItem(activity);
 
@@ -628,7 +618,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_FixErrors_FixReloadMapping_Done()
         // ReSharper restore InconsistentNaming
         {
-            var xml = @"<Args>
+            const string xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
           {""Name"":""n2"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
@@ -697,7 +687,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         // ReSharper restore InconsistentNaming
         {
             //---------------------------------Setup-------------------------------------------------------------------------------------------------------
-            var xml = @"<Args>
+            const string xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
           {""Name"":""n2"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":false,""RawValue"":"""",""EmptyToNull"":false},
@@ -739,7 +729,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_FixErrors_Required_Done()
         // ReSharper restore InconsistentNaming
         {
-            var xml = @"<Args>
+            const string xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
         </Args>";
@@ -789,7 +779,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_FixErrors_RequiredWhenMappingValid_ShouldRemoveError()
         // ReSharper restore InconsistentNaming
         {
-            var xml = @"<Args>
+            const string xml = @"<Args>
           <Input>[
           {""Name"":""n1"",""MapsTo"":"""",""Value"":"""",""IsRecordSet"":false,""RecordSetName"":"""",""IsEvaluated"":false,""DefaultValue"":"""",""IsRequired"":true,""RawValue"":"""",""EmptyToNull"":false}]</Input>          
         </Args>";
@@ -899,11 +889,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity();
-            activity.ResourceID = new InArgument<Guid>(resourceID);
-            activity.EnvironmentID = new InArgument<Guid>(Guid.Empty);
-            activity.UniqueID = Guid.NewGuid().ToString();
-            activity.SimulationMode = SimulationMode.OnDemand;
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
             var modelItem = CreateModelItem(activity);
 
