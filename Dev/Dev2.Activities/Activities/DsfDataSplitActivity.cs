@@ -159,7 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 int opCnt = 0;
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
-
+                                
                                 // track used tokens so we can adjust flushing ;)
                                 HashSet<string> usedTokens = new HashSet<string>();
 
@@ -179,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             {
                                                 toUpsert.FlushIterationFrame();
                                             }
-
+                                            
                                             toUpsert.Add(region, tmp);
                                         }
                                     }
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     if(pos == end)
                                     {
                                         pos = 0;
-                                        opCnt++;
+                                        opCnt++;                                     
 
                                         // clear token cache
                                         usedTokens.Clear();
@@ -217,10 +217,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     {
                                         var outputVariable = ResultsCollection[innerCount - 1].OutputVariable;
                                         if(outputVariable.Contains("()."))
-                                        {
+                                    {
                                             outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
                                             outputVariable = outputVariable.Replace("()", "(*)") + "]]";
-                                        }
+                                    }
                                         IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                                         string expression = dataSplitDto.OutputVariable;
                                         if(expression.Contains("()."))
@@ -231,7 +231,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount, dlID);
                                         innerCount++;
                                     }
-
+                                    
                                 }
 
                                 toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -279,7 +279,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(DataListUtil.IsValueRecordset(arg.OutputVariable))
                 {
                     return false;
-                }
+                }    
             }
 
             return true;
@@ -326,13 +326,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
 
-            if(mic != null)
+                if(mic != null)
             {
                 List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
-                if(listOfValidRows.Count > 0)
+                    if(listOfValidRows.Count > 0)
                 {
                     int startIndex = ResultsCollection.Last(c => !c.CanRemove()).IndexNumber;
-                    foreach(string s in listToAdd)
+                        foreach(string s in listToAdd)
                     {
                         mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
                         startIndex++;
@@ -350,13 +350,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ModelItemCollection mic = modelItem.Properties["ResultsCollection"].Collection;
 
-            if(mic != null)
+                if(mic != null)
             {
                 int startIndex = 0;
                 string firstRowSplitType = ResultsCollection[0].SplitType;
                 string firstRowAt = ResultsCollection[0].At;
                 mic.Clear();
-                foreach(string s in listToAdd)
+                    foreach(string s in listToAdd)
                 {
                     mic.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
                     startIndex++;
@@ -380,7 +380,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string currentName = modelItem.Properties["DisplayName"].ComputedValue as string;
             if(currentName.Contains("(") && currentName.Contains(")"))
             {
-                if(currentName.Contains(" ("))
+                    if(currentName.Contains(" ("))
                 {
                     currentName = currentName.Remove(currentName.IndexOf(" ("));
                 }
