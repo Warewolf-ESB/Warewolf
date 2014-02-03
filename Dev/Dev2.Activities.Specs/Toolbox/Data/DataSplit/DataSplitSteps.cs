@@ -20,23 +20,29 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             string stringToSplit;
             ScenarioContext.Current.TryGetValue("stringToSplit", out stringToSplit);
 
-            List<Tuple<string, string, string>> splitCollection;
+            List<DataSplitDTO> splitCollection;
             ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
 
             var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
 
 
             int row = 1;
-            foreach (dynamic variable in splitCollection)
+            foreach(var dto in splitCollection)
             {
-                dataSplit.ResultsCollection.Add(new DataSplitDTO(variable.Item1, variable.Item2, variable.Item3, row));
+                dto.IndexNumber = row;
+                dataSplit.ResultsCollection.Add(dto);
                 row++;
             }
-            
+
+            bool reverseOrder;
+            ScenarioContext.Current.TryGetValue("ReverseOrder", out reverseOrder);
+            dataSplit.ReverseOrder = reverseOrder;
+
             TestStartNode = new FlowStep
                 {
                     Action = dataSplit
                 };
+            ScenarioContext.Current.Add("Activity", dataSplit);
         }
 
         [Given(@"A file ""(.*)"" to split")]
@@ -57,34 +63,44 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"the direction is ""(.*)""")]
         public void GivenTheDirectionIs(string direction)
         {
-            ScenarioContext.Current.Pending();
+            if(!String.IsNullOrEmpty(direction) && direction.ToLower() == "backward")
+            {
+                ScenarioContext.Current.Add("ReverseOrder", true);
+            }
+            else
+            {
+                ScenarioContext.Current.Add("ReverseOrder", false);
+            }
         }
-
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAt(string variable, string splitType, string splitAt)
         {
+            AddVariables(variable, splitType, splitAt);
+        }
+
+        static void AddVariables(string variable, string splitType, string splitAt)
+        {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(variable, ""));
-           
-            List<Tuple<string, string, string>> splitCollection;
+
+            List<DataSplitDTO> splitCollection;
             ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
 
-            if (splitCollection == null)
+            if(splitCollection == null)
             {
-                splitCollection = new List<Tuple<string, string, string>>();
+                splitCollection = new List<DataSplitDTO>();
                 ScenarioContext.Current.Add("splitCollection", splitCollection);
             }
-
-            splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
-
+            DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt };
+            splitCollection.Add(dto);
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)""")]
@@ -94,11 +110,31 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape '(.*)'")]
-        public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string at, string include, string escape)
+        public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string splitAt, string include, string escape)
         {
-            ScenarioContext.Current.Pending();
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if(variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, ""));
+
+            List<Tuple<string, string, string>> splitCollection;
+            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
+
+            if(splitCollection == null)
+            {
+                splitCollection = new List<Tuple<string, string, string>>();
+                ScenarioContext.Current.Add("splitCollection", splitCollection);
+            }
+
+            splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
+
         }
-        
+
         [Given(
             @"assign to variable ""(.*)"" split type as ""(.*)"" at ""(.*)"" and escape ""(.*)"" and include is ""(.*)"""
             )]
@@ -113,7 +149,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void WhenTheDataSplitToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -132,12 +168,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][0], recordSetValues[i]);
             }
         }
-        
+
         [Then(@"the split result for ""(.*)"" will be ""(.*)""")]
         public void ThenTheSplitResultForWillBe(string variable, string value)
         {

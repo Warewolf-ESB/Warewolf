@@ -550,7 +550,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return false;
             }
 
-            if(DataListViewModel!=null && DataListViewModel.HasErrors)
+            FindMissing();
+
+            if(DataListViewModel != null && DataListViewModel.HasErrors)
             {
                 PopupController controller = new PopupController("Error Saving", "Please resolve the variable(s) errors below, before saving." + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage, MessageBoxImage.Error, MessageBoxButton.OK);
                 controller.Show();
@@ -563,9 +565,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return true;
             }
 
-            FindMissing();
-            BindToModel();
 
+            BindToModel();
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
             resource.Environment.ResourceRepository.Save(resource);
             DisplaySaveResult(result, resource);

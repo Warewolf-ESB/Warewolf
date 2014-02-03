@@ -23,10 +23,10 @@ Scenario: Split characters using Index Going Backwards
 	And the direction is "Backward"
 	When the data split tool is executed
 	Then the split result will be
-	| vowels().chars		|
-	| _)(*&^~	|
-	| ><":}{+	|
-	| @!?		|
+	| vowels().chars |
+	| _)(*&^~        |
+	| ><":}{+        |
+	| @!?            |
 	And the execution has "NO" error
 
 Scenario: Split characters using Index Going Forward

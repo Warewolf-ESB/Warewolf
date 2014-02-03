@@ -18,6 +18,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
@@ -405,11 +406,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        private IDev2Tokenizer CreateSplitPattern(ref string StringToSplit, IEnumerable<DataSplitDTO> Args, IDataListCompiler compiler, Guid DlID, bool isDebug = false)
+        private IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IDataListCompiler compiler, Guid dlID, bool isDebug = false)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = StringToSplit };
-
-            foreach(DataSplitDTO t in Args)
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
+            foreach(DataSplitDTO t in args)
             {
                 IBinaryDataListEntry entry = null;
                 ErrorResultTO errors;
@@ -419,7 +419,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Index":
                         try
                         {
-                            entry = compiler.Evaluate(DlID, enActionType.User, t.At, true, out errors);
+                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
                             string index = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             int indexNum = Convert.ToInt32(index);
                             if(indexNum > 0)
@@ -446,15 +446,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         break;
 
                     case "New Line":
-                        if(StringToSplit.Contains("\r\n"))
+                        if(stringToSplit.Contains("\r\n"))
                         {
                             dtb.AddTokenOp("\r\n", t.Include);
                         }
-                        else if(StringToSplit.Contains("\n"))
+                        else if(stringToSplit.Contains("\n"))
                         {
                             dtb.AddTokenOp("\n", t.Include);
                         }
-                        else if(StringToSplit.Contains("\r"))
+                        else if(stringToSplit.Contains("\r"))
                         {
                             dtb.AddTokenOp("\r", t.Include);
                         }
@@ -463,7 +463,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     case "Chars":
                         if(!string.IsNullOrEmpty(t.At))
                         {
-                            entry = compiler.Evaluate(DlID, enActionType.User, t.At, true, out errors);
+                            entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
                             dtb.AddTokenOp(val, t.Include);
                         }
@@ -472,7 +472,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(isDebug)
                 {
-                    AddDebugInputItem(t.At, t.SplitType, entry, DlID);
+                    AddDebugInputItem(t.At, t.SplitType, entry, dlID);
                 }
 
                 _indexCounter++;
@@ -481,14 +481,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return dtb.Generate();
         }
 
-        private void CleanArguments(IList<DataSplitDTO> Args)
+        private void CleanArguments(IList<DataSplitDTO> args)
         {
             int count = 0;
-            while(count < Args.Count)
+            while(count < args.Count)
             {
-                if(Args[count].SplitType == "Index" && string.IsNullOrEmpty(Args[count].At) || Args[count].SplitType == "Chars" && string.IsNullOrEmpty(Args[count].At))
+                if(args[count].SplitType == "Index" && string.IsNullOrEmpty(args[count].At) || args[count].SplitType == "Chars" && string.IsNullOrEmpty(args[count].At))
                 {
-                    Args.RemoveAt(count);
+                    args.RemoveAt(count);
                 }
                 else
                 {
@@ -505,18 +505,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string recordsetName = "ResultsCollection";
+            const string RecordsetName = "ResultsCollection";
             result.TryCreateScalarTemplate(string.Empty, "SourceString", string.Empty, true, out error);
             result.TryCreateScalarValue(SourceString, "SourceString", out error);
             result.TryCreateScalarTemplate(string.Empty, "ReverseOrder", string.Empty, true, out error);
             result.TryCreateScalarValue(ReverseOrder.ToString(), "ReverseOrder", out error);
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
+            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("SplitType", string.Empty), DataListFactory.CreateDev2Column("At", string.Empty), DataListFactory.CreateDev2Column("Include", string.Empty), DataListFactory.CreateDev2Column("Result", string.Empty) }, true, out error);
             foreach(DataSplitDTO item in ResultsCollection)
             {
-                result.TryCreateRecordsetValue(item.SplitType, "SplitType", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.At, "At", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.Include.ToString(), "Include", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.OutputVariable, "Result", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.SplitType, "SplitType", RecordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.At, "At", RecordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.Include.ToString(), "Include", RecordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.OutputVariable, "Result", RecordsetName, item.IndexNumber, out error);
             }
             return result;
         }

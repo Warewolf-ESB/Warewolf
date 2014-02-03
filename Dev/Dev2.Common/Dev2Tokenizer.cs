@@ -142,9 +142,19 @@ namespace Dev2.Common
 
             if(!_useEnumerator)
             {
-                for(int i = _startIdx; i < _tokenParts.Length; i++)
+                if(_isReversed)
                 {
-                    result.Append(_tokenParts[i]);
+                    for(var i = 0; i <= _startIdx; i++)
+                    {
+                        result.Append(_tokenParts[i]);
+                    }
+                }
+                else
+                {
+                    for(int i = _startIdx; i < _tokenParts.Length; i++)
+                    {
+                        result.Append(_tokenParts[i]);
+                    }
                 }
             }
             else
@@ -214,7 +224,6 @@ namespace Dev2.Common
                 // ReSharper disable RedundantAssignment
                 result = RemainderToString();
                 // ReSharper restore RedundantAssignment
-                throw;
             }
 
             return result;
