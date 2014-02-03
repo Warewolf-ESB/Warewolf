@@ -86,20 +86,20 @@
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
 
-            <RadioButton Content="Forward"
-                         GroupName="ProcessDirectionGroup"
+            <RadioButton Content="Forward"    
                          IsChecked="True"
+                         GroupName="{Binding ProcessDirectionGroup, Mode=OneTime}"
                          VerticalAlignment="Center"
                          ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipProcessDirection}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ProcessDirectionForward_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpProcessDirection}"
                                      DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>                
             </RadioButton>
 
             <RadioButton Content="Backward"
-                         GroupName="ProcessDirectionGroup"
+                         GroupName="{Binding ProcessDirectionGroup, Mode=OneTime}"
                          Margin="15,0,0,0"
                          VerticalAlignment="Center"
                          IsChecked="{Binding ModelItem.ReverseOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

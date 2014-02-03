@@ -229,5 +229,37 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             doError.Invoke();
             Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
         }
+   
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDesignerViewModel_ProcessDirectionGroup")]
+        public void DataSplitDesignerViewModel_ProcessDirectionGroup_IsUnique()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var viewModel1 = CreateViewModel();
+            var viewModel2 = CreateViewModel();
+
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(viewModel1.ProcessDirectionGroup, viewModel2.ProcessDirectionGroup);
+        }
+
+        static DataSplitDesignerViewModel CreateViewModel()
+        {
+            var mi = ModelItemUtils.CreateModelItem(new DsfDataSplitActivity());
+            mi.SetProperty("DisplayName", "Split");
+            mi.SetProperty("SourceString", "a,b");
+
+            var dto = new DataSplitDTO("a]]", DataSplitDTO.SplitTypeIndex, "a", 0);
+
+            // ReSharper disable PossibleNullReferenceException
+            var miCollection = mi.Properties["ResultsCollection"].Collection;
+            var dtoModelItem = miCollection.Add(dto);
+            // ReSharper restore PossibleNullReferenceException
+
+            var viewModel = new DataSplitDesignerViewModel(mi);
+            return viewModel;
+        }
     }
 }

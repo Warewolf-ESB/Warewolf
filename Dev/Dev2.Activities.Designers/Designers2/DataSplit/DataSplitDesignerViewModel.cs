@@ -1,3 +1,4 @@
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
@@ -19,6 +20,8 @@ namespace Dev2.Activities.Designers2.DataSplit
         public DataSplitDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
+            ProcessDirectionGroup = string.Format("ProcessDirectionGroup{0}", Guid.NewGuid());
+
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
@@ -43,6 +46,9 @@ namespace Dev2.Activities.Designers2.DataSplit
         public static readonly DependencyProperty IsSourceStringFocusedProperty = DependencyProperty.Register("IsSourceStringFocused", typeof(bool), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(bool)));
 
         string SourceString { get { return GetProperty<string>(); } }
+
+        public string ProcessDirectionGroup { get { return (string)GetValue(ProcessDirectionGroupProperty); } set { SetValue(ProcessDirectionGroupProperty, value); } }
+        public static readonly DependencyProperty ProcessDirectionGroupProperty = DependencyProperty.Register("ProcessDirectionGroup", typeof(string), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(string)));
 
         void OnSplitTypeChanged(object indexObj)
         {
