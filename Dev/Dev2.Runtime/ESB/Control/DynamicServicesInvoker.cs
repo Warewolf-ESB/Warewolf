@@ -102,6 +102,9 @@ namespace Dev2.Runtime.ESB
             try
             {
                 Guid serviceID = dataObject.ResourceID;
+
+                // we need to get better at getting this ;)
+
                 string serviceName = dataObject.ServiceName;
                 if(serviceID == Guid.Empty && string.IsNullOrEmpty(serviceName))
                 {

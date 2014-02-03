@@ -257,7 +257,7 @@
     </Compile>
     <Compile Include="Activities\Dev2ActivityIOBrokerTestCases.cs" />
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="CommonTest\GetComputerNamesTests.cs" />
+    <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfCalculateActivityTest.cs" />
@@ -285,6 +285,7 @@
     <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\RemoteInvokeTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\WebServiceTest.cs" />
+    <Compile Include="Server Test\Bpm unit tests\WorkflowInvokeTest.cs" />
     <Compile Include="Server Test\Build.Test\ApplicationServerBuildTests.cs" />
     <Compile Include="Server Test\DeleteResourceTest.cs" />
     <Compile Include="Server Test\DynamicServicesHostTest.cs" />
@@ -396,6 +397,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CommonTest\" />
     <Folder Include="Server Test\Channel Tests\" />
   </ItemGroup>
   <ItemGroup>

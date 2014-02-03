@@ -125,16 +125,16 @@ namespace Dev2.Runtime.WebServer.Controllers
         }
 
         [HttpPost]
-        [Route("{website}/{path}/Service/{name}/{method}")]
-        public HttpResponseMessage InvokeService(string website, string path, string name, string method)
+        [Route("{__website__}/{__path__}/Service/{__name__}/{__method__}")]
+        public HttpResponseMessage InvokeService(string __website__, string __path__, string __name__, string __method__)
         {
             // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
             var requestVariables = new NameValueCollection
             {
-                { "website", website }, 
-                { "path", path },
-                { "name", name },
-                { "action", method },
+                { "website", __website__ }, 
+                { "path", __path__ },
+                { "name", __name__ },
+                { "action", __method__ },
             };
 
             return ProcessRequest<WebsiteServiceHandler>(requestVariables);
@@ -142,12 +142,12 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         [HttpGet]
         [HttpPost]
-        [Route("services/{name}")]
-        public HttpResponseMessage ExecuteWorkflow(string name)
+        [Route("services/{__name__}")]
+        public HttpResponseMessage ExecuteWorkflow(string __name__)
         {
             var requestVariables = new NameValueCollection
             {
-                { "servicename", name }
+                { "servicename", __name__ }
             };
 
             return Request.Method == HttpMethod.Post
@@ -157,14 +157,14 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         [HttpGet]
         [HttpPost]
-        [Route("services/{name}/instances/{instanceid}/bookmarks/{bookmark}")]
-        public HttpResponseMessage BookmarkWorkflow(string name, string instanceid, string bookmark)
+        [Route("services/{__name__}/instances/{__instanceid__}/bookmarks/{__bookmark__}")]
+        public HttpResponseMessage BookmarkWorkflow(string __name__, string __instanceid__, string __bookmark__)
         {
             var requestVariables = new NameValueCollection
             {
-                { "servicename", name }, 
-                { "instanceid", instanceid },
-                { "bookmark", bookmark }
+                { "servicename", __name__ }, 
+                { "instanceid", __instanceid__ },
+                { "bookmark", __bookmark__ }
             };
 
             return Request.Method == HttpMethod.Post

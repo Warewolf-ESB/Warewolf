@@ -1201,7 +1201,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 // In the case of null of empty try fetching again ;)
                 var msg = EnvironmentModel.ResourceRepository.FetchResourceDefinition(_resourceModel.Environment, workspace, _resourceModel.ID);
-                xaml = msg.Message;
+                if(msg != null)
+                {
+                    xaml = msg.Message;
+                }
             }
 
             // if we still cannot find it, create a new one ;)
