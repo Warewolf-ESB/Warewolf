@@ -6,9 +6,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 {
-    public class TestActivityDesignerCollectionViewModelItemsInitialized : ActivityCollectionDesignerViewModel<ActivityDTO>
+    public class TestValidationActivityDesignerCollectionViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
-        public TestActivityDesignerCollectionViewModelItemsInitialized(ModelItem modelItem)
+        public TestValidationActivityDesignerCollectionViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             dynamic mi = ModelItem;
@@ -17,24 +17,18 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 
         public override string CollectionName { get { return "FieldsCollection"; } }
 
-        public void TestAddTitleBarQuickVariableInputToggle()
-        {
-            AddTitleBarQuickVariableInputToggle();
-        }
-
-        public void TestAddToCollection(IEnumerable<string> source, bool overwrite)
-        {
-            AddToCollection(source, overwrite);
-        }
-
+        public int ValidateThisHitCount { get; private set; }
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            yield break;
+            ValidateThisHitCount++;
+            yield return new ActionableErrorInfo();
         }
 
+        public int ValidateCollectionItemHitCount { get; private set; }
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            yield break;
+            ValidateCollectionItemHitCount++;
+            yield return new ActionableErrorInfo();
         }
 
     }

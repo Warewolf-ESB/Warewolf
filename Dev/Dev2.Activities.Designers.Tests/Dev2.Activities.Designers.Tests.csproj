@@ -98,6 +98,7 @@
     <Compile Include="Designers2\Core\Credentials\TestCredentialsActivityDesignerViewModel.cs" />
     <Compile Include="Designers2\Core\FileActivityDesigner\FileActivityDesignerViewModelTests.cs" />
     <Compile Include="Designers2\Core\FileActivityDesigner\TestFileActivityDesignerViewModel.cs" />
+    <Compile Include="Designers2\Core\Stubs\TestValidationActivityDesignerCollectionViewModel.cs" />
     <Compile Include="Designers2\Core\VariableUtilsTests.cs" />
     <Compile Include="ExecuteCommandLine\CommandLineDesignerViewModelTests.cs" />
     <Compile Include="GatherSystemInformation\GatherSystemInformationDesignerViewModelTests.cs" />

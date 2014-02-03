@@ -1183,5 +1183,22 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             }
             return result;
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("ActivityCollectionDesignerViewModel_Validate")]
+        public void ActivityCollectionDesignerViewModel_Validate_InvokesSubMethodsAndUpdatesErrors()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new TestValidationActivityDesignerCollectionViewModel(CreateModelItem(2));
+            
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.ValidateThisHitCount);
+            Assert.AreEqual(2, viewModel.ValidateCollectionItemHitCount);
+            Assert.AreEqual(3, viewModel.Errors.Count);
+        }
     }
 }
