@@ -471,7 +471,9 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(TestCategory, category);
                 Assert.AreEqual(TestXaml, source);
             });
+            // ReSharper disable ImplicitlyCapturedClosure
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.Service, TestCategory, "<Root><Category>Test</Category><Source>" + TestXaml + "</Source></Root>", true, serviceElement =>
+            // ReSharper restore ImplicitlyCapturedClosure
             {
                 var category = serviceElement.ElementSafe("Category");
                 Assert.AreEqual(TestCategory, category);
