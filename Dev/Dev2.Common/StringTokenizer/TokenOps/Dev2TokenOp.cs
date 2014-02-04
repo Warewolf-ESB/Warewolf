@@ -77,7 +77,7 @@ namespace Dev2.Common
                     {
                         pos = candidate.Length - 1;
                     }
-                    while(pos >= 0 && candidate[pos] != _tokenParts[0])
+                    while(pos >= 0 && (candidate[pos] != _tokenParts[0] || SkipDueToEscapeChar(candidate, pos)))
                     {
                         result.Insert(0, candidate[pos]);
                         pos--;
