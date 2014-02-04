@@ -7,7 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RuleSetTests
     {
         [TestMethod]
@@ -20,9 +21,23 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             var ruleSet = new RuleSet();
             //------------Assert Results-------------------------
             Assert.IsNotNull(ruleSet);
-            Assert.AreEqual(0,ruleSet.Rules.Count);
-        }      
-        
+            Assert.AreEqual(0, ruleSet.Rules.Count);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("RuleSet_Construct")]
+        public void RuleSet_Construct_ConstructWithRules_RulesAdded()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var ruleSet = new RuleSet(new [] { new IsNullRule(() => null) });
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(ruleSet);
+            Assert.AreEqual(1, ruleSet.Rules.Count);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RuleSet_Validate")]
@@ -33,9 +48,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Execute Test---------------------------
             var validateRules = ruleSet.ValidateRules();
             //------------Assert Results-------------------------
-            Assert.AreEqual(0,ruleSet.Rules.Count);
-            Assert.AreEqual(0,validateRules.Count);
-        }        
+            Assert.AreEqual(0, ruleSet.Rules.Count);
+            Assert.AreEqual(0, validateRules.Count);
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -70,11 +85,11 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         {
             //------------Setup for test--------------------------
             var ruleSet = new RuleSet();
-            ruleSet.Add(new TestRule("value",null));
+            ruleSet.Add(new TestRule("value", null));
             //------------Execute Test---------------------------
             var validateRules = ruleSet.ValidateRules();
             //------------Assert Results-------------------------
-            Assert.AreEqual(0,validateRules.Count);
+            Assert.AreEqual(0, validateRules.Count);
         }
 
         [TestMethod]
@@ -88,7 +103,32 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Execute Test---------------------------
             var validateRules = ruleSet.ValidateRules();
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,validateRules.Count);
+            Assert.AreEqual(1, validateRules.Count);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("RuleSet_ValidateRules")]
+        public void RuleSet_ValidateRules_WithRule_AssignsArgsToRuleAndReturnsValueOfCheck()
+        {
+            //------------Setup for test--------------------------
+            var doErrorWasAssigned = false;
+            Action doError = () => { doErrorWasAssigned = true; };
+
+            const string LabelText = "Label Text";
+
+            var ruleSet = new RuleSet();
+            ruleSet.Add(new IsStringNullOrEmptyRule(() => ""));
+
+            //------------Execute Test---------------------------
+            var errors = ruleSet.ValidateRules(LabelText, doError);
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(errors);
+            Assert.AreEqual(1, errors.Count);
+            Assert.AreEqual(LabelText + " cannot be empty or null", errors[0].Message);
+            errors[0].Do();
+            Assert.IsTrue(doErrorWasAssigned);
         }
     }
 
