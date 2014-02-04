@@ -1,19 +1,32 @@
 ﻿using System;
 using System.Text;
 
-namespace Dev2.Common {
+// ReSharper disable CheckNamespace
+namespace Dev2.Common
+{
 
-    class Dev2TokenOp :  IDev2SplitOp {
+    class Dev2TokenOp : IDev2SplitOp
+    {
 
         private readonly char[] _tokenParts;
         private readonly bool _include;
+        string _escapeChar;
 
-        internal Dev2TokenOp(string token, bool includeToken) {
-            _include = includeToken;
-            _tokenParts = token.ToCharArray();
+        internal Dev2TokenOp(string token, bool includeToken)
+            : this(token, includeToken, "")
+        {
+
         }
 
-        public bool IsFinalOp() {
+        internal Dev2TokenOp(string token, bool includeToken, string escape)
+        {
+            _include = includeToken;
+            _tokenParts = token.ToCharArray();
+            _escapeChar = escape;
+        }
+
+        public bool IsFinalOp()
+        {
             return false;
         }
 
@@ -22,58 +35,90 @@ namespace Dev2.Common {
             return (isReversed != true && _tokenParts.Length == 1);
         }
 
-        public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
+        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
+        {
 
             StringBuilder result = new StringBuilder();
 
 
-            if (!isReversed) {
-                if (_tokenParts.Length == 1) {
+            if(!isReversed)
+            {
+                if(_tokenParts.Length == 1)
+                {
                     int pos = startIdx;
-                    while (pos < canidate.Length && canidate[pos] != _tokenParts[0]) {
-                        result.Append(canidate[pos]);
+                    while(pos < candidate.Length && (candidate[pos] != _tokenParts[0] || SkipDueToEscapeChar(candidate, pos)))
+                    {
+                        result.Append(candidate[pos]);
                         pos++;
                     }
                 }
-                else {
+                else
+                {
                     int pos = startIdx;
-                    while (pos < canidate.Length && !IsMultiTokenMatch(canidate, pos, isReversed)) {
-                        result.Append(canidate[pos]);
+                    while(pos < candidate.Length && !IsMultiTokenMatch(candidate, pos, false))
+                    {
+                        result.Append(candidate[pos]);
                         pos++;
                     }
                 }
 
                 // did the user want the token included?
-                if (_include && (result.Length + startIdx) < canidate.Length) {
+                if(_include && (result.Length + startIdx) < candidate.Length)
+                {
                     result.Append(_tokenParts);
                 }
             }
-            else { // reverse order
-                if (_tokenParts.Length == 1) {
+            else
+            { // reverse order
+                if(_tokenParts.Length == 1)
+                {
                     int pos = startIdx;
-                    if (pos > canidate.Length) {
-                        pos = canidate.Length - 1;
+                    if(pos > candidate.Length)
+                    {
+                        pos = candidate.Length - 1;
                     }
-                    while (pos >= 0 && canidate[pos] != _tokenParts[0]) {
-                        result.Insert(0,canidate[pos]);
+                    while(pos >= 0 && candidate[pos] != _tokenParts[0])
+                    {
+                        result.Insert(0, candidate[pos]);
                         pos--;
                     }
                 }
-                else {
+                else
+                {
                     int pos = startIdx;
-                    while (pos >= 0 && !IsMultiTokenMatch(canidate, pos, isReversed)) {
-                        result.Insert(0,canidate[pos]);
+                    while(pos >= 0 && !IsMultiTokenMatch(candidate, pos, true))
+                    {
+                        result.Insert(0, candidate[pos]);
                         pos--;
                     }
                 }
 
-                if (_include && (startIdx - result.Length) >= 0) {
+                if(_include && (startIdx - result.Length) >= 0)
+                {
                     result.Insert(0, _tokenParts);
                 }
             }
 
             return result.ToString();
 
+        }
+
+        bool SkipDueToEscapeChar(char[] candidate, int pos)
+        {
+            if(pos > 0 && !String.IsNullOrEmpty(_escapeChar))
+            {
+                return candidate[pos - 1] == _escapeChar[0];
+            }
+            return false;
+        }
+
+        bool SkipDueToEscapeChar(char previousChar)
+        {
+            if(!String.IsNullOrEmpty(_escapeChar))
+            {
+                return previousChar == _escapeChar[0];
+            }
+            return false;
         }
 
         public string ExecuteOperation(CharEnumerator canidate, int startIdx, int len, bool isReversed)
@@ -87,9 +132,11 @@ namespace Dev2.Common {
                     char tmp;
 
                     // fetch next value while 
-                    while(canidate.MoveNext() && (tmp = canidate.Current) != _tokenParts[0])
+                    char previous = '\0';
+                    while(canidate.MoveNext() && ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(previous)))
                     {
                         result.Append(tmp);
+                        previous = tmp;
                     }
                 }
 
@@ -103,15 +150,18 @@ namespace Dev2.Common {
             {
                 throw new Exception("CharEnumerator is not supported for this operation type!");
             }
-            
+
             return result.ToString();
         }
 
-        public int OpLength() {
+
+        public int OpLength()
+        {
             int result = _tokenParts.Length;
-            
-            if (_include) {
-                result -= 1;
+
+            if(_include)
+            {
+                result -= _tokenParts.Length;
             }
 
             return result;
@@ -125,20 +175,20 @@ namespace Dev2.Common {
             int cnt = 0;
             int canidateIdx = fromIndex;
 
-            if (isReversed)
+            if(isReversed)
             {
                 cnt = _tokenParts.Length - 1;
             }
 
-            if (((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed) || !isReversed)
+            if(((canidateIdx - (_tokenParts.Length - 1)) >= 0 && isReversed) || !isReversed)
             {
-                while (((cnt < _tokenParts.Length) && (cnt >= 0)) && (canidateIdx >= 0 && canidateIdx < canidate.Length) && result)
+                while(((cnt < _tokenParts.Length) && (cnt >= 0)) && (canidateIdx >= 0 && canidateIdx < canidate.Length) && result)
                 {
-                    if (canidate[canidateIdx] != _tokenParts[cnt])
+                    if(canidate[canidateIdx] != _tokenParts[cnt])
                     {
                         result = false;
                     }
-                    if (!isReversed)
+                    if(!isReversed)
                     {
                         canidateIdx++;
                         cnt++;

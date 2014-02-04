@@ -19,16 +19,16 @@ namespace Dev2.Common {
             return false;
         }
 
-        public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
+        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed) {
             StringBuilder result = new StringBuilder();
 
             int start = startIdx;
             int end = (startIdx + ToIndex);
 
             // Avoid boundry over-run
-            if (end > canidate.Length)
+            if (end > candidate.Length)
             {
-                end = canidate.Length;
+                end = candidate.Length;
             }
 
             if (isReversed) {
@@ -37,7 +37,7 @@ namespace Dev2.Common {
             }
 
             for (int i = start; i < end; i++) {
-                result.Append(canidate[i]);
+                result.Append(candidate[i]);
             }
 
             return result.ToString();

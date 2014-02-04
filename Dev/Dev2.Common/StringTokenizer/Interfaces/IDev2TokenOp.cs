@@ -5,7 +5,7 @@ namespace Dev2.Common {
 
         bool IsFinalOp();
 
-        string ExecuteOperation(char[] canidate, int startIdx, bool isReversed);
+        string ExecuteOperation(char[] candidate, int startIdx, bool isReversed);
 
         string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed);
         

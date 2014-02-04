@@ -160,6 +160,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(!string.IsNullOrEmpty(c.TheValue))
                             {
                                 string val = c.TheValue;
+                                var blankRows = new List<int>();
+                                if(SkipBlankRows)
+                                {
+                                    var strings = val.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                                    var newSourceString = string.Join(Environment.NewLine, strings);
+                                    val = newSourceString;
+                                }
+                                else
+                                {
+
+                                    var strings = val.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                                    for(int blankRow = 0; blankRow < strings.Length; blankRow++)
+                                    {
+                                        if(String.IsNullOrEmpty(strings[blankRow]))
+                                        {
+                                            blankRows.Add(blankRow);
+                                        }
+                                    }
+                                }
                                 IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, compiler, dlID, dataObject.IsDebug);
                                 int pos = 0;
                                 int end = (ResultsCollection.Count - 1);
@@ -170,39 +189,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 while(tokenizer.HasMoreOps() && !exit)
                                 {
                                     string tmp = tokenizer.NextToken();
-
-                                    var dataSplitDto = ResultsCollection[pos];
-                                    var outputVariable = dataSplitDto.OutputVariable;
-                                    if(!string.IsNullOrEmpty(outputVariable))
+                                    if(blankRows.Contains(opCnt) && blankRows.Count != 0)
                                     {
-                                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(outputVariable))
+                                        tmp = tmp.Replace(Environment.NewLine, "");
+                                        while(pos != end + 1)
                                         {
-                                            // if it already exist, flush this round ;)
-                                            if(!usedTokens.Add(region))
-                                            {
-                                                toUpsert.FlushIterationFrame();
-                                            }
-
-                                            toUpsert.Add(region, tmp);
+                                            UpdateOutputVariableWithValue(pos, usedTokens, toUpsert, "");
+                                            pos++;
                                         }
+                                        pos = CompletedRow(usedTokens, toUpsert, singleInnerIteration, ref opCnt, ref exit);
                                     }
+                                    UpdateOutputVariableWithValue(pos, usedTokens, toUpsert, tmp);
 
                                     // Per pass
                                     if(pos == end)
                                     {
-                                        pos = 0;
-                                        opCnt++;
-
-                                        // clear token cache
-                                        usedTokens.Clear();
-
-                                        toUpsert.FlushIterationFrame();
-
-                                        if(singleInnerIteration)
-                                        {
-                                            exit = true;
-                                        }
+                                        //row has been processed
+                                        pos = CompletedRow(usedTokens, toUpsert, singleInnerIteration, ref opCnt, ref exit);
                                     }
                                     else
                                     {
@@ -262,6 +265,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfDataSplitActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                }
+            }
+        }
+
+        static int CompletedRow(HashSet<string> usedTokens, IDev2DataListUpsertPayloadBuilder<string> toUpsert, bool singleInnerIteration, ref int opCnt, ref bool exit)
+        {
+            opCnt++;
+
+            // clear token cache
+            usedTokens.Clear();
+
+            toUpsert.FlushIterationFrame();
+
+            if(singleInnerIteration)
+            {
+                exit = true;
+            }
+            return 0;
+        }
+
+        void UpdateOutputVariableWithValue(int pos, HashSet<string> usedTokens, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string tmp)
+        {
+            var dataSplitDto = ResultsCollection[pos];
+            var outputVariable = dataSplitDto.OutputVariable;
+            CheckIndex(outputVariable);
+            CheckIndex(dataSplitDto.EscapeChar);
+            if(!string.IsNullOrEmpty(outputVariable))
+            {
+                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(outputVariable))
+                {
+                    // if it already exist, flush this round ;)
+                    if(!usedTokens.Add(region))
+                    {
+                        toUpsert.FlushIterationFrame();
+                    }
+
+                    toUpsert.Add(region, tmp);
+                }
+            }
+        }
+
+        static void CheckIndex(string toCheck)
+        {
+            if(DataListUtil.IsValueRecordset(toCheck) && DataListUtil.GetRecordsetIndexType(toCheck) == enRecordsetIndexType.Numeric)
+            {
+                int index;
+                if(!int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(toCheck), out index) || index < 0)
+                {
+                    throw new Exception(string.Format("Invalid numeric index for Recordset {0}", toCheck));
                 }
             }
         }
@@ -465,7 +518,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             entry = compiler.Evaluate(dlID, enActionType.User, t.At, true, out errors);
                             string val = DataListUtil.GetValueAtIndex(entry, 1, out error);
-                            dtb.AddTokenOp(val, t.Include);
+                            string escape = t.EscapeChar;
+                            if(!String.IsNullOrEmpty(escape))
+                            {
+                                entry = compiler.Evaluate(dlID, enActionType.User, t.EscapeChar, true, out errors);
+                                escape = DataListUtil.GetValueAtIndex(entry, 1, out error);
+                            }
+
+                            dtb.AddTokenOp(val, t.Include, escape);
                         }
                         break;
                 }

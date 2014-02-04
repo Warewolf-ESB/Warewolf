@@ -18,11 +18,11 @@ namespace Dev2.Common {
             return false;
         }
 
-        public string ExecuteOperation(char[] canidate, int startIdx, bool isReversed) {
+        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed) {
             StringBuilder result = new StringBuilder();
 
             int start = startIdx;
-            int end = canidate.Length;
+            int end = candidate.Length;
 
             if (isReversed) {
                 start = 0;
@@ -30,7 +30,7 @@ namespace Dev2.Common {
             }
 
             for (int i = start; i < end; i++) {
-                result.Append(canidate[i]);
+                result.Append(candidate[i]);
             }
 
             return result.ToString();

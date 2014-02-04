@@ -457,11 +457,24 @@ namespace Dev2.DataList.Contract.Binary_Objects
         private void CreateIntelliseneResult(string rs, IEnumerable<Dev2Column> cols)
         {
 
-
             if(!_intellisensedNamespace.Contains(rs))
             {
                 IList<IDev2DataLanguageIntellisensePart> children = cols.Select(c => DataListFactory.CreateIntellisensePart(c.ColumnName, string.Empty)).ToList();
 
+                IDev2DataLanguageIntellisensePart p = DataListFactory.CreateIntellisensePart(rs, string.Empty, children);
+                _intellisenseParts.Add(p);
+                _intellisensedNamespace.Add(rs);
+            }
+            else
+            {
+                var foundExistingPart = _intellisenseParts.FirstOrDefault(part => part.Name == rs);
+                if(foundExistingPart != null)
+                {
+                    _intellisenseParts.Remove(foundExistingPart);
+                    _intellisensedNamespace.Remove(rs);
+                }
+
+                IList<IDev2DataLanguageIntellisensePart> children = cols.Select(c => DataListFactory.CreateIntellisensePart(c.ColumnName, string.Empty)).ToList();
                 IDev2DataLanguageIntellisensePart p = DataListFactory.CreateIntellisensePart(rs, string.Empty, children);
                 _intellisenseParts.Add(p);
                 _intellisensedNamespace.Add(rs);

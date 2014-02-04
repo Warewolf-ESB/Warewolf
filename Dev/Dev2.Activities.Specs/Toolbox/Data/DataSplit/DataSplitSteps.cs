@@ -35,9 +35,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             }
 
             bool reverseOrder;
+            bool skipBlankRows;
             ScenarioContext.Current.TryGetValue("ReverseOrder", out reverseOrder);
+            ScenarioContext.Current.TryGetValue("SkipBlankRows", out skipBlankRows);
             dataSplit.ReverseOrder = reverseOrder;
-
+            dataSplit.SkipBlankRows = skipBlankRows;
             TestStartNode = new FlowStep
                 {
                     Action = dataSplit
@@ -53,6 +55,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var stringToSplit = ReadFile(resourceName);
             ScenarioContext.Current.Add("stringToSplit", stringToSplit);
         }
+
+        [Given(@"Skip Blanks rows is ""(.*)""")]
+        public void GivenSkipBlanksRowsIs(string enabled)
+        {
+            var skipBlankRows = enabled.ToLower() == "enabled";
+            ScenarioContext.Current.Add("SkipBlankRows", skipBlankRows);
+        }
+
 
         [Given(@"A string to split with value ""(.*)""")]
         public void GivenAStringToSplitWithValue(string stringToSplit)
@@ -79,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             AddVariables(variable, splitType, splitAt);
         }
 
-        static void AddVariables(string variable, string splitType, string splitAt)
+        static void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -99,50 +109,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 splitCollection = new List<DataSplitDTO>();
                 ScenarioContext.Current.Add("splitCollection", splitCollection);
             }
-            DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt };
+            DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
             splitCollection.Add(dto);
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)""")]
         public void GivenAssignToVariableSplitTypeAtAndInclude(string variable, string splitType, string splitAt, string include)
         {
-            ScenarioContext.Current.Pending();
+            var included = include.ToLower() == "selected";
+            AddVariables(variable, splitType, splitAt, included);
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape '(.*)'")]
         public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string splitAt, string include, string escape)
         {
-            List<Tuple<string, string>> variableList;
-            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            var included = include.ToLower() == "selected";
+            AddVariables(variable, splitType, splitAt, included, escape);
 
-            if(variableList == null)
-            {
-                variableList = new List<Tuple<string, string>>();
-                ScenarioContext.Current.Add("variableList", variableList);
-            }
-            variableList.Add(new Tuple<string, string>(variable, ""));
-
-            List<Tuple<string, string, string>> splitCollection;
-            ScenarioContext.Current.TryGetValue("splitCollection", out splitCollection);
-
-            if(splitCollection == null)
-            {
-                splitCollection = new List<Tuple<string, string, string>>();
-                ScenarioContext.Current.Add("splitCollection", splitCollection);
-            }
-
-            splitCollection.Add(new Tuple<string, string, string>(variable, splitType, splitAt));
-
-        }
-
-        [Given(
-            @"assign to variable ""(.*)"" split type as ""(.*)"" at ""(.*)"" and escape ""(.*)"" and include is ""(.*)"""
-            )]
-        public void GivenAssignToVariableSplitTypeAsAtAndEscapeAndIncludeIs(string variable, string splitType, string at,
-                                                                            string escape, string include)
-        {
-            //Note that both the escape and include are not implemeted on the activity this will pass once these are implemented
-            ScenarioContext.Current.Pending();
         }
 
         [When(@"the data split tool is executed")]
@@ -163,8 +146,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var field = ScenarioContext.Current.Get<string>("recordField");
 
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset,
-                                                                           field, out error).Where(c => !string.IsNullOrEmpty(c)).ToList();
+            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, field, out error).ToList();
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

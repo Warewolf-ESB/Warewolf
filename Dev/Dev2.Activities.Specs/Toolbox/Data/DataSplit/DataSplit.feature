@@ -45,10 +45,10 @@ Scenario: Split characters using Index Going Forward
 
 Scenario: Split text using All split types - Some with Include selected
 	Given A string to split with value "IndexTab	Chars,space end"
-	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	And assign to variable "[[vowels(*).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
 	And  assign to variable "[[vowels(*).letters]]" split type "Tab" at ""	
-	And  assign to variable "[[vowels().letters]]" split type as "Chars" at "ars," and escape "" and include is "unselected"
-	And  assign to variable "[[vowels().letters]]" split type as "Space" at "1" and escape "\" and include is "unselected"		
+	And  assign to variable "[[vowels(*).letters]]" split type "Chars" at "ars," and Include "Selected" and Escape '' 
+	And  assign to variable "[[vowels(*).letters]]" split type "Space" at "1" and Include "unselected" and Escape '\'
 	And  assign to variable "[[vowels(*).letters]]" split type "End" at ""
 	When the data split tool is executed
 	Then the split result will be
@@ -62,11 +62,10 @@ Scenario: Split text using All split types - Some with Include selected
 
 Scenario: Split CSV file format into recordset - some fields blank
 	Given A file "CSVExample.txt" to split	
-	And  assign to variable "[[rec().id]]" split type as "Chars" at "," and escape "" and include is "unselected"	
-	And  assign to variable "[[rec().name]]" split type as "Chars" at "," and escape "" and include is "unselected"
-	And  assign to variable "" split type as "Chars" at "," and escape "" and include is "unselected"
-	And  assign to variable "[[rec().phone]]" split type "NewLine" at ""	
-	And  assign to variable "" split type as "" at "" and escape "" and include is "unselected"
+	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape ''
+	And  assign to variable "[[rec().name]]" split type "Chars" at "," and Include "unselected" and Escape ''
+	And  assign to variable "" split type "Chars" at "," and Include "unselected" and Escape '' 
+	And  assign to variable "[[rec().phone]]" split type "New Line" at ""
 	When the data split tool is executed
 	Then the split result will be
 	| rec().id | rec().name | rec().phone |
@@ -79,11 +78,11 @@ Scenario: Split CSV file format into recordset - some fields blank
 
 Scenario: Split CSV file format into recordset - Skip blank rows selected
 	Given A file "CSVExample.txt" to split	
-	And  assign to variable "[[rec().id]]" split type as "Chars" at "," and escape "" and include is "unselected"	
-	And  assign to variable "[[rec().name]]" split type as "Chars" at "," and escape "" and include is "unselected"	
-	And  assign to variable "" split type as "Chars" at "," and escape "" and include is "unselected"
-	And  assign to variable "[[rec().phone]]" split type "NewLine" at ""	
-	And  assign to variable "" split type as "" at "" and escape "" and include is "selected"
+	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape '' 
+	And  assign to variable "[[rec().name]]" split type "Chars" at "," and Include "unselected" and Escape '' 	
+	And  assign to variable "" split type "Chars" at "," and Include "unselected" and Escape '' 
+	And  assign to variable "[[rec().phone]]" split type "New Line" at ""
+	And  Skip Blanks rows is "enabled"
 	When the data split tool is executed
 	Then the split result will be
 	| rec().id | rec().name | rec().phone |
@@ -95,10 +94,10 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
-	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	And  assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
 	And  assign to variable "[[vowels().letters]]" split type "Tab" at ""	
-	And  assign to variable "[[vowels().letters]]" split type as "Chars" at "ars," and escape "" and include is "selected"	
-	And  assign to variable "[[vowels().letters]]" split type as "Space" at "" and escape "\" and include is "unselected"
+	And  assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "selected" and Escape '' 
+	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\'
 	And  assign to variable "[[vowels().letters]]" split type "End" at ""	
 	And  assign to variable "[[vowels().letters]]" split type "NewLine" at ""
 	When the data split tool is executed
@@ -108,8 +107,8 @@ Scenario: Split blank text using All split types
 
 Scenario: Split text using Index where index > provided
 	Given A string to split with value "123"	
-	And  assign to variable "[[var]]" split type as "Index" at "5" and escape "\" and include is "selected"
-	And  assign to variable "[[vowels().letters]]" split type as "Space" at "" and escape "\" and include is "unselected"
+	And assign to variable "[[var]]" split type "Index" at "," and Include "Selected" and Escape '\'
+	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\' 
 	When the data split tool is executed	
 
 	Then the split result for "[[var]]" will be "123"

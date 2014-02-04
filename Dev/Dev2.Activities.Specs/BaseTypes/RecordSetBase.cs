@@ -90,11 +90,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                     addedRecordsets.Add(recordset);
                     addedFieldset.Add(recordField);
                 }
-
-                data.Append(string.Format("<{0}>", recordset));
-                data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
-                data.Append(string.Format("</{0}>", recordset));
-
+                if(!String.IsNullOrEmpty(variable.Item2))
+                {
+                    data.Append(string.Format("<{0}>", recordset));
+                    data.Append(string.Format("<{0}>{1}</{0}>", recordField, variable.Item2));
+                    data.Append(string.Format("</{0}>", recordset));
+                }
                 string rec;
                 ScenarioContext.Current.TryGetValue("recordset", out rec);
 
@@ -114,8 +115,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             else
             {
                 string variableName = DataListUtil.RemoveLanguageBrackets(variable.Item1);
-                shape.Append(string.Format("<{0}/>", variableName));
-                data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
+                if(!String.IsNullOrEmpty(variableName))
+                {
+                    shape.Append(string.Format("<{0}/>", variableName));
+                    data.Append(string.Format("<{0}>{1}</{0}>", variableName, variable.Item2));
+                }
             }
         }
 

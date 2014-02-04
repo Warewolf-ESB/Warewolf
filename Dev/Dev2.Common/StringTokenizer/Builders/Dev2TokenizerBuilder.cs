@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dev2.Common.StringTokenizer.Interfaces;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Common
 {
     public class Dev2TokenizerBuilder
@@ -30,17 +31,22 @@ namespace Dev2.Common
         public IDev2Tokenizer Generate()
         {
 
-            if (string.IsNullOrEmpty(ToTokenize))
+            if(string.IsNullOrEmpty(ToTokenize))
             {
                 throw new TokenizeError("Null or empty tokenize string!");
             }
 
-            if (_ops.Count <= 0)
+            if(_ops.Count <= 0)
             {
                 throw new TokenizeError("Cant find anything to split on!");
             }
 
             return new Dev2Tokenizer(ToTokenize, _ops, ReverseOrder);
+        }
+
+        public void AddTokenOp(string token, bool returnToken, string escape)
+        {
+            _ops.Add(new Dev2TokenOp(token, returnToken, escape));
         }
     }
 }
