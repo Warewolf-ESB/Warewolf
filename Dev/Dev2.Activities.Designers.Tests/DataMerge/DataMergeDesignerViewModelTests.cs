@@ -172,10 +172,10 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
 
             // reset before next test!
             dtoModelItem.SetProperty("IsAtFocused", false);
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' value must be a positive whole number");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a positive whole number");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
 
-            StringAssert.Contains(viewModel.Errors[2].Message, "'Padding' value must be a single character");
+            StringAssert.Contains(viewModel.Errors[2].Message, "'Padding' must be a single character");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[2].Do, "IsPaddingFocused");
         }
 

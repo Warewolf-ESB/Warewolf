@@ -8,19 +8,13 @@ namespace Dev2.Providers.Validation.Rules
         public IsNumericRule(Func<string> getValue)
             : base(getValue)
         {
+            ErrorText = "must be a whole number";
         }
 
         public override IActionableErrorInfo Check()
         {
             int value;
-            if(!int.TryParse(GetValue(), out value))
-            {
-                return new ActionableErrorInfo(DoError)
-                {
-                    Message = LabelText + " value must be a whole number."
-                };
-            }
-            return null;
+            return !int.TryParse(GetValue(), out value) ? CreatError() : null;
         }
     }
 }

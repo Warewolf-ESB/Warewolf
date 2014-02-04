@@ -59,8 +59,11 @@
                Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ui:IntellisenseTextBox Grid.Row="0"
                                 Grid.Column="1"
-                                x:Name="InitialFocusElement"                                 
+                                x:Name="InitialFocusElement"                                     
                                 DefaultText="Data to split"
+                                AllowUserInsertLine="False"
+                                AllowMultilinePaste="False"   
+                                MinHeight="24"
                                 Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipString}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

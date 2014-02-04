@@ -8,19 +8,13 @@ namespace Dev2.Providers.Validation.Rules
         public IsNullRule(Func<object> getValue)
             : base(getValue)
         {
+            ErrorText = "cannot be null";
         }
 
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            if(value == null)
-            {
-                return new ActionableErrorInfo(DoError)
-                {
-                    Message = LabelText + " value cannot be null."
-                };
-            }
-            return null;
+            return value == null ? CreatError() : null;
         }
     }
 }

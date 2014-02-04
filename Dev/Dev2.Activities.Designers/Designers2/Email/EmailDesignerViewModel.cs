@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Data.Enums;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
@@ -22,11 +23,14 @@ namespace Dev2.Activities.Designers2.Email
 {
     public class EmailDesignerViewModel : ActivityDesignerViewModel
     {
+        readonly ObservableCollection<EmailSource> _emailSourceList = new ObservableCollection<EmailSource>();
+        readonly ObservableCollection<enMailPriorityEnum> _prioritiesList = new ObservableCollection<enMailPriorityEnum>();
         readonly EmailSource _baseEmailSource = new EmailSource();
         readonly IEventAggregator _eventPublisher;
 
         ICommand _editEmailSourceCommand;
-        ObservableCollection<EmailSource> _emailSourceList;
+        ICommand _testPasswordCommand;
+        ICommand _chooseAttachmentsCommand;
 
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, EventPublishers.Aggregator)
@@ -46,12 +50,16 @@ namespace Dev2.Activities.Designers2.Email
 
             if(SelectedEmailSource != null)
             {
-                SelectedSelectedEmailSource = SelectedEmailSource;
+                TheSelectedEmailSource = SelectedEmailSource;
             }
+
+            _prioritiesList.Add(enMailPriorityEnum.High);
+            _prioritiesList.Add(enMailPriorityEnum.Normal);
+            _prioritiesList.Add(enMailPriorityEnum.Low);
         }
 
-        public EmailSource SelectedSelectedEmailSource { get { return (EmailSource)GetValue(SelectedSelectedEmailSourceProperty); } set { SetValue(SelectedSelectedEmailSourceProperty, value); } }
-        public static readonly DependencyProperty SelectedSelectedEmailSourceProperty = DependencyProperty.Register("SelectedSelectedEmailSource", typeof(EmailSource), typeof(EmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
+        public EmailSource TheSelectedEmailSource { get { return (EmailSource)GetValue(TheSelectedEmailSourceProperty); } set { SetValue(TheSelectedEmailSourceProperty, value); } }
+        public static readonly DependencyProperty TheSelectedEmailSourceProperty = DependencyProperty.Register("TheSelectedEmailSource", typeof(EmailSource), typeof(EmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
 
         static void OnSelectedEmailSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -76,18 +84,44 @@ namespace Dev2.Activities.Designers2.Email
         }
 
         public ICommand EditEmailSourceCommand { get { return _editEmailSourceCommand ?? (_editEmailSourceCommand = new RelayCommand(param => EditEmailSource())); } }
+        public ICommand TestPasswordCommand { get { return _testPasswordCommand ?? (_testPasswordCommand = new RelayCommand(param => TestPassword())); } }
+        public ICommand ChooseAttachmentsCommand { get { return _chooseAttachmentsCommand ?? (_chooseAttachmentsCommand = new RelayCommand(param => ChooseAttachments())); } }
 
         public bool CanEditSource { get; set; }
 
-        public ObservableCollection<EmailSource> EmailSourceList { get { return _emailSourceList ?? (_emailSourceList = new ObservableCollection<EmailSource>()); } }
+        public ObservableCollection<EmailSource> EmailSourceList { get { return _emailSourceList; } }
+        public ObservableCollection<enMailPriorityEnum> PrioritiesList { get { return _prioritiesList; } }
+
+        public bool IsEmailSourceFocused { get { return (bool)GetValue(IsEmailSourceFocusedProperty); } set { SetValue(IsEmailSourceFocusedProperty, value); } }
+        public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsFromAccountFocused { get { return (bool)GetValue(IsFromAccountFocusedProperty); } set { SetValue(IsFromAccountFocusedProperty, value); } }
         public static readonly DependencyProperty IsFromAccountFocusedProperty = DependencyProperty.Register("IsFromAccountFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
+        public bool IsToFocused { get { return (bool)GetValue(IsToFocusedProperty); } set { SetValue(IsToFocusedProperty, value); } }
+        public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsCcFocused { get { return (bool)GetValue(IsCcFocusedProperty); } set { SetValue(IsCcFocusedProperty, value); } }
+        public static readonly DependencyProperty IsCcFocusedProperty = DependencyProperty.Register("IsCcFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsBccFocused { get { return (bool)GetValue(IsBccFocusedProperty); } set { SetValue(IsBccFocusedProperty, value); } }
+        public static readonly DependencyProperty IsBccFocusedProperty = DependencyProperty.Register("IsBccFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsSubjectFocused { get { return (bool)GetValue(IsSubjectFocusedProperty); } set { SetValue(IsSubjectFocusedProperty, value); } }
+        public static readonly DependencyProperty IsSubjectFocusedProperty = DependencyProperty.Register("IsSubjectFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
+
+        public bool IsAttachmentsFocused { get { return (bool)GetValue(IsAttachmentsFocusedProperty); } set { SetValue(IsAttachmentsFocusedProperty, value); } }
+        public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        EmailSource SelectedEmailSource { set { SetProperty(value); } get { return GetProperty<EmailSource>(); } }
-        string FromAccount { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        public string Password { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        EmailSource SelectedEmailSource { get { return GetProperty<EmailSource>(); } set { SetProperty(value); } }
+        string FromAccount { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        string To { get { return GetProperty<string>(); } }
+        string Cc { get { return GetProperty<string>(); } }
+        string Bcc { get { return GetProperty<string>(); } }
+        string Subject {  get { return GetProperty<string>(); } }
+        string Attachments { get { return GetProperty<string>(); } }
 
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
@@ -111,14 +145,14 @@ namespace Dev2.Activities.Designers2.Email
                     {
                         if(tmpSourceList.FirstOrDefault(c => c.ResourceName == source.ResourceName) == null)
                         {
-                            SelectedSelectedEmailSource = source;
+                            TheSelectedEmailSource = source;
                             break;
                         }
                     }
                 }
                 else
                 {
-                    SelectedSelectedEmailSource = null;
+                    TheSelectedEmailSource = null;
                 }
             }
         }
@@ -140,13 +174,6 @@ namespace Dev2.Activities.Designers2.Email
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
-        void UpdateEnvironmentResources()
-        {
-            Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
-            this.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
-            _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
-        }
-
         void EditEmailSource(IEnvironmentModel env)
         {
             if(SelectedEmailSource != null)
@@ -159,18 +186,55 @@ namespace Dev2.Activities.Designers2.Email
             }
         }
 
+        void UpdateEnvironmentResources()
+        {
+            Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
+            this.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
+            _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
+        }
+
+        void TestPassword()
+        {
+        }
+
+        void ChooseAttachments()
+        {
+        }
+
         public override void Validate()
         {
-            //var result = new List<IActionableErrorInfo>();
-            //result.AddRange(ValidateThis());
-            //Errors = result.Count == 0 ? null : result;
+            var result = new List<IActionableErrorInfo>();
+            result.AddRange(ValidateThis());
+            Errors = result.Count == 0 ? null : result;
         }
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(var error in GetRuleSet("EmailSource").ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
+            {
+                yield return error;
+            }
             foreach(var error in GetRuleSet("FromAccount").ValidateRules("'From Account'", () => IsFromAccountFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                yield return error;
+            }
+            foreach(var error in GetRuleSet("To").ValidateRules("'To'", () => IsToFocused = true))
+            {
+                yield return error;
+            }
+            foreach(var error in GetRuleSet("Cc").ValidateRules("'Cc'", () => IsCcFocused = true))
+            {
+                yield return error;
+            }
+            foreach(var error in GetRuleSet("Bcc").ValidateRules("'Bcc'", () => IsBccFocused = true))
+            {
+                yield return error;
+            }
+            foreach(var error in GetRuleSet("Subject").ValidateRules("'Subject'", () => IsSubjectFocused = true))
+            {
+                yield return error;
+            }
+            foreach(var error in GetRuleSet("Attachments").ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
             {
                 yield return error;
             }
@@ -182,10 +246,40 @@ namespace Dev2.Activities.Designers2.Email
 
             switch(propertyName)
             {
+                case "EmailSource":
+                    ruleSet.Add(new IsNullRule(() => SelectedEmailSource));
+                    break;
                 case "FromAccount":
-                    var sourceExprRule = new IsValidExpressionRule(() => FromAccount);
-                    ruleSet.Add(sourceExprRule);
-                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => sourceExprRule.ExpressionValue));
+                    var fromExprRule = new IsValidExpressionRule(() => FromAccount);
+                    ruleSet.Add(fromExprRule);
+                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => fromExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailRule(() => fromExprRule.ExpressionValue));
+                    break;
+                case "To":
+                    var toExprRule = new IsValidExpressionRule(() => To);
+                    ruleSet.Add(toExprRule);
+                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => toExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailRule(() => toExprRule.ExpressionValue));
+                    break;
+                case "Cc":
+                    var ccExprRule = new IsValidExpressionRule(() => Cc);
+                    ruleSet.Add(ccExprRule);
+                    ruleSet.Add(new IsValidEmailRule(() => ccExprRule.ExpressionValue));
+                    break;
+                case "Bcc":
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc);
+                    ruleSet.Add(bccExprRule);
+                    ruleSet.Add(new IsValidEmailRule(() => bccExprRule.ExpressionValue));
+                    break;
+                case "Subject":
+                    var subjectExprRule = new IsValidExpressionRule(() => Subject);
+                    ruleSet.Add(subjectExprRule);
+                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => subjectExprRule.ExpressionValue));
+                    break;
+                case "Attachments":
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments);
+                    ruleSet.Add(attachmentsExprRule);
+                    ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;
             }
             return ruleSet;

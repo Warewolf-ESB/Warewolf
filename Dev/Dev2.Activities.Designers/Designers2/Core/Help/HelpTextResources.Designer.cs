@@ -1244,7 +1244,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a comma..
+        ///   Looks up a localized string similar to Enter the path to the attachments you want to send separated by a semicolon ;.
         /// </summary>
         public static string EmailHelpAttachments {
             get {

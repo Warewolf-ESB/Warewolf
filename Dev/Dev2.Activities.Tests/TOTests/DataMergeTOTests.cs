@@ -235,7 +235,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { Padding = "aa", At = "1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "Padding", "value must be a single character");
+            Verify_RuleSet(dto, "Padding", "must be a single character");
         }
 
         [TestMethod]
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "value cannot be empty or null");
+            Verify_RuleSet(dto, "At", "cannot be empty or null");
         }
 
         [TestMethod]
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "-1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "value must be a positive whole number");
+            Verify_RuleSet(dto, "At", "must be a positive whole number");
         }
 
         [TestMethod]

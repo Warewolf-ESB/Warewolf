@@ -19,11 +19,21 @@ namespace Dev2.Providers.Validation.Rules
         protected RuleBase()
         {
             LabelText = "The";
+            ErrorText = "value is invalid.";
         }
+
+        public string LabelText { get; set; }
+        public string ErrorText { get; set; }
+        public Action DoError { get; set; }
 
         public abstract IActionableErrorInfo Check();
 
-        public string LabelText { get; set; }
-        public Action DoError { get; set; }
+        protected IActionableErrorInfo CreatError()
+        {
+            return new ActionableErrorInfo(DoError)
+            {
+                Message = string.Format("{0} {1}", LabelText, ErrorText)
+            };
+        }
     }
 }

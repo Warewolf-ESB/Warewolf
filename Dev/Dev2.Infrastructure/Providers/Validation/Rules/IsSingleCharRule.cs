@@ -8,6 +8,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsSingleCharRule(Func<string> getValue)
             : base(getValue)
         {
+            ErrorText = "must be a single character";
         }
 
         public override IActionableErrorInfo Check()
@@ -17,10 +18,7 @@ namespace Dev2.Providers.Validation.Rules
             {
                 if(value.Length > 1)
                 {
-                    return new ActionableErrorInfo(DoError)
-                    {
-                        Message = LabelText + " value must be a single character."
-                    };
+                    return CreatError();
                 }
             }
             return null;

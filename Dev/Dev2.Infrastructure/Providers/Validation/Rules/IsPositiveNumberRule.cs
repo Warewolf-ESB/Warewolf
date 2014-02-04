@@ -8,6 +8,7 @@ namespace Dev2.Providers.Validation.Rules
         public IsPositiveNumberRule(Func<string> getValue)
             : base(getValue)
         {
+            ErrorText = "must be a positive whole number";
         }
 
         public override IActionableErrorInfo Check()
@@ -21,10 +22,7 @@ namespace Dev2.Providers.Validation.Rules
                     isValid = true;
                 }
             }
-            return isValid ? null : new ActionableErrorInfo(DoError)
-            {
-                Message = LabelText + " value must be a positive whole number."
-            };
+            return isValid ? null : CreatError();
         }
     }
 }

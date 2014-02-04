@@ -1432,7 +1432,7 @@ Using recordset () will add a new record and (*) will assign every record.</valu
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpAttachments" xml:space="preserve">
-    <value>Enter the path to the attachments you want to send separated by a comma.</value>
+    <value>Enter the path to the attachments you want to send separated by a semicolon ;</value>
   </data>
   <data name="EmailHelpBcc" xml:space="preserve">
     <value>List the accounts or email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;</value>

@@ -45,7 +45,7 @@
                                     Grid.Row="0"
                                     MinWidth="125"
                                     Width="125"
-                                    HorizontalAlignment="Right"
+                                    HorizontalAlignment="Right"                                                                    
                                     DefaultText="Data to split"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipString}"

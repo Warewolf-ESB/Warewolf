@@ -99,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("EmailDesignerViewModel_Constructor")]
-        public void EmailDesignerViewModel_Constructor_KeepsUserData_UserDataStillPersent()
+        public void EmailDesignerViewModel_Constructor_KeepsUserData_UserDataStillPresent()
         {
             var modelItem = CreateModelItem();
             var mockEventPublisher = new Mock<IEventAggregator>();
@@ -108,7 +108,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             const string TestMailAccount = "test@mydomain.com";
             viewModel.FromAccount = TestMailAccount;
 
-            viewModel.SelectedSelectedEmailSource = new EmailSource
+            viewModel.TheSelectedEmailSource = new EmailSource
             {
                 UserName = "MyUser",
                 Password = "MyPassword",
@@ -134,7 +134,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             const string TestMailAccount = "";
             viewModel.FromAccount = TestMailAccount;
 
-            viewModel.SelectedSelectedEmailSource = new EmailSource
+            viewModel.TheSelectedEmailSource = new EmailSource
             {
                 UserName = "MyUser",
                 Password = "MyPassword",
@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Host = "mx.mydomain.com",
                 Port = 25,
                 TestFromAddress = "bob@mydomain.com",
-                ResourceID = Guid.NewGuid()
+                ResourceID = Guid.NewGuid()                
             };
 
             Assert.AreEqual("MyUser", viewModel.FromAccount);

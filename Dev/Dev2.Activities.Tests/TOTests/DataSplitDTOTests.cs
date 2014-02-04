@@ -280,7 +280,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { OutputVariable = "", At = "1"};
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "OutputVariable", "value cannot be empty or null");
+            Verify_RuleSet(dto, "OutputVariable", "cannot be empty or null");
         }
 
         [TestMethod]
@@ -328,7 +328,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataSplitDTO { At = "h" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "value must be a whole number");
+            Verify_RuleSet(dto, "At", "must be a whole number");
         }
 
 

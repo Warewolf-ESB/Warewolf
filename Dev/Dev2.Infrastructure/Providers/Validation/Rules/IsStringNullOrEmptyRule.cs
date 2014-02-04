@@ -8,19 +8,13 @@ namespace Dev2.Providers.Validation.Rules
         public IsStringNullOrEmptyRule(Func<string> getValue)
             : base(getValue)
         {
+            ErrorText = "cannot be empty or null";
         }
 
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            if(string.IsNullOrEmpty(value))
-            {
-                return new ActionableErrorInfo(DoError)
-                {
-                    Message = LabelText + " value cannot be empty or null."
-                };
-            }
-            return null;
+            return string.IsNullOrEmpty(value) ? CreatError() : null;
         }
     }
 }
