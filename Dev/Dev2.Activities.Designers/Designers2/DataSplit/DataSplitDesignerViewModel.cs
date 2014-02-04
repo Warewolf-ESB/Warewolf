@@ -45,10 +45,10 @@ namespace Dev2.Activities.Designers2.DataSplit
         public bool IsSourceStringFocused { get { return (bool)GetValue(IsSourceStringFocusedProperty); } set { SetValue(IsSourceStringFocusedProperty, value); } }
         public static readonly DependencyProperty IsSourceStringFocusedProperty = DependencyProperty.Register("IsSourceStringFocused", typeof(bool), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        string SourceString { get { return GetProperty<string>(); } }
-
         public string ProcessDirectionGroup { get { return (string)GetValue(ProcessDirectionGroupProperty); } set { SetValue(ProcessDirectionGroupProperty, value); } }
         public static readonly DependencyProperty ProcessDirectionGroupProperty = DependencyProperty.Register("ProcessDirectionGroup", typeof(string), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(string)));
+
+        string SourceString { get { return GetProperty<string>(); } }
 
         void OnSplitTypeChanged(object indexObj)
         {

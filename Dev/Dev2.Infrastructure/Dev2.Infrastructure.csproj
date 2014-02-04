@@ -119,6 +119,7 @@
     <Compile Include="Providers\Validation\Rules\IRuleSet.cs" />
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsSingleCharRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsStringNullOrWhiteSpaceRule.cs" />
     <Compile Include="Providers\Validation\Rules\Rule.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSet.cs" />

@@ -194,7 +194,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDesignerViewModel_ValidateCollectionItem")]
-        public void DataSplitDesignerViewModel_ValidateCollectionItem_InvokesForValidatedPropertiesOfDTO()
+        public void DataSplitDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
         {
             //------------Setup for test--------------------------
             var mi = ModelItemUtils.CreateModelItem(new DsfDataSplitActivity());
@@ -229,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             doError.Invoke();
             Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
         }
-   
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDesignerViewModel_ProcessDirectionGroup")]

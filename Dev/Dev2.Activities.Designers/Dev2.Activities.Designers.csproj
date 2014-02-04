@@ -263,6 +263,9 @@
     <Compile Include="Designers2\Delete\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\Email\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Email\EmailDesigner.xaml.cs">
       <DependentUpon>EmailDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -748,6 +751,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\Delete\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Email\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,12 +1,3 @@
-using Caliburn.Micro;
-using Dev2.Activities.Designers2.Core;
-using Dev2.DynamicServices;
-using Dev2.Providers.Logs;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -14,11 +5,29 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
+using Dev2.Activities.Designers2.Core;
+using Dev2.DynamicServices;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
+using Dev2.Providers.Validation.Rules;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Email
 {
     public class EmailDesignerViewModel : ActivityDesignerViewModel
     {
+        readonly EmailSource _baseEmailSource = new EmailSource();
+        readonly IEventAggregator _eventPublisher;
+
+        ICommand _editEmailSourceCommand;
+        ObservableCollection<EmailSource> _emailSourceList;
+
         public EmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, EventPublishers.Aggregator)
         {
@@ -27,7 +36,9 @@ namespace Dev2.Activities.Designers2.Email
         public EmailDesignerViewModel(ModelItem modelItem, IEventAggregator eventPublisher)
             : base(modelItem)
         {
+            AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
+
             _eventPublisher = eventPublisher;
             _baseEmailSource.ResourceName = "New Email Source...";
             EmailSourceList.Add(_baseEmailSource);
@@ -40,13 +51,7 @@ namespace Dev2.Activities.Designers2.Email
         }
 
         public EmailSource SelectedSelectedEmailSource { get { return (EmailSource)GetValue(SelectedSelectedEmailSourceProperty); } set { SetValue(SelectedSelectedEmailSourceProperty, value); } }
-
-        public static readonly DependencyProperty SelectedSelectedEmailSourceProperty =
-         DependencyProperty.Register("SelectedSelectedEmailSource", typeof(EmailSource), typeof(EmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        EmailSource SelectedEmailSource { set { SetProperty(value); } get { return GetProperty<EmailSource>(); } }
-        string FromAccount { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        public static readonly DependencyProperty SelectedSelectedEmailSourceProperty = DependencyProperty.Register("SelectedSelectedEmailSource", typeof(EmailSource), typeof(EmailDesignerViewModel), new PropertyMetadata(null, OnSelectedEmailSourceChanged));
 
         static void OnSelectedEmailSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -70,50 +75,19 @@ namespace Dev2.Activities.Designers2.Email
             }
         }
 
-        public override void Validate()
-        {
-        }
+        public ICommand EditEmailSourceCommand { get { return _editEmailSourceCommand ?? (_editEmailSourceCommand = new RelayCommand(param => EditEmailSource())); } }
 
-        #region Fields
-        readonly EmailSource _baseEmailSource = new EmailSource();
-        ICommand _editEmailSourceCommand;
-        ObservableCollection<EmailSource> _emailSourceList;
-        private readonly IEventAggregator _eventPublisher;
-        bool _canEditSource;
-        #endregion
-
-        #region Commands
-
-        public ICommand EditEmailSourceCommand
-        {
-            get
-            {
-                return _editEmailSourceCommand ??
-                       (_editEmailSourceCommand = new RelayCommand(param => EditEmailSource()));
-            }
-        }
-
-        #endregion
-
-        #region Properties
-
-        public bool CanEditSource
-        {
-            get
-            {
-                return _canEditSource;
-            }
-            set
-            {
-                _canEditSource = value;
-            }
-        }
+        public bool CanEditSource { get; set; }
 
         public ObservableCollection<EmailSource> EmailSourceList { get { return _emailSourceList ?? (_emailSourceList = new ObservableCollection<EmailSource>()); } }
 
-        #endregion
+        public bool IsFromAccountFocused { get { return (bool)GetValue(IsFromAccountFocusedProperty); } set { SetValue(IsFromAccountFocusedProperty, value); } }
+        public static readonly DependencyProperty IsFromAccountFocusedProperty = DependencyProperty.Register("IsFromAccountFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        #region Methods
+
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        EmailSource SelectedEmailSource { set { SetProperty(value); } get { return GetProperty<EmailSource>(); } }
+        string FromAccount { set { SetProperty(value); } get { return GetProperty<string>(); } }
 
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
@@ -165,17 +139,15 @@ namespace Dev2.Activities.Designers2.Email
             Action<IEnvironmentModel> callback = EditEmailSource;
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
-        #endregion
 
-        #region Private Methods
-        private void UpdateEnvironmentResources()
+        void UpdateEnvironmentResources()
         {
             Action<IEnvironmentModel> callback = UpdateEnvironmentResourcesCallback;
             this.TraceInfo("Publish message of type - " + typeof(GetActiveEnvironmentCallbackMessage));
             _eventPublisher.Publish(new GetActiveEnvironmentCallbackMessage(callback));
         }
 
-        private void EditEmailSource(IEnvironmentModel env)
+        void EditEmailSource(IEnvironmentModel env)
         {
             if(SelectedEmailSource != null)
             {
@@ -186,6 +158,37 @@ namespace Dev2.Activities.Designers2.Email
                 }
             }
         }
-        #endregion
+
+        public override void Validate()
+        {
+            //var result = new List<IActionableErrorInfo>();
+            //result.AddRange(ValidateThis());
+            //Errors = result.Count == 0 ? null : result;
+        }
+
+        IEnumerable<IActionableErrorInfo> ValidateThis()
+        {
+            // ReSharper disable LoopCanBeConvertedToQuery
+            foreach(var error in GetRuleSet("FromAccount").ValidateRules("'From Account'", () => IsFromAccountFocused = true))
+            // ReSharper restore LoopCanBeConvertedToQuery
+            {
+                yield return error;
+            }
+        }
+
+        IRuleSet GetRuleSet(string propertyName)
+        {
+            var ruleSet = new RuleSet();
+
+            switch(propertyName)
+            {
+                case "FromAccount":
+                    var sourceExprRule = new IsValidExpressionRule(() => FromAccount);
+                    ruleSet.Add(sourceExprRule);
+                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => sourceExprRule.ExpressionValue));
+                    break;
+            }
+            return ruleSet;
+        }
     }
 }

@@ -21,12 +21,20 @@
    
     <sap:ActivityDesigner.Resources>
         <local:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
-        
+        <local:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
+      
         <Style x:Key="ContentViewStyle"
                BasedOn="{StaticResource ActivityDesignerStyle}"
                TargetType="{x:Type sap:ActivityDesigner}">
             <Setter Property="Content"
                     Value="{DynamicResource Small}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}"
+                             Value="true">
+                    <Setter Property="Content"
+                            Value="{DynamicResource Large}" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </sap:ActivityDesigner.Resources>
 

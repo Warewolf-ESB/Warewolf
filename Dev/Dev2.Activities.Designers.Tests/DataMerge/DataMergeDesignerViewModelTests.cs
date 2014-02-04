@@ -1,10 +1,11 @@
-﻿using Dev2.Activities.Designers2.DataMerge;
-using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2.Activities.Designers2.DataMerge;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DataMerge
@@ -139,5 +140,51 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             }
             return modelItem;
         }
+
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataMergeDesignerViewModel_ValidateCollectionItem")]
+        public void DataMergeDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfDataMergeActivity());
+            mi.SetProperty("DisplayName", "Merge");
+
+            var dto = new DataMergeDTO("", DataMergeDTO.MergeTypeIndex, "a]]", 0, "ab", "Left");
+
+            // ReSharper disable PossibleNullReferenceException
+            var miCollection = mi.Properties["MergeCollection"].Collection;
+            var dtoModelItem = miCollection.Add(dto);
+            // ReSharper restore PossibleNullReferenceException
+
+            var viewModel = new DataMergeDesignerViewModel(mi);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, viewModel.Errors.Count);
+
+            StringAssert.Contains(viewModel.Errors[0].Message, "'Using' - Invalid expression: opening and closing brackets don't match");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsAtFocused");
+
+            // reset before next test!
+            dtoModelItem.SetProperty("IsAtFocused", false);
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' value must be a positive whole number");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
+
+            StringAssert.Contains(viewModel.Errors[2].Message, "'Padding' value must be a single character");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[2].Do, "IsPaddingFocused");
+        }
+
+        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        {
+            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            doError.Invoke();
+            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
+        }
+
     }
 }

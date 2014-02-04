@@ -1,10 +1,10 @@
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataMerge

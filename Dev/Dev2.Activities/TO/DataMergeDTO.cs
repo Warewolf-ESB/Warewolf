@@ -9,12 +9,18 @@ using Dev2.Validation;
 // ReSharper disable CheckNamespace
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
 {
     // ReSharper disable InconsistentNaming
     public class DataMergeDTO : ValidatedObject, IDev2TOFn
-        // ReSharper restore InconsistentNaming
+    // ReSharper restore InconsistentNaming
     {
+        public const string MergeTypeIndex = "Index";
+        public const string MergeTypeChars = "Chars";
+        public const string MergeTypeNone = "None";
+
+        public const string AlignmentLeft = "Left";
+
         #region Fields
 
         string _inputVariable;
@@ -34,17 +40,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Inserted = inserted;
             InputVariable = inputVariable;
-            MergeType = string.IsNullOrEmpty(mergeType) ? "Index" : mergeType;
+            MergeType = string.IsNullOrEmpty(mergeType) ? MergeTypeIndex : mergeType;
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             _enableAt = true;
             Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
-            Alignment = string.IsNullOrEmpty(alignment) ? "Left" : alignment;
+            Alignment = string.IsNullOrEmpty(alignment) ? AlignmentLeft : alignment;
         }
 
         public DataMergeDTO()
         {
             Errors = new Dictionary<string, List<IActionableErrorInfo>>();
+            MergeType = MergeTypeIndex;
+            _enableAt = true;
         }
 
         #endregion
@@ -127,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(MergeType == "Index" || MergeType == "Chars")
+            if(MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
             {
                 if(string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
                 {
@@ -142,7 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool CanAdd()
         {
             bool result = true;
-            if(MergeType == "Index" || MergeType == "Chars")
+            if(MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
             {
                 if(string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
                 {
@@ -154,10 +162,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void ClearRow()
         {
-            Padding = " ";
-            Alignment = "Left";
+            Padding = string.Empty;
+            Alignment = AlignmentLeft;
             InputVariable = string.Empty;
-            MergeType = "Char";
+            MergeType = MergeTypeChars;
             At = string.Empty;
         }
 
@@ -167,11 +175,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsEmpty()
         {
-            if(InputVariable == string.Empty && MergeType == "Index" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "Chars" && string.IsNullOrEmpty(At) || InputVariable == string.Empty && MergeType == "None" && string.IsNullOrEmpty(At))
-            {
-                return true;
-            }
-            return false;
+            return string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeIndex && string.IsNullOrEmpty(At)
+                   || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeChars && string.IsNullOrEmpty(At)
+                   || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeNone && string.IsNullOrEmpty(At);
         }
 
         #endregion
@@ -186,24 +192,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "At":
-                    if(MergeType == "Index")
+                    if(MergeType == MergeTypeIndex)
                     {
                         var atExprRule = new IsValidExpressionRule(() => At, "1");
                         ruleSet.Add(atExprRule);
 
                         ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue));
-                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue));
                         ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue));
                     }
                     break;
                 case "Padding":
                     if(!string.IsNullOrEmpty(Padding))
                     {
-                        var paddingExprRule = new IsValidExpressionRule(() => Padding, "1");
+                        var paddingExprRule = new IsValidExpressionRule(() => Padding, "0");
                         ruleSet.Add(paddingExprRule);
 
-                        ruleSet.Add(new IsNumericRule(() => paddingExprRule.ExpressionValue));
-                        ruleSet.Add(new IsPositiveNumberRule(() => paddingExprRule.ExpressionValue));
+                        ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
             }

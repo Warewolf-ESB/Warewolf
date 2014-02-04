@@ -86,7 +86,7 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"
+                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"                                                    
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpInput}"
@@ -157,7 +157,7 @@
                                                     Text="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipUsing}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    attachedProperties:FocusSetter.IsFocused="{Binding At, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsAtFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpUsing}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -190,7 +190,7 @@
                                                     Text="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipPadding}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    attachedProperties:FocusSetter.IsFocused="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsPaddingFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpPadding}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
