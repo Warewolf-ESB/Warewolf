@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, dlID);
                     }
-
+                    CheckIndex(SourceString);
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -255,17 +255,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if(dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(context, StateType.Before);
-                    DispatchDebugState(context, StateType.After);
-                }
                 // Handle Errors
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDataSplitActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
+
+                if(dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(context, StateType.Before);
+                    DispatchDebugState(context, StateType.After);
+                }
+
             }
         }
 
@@ -309,7 +311,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         static void CheckIndex(string toCheck)
         {
-            if(DataListUtil.IsValueRecordset(toCheck) && DataListUtil.GetRecordsetIndexType(toCheck) == enRecordsetIndexType.Numeric)
+            if(!String.IsNullOrEmpty(toCheck) && DataListUtil.IsEvaluated(toCheck) && DataListUtil.IsValueRecordset(toCheck) && DataListUtil.GetRecordsetIndexType(toCheck) == enRecordsetIndexType.Numeric)
             {
                 int index;
                 if(!int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(toCheck), out index) || index < 0)
