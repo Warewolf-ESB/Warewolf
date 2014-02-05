@@ -67,4 +67,7 @@
       <SubType>Designer</SubType>
     </Prerequisite>
   </ItemGroup>
+  <ItemGroup>
+    <IncludeInCab Include="Files\Ionic.Zip.Reduced.dll" />
+  </ItemGroup>
 </Project>

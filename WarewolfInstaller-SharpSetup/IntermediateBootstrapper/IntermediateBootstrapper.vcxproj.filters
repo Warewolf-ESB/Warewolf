@@ -61,4 +61,7 @@
       <Filter>Translation Files</Filter>
     </SharpSetupTranslationCompiler>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dev\Binaries\Ionic.Zip.Reduced.dll" />
+  </ItemGroup>
 </Project>

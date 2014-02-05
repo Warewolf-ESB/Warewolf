@@ -116,6 +116,9 @@
     <SharpSetupTranslationCompiler Include="translation_overrides.en.sstf" />
     <SharpSetupTranslationCompiler Include="translation_overrides.sstf" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dev\Binaries\Ionic.Zip.Reduced.dll" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(SharpSetupTargetsPath)\Sharpsetup.Bootstrapper.targets" />
   <ImportGroup Label="ExtensionTargets">

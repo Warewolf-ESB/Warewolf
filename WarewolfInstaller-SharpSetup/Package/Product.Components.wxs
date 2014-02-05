@@ -276,7 +276,7 @@
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73" KeyPath="yes" Source="..\ProductBuild\Server\XPath20Api.dll" />
             </Component>
             <!-- Sample Stuff -->
-                <!-- Src -->
+            <!-- Src -->
             <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A214219" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{C868F06D-447D-4551-938A-AC82695E8753}">
                 <File Id="filADDA41D87BACF5C03971418692A96D44" KeyPath="yes" Source="..\ProductBuild\Server\Sources\paypal.xml" />
             </Component>
@@ -286,8 +286,8 @@
             <Component Id="cmp1FA3F0AF1D061729CD4DDDCC3A204218" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{556C46BD-3008-4C03-BB2E-69EA45298361}">
                 <File Id="fil2FD1FDFCDD740DA954F2B1D630D1A835" KeyPath="yes" Source="..\ProductBuild\Server\Sources\WarewolfShoppingCartDB.xml" />
             </Component>
-                <!-- End Src -->
-                <!-- Service -->
+            <!-- End Src -->
+            <!-- Service -->
             <Component Id="AddCategory.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{6F2FF298-16CF-4D34-8500-FF48EA5453C3}">
                 <File Id="fil5AF56A37A81C6083A51461A99B30282E" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategory.xml" />
             </Component>
@@ -330,10 +330,10 @@
             <Component Id="GetCategoryTableFromWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{3A562DB6-A426-4023-99F9-391565A04F96}">
                 <File Id="fil92D7728DC0884123D28DA3E953D54869" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetCategoryTableFromWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="GetProductsTable.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12"  Guid="{7683B834-11FF-4CC3-872D-2EA037D61871}">
+            <Component Id="GetProductsTable.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{7683B834-11FF-4CC3-872D-2EA037D61871}">
                 <File Id="fil966282D32AA356FFEFB0BB9D2074B78D" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTable.xml" />
             </Component>
-            <Component Id="GetProductsTableFromWarewolfShoppingCartDb.xml"  Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{7A4B3E2C-62A9-4196-B530-035839235AB1}">
+            <Component Id="GetProductsTableFromWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{7A4B3E2C-62A9-4196-B530-035839235AB1}">
                 <File Id="fil12052E332FB4ADD2E6BB3F44B97845F0" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTableFromWarewolfShoppingCartDb.xml" />
             </Component>
             <Component Id="PayPal_GetPaymentService.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{24DA6796-E108-4042-8F55-B222F6FC7FF5}">
@@ -351,13 +351,13 @@
             <Component Id="PayPal_RetrieveAuthToken.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE87D7BE46}">
                 <File Id="filD161B536A111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_RetrieveAuthToken.xml" />
             </Component>
-             <Component Id="paypal_retrievepayments.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE97E7CE46}">
+            <Component Id="paypal_retrievepayments.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE97E7CE46}">
                 <File Id="filD262B536B111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_retrievepayments.xml" />
             </Component>
             <Component Id="SampleEmployeesWorkflow.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{4E3F3B11-EFAC-4725-962F-645C0D1127D0}">
                 <File Id="fil12C318DB6125764AF55F36D1EFF876B5" KeyPath="yes" Source="..\ProductBuild\Server\Services\SampleEmployeesWorkflow.xml" />
             </Component>
-                <!-- End Service-->
+            <!-- End Service-->
             <!-- End Sample -->
             <Component Id="cmp62707DDA8BD0362C71EDB96A68049F9D" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563732F76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Control Flow - Decision.xml" />
@@ -1185,5 +1185,5 @@
         </ComponentGroup>
     </Fragment>
     <!-- ==== END STUDIO ==== -->
-
+    
 </Wix>

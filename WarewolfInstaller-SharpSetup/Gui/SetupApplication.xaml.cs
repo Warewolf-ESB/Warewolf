@@ -129,6 +129,10 @@ namespace Gui
                 }
                 catch(Exception e2)
                 {
+                    if(e2.Message.IndexOf("install.cmd", StringComparison.Ordinal) >= 0)
+                    {
+                        return;
+                    }
                     MessageBox.Show("An error occurred while removing Warewolf." + Environment.NewLine + e2.Message);
                 }
             }
