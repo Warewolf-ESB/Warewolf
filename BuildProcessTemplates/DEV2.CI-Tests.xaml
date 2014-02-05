@@ -166,7 +166,7 @@
                   <InArgument x:TypeArguments="x:String">[BuildDetail.SourceGetVersion.Trim("C"c)]</InArgument>
                 </Assign.Value>
               </Assign>
-              <Delay DisplayName="10 second Delay" Duration="00:10:00" sap2010:WorkflowViewState.IdRef="Delay_1" />
+              <Delay DisplayName="10 second Delay" Duration="00:00:10" sap2010:WorkflowViewState.IdRef="Delay_1" />
               <If Condition="[File.Exists(TestRunStagingDir &amp; &quot;\&quot; &amp; LatestChangesetIDForBranch &amp; &quot;.zip&quot;)]" DisplayName="If can find a build" sap2010:WorkflowViewState.IdRef="If_128">
                 <If.Then>
                   <Assign DisplayName="Use SourceGetVersion" sap2010:WorkflowViewState.IdRef="Assign_54">
