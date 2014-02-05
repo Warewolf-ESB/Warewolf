@@ -72,7 +72,21 @@ namespace Gui
                 // set the Webs folder ACL
                 //SetWebsACL();
 
+                // open the readme.txt
+                ViewReadMe();
+
             };
+        }
+
+        private void ViewReadMe()
+        {
+            if(!InstallVariables.ViewReadMe)
+            {
+                return;
+            }
+
+            var readmePath = InstallVariables.InstallRoot + "\\Samples\\Readme.txt";
+            ProcessHost.Invoke(string.Empty, "notepad", readmePath, false);
         }
 
         /// <summary>

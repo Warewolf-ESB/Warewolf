@@ -231,7 +231,7 @@ namespace Gui
                 sc.Dispose();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception e)
+            catch(Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
                 //MessageBox.Show(e.Message);

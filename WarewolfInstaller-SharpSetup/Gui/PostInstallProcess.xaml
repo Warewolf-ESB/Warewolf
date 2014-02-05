@@ -39,6 +39,7 @@
                    Grid.Row="2"
                    Margin="0,0,0,-26">
             <StackPanel>
+                <!-- orig total height 215 -->
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0" Height="215">
                     <TextBlock Style="{StaticResource TextBlockStyle}" FontSize="12" HorizontalAlignment="Left" VerticalAlignment="Top" Name="PostInstallMsg" TextWrapping="Wrap" Text="{x:Static props:Resources.PostInstallProcess_MessageMain}" Width="269" Height="25" />
                     <Image Visibility="Visible" Source="/Gui;component/ResourceFiles\Images\tick.png" Name="postInstallStatusImg" Margin="0,0,0,200" Width="16" RenderTransformOrigin="1.651,2.784"/>

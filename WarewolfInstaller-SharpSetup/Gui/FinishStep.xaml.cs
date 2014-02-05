@@ -11,6 +11,7 @@ namespace Gui
         public FinishStep(int stepNumber, List<string> listOfStepNames)
         {
             InitializeComponent();
+
             // swap text at end if not install mode ;)
             if(!InstallVariables.IsInstallMode)
             {
@@ -19,12 +20,15 @@ namespace Gui
             }
             else
             {
+                // install mode ;)
                 cbStartStudio.Visibility = Visibility.Visible;
                 tbFinish.Visibility = Visibility.Hidden;
 
                 // Force a studio start ;)
                 InstallVariables.StartStudioOnExit = true;
+                InstallVariables.ViewReadMe = true;
             }
+
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
 
@@ -34,5 +38,10 @@ namespace Gui
             InstallVariables.StartStudioOnExit = !(InstallVariables.StartStudioOnExit);
         }
 
+        void BtnExitWithReadme(object sender, RoutedEventArgs e)
+        {
+            // swap the read-me flag ;)
+            InstallVariables.ViewReadMe = !(InstallVariables.ViewReadMe);
+        }
     }
 }

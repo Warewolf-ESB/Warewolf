@@ -133,6 +133,15 @@ namespace Gui.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Readme.
+        /// </summary>
+        public static string FinishStep_View_Readme {
+            get {
+                return ResourceManager.GetString("FinishStep_View_Readme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0}\application.exe.
         /// </summary>
         public static string FinishStepCommand {
@@ -273,6 +282,15 @@ namespace Gui.Properties {
         public static string PostInstallProcess_MessageMain {
             get {
                 return ResourceManager.GetString("PostInstallProcess_MessageMain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installing Examples.
+        /// </summary>
+        public static string PostInstallProcess_MessageSamples {
+            get {
+                return ResourceManager.GetString("PostInstallProcess_MessageSamples", resourceCulture);
             }
         }
         

@@ -7,6 +7,8 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using Gui.Utility;
+using Ionic.Zip;
 using SharpSetup.Base;
 using SharpSetup.UI.Wpf.Base;
 using Path = System.IO.Path;
@@ -33,9 +35,38 @@ namespace Gui
         /// 
         /// Change Log : 
         /// + Release 0.2.13.1 - Swap old secure config name to new
+        /// + Release 0.4.1.2 - Install Examples
         /// 
         /// </summary>
         private void CustomOperation()
+        {
+            SwapConfigs();
+            InstallExamples();
+        }
+
+        private void InstallExamples()
+        {
+            var stream = ResourceExtractor.Fetch("Samples.zip");
+
+            if(stream == null)
+            {
+                return;
+            }
+
+            using(stream)
+            {
+                // Extract zip and unpack ;)
+                using(var zp = ZipFile.Read(stream))
+                {
+                    foreach(var ze in zp)
+                    {
+                        ze.Extract(InstallVariables.InstallRoot, ExtractExistingFileAction.OverwriteSilently);
+                    }
+                }
+            }
+        }
+
+        private void SwapConfigs()
         {
             // Swap config files around
             var oldConfig = InstallVariables.InstallRoot + @"Server\Dev2.Server.exe.secureconfig";
@@ -60,8 +91,6 @@ namespace Gui
             {
                 // Just making sure ;)
             }
-
-
         }
 
         /// <summary>
@@ -75,7 +104,7 @@ namespace Gui
         }
 
         /// <summary>
-        /// Sets the success messasge.
+        /// Sets the success message.
         /// </summary>
         /// <param name="msg">The MSG.</param>
         private void SetSuccessMessasge(string msg)

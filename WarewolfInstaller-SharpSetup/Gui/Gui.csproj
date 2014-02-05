@@ -62,6 +62,9 @@
     <StartupObject>Gui.SetupApplication</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\..\Release 0.4.1.x\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="SharpSetup, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="SharpSetup.Wpf, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -140,6 +143,7 @@
     <Compile Include="SetupWizard.xaml.cs">
       <DependentUpon>SetupWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ResourceExtractor.cs" />
     <Compile Include="Utility\WarewolfCommand.cs" />
     <Compile Include="WelcomeStep.xaml.cs">
       <DependentUpon>WelcomeStep.xaml</DependentUpon>
@@ -159,6 +163,7 @@
     <AppDesigner Include="Properties\" />
     <None Include="ResourceFiles\PrivacyStatement.rtf" />
     <None Include="ResourceFiles\WAREWOLF_EULA_EN.rtf" />
+    <EmbeddedResource Include="UnpackResources\Samples.zip" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="SetupApplication.xaml">

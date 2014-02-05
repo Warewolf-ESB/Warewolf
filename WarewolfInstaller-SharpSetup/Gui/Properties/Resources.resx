@@ -293,4 +293,10 @@ service manager.</value>
   <data name="PrivacyStatment_Title" xml:space="preserve">
     <value>Privacy Statement</value>
   </data>
+  <data name="FinishStep_View_Readme" xml:space="preserve">
+    <value>View Readme</value>
+  </data>
+  <data name="PostInstallProcess_MessageSamples" xml:space="preserve">
+    <value>Installing Examples</value>
+  </data>
 </root>

@@ -60,5 +60,13 @@
         ///   <c>true</c> if [install shortcuts]; otherwise, <c>false</c>.
         /// </value>
         public static bool InstallShortcuts { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [view read memory].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [view read memory]; otherwise, <c>false</c>.
+        /// </value>
+        public static bool ViewReadMe { get; set; }
     }
 }
