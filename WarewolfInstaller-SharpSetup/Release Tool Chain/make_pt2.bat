@@ -10,8 +10,8 @@ cls
 "C:\Program Files (x86)\Windows Kits\8.0\bin\x86\signtool.exe" sign /f "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\Warewolf Cert.pfx" /p 5678 "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts\*.dll"
 
 @echo -Staging For Build-
-rd /S /Q "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\"
-rd /S /Q "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
+REM rd /S /Q "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\"
+REM rd /S /Q "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
 
 mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\"
 mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio\"
@@ -23,22 +23,22 @@ xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging"
 xcopy /S /Y "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
 
 @echo -Preping Example Workflows-
-mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
-mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Sources"
+REM mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services"
+REM mkdir "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Sources"
 
-cd "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain"
-PrepForShip.exe "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services" "C:\Development\Release %1%\BPM Resources - Release\Services"
-cd "C:\Development\Release %1%\BPM Resources - Release\Sources\"
-xcopy /S /Y "*.*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Sources\"
+REM cd "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain"
+REM PrepForShip.exe "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Services" "C:\Development\Release %1%\BPM Resources - Release\Services"
+REM cd "C:\Development\Release %1%\BPM Resources - Release\Sources\"
+REM xcopy /S /Y "*.*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Sources\"
 
 @echo -Versioning Artifacts-
 xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
 xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
 
 cd "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
-updatever-server.bat "%2%"
+REM updatever-server.bat "%2%"
 
 cd "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
-updatever-studio.bat "%2%"
+REM updatever-studio.bat "%2%"
 
 @echo --End Release Process--

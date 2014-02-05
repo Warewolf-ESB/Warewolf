@@ -25,27 +25,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translation", "Translation\Translation.csproj", "{89240B0D-4716-4549-A75F-DE68DE0AD774}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 6
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Assembler\\Assembler.csproj
-		SccProjectName1 = Assembler
-		SccLocalPath1 = Assembler
-		SccProjectUniqueName2 = Gui\\Gui.csproj
-		SccProjectName2 = Gui
-		SccLocalPath2 = Gui
-		SccProjectUniqueName3 = IntermediateBootstrapper\\IntermediateBootstrapper.vcxproj
-		SccProjectName3 = IntermediateBootstrapper
-		SccLocalPath3 = IntermediateBootstrapper
-		SccProjectUniqueName4 = Translation\\Translation.csproj
-		SccProjectName4 = Translation
-		SccLocalPath4 = Translation
-		SccProjectUniqueName5 = Package\\Package.wixproj
-		SccProjectName5 = Package
-		SccLocalPath5 = Package
-	EndGlobalSection
 	GlobalSection(SharpSetup) = preSolution
 		Version = 1.8
 	EndGlobalSection
@@ -131,8 +110,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

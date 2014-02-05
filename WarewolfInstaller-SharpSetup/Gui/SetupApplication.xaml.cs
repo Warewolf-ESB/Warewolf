@@ -86,7 +86,7 @@ namespace Gui
                 return;
             }
 
-            var readmePath = InstallVariables.InstallRoot + "Samples\\Readme.txt";
+            var readmePath = Path.Combine(InstallVariables.InstallRoot, "Samples\\Readme.txt");
             Process.Start(readmePath);
         }
 
