@@ -17,6 +17,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         public const string SplitTypeIndex = "Index";
         public const string SplitTypeChars = "Chars";
+        public const string SplitTypeNewLine = "New Line";
+        public const string SplitTypeSpace = "Space";
+        public const string SplitTypeTab = "Tab";
+        public const string SplitTypeEnd = "End";
         public const string SplitTypeNone = "None";
 
         string _outputVariable;
@@ -29,11 +33,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isEscapeCharFocused;
         bool _isOutputVariableFocused;
         bool _isAtFocused;
+        bool _isEscapeCharEnabled;
 
         public DataSplitDTO()
         {
             SplitType = SplitTypeIndex;
             _enableAt = true;
+            _isEscapeCharEnabled = true;
         }
 
         public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
@@ -45,6 +51,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IndexNumber = indexNum;
             Include = include;
             _enableAt = true;
+            _isEscapeCharEnabled = true;
             OutList = new List<string>();
         }
 
@@ -70,6 +77,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string EscapeChar { get { return _escapeChar; } set { OnPropertyChanged(ref _escapeChar, value); } }
 
         public bool IsEscapeCharFocused { get { return _isEscapeCharFocused; } set { OnPropertyChanged(ref _isEscapeCharFocused, value); } }
+
+        public bool IsEscapeCharEnabled { get { return _isEscapeCharEnabled; } set { OnPropertyChanged(ref _isEscapeCharEnabled, value); } }
 
         [FindMissing]
         public string OutputVariable
@@ -173,15 +182,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "OutputVariable":
                     var outputExprRule = new IsValidExpressionRule(() => OutputVariable, "1");
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsStringNullOrEmptyRule(() => outputExprRule.ExpressionValue));
+                    ruleSet.Add(new IsStringEmptyRule(() => outputExprRule.ExpressionValue));
                     break;
 
                 case "At":
-                    if(SplitType == SplitTypeIndex)
+                    switch(SplitType)
                     {
-                        var atExprRule = new IsValidExpressionRule(() => At, "1");
-                        ruleSet.Add(atExprRule);
-                        ruleSet.Add(new IsNumericRule(() => atExprRule.ExpressionValue));
+                        case SplitTypeIndex:
+                            var atIndexExprRule = new IsValidExpressionRule(() => At, "1");
+                            ruleSet.Add(atIndexExprRule);
+                            ruleSet.Add(new IsNumericRule(() => atIndexExprRule.ExpressionValue));
+                            break;
+                        case SplitTypeChars:
+                            var atCharsExprRule = new IsValidExpressionRule(() => At, ",");
+                            ruleSet.Add(atCharsExprRule);
+                            ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
+                            break;
                     }
                     break;
 

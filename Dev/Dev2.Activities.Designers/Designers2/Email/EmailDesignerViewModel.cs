@@ -252,13 +252,13 @@ namespace Dev2.Activities.Designers2.Email
                 case "FromAccount":
                     var fromExprRule = new IsValidExpressionRule(() => FromAccount);
                     ruleSet.Add(fromExprRule);
-                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => fromExprRule.ExpressionValue));
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => fromExprRule.ExpressionValue));
                     ruleSet.Add(new IsValidEmailRule(() => fromExprRule.ExpressionValue));
                     break;
                 case "To":
                     var toExprRule = new IsValidExpressionRule(() => To);
                     ruleSet.Add(toExprRule);
-                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => toExprRule.ExpressionValue));
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => toExprRule.ExpressionValue));
                     ruleSet.Add(new IsValidEmailRule(() => toExprRule.ExpressionValue));
                     break;
                 case "Cc":
@@ -274,7 +274,7 @@ namespace Dev2.Activities.Designers2.Email
                 case "Subject":
                     var subjectExprRule = new IsValidExpressionRule(() => Subject);
                     ruleSet.Add(subjectExprRule);
-                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => subjectExprRule.ExpressionValue));
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => subjectExprRule.ExpressionValue));
                     break;
                 case "Attachments":
                     var attachmentsExprRule = new IsValidExpressionRule(() => Attachments);

@@ -51,10 +51,10 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         {
             var items = new List<DataSplitDTO>
             {
-                new DataSplitDTO("", "None", "", 0),
-                new DataSplitDTO("", "None", "", 0),
-                new DataSplitDTO("", "None", "", 0),
-                new DataSplitDTO("", "None", "", 0)
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0)
             };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             dynamic mi = viewModel.ModelItem;
@@ -64,54 +64,53 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
-        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNone_EnableAtIsSetToFalse()
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_EnableAt_SetCorrectly()
         {
-            VerifySplitTypeAgaintsEnabledAt("None", false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeIndex, true);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeChars, true);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeNewLine, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeSpace, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeTab, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeEnd, false);
         }
 
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
-        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToTab_EnableAtIsSetToFalse()
+        static void VerifySplitTypeAgainstEnabledAt(string splitType, bool expectedEnableAt)
         {
-            VerifySplitTypeAgaintsEnabledAt("Tab", false);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
-        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToNewLine_EnableAtIsSetToFalse()
-        {
-            VerifySplitTypeAgaintsEnabledAt("New Line", false);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
-        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToIndex_EnableAtIsSetToTrue()
-        {
-            VerifySplitTypeAgaintsEnabledAt("Index", true);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
-        public void DataSplitDesignerViewModel_OnSplitTypeChanged_SetIndexToSplitTypeToChars_EnableAtIsSetToTrue()
-        {
-            VerifySplitTypeAgaintsEnabledAt("Chars", true);
-        }
-
-        static void VerifySplitTypeAgaintsEnabledAt(string splitType, bool expectedEnableAt)
-        {
-            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, "", 0) };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, ",", 0) };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             viewModel.SplitTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
             var at = mi.At as string;
             var actualEnableAt = mi.EnableAt as bool?;
-            Assert.AreEqual("", at);
+            Assert.AreEqual(expectedEnableAt ? "," : "", at);
             Assert.AreEqual(expectedEnableAt, actualEnableAt);
         }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
+        public void DataSplitDesignerViewModel_OnSplitTypeChanged_IsEscapeCharEnabled_SetCorrectly()
+        {
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeIndex, false);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeChars, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeNewLine, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeSpace, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeTab, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeEnd, false);
+        }
+
+        static void VerifySplitTypeAgainstIsEscapeCharEnabled(string splitType, bool expectedIsEscapeCharEnabled)
+        {
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, "", 0) { EscapeChar = "'"} };
+            var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
+            viewModel.SplitTypeUpdatedCommand.Execute(0);
+            dynamic mi = viewModel.ModelItemCollection[0];
+            var escapeChar = mi.EscapeChar as string;
+            var actualIsEscapeCharEnabled = mi.IsEscapeCharEnabled as bool?;
+            Assert.AreEqual(expectedIsEscapeCharEnabled ? "'" : "", escapeChar);
+            Assert.AreEqual(expectedIsEscapeCharEnabled, actualIsEscapeCharEnabled);
+        }
+
 
         static ModelItem CreateModelItem(IEnumerable<DataSplitDTO> items, string displayName = "Split")
         {
@@ -131,36 +130,12 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDesignerViewModel_ValidateThis")]
-        public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsInvalidExpression_DoesHaveErrors()
+        public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsNotEmpty_DoesNotHaveErrors()
         {
             //------------Setup for test--------------------------
             var items = new List<DataSplitDTO> { new DataSplitDTO("", DataSplitDTO.SplitTypeChars, "", 0) };
             var mi = CreateModelItem(items);
-            mi.SetProperty("SourceString", "h]]");
-            var viewModel = new DataSplitDesignerViewModel(mi);
-
-
-            //------------Execute Test---------------------------
-            viewModel.Validate();
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'String to Split' - Invalid expression: opening and closing brackets don't match");
-
-            Assert.IsFalse(viewModel.IsSourceStringFocused);
-            viewModel.Errors[0].Do();
-            Assert.IsTrue(viewModel.IsSourceStringFocused);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DataSplitDesignerViewModel_ValidateThis")]
-        public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsValidExpression_DoesNotHaveErrors()
-        {
-            //------------Setup for test--------------------------
-            var items = new List<DataSplitDTO> { new DataSplitDTO("", DataSplitDTO.SplitTypeChars, "", 0) };
-            var mi = CreateModelItem(items);
-            mi.SetProperty("SourceString", "[[h]]");
+            mi.SetProperty("SourceString", "a,b,c");
             var viewModel = new DataSplitDesignerViewModel(mi);
 
 
@@ -174,7 +149,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDesignerViewModel_ValidateThis")]
-        public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsNullOrWhiteSpace_DoesHaveErrors()
+        public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsEmptyOrWhiteSpace_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
             var items = new List<DataSplitDTO> { new DataSplitDTO("", DataSplitDTO.SplitTypeChars, "", 0) };
@@ -187,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, viewModel.Errors.Count);
-            StringAssert.Contains(viewModel.Errors[0].Message, "'String to Split' cannot be empty, null or white space only");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'String to Split' cannot be empty or only white space");
         }
 
 

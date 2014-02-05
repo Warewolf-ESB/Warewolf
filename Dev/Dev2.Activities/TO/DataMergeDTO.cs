@@ -197,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var atExprRule = new IsValidExpressionRule(() => At, "1");
                         ruleSet.Add(atExprRule);
 
-                        ruleSet.Add(new IsStringNullOrEmptyRule(() => atExprRule.ExpressionValue));
+                        ruleSet.Add(new IsStringEmptyRule(() => atExprRule.ExpressionValue));
                         ruleSet.Add(new IsPositiveNumberRule(() => atExprRule.ExpressionValue));
                     }
                     break;

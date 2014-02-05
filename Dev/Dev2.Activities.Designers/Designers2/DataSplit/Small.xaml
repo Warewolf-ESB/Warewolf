@@ -13,6 +13,7 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                Width="280"
                                MaxWidth="280"
                                Padding="7"
@@ -36,20 +37,28 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Label  Content="String To Split"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Style="{StaticResource ActivityLabelStyle}" />
+            <Label Grid.Row="0"
+                   Grid.Column="0"
+                   Content="String To Split"
+                   VerticalAlignment="Top"
+                   Margin="0,5,5,0"
+                   Style="{StaticResource ActivityMapppingLabelStyle}" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                     Grid.Column="1"
                                     Grid.Row="0"
                                     MinWidth="125"
                                     Width="125"
-                                    HorizontalAlignment="Right"                                                                    
+                                    Height="37"
+                                    MinHeight="37"
+                                    MaxHeight="37"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"                                    
+                                    VerticalContentAlignment="Top"
+                                    VerticalScrollBarVisibility="Auto"
                                     DefaultText="Data to split"
                                     Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipString}"
-                                    Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
+                                    Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SourceStringtxt_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.DataSplitHelpString}"
@@ -59,6 +68,10 @@
                                          SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
+                <ui:IntellisenseTextBox.IntellisenseProvider>   
+                    <!--Disable variable validation-->
+                    <provider:BlankIntellisenseProvider/>
+                </ui:IntellisenseTextBox.IntellisenseProvider>
             </ui:IntellisenseTextBox>
         </Grid>
         <controls:Dev2DataGrid x:Name="SmallDataGrid"

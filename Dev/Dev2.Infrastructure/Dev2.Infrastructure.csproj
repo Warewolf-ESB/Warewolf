@@ -122,11 +122,11 @@
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsSingleCharRule.cs" />
-    <Compile Include="Providers\Validation\Rules\IsStringNullOrWhiteSpaceRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsStringEmptyOrWhiteSpaceRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidFileNameRule.cs" />
     <Compile Include="Providers\Validation\Rules\Rule.cs" />
     <Compile Include="Providers\Validation\Rules\RuleSet.cs" />
-    <Compile Include="Providers\Validation\Rules\IsStringNullOrEmptyRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsStringEmptyRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNullRule.cs" />
     <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Service Catalog\HubList.cs" />

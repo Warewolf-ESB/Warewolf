@@ -27,6 +27,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(DataSplitDTO.SplitTypeIndex, dto.SplitType);
             Assert.IsNull(dto.At);
             Assert.AreEqual(true, dto.EnableAt);
+            Assert.AreEqual(true, dto.IsEscapeCharEnabled);
             Assert.AreEqual(0, dto.IndexNumber);
             Assert.IsNull(dto.EscapeChar);
             Assert.AreEqual(false, dto.Include);
@@ -50,6 +51,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual(DataSplitDTO.SplitTypeIndex, dto.SplitType);
             Assert.AreEqual(string.Empty, dto.At);
             Assert.AreEqual(true, dto.EnableAt);
+            Assert.AreEqual(true, dto.IsEscapeCharEnabled);
             Assert.AreEqual(1, dto.IndexNumber);
             Assert.IsNull(dto.EscapeChar);
             Assert.AreEqual(false, dto.Include);
@@ -206,7 +208,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void DataSplitDTO_ClearRow_PropertiesAreEmpty()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "xxx", SplitType = DataSplitDTO.SplitTypeNone, Include = true, EscapeChar = "'"};
+            var dto = new DataSplitDTO { OutputVariable = "xxx", SplitType = DataSplitDTO.SplitTypeNone, Include = true, EscapeChar = "'" };
 
             Assert.IsFalse(dto.IsEmpty());
 
@@ -250,7 +252,7 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_OutputVariableExpressionIsInvalid_ValidateRulesReturnsFalse()
+        public void DataSplitDTO_GetRuleSetOutputVariable_ExpressionIsInvalid_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
             var dto = new DataSplitDTO { OutputVariable = "h]]" };
@@ -262,7 +264,7 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_OutputVariableExpressionIsValid_ValidateRulesReturnsTrue()
+        public void DataSplitDTO_GetRuleSetOutputVariable_ExpressionIsValid_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
             var dto = new DataSplitDTO { OutputVariable = "[[h]]" };
@@ -274,19 +276,19 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_OutputVariableIsNullOrEmpty_ValidateRulesReturnsFalse()
+        public void DataSplitDTO_GetRuleSetOutputVariable_IsNullOrEmpty_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "", At = "1"};
+            var dto = new DataSplitDTO { OutputVariable = "", At = "1" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "OutputVariable", "cannot be empty or null");
+            Verify_RuleSet(dto, "OutputVariable", "cannot be empty");
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_OutputVariableIsNotNullOrEmpty_ValidateRulesReturnsTrue()
+        public void DataSplitDTO_GetRuleSetOutputVariable_IsNotNullOrEmpty_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
             var dto = new DataSplitDTO { OutputVariable = "[[h]]", At = "1" };
@@ -298,10 +300,10 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_AtExpressionIsInvalid_ValidateRulesReturnsFalse()
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndExpressionIsInvalid_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { At = "h]]" };
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
@@ -310,10 +312,10 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_AtExpressionIsValid_ValidateRulesReturnsTrue()
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndExpressionIsValid_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { At = "[[h]]" };
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -322,23 +324,70 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_AtIsNotNumeric_ValidateRulesReturnsFalse()
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsNotNumeric_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { At = "h" };
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", "must be a whole number");
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsNumeric_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "1", SplitType = DataSplitDTO.SplitTypeIndex };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSet_AtIsNumeric_ValidateRulesReturnsTrue()
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndExpressionIsInvalid_ValidateRulesReturnsFalse()
         {
             //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { At = "1" };
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h]]", SplitType = DataSplitDTO.SplitTypeChars };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", "Invalid expression: opening and closing brackets don't match");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndExpressionIsValid_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "[[h]]", SplitType = DataSplitDTO.SplitTypeChars };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndIsEmpty_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "", SplitType = DataSplitDTO.SplitTypeChars };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", "cannot be empty");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsCharsAndIsNotEmpty_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = ",", SplitType = DataSplitDTO.SplitTypeChars };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
@@ -346,7 +395,7 @@ namespace Dev2.Tests.Activities.TOTests
 
         static void Verify_RuleSet(DataSplitDTO dto, string propertyName, string expectedErrorMessage)
         {
-            
+
             //------------Execute Test---------------------------
             var ruleSet = dto.GetRuleSet(propertyName);
             var errors = ruleSet.ValidateRules(null, null);

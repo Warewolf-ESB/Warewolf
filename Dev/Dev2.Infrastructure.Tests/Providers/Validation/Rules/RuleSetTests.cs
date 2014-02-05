@@ -118,7 +118,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             const string LabelText = "Label Text";
 
             var ruleSet = new RuleSet();
-            ruleSet.Add(new IsStringNullOrEmptyRule(() => ""));
+            ruleSet.Add(new IsStringEmptyRule(() => ""));
 
             //------------Execute Test---------------------------
             var errors = ruleSet.ValidateRules(LabelText, doError);
@@ -126,7 +126,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Assert Results-------------------------
             Assert.IsNotNull(errors);
             Assert.AreEqual(1, errors.Count);
-            Assert.AreEqual(LabelText + " cannot be empty or null", errors[0].Message);
+            Assert.AreEqual(LabelText + " cannot be empty", errors[0].Message);
             errors[0].Do();
             Assert.IsTrue(doErrorWasAssigned);
         }

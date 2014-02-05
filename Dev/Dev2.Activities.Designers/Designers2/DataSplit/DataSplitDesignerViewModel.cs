@@ -8,7 +8,6 @@ using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataSplit
@@ -26,7 +25,15 @@ namespace Dev2.Activities.Designers2.DataSplit
             AddTitleBarQuickVariableInputToggle();
             AddTitleBarHelpToggle();
 
-            ItemsList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab", "End" };
+            ItemsList = new List<string>
+            {
+                DataSplitDTO.SplitTypeIndex,
+                DataSplitDTO.SplitTypeChars,
+                DataSplitDTO.SplitTypeNewLine,
+                DataSplitDTO.SplitTypeSpace,
+                DataSplitDTO.SplitTypeTab,
+                DataSplitDTO.SplitTypeEnd
+            };
             SplitTypeUpdatedCommand = new RelayCommand(OnSplitTypeChanged, o => true);
 
             dynamic mi = ModelItem;
@@ -60,15 +67,38 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             var mi = ModelItemCollection[index];
             var splitType = mi.GetProperty("SplitType") as string;
-
-            if(splitType == "Index" || splitType == "Chars")
+            switch(splitType)
             {
-                mi.SetProperty("EnableAt", true);
-            }
-            else
-            {
-                mi.SetProperty("At", string.Empty);
-                mi.SetProperty("EnableAt", false);
+                case DataSplitDTO.SplitTypeIndex:
+                    mi.SetProperty("IsEscapeCharEnabled", false);
+                    mi.SetProperty("EscapeChar", string.Empty);
+                    mi.SetProperty("EnableAt", true);
+                    break;
+                case DataSplitDTO.SplitTypeChars:
+                    mi.SetProperty("IsEscapeCharEnabled", true);
+                    mi.SetProperty("EnableAt", true);
+                    break;
+                case DataSplitDTO.SplitTypeNewLine:
+                    mi.SetProperty("IsEscapeCharEnabled", true);
+                    mi.SetProperty("EnableAt", false);
+                    mi.SetProperty("At", string.Empty);
+                    break;
+                case DataSplitDTO.SplitTypeSpace:
+                    mi.SetProperty("IsEscapeCharEnabled", true);
+                    mi.SetProperty("EnableAt", false);
+                    mi.SetProperty("At", string.Empty);
+                    break;
+                case DataSplitDTO.SplitTypeTab:
+                    mi.SetProperty("IsEscapeCharEnabled", true);
+                    mi.SetProperty("EnableAt", false);
+                    mi.SetProperty("At", string.Empty);
+                    break;
+                case DataSplitDTO.SplitTypeEnd:
+                    mi.SetProperty("IsEscapeCharEnabled", false);
+                    mi.SetProperty("EscapeChar", string.Empty);
+                    mi.SetProperty("EnableAt", false);
+                    mi.SetProperty("At", string.Empty);
+                    break;
             }
         }
 
@@ -107,9 +137,7 @@ namespace Dev2.Activities.Designers2.DataSplit
             switch(propertyName)
             {
                 case "SourceString":
-                    var sourceExprRule = new IsValidExpressionRule(() => SourceString);
-                    ruleSet.Add(sourceExprRule);
-                    ruleSet.Add(new IsStringNullOrWhiteSpaceRule(() => sourceExprRule.ExpressionValue));
+                    ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
                     break;
             }
             return ruleSet;

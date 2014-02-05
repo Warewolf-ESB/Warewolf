@@ -14,6 +14,7 @@
                                xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
+                               xmlns:provider="clr-namespace:Dev2.Intellisense.Provider;assembly=Dev2.Intellisense"
                                Width="350"
                                MinWidth="350"
                                MinHeight="350"
@@ -56,14 +57,19 @@
         <Label Grid.Row="0"
                Grid.Column="0"
                Content="String To Split"
+               VerticalAlignment="Top"
+               Margin="0,5,5,0"
                Style="{StaticResource ActivityMapppingLabelStyle}" />
         <ui:IntellisenseTextBox Grid.Row="0"
                                 Grid.Column="1"
-                                x:Name="InitialFocusElement"                                     
+                                x:Name="InitialFocusElement"  
+                                Height="37"
+                                MinHeight="37"
+                                MaxHeight="37"
+                                VerticalAlignment="Top"                                                           
+                                VerticalContentAlignment="Top"
+                                VerticalScrollBarVisibility="Auto"
                                 DefaultText="Data to split"
-                                AllowUserInsertLine="False"
-                                AllowMultilinePaste="False"   
-                                MinHeight="24"
                                 Text="{Binding Path=ModelItem.SourceString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipString}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsSourceStringFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -76,7 +82,11 @@
                                      SourcePropertyName="ModelItem.SourceString"
                                      SourcePropertyValue="{Binding  ModelItem.SourceString, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
-            </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>            
+            <ui:IntellisenseTextBox.IntellisenseProvider>
+                <!--Disable variable validation-->
+                <provider:BlankIntellisenseProvider />
+            </ui:IntellisenseTextBox.IntellisenseProvider>
         </ui:IntellisenseTextBox>
 
         <Label Grid.Row="1"
@@ -296,7 +306,8 @@
                                         d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox WrapInBrackets="False"                                                   
+                            <ui:IntellisenseTextBox WrapInBrackets="False"                                  
+                                                    IsEnabled="{Binding IsEscapeCharEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding EscapeChar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataSplitToolTipEscape}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsEscapeCharFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

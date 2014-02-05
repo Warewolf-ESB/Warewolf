@@ -3,12 +3,12 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class IsStringNullOrEmptyRule : Rule<string>
+    public class IsStringEmptyRule : Rule<string>
     {
-        public IsStringNullOrEmptyRule(Func<string> getValue)
+        public IsStringEmptyRule(Func<string> getValue)
             : base(getValue)
         {
-            ErrorText = "cannot be empty or null";
+            ErrorText = "cannot be empty";
         }
 
         public override IActionableErrorInfo Check()

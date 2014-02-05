@@ -295,7 +295,7 @@ namespace Dev2.Tests.Activities.TOTests
             var dto = new DataMergeDTO { InputVariable = "[[a]]", At = "" };
 
             //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "cannot be empty or null");
+            Verify_RuleSet(dto, "At", "cannot be empty");
         }
 
         [TestMethod]
