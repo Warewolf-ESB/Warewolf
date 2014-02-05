@@ -5,7 +5,7 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramMenuFolder" Name="Programs">
                 <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
-                    <Component Id="pmd" Guid="{3010812e-5a4d-4893-a4e1-0559160e1e3b}" >
+                    <Component Id="pmd" Guid="{3010812e-5a4d-4893-a4e1-0559160e1e3b}">
                         <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
                         <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
                     </Component>
@@ -31,7 +31,15 @@
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEC" Name="SSL Generation" />
         </DirectoryRef>
         <ComponentGroup Id="Server">
-            <!-- New Junk -->
+            <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B966836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618AF58912}">
+                <File Id="filD16B434756CC1373AB1957E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Instrumentation.dll" />
+            </Component>
+            <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618EE58912}">
+                <File Id="filD16B434756BC4373AB0857E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.Tracker.dll" />
+            </Component>
+            <Component Id="cmpE9EC7D9921B14FF5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618FF58912}">
+                <File Id="filD16B434756BC4373AB0857E4FBFA516C" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.Tracker.xml" />
+            </Component>
             <Component Id="cmpE9EC7D9921B14EE5BF2DA1807A977836" Directory="dirServerRoot" Guid="{C0AD2CF4-8174-4D4B-9C4E-DF618EE58912}">
                 <File Id="filD16B434756BC4373AB0857E4FBFA516F" KeyPath="yes" Source="..\ProductBuild\Server\Owin.dll" />
             </Component>
@@ -267,6 +275,90 @@
             <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A204218" Directory="dirServerRoot" Guid="{2775B54A-20B4-4EB5-97E7-1B0C911753D3}">
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73" KeyPath="yes" Source="..\ProductBuild\Server\XPath20Api.dll" />
             </Component>
+            <!-- Sample Stuff -->
+                <!-- Src -->
+            <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A214219" Directory="dirServerRoot" Guid="{C868F06D-447D-4551-938A-AC82695E8753}">
+                <File Id="filADDA41D87BACF5C03971418692A96D44" KeyPath="yes" Source="..\ProductBuild\Server\Sources\paypal.xml" />
+            </Component>
+            <Component Id="cmp3A06F0AF2D151729CD4DDDCC3A204218" Directory="dirServerRoot" Guid="{4A974C71-5004-4E0B-B8B0-4C0C39E7C904}">
+                <File Id="filD2C20C51F38D822437ED4DB7D9245D13" KeyPath="yes" Source="..\ProductBuild\Server\Sources\paypalpayment.xml" />
+            </Component>
+            <Component Id="cmp1FA3F0AF1D061729CD4DDDCC3A204218" Directory="dirServerRoot" Guid="{556C46BD-3008-4C03-BB2E-69EA45298361}">
+                <File Id="fil2FD1FDFCDD740DA954F2B1D630D1A835" KeyPath="yes" Source="..\ProductBuild\Server\Sources\WarewolfShoppingCartDB.xml" />
+            </Component>
+                <!-- End Src -->
+                <!-- Service -->
+            <Component Id="AddCategory.xml" Directory="dirServerRoot" Guid="{6F2FF298-16CF-4D34-8500-FF48EA5453C3}">
+                <File Id="fil5AF56A37A81C6083A51461A99B30282E" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategory.xml" />
+            </Component>
+            <Component Id="AddCategoryToWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{E7EB6036-1BA2-4C7E-A7AD-78D4E7C86F56}">
+                <File Id="fil80688222B6F483F07201097F468C9CAC" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategoryToWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="AddProduct.xml" Directory="dirServerRoot" Guid="{B7D0FB11-EFBF-4C97-9F40-810359C5F0E5}">
+                <File Id="fil04E4ECB42B1D05438FD134DDE98929EA" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddProduct.xml" />
+            </Component>
+            <Component Id="AddProductToWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{D81A6B92-0364-4723-BED9-2C068DA99B71}">
+                <File Id="fil3C517654CEC040749B8DDC84A4A29175" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddProductToWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="DeleteCategory.xml" Directory="dirServerRoot" Guid="{AE292E1E-B85A-4C64-8EDC-174A2D643812}">
+                <File Id="fil4905DDA8A2CBD163EFEC85E54200C3F8" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteCategory.xml" />
+            </Component>
+            <Component Id="DeleteCategoryInWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{F1481C38-EC26-494F-BBFA-B6C0940A2BAE}">
+                <File Id="fil304F56C55113A5045B627188E267333D" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteCategoryInWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="DeleteProduct.xml" Directory="dirServerRoot" Guid="{4C6265A4-3166-4147-B933-9D39FC0D302E}">
+                <File Id="fil393FF1048FB4AE802CE1FD9DA0D11F49" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteProduct.xml" />
+            </Component>
+            <Component Id="DeleteProductFromWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{2704E1C1-8AF5-4082-98CF-71A0E40914B5}">
+                <File Id="fil05553260C57B147F476A73644561907E" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteProductFromWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="EditCategory.xml" Directory="dirServerRoot" Guid="{1D04A348-3B69-4D93-8483-C43FFD7AB36E}">
+                <File Id="fil3FD812901E654C3C9E7357273A5E0F32" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditCategory.xml" />
+            </Component>
+            <Component Id="EditCategoryOnWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{96EFF6D1-892E-4420-B782-980847599A12}">
+                <File Id="fil5BE2A63F8C6A2C6D8D7F74AA3A95A5A2" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditCategoryOnWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="EditProduct.xml" Directory="dirServerRoot" Guid="{5FF1BBB5-8F97-4FC2-847D-536EA17335CA}">
+                <File Id="filED96E6BEF9431CA52B2C7DF0C1764F78" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditProduct.xml" />
+            </Component>
+            <Component Id="EditProductInWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{8423029A-9D9F-4B3F-9AF5-9A3ACF7ED33B}">
+                <File Id="filB66C1FFCF064FB7EE6C215850F92A9E7" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditProductInWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="GetCategoryTable.xml" Directory="dirServerRoot" Guid="{C42BCBBB-BC43-4FCD-A8B9-01F22603F9DB}">
+                <File Id="fil375696D71434CE41224F8AC8BCFE3CF0" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetCategoryTable.xml" />
+            </Component>
+            <Component Id="GetCategoryTableFromWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{3A562DB6-A426-4023-99F9-391565A04F96}">
+                <File Id="fil92D7728DC0884123D28DA3E953D54869" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetCategoryTableFromWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="GetProductsTable.xml" Directory="dirServerRoot"  Guid="{7683B834-11FF-4CC3-872D-2EA037D61871}">
+                <File Id="fil966282D32AA356FFEFB0BB9D2074B78D" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTable.xml" />
+            </Component>
+            <Component Id="GetProductsTableFromWarewolfShoppingCartDb.xml"  Directory="dirServerRoot" Guid="{7A4B3E2C-62A9-4196-B530-035839235AB1}">
+                <File Id="fil12052E332FB4ADD2E6BB3F44B97845F0" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTableFromWarewolfShoppingCartDb.xml" />
+            </Component>
+            <Component Id="PayPal_GetPaymentService.xml" Directory="dirServerRoot" Guid="{24DA6796-E108-4042-8F55-B222F6FC7FF5}">
+                <File Id="fil58B3D71B6E188AC14E0710ABDC01AE41" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_GetPaymentService.xml" />
+            </Component>
+            <Component Id="paypal_gettoken.xml" Directory="dirServerRoot" Guid="{36AB911D-EA2C-4E87-947A-A308C37992DE}">
+                <File Id="filC8F95084A5D7262DB6E28CDE6097214E" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_gettoken.xml" />
+            </Component>
+            <Component Id="PayPal_PerformPayment.xml" Directory="dirServerRoot" Guid="{41260F10-82D2-4222-9D41-310169F803FA}">
+                <File Id="fil6861BA74500F737E9FEF2F1DABC7F805" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_PerformPayment.xml" />
+            </Component>
+            <Component Id="paypal_postpayment.xml" Directory="dirServerRoot" Guid="{64258C09-3E83-433B-BD64-D9A48ADB7FE3}">
+                <File Id="filA1CF537F095141C9AC5CBB2DA1A7EFCC" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_postpayment.xml" />
+            </Component>
+            <Component Id="PayPal_RetrieveAuthToken.xml" Directory="dirServerRoot" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE87D7BE46}">
+                <File Id="filD161B536A111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_RetrieveAuthToken.xml" />
+            </Component>
+             <Component Id="paypal_retrievepayments.xml" Directory="dirServerRoot" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE97E7CE46}">
+                <File Id="filD262B536B111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_retrievepayments.xml" />
+            </Component>
+            <Component Id="SampleEmployeesWorkflow.xml" Directory="dirServerRoot" Guid="{4E3F3B11-EFAC-4725-962F-645C0D1127D0}">
+                <File Id="fil12C318DB6125764AF55F36D1EFF876B5" KeyPath="yes" Source="..\ProductBuild\Server\Services\SampleEmployeesWorkflow.xml" />
+            </Component>
+                <!-- End Service-->
+            <!-- End Sample -->
             <Component Id="cmp62707DDA8BD0362C71EDB96A68049F9D" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563732F76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Control Flow - Decision.xml" />
             </Component>
@@ -666,39 +758,6 @@
         </DirectoryRef>
     </Fragment>
     <!-- ==== END SERVER ==== -->
-    <!-- ==== SQL ==== -->
-    <Fragment>
-        <DirectoryRef Id="INSTALLLOCATION">
-            <Directory Id="sqlRoot" Name="SqlResources" />
-        </DirectoryRef>
-        <DirectoryRef Id="sqlRoot">
-            <Directory Id="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Name="Warewolf" />
-        </DirectoryRef>
-        <ComponentGroup Id="SqlResources">
-            <Component Id="cmp00BE046BD723380CEA5C4451C85FDCEF" Directory="sqlRoot" Guid="{2B177AFD-22C8-4879-9BB8-2445B37C850A}">
-                <File Id="filC034DF4931E93AD8E9208B0082FD9929" KeyPath="yes" Source="..\ProductBuild\SqlResources\install.cmd" />
-            </Component>
-            <Component Id="cmp5199D025C0C5F992A1E915750BA4EB79" Directory="sqlRoot" Guid="{C6021B14-1BEF-4975-A39D-68B1B8B78D71}">
-                <File Id="filFCEA7C18E4767DB01A24C9C8D64EAE64" KeyPath="yes" Source="..\ProductBuild\SqlResources\Readme.txt" />
-            </Component>
-            <Component Id="cmp79E07772846914FE68AD9C825F1D401E" Directory="sqlRoot" Guid="{F2441F59-7629-4D85-BA86-D2090C1302B5}">
-                <File Id="fil034B1E063733EC02221EFEE45C596000" KeyPath="yes" Source="..\ProductBuild\SqlResources\Samples.sql" />
-            </Component>
-            <Component Id="cmpF734FCD0D4611206D13534F5437ECA7B" Directory="sqlRoot" Guid="{F5BD9277-BA51-4302-A4C9-685B3D340B96}">
-                <File Id="fil92D56710817AE4B32B21F6B1E9C68D33" KeyPath="yes" Source="..\ProductBuild\SqlResources\uninstall.cmd" />
-            </Component>
-            <Component Id="cmpAC677B2806FA61E7FBE0DA1BA2C5E9FB" Directory="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Guid="{361FC520-8560-47BA-AA7F-EB8AF498FF1F}">
-                <File Id="fil8500834E6DBF72267537CDBD3ACB743B" KeyPath="yes" Source="..\ProductBuild\SqlResources\Warewolf\Install.sql" />
-            </Component>
-            <Component Id="cmpC165E6EA15B4B12710567FC3A14D596B" Directory="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Guid="{A17083FD-013F-4F02-9B3C-F8DFD8D72562}">
-                <File Id="filD0055C2C3E5AD984817C5F6E88150CFA" KeyPath="yes" Source="..\ProductBuild\SqlResources\Warewolf\Uninstall.sql" />
-            </Component>
-            <Component Id="cmpF0C746B81507F3FC6503472E4705F878" Directory="dirB4D310A9E9F8FE869D7BE8BA2B85CF4D" Guid="{44EBDB16-713B-477D-85A3-11C9CD993758}">
-                <File Id="fil127B2676A6671FB19ADB7A0A96C5EA16" KeyPath="yes" Source="..\ProductBuild\SqlResources\Warewolf\Warewolf.Sql.dll" />
-            </Component>
-        </ComponentGroup>
-    </Fragment>
-    <!-- ==== END SQL ==== -->
     <!-- ==== STUDIO ==== -->
     <Fragment>
         <DirectoryRef Id="INSTALLLOCATION">
@@ -709,6 +768,7 @@
             <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
         </DirectoryRef>
         <ComponentGroup Id="Studio">
+
             <Component Id="cmp0E096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-C33C-1132-92AB-7B4349240DAC}">
                 <File Id="fil7BBC05375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Interop.ActiveDs.dll" />
             </Component>
@@ -936,6 +996,15 @@
             <Component Id="cmpCFFD37E68A3FC416A0A4DAAC72E4347D_Studio" Directory="dirStudioRoot" Guid="{B79A71F3-C2E7-409C-811E-DE0ADA1ED188}">
                 <File Id="filF254CAAA6D4CF81080042A701DB6D9CE_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Weave.dll" />
             </Component>
+            <Component Id="cmp0C011C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-D33D-3332-92AB-7B4349240DAC}">
+                <File Id="fil7CCB05375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Instrumentation.dll" />
+            </Component>
+            <Component Id="cmp0C096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-D33D-1132-92AB-7B4349240DAC}">
+                <File Id="fil7CBD05375326109CAE22A1FA26A49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Trackerbird.Tracker.dll" />
+            </Component>
+            <Component Id="cmp0F096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-D33D-1112-A2AC-7B4349240DAC}">
+                <File Id="fil7CBD05375326109CBE22A1FB26B49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Trackerbird.Tracker.xml" />
+            </Component>
             <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A204218_Studio" Directory="dirStudioRoot" Guid="{28DC149E-9F4E-440F-96DF-F96160501E34}">
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\XPath20Api.dll" />
             </Component>
@@ -1116,4 +1185,5 @@
         </ComponentGroup>
     </Fragment>
     <!-- ==== END STUDIO ==== -->
+
 </Wix>

@@ -16,6 +16,7 @@ namespace Gui
             if(!InstallVariables.IsInstallMode)
             {
                 cbStartStudio.Visibility = Visibility.Hidden;
+                cbViewReadMe.Visibility = Visibility.Hidden;
                 tbFinish.Visibility = Visibility.Visible;
             }
             else

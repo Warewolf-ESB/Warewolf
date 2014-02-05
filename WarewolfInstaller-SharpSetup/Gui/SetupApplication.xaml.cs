@@ -85,8 +85,8 @@ namespace Gui
                 return;
             }
 
-            var readmePath = InstallVariables.InstallRoot + "\\Samples\\Readme.txt";
-            ProcessHost.Invoke(string.Empty, "notepad", readmePath, false);
+            var readmePath = InstallVariables.InstallRoot + "Samples\\Readme.txt";
+            ProcessHost.Invoke(string.Empty, "notepad.exe", readmePath, false);
         }
 
         /// <summary>
