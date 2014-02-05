@@ -5,6 +5,7 @@ using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
 
@@ -291,6 +292,20 @@ namespace Dev2.Studio.Webs
         }
 
         #endregion
+
+        public static void ShowFileChooser(IEnvironmentModel environment, FileChooserMessage fileChooserMessage)
+        {
+            VerifyArgument.IsNotNull("environment", environment);
+
+            const string PageName = "dialogs/filechooser";
+            const double Width = 704;
+            const double Height = 492;
+
+            var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
+
+            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
+            environment.ShowWebPageDialog(SiteName, string.Format("{0}?envir={1}", PageName, envirDisplayName), pageHandler, Width, Height);
+        }
 
         #region Encode Environment Name and Address
 

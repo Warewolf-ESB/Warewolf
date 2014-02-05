@@ -9,7 +9,7 @@ namespace Dev2.Instrumentation
     /// Tracks feature and event usage.
     /// </summary>
     public static class Tracker
-    { 
+    {
         /// <summary>
         /// This signals that Server has started. 
         /// This should be placed before calling any other <see cref="Tracker"/> method.
@@ -21,7 +21,7 @@ namespace Dev2.Instrumentation
             Start("2385158467", "http://27504.tbnet1.com");
 #else
             // RELEASE
-            Start("2385158467", "http://27504.tbnet1.com");
+            Start("2386158864", "http://40589.tbnet1.com");
 #endif
 #endif
         }
@@ -37,7 +37,7 @@ namespace Dev2.Instrumentation
             Start("2385158467", "http://27504.tbnet1.com");
 #else
             // RELEASE
-            Start("2385158467", "http://27504.tbnet1.com");
+            Start("2386158962", "http://94687.tbnet1.com");
 #endif
 #endif
         }

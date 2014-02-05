@@ -70,8 +70,9 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<RemoveResourceAndCloseTabMessage>,
                                         IHandle<GetActiveEnvironmentCallbackMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
-        IHandle<ShowReverseDependencyVisualizer>,
-        IHandle<GetContextualEnvironmentCallbackMessage>,
+                                        IHandle<ShowReverseDependencyVisualizer>,
+                                        IHandle<GetContextualEnvironmentCallbackMessage>,
+                                        IHandle<FileChooserMessage>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
@@ -1482,5 +1483,10 @@ namespace Dev2.Studio.ViewModels
         }
 
         #endregion
+
+        public void Handle(FileChooserMessage message)
+        {
+            RootWebSite.ShowFileChooser(ActiveEnvironment, message);
+        }
     }
 }

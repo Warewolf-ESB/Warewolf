@@ -120,8 +120,8 @@ namespace Dev2.Activities.Designers2.Email
         string To { get { return GetProperty<string>(); } }
         string Cc { get { return GetProperty<string>(); } }
         string Bcc { get { return GetProperty<string>(); } }
-        string Subject {  get { return GetProperty<string>(); } }
-        string Attachments { get { return GetProperty<string>(); } }
+        string Subject { get { return GetProperty<string>(); } }
+        string Attachments { get { return GetProperty<string>(); } set { SetProperty(value); } }
 
         public void UpdateEnvironmentResourcesCallback(IEnvironmentModel environmentModel)
         {
@@ -199,6 +199,18 @@ namespace Dev2.Activities.Designers2.Email
 
         void ChooseAttachments()
         {
+            var message = new FileChooserMessage();
+            message.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "SelectedFiles")
+                {
+                    if(message.SelectedFiles != null)
+                    {
+                        Attachments = string.Join(";", message.SelectedFiles);
+                    }
+                }
+            };
+            _eventPublisher.Publish(message);
         }
 
         public override void Validate()

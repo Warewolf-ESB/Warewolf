@@ -413,6 +413,7 @@
       <SubType>Code</SubType>
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Webs\Callbacks\FileChooserCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\ShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\WebSourceCallbackHandler.cs" />

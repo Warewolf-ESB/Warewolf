@@ -99,6 +99,7 @@
     <Content Include="wwwroot\Images\tick.png" />
     <Content Include="wwwroot\Images\warning.png" />
     <Content Include="wwwroot\Layout.htm" />
+    <Content Include="wwwroot\Scripts\Dialogs\FileChooserViewModel.js" />
     <Content Include="wwwroot\Scripts\fx\jquery-ui-1.10.3.custom.min.js" />
     <Content Include="wwwroot\Scripts\fx\knockout-2.2.1.debug.js" />
     <Content Include="wwwroot\Scripts\Services\ServiceData.js" />
@@ -128,6 +129,7 @@
     <Content Include="wwwroot\Scripts\Sources\DbSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\PluginSourceViewModel.js" />
     <Content Include="wwwroot\Scripts\Sources\ServerViewModel.js" />
+    <Content Include="wwwroot\Views\Dialogs\FileChooser.htm" />
     <Content Include="wwwroot\Views\Services\WebService.htm" />
     <Content Include="wwwroot\Views\Services\DbService.htm" />
     <Content Include="wwwroot\Views\Services\PluginService.htm" />

@@ -907,3 +907,32 @@ input:hover,textarea:hover {
     font-family: Tahoma, Geneva, sans-serif;
     padding: 5px 4px 5px 4px;
 }
+
+
+.file-chooser-tree {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 1px solid #ff8613 !important;
+    background-color: white;
+    height: 355px;
+}
+
+.file-chooser-files {
+   margin-top: 7px;    
+}
+
+.file-chooser-files label {
+    width: auto;
+    display: inline-block;
+    float: left;
+    text-align: left;
+    border: 0;
+    /*margin: 0 !important;*/
+    margin-top: 4px;
+    vertical-align: baseline;
+}
+
+.file-chooser-files input {
+    width: 619px;
+    margin-left: 5px;
+}

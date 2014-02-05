@@ -1,0 +1,29 @@
+﻿<div id="fileChooserContainer" class="ui-widget-content" style="height: 488px; width: 700px;">
+    <div id="fileChooserHeader" class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix" style="padding: 5px;">
+        <span class="source-tab-title" data-bind="text: title, attr: { title: title }"></span>
+        <span class="source-tab-environment" data-bind="text: currentEnvironment, attr: { title: currentEnvironment }"></span>
+    </div>
+    <div  id="fileChooserContent" class="source-content">
+        <div id="fileTree" tabindex="11" class="file-chooser-tree"></div>
+        <div class="field file-chooser-files">
+            <label for="filePaths">Files:</label>
+            <input tabindex="12" type="text" name="filePaths" id="filePaths" placeholder="" data-bind="value: filePaths, valueUpdate: 'afterkeydown'" />
+        </div>
+
+        <div class="button-bar" style="position: absolute; top: 445px; left: 499px;">
+            <button tabindex="13" type="submit" name="ok" id="okButton" data-bind="click: save, jEnable: isFormValid">OK</button>
+            <button tabindex="14" type="button" name="cancel" id="cancelButton" data-bind="click: cancel">Cancel</button>
+        </div>
+
+    </div>
+</div>
+
+
+<script src="Scripts/Dialogs/FileChooserViewModel.js"></script>
+<link href="Content/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">
+
+<script type="text/javascript">
+    // Make this available to chrome debugger
+    //@ sourceURL=FileChooser.js  
+    var fileChooserViewModel = FileChooserViewModel.create("fileChooserContainer");
+</script>
