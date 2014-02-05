@@ -21,8 +21,7 @@
                     Margin="3">
             <dev2:ConnectControl
                                  Width="250"
-                                 LabelText="Server:"
-                                 ServerChangedCommand="{Binding SourceServerChangedCommand}"
+                                 LabelText="Server:"                                 
                                  NewButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
                                  EditButtonAutomationID="UI_SourceServerConnectbtn_AutoID"
                                  ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"

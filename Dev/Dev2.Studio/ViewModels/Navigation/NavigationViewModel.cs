@@ -221,7 +221,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 newEnvNode.IsSelected = true;
             }
             //2013.06.02: Ashley Lewis for bugs 9444+9445 - Show disconnected environments but dont autoconnect
-            if(environment.IsConnected || environment.IsLocalHost())
+            if(environment.IsConnected || environment.IsLocalHost)
             {
                 LoadEnvironmentResources(environment);
             }
@@ -282,7 +282,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             // Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
             // Added "|| c.IsLocalHost()" to the Where clause to connect to disconnected localhost - 2013.08.13: Ashley Lewis for bug 10106 (studio autoconnect)
-            foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost()))
+            foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost))
             {
                 LoadEnvironmentResources(environment);
             }
@@ -530,8 +530,9 @@ namespace Dev2.Studio.ViewModels.Navigation
 
             var treeNodes = environmentNode.GetChildren(c => c.GetType() == typeof(ResourceTreeViewModel)).ToList();
 
-            foreach(ResourceTreeViewModel resourceTreeViewModel in treeNodes)
+            foreach(var treeNode in treeNodes)
             {
+                var resourceTreeViewModel = (ResourceTreeViewModel)treeNode;
                 preTreeViewModels.Add(resourceTreeViewModel);
             }
 

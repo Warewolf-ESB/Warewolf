@@ -1093,7 +1093,7 @@ namespace Dev2.Studio.ViewModels
 
 
                 //If its deleted from loalhost, and is a server, also delete from repository
-                if(contextualModel.Environment.IsLocalHost())
+                if(contextualModel.Environment.IsLocalHost)
                 {
                     if(contextualModel.ResourceType == ResourceType.Source)
                     {

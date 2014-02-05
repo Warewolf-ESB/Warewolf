@@ -56,6 +56,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
 
         private string _initialItemDisplayName;
+        readonly IAsyncWorker _asyncWorker;
         private IEnvironmentModel _initialItemEnvironment;
         private bool _isDeploying;
         private bool _deploySuccessfull;
@@ -81,6 +82,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
+            _asyncWorker = asyncWorker;
             _initialItemEnvironment = environment;
             _initialItemDisplayName = displayName;
             Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
@@ -531,19 +533,27 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void AddServer(IEnvironmentModel server, bool connectSource, bool connectTarget)
         {
-            server.Connect();
 
-            Servers.Add(server);
+            _asyncWorker.Start(
+                () =>
+                {
+                    server.Connect();
+                },
+                () =>
+                {
+                    Servers.Add(server);
 
-            if(connectSource)
-            {
-                SelectedSourceServer = server;
-            }
-            if(connectTarget)
-            {
-                SelectedDestinationServer = server;
-            }
-            EventPublisher.Publish(new UpdateSelectedServer(server, connectSource));
+
+                    if(connectSource)
+                    {
+                        SelectedSourceServer = server;
+                    }
+                    if(connectTarget)
+                    {
+                        SelectedDestinationServer = server;
+                    }
+                    EventPublisher.Publish(new UpdateSelectedServer(server, connectSource));
+                });
         }
 
         /// <summary>
@@ -611,19 +621,19 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         public Func<List<IResourceModel>, IResourceRepository, bool> HasNoResourcesToDeploy = (resourcesToDeploy, deployResourceRepo) =>
+        {
+            if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
             {
-                if(resourcesToDeploy.Count <= 0 || deployResourceRepo == null)
-                {
-                    return true;
-                }
-                return false;
-            };
+                return true;
+            }
+            return false;
+        };
 
         public Action<object> ShowDialog = deployDialogViewModel =>
-            {
-                var dialog = new DeployViewDialog { DataContext = deployDialogViewModel };
-                dialog.ShowDialog();
-            };
+        {
+            var dialog = new DeployViewDialog { DataContext = deployDialogViewModel };
+            dialog.ShowDialog();
+        };
 
         /// <summary>
         /// Loads an environment for the source navigation manager

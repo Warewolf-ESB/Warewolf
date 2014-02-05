@@ -28,8 +28,11 @@ namespace Dev2.Studio.ViewModels.Explorer
                                      IHandle<RefreshExplorerMessage>,
                                      IHandle<SetSelectedItemInExplorerTree>
     {
+
+
         #region Class Members
 
+        readonly IAsyncWorker _asyncWorker;
         private RelayCommand _environmentChangedCommand;
         private Guid? _context;
         System.Action _onLoadResourcesCompletedOnceOff;
@@ -41,9 +44,10 @@ namespace Dev2.Studio.ViewModels.Explorer
         public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
             : base(eventPublisher)
         {
+
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-
+            _asyncWorker = asyncWorker;
             EnvironmentRepository = environmentRepository;
             NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, isFromActivityDrop, activityType) { Parent = this };
             if(onLoadResourcesCompletedOnceOff != null)
@@ -106,14 +110,21 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
         {
-            if(forceConnect)
-            {
-                environmentModel.Connect();
-            }
-            NavigationViewModel.AddEnvironment(environmentModel);
-            SaveEnvironment(environmentModel);
-            this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-            EventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
+            _asyncWorker.Start(
+                () =>
+                {
+                    if(forceConnect)
+                    {
+                        environmentModel.Connect();
+                    }
+                },
+                () =>
+                {
+                    NavigationViewModel.AddEnvironment(environmentModel);
+                    SaveEnvironment(environmentModel);
+                    this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                    EventPublisher.Publish(new SetActiveEnvironmentMessage(environmentModel));
+                });
         }
 
         private void SaveEnvironment(IEnvironmentModel environmentModel)
@@ -257,10 +268,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         public void Handle(AddServerToExplorerMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            if(message.Context == null || message.Context != Context)
-            {
-                return;
-            }
             AddEnvironment(message.EnvironmentModel, message.ForceConnect);
         }
 

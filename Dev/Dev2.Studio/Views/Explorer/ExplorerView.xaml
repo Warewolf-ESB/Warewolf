@@ -34,7 +34,6 @@
                              Margin="2,2,2,0"
                              LabelText="Connect:"
                              Context="{Binding Context}"
-                             EnvironmentChangedCommand="{Binding EnvironmentChangedCommand}"
                              EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
                              NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
                              ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"

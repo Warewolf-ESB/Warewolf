@@ -72,7 +72,11 @@ namespace Dev2.Security
                 ServiceName = "SecurityReadService"
             };
             SecuritySettingsTO securitySettingsTO = communicationController.ExecuteCommand<SecuritySettingsTO>(_environmentConnection, _environmentConnection.WorkspaceID);
-            return securitySettingsTO.WindowsGroupPermissions;
+            if(securitySettingsTO != null)
+            {
+                return securitySettingsTO.WindowsGroupPermissions;
+            }
+            return null;
         }
 
         protected override void WritePermissions(List<WindowsGroupPermission> permissions)

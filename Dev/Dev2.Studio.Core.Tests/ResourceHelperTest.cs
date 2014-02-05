@@ -1,19 +1,20 @@
 ﻿using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Moq;
 
 namespace Dev2.Core.Tests
 {
-    
+
     // Sashen - 18-10-2012 - This class needs to be excluded
     /// <summary>
     ///This is a test class for ResourceHelperTest and is intended
     ///to contain all ResourceHelperTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class ResourceHelperTest {
+    public class ResourceHelperTest
+    {
 
 
         private TestContext testContextInstance;
@@ -22,11 +23,14 @@ namespace Dev2.Core.Tests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary> 
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -66,8 +70,9 @@ namespace Dev2.Core.Tests
         ///A test for GetWebPageElementNames were the XmlConfig is malformed
         ///</summary>
         [TestMethod()]
-        public void GetWebPageElementNames_Malformed_XmlConfig() {
-            string xmlConfig = StringResourcesTest.Webpage_Malformed_XmlConfig;            
+        public void GetWebPageElementNames_Malformed_XmlConfig()
+        {
+            string xmlConfig = StringResourcesTest.Webpage_Malformed_XmlConfig;
             string actual;
             actual = ResourceHelper.GetWebPageElementNames(xmlConfig);
             Assert.AreEqual(actual, string.Empty);
@@ -77,7 +82,8 @@ namespace Dev2.Core.Tests
         ///A test for GetWebPageElementNames were the XmlConfig is normal
         ///</summary>
         [TestMethod()]
-        public void GetWebPageElementNames_PositiveTest() {
+        public void GetWebPageElementNames_PositiveTest()
+        {
             string xmlConfig = StringResourcesTest.WebPartWizards_DuplicateNameCheck;
             string actual;
             actual = ResourceHelper.GetWebPageElementNames(xmlConfig);
@@ -88,19 +94,21 @@ namespace Dev2.Core.Tests
         ///A test for GetWebPageElementNames were the XmlConfig is blank
         ///</summary>
         [TestMethod()]
-        public void GetWebPageElementNames_BlankXmlConfig() {
+        public void GetWebPageElementNames_BlankXmlConfig()
+        {
             string actual;
-            actual = ResourceHelper.GetWebPageElementNames("");            
+            actual = ResourceHelper.GetWebPageElementNames("");
             Assert.AreEqual(string.Empty, actual);
         }
-        
+
         // This seems to stop the Test Agent process for some reason, it may be related to threading 
 
         /// <summary>
         ///A test for MergeXmlConfig were the XmlConfig is normal
         ///</summary>
         [TestMethod()]
-        public void MergeXmlConfig_PositiveTest() {
+        public void MergeXmlConfig_PositiveTest()
+        {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
             string elementList;
             elementList = ResourceHelper.GetWebPageElementNames(StringResourcesTest.WebPartWizards_DuplicateNameCheck);
@@ -113,7 +121,8 @@ namespace Dev2.Core.Tests
         ///A test for MergeXmlConfig were the XmlConfig is blank
         ///</summary>
         [TestMethod()]
-        public void MergeXmlConfig_BlankXmlConfig() {
+        public void MergeXmlConfig_BlankXmlConfig()
+        {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
             string elementList;
             elementList = ResourceHelper.GetWebPageElementNames(StringResourcesTest.WebPartWizards_DuplicateNameCheck);
@@ -125,7 +134,8 @@ namespace Dev2.Core.Tests
         ///A test for MergeXmlConfig were the XmlConfig has no Dev2XmlResult tag
         ///</summary>
         [TestMethod()]
-        public void MergeXmlConfig_NoRootTag() {
+        public void MergeXmlConfig_NoRootTag()
+        {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
             string elementList;
             elementList = ResourceHelper.GetWebPageElementNames(StringResourcesTest.WebPartWizards_DuplicateNameCheck);
@@ -144,7 +154,8 @@ namespace Dev2.Core.Tests
         ///A test for MergeXmlConfig were the XmlConfig has two Dev2XmlResult tag
         ///</summary>
         [TestMethod()]
-        public void MergeXmlConfig_DoubleRootTag() {
+        public void MergeXmlConfig_DoubleRootTag()
+        {
             string xmlConfig = StringResourcesTest.NameRegion_xmlCofig;
             string elementList;
             elementList = ResourceHelper.GetWebPageElementNames(StringResourcesTest.WebPartWizards_DuplicateNameCheck);
@@ -183,7 +194,7 @@ namespace Dev2.Core.Tests
             //Assert
             Assert.AreEqual("Test", name);
         }
-        
+
         [TestMethod]
         public void ResourceHelper_UnitTest_WhenEnvironmentNullResourceIsWorkflowSavedFalse_ExpectResourceDisplayNameWithStar()
         {
@@ -204,7 +215,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.IsLocalHost()).Returns(true);
+            env.Setup(e => e.IsLocalHost).Returns(true);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceName).Returns("Test");
@@ -223,7 +234,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.IsLocalHost()).Returns(true);
+            env.Setup(e => e.IsLocalHost).Returns(true);
 
             var model = new Mock<IContextualResourceModel>();
             model.Setup(m => m.ResourceName).Returns("Test");
@@ -242,7 +253,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.IsLocalHost()).Returns(false);
+            env.Setup(e => e.IsLocalHost).Returns(false);
             env.Setup(e => e.Name).Returns("HostName");
 
             var model = new Mock<IContextualResourceModel>();
@@ -254,8 +265,8 @@ namespace Dev2.Core.Tests
 
             //Assert
             Assert.AreEqual("Test - HostName", name);
-        } 
-        
+        }
+
         [TestMethod]
         [Description("Resource IsWorkflowSaved should show * in text")]
         [Owner("Huggs")]
@@ -263,7 +274,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.IsLocalHost()).Returns(false);
+            env.Setup(e => e.IsLocalHost).Returns(false);
             env.Setup(e => e.Name).Returns("HostName");
 
             var model = new Mock<IContextualResourceModel>();

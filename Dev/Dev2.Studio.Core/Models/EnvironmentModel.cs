@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Models
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-    public class EnvironmentModel : IEnvironmentModel
+    public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
@@ -87,7 +87,14 @@ namespace Dev2.Studio.Core.Models
         public Guid ID { get; private set; }
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
+        public bool IsLocalHostCheck()
+        {
+            return Connection.IsLocalHost;
+        }
+
         public string Category { get; set; }
+
+        public bool IsLocalHost { get { return IsLocalHostCheck(); } }
 
         public IEnvironmentConnection Connection { get; private set; }
 
@@ -154,13 +161,6 @@ namespace Dev2.Studio.Core.Models
 
         #endregion
 
-        #region IsLocalHost
-        public bool IsLocalHost()
-        {
-            return Connection.IsLocalHost;
-        }
-        #endregion
-
         #region ForceLoadResources
 
         public void ForceLoadResources()
@@ -225,6 +225,9 @@ namespace Dev2.Studio.Core.Models
             {
                 IsConnectedChanged(this, new ConnectedEventArgs { IsConnected = isOnline });
             }
+            // ReSharper disable ExplicitCallerInfoArgument
+            OnPropertyChanged("IsConnected");
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
@@ -274,10 +277,9 @@ namespace Dev2.Studio.Core.Models
                 return false;
             }
 
-            // BUG 9276 : TWR : 2013.04.19 - refactored to use deleted EnvironmentModelEqualityComparer logic instead!           
-            return ID == other.ID
-                   && Connection.ServerID == other.Connection.ServerID
-                   && Connection.AppServerUri.AbsoluteUri.Equals(other.Connection.AppServerUri.AbsoluteUri);
+            // BUG 9276 : TWR : 2013.04.19 - refactored to use deleted EnvironmentModelEqualityComparer logic instead!   
+            //Dont ever EVER check any other property here or the connect control will die and you will be beaten;)
+            return ID == other.ID;
         }
 
         public override bool Equals(object obj)
@@ -287,7 +289,7 @@ namespace Dev2.Studio.Core.Models
 
         public override int GetHashCode()
         {
-            return ID.GetHashCode() ^ Connection.ServerID.GetHashCode() ^ Connection.AppServerUri.AbsoluteUri.GetHashCode();
+            return ID.GetHashCode();
         }
 
         #endregion

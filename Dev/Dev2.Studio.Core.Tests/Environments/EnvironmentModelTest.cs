@@ -5,7 +5,6 @@ using System.Network;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
-using Dev2.Core.Tests.Network;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -349,7 +348,7 @@ namespace Dev2.Core.Tests.Environments
             conn.SetupProperty(c => c.DisplayName, "localhost");
             conn.Setup(connection => connection.IsLocalHost).Returns(conn.Object.DisplayName == "localhost");
             var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
-            var isLocalHost = env.IsLocalHost();
+            var isLocalHost = env.IsLocalHost;
             Assert.IsTrue(isLocalHost);
         }
 
@@ -360,7 +359,7 @@ namespace Dev2.Core.Tests.Environments
             var conn = CreateConnection();
             conn.Setup(c => c.DisplayName).Returns("notlocalhost");
             var env = CreateEnvironmentModel(Guid.NewGuid(), conn.Object);
-            var isLocalHost = env.IsLocalHost();
+            var isLocalHost = env.IsLocalHost;
             Assert.IsFalse(isLocalHost);
         }
 
@@ -500,46 +499,6 @@ namespace Dev2.Core.Tests.Environments
 
             //------------Assert Results-------------------------
             Assert.IsTrue(actual);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EnvironmentModel_Equals")]
-        public void EnvironmentModel_Equals_OtherHasDifferentServerID_False()
-        {
-            //------------Setup for test--------------------------
-            const string Name = "test";
-            var resourceID = Guid.NewGuid();
-            const string ServerUri = "https://myotherserver1:3143";
-
-            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name, Guid.NewGuid(), ServerUri);
-            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name, Guid.NewGuid(), ServerUri);
-
-            //------------Execute Test---------------------------
-            var actual = environment1.Equals(environment2);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(actual);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EnvironmentModel_Equals")]
-        public void EnvironmentModel_Equals_OtherHasDifferentServerUri_False()
-        {
-            //------------Setup for test--------------------------
-            const string Name = "test";
-            var resourceID = Guid.NewGuid();
-            var serverID = Guid.NewGuid();
-
-            var environment1 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, "https://myotherserver1:3143");
-            var environment2 = CreateEqualityEnvironmentModel(resourceID, Name, serverID, "https://myotherserver2:3143");
-
-            //------------Execute Test---------------------------
-            var actual = environment1.Equals(environment2);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(actual);
         }
 
         [TestMethod]

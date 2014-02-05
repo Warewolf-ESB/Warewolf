@@ -1108,7 +1108,7 @@ namespace Dev2.Core.Tests
         {
             //---------Setup------
             var mock = SetupForDeleteServer();
-            _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
+            _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
             //---------Execute------
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
             _mainViewModel.Handle(msg);
@@ -1261,7 +1261,7 @@ namespace Dev2.Core.Tests
         {
             //---------Setup------
             var mock = SetupForDeleteServer();
-            _environmentModel.Setup(s => s.IsLocalHost()).Returns(true);
+            _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
 
             //---------Execute------
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { null }, false);

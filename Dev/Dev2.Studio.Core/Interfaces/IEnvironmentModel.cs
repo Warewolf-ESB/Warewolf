@@ -18,6 +18,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsAuthorized { get; }
         bool IsAuthorizedDeployFrom { get; }
         bool IsAuthorizedDeployTo { get; }
+        bool IsLocalHost { get; }
 
         IEnvironmentConnection Connection { get; }
         IResourceRepository ResourceRepository { get; }
@@ -27,7 +28,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Connect(IEnvironmentModel model);
         void ForceLoadResources();
         void LoadResources();
-        bool IsLocalHost();
+        bool IsLocalHostCheck();
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         string Category { get; set; }

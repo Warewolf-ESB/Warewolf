@@ -164,29 +164,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void AddServerToExplorerMessageWithInCorrectContextExpectsEnvironmentNotAdded()
-        {
-            //------Setup---------
-            //Setup();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
-            var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
-
-            //------Assert---------
-            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
-
-            //------Execute---------
-            var secondEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
-            repo.Save(secondEnvironment.Object);
-
-            var msg = new AddServerToExplorerMessage(secondEnvironment.Object, Guid.NewGuid());
-            vm.Handle(msg);
-
-            //------Assert---------
-            Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
-        }
-
-        [TestMethod]
         public void AddServerToExplorerMessageWithForceConnectTrueExpectsEnvironmentToConnect()
         {
             //------Setup---------

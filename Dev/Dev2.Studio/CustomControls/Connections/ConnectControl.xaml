@@ -1,29 +1,31 @@
 ﻿<UserControl x:Class="Dev2.UI.ConnectControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Name="ConnectUserControl">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ui="clr-namespace:Dev2.UI"
+             x:Name="ConnectUserControl"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance ui:ConnectControlViewModel}"
+             >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <TextBlock Grid.Column="0" Text="{Binding Path=LabelText, ElementName=ConnectUserControl}" VerticalAlignment="Center" />
+        </Grid.ColumnDefinitions>                 
+        <TextBlock Grid.Column="0" Text="{Binding Path=LabelText}"
+                   VerticalAlignment="Center" />
         <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
-                  Grid.Column="1" x:Name="TheServerComboBox"  
-                  ItemsSource="{Binding ViewModel.Servers, ElementName=ConnectUserControl}" 
-                  DropDownOpened="OnServerDropDownOpened"
-                  DropDownClosed="OnServerDropDownClosed"
-                  SelectionChanged="OnServerSelectionChanged"                   
-                  SelectedItem="{Binding ViewModel.SelectedServer, ElementName=ConnectUserControl}"
+                  Grid.Column="1" x:Name="TheServerComboBox"                    
+                  SelectedItem="{Binding SelectedServer,Mode=TwoWay}"
+                  ItemsSource="{Binding Servers}"        
                   Margin="5,0,0,0" 
                   VerticalAlignment="Bottom"
                   IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-                    <!--<Setter Property="IsEnabled" Value="{Binding Environment.IsConnected, Converter={StaticResource BooleanInvertConverter}}"/>-->
                     <Setter Property="AutomationProperties.AutomationId">
                         <Setter.Value>
                             <MultiBinding StringFormat="U_{0}_{1}">
@@ -49,7 +51,7 @@
         </ComboBox>
         <Button AutomationProperties.AutomationId="{Binding EditButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
                 Grid.Column="2" Content="..." Margin="2,0,0,0" Click="OnEditClick" 
-                IsEnabled="{Binding ViewModel.IsEditEnabled, Mode=OneWay, ElementName=ConnectUserControl}"/>
+                IsEnabled="{Binding SelectedServer.IsLocalHost, Mode=OneWay,Converter={StaticResource BooleanInvertConverter}}"/>
         <Button AutomationProperties.AutomationId="{Binding NewButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}" 
                 Grid.Column="3" Content="New" Margin="2,0,0,0" Click="OnNewClick" 
                 IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>

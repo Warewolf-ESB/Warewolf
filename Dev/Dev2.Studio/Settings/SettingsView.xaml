@@ -74,8 +74,7 @@
                            Width="400"
                            Margin="0,0,0,10"
                            HorizontalAlignment="Left"                           
-                           LabelText="Server:"
-                           ServerChangedCommand="{Binding ServerChangedCommand}"
+                           LabelText="Server:"                           
                            NewButtonAutomationID="UI_SettingsServerNewButton_AutoID"
                            EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
                            ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID" />

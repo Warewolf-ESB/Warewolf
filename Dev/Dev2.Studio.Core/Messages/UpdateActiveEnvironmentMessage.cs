@@ -7,9 +7,12 @@ namespace Dev2.Studio.Core.Messages
     {
         public IEnvironmentModel EnvironmentModel { get; set; }
 
-        public UpdateActiveEnvironmentMessage(IEnvironmentModel environmentModel)
+        public bool SetFromConnectControl { get; set; }
+
+        public UpdateActiveEnvironmentMessage(IEnvironmentModel environmentModel, bool setFromConnectControl = false)
         {
             EnvironmentModel = environmentModel;
+            SetFromConnectControl = setFromConnectControl;
         }
     }
 }

@@ -318,7 +318,7 @@ namespace Dev2.Core.Tests
 
             var destCtx = vm.DestinationContext;
 
-            var msg = new AddServerToDeployMessage(server, destCtx);
+            var msg = new AddServerToDeployMessage(server, destCtx) { IsDestination = true, IsSource = false };
             vm.Handle(msg);
             Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
             Assert.IsFalse(publishedIsSource);
@@ -512,7 +512,7 @@ namespace Dev2.Core.Tests
 
             var remoteConnection = new Mock<IEnvironmentConnection>();
             remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
-            
+
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
             mockDestinationServer.Setup(server => server.IsConnected).Returns(true);

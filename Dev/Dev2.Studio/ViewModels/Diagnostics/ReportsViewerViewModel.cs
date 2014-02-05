@@ -446,7 +446,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         protected override void OnViewAttached(object view, object context)
         {
             var servers = ServerProvider.Instance.Load();
-            var localHost = servers.FirstOrDefault(s => s.IsLocalHost());
+            var localHost = servers.FirstOrDefault(s => s.IsLocalHost);
             if(localHost != null && localHost.IsConnected)
                 SelectedServer = localHost;
             base.OnViewAttached(view, context);
