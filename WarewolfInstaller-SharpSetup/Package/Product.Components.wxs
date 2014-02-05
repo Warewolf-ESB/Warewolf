@@ -277,84 +277,84 @@
             </Component>
             <!-- Sample Stuff -->
                 <!-- Src -->
-            <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A214219" Directory="dirServerRoot" Guid="{C868F06D-447D-4551-938A-AC82695E8753}">
+            <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A214219" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{C868F06D-447D-4551-938A-AC82695E8753}">
                 <File Id="filADDA41D87BACF5C03971418692A96D44" KeyPath="yes" Source="..\ProductBuild\Server\Sources\paypal.xml" />
             </Component>
-            <Component Id="cmp3A06F0AF2D151729CD4DDDCC3A204218" Directory="dirServerRoot" Guid="{4A974C71-5004-4E0B-B8B0-4C0C39E7C904}">
+            <Component Id="cmp3A06F0AF2D151729CD4DDDCC3A204218" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{4A974C71-5004-4E0B-B8B0-4C0C39E7C904}">
                 <File Id="filD2C20C51F38D822437ED4DB7D9245D13" KeyPath="yes" Source="..\ProductBuild\Server\Sources\paypalpayment.xml" />
             </Component>
-            <Component Id="cmp1FA3F0AF1D061729CD4DDDCC3A204218" Directory="dirServerRoot" Guid="{556C46BD-3008-4C03-BB2E-69EA45298361}">
+            <Component Id="cmp1FA3F0AF1D061729CD4DDDCC3A204218" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{556C46BD-3008-4C03-BB2E-69EA45298361}">
                 <File Id="fil2FD1FDFCDD740DA954F2B1D630D1A835" KeyPath="yes" Source="..\ProductBuild\Server\Sources\WarewolfShoppingCartDB.xml" />
             </Component>
                 <!-- End Src -->
                 <!-- Service -->
-            <Component Id="AddCategory.xml" Directory="dirServerRoot" Guid="{6F2FF298-16CF-4D34-8500-FF48EA5453C3}">
+            <Component Id="AddCategory.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{6F2FF298-16CF-4D34-8500-FF48EA5453C3}">
                 <File Id="fil5AF56A37A81C6083A51461A99B30282E" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategory.xml" />
             </Component>
-            <Component Id="AddCategoryToWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{E7EB6036-1BA2-4C7E-A7AD-78D4E7C86F56}">
+            <Component Id="AddCategoryToWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{E7EB6036-1BA2-4C7E-A7AD-78D4E7C86F56}">
                 <File Id="fil80688222B6F483F07201097F468C9CAC" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategoryToWarewolfShoppingCartDb.xml" />
             </Component>
             <Component Id="AddProduct.xml" Directory="dirServerRoot" Guid="{B7D0FB11-EFBF-4C97-9F40-810359C5F0E5}">
                 <File Id="fil04E4ECB42B1D05438FD134DDE98929EA" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddProduct.xml" />
             </Component>
-            <Component Id="AddProductToWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{D81A6B92-0364-4723-BED9-2C068DA99B71}">
+            <Component Id="AddProductToWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{D81A6B92-0364-4723-BED9-2C068DA99B71}">
                 <File Id="fil3C517654CEC040749B8DDC84A4A29175" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddProductToWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="DeleteCategory.xml" Directory="dirServerRoot" Guid="{AE292E1E-B85A-4C64-8EDC-174A2D643812}">
+            <Component Id="DeleteCategory.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{AE292E1E-B85A-4C64-8EDC-174A2D643812}">
                 <File Id="fil4905DDA8A2CBD163EFEC85E54200C3F8" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteCategory.xml" />
             </Component>
-            <Component Id="DeleteCategoryInWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{F1481C38-EC26-494F-BBFA-B6C0940A2BAE}">
+            <Component Id="DeleteCategoryInWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F1481C38-EC26-494F-BBFA-B6C0940A2BAE}">
                 <File Id="fil304F56C55113A5045B627188E267333D" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteCategoryInWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="DeleteProduct.xml" Directory="dirServerRoot" Guid="{4C6265A4-3166-4147-B933-9D39FC0D302E}">
+            <Component Id="DeleteProduct.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{4C6265A4-3166-4147-B933-9D39FC0D302E}">
                 <File Id="fil393FF1048FB4AE802CE1FD9DA0D11F49" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteProduct.xml" />
             </Component>
-            <Component Id="DeleteProductFromWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{2704E1C1-8AF5-4082-98CF-71A0E40914B5}">
+            <Component Id="DeleteProductFromWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{2704E1C1-8AF5-4082-98CF-71A0E40914B5}">
                 <File Id="fil05553260C57B147F476A73644561907E" KeyPath="yes" Source="..\ProductBuild\Server\Services\DeleteProductFromWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="EditCategory.xml" Directory="dirServerRoot" Guid="{1D04A348-3B69-4D93-8483-C43FFD7AB36E}">
+            <Component Id="EditCategory.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{1D04A348-3B69-4D93-8483-C43FFD7AB36E}">
                 <File Id="fil3FD812901E654C3C9E7357273A5E0F32" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditCategory.xml" />
             </Component>
-            <Component Id="EditCategoryOnWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{96EFF6D1-892E-4420-B782-980847599A12}">
+            <Component Id="EditCategoryOnWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{96EFF6D1-892E-4420-B782-980847599A12}">
                 <File Id="fil5BE2A63F8C6A2C6D8D7F74AA3A95A5A2" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditCategoryOnWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="EditProduct.xml" Directory="dirServerRoot" Guid="{5FF1BBB5-8F97-4FC2-847D-536EA17335CA}">
+            <Component Id="EditProduct.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{5FF1BBB5-8F97-4FC2-847D-536EA17335CA}">
                 <File Id="filED96E6BEF9431CA52B2C7DF0C1764F78" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditProduct.xml" />
             </Component>
-            <Component Id="EditProductInWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{8423029A-9D9F-4B3F-9AF5-9A3ACF7ED33B}">
+            <Component Id="EditProductInWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{8423029A-9D9F-4B3F-9AF5-9A3ACF7ED33B}">
                 <File Id="filB66C1FFCF064FB7EE6C215850F92A9E7" KeyPath="yes" Source="..\ProductBuild\Server\Services\EditProductInWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="GetCategoryTable.xml" Directory="dirServerRoot" Guid="{C42BCBBB-BC43-4FCD-A8B9-01F22603F9DB}">
+            <Component Id="GetCategoryTable.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{C42BCBBB-BC43-4FCD-A8B9-01F22603F9DB}">
                 <File Id="fil375696D71434CE41224F8AC8BCFE3CF0" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetCategoryTable.xml" />
             </Component>
-            <Component Id="GetCategoryTableFromWarewolfShoppingCartDb.xml" Directory="dirServerRoot" Guid="{3A562DB6-A426-4023-99F9-391565A04F96}">
+            <Component Id="GetCategoryTableFromWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{3A562DB6-A426-4023-99F9-391565A04F96}">
                 <File Id="fil92D7728DC0884123D28DA3E953D54869" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetCategoryTableFromWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="GetProductsTable.xml" Directory="dirServerRoot"  Guid="{7683B834-11FF-4CC3-872D-2EA037D61871}">
+            <Component Id="GetProductsTable.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12"  Guid="{7683B834-11FF-4CC3-872D-2EA037D61871}">
                 <File Id="fil966282D32AA356FFEFB0BB9D2074B78D" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTable.xml" />
             </Component>
-            <Component Id="GetProductsTableFromWarewolfShoppingCartDb.xml"  Directory="dirServerRoot" Guid="{7A4B3E2C-62A9-4196-B530-035839235AB1}">
+            <Component Id="GetProductsTableFromWarewolfShoppingCartDb.xml"  Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{7A4B3E2C-62A9-4196-B530-035839235AB1}">
                 <File Id="fil12052E332FB4ADD2E6BB3F44B97845F0" KeyPath="yes" Source="..\ProductBuild\Server\Services\GetProductsTableFromWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="PayPal_GetPaymentService.xml" Directory="dirServerRoot" Guid="{24DA6796-E108-4042-8F55-B222F6FC7FF5}">
+            <Component Id="PayPal_GetPaymentService.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{24DA6796-E108-4042-8F55-B222F6FC7FF5}">
                 <File Id="fil58B3D71B6E188AC14E0710ABDC01AE41" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_GetPaymentService.xml" />
             </Component>
-            <Component Id="paypal_gettoken.xml" Directory="dirServerRoot" Guid="{36AB911D-EA2C-4E87-947A-A308C37992DE}">
+            <Component Id="paypal_gettoken.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{36AB911D-EA2C-4E87-947A-A308C37992DE}">
                 <File Id="filC8F95084A5D7262DB6E28CDE6097214E" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_gettoken.xml" />
             </Component>
-            <Component Id="PayPal_PerformPayment.xml" Directory="dirServerRoot" Guid="{41260F10-82D2-4222-9D41-310169F803FA}">
+            <Component Id="PayPal_PerformPayment.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{41260F10-82D2-4222-9D41-310169F803FA}">
                 <File Id="fil6861BA74500F737E9FEF2F1DABC7F805" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_PerformPayment.xml" />
             </Component>
-            <Component Id="paypal_postpayment.xml" Directory="dirServerRoot" Guid="{64258C09-3E83-433B-BD64-D9A48ADB7FE3}">
+            <Component Id="paypal_postpayment.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{64258C09-3E83-433B-BD64-D9A48ADB7FE3}">
                 <File Id="filA1CF537F095141C9AC5CBB2DA1A7EFCC" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_postpayment.xml" />
             </Component>
-            <Component Id="PayPal_RetrieveAuthToken.xml" Directory="dirServerRoot" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE87D7BE46}">
+            <Component Id="PayPal_RetrieveAuthToken.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE87D7BE46}">
                 <File Id="filD161B536A111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\PayPal_RetrieveAuthToken.xml" />
             </Component>
-             <Component Id="paypal_retrievepayments.xml" Directory="dirServerRoot" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE97E7CE46}">
+             <Component Id="paypal_retrievepayments.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{F9F0142F-ACE6-4E3C-85FB-A8AE97E7CE46}">
                 <File Id="filD262B536B111377B280CC7753060C131" KeyPath="yes" Source="..\ProductBuild\Server\Services\paypal_retrievepayments.xml" />
             </Component>
-            <Component Id="SampleEmployeesWorkflow.xml" Directory="dirServerRoot" Guid="{4E3F3B11-EFAC-4725-962F-645C0D1127D0}">
+            <Component Id="SampleEmployeesWorkflow.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{4E3F3B11-EFAC-4725-962F-645C0D1127D0}">
                 <File Id="fil12C318DB6125764AF55F36D1EFF876B5" KeyPath="yes" Source="..\ProductBuild\Server\Services\SampleEmployeesWorkflow.xml" />
             </Component>
                 <!-- End Service-->
