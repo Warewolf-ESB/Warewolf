@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Windows;
@@ -85,8 +86,8 @@ namespace Gui
                 return;
             }
 
-            var readmePath = InstallVariables.InstallRoot + "Samples\\Readme.txt";
-            ProcessHost.Invoke(string.Empty, "notepad.exe", readmePath, false);
+            var readmePath = Path.Combine(InstallVariables.InstallRoot, "Samples\\Readme.txt");
+            Process.Start(readmePath);
         }
 
         /// <summary>
