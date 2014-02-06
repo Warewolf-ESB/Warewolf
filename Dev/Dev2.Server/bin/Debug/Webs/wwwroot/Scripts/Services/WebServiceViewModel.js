@@ -10,7 +10,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     var srcBodyPrev = "";
     var srcHeaderPrev = "";
     var initLoad = true;
-    
+
     var $tabs = $("#tabs");
     var $sourceAddress = $("#sourceAddress");
     var $requestHeaders = $("#requestHeaders");
@@ -18,66 +18,66 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     var $requestBody = $("#requestBody");
     var $addResponseDialog = $("#addResponseDialog");
     var $addPathDialog = $("#addPathDialog");
-    
+
     $("#addResponseButton").length > 0 ? $("#addResponseButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/edit.png" />')
       // ReSharper disable WrongExpressionStatement
       .button() : null;
-      // ReSharper restore WrongExpressionStatement
-    
+    // ReSharper restore WrongExpressionStatement
+
     $("#addPathButton").length > 0 ? $("#addPathButton")
       .text("")
       .append('<img height="16px" width="16px" src="images/jsonpath.png" />')
       // ReSharper disable WrongExpressionStatement
       .button() : null;
-      // ReSharper restore WrongExpressionStatement
-	  
-	$("#requestMethod").change(function(){
-		if($(this).val() == "GET"){
-			// clear out the header data ;)
-			self.data.requestBody("");
-		}
-	});
-    
+    // ReSharper restore WrongExpressionStatement
+
+    $("#requestMethod").change(function () {
+        if ($(this).val() == "GET") {
+            // clear out the header data ;)
+            self.data.requestBody("");
+        }
+    });
+
     self.$webSourceDialogContainer = $("#webSourceDialogContainer");
 
     self.currentEnvironment = ko.observable(environment); //2013.06.08: Ashley Lewis for PBI 9458 - Show server
     self.titleSearchString = "Web Service";
-    
+
     self.isEditing = !utils.IsNullOrEmptyGuid(resourceID);
     self.onLoadSourceCompleted = null;
     self.inputMappingLink = "Please enter a request url or body first (Step 3 & 4)";
     self.outputMappingLink = "Please run a test first (Step 5) or paste a response first (Step 6)";
     self.isReadOnly = false;
-    
+
     self.data = new ServiceData(self.isEditing ? resourceID : $.Guid.Empty(), "WebService");
     self.data.requestUrl = ko.observable("");
     self.data.requestMethod = ko.observable("");
     self.data.requestHeaders = ko.observable("");
     self.data.requestBody = ko.observable("");
-    self.data.requestResponse = ko.observable("");   
+    self.data.requestResponse = ko.observable("");
     self.data.jsonPath = ko.observable("");
-	self.data.jsonPathResult = ko.observable("");
-	self.data.requestMessage = ko.observable("");	
-	self.data.displayData = ko.observable("");
+    self.data.jsonPathResult = ko.observable("");
+    self.data.requestMessage = ko.observable("");
+    self.data.displayData = ko.observable("");
 
     self.sourceAddress = ko.observable("");
-    
+
     self.placeHolderRequestBody = ko.computed(function () {
         return self.data.source() ? "" : "e.g. CountryName=[[CountryName]]";
     });
     self.placeHolderRequestUrl = ko.computed(function () {
         return self.data.source() ? "" : "e.g. http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry?CountryName=[[CountryName]]";
     });
-    
+
     self.isPaste = ko.observable(false);
     self.isPaste.subscribe(function (isPasting) {
         if (isPasting) {
             self.clearRequestVariables();
         }
         self.hasSourceSelectionChanged = isPasting;
-		self.hasPasteHappened = isPasting;
+        self.hasPasteHappened = isPasting;
     });
 
     self.isCut = ko.observable(false);
@@ -96,7 +96,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         self.isCut(e.ctrlKey && e.keyCode == 88); // CTRL+X
         return true;
     };
-    
+
     self.RequestUrlOnKeyUpEvent = function (elem, e) {
         self.isBackspacePressed = false;
         self.isEqualPressed = false;
@@ -117,13 +117,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     }).keyup(function (e) {
         self.isCloseBracketPressed = false;
     });
-    
+
     self.isUpdatingVariables = false;
     self.isBackspacePressed = false;
     self.isEqualPressed = false;
     self.isCloseBracketPressed = false;
     self.hasSourceSelectionChanged = false;
-	self.hasPasteHappened = false;
+    self.hasPasteHappened = false;
 
     self.pushRequestVariable = function (varName, varSrc, varValue) {
         var oldVar = $.grep(self.data.method.Parameters(), function (e) { return e.Name == varName; });
@@ -135,11 +135,11 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.clearRequestVariables = function () {
         self.data.method.Parameters.removeAll();
     };
-    
+
     self.getOutputDisplayName = function (name) {
         return name && name.length > 20 ? ("..." + name.substr(name.length - 17, name.length)) : name;
     };
-    
+
     self.pushRecordsets = function (result) {
         var hasResults = result.Recordsets && result.Recordsets.length > 0;
         self.hasTestResults(hasResults);
@@ -160,7 +160,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             result.nameStart++;
             result.name = text.substring(result.nameStart, result.nameEnd);
         }
-        
+
         result.valueStart = start;
         result.valueEnd = text.indexOf("&", start);
         if (result.valueEnd == -1) {
@@ -172,15 +172,15 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             }
         }
         result.value = text.substring(result.valueStart, result.valueEnd);
-        
+
         return result;
     };
 
     self.extractAndPushRequestVariable = function (text, start, varSrc) {
         var prev = text.slice(start - 2, start - 1);
-		
+
         if (prev == "]") {
-            
+
             var idx = text.lastIndexOf("[[", start);
             if (idx != -1) {
                 var paramName = text.substring(idx + 2, start - 2);
@@ -196,16 +196,16 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.data.requestUrl(newValue);
                 $requestUrl.caret(caretPos);
 
-            } else if(varSrc == srcBody){
+            } else if (varSrc == srcBody) {
                 self.data.requestBody(newValue);
-            }else {
+            } else {
                 self.data.requestHeaders(newValue);
             }
         } finally {
             self.isUpdatingVariables = false;
         }
     };
-    
+
     self.updateAllVariables = function (varSrc, newValue) {
         if (!newValue) {
             newValue = "";
@@ -264,125 +264,125 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     };
 
     self.ProperlyHandleVariableInput = function (newValue) {
-		// handle more normal use cases ;)
-			
-		// find ? then substring
-		var indexOfQuestionMark = newValue.indexOf("?");
-		
+        // handle more normal use cases ;)
+
+        // find ? then substring
+        var indexOfQuestionMark = newValue.indexOf("?");
+
         if (indexOfQuestionMark >= 0) {
-		
-			// create working string 
+
+            // create working string 
             var tmpValue = newValue.substring((indexOfQuestionMark + 1));
-			// generate pairs
-			var pairs = tmpValue.split("&");
-			
-			// now match pairs ;)
+            // generate pairs
+            var pairs = tmpValue.split("&");
+
+            // now match pairs ;)
             for (var i = 0; i < pairs.length; i++) {
-				
-				var tmp = pairs[i];
 
-				var subPairs = tmp.split("=");
-				
-				if (subPairs.length == 2) {
+                var tmp = pairs[i];
+
+                var subPairs = tmp.split("=");
+
+                if (subPairs.length == 2) {
 
 
-				    var varName = subPairs[1].replace("[[", "").replace("]]", "");
+                    var varName = subPairs[1].replace("[[", "").replace("]]", "");
 
-				    var targetEnd = varName.indexOf("&");
+                    var targetEnd = varName.indexOf("&");
 
-				    if (targetEnd > 0) {
-				        // we need to trim it up a bit ;)
-				        varName = varName.substring(0, targetEnd);
-				    }
+                    if (targetEnd > 0) {
+                        // we need to trim it up a bit ;)
+                        varName = varName.substring(0, targetEnd);
+                    }
 
-				    self.pushRequestVariable(varName, "", "");
-				} else {
-				    // we may have a silly chicken with just a datalist fragment ;)
-				    if (tmp.indexOf("[[") == 0) {
-				   
-				        varName = tmp.replace("[[", "").replace("]]", "");
-				        self.pushRequestVariable(varName, "", "");
-				        
-				    }
-				}
-			}
-		}
-        
-	};
+                    self.pushRequestVariable(varName, "", "");
+                } else {
+                    // we may have a silly chicken with just a datalist fragment ;)
+                    if (tmp.indexOf("[[") == 0) {
+
+                        varName = tmp.replace("[[", "").replace("]]", "");
+                        self.pushRequestVariable(varName, "", "");
+
+                    }
+                }
+            }
+        }
+
+    };
 
     self.updateVariables = function (varSrc, newValue) {
 
-		var param = self.getParameter(newValue, start);
-		var start = 0;
+        var param = self.getParameter(newValue, start);
+        var start = 0;
 
-        if(varSrc == srcUrl) {
+        if (varSrc == srcUrl) {
             start = $requestUrl.caret();
-        }else if(varSrc == srcBody) {
+        } else if (varSrc == srcBody) {
             start = $requestBody.caret();
         } else if (varSrc == srcHeader) {
             start = $requestHeaders.caret();
         }
 
         if (self.hasSourceSelectionChanged) {
-		
+
             // when paste do this ;)
             if (self.hasPasteHappened) {
-		
-				self.hasPasteHappened = false;
+
+                self.hasPasteHappened = false;
 
                 // Scan for [[]] regions prior to the variable request string ;)
-				paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
+                paramVars = newValue.match(/\[\[\w*\]\]/g); // match our variables!
 
                 for (var ii = 0; ii < paramVars.length; ii++) {
-                    var value = paramVars[ii].replace("[[","").replace("]]","");
+                    var value = paramVars[ii].replace("[[", "").replace("]]", "");
                     self.pushRequestVariable(value, "", "");
                 }
 
             } else {
-				self.updateAllVariables(varSrc, newValue);
-			}
-			
-			self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
-			
+                self.updateAllVariables(varSrc, newValue);
+            }
+
+            self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
+
             return;
         }
-	
+
         if (varSrc == srcUrl) {
             if (self.isEqualPressed) {
                 param = self.getParameter(newValue, start);
 
-				var afterParam = "";
+                var afterParam = "";
                 var offSet = start + (param.name.length);
-				
+
                 if (offSet < newValue.length) {
-					afterParam = newValue.substring(offSet);
-				}
-                
-				// handle the case of ]]= and &= correctly 
-				if (param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0) {
-				    self.pushRequestVariable(param.name, varSrc, param.value);
+                    afterParam = newValue.substring(offSet);
+                }
 
-				    var prefix = newValue.slice(0, param.valueStart);
-				    var postfix = newValue.slice(param.valueEnd, newValue.length);
-				    var paramValue = "[[" + param.name + "]]";
-				    newValue = prefix.concat(paramValue).concat(postfix);					
+                // handle the case of ]]= and &= correctly 
+                if (param.name.indexOf("[[") < 0 && param.name.indexOf("=") < 0 && param.name.length > 0 && afterParam.indexOf("[") != 0) {
+                    self.pushRequestVariable(param.name, varSrc, param.value);
+
+                    var prefix = newValue.slice(0, param.valueStart);
+                    var postfix = newValue.slice(param.valueEnd, newValue.length);
+                    var paramValue = "[[" + param.name + "]]";
+                    newValue = prefix.concat(paramValue).concat(postfix);
 
 
-				    self.updateVariablesText(varSrc, newValue, start + paramValue.length);
-				}
-                
+                    self.updateVariablesText(varSrc, newValue, start + paramValue.length);
+                }
+
             } else if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {
-				// handle more normal use case ;)
-				self.ProperlyHandleVariableInput(newValue);
-			}
+                // handle more normal use case ;)
+                self.ProperlyHandleVariableInput(newValue);
+            }
         } else { // SRC_BODY
-			
+
             if (self.isCloseBracketPressed) {
                 self.extractAndPushRequestVariable(newValue, start, varSrc);
             } else {
-				
+
                 if (srcHeaderPrev == "" || srcBodyPrev == "") {
                     // fake paste due to silly binding issues
                     self.updateAllVariables(varSrc, newValue);
@@ -391,28 +391,28 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         }
 
 
-            // Clean up variables
-            var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
-            var forceRemoveItems = new Array();
+        // Clean up variables
+        var paramVars = newValue.match(/\[\[\w*\]\]/g);    // match our variables!
+        var forceRemoveItems = new Array();
+        if (!paramVars) {
+            paramVars = newValue.match(/\[\[\w*\]/g);    // match our variables!
             if (!paramVars) {
-                paramVars = newValue.match(/\[\[\w*\]/g);    // match our variables!
-                if (!paramVars) {
-                    // all gone, swap what was there for parsing ;)
-                    if (varSrc == srcBody) {
-                        paramVars = srcBodyPrev.match(/\[\[\w*\]\]/g);    // match our variables!
-                    }else if(varSrc == srcHeader) {
-                        paramVars = srcHeaderPrev.match(/\[\[\w*\]\]/g);    // match our variables!
-                    }
-                }
-
-                for (var q = 0; q < paramVars.length; q++) {
-                    if (!paramVars[q].endsWith("]]")) {
-                        forceRemoveItems[q] = paramVars[q] + "]";
-                    }else {
-                        forceRemoveItems[q] = paramVars[q];
-                    }
+                // all gone, swap what was there for parsing ;)
+                if (varSrc == srcBody) {
+                    paramVars = srcBodyPrev.match(/\[\[\w*\]\]/g);    // match our variables!
+                } else if (varSrc == srcHeader) {
+                    paramVars = srcHeaderPrev.match(/\[\[\w*\]\]/g);    // match our variables!
                 }
             }
+
+            for (var q = 0; q < paramVars.length; q++) {
+                if (!paramVars[q].endsWith("]]")) {
+                    forceRemoveItems[q] = paramVars[q] + "]";
+                } else {
+                    forceRemoveItems[q] = paramVars[q];
+                }
+            }
+        }
 
 
         if (paramVars) {
@@ -427,7 +427,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                     for (var z = 0; z < forceRemoveItems.length; z++) {
                         for (var c = 0; c < self.data.method.Parameters().length; c++) {
                             var tmp = self.data.method.Parameters()[c];
-                            if("[["+tmp.Name+"]]" == forceRemoveItems[z]) {
+                            if ("[[" + tmp.Name + "]]" == forceRemoveItems[z]) {
                                 self.data.method.Parameters.splice(c, 1);
                             }
                         }
@@ -435,16 +435,16 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 }
             }
         }
- 
-		if (varSrc == srcBody) {
-			srcBodyPrev = newValue;
-		} else if (varSrc == srcHeader) {
-			srcHeaderPrev = newValue;
-		}
-		
+
+        if (varSrc == srcBody) {
+            srcBodyPrev = newValue;
+        } else if (varSrc == srcHeader) {
+            srcHeaderPrev = newValue;
+        }
+
         self.data.method.Parameters.sort(utils.nameCaseInsensitiveSort);
     };
-    
+
     self.data.requestHeaders.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {
             self.updateVariables(srcHeader, newValue);
@@ -456,15 +456,15 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.updateVariables(srcUrl, newValue);
         }
     });
-    
+
     self.data.requestBody.subscribe(function (newValue) {
         if (!self.isUpdatingVariables) {
             self.updateVariables(srcBody, newValue);
         }
     });
 
-    self.requestMethods = ko.observableArray(["GET", "POST", "PUT", "DELETE", "TRACE"]);  
-    
+    self.requestMethods = ko.observableArray(["GET", "POST", "PUT", "DELETE", "TRACE"]);
+
     self.sources = ko.observableArray();
     self.upsertSources = function (result) {
         var id = result.ResourceID.toLowerCase();
@@ -476,13 +476,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 idx = index;
                 replace = true;
                 return false;
-            }           
+            }
             if (idx == -1 && name < source.ResourceName.toLowerCase()) {
                 idx = index;
             }
             return true;
         });
-        
+
         if (idx != -1) {
             if (replace) {
                 self.sources()[idx] = result;
@@ -493,8 +493,8 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.sources.push(result);
         }
     };
-    
-    self.data.source.subscribe(function (newValue) {             
+
+    self.data.source.subscribe(function (newValue) {
         // our sources is a list of Resource's and NOT WebSource's 
         // so we have to load it
         if (newValue && !newValue.Address) {
@@ -516,9 +516,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.data.requestUrl(newValue ? newValue.DefaultQuery : ""); // triggers a call updateVariables()
                 self.hasTestResults(false);
                 self.sourceAddress(newValue ? newValue.Address : "");
-            }else {
+            } else {
                 initLoad = false;
-                self.data.requestUrl(newValue); // triggers a call updateVariables()
+                // DO NOT CALL - Will overwrite exiting value on edit ;)
+                //self.data.requestUrl(newValue.DefaultQuery); // triggers a call updateVariables()
                 self.sourceAddress(newValue ? newValue.Address : "");
             }
 
@@ -538,10 +539,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     // sources have not loaded at this point in time ;(
 
     self.selectSourceByID = function (theID) {
-        theID = theID.toLowerCase().trim()+"";
+        theID = theID.toLowerCase().trim() + "";
         var found = false;
         $.each(self.sources(), function (index, source) {
-            
+
             var matchID = source.ResourceID.toLowerCase().trim() + "";
 
             if (matchID === theID) {
@@ -549,10 +550,10 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.data.source(source);
                 return false;
             }
-            
+
             return true;
         });
-        
+
         return found;
     };
 
@@ -571,37 +572,37 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         }
         return found;
     };
-    
+
     self.hasTestResults = ko.observable(false);
-    
+
     self.hasInputs = ko.computed(function () {
         return self.data.method.Parameters().length > 0;
     });
-    
+
     self.isFormValid = ko.computed(function () {
         return self.hasTestResults() && !self.isReadOnly;
     });
-    
-	self.isJsonPathEnabled = ko.computed(function () {
-        
-		try{
-			var firstFlag =  self.data.requestResponse() ? true : false;
-		}catch(e){
-			return false;
-		}
-		
-		if(firstFlag){
-			// check that it is JSONData ;)
-			try{
-				JSON.parse(self.data.requestResponse());
-				return true;
-			}catch(e){
-				return false;
-			}
-		}
-		return false;
+
+    self.isJsonPathEnabled = ko.computed(function () {
+
+        try {
+            var firstFlag = self.data.requestResponse() ? true : false;
+        } catch (e) {
+            return false;
+        }
+
+        if (firstFlag) {
+            // check that it is JSONData ;)
+            try {
+                JSON.parse(self.data.requestResponse());
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        return false;
     });
-	
+
     self.isTestVisible = ko.observable(true);
     self.isTestEnabled = ko.computed(function () {
         if (self.isReadOnly) {
@@ -609,11 +610,11 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         }
         return self.data.source() ? true : false;
     });
-	
+
     self.isTestResultsLoading = ko.observable(false);
-	self.canDisplayJSONPathResult = ko.observable(true);
+    self.canDisplayJSONPathResult = ko.observable(true);
     self.setTestResultsLoading = function (testResultsLoading) {
-		self.canDisplayJSONPathResult(!testResultsLoading);
+        self.canDisplayJSONPathResult(!testResultsLoading);
         return self.isTestResultsLoading(testResultsLoading);
     };
     self.isEditSourceEnabled = ko.computed(function () {
@@ -648,14 +649,14 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.setRequestResponse = function (requestResponse) {
         return self.data.requestResponse(requestResponse);
     };
-	
-	self.setJsonPathData = function (data) {
+
+    self.setJsonPathData = function (data) {
         return self.data.jsonPathResult(data);
     };
-	
-	self.setDisplayData = function (data) {
-	    return self.data.displayData(data);
-	};
+
+    self.setDisplayData = function (data) {
+        return self.data.displayData(data);
+    };
 
     self.load = function () {
         self.loadSources();
@@ -664,13 +665,13 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.isReadOnly = isReadOnly;
         });
     };
-    
+
     self.loadService = function () {
         var args = ko.toJSON({
             resourceID: resourceID,
             resourceType: "WebService"
         });
-        
+
 
         $.post("Service/WebServices/Get" + window.location.search, args, function (result) {
             self.data.resourceID(result.ResourceID);
@@ -678,9 +679,9 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.data.resourceName(result.ResourceName);
             self.data.resourcePath(result.ResourcePath);
             self.data.jsonPath(result.JsonPath);
-			self.data.requestMessage(result.RequestMessage);
-			self.data.displayData("");
-            
+            self.data.requestMessage(result.RequestMessage);
+            self.data.displayData("");
+
             if (!result.ResourcePath && resourcePath) {
                 self.data.resourcePath(resourcePath);
             }
@@ -703,25 +704,24 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
                 self.onLoadSourceCompleted = null;
                 
             };*/
-            
+
             /*
                 The issue is that some times !found route is triggered
             */
 
             var found = self.selectSourceByID(sourceID);
-            
+
             if (found) {
-                
+
                 if (result.Method) {
                     self.data.method.Name(result.Method.Name);
                     self.data.method.Parameters(result.Method.Parameters);
                 }
-                
                 self.data.requestUrl(result.RequestUrl);
                 self.data.requestMethod(result.RequestMethod.toUpperCase());
                 self.data.requestHeaders(result.RequestHeaders);
                 srcHeaderPrev = result.RequestHeaders;
-                self.data.requestBody(result.RequestBody); 
+                self.data.requestBody(result.RequestBody);
                 srcBodyPrev = result.RequestBody;
                 self.data.requestResponse(result.RequestResponse);
                 self.pushRecordsets(result);
@@ -731,31 +731,31 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (!found) {
                 //self.onLoadSourceCompleted();
-				//self.selectSourceByID(sourceID);
+                //self.selectSourceByID(sourceID);
             }
-            
+
             self.title(self.isEditing ? "Edit Web Service - " + result.ResourceName : "New Web Service");
         });
     };
 
     self.loadSources = function (callback) {
-		// force sync to avoid race condition ;)
-		$.ajaxSetup({async: false});
+        // force sync to avoid race condition ;)
+        $.ajaxSetup({ async: false });
         $.post("Service/Resources/Sources" + window.location.search, ko.toJSON({ resourceType: "WebSource" }), function (result) {
             self.sources(result);
             self.sources.sort(utils.resourceNameCaseInsensitiveSort);
         }).done(function () {
-			// reset behavior
-			$.ajaxSetup({async: true});
+            // reset behavior
+            $.ajaxSetup({ async: true });
             if (callback) {
                 callback();
             }
         });
     };
-    
+
     // ReSharper disable DuplicatingLocalDeclaration
     self.loadSource = function (sourceID) {
-    // ReSharper restore DuplicatingLocalDeclaration
+        // ReSharper restore DuplicatingLocalDeclaration
         $.post("Service/WebSources/Get" + window.location.search, sourceID, function (result) {
             // Need to set this just in case this is the first time!
             self.data.source().Address = result.Address;
@@ -771,7 +771,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             }
         });
     };
-    
+
     self.editSource = function () {
         return self.showSource(self.data.source().ResourceName);
     };
@@ -779,34 +779,34 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
     self.newSource = function () {
         return self.showSource("");
     };
-    
+
     self.addResponse = function () {
         $addResponseDialog.dialog("open");
     };
-    
+
     self.addPath = function () {
         $addPathDialog.dialog("open");
     };
-    
+
     self.testWebService = function (isResponseCleared) {
         self.isTestResultsLoading(true);
         if (isResponseCleared) {
             self.data.requestResponse("");
         }
-        
+
         $.post("Service/WebServices/Test" + window.location.search, self.getJsonData(), function (result) {
             self.isTestResultsLoading(false);
             self.data.requestResponse(result.RequestResponse);
             self.data.requestMessage(result.RequestMessage);
-			self.data.jsonPathResult(result.RequestResponse);
-			
-			// set correct display data ;)
-			if(result.RequestMessage != null && result.RequestMessage != ""){
-				self.data.displayData(result.RequestMessage + " ");
-			}else{
-				self.data.displayData(result.RequestResponse+" ");
-			}
-            
+            self.data.jsonPathResult(result.RequestResponse);
+
+            // set correct display data ;)
+            if (result.RequestMessage != null && result.RequestMessage != "") {
+                self.data.displayData(result.RequestMessage + " ");
+            } else {
+                self.data.displayData(result.RequestResponse + " ");
+            }
+
             self.pushRecordsets(result);
         });
     };
@@ -829,7 +829,7 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
             self.saveViewModel.IsDialoglessSave = true;
             self.saveViewModel.save();
         }
-    };    
+    };
 
     self.showSource = function (theSourceName) {
         // 
@@ -837,11 +837,11 @@ function WebServiceViewModel(saveContainerID, resourceID, sourceID, environment,
         //
         webSourceViewModel.showDialog(theSourceName, function (result) {
             self.upsertSources(result);
-            self.data.source(result);            
+            self.data.source(result);
         });
     };
-    
-    self.load();    
+
+    self.load();
 };
 
 
@@ -852,7 +852,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
     var webServiceViewModel = new WebServiceViewModel(saveContainerID, getParameterByName("rid"), getParameterByName("sourceID"), utils.decodeFullStops(getParameterByName("envir")), getParameterByName("path"));
 
     ko.applyBindings(webServiceViewModel, document.getElementById(webServiceContainerID));
-    
+
 
     $("#addResponseDialog").dialog({
         resizable: false,
@@ -870,7 +870,7 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
             }
         }
     });
-    
+
     $("#addPathDialog").dialog({
         resizable: false,
         autoOpen: false,
@@ -879,8 +879,8 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
         width: 650,
         buttons: {
             "Ok": function () {
-				webServiceViewModel.setRequestResponse(webServiceViewModel.data.jsonPathResult());
-				webServiceViewModel.setDisplayData(webServiceViewModel.data.jsonPathResult());
+                webServiceViewModel.setRequestResponse(webServiceViewModel.data.jsonPathResult());
+                webServiceViewModel.setDisplayData(webServiceViewModel.data.jsonPathResult());
                 $(this).dialog("close");
             },
             "Cancel": function () {
@@ -889,21 +889,21 @@ WebServiceViewModel.create = function (webServiceContainerID, saveContainerID) {
             "Test Path": function () {
                 webServiceViewModel.setTestResultsLoading(true);
                 $.post("Service/WebServices/ApplyPath" + window.location.search, webServiceViewModel.getJsonData(), function (result) {
-                    
-					webServiceViewModel.setJsonPathData(result.JsonPathResult);
-					
-					if(result.jsonPath != null && result.jsonPath != ""){
-						webServiceViewModel.setDisplayData(result.JsonPathResult+" ");
-					}
 
-					webServiceViewModel.pushRecordsets(result);
-					//webServiceViewModel.pushResult(webServiceViewModel.data.recordsets, result.Recordsets);
-					webServiceViewModel.setTestResultsLoading(false);
+                    webServiceViewModel.setJsonPathData(result.JsonPathResult);
+
+                    if (result.jsonPath != null && result.jsonPath != "") {
+                        webServiceViewModel.setDisplayData(result.JsonPathResult + " ");
+                    }
+
+                    webServiceViewModel.pushRecordsets(result);
+                    //webServiceViewModel.pushResult(webServiceViewModel.data.recordsets, result.Recordsets);
+                    webServiceViewModel.setTestResultsLoading(false);
                 });
             }
         }
     });
-    
+
     // inject WebSourceDialog
     webServiceViewModel.$webSourceDialogContainer.load("Views/Sources/WebSource.htm", function () {
         // 
