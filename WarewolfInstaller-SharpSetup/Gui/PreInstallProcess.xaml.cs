@@ -91,7 +91,7 @@ namespace Gui
         /// </summary>
         private void OpenPorts()
         {
-            var args = new[] { "http add urlacl url={http://*:3142}/  user=\\Everyone", "http add urlacl url={https://*:3143}/ user=\\Everyone" };
+            var args = new[] { "http add urlacl url=http://*:3142/  user=\\Everyone", "http add urlacl url=https://*:3143/ user=\\Everyone" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
