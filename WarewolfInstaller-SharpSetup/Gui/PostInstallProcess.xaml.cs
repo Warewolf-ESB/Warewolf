@@ -314,7 +314,8 @@ namespace Gui
             RestartService();
 
             // clean up any log files and junk ;)
-            CleanupOperation(serverInstallLocation);
+            var serverRoot = Path.Combine(installRoot, "Server");
+            CleanupOperation(serverRoot);
 
         }
 
@@ -356,22 +357,22 @@ namespace Gui
             btnRerun.Visibility = Visibility.Hidden;
             // Setup a cancel action ;)
             Cancel += delegate
-                    {
-                        SetCleanupMessage();
-                        List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
-                        var trans = new PreUnInstallProcess(2, listOfStepNames);
+            {
+                SetCleanupMessage();
+                List<string> listOfStepNames = new List<string> { "License Agreement", "Pre UnInstall", "UnInstall", "Installation", "Post Install", "Finish" };
+                var trans = new PreUnInstallProcess(2, listOfStepNames);
 
-                        if(!trans.Rollback())
-                        {
-                            ShowCancelError();
-                        }
-                        else
-                        {
-                            // Now uninstall?!
-                            MsiConnection.Instance.Uninstall();
-                            SetSuccessMessasge("Rollback complete");
-                        }
-                    };
+                if(!trans.Rollback())
+                {
+                    ShowCancelError();
+                }
+                else
+                {
+                    // Now uninstall?!
+                    MsiConnection.Instance.Uninstall();
+                    SetSuccessMessasge("Rollback complete");
+                }
+            };
 
             // attempts to install service ;)
             if(!string.IsNullOrEmpty(InstallVariables.InstallRoot))
