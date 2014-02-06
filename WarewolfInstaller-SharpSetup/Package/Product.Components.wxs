@@ -1034,9 +1034,6 @@
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\XPath20Api.dll" />
             </Component>
             <!-- Help Resources -->
-            <Component Id="cmp44A263E383B48B4E7D16644DA684C523_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{A50AF7A4-6468-4664-9027-511B4AAF057C}">
-                <File Id="filAB8624F6C1407EA5A6CFD9820F5A4770_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageNotFound.htm" />
-            </Component>
             <Component Id="cmpD1235FCF53EF78C9B721E62F94FCC795_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98B3-4303-8469-F3413D939FA1}">
                 <File Id="filF90E052B610E1CCE1C3E09E90260AD85_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PopupError-32.png" />
             </Component>

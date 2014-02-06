@@ -29,15 +29,15 @@ cls
 
 @echo -Update Source-
 cd "C:\Development\Release %1%"
-"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\tf.exe" update
+"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\tf.exe" get
 
 @echo -Build Server-
 "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Server.sln" /clean
-"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Server.sln" /build
+"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Server.sln" /build release
 
 @echo -Build Studio-
 "C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Studio.sln" /clean
-"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Studio.sln" /build
+"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\Release %1%\Studio.sln" /build release
 
 @echo -Staging For Obfuscation-
 rd /S /Q "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Artifacts\"
@@ -48,6 +48,7 @@ mkdir "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\"
 mkdir "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\Webs"
 mkdir "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\Webs\wwwroot"
 
+@set /P waitKey=Press Enter When Ready 
 
 xcopy "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Static_Artifacts\Warewolf.snk" "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\"
 rd /S /Q "C:\Development\Release %1%\Dev2.Server\bin\Release\Workspaces\"
@@ -117,7 +118,7 @@ version.bat
 
 @echo "Making Release %2%"
 @echo -Make Installer-
-"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\WarewolfInstaller-SharpSetup\WarewolfInstaller-SharpSetup.sln" /build
+"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" "C:\Development\WarewolfInstaller-SharpSetup\WarewolfInstaller-SharpSetup.sln" /build release
 
 @echo -Sign Installer-
 delete "C:\Development\WarewolfInstaller-SharpSetup\Debug\Warewolf-%2%.exe"
