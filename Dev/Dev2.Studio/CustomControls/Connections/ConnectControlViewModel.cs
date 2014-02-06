@@ -99,6 +99,7 @@ namespace Dev2.UI
         {
             var viewModel = (ConnectControlViewModel)d;
             var newValue = e.NewValue as IEnvironmentModel;
+            viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer));
 
             if(newValue != null)
             {

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Instrumentation;
+using Dev2.Messages;
 using Dev2.Services.Events;
 using Dev2.Settings.Logging;
 using Dev2.Settings.Security;
@@ -18,7 +19,7 @@ using Dev2.Threading;
 
 namespace Dev2.Settings
 {
-    public class SettingsViewModel : BaseWorkSurfaceViewModel
+    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>
     {
         bool _isLoading;
         bool _isDirty;
@@ -371,6 +372,15 @@ namespace Dev2.Settings
             Errors = description;
             //throw new Exception(string.Format("{0} : {1}", header, description));
         }
+
+        #region Implementation of IHandle<ServerSelectionChangedMessage>
+
+        public void Handle(ServerSelectionChangedMessage message)
+        {
+            OnServerChanged(message.SelectedServer);
+        }
+
+        #endregion
     }
 }
 

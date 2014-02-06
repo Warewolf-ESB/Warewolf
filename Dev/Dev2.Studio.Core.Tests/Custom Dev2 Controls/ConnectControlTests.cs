@@ -37,6 +37,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             connectControlViewModel.BindToActiveEnvironment = false;
@@ -45,6 +46,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
         }
 
         [TestMethod]
@@ -59,6 +61,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.SelectedServer = remoteServer;
             connectControlViewModel.IsSelectionFromTree = true;
@@ -70,6 +73,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
         }
 
         [TestMethod]
@@ -84,6 +88,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.SelectedServer = localhostServer;
             connectControlViewModel.IsSelectionFromTree = true;
@@ -95,6 +100,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
         }
 
         [TestMethod]
@@ -109,6 +115,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var mockEventAggregator = new Mock<IEventAggregator>();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
+            mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.BindToActiveEnvironment = true;
             connectControlViewModel.IsSelectionFromTree = false;
@@ -122,6 +129,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Once());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
         }
 
         [TestMethod]

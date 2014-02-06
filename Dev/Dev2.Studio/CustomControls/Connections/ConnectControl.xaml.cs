@@ -182,6 +182,15 @@ namespace Dev2.UI
                         ViewModel.SelectedServer = environmentModel;
                     }
                 }
+
+                if(ViewModel.SelectedServer == null && ViewModel.Servers.Any())
+                {
+                    IEnvironmentModel localhost = ViewModel.Servers.FirstOrDefault(c => c.IsLocalHost);
+                    if(localhost != null)
+                    {
+                        ViewModel.SelectedServer = localhost;
+                    }
+                }
             }
 
             Loaded -= OnLoaded;
