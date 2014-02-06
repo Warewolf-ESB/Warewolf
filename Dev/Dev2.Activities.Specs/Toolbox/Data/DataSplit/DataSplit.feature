@@ -105,14 +105,13 @@ Scenario: Split blank text using All split types
 	| vowels().letters |
 	And the execution has "NO" error
 
-Scenario: Split text using Index where index > provided
+Scenario: Split text using Index where and Space > 
 	Given A string to split with value "123"	
-	And assign to variable "[[var]]" split type "Index" at "," and Include "Selected" and Escape '\'
+	And assign to variable "[[var]]" split type "Index" at "," and Include "Selected"
 	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\' 
 	When the data split tool is executed	
-
-	Then the split result for "[[var]]" will be "123"
-	And the execution has "NO" error
+    Then the split result for "[[var]]" will be "123"
+    And the execution has "AN" error
 
 Scenario: Split text using Char and Escape character
 	Given A string to split with value "123|,45,1"
@@ -161,6 +160,31 @@ Scenario: Split text using a negative recordset index as escape character
 	When the data split tool is executed
 	Then the execution has "AN" error
 
+Scenario: Split text using a index with "," and space  
+     Given A string to split with value "a bc, def"
+	 And assign to variable "[[vowels(*).letters]]" split type "Index" at "2" and Include "UnSelected"
+	 And  assign to variable "[[vowels(*).letters]]" split type "Space" at "" and Include "unselected" and Escape '\' 
+	 When the data split tool is executed
+	 Then the execution has "AN" error
+
+	 Scenario: Split text using Index where index is not numeric - variable
+     Given A string to split with value "123" 
+	 And I have a variable “[[idx]]” with a value “2”
+     And assign to variable "[[var]]" split type "Index" at "[[idx]]" 
+     When the data split tool is executed     
+     Then the split result for "[[var]]" will be "12"
+     And the execution has "NO" error
+
+	 Scenario: Split text using Index where index > provided
+     Given A string to split with value "123" 
+     And assign to variable "[[var]]" split type "Index" at "7" and Include "Selected" and Escape '\'
+     When the data split tool is executed     
+     Then the split result for "[[var]]" will be "123"
+     And the execution has "NO" error
+
+
+
+
 
 #Debug output
 #	
@@ -170,7 +194,7 @@ Scenario: Split text using a negative recordset index as escape character
 #	Then the execution has "Data split" in the debug output
 #
 #	Scenario:  Ensure that user can be able to see inputs in debug output 
-#	Given I have created a workflow
+#	Given I have created a workflow with Data split 
 #	When the data split tool is executed
 #	Then the execution has inputs of the Data split in the debug output
 #
