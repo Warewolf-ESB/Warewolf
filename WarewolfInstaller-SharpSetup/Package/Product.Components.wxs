@@ -294,7 +294,7 @@
             <Component Id="AddCategoryToWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{E7EB6036-1BA2-4C7E-A7AD-78D4E7C86F56}">
                 <File Id="fil80688222B6F483F07201097F468C9CAC" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddCategoryToWarewolfShoppingCartDb.xml" />
             </Component>
-            <Component Id="AddProduct.xml" Directory="dirServerRoot" Guid="{B7D0FB11-EFBF-4C97-9F40-810359C5F0E5}">
+            <Component Id="AddProduct.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{B7D0FB11-EFBF-4C97-9F40-810359C5F0E5}">
                 <File Id="fil04E4ECB42B1D05438FD134DDE98929EA" KeyPath="yes" Source="..\ProductBuild\Server\Services\AddProduct.xml" />
             </Component>
             <Component Id="AddProductToWarewolfShoppingCartDb.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{D81A6B92-0364-4723-BED9-2C068DA99B71}">
@@ -359,6 +359,28 @@
             </Component>
             <!-- End Service-->
             <!-- End Sample -->
+            <!-- Start Services -->
+            <Component Id="RecordsetSQL_Bulk_Insert" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4ABE-7AC6-FF6EC29E163B}">
+                <File Id="fil858D36B941DA865CC6CA040563721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - SQL Bulk Insert.xml" />
+            </Component>
+            <Component Id="RecordsetUnique_Records" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67ABC-C507-4ABE-7AC6-FF6EC29E163B}">
+                <File Id="fil858D36B941DA865CC6CA040612721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Recordset - Unique Records.xml" />
+            </Component>
+            <Component Id="ScriptingCMD_Line" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{1AB67ABC-C507-4ABE-7AC6-FF6EC29E163B}">
+                <File Id="fil748D36B941DA865CC6CA040612721A76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Scripting - CMD Line.xml" />
+            </Component>
+            <Component Id="ScriptingScript" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{B1DC9F16-B995-4F6B-9E10-F95828D883F9}">
+                <File Id="filC473C69DE74413970213D89459CCC77E" KeyPath="yes" Source="..\ProductBuild\Server\Services\Scripting - Script.xml" />
+            </Component>
+            <Component Id="UtilityComment" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{740D6A9C-EA20-4F07-B53D-76099CB2C099}">
+                <File Id="filED0067C033A1C3A4A999042CC55AF992" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Comment.xml" />
+            </Component>
+            <Component Id="UtilityEmail" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{84CFE294-7C05-4B41-9C21-AA591EDA10A6}">
+                <File Id="fil97E48BBA831B6BB7223CFB0AA81B464E" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Email.xml" />
+            </Component>
+            <Component Id="UtilityWeb_Request" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{1A1F1301-EBA0-4517-B3A9-832519F9C9DF}">
+                <File Id="fil0657FBA1CB7D10713A2E31ECF6ECEEA6" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - Web Request.xml" />
+            </Component>
             <Component Id="cmp62707DDA8BD0362C71EDB96A68049F9D" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E163B}">
                 <File Id="fil858D36B941DA865CC6CA040563732F76" KeyPath="yes" Source="..\ProductBuild\Server\Services\Control Flow - Decision.xml" />
             </Component>
@@ -464,9 +486,12 @@
             <Component Id="Utility___XPath.xml" Directory="dir316D7F9F0F517B1C11A91C9A7EBB2E12" Guid="{74AA06A7-B737-449B-ACF7-D099D109C18A}">
                 <File Id="fil35A5B5F2151313846BAFE4B178C32EDA" KeyPath="yes" Source="..\ProductBuild\Server\Services\Utility - XPath.xml" />
             </Component>
+            <!-- End Services -->
+            <!-- Start Sources -->
             <Component Id="cmpF7948E1F95837D4D1D31AA5FB7B3F616" Directory="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Guid="{51C4131B-F20B-44EE-A4BC-EBFDD864C187}">
                 <File Id="filFF28E74843493E8B1DC7B96266CFA4F9" KeyPath="yes" Source="..\ProductBuild\Server\Sources\DemoDB.xml" />
             </Component>
+            <!-- End Sources -->
             <Component Id="cmpA0618CE539564D7EA19F4C863E8F6A26" Directory="dir0D329F9CF54086640E16B87A42B62E67" Guid="{4EBCC5C6-2BD0-4240-97D8-6A84E1DACC28}">
                 <File Id="filB79B8A07CE0562813A5ADF402518A861" KeyPath="yes" Source="..\ProductBuild\Server\Webs\wwwroot\default.htm" />
             </Component>
