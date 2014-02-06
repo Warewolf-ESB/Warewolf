@@ -17,8 +17,12 @@ namespace Gui
         {
             var mainMsiFile = Properties.Resources.MainMsiFile;
             MsiConnection.Instance.Open(mainMsiFile, true);
+            Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
+            Wizard.NextStep();
+            DataContext = new InfoStepDataContext();
 
             // Seems to be  install issues following the route below ;)
+            //var mainMsiFile = Properties.Resources.MainMsiFile;
             //if(File.Exists(PublicResources.SerializedStateFile))
             //    MsiConnection.Instance.OpenFromFile(PublicResources.SerializedStateFile);
             //else if(File.Exists(mainMsiFile))
@@ -26,9 +30,9 @@ namespace Gui
             //else
 
             //MsiConnection.Instance.Open(SetupHelper.GetProductGuidFromPath(), true);
-            Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
-            Wizard.NextStep();
-            DataContext = new InfoStepDataContext();
+            //Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
+            //Wizard.NextStep();
+            //DataContext = new InfoStepDataContext();
         }
     }
 }

@@ -1033,11 +1033,21 @@
             <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A204218_Studio" Directory="dirStudioRoot" Guid="{28DC149E-9F4E-440F-96DF-F96160501E34}">
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\XPath20Api.dll" />
             </Component>
+            <!-- Help Resources -->
             <Component Id="cmp44A263E383B48B4E7D16644DA684C523_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{A50AF7A4-6468-4664-9027-511B4AAF057C}">
                 <File Id="filAB8624F6C1407EA5A6CFD9820F5A4770_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageNotFound.htm" />
             </Component>
             <Component Id="cmpD1235FCF53EF78C9B721E62F94FCC795_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98B3-4303-8469-F3413D939FA1}">
                 <File Id="filF90E052B610E1CCE1C3E09E90260AD85_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PopupError-32.png" />
+            </Component>
+            <Component Id="PageMissingPng" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98A3-4A03-A469-F3413D939FA1}">
+                <File Id="filF90E052B610E2CFE1C1E09E90260AD85_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageMissing.png" />
+            </Component>
+            <Component Id="PageRestrictedAccessPng" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98B3-4301-8469-13413F939AA1}">
+                <File Id="filF90E051C610E1CCE1C3E09A90260AD85_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageRestrictedAccess.png" />
+            </Component>
+            <Component Id="PageNotAvailablePng" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{512D8AE2-98B3-4303-8469-F3413D919FD9}">
+                <File Id="filF90E052B610E1AAE1D3E09E90260AD85_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageNotAvailable.png" />
             </Component>
             <Component Id="cmp4F55AB49627E0E2AE798885B471AF8A5_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{3D7AD122-BF7A-4AF1-9ECC-BB970E121441}">
                 <File Id="filCF76F60D900D86C8C61828C7EE477E01_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioHomepage.htm" />
@@ -1048,6 +1058,16 @@
             <Component Id="cmp5E04A05CA1E1D9EF0F190A7FD8D04F2E_Studio" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{9DF4B3DA-F67D-4D11-A8D4-F80C972A87C5}">
                 <File Id="filA60E3303E848D13A120615FB6135AC3C_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\StudioShortCutKeys.htm" />
             </Component>
+            <Component Id="PageMissing" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{1AC4B3DA-F67D-4D11-A8D4-F80C972A87C5}">
+                <File Id="filC10F1303E848D13A120615FB6135AC3C_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageMissing.htm" />
+            </Component>
+            <Component Id="PageNotAvailable" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{1AC4B3DA-F67D-4D11-A8D4-A91C972A87C5}">
+                <File Id="filC10F1303E848D13A120615FB2135FC1C_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageNotAvailable.htm" />
+            </Component>
+             <Component Id="PageRestrictedAccess" Directory="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Guid="{1AC4B3DA-F67D-4D21-A5D4-F11C972A84C5}">
+                <File Id="filC10F1303E848D13A120345FB2135FC1C_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Help\PageRestrictedAccess.htm" />
+            </Component>
+            <!-- End Help Resources -->
             <Component Id="cmpBFF376583BAB2932C2A479C0396FBAA3_Studio" Directory="dirF2DB3C44B894CD4571482EAE3116C6E1" Guid="{B14FAC50-F185-46C5-BEF7-8265CCC27CA7}">
                 <File Id="fil8F95D56F94B2F43FD9DBC0CA6FCE94BB_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\locales\am.pak" />
             </Component>

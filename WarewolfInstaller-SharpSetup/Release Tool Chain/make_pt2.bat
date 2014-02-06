@@ -32,13 +32,18 @@ REM cd "C:\Development\Release %1%\BPM Resources - Release\Sources\"
 REM xcopy /S /Y "*.*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server\Sources\"
 
 @echo -Versioning Artifacts-
-xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
-xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\*" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
+xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\verpatch.exe" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
+xcopy /X /Y "C:\Development\WarewolfInstaller-SharpSetup\Release Tool Chain\verpatch-bin-1.0.10\verpatch.exe" "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
 
 cd "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Server"
-REM updatever-server.bat "%2%"
+echo verpatch "Warewolf Server.exe" "%1%" > version.bat
+echo for %%f in (Dev2*.dll) do verpatch %%f "%1%" >> version.bat
+version.bat
 
 cd "C:\Development\WarewolfInstaller-SharpSetup\ProductBuild\Studio"
-REM updatever-studio.bat "%2%"
+echo verpatch "Warewolf Server.exe" "%1%" > version.bat
+rem Do whatever you want here over the files of this subdir, for example:
+echo for %%f in (Dev2*.dll) do verpatch %%f "%1%" >> version.bat
+version.bat
 
 @echo --End Release Process--

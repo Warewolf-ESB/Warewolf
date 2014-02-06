@@ -11,6 +11,9 @@ COLOR 97
 @echo "Using %2% as the release number"
 @echo "Make sure you have updated the build meta data for the installer project"
 
+IF "%1%"=="" GOTO EXIT
+IF "%2%"=="" GOTO EXIT
+
 @set /P waitKey=Press Any Key When Ready
 
 @echo "Using Branch %1% for build"
@@ -47,6 +50,11 @@ rd /S /Q "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\the
 rd /S /Q "\\RSAKLFSVRTFSBLD\Automated Builds\NightlyBuild\Obfuscated_Staging\Plugins"
 
 @echo -Obfuscating Build-
-REM - Service must run as IntegrationTester - And Must Support non NTLM request ;)
+echo Service must run as IntegrationTester - And Must Support non NTLM request ;)
 REM wget "http://RSAKLFSVRTFSBLD:3142/services/Obfuscate Artifacts"
+
+EXIT:
+@echo "You need to pass the release branch as first parameter"
+@echo "And you need to pass the release number as the second parameter"
+@echo "ie make.bat 0.4.1.x 0.4.1.1"
 
