@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using Trackerbird.Tracker;
@@ -44,9 +45,10 @@ namespace Dev2.Instrumentation
 
         static void Start(string productID, string callHomeUrl)
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            var productVersion = version.ToString();
-            var productBuildNumber = version.Build.ToString(CultureInfo.InvariantCulture);
+            var assembly = Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            var productVersion = fvi.FileVersion;
+            var productBuildNumber = fvi.FileBuildPart.ToString(CultureInfo.InvariantCulture);
             var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
             App.Start(config);
         }
