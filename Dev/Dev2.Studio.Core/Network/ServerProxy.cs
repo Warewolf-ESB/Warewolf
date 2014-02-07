@@ -51,6 +51,10 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
+            // Travis Logging
+            HubConnection.ConnectionSlow += () => this.LogError("************ Slow hub connection?!");
+            HubConnection.Reconnecting += () => this.LogError("************ Reconnect hub");
+            HubConnection.Closed += () => HubConnection.Dispose();
             //HubConnection.TraceLevel = TraceLevels.All;
             //HubConnection.TraceWriter = Console.Out;
 
@@ -76,6 +80,7 @@ namespace Dev2.Network
 
         void HasDisconnected()
         {
+            this.LogTrace("*********** Hub connection down");
             IsConnected = false;
             UpdateIsAuthorized(true);
             StartReconnectTimer();
@@ -151,8 +156,6 @@ namespace Dev2.Network
                                 return true; // This we know how to handle this
                         }
                     }
-                    //HandleConnectError(ex);
-                    //return false; // Let anything else stop the application.
 
                     return true; // This we know how to handle this
                 });
@@ -309,11 +312,6 @@ namespace Dev2.Network
             {
                 throw new ArgumentNullException("payload");
             }
-            //// HACK: Remove this
-            //if(payload.Contains("GetLatestService"))
-            //{
-            //    RaisePermissionsChanged();
-            //}
 
             // build up payload 
             var length = payload.Length;
@@ -349,7 +347,7 @@ namespace Dev2.Network
                 {
                     break;
                 }
-                // now build up the result in fragements ;)
+                // now build up the result in fragments ;)
                 if(isEnd)
                 {
                     var totalToFetch = invoke.Result.ResultParts;
@@ -375,7 +373,7 @@ namespace Dev2.Network
                     var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
                     if(start < end && (end - start) > 1)
                     {
-                        // we can return the trimed payload instead
+                        // we can return the trimmed payload instead
                         start += (GlobalConstants.ManagementServicePayload.Length + 2);
                         return new StringBuilder(result.Substring(start, (end - start)));
                     }

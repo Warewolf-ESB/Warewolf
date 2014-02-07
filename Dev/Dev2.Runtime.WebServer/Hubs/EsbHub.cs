@@ -35,8 +35,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            var permissionsMemo = new PermissionsModifiedMemo();
-            permissionsMemo.ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions;
+            var permissionsMemo = new PermissionsModifiedMemo { ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions };
             var serializedMemo = JsonConvert.SerializeObject(permissionsMemo);
             var hubCallerConnectionContext = Clients;
             hubCallerConnectionContext.All.SendPermissionsMemo(serializedMemo);
@@ -80,12 +79,9 @@ namespace Dev2.Runtime.WebServer.Hubs
         public async Task<string> FetchExecutePayloadFragment(FutureReceipt receipt)
         {
             string value;
-            if(ResultCache.TryGetValue(receipt.ToKey(), out value))
+            if(ResultCache.TryRemove(receipt.ToKey(), out value))
             {
-                var task = new Task<string>(() =>
-                            {
-                                return value;
-                            });
+                var task = new Task<string>(() => value);
 
                 task.Start();
                 return await task;

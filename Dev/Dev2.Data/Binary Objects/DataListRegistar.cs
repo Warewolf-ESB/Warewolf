@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Data.Storage;
 
@@ -64,42 +65,46 @@ namespace Dev2.Data.Binary_Objects
         /// <param name="doCompact">if set to <c>true</c> [document compact].</param>
         public static void DisposeScope(int transactionScopeID, Guid rootRequestID, bool doCompact = true)
         {
-            ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeID);
-            try
+            Task.Run(() =>
             {
-                IList<Guid> theList;
-                if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
-                {                   
-                    theList.Remove(rootRequestID);
-                    BinaryDataListStorageLayer.RemoveAll(theList);
 
-                    // finally reset
-                    IList<Guid> dummy;
-                    _registrationRoster.TryRemove(transactionScopeID, out dummy);
-
-                    // now remove children ;)
-                    foreach(var key in _activityThreadToParentThreadID.Keys)
+                ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeID);
+                try
+                {
+                    IList<Guid> theList;
+                    if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
                     {
-                        if(key == transactionScopeID)
+                        theList.Remove(rootRequestID);
+                        BinaryDataListStorageLayer.RemoveAll(theList);
+
+                        // finally reset
+                        IList<Guid> dummy;
+                        _registrationRoster.TryRemove(transactionScopeID, out dummy);
+
+                        // now remove children ;)
+                        foreach(var key in _activityThreadToParentThreadID.Keys)
                         {
-                            int dummyInt;
-                            _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
+                            if(key == transactionScopeID)
+                            {
+                                int dummyInt;
+                                _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
+                            }
                         }
                     }
                 }
-            }
-            catch(Exception e)
-            {
-                ServerLogger.LogError("DataListRegistar", e);
-            }
-            finally
-            {
-                // now we need to pack memory to reclaim space ;)
-                if(doCompact)
+                catch(Exception e)
                 {
-                    BinaryDataListStorageLayer.CompactMemory(true);
+                    ServerLogger.LogError("DataListRegistar", e);
                 }
-            }
+                finally
+                {
+                    // now we need to pack memory to reclaim space ;)
+                    if(doCompact)
+                    {
+                        BinaryDataListStorageLayer.CompactMemory(true);
+                    }
+                }
+            });
         }
     }
 }

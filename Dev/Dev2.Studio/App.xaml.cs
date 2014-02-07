@@ -159,7 +159,14 @@ namespace Dev2.Studio
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
-            e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+            if(_appExceptionHandler != null)
+            {
+                e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
+            }
+            else
+            {
+                MessageBox.Show("Fatal Error : " + e.Exception);
+            }
         }
     }
 }

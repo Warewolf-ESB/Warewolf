@@ -129,7 +129,6 @@
     <Compile Include="Providers\Validation\Rules\IsStringEmptyRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNullRule.cs" />
     <Compile Include="ServerCompileMessageType.cs" />
-    <Compile Include="Service Catalog\HubList.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />
     <Compile Include="Services\IEsbService.cs" />
@@ -191,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service Catalog\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
