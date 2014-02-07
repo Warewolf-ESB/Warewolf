@@ -15,7 +15,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     /// <summary>
     /// Summary description for DbServiceTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PluginServiceTests
     {
         #region CTOR
