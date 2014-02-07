@@ -6,12 +6,21 @@
             <Directory Id="ProgramMenuFolder" Name="Programs">
                 <Directory Id="ProgramMenuDir" Name="!(loc.APPNAME)">
                     <Component Id="pmd" Guid="{3010812e-5a4d-4893-a4e1-0559160e1e3b}">
+                        <Condition>INSTALLSHORTCUT = 1</Condition>
+                        <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" Target="dirStudioRoot\Warewolf Studio.exe" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0"/>
                         <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\ProgramMenuDir" Type="string" Value="ProgramMenuDir" KeyPath="yes" />
                         <RemoveFolder Id="ProgramMenuDirRF" On="uninstall" />
                     </Component>
                 </Directory>
             </Directory>
-            <Directory Id="DesktopFolder" Name="Desktop" />
+            <Directory Id="DesktopFolder" Name="Desktop">
+                <Component Id="DesktopShortcut" Guid="{b8d2e61a-4e69-480a-bd06-360c4cec10f7}">
+                    <Condition>INSTALLSHORTCUT = 1</Condition>
+                    <Shortcut Id="DesktopShortcut" Name="!(loc.APPNAME)" Directory="DesktopFolder" WorkingDirectory="Studio" Target="dirStudioRoot\Warewolf Studio.exe" Icon="icon.ico" IconIndex="0" />    
+                    <RegistryValue Root="HKCU" Key="SOFTWARE\$(var.AppCode)\DesktopDir" Type="string" Value="DesktopFolder" KeyPath="yes" />
+                    <RemoveFolder Id="DesktopDirRF" On="uninstall" />
+                </Component>
+            </Directory>
             <Directory Id="ProgramFilesFolder">
                 <Directory Id="INSTALLLOCATION" Name="$(var.AppCode)">
                 </Directory>
@@ -1007,13 +1016,6 @@
             <!-- MAIN EXE SHORTCUTS ;) -->
             <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FB_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F810}">
                 <File Id="fil7C751B4021A48678ACD04F89200E9E4E_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
-                <Condition>INSTALLSHORTCUT = 1</Condition>
-                <Shortcut Id="MainExecutableStartMenu" Directory="ProgramMenuDir" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />
-            </Component>
-            <Component Id="cmpB14618AC32CAD3052ACEDB86AA6A20FA_Studio" Directory="dirStudioRoot" Guid="{C2AC4ACE-CC2C-4D99-8971-43FFDED2F811}">
-                <File Id="fil7C751B4021A48678ACD04F89200E9E4F_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe" />
-                <Condition>INSTALLSHORTCUT = 1</Condition>
-                <Shortcut Id="MainExecutableDesktop" Directory="DesktopFolder" Name="!(loc.APPNAME)" WorkingDirectory="Studio" Icon="icon.ico" IconIndex="0" Advertise="yes" />
             </Component>
             <Component Id="cmp01DECDDA8B38B61D79EB30874A2D8B15_Studio" Directory="dirStudioRoot" Guid="{94B33862-A313-456B-B8CE-52EB276E1A5F}">
                 <File Id="filB6AB605B846CF0D4F875D04B59A18FBC_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Warewolf Studio.exe.config" />
