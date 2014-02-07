@@ -485,6 +485,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         catch(Exception ex)
                         {
                             this.LogError(ex);
+                            throw;
                         }
                         break;
 

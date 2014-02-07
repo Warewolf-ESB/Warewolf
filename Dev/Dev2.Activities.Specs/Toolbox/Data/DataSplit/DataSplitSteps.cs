@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
@@ -83,12 +84,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             }
         }
 
-        [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)""")]
-        public void GivenAssignToVariableSplitTypeAt(string variable, string splitType, string splitAt)
-        {
-            AddVariables(variable, splitType, splitAt);
-        }
-
         static void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
         {
             List<Tuple<string, string>> variableList;
@@ -127,6 +122,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             AddVariables(variable, splitType, splitAt, included, escape);
 
         }
+
+        [Given(@"I have a variable ""(.*)"" with a value “(.*)”")]
+        public void GivenIHaveAVariableWithAValue(string variable, int value)
+        {
+            List<Tuple<string, string>> variableList;
+            ScenarioContext.Current.TryGetValue("variableList", out variableList);
+
+            if(variableList == null)
+            {
+                variableList = new List<Tuple<string, string>>();
+                ScenarioContext.Current.Add("variableList", variableList);
+            }
+            variableList.Add(new Tuple<string, string>(variable, value.ToString(CultureInfo.InvariantCulture)));
+
+        }
+
+
 
         [When(@"the data split tool is executed")]
         public void WhenTheDataSplitToolIsExecuted()

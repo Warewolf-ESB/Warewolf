@@ -6,7 +6,7 @@
 
 Scenario: Split text to a recordset using Index 
 	Given A string to split with value "abcde"
-	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "1"
+	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "1" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -19,7 +19,7 @@ Scenario: Split text to a recordset using Index
 
 Scenario: Split characters using Index Going Backwards
 	Given A string to split with value "@!?><":}{+_)(*&^~"
-	And assign to variable "[[vowels(*).chars]]" split type "Index" at "7"
+	And assign to variable "[[vowels(*).chars]]" split type "Index" at "7" and Include "unselected"
 	And the direction is "Backward"
 	When the data split tool is executed
 	Then the split result will be
@@ -31,7 +31,7 @@ Scenario: Split characters using Index Going Backwards
 
 Scenario: Split characters using Index Going Forward
 	Given A string to split with value "@!?><":}{+_)(*&^~"
-	And assign to variable "[[vowels(*).chars]]" split type "Index" at "7"
+	And assign to variable "[[vowels(*).chars]]" split type "Index" at "7" and Include "unselected"
 	And the direction is "Forward"
 	When the data split tool is executed
 	Then the split result will be
@@ -46,10 +46,10 @@ Scenario: Split characters using Index Going Forward
 Scenario: Split text using All split types - Some with Include selected
 	Given A string to split with value "IndexTab	Chars,space end"
 	And assign to variable "[[vowels(*).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
-	And  assign to variable "[[vowels(*).letters]]" split type "Tab" at ""	
+	And  assign to variable "[[vowels(*).letters]]" split type "Tab" at "" and Include "unselected"
 	And  assign to variable "[[vowels(*).letters]]" split type "Chars" at "ars," and Include "Selected" and Escape '' 
 	And  assign to variable "[[vowels(*).letters]]" split type "Space" at "1" and Include "unselected" and Escape '\'
-	And  assign to variable "[[vowels(*).letters]]" split type "End" at ""
+	And  assign to variable "[[vowels(*).letters]]" split type "End" at "" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -65,7 +65,7 @@ Scenario: Split CSV file format into recordset - some fields blank
 	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape ''
 	And  assign to variable "[[rec().name]]" split type "Chars" at "," and Include "unselected" and Escape ''
 	And  assign to variable "" split type "Chars" at "," and Include "unselected" and Escape '' 
-	And  assign to variable "[[rec().phone]]" split type "New Line" at ""
+	And  assign to variable "[[rec().phone]]" split type "New Line" at "" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| rec().id | rec().name | rec().phone |
@@ -81,7 +81,7 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	And  assign to variable "[[rec().id]]" split type "Chars" at "," and Include "unselected" and Escape '' 
 	And  assign to variable "[[rec().name]]" split type "Chars" at "," and Include "unselected" and Escape '' 	
 	And  assign to variable "" split type "Chars" at "," and Include "unselected" and Escape '' 
-	And  assign to variable "[[rec().phone]]" split type "New Line" at ""
+	And  assign to variable "[[rec().phone]]" split type "New Line" at "" and Include "unselected"
 	And  Skip Blanks rows is "enabled"
 	When the data split tool is executed
 	Then the split result will be
@@ -95,11 +95,11 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
 	And  assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
-	And  assign to variable "[[vowels().letters]]" split type "Tab" at ""	
+	And  assign to variable "[[vowels().letters]]" split type "Tab" at "" and Include "unselected"	
 	And  assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "selected" and Escape '' 
 	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\'
-	And  assign to variable "[[vowels().letters]]" split type "End" at ""	
-	And  assign to variable "[[vowels().letters]]" split type "NewLine" at ""
+	And  assign to variable "[[vowels().letters]]" split type "End" at "" and Include "unselected"
+	And  assign to variable "[[vowels().letters]]" split type "NewLine" at "" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -110,7 +110,7 @@ Scenario: Split text using Index where and Space >
 	And assign to variable "[[var]]" split type "Index" at "," and Include "Selected"
 	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\' 
 	When the data split tool is executed	
-    Then the split result for "[[var]]" will be "123"
+    Then the split result for "[[var]]" will be ""
     And the execution has "AN" error
 
 Scenario: Split text using Char and Escape character
@@ -122,7 +122,7 @@ Scenario: Split text using Char and Escape character
 
 Scenario: Split blank text	
 	Given A string to split with value ""
-	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "1"
+	And assign to variable "[[vowels(*).letters]]" split type "Index" at "1" and Include "Unselected" and Escape '|'
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -130,7 +130,7 @@ Scenario: Split blank text
 
 Scenario: Split text to a recordset using a negative Index 
 	Given A string to split with value "abcde"
-	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "-1"
+	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "-1" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
@@ -162,15 +162,15 @@ Scenario: Split text using a negative recordset index as escape character
 
 Scenario: Split text using a index with "," and space  
      Given A string to split with value "a bc, def"
-	 And assign to variable "[[vowels(*).letters]]" split type "Index" at "2" and Include "UnSelected"
+	 And  assign to variable "[[vowels(*).letters]]" split type "Index" at "," and Include "UnSelected"
 	 And  assign to variable "[[vowels(*).letters]]" split type "Space" at "" and Include "unselected" and Escape '\' 
 	 When the data split tool is executed
 	 Then the execution has "AN" error
 
 	 Scenario: Split text using Index where index is not numeric - variable
      Given A string to split with value "123" 
-	 And I have a variable “[[idx]]” with a value “2”
-     And assign to variable "[[var]]" split type "Index" at "[[idx]]" 
+	 And I have a variable "[[idx]]" with a value “2”
+     And assign to variable "[[var]]" split type "Index" at "[[idx]]" and Include "unselected"
      When the data split tool is executed     
      Then the split result for "[[var]]" will be "12"
      And the execution has "NO" error
