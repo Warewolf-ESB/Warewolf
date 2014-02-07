@@ -83,6 +83,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             Playback.Wait(20);
             SendKeys.SendWait("{TAB}");
             Playback.Wait(20);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(20);
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(20);
         }
@@ -95,53 +97,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             uIItemImage.WaitForControlEnabled();
             Mouse.Click(uIItemImage, new Point(874, 533));
-        }
-
-        public void InitializeFullTestServiceAndSource(string serverAndSourceCategoryName, string serverAndSourceName)
-        {
-            //DbSource
-            RibbonUIMap.ClickRibbonMenuItem("UI_RibbonHomeTabDBServiceBtn_AutoID");
-            WizardsUIMap.WaitForWizard();
-            Playback.Wait(9000); // darn db query can take a long time ;)
-            SendKeys.SendWait("{TAB}{TAB}{ENTER}");
-            Playback.Wait(10);
-            SendKeys.SendWait("RSAKLFSVRGENDEV");
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}{RIGHT}{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait("testuser");
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait("test123");
-            Playback.Wait(10);
-            SendKeys.SendWait("{TAB}{ENTER}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{TAB}{DOWN}{TAB}{ENTER}{ENTER}");
-            Playback.Wait(10);
-            SendKeys.SendWait(serverAndSourceCategoryName);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait(serverAndSourceName);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(2500);
-            //DbService
-            ClickFirstAction();
-            ClickTestAction();
-            KeyboardOK();
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(10);
-            SendKeys.SendWait(serverAndSourceCategoryName);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}{TAB}{TAB}{TAB}");
-            Playback.Wait(10);
-            SendKeys.SendWait(serverAndSourceName);
-            Playback.Wait(10);
-            SendKeys.SendWait("{ENTER}");
         }
 
         public void TabToMappingsTab()

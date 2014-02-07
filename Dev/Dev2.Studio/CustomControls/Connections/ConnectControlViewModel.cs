@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Messages;
@@ -55,6 +54,20 @@ namespace Dev2.UI
 
         #region Dependancy Properties
 
+        #region IsDropDownEnabled
+
+        public bool IsDropDownEnabled
+        {
+            get { return (bool)GetValue(IsDropDownEnabledProperty); }
+            set { SetValue(IsDropDownEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsDropDownEnabledProperty =
+            DependencyProperty.Register("IsDropDownEnabled", typeof(bool), typeof(ConnectControlViewModel), new PropertyMetadata(true));
+
+
+        #endregion
+
         #region LabelText
 
         public string LabelText
@@ -99,7 +112,10 @@ namespace Dev2.UI
         {
             var viewModel = (ConnectControlViewModel)d;
             var newValue = e.NewValue as IEnvironmentModel;
-            viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer));
+            if(viewModel.IngoreSelectionChangedMessage)
+            {
+                viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer));
+            }
 
             if(newValue != null)
             {
@@ -154,6 +170,21 @@ namespace Dev2.UI
 
         #endregion
 
+        #region IngoreSelectionChangedMessage
+
+        public bool IngoreSelectionChangedMessage
+        {
+            get { return (bool)GetValue(IngoreSelectionChangedMessageProperty); }
+            set { SetValue(IngoreSelectionChangedMessageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IngoreSelectionChangedMessageProperty =
+            DependencyProperty.Register("IngoreSelectionChangedMessage", typeof(bool),
+                typeof(ConnectControlViewModel), new PropertyMetadata(false));
+
+        #endregion
+
         #endregion
 
         #region Handlers
@@ -194,57 +225,6 @@ namespace Dev2.UI
         #endregion
 
         #region Public Methods
-
-        public IEnvironmentModel GetSelectedServer(string labelText)
-        {
-            if(Servers == null || Servers.Count == 0)
-            {
-                return null;
-            }
-
-            if(string.IsNullOrEmpty(labelText) || !labelText.Contains("Destination"))
-            {
-                IEnvironmentModel firstOrDefault = Servers.FirstOrDefault(s => s.Name == _activeEnvironment.Name);
-                if(firstOrDefault != null)
-                {
-                    return firstOrDefault;
-                }
-
-                IEnvironmentModel first = Servers.First(s => s.IsLocalHost);
-
-                return first;
-            }
-
-            if(_activeEnvironment.IsLocalHost && Servers.Count(itm => !itm.IsLocalHost && itm.IsConnected) == 1)
-            {
-                //Select the only other connected server
-                var otherServer = Servers.FirstOrDefault(itm => !itm.IsLocalHost && itm.IsConnected);
-                if(otherServer != null)
-                {
-                    return otherServer;
-                }
-            }
-
-            if(_activeEnvironment.IsLocalHost && Servers.Count(itm => !itm.IsLocalHost) == 1)
-            {
-                //Select and connect to the only other server
-                var otherServer = Servers.FirstOrDefault(itm => !itm.IsLocalHost);
-                if(otherServer != null)
-                {
-                    otherServer.Connect();
-                    otherServer.ForceLoadResources();
-                    return otherServer;
-                }
-            }
-
-            if(!_activeEnvironment.IsLocalHost)
-            {
-                //Select localhost
-                return Servers.FirstOrDefault(itm => itm.IsLocalHost);
-            }
-
-            return null;
-        }
 
         public void LoadServers(IEnvironmentModel envModel = null)
         {

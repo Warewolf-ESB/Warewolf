@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Instrumentation;
 using Dev2.Messages;
@@ -552,7 +553,6 @@ namespace Dev2.Studio.ViewModels.Deploy
                     {
                         SelectedDestinationServer = server;
                     }
-                    EventPublisher.Publish(new UpdateSelectedServer(server, connectSource));
                 });
         }
 

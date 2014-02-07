@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
@@ -104,7 +105,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public UITestControl GetLocalServer()
         {
             var firstTreeChild = _explorerTree.GetChildren()[0];
-            return firstTreeChild.GetChildren()[3];
+            return firstTreeChild.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.Text);
         }
 
 
@@ -161,20 +162,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
         }
 
-        public bool ValidateServiceExists(string serverName, string serviceType, string folderName, string projectName)
+        public bool ValidateServiceExists(string serviceName, string folderName, string serverName = "localhost")
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
-            Mouse.Click(p);
+            return ValidateResourceExists(serviceName, folderName, ServiceType.Services, serverName);
+        }
 
-            var kids = theControl.GetChildren();
+        public bool ValidateSourceExists(string sourceName, string folderName, string serverName = "localhost")
+        {
+            return ValidateResourceExists(sourceName, folderName, ServiceType.Sources, serverName);
+        }
 
-            if(kids != null && kids.Count > 0)
-            {
-                return kids.Any(kid => kid.Name == projectName);
-            }
-
-            return false;
+        public bool ValidateWorkflowExists(string workflowName, string folderName, string serverName = "localhost")
+        {
+            return ValidateResourceExists(workflowName, folderName, ServiceType.Workflows, serverName);
         }
 
         public void RightClickDeployProject(string serverName, string serviceType, string folderName, string projectName)
@@ -227,15 +227,19 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl ddlBase = GetServerDDL();
 
             var theDdl = ddlBase as WpfComboBox;
-            var firstItemInDdl = theDdl.Items[theDdl.SelectedIndex] as WpfListItem;
-
-            if(firstItemInDdl == null)
+            if(theDdl != null)
             {
-                string message = string.Format("No selected server name where found on the explorer server combo box");
-                throw new Exception(message);
-            }
+                var firstItemInDdl = theDdl.Items[theDdl.SelectedIndex] as WpfListItem;
 
-            return firstItemInDdl.AutomationId.Replace("U_UI_ExplorerServerCbx_AutoID_", "");
+                if(firstItemInDdl == null)
+                {
+                    string message = string.Format("No selected server name where found on the explorer server combo box");
+                    throw new Exception(message);
+                }
+
+                return firstItemInDdl.AutomationId.Replace("U_UI_ExplorerServerCbx_AutoID_", "");
+            }
+            return string.Empty;
         }
 
         /// <summary>
@@ -244,7 +248,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <returns></returns>
         public int CountServers()
         {
-            WpfTree uITvExplorerTree = this.UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
+            WpfTree uITvExplorerTree = UIBusinessDesignStudioWindow.UIExplorerCustom.UINavigationViewUserCoCustom.UITvExplorerTree;
             return uITvExplorerTree.GetChildren().Count;
         }
 
@@ -484,6 +488,42 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
 
         /// <summary>
+        /// Drags the resource from the explorer to the active tab.
+        /// </summary>
+        /// <param name="tabToDropOnto">The tab to drop the resource onto.</param>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="categoryName">The name of the category.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serverName">Name of the server (Will default to "localhost").</param>
+        /// <param name="pointToDragTo">The point to drop the resource on the designer (Will default to just below the start node).</param>
+        /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
+        public UITestControl DragResourceOntoWorkflowDesigner(UITestControl tabToDropOnto, string resourceName, string categoryName, ServiceType serviceType, string serverName = "localhost", Point pointToDragTo = new Point(), bool overrideDblClickBehavior = false)
+        {
+            if(pointToDragTo.X == 0 && pointToDragTo.Y == 0)
+            {
+                UITestControl theStartButton = WorkflowDesignerUIMap.FindStartNode(tabToDropOnto);
+                pointToDragTo = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            }
+
+            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
+            Mouse.StartDragging(theControl);
+            Playback.Wait(20);
+            Mouse.StopDragging(pointToDragTo);
+            Playback.Wait(100);
+            UITestControl resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, resourceName);
+            int counter = 0;
+            while(resourceOnDesignSurface == null && counter < 5)
+            {
+                Playback.Wait(1000);
+                resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, resourceName);
+                Playback.Wait(500);
+                counter++;
+            }
+
+            return resourceOnDesignSurface;
+        }
+
+        /// <summary>
         /// Drags the control automatic workflow designer.
         /// </summary>
         /// <param name="serverName">Name of the server.</param>
@@ -533,6 +573,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             var nextConnectControlButtonPosition = new Point(firstConnectControlButton.Left + 35, firstConnectControlButton.Top + 10);
             Mouse.Click(nextConnectControlButtonPosition);
             Playback.Wait(200);
+        }
+
+        private bool ValidateResourceExists(string resourceName, string folderName, ServiceType serviceType, string serverName = "localhost")
+        {
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            Playback.Wait(1000);
+            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), folderName, resourceName);
+            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
+            Mouse.Click(p);
+
+            var kids = theControl.GetChildren();
+
+            if(kids != null && kids.Count > 0)
+            {
+                return kids.Any(kid => kid.Name == resourceName);
+            }
+
+            return false;
         }
     }
 }

@@ -125,8 +125,14 @@ namespace Dev2.Activities.Designers2.Core
 
         public bool ShowLarge
         {
-            get { return (bool)GetValue(ShowLargeProperty); }
-            set { SetValue(ShowLargeProperty, value); }
+            get
+            {
+                return (bool)GetValue(ShowLargeProperty);
+            }
+            set
+            {
+                SetValue(ShowLargeProperty, value);
+            }
         }
 
         protected void RemoveHelpToggle()

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -219,7 +218,7 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Description("Clicking a debug output step should highlight that activity on the design surface")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void DebugOutput_ClickStep_ActivityIsHighlighted()
         {
             //Create testing workflow
@@ -264,55 +263,6 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsTrue(WorkflowDesignerUIMap.IsControlSelected(assign),
                           "Selecting a step in the debug output does not select the activity on the design surface");
 
-        }
-
-        [TestMethod]
-        [TestCategory("UnsavedWorkflows_UITest")]
-        [Description("For bug 10086 - Switching tabs does not flicker unsaved status")]
-        [Owner("Ashley Lewis")]
-        [Ignore]
-        // Manually verified
-        // closing unsaved tabs takes a long time
-        public void Tabs_UnsavedStar_SwitchingTabs_DoesNotChangeUnsavedStatus()
-        {
-            var firstName = "Test" + Guid.NewGuid().ToString().Substring(24);
-            var secondName = "Test" + Guid.NewGuid().ToString().Substring(24);
-            // Create first workflow
-            RibbonUIMap.CreateNewWorkflow();
-            var theTab = TabManagerUIMap.GetActiveTab();
-            var theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
-                                                      new Point(theStartNode.BoundingRectangle.X + 20,
-                                                                theStartNode.BoundingRectangle.Y + 100));
-            RibbonUIMap.ClickRibbonMenuItem("Save");
-            WizardsUIMap.WaitForWizard();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(firstName);
-            Playback.Wait(3500);
-
-            // Create second workflow
-            RibbonUIMap.CreateNewWorkflow();
-            Playback.Wait(3500);
-            theTab = TabManagerUIMap.GetActiveTab();
-            theStartNode = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "StartSymbol");
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
-                                                       new Point(theStartNode.BoundingRectangle.X + 20,
-                                                                 theStartNode.BoundingRectangle.Y + 100));
-            RibbonUIMap.ClickRibbonMenuItem("Save");
-            WizardsUIMap.WaitForWizard();
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(secondName);
-            Playback.Wait(3500);
-
-            // Switch between tabs ensuring the star is never added to their name
-            UITestControl tryGetTab;
-            tryGetTab = TabManagerUIMap.FindTabByName(secondName);
-            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
-            tryGetTab = TabManagerUIMap.FindTabByName(firstName);
-            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName(firstName));
-            tryGetTab = TabManagerUIMap.FindTabByName(secondName);
-            Assert.IsNotNull(tryGetTab, "Tab has a star after it's name even though it was not altered");
-            Mouse.Click(TabManagerUIMap.FindTabByName(secondName));
         }
 
         // Bug 6617

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
-namespace Dev2.Studio.UI.Tests.WrapperClasses
+namespace Dev2.Studio.UI.Tests.UIMaps.Settings
 {
-    public class ManageSecuritySecuritySettingsTestWrapper : UIMapBase, IDisposable
+    public class SecuritySettingsUiMap : UIMapBase, IDisposable
     {
         readonly UITestControl _activeTab;
 
@@ -28,11 +28,11 @@ namespace Dev2.Studio.UI.Tests.WrapperClasses
         private readonly string[] _helpViewCloseButtonPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "SecurityViewContent", HelpViewCloseButtonId };
         #endregion
 
-        public ManageSecuritySecuritySettingsTestWrapper()
+        public SecuritySettingsUiMap()
         {
             RibbonUIMap.ClickManageSecuritySettings();
             _activeTab = TabManagerUIMap.GetActiveTab();
-            Playback.Wait(1500);
+            Playback.Wait(3000);
         }
 
         public void AddResource(string resourceName, string category, string folder)
@@ -40,6 +40,7 @@ namespace Dev2.Studio.UI.Tests.WrapperClasses
             UITestControl addResourceButton = _activeTab.GetChildByAutomationIDPath(_resourceGridPath)
               .FindByAutomationId(AddResourceButtonId);
             addResourceButton.Click();
+            PopupDialogUIMap.WaitForDialog();
             PopupDialogUIMap.AddAResource("localhost", category, folder, resourceName);
         }
 

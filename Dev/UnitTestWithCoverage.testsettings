@@ -13,7 +13,7 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="UT" />
-  <Execution>
+  <Execution parallelTestCount="1">
     <Buckets size="500" />
     <Timeouts testTimeout="0" />
     <TestTypeSpecific>

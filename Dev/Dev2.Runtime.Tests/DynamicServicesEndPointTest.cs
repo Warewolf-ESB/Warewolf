@@ -5,7 +5,8 @@
 //using Dev2.Runtime.Hosting;
 //using Dev2.Runtime.ServiceModel.Data;
 //using Dev2.Tests.Runtime.Hosting;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using System.Diagnostics.CodeAnalysis;
 //using Dev2.Common;
 
 //namespace Dev2.DynamicServices.Test
@@ -13,7 +14,8 @@
 //    /// <summary>
 //    /// Summary description for DynamicServicesInvokerTest
 //    /// </summary>
-//    [TestClass][ExcludeFromCodeCoverage]
+//    [TestClass]
+//    [ExcludeFromCodeCoverage]
 //    public class DynamicServicesEndPointTest
 //    {
 //        const int VersionNo = 9999;
@@ -70,7 +72,7 @@
 //               new[] { ServiceID });
 
 //            ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
-            
+
 //        }
 //        #endregion
 
@@ -97,7 +99,7 @@
 //            Assert.IsTrue(result.IndexOf("<newrecset", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset></newrecset>");
 //            Assert.IsTrue(result.IndexOf("<field1", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
 //            Assert.IsTrue(result.IndexOf("<field2", StringComparison.Ordinal) < 0, "Output format contains additional tag, <newrecset><f1/></newrecset>");
-            
+
 //        }
 
 //        [TestMethod]
@@ -126,7 +128,7 @@
 //            Assert.IsTrue(result.IndexOf("<f2", StringComparison.Ordinal) > 0, "Output format missing required tag of <recset><f2/></recset>");
 
 //        }
-		
+
 
 //        [TestMethod]
 //        public void CheckOutputFormatOfDataListForViewInBrowserForOneRecordsetOutputRegion()

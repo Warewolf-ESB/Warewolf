@@ -46,6 +46,22 @@ namespace Dev2.UI
 
         public ConnectControlViewModel ViewModel { get; set; }
 
+        #region IsDropDownEnabled
+
+        public bool IsDropDownEnabled
+        {
+            get { return (bool)GetValue(IsDropDownEnabledProperty); }
+            set
+            {
+                SetValue(IsDropDownEnabledProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty IsDropDownEnabledProperty =
+            DependencyProperty.Register("IsDropDownEnabled", typeof(bool), typeof(ConnectControl), new PropertyMetadata(true));
+
+        #endregion
+
         #region BindToActiveEnvironment
 
         public bool BindToActiveEnvironment
@@ -112,6 +128,21 @@ namespace Dev2.UI
 
         #endregion
 
+        #region IngoreSelectionChangedMessage
+
+        public bool IngoreSelectionChangedMessage
+        {
+            get { return (bool)GetValue(IngoreSelectionChangedMessageProperty); }
+            set { SetValue(IngoreSelectionChangedMessageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IngoreSelectionChangedMessageProperty =
+            DependencyProperty.Register("IngoreSelectionChangedMessage", typeof(bool),
+                typeof(ConnectControl), new PropertyMetadata(false));
+
+        #endregion
+
         #region Context
 
         public Guid? Context
@@ -146,6 +177,13 @@ namespace Dev2.UI
             var connectControlViewModel = ViewModel;
             if(connectControlViewModel != null)
             {
+                #region Bindings
+                BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.IsDropDownEnabledProperty, new Binding(IsDropDownEnabledProperty.Name)
+                {
+                    Source = this,
+                    Mode = BindingMode.TwoWay,
+                });
+
                 BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.BindToActiveEnvironmentProperty, new Binding(BindToActiveEnvironmentProperty.Name)
                 {
                     Source = this,
@@ -163,6 +201,14 @@ namespace Dev2.UI
                     Source = this,
                     Mode = BindingMode.TwoWay,
                 });
+
+                BindingOperations.SetBinding(connectControlViewModel, ConnectControlViewModel.IngoreSelectionChangedMessageProperty, new Binding(IngoreSelectionChangedMessageProperty.Name)
+                {
+                    Source = this,
+                    Mode = BindingMode.TwoWay,
+                });
+
+                #endregion
 
                 connectControlViewModel.LoadServers();
 

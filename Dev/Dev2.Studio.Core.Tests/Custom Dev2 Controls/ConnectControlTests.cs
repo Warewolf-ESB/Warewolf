@@ -41,6 +41,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             connectControlViewModel.BindToActiveEnvironment = false;
+            connectControlViewModel.IngoreSelectionChangedMessage = true;
             //------------Execute Test---------------------------
             connectControlViewModel.SelectedServer = remoteServer;
             //------------Assert Results-------------------------
@@ -64,6 +65,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.IngoreSelectionChangedMessage = true;
             connectControlViewModel.IsSelectionFromTree = true;
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
@@ -73,7 +75,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
-            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Never());
         }
 
         [TestMethod]
@@ -91,6 +93,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.SelectedServer = localhostServer;
+            connectControlViewModel.IngoreSelectionChangedMessage = false;
             connectControlViewModel.IsSelectionFromTree = true;
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
@@ -100,7 +103,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
-            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
+            mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Never());
         }
 
         [TestMethod]
@@ -119,6 +122,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
             var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
             connectControlViewModel.BindToActiveEnvironment = true;
             connectControlViewModel.IsSelectionFromTree = false;
+            connectControlViewModel.IngoreSelectionChangedMessage = true;
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;

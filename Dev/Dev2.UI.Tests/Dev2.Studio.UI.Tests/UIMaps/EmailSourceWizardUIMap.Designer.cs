@@ -35,48 +35,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
     public partial class EmailSourceWizardUIMap : UIMapBase
     {
 
-        public void InitializeFullTestSource(string name)
-        {
-
-            ExplorerUIMap.ClearExplorerSearchText();
-            ExplorerUIMap.EnterExplorerSearchText("$");
-            var getLocalServer = ExplorerUIMap.GetLocalServer();
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, new Point(getLocalServer.BoundingRectangle.X, getLocalServer.BoundingRectangle.Y));
-            for(var i = 0; i < 10; i++)
-            {
-                Keyboard.SendKeys("{DOWN}");
-            }
-
-            SendKeys.SendWait("{ENTER}");
-
-            //wait for email source wizard
-            WizardsUIMap.WaitForWizard();
-
-            SendKeys.SendWait("{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("smtp.afrihost.co.za{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("dev2test{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("Password{TAB}{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("{TAB}{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("{ENTER}");
-            SendKeys.SendWait("^AThorLocal@norsegods.com{TAB}");
-            SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(30000);//wait for test
-            ClickSave();
-
-            SendKeys.SendWait("{TAB}{TAB}{TAB}");
-            Playback.Wait(50);
-            SendKeys.SendWait(name);
-            Playback.Wait(50);
-            SendKeys.SendWait("{TAB}{ENTER}");
-        }
-
         public void ClickTestConnection()
         {
             Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
@@ -110,9 +68,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIStartPageCustom : WpfCustom
     {
-        
-        public UIStartPageCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIStartPageCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -120,13 +78,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
         public WpfImage UIItemImage
         {
             get
             {
-                if ((this.mUIItemImage == null))
+                if((this.mUIItemImage == null))
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
@@ -137,7 +95,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfImage mUIItemImage;
         #endregion

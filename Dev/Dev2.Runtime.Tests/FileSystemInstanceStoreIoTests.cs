@@ -1,19 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Activities.DurableInstancing;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Runtime.DurableInstancing;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.DynamicServices;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Activities.DurableInstancing;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.DurableInstancing;
-using System.Xml.Linq;
 
 namespace Dev2.Tests.Runtime
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";
@@ -36,7 +37,7 @@ namespace Dev2.Tests.Runtime
         [ClassCleanup]
         public static void MyClassCleanup()
         {
-            if (Directory.Exists(TestPath))
+            if(Directory.Exists(TestPath))
             {
                 DirectoryHelper.CleanUp(TestPath);
             }
@@ -64,7 +65,7 @@ namespace Dev2.Tests.Runtime
                 xml.Save(metaPath);
 
                 // Force error: The process cannot access the file because it is being used by another process
-                using (var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
+                using(var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     var store = new FileSystemInstanceStoreIO();
                     IDictionary<XName, InstanceValue> instanceData;
@@ -75,11 +76,11 @@ namespace Dev2.Tests.Runtime
             }
             finally
             {
-                if (File.Exists(path))
+                if(File.Exists(path))
                 {
                     File.Delete(path);
                 }
-                if (File.Exists(metaPath))
+                if(File.Exists(metaPath))
                 {
                     File.Delete(metaPath);
                 }
@@ -105,7 +106,7 @@ namespace Dev2.Tests.Runtime
                 xml.Save(path);
 
                 // Force error: The process cannot access the file because it is being used by another process
-                using (var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
+                using(var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     var store = new FileSystemInstanceStoreIO();
                     var result = store.SaveAllInstanceData(instanceId, new SaveWorkflowCommand());
@@ -113,7 +114,7 @@ namespace Dev2.Tests.Runtime
             }
             finally
             {
-                if (File.Exists(path))
+                if(File.Exists(path))
                 {
                     File.Delete(path);
                 }
@@ -139,7 +140,7 @@ namespace Dev2.Tests.Runtime
                 xml.Save(path);
 
                 // Force error: The process cannot access the file because it is being used by another process
-                using (var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
+                using(var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     var store = new FileSystemInstanceStoreIO();
                     store.SaveAllInstanceMetaData(instanceId, new SaveWorkflowCommand());
@@ -147,7 +148,7 @@ namespace Dev2.Tests.Runtime
             }
             finally
             {
-                if (File.Exists(path))
+                if(File.Exists(path))
                 {
                     File.Delete(path);
                 }
@@ -177,14 +178,14 @@ namespace Dev2.Tests.Runtime
                 xml.Save(path);
 
                 // Force error: The process cannot access the file because it is being used by another process
-                using (var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
+                using(var fs = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
                 {
                     store.SaveInstanceAssociation(instanceId, instanceKey, true);
                 }
             }
             finally
             {
-                if (File.Exists(path))
+                if(File.Exists(path))
                 {
                     File.Delete(path);
                 }
@@ -251,7 +252,7 @@ namespace Dev2.Tests.Runtime
             }
             finally
             {
-                if (File.Exists(path))
+                if(File.Exists(path))
                 {
                     File.Delete(path);
                 }

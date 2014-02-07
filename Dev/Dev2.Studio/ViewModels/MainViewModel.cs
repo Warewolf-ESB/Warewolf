@@ -1476,6 +1476,14 @@ namespace Dev2.Studio.ViewModels
                             }
                         }
                     }
+                    else if(vm != null && vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                    {
+                        var settingsViewModel = vm as SettingsViewModel;
+                        if(settingsViewModel != null)
+                        {
+                            settingsViewModel.Dispose();
+                        }
+                    }
                 }
             }
 

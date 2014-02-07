@@ -36,8 +36,8 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Assert Results-------------------------
             Assert.IsNotNull(ruleSet);
             Assert.AreEqual(1, ruleSet.Rules.Count);
-        }
-
+        }      
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("RuleSet_Validate")]
@@ -50,7 +50,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             //------------Assert Results-------------------------
             Assert.AreEqual(0, ruleSet.Rules.Count);
             Assert.AreEqual(0, validateRules.Count);
-        }
+        }        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

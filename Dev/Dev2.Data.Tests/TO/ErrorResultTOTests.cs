@@ -7,7 +7,8 @@ namespace Dev2.Data.Tests.TO
     /// <summary>
     /// Summary description for ErrorResultTOTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ErrorResultTOTests
     {
         /// <summary>
@@ -43,9 +44,9 @@ namespace Dev2.Data.Tests.TO
         {
             ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
             Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
-            Assert.AreEqual(2,makeErrorResultFromDataListString.FetchErrors().Count);
-            Assert.AreEqual("First Error",makeErrorResultFromDataListString.FetchErrors()[0]);
-            Assert.AreEqual("Second Error",makeErrorResultFromDataListString.FetchErrors()[1]);
+            Assert.AreEqual(2, makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual("First Error", makeErrorResultFromDataListString.FetchErrors()[0]);
+            Assert.AreEqual("Second Error", makeErrorResultFromDataListString.FetchErrors()[1]);
         }
 
         [TestMethod]
@@ -57,7 +58,7 @@ namespace Dev2.Data.Tests.TO
             //------------Execute Test---------------------------
             ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>Could not insert <> into a field</InnerError>");
             //------------Assert Results-------------------------
-            Assert.AreEqual(1,makeErrorResultFromDataListString.FetchErrors().Count);
+            Assert.AreEqual(1, makeErrorResultFromDataListString.FetchErrors().Count);
             Assert.AreEqual("<Error><InnerError>Could not insert <> into a field</InnerError></Error>", makeErrorResultFromDataListString.FetchErrors()[0]);
         }
     }

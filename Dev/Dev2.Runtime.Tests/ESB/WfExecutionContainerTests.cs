@@ -1,7 +1,6 @@
 ﻿using System.Activities;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Utilities;
@@ -11,7 +10,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WfExecutionContainerTests
     {
         #region Execute

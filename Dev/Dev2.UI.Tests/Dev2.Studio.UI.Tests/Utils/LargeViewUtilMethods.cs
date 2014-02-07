@@ -15,7 +15,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 {
     public class LargeViewUtilMethods
     {
-        public void LargeViewTextboxesEnterTestData(string toolName,UITestControl theTab)
+        public void LargeViewTextboxesEnterTestData(string toolName, UITestControl theTab)
         {
             //Find the start point
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -41,14 +41,14 @@ namespace Dev2.Studio.UI.Tests.Utils
             foreach(var textbox in listOfTextboxes)
             {
                 WpfEdit tb = textbox as WpfEdit;
-                if(tb!= null && !tb.IsPassword)
-                {                    
+                if(tb != null && !tb.IsPassword)
+                {
                     tb.SetFocus();
-                    SendKeys.SendWait("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]");   
+                    SendKeys.SendWait("[[theVar" + counter.ToString(CultureInfo.InvariantCulture) + "]]");
                 }
-                
+
                 counter++;
-            }                        
+            }
         }
 
         public void EnterDataIntoPasswordBoxes(List<UITestControl> allTextboxes)

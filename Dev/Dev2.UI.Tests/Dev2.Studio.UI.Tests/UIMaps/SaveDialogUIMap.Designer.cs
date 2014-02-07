@@ -25,12 +25,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public partial class SaveDialogUIMap
     {
-        
+
         /// <summary>
         /// ClickAndTypeInFilterTextBox - Use 'ClickAndTypeInFilterTextBoxParams' to pass parameters into this method.
         /// </summary>
@@ -39,15 +39,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             var kids = this.UIBusinessDesignStudioWindow.GetChildren();
             var subKids = kids[0].GetChildren();
 
-            UITestControl uIItemImage = subKids[0];         
-            
+            UITestControl uIItemImage = subKids[0];
+
             //// Click image
             Mouse.Click(uIItemImage, new Point(424, 69));
 
             //// Type text in 'Wpf' window
             Keyboard.SendKeys(uIItemImage, textToType, ModifierKeys.None);
         }
-        
+
         /// <summary>
         /// ClickAndTypeInNameTextbox - Use 'ClickAndTypeInNameTextboxParams' to pass parameters into this method.
         /// </summary>
@@ -64,8 +64,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             SendKeys.SendWait(textToType);
             Playback.Wait(500);
             SendKeys.SendWait("{TAB}{TAB}{ENTER}");
+            Playback.Wait(8000);
         }
-        
+
         /// <summary>
         /// ClickCancel
         /// </summary>
@@ -78,7 +79,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             // Click image
             Mouse.Click(uIItemImage, new Point(554, 423));
         }
-        
+
         /// <summary>
         /// ClickCategory
         /// </summary>
@@ -91,7 +92,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             // Click image
             Mouse.Click(uIItemImage, new Point(74, 115));
         }
-        
+
         /// <summary>
         /// ClickSave
         /// </summary>
@@ -100,37 +101,37 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             Playback.Wait(3500);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
         }
-        
+
         #region Properties
         public virtual ClickAndTypeInFilterTextBoxParams ClickAndTypeInFilterTextBoxParams
         {
             get
             {
-                if ((this.mClickAndTypeInFilterTextBoxParams == null))
+                if((this.mClickAndTypeInFilterTextBoxParams == null))
                 {
                     this.mClickAndTypeInFilterTextBoxParams = new ClickAndTypeInFilterTextBoxParams();
                 }
                 return this.mClickAndTypeInFilterTextBoxParams;
             }
         }
-        
+
         public virtual ClickAndTypeInNameTextboxParams ClickAndTypeInNameTextboxParams
         {
             get
             {
-                if ((this.mClickAndTypeInNameTextboxParams == null))
+                if((this.mClickAndTypeInNameTextboxParams == null))
                 {
                     this.mClickAndTypeInNameTextboxParams = new ClickAndTypeInNameTextboxParams();
                 }
                 return this.mClickAndTypeInNameTextboxParams;
             }
         }
-        
+
         public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
         {
             get
             {
-                if ((this.mUIBusinessDesignStudioWindow == null))
+                if((this.mUIBusinessDesignStudioWindow == null))
                 {
                     this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
@@ -138,23 +139,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private ClickAndTypeInFilterTextBoxParams mClickAndTypeInFilterTextBoxParams;
-        
+
         private ClickAndTypeInNameTextboxParams mClickAndTypeInNameTextboxParams;
-        
+
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         #endregion
     }
-    
+
     /// <summary>
     /// Parameters to be passed into 'ClickAndTypeInFilterTextBox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class ClickAndTypeInFilterTextBoxParams
     {
-        
+
         #region Fields
         /// <summary>
         /// Type 'Mo' in 'Wpf' window
@@ -162,14 +163,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         public string UIWpfWindowSendKeys = "Mo";
         #endregion
     }
-    
+
     /// <summary>
     /// Parameters to be passed into 'ClickAndTypeInNameTextbox'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class ClickAndTypeInNameTextboxParams
     {
-        
+
         #region Fields
         /// <summary>
         /// Type 'MyNewWorkflow1' in 'Wpf' window
@@ -177,11 +178,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         public string UIWpfWindowSendKeys = "MyNewWorkflow1";
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIBusinessDesignStudioWindow : WpfWindow
     {
-        
+
         public UIBusinessDesignStudioWindow()
         {
             #region Search Criteria
@@ -191,13 +192,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             //this.WindowTitles.Add("Warewolf (DEV2\\massimo.guerrera)");
             #endregion
         }
-        
+
         #region Properties
         public WpfImage UIItemImage
         {
             get
             {
-                if ((this.mUIItemImage == null))
+                if((this.mUIItemImage == null))
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
@@ -207,12 +208,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
                 return this.mUIItemImage;
             }
         }
-        
+
         public WpfWindow UIWpfWindow
         {
             get
             {
-                if ((this.mUIWpfWindow == null))
+                if((this.mUIWpfWindow == null))
                 {
                     this.mUIWpfWindow = new WpfWindow(this);
                     #region Search Criteria
@@ -224,10 +225,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfImage mUIItemImage;
-        
+
         private WpfWindow mUIWpfWindow;
         #endregion
     }

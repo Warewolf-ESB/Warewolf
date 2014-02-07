@@ -71,9 +71,9 @@
                                                                                 OpenOnDoubleClick="True" />
                                 <local:NavigationItemViewModelDragDropBehavior />
                             </i:Interaction.Behaviors>
-                            <Image Width="24"
-                                   Height="24"
-                                   Margin="3,0,0,0">
+                            <Image Width="17"
+                                   Height="17"
+                                   Margin="3,1,0,1">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
                                         <MultiBinding.Bindings>

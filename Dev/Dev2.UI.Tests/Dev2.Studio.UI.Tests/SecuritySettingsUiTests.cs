@@ -1,4 +1,4 @@
-﻿using Dev2.Studio.UI.Tests.WrapperClasses;
+﻿using Dev2.Studio.UI.Tests.UIMaps.Settings;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -13,12 +13,9 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("SecuritySettingsUiTests")]
-        [Ignore]
-        // coded ui setup issue!!!!!
-        // manually verified 
         public void SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled()
         {
-            using(var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
+            using(var securityWrapper = new SecuritySettingsUiMap())
             {
                 //Add resource and set priviledges
                 securityWrapper.AddResource("Utility - Email", "WORKFLOWS", "EXAMPLES");
@@ -48,7 +45,7 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("SecuritySettingsUiTests")]
         public void SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully()
         {
-            using(var securityWrapper = new ManageSecuritySecuritySettingsTestWrapper())
+            using(var securityWrapper = new SecuritySettingsUiMap())
             {
                 //Toggle Server Help
                 securityWrapper.ToggleServerHelpButton();

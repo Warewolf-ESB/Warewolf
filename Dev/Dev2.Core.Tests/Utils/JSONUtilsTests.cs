@@ -1,9 +1,11 @@
-﻿using Dev2.Common.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Utils
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class JSONUtilsTests
     {
         [TestMethod]
@@ -304,7 +306,7 @@ Website: http://dev2.co.za";
             //------------Execute Test---------------------------
             var replaceSlashes = JSONUtils.ReplaceSlashes(TestData);
             //------------Assert Results-------------------------
-            Assert.AreEqual(ExpectedResult,replaceSlashes);
+            Assert.AreEqual(ExpectedResult, replaceSlashes);
         }
     }
 }

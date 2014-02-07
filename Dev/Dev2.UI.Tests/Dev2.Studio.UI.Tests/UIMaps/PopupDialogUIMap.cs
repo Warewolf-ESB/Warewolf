@@ -22,7 +22,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForDialog()
         {
-            Playback.Wait(3500);
+            Playback.Wait(5000);
         }
 
         public void AddAResource(string serverName, string serviceType, string folderName, string projectName)

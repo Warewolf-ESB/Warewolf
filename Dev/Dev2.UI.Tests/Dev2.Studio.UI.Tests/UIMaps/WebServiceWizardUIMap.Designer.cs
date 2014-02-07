@@ -34,53 +34,77 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 
     public partial class WebServiceWizardUIMap : UIMapBase
     {
-        public void     InitializeFullTestServiceAndSource(string serviceName, string sourceName)
+        /// <summary>
+        /// ClickFirstAction
+        /// </summary>
+        public void ClickMappingTab(int x = 280)
         {
-            //Open wizard
-            RibbonUIMap.ClickRibbonMenuItem("New Web Service");
-
-            //Wait for wizard
-            WizardsUIMap.WaitForWizard();
-
-            //Click new web source
-            WebServiceWizardUIMap.ClickNewWebSource();
-
-            //Web Source Details
-            SendKeys.SendWait("http://www.webservicex.net/globalweather.asmx{TAB}{TAB}{TAB}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(10000 );
-            WebSourceWizardUIMap.ClickSave();
-            SendKeys.SendWait("{TAB}{TAB}{TAB}" + sourceName + "{TAB}{ENTER}");
-            Playback.Wait(1000);
-
-            //Web Service Details
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
+            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Playback.Wait(500);
+            Mouse.Click(uIItemImage, new Point(x, 25));
+        }
+
+        public void EnterDataIntoMappingTextBox(int textboxNumber, string newMappingText)
+        {
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            wizard.WaitForControlReady();
+            for(int i = 0; i <= textboxNumber; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
+        }
+
+        public void ClickSaveButton(int numberOfTabsToSaveButton)
+        {
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            wizard.WaitForControlReady();
+            for(int i = 0; i <= numberOfTabsToSaveButton; i++)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(50);
+            }
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(30000);//wait for test
-            SendKeys.SendWait("{TAB}{ENTER}");
-            Playback.Wait(1000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}" + serviceName + "{TAB}{ENTER}");
-            
+            Playback.Wait(500);
         }
 
         public static void Cancel()
         {
-            for (var i = 0; i < 4; i++)
+            for(var i = 0; i < 4; i++)
             {
                 Keyboard.SendKeys("{TAB}");
             }
             Keyboard.SendKeys("{ENTER}");
         }
+
+        #region Properties
+
+        public UIBusinessDesignStudioWindow UIBusinessDesignStudioWindow
+        {
+            get
+            {
+                if((this.mUIBusinessDesignStudioWindow == null))
+                {
+                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                }
+                return this.mUIBusinessDesignStudioWindow;
+            }
+        }
+        #endregion
+
+        #region Fields
+        private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
+        #endregion
+
+
     }
 
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIStartPageCustom : WpfCustom
     {
-        
-        public UIStartPageCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
+
+        public UIStartPageCustom(UITestControl searchLimitContainer) :
+            base(searchLimitContainer)
         {
             #region Search Criteria
             this.SearchProperties[UITestControl.PropertyNames.ClassName] = "Uia.ContentPane";
@@ -88,13 +112,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             this.WindowTitles.Add(TestBase.GetStudioWindowName());
             #endregion
         }
-        
+
         #region Properties
+
         public WpfImage UIItemImage
         {
             get
             {
-                if ((this.mUIItemImage == null))
+                if((this.mUIItemImage == null))
                 {
                     this.mUIItemImage = new WpfImage(this);
                     #region Search Criteria
@@ -105,7 +130,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfImage mUIItemImage;
         #endregion

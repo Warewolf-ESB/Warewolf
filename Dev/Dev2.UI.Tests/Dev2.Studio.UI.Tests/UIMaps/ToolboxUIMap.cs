@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 
 namespace Dev2.Studio.UI.Tests.UIMaps
 {
-    public partial class ToolboxUIMap 
+    public partial class ToolboxUIMap : UIMapBase
     {
         UITestControl _toolTree;
         UITestControl _toolSearch;
@@ -14,8 +14,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var vstw = new VisualTreeWalker();
 
-            _toolTree = vstw.GetControlFromRoot(1, true,"Uia.ToolboxUserControl", "PART_Tools");
-            _toolSearch = vstw.GetControlFromRoot(1,true, "Uia.ToolboxUserControl","PART_Search");
+            _toolTree = vstw.GetControlFromRoot(1, true, "Uia.ToolboxUserControl", "PART_Tools");
+            _toolSearch = vstw.GetControlFromRoot(1, true, "Uia.ToolboxUserControl", "PART_Search");
         }
 
         public void clickToolboxItem(string automationID)
@@ -23,6 +23,45 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl theControl = FindControl(automationID);
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(p);
+        }
+
+        /// <summary>
+        /// Drags a control from the Toolbox to the Workflow
+        /// </summary>
+        /// <param name="toolName">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
+        /// <param name="tabToDropOnto">The tab on which to drop the control</param>
+        /// <param name="pointToDragTo">The point you wish to drop the control</param>
+        /// <param name="getDroppedActivity">Get and return the dropped control</param>
+        public UITestControl DragControlToWorkflowDesigner(string toolName, UITestControl tabToDropOnto, Point pointToDragTo = new Point(), bool getDroppedActivity = true)
+        {
+            UITestControl theControl = FindToolboxItemByAutomationId(toolName);
+            theControl.WaitForControlEnabled();
+            if(pointToDragTo.X == 0 && pointToDragTo.Y == 0)
+            {
+                UITestControl theStartButton = WorkflowDesignerUIMap.FindStartNode(tabToDropOnto);
+                pointToDragTo = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+            }
+
+            Mouse.StartDragging(theControl, MouseButtons.Left);
+            Playback.Wait(20);
+            Mouse.StopDragging(pointToDragTo);
+            Playback.Wait(100);
+
+            UITestControl resourceOnDesignSurface = null;
+            if(getDroppedActivity)
+            {
+                resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, toolName);
+                int counter = 0;
+                while(resourceOnDesignSurface == null && counter < 5)
+                {
+                    Playback.Wait(1000);
+                    resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, toolName);
+                    Playback.Wait(500);
+                    counter++;
+                }
+            }
+
+            return resourceOnDesignSurface;
         }
 
         /// <summary>
@@ -42,11 +81,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public UITestControl FindToolboxItemByAutomationId(string automationId, string properSearchTerm = "")
         {
             var theTerm = automationId;
-            if (!string.IsNullOrEmpty(properSearchTerm))
+            if(!string.IsNullOrEmpty(properSearchTerm))
             {
                 theTerm = properSearchTerm;
             }
-            
+
             SearchForControl(theTerm);
 
             UITestControl theControl = FindControl(automationId);
@@ -68,7 +107,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //must find some color after 3 pixel grabs
 
             //first pass
-            Mouse.Move(tool, new Point(24,9));
+            Mouse.Move(tool, new Point(24, 9));
             var thePixel = pixelGrabber.GetPixel(24, 9).Name;
             result = thePixel != White;
 
@@ -120,19 +159,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             var kids = _toolTree.GetChildren();
 
-            foreach (var kid in kids)
+            foreach(var kid in kids)
             {
                 // Now process to find the correct item ;)
 
                 var innerKids = kid.GetChildren();
 
-                foreach (var innerKid in innerKids)
+                foreach(var innerKid in innerKids)
                 {
                     string autoID = innerKid.GetProperty("AutomationID").ToString();
-                    if (autoID.Contains(itemAutomationID))
+                    if(autoID.Contains(itemAutomationID))
                     {
                         return innerKid;
-                    }    
+                    }
                 }
             }
             return null;

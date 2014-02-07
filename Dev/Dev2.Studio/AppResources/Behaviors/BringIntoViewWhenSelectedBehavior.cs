@@ -97,7 +97,7 @@ namespace Dev2.CustomControls.Behavior
             //We need to know when the item as been scrolled into view, and then fire the animation
             _timer = new DispatcherTimer
                 {
-                    Interval = new TimeSpan(0, 0, 0, 0, 1000)
+                    Interval = new TimeSpan(0, 0, 0, 0, 3000)
                 };
             _timer.Tick += (sender, e) =>
                 {

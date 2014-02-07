@@ -1,5 +1,4 @@
-﻿
-using Dev2.Studio.ViewModels.Deploy;
+﻿using Dev2.Studio.ViewModels.Deploy;
 using Dev2.Studio.ViewModels.Navigation;
 using System.Windows;
 
@@ -24,10 +23,10 @@ namespace Dev2.Studio.Views.Deploy
                 ResourceTreeViewModel rtvm = frameworkElement.DataContext as ResourceTreeViewModel;
                 if(rtvm != null)
                 {
-                    DeployViewModel vm = DataContext as DeployViewModel;
-                    if(vm != null)
+                    DeployViewModel viewModel = DataContext as DeployViewModel;
+                    if(viewModel != null)
                     {
-                        vm.SelectDependencies(rtvm.DataContext);
+                        viewModel.SelectDependencies(rtvm.DataContext);
                     }
                 }
             }

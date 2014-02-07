@@ -51,6 +51,7 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
+    <converters:ConnectControlDisableConverter x:Key="ConnectControlDisableConverter" />
     <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />

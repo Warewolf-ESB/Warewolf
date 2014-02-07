@@ -5,7 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Infrastructure.Tests.Providers.Errors
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActionableErrorInfoTests
     {
         [TestMethod]

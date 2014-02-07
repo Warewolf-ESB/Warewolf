@@ -10,14 +10,17 @@
              xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
              xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
              xmlns:help="clr-namespace:Dev2.Help"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:explorer="clr-namespace:Dev2.Studio.ViewModels.Explorer"
              AllowDrop="False"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance explorer:ExplorerViewModel}"
              Name="Explorer">
 
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding RenameCommand}"
-                    Key="F2" />
-        <KeyBinding Command="{Binding DeleteCommand}"
-                    Key="Delete" />
+                    Key="F2" />        
     </UserControl.InputBindings>
 
     <Grid>
@@ -36,6 +39,8 @@
                              Context="{Binding Context}"
                              EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
                              NewButtonAutomationID="UI_ExplorerNewBtn_AutoID"
+                             IngoreSelectionChangedMessage="False"                             
+                             IsDropDownEnabled="{Binding DataContext.NavigationViewModel.IsRefreshing, ElementName=Explorer,Mode=TwoWay,Converter={StaticResource BooleanInvertConverter}}"
                              ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
                              BindToActiveEnvironment="True" />
 

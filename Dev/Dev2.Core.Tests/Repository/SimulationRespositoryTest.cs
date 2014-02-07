@@ -2,12 +2,13 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.DataList.Contract.Binary_Objects;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Simulation;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Repository
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SimulationRespositoryTest
     {
         static SimulationRepository _testInstance;
@@ -43,7 +44,7 @@ namespace Dev2.Tests.Repository
         [ExpectedException(typeof(ArgumentNullException))]
         public void GetWithNull_Expected_ThrowsNullArgumentException()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 thisInstance.Get(null, true);
@@ -53,7 +54,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void GetWithValidKey_Expected_ReturnsItem()
         {
-            lock (l)
+            lock(l)
             {
                 var result = _testInstance.Get(_testResult.Key);
                 Assert.AreSame(result, _testResult);
@@ -63,7 +64,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void GetWithInvalidKey_Expected_ReturnsNull()
         {
-            lock (l)
+            lock(l)
             {
                 var key = CreateKey();
                 var item = _testInstance.Get(key);
@@ -74,7 +75,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void GetWithForce_Expected_ReloadsItem()
         {
-            lock (l)
+            lock(l)
             {
                 var item = CreateResult(CreateKey());
                 _testInstance.Save(item);
@@ -88,7 +89,7 @@ namespace Dev2.Tests.Repository
         //[TestMethod]
         //public void GetWithForceKeyNotExists_Expected_ReturnsNull() {
         //    var item = CreateResult(CreateKey());
-            
+
 
         //    var result = _testInstance.Get(item.Key, true);
         //    Assert.IsNull(item);
@@ -101,7 +102,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void DeleteWithValidItem_Expected_ItemCountDecreasesByOne()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 var item = CreateResult(CreateKey());
@@ -116,7 +117,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void DeleteWithInvalidItem_Expected_ItemCountIsSame()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 int expected = thisInstance.Count;
@@ -134,7 +135,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void DeleteWithNullItem_Expected_NoOperationPerformed()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 var expected = thisInstance.Count;
@@ -150,7 +151,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void SaveWithNewItem_Expected_ItemCountIncreasesByOne()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 var expected = thisInstance.Count + 1;
@@ -163,7 +164,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void SaveWithExistingItem_Expected_ItemCountIsSame()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 var expected = thisInstance.Count;
@@ -175,7 +176,7 @@ namespace Dev2.Tests.Repository
         [TestMethod]
         public void SaveWithNullItem_Expected_NoOperationPerformed()
         {
-            lock (l)
+            lock(l)
             {
                 SimulationRepository thisInstance = _testInstance;
                 var expected = thisInstance.Count;

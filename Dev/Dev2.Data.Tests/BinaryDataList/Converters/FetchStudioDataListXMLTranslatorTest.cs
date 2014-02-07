@@ -4,12 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.DataList.Contract.Binary_Objects;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FetchStudioDataListXMLTranslatorTest
     {
         static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
@@ -24,16 +25,16 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
             IList<Dev2Column> cols = new List<Dev2Column>();
-            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1", dir ));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1", dir));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2", dir));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f3", dir));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f4", dir));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f5", dir));
 
-            dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true,true, dir, out error);
+            dl1.TryCreateRecordsetTemplate("recset", string.Empty, cols, true, true, dir, out error);
 
-            dl1.TryCreateScalarTemplate(string.Empty, "myScalar", string.Empty, true, true,dir, out error);
-           // dl1.Dispose();
+            dl1.TryCreateScalarTemplate(string.Empty, "myScalar", string.Empty, true, true, dir, out error);
+            // dl1.Dispose();
             return (_compiler.PushBinaryDataList(dl1.UID, dl1, out errors));
 
         }
@@ -46,7 +47,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         {
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Input);
             ErrorResultTO errors;
-            
+
             string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
@@ -105,16 +106,16 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
-            
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     Assert.AreEqual(entry.ColumnIODirection, enDev2ColumnArgumentDirection.Input);
-                   
-                    foreach (Dev2Column c in entry.Columns)
+
+                    foreach(Dev2Column c in entry.Columns)
                     {
-                        Assert.AreEqual(enDev2ColumnArgumentDirection.Input,c.ColumnIODirection);
+                        Assert.AreEqual(enDev2ColumnArgumentDirection.Input, c.ColumnIODirection);
                     }
                 }
                 else
@@ -122,9 +123,9 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Input, entry.ColumnIODirection);
                 }
             }
-            
+
             _compiler.ForceDeleteDataListByID(tmp);
-            
+
         }
 
         [TestMethod]
@@ -138,13 +139,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Output, entry.ColumnIODirection);
 
-                    foreach (Dev2Column c in entry.Columns)
+                    foreach(Dev2Column c in entry.Columns)
                     {
                         Assert.AreEqual(enDev2ColumnArgumentDirection.Output, c.ColumnIODirection);
                     }
@@ -170,13 +171,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Both, entry.ColumnIODirection);
 
-                    foreach (Dev2Column c in entry.Columns)
+                    foreach(Dev2Column c in entry.Columns)
                     {
                         Assert.AreEqual(enDev2ColumnArgumentDirection.Both, c.ColumnIODirection);
                     }
@@ -201,15 +202,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
-                    Assert.AreEqual(true, entry.IsEditable);                   
+                    Assert.AreEqual(true, entry.IsEditable);
 
-                    foreach (Dev2Column c in entry.Columns)
+                    foreach(Dev2Column c in entry.Columns)
                     {
-                        Assert.AreEqual(true, c.IsEditable);                        
+                        Assert.AreEqual(true, c.IsEditable);
                     }
                 }
                 else
@@ -235,13 +236,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     Assert.AreEqual(enDev2ColumnArgumentDirection.Both, entry.ColumnIODirection);
 
-                    foreach (Dev2Column c in entry.Columns)
+                    foreach(Dev2Column c in entry.Columns)
                     {
                         Assert.AreEqual(enDev2ColumnArgumentDirection.Both, c.ColumnIODirection);
                     }
@@ -266,13 +267,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 
-            foreach (IBinaryDataListEntry entry in bdl.FetchAllEntries())
+            foreach(IBinaryDataListEntry entry in bdl.FetchAllEntries())
             {
-                if (entry.IsRecordset)
+                if(entry.IsRecordset)
                 {
                     Assert.AreEqual(enDev2ColumnArgumentDirection.None, entry.ColumnIODirection);
 
-                    foreach (Dev2Column c in entry.Columns)
+                    foreach(Dev2Column c in entry.Columns)
                     {
                         Assert.AreEqual(enDev2ColumnArgumentDirection.None, c.ColumnIODirection);
                     }

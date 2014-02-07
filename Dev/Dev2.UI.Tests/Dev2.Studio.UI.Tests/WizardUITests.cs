@@ -79,58 +79,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("{ESC}");
         }
 
-        [TestMethod]
-        [Ignore]
-        // manually verified
-        // issue with test construction
-        // and issue with external resource!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        public void WebServiceWizardCreateServiceAndSourceExpectedServiceCreated()
-        {
-            //Initialization
-            var sourceNameId = Guid.NewGuid().ToString().Substring(0, 5);
-            var sourceName = "codeduitest" + sourceNameId;
-
-            var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
-            var serviceName = "codeduitest" + serviceNameId;
-
-            // I flipping hate everything packed into a single method. Way too hard to understand where the failure is ;(
-            WebServiceWizardUIMap.InitializeFullTestServiceAndSource(serviceName, sourceName);
-
-            //Assert
-            ExplorerUIMap.DoRefresh();
-            ExplorerUIMap.EnterExplorerSearchText(serviceName);
-            Playback.Wait(3500);
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SERVICES", "Unassigned", serviceName));
-
-            ExplorerUIMap.EnterExplorerSearchText(sourceName);
-            Playback.Wait(3500);
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", sourceName));
-
-        }
-
-        //2013.03.14: Ashley Lewis - Bug 9217
-        [TestMethod]
-        [Ignore]
-        // test setup issue!!!!!!!!!!!!!!!!!!!!!!!!
-        // manually verified!
-        public void DatabaseServiceWizardCreateNewServiceExpectedServiceCreated()
-        {
-            //Initialization
-            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
-            var serverSourceName = Guid.NewGuid().ToString().Substring(0, 5);
-            var cat = "CODEDUITESTS" + serverSourceCategoryName.ToUpper();
-            var name = "codeduitest" + serverSourceName;
-
-            DatabaseServiceWizardUIMap.InitializeFullTestServiceAndSource(cat, name);
-
-            //Assert
-            ExplorerUIMap.EnterExplorerSearchText(name);
-
-            var result = ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", cat, name);
-
-            Assert.IsTrue(result);
-        }
-
         /// <summary>
         /// News the database service shortcut key expected new database service wizard opens.
         /// </summary>
@@ -169,26 +117,94 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         #endregion
 
-        #region Source Wizards
+        #region Web Service And Source Wizards
 
-        //2013.06.22: Ashley Lewis for bug 9478
         [TestMethod]
-        [Owner("Travis Frisinger")]
-        [Ignore]
-        // Coded UI setup failure
-        // Manually verified
-        public void EmailSourceWizardCreateNewSourceExpectedSourceCreated()
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_WebServiceWizard")]
+        public void WizardUiTests_WebServiceWizard_CreateServiceAndSource_ExpectedServiceAndSourceCreated()
+        {
+            //Initialization
+            var sourceNameId = Guid.NewGuid().ToString().Substring(0, 5);
+            var sourceName = "codeduitest" + sourceNameId;
+
+            var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
+            var serviceName = "codeduitest" + serviceNameId;
+            var sourceUrl = "http://www.webservicex.net/globalweather.asmx";
+
+            //Open wizard
+            RibbonUIMap.ClickNewWebService();
+
+            //Click new web source
+            WebServiceWizardUIMap.ClickNewWebSource();
+
+            WebServiceWizardUIMap.CreateWebSource(sourceUrl, sourceName);
+
+            WebServiceWizardUIMap.SaveWebService(serviceName);
+
+            //Assert
+            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists(serviceName, "Unassigned"));
+
+            Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(sourceName, "Unassigned"));
+
+        }
+
+        #endregion
+
+        #region Db Service And Source Wizards
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_DbServiceWizard")]
+        public void WizardUiTests_DbServiceWizard_CreateNewService_ExpectedServiceCreated()
+        {
+            //Initialization
+            var serverSourceCategoryName = Guid.NewGuid().ToString().Substring(0, 5);
+            var sourceNameID = Guid.NewGuid().ToString().Substring(0, 5);
+            var serviceNameID = Guid.NewGuid().ToString().Substring(0, 5);
+            var cat = "CODEDUITESTS" + serverSourceCategoryName.ToUpper();
+            var serviceName = "codeduitest" + serviceNameID;
+            var sourceName = "codeduitest" + sourceNameID;
+            var sourcePath = "RSAKLFSVRGENDEV";
+
+            //Open wizard
+            RibbonUIMap.ClickNewDbWebService();
+
+            //Click New Db Source button
+            DatabaseServiceWizardUIMap.ClickNewDbSource();
+
+            //Create the new Db Source
+            DatabaseServiceWizardUIMap.CreateDbSource(sourcePath, sourceName, cat);
+
+            //Create the Db Service
+            DatabaseServiceWizardUIMap.CreateDbService(serviceName, cat);
+
+            //Assert
+            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists(serviceName, cat));
+            Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(sourceName, cat));
+        }
+
+        #endregion
+
+        #region Email Source Wizard
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("WizardUiTests_EmailSourceWizard")]
+        public void WizardUiTests_EmailSourceWizard_CreateNewSource_ExpectedSourceCreated()
         {
             //Initialization
             var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
             var name = "codeduitest" + sourceName;
 
-            EmailSourceWizardUIMap.InitializeFullTestSource(name);
+            //Open wizard
+            EmailSourceWizardUIMap.OpenWizard();
+
+            //Create Email Source
+            EmailSourceWizardUIMap.CreateEmailSource(name);
 
             //Assert
-            ExplorerUIMap.EnterExplorerSearchText(name);
-
-            Assert.IsTrue(ExplorerUIMap.ValidateServiceExists("localhost", "SOURCES", "Unassigned", name));
+            Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(name, "Unassigned"));
         }
 
         #endregion
@@ -389,7 +405,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         [TestCategory("UITest")]
         [Description("for bug 9717 - copy paste multiple decisions (2013.06.22)")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void CopyDecisionsWithContextMenuAndPasteExpectedNoWizardsDisplayed()
         {
             //Initialize

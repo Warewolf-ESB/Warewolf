@@ -112,8 +112,11 @@ namespace Dev2.CodedUI.Tests
 
             Playback.Wait(500);
             var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
-            string text = leftTextBoxInRowLastRow.Text;
-            StringAssert.Contains(text, "[[theVar19]]");
+            if(leftTextBoxInRowLastRow != null)
+            {
+                string text = leftTextBoxInRowLastRow.Text;
+                StringAssert.Contains(text, "[[theVar19]]");
+            }
         }
 
         [TestMethod]
@@ -151,9 +154,9 @@ namespace Dev2.CodedUI.Tests
             var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
             if(leftTextBoxInRowLastRow != null)
             {
-            string text = leftTextBoxInRowLastRow.Text;
+                string text = leftTextBoxInRowLastRow.Text;
 
-            Assert.IsFalse(string.IsNullOrEmpty(text));
+                Assert.IsFalse(string.IsNullOrEmpty(text));
             }
             else
             {
@@ -375,107 +378,6 @@ namespace Dev2.CodedUI.Tests
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TestFlow");
             Mouse.Click(controlOnWorkflow, new Point(265, 5));
         }
-
-        #region Tests Requiring Designer access
-
-        // vi - Can I drop a tool onto the designer?
-        [TestMethod]
-        [Ignore] // Broken Automation ID at the localhost level ;) 
-        // MANUALLY VERIFIED
-        public void DropAWorkflowOrServiceOnFromTheToolBoxAndTestTheWindowThatPopsUp()
-        {
-            // Create the Workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get the tab
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            // Get the location of the Start button
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-
-            // Get a point underneath the start button
-            Point p = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-
-            // Get the comment box
-
-            // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner("Workflow", p);
-
-            // Wait for dialog
-            PopupDialogUIMap.WaitForDialog();
-
-            // Wait for refresh
-            Playback.Wait(2500);
-
-            #region Checking Ok Button enabled property
-
-            //Get the Ok button from the window
-            UITestControl buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the buttton is disabled
-            Assert.IsFalse(buttonControl.Enabled);
-
-            //Open the folder in the tree
-            ActivityDropUIMap.DoubleClickFirstWorkflowFolder();
-
-            //Single click a resource in the tree
-            ActivityDropUIMap.SingleClickFirstResource();
-            Playback.Wait(300);            //get the ok button from the window
-            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the button is enabled
-            Assert.IsTrue(buttonControl.Enabled);
-
-            //Single click on a folder again
-            ActivityDropUIMap.SingleClickAFolder();
-
-            //Get the ok button from the window
-            buttonControl = ActivityDropUIMap.GetOkButtonOnActivityDropWindow();
-
-            //Assert that the button is disabled
-            Assert.IsFalse(buttonControl.Enabled);
-
-            #endregion
-
-            #region Checking the double click of a resource puts it on the design surface
-
-            //Select a resource in the explorer view
-            ActivityDropUIMap.DoubleClickAResource();
-
-            // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "ServiceDesigner"));
-            SendKeys.SendWait("{DELETE}");
-
-            #endregion
-
-            #region Checking the click of the Cacnel button doesnt Adds the resource to the design surface
-
-            // And drag it onto the point
-            ToolboxUIMap.DragControlToWorkflowDesigner("Workflow", p);
-
-            // Wait for the window to show up
-            PopupDialogUIMap.WaitForDialog();
-
-            // Wait for refresh
-            Playback.Wait(5000);
-
-            //Open the folder in the tree
-            ActivityDropUIMap.DoubleClickFirstWorkflowFolder();
-
-            // Single click a folder in the tree
-            ActivityDropUIMap.SingleClickFirstResource();
-
-            Playback.Wait(2000);
-            // Click the Ok button on the window
-            ActivityDropUIMap.ClickOkButton();
-
-            // Check if it exists on the designer
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, "fileTest"));
-
-            #endregion
-        }
-
-        #endregion Tests Requiring Designer access
 
         #region Groomed Test
 

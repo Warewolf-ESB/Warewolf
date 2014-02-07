@@ -1437,7 +1437,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ResourceTreeViewModel));
-
             if(DataObject != null && DataObject.IsNew)
             {
                 IsItemDragged.Instance.IsDragged = true;

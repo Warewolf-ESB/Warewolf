@@ -18,7 +18,8 @@ namespace Dev2.Tests.RecordsetSearch
     /// <summary>
     ///     Summary description for RsOpTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RsOpTests
     {
         const string DlShape = "<Xml><Recset><Field1/></Recset><Result><res/></Result></Xml>";
@@ -521,14 +522,14 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThan();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
         }
-        
+
         [TestMethod]
         [TestCategory("Find Record Index, Unit Test")]
         [Owner("Travis")]
@@ -542,7 +543,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThan();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -570,7 +571,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             Assert.AreEqual(2, result.Count);
         }
-        
+
         [TestMethod]
         [TestCategory("Find Record Index, Unit Test")]
         [Owner("Travis")]
@@ -584,14 +585,14 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThanOrEqualTo();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
         }
-        
+
         [TestMethod]
         [TestCategory("Find Record Index, Unit Test")]
         [Owner("Travis")]
@@ -605,7 +606,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
             var op = new RsOpGreaterThanOrEqualTo();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -643,7 +644,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsAlphanumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -662,7 +663,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsAlphanumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -700,7 +701,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThanOrEqualTo();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -719,7 +720,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThanOrEqualTo();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -757,7 +758,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsDate();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -966,7 +967,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotDate();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -985,7 +986,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotDate();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1125,7 +1126,7 @@ namespace Dev2.Tests.RecordsetSearch
 
             Assert.AreEqual(1, result.Count);
         }
-        
+
         [TestMethod]
         public void IsNumeric_RequiresAllFieldsToMatch_Expected_0()
         {
@@ -1137,14 +1138,14 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsNumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
         }
-        
+
         [TestMethod]
         public void IsNumeric_RequiresAllFieldsToMatch_AllFieldsMatch_Expected_3()
         {
@@ -1156,7 +1157,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsNumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1232,7 +1233,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotNumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1251,7 +1252,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotNumeric();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1289,7 +1290,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsText();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1308,7 +1309,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsText();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1365,7 +1366,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotText();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1384,7 +1385,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotText();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1422,7 +1423,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsXML();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1441,7 +1442,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpIsXML();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1479,7 +1480,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotXML();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1498,7 +1499,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
             var op = new RsOpNotXML();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1523,8 +1524,8 @@ namespace Dev2.Tests.RecordsetSearch
             var result = func.Invoke();
 
             Assert.AreEqual(1, result.Count);
-        }  
-        
+        }
+
         [TestMethod]
         public void LessThan_RequireAllFieldsToMatch_Expected_0()
         {
@@ -1536,14 +1537,14 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThan();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
         }
-        
+
         [TestMethod]
         public void LessThan_RequireAllFieldsToMatch_AllFieldsMatch_Expected_3()
         {
@@ -1555,7 +1556,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
             var op = new RsOpLessThan();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1593,7 +1594,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
             var op = new RsOpRegex();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1612,7 +1613,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
             var op = new RsOpRegex();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1670,7 +1671,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1690,7 +1691,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1729,14 +1730,14 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
 
             Assert.AreEqual(0, result.Count);
         }
-        
+
         [TestMethod]
         public void StartsWith_MatchCase_False_RequireAllFieldsToMatch_AllFieldsMatch_Expected_3()
         {
@@ -1748,7 +1749,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
             var op = new RsOpStartsWith();
             var func = op.BuildSearchExpression(bdl, props);
             var result = func.Invoke();
@@ -1775,16 +1776,16 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false,"25","75");
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "25", "75");
             var rsOpIsBetween = new RsOpIsBetween();
-            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);            
-           
+            var func = rsOpIsBetween.BuildSearchExpression(bdl, props);
+
             //------------Execute Test---------------------------
             var result = func.Invoke();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, result.Count);
-            
+
         }
 
         [TestMethod]
@@ -2129,7 +2130,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false, true);
             var rsOpIsBinary = new RsOpIsBinary();
             var func = rsOpIsBinary.BuildSearchExpression(bdl, props);
 
@@ -2241,7 +2242,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false, true);
             var RsOpIsHex = new RsOpIsHex();
             var func = RsOpIsHex.BuildSearchExpression(bdl, props);
 
@@ -2253,7 +2254,7 @@ namespace Dev2.Tests.RecordsetSearch
         }
 
         #endregion
-        
+
         #region Not Hex Tests
 
         [TestMethod]
@@ -2353,7 +2354,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false, true);
             var RsOpNotBase64 = new RsOpNotBase64();
             var func = RsOpNotBase64.BuildSearchExpression(bdl, props);
 
@@ -2409,7 +2410,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
-            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false,true);
+            IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false, true);
             var RsOpNotEndsWith = new RsOpNotEndsWith();
             var func = RsOpNotEndsWith.BuildSearchExpression(bdl, props);
 

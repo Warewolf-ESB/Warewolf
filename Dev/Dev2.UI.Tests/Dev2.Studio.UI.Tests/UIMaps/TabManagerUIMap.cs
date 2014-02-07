@@ -270,5 +270,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             return theTab.GetChildren().FirstOrDefault(t => t.GetProperty("AutomationID").ToString().Contains("WorkSurfaceContext"));
         }
+
+        public void ClickTab(string tabName)
+        {
+            UITestControl findTabByName = FindTabByName(tabName);
+            Mouse.Click(findTabByName);
+        }
     }
 }

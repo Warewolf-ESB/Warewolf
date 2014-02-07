@@ -3,8 +3,10 @@
     public class IsItemDragged
     {
 
-        #region Fields  
+        #region Fields
         private static IsItemDragged _instance;
+        bool _isDragged;
+
         #endregion
 
         #region Ctor
@@ -22,7 +24,7 @@
         {
             get
             {
-                if (_instance == null)
+                if(_instance == null)
                 {
                     _instance = new IsItemDragged();
                 }
@@ -30,7 +32,17 @@
             }
         }
 
-        public bool IsDragged { get; set; }
+        public bool IsDragged
+        {
+            get
+            {
+                return _isDragged;
+            }
+            set
+            {
+                _isDragged = value;
+            }
+        }
 
         #endregion
     }

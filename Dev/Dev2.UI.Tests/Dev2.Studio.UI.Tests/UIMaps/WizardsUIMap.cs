@@ -11,7 +11,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForWizard(int timeOut = DefaultTimeOut, bool throwIfNotFound = true)
         {
-            Playback.Wait(10000);
+            Playback.Wait(5000);
         }
 
 

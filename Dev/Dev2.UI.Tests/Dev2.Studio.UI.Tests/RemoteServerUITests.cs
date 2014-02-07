@@ -75,7 +75,6 @@ namespace Dev2.Studio.UI.Tests
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
             Assert.IsTrue(activeTabName.Contains("Remote Connection"));
-
         }
 
         [TestMethod]
@@ -437,7 +436,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         [Ignore]
         // Test setup issue - Delete dialog prompt
-
         public void RemoteServerUITests_AddRenameAndDeleteARemoteWorkFlow_CompletesSuccessfully()
         {
 
@@ -481,8 +479,6 @@ namespace Dev2.Studio.UI.Tests
         void EnternameAndSave(string tempName)
         {
             SaveDialogUIMap.ClickAndTypeInNameTextbox(tempName);
-            Keyboard.SendKeys("{TAB}{TAB}{ENTER}");
-            Playback.Wait(3000);
         }
 
         void OpenMenuItem(string itemType)

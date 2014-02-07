@@ -333,6 +333,7 @@
                                     </Button>
                                     <Button Command="{Binding SaveCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabSaveBtn_AutoID"
                                            >
                                         <Grid>
                                             <Image Style="{StaticResource ImageStyleRibbon}"

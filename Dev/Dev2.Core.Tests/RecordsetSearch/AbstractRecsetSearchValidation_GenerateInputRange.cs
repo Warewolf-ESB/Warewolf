@@ -1,12 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Tests.RecordsetSearch {
+namespace Dev2.Tests.RecordsetSearch
+{
     /// <summary>
     /// Summary description for AbstractRecsetSearchValidation_GenerateInputRange
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class AbstractRecsetSearchValidation_GenerateInputRange {
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class AbstractRecsetSearchValidation_GenerateInputRange
+    {
 
 
         //        #region Test Variables
@@ -115,7 +118,7 @@ namespace Dev2.Tests.RecordsetSearch {
         //        }
 
         //        #endregion
-        
+
         //        #region Negative Test
         //        [TestMethod]
         //        public void GenerateInputRage_InvalidStartIndex_ExpectEmptyList() {

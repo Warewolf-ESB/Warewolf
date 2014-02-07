@@ -20,7 +20,8 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebServiceContainerTests
     {
         static readonly XElement WebSourceWithInputsXml = XmlResource.Fetch("WebSource");
@@ -41,9 +42,9 @@ namespace Dev2.Tests.Runtime.ESB
             //------------------------------------Execute-----------------------------------------------------------------------
             List<ServiceActionInput> serviceActionInputs = sa.ServiceActionInputs;
             //------------------------------------Assert------------------------------------------------------------------------
-            Assert.AreEqual(2,serviceActionInputs.Count);
-            Assert.AreEqual("CityName",serviceActionInputs[0].Source);
-            Assert.AreEqual("CountryName",serviceActionInputs[1].Source);
+            Assert.AreEqual(2, serviceActionInputs.Count);
+            Assert.AreEqual("CityName", serviceActionInputs[0].Source);
+            Assert.AreEqual("CountryName", serviceActionInputs[1].Source);
         }
 
         #endregion
@@ -149,16 +150,16 @@ namespace Dev2.Tests.Runtime.ESB
             var esbChannel = new Mock<IEsbChannel>();
 
             var sa = CreateServiceAction(serviceXml, sourceXml);
-            var serviceExecution = new WebserviceExecution(dataObj.Object,true);
+            var serviceExecution = new WebserviceExecution(dataObj.Object, true);
             var webService = new WebService();
             webService.Method = new ServiceMethod();
             var outputDescription = new OutputDescription();
-            outputDescription.Format =OutputFormats.ShapedXML;
+            outputDescription.Format = OutputFormats.ShapedXML;
             webService.OutputDescription = outputDescription;
             serviceExecution.Service = webService;
             var container = new WebServiceContainerMockWithError(serviceExecution)
             {
-                WebRequestRespsonse = response,                
+                WebRequestRespsonse = response,
             };
             return container;
         }
@@ -221,8 +222,8 @@ namespace Dev2.Tests.Runtime.ESB
     internal class FaultyWebServiceContainerMock : WebServiceContainerMock
     {
         public FaultyWebServiceContainerMock(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
-            : base(sa,dsfDataObject,workspace,esbChannel)
-        {   
+            : base(sa, dsfDataObject, workspace, esbChannel)
+        {
         }
 
         #region Overrides of WebServiceContainerMock
@@ -244,10 +245,10 @@ namespace Dev2.Tests.Runtime.ESB
     internal class WebServiceContainerMockWithError : WebServiceContainer
     {
         public WebServiceContainerMockWithError(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
-            : base(sa,dsfDataObject,workspace,esbChannel)
+            : base(sa, dsfDataObject, workspace, esbChannel)
         {
         }
-        
+
         public WebServiceContainerMockWithError(IServiceExecution serviceExecution)
             : base(serviceExecution)
         {

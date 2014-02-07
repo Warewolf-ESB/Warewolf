@@ -20,7 +20,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         [TestCategory("PluginIntegrationTest")]
         [Description("Test for executing a remote plugin, specific data is expected to be returned back")]
-        [Owner("Ashley")]
+        [Owner("Ashley Lewis")]
         public void Plugins_PluginIntegrationTest_Execution_CorrectResponse()
         {
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BUG_9966_RemotePlugins");
@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue(responseData.IndexOf(expected, StringComparison.Ordinal) >= 0, "Got [ " + responseData + " ]");            
+            Assert.IsTrue(responseData.IndexOf(expected, StringComparison.Ordinal) >= 0, "Got [ " + responseData + " ]");
         }
 
         // Bug 8378

@@ -61,6 +61,9 @@
     <When Condition="'$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0'" />
   </Choose>
   <ItemGroup>
+    <Reference Include="Ionic.Zip.Reduced">
+      <HintPath>..\..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
@@ -70,6 +73,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="UIAutomationTypes" />
@@ -85,8 +89,21 @@
     <Compile Include="AdornerTests.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
-    <Compile Include="Bootstrap.cs" />
-    <Compile Include="WrapperClasses\ManageSecuritySecuritySettingsTestWrapper.cs" />
+    <Compile Include="Enums\ActionType.cs" />
+    <Compile Include="Enums\ToolType.cs" />
+    <Compile Include="Tests\Activities\DbServiceTests.cs" />
+    <Compile Include="Tests\Activities\PluginServiceTests.cs" />
+    <Compile Include="Tests\Activities\WebServiceTests.cs" />
+    <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />
+    <Compile Include="Tests\TabManager\TabManagerTests.cs" />
+    <Compile Include="UIMaps\Settings\SecuritySettingsUiMap.cs" />
+    <Compile Include="Utils\Bootstrap.cs" />
+    <Compile Include="Tests\Activities\DsfActivityTests.cs" />
+    <Compile Include="Enums\ActivityLocation.cs" />
+    <Compile Include="UIMaps\Activities\ActivityUiMapBase.cs" />
+    <Compile Include="UIMaps\Activities\DsfActivityUiMap.cs" />
+    <Compile Include="Enums\ServiceType.cs" />
+    <Compile Include="Utils\Extensions\BaseEnumExtensions.cs" />
     <Compile Include="SecuritySettingsUiTests.cs" />
     <Compile Include="DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />

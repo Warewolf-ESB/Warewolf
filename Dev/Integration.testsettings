@@ -2,13 +2,14 @@
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="Dev2.Integration.Tests\TestData\" />
-    <DeploymentItem filename="C:\Builds\TestRunWorkspace\Binaries\" />
+    <DeploymentItem filename="ForChangesetID.txt" />
+    <DeploymentItem filename="TestData\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Scripts setupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" cleanupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
-  <Execution location="Remote">
+  <Execution location="Remote" parallelTestCount="0">
+    <Buckets size="60" />
     <Timeouts testTimeout="120000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">

@@ -6,11 +6,13 @@
 //using Dev2.Common.Common;
 //using Dev2.Network.Messaging.Messages;
 //using Dev2.Runtime.Configuration;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using System.Diagnostics.CodeAnalysis;
 //
 //namespace Dev2.Tests.Runtime.Configuration
 //{
-//    [TestClass][ExcludeFromCodeCoverage]
+//    [TestClass]
+//    [ExcludeFromCodeCoverage]
 //    public class SettingsProviderTests
 //    {
 //        static readonly object WriterLock = new object();

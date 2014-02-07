@@ -19,11 +19,11 @@
                    VerticalAlignment="Center" />
         <ComboBox AutomationProperties.AutomationId="{Binding ServerComboBoxAutomationID, ElementName=ConnectUserControl}" 
                   Grid.Column="1" x:Name="TheServerComboBox"                    
-                  SelectedItem="{Binding SelectedServer,Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedServer,Mode=TwoWay}"                  
                   ItemsSource="{Binding Servers}"        
                   Margin="5,0,0,0" 
                   VerticalAlignment="Bottom"
-                  IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}">
+                  IsEnabled="{Binding IsDropDownEnabled}">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="AutomationProperties.AutomationId">

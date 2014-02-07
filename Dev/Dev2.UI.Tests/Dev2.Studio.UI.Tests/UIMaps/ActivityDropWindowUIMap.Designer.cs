@@ -25,8 +25,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public partial class ActivityDropWindowUIMap : UIMapBase
     {
@@ -75,6 +75,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             return null;
         }
 
+        public bool IsOkButtonEnabled()
+        {
+            return GetOkButtonOnActivityDropWindow().Enabled;
+        }
+
         /// <summary>
         /// SingleClickAFolder
         /// </summary>
@@ -86,12 +91,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                 var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
                 if(workflowsAutoID.Contains("WORKFLOW"))
                 {
-                    var firstFolder = treeChild.GetChildren()[6];
-                    if(firstFolder.ControlType == "TreeItem")
-                    {
-                        Mouse.Click(firstFolder, new Point(57, 9));
-                        return;
-                    }
+                    var firstFolder = treeChild.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+                    Mouse.Click(firstFolder, new Point(57, 9));
+                    return;
                 }
             }
             throw new UITestControlNotFoundException("Folder not found");
@@ -100,20 +102,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
         private UITestControl GetLocalHostExplorerTree()
         {
             var SelectActivityDialog = StudioWindow.GetChildren()[0];
-            foreach (var child in SelectActivityDialog.GetChildren())
+            foreach(var child in SelectActivityDialog.GetChildren())
             {
                 var navViewAutoID = child.GetProperty("AutomationID").ToString();
-                if (navViewAutoID.Contains("TheNavigationView"))
+                if(navViewAutoID.Contains("TheNavigationView"))
                 {
-                    foreach (var navigationViewChid in child.GetChildren())
+                    foreach(var navigationViewChid in child.GetChildren())
                     {
                         var navAutoID = navigationViewChid.GetProperty("AutomationID").ToString();
-                        if (navAutoID.Contains("Navigation"))
+                        if(navAutoID.Contains("Navigation"))
                         {
-                            foreach (var navChild in navigationViewChid.GetChildren())
+                            foreach(var navChild in navigationViewChid.GetChildren())
                             {
-                                var autoID = navChild.GetProperty("AutomationID").ToString();
-                                if (autoID.Contains("localhost"))
+                                if(navChild.ControlType == ControlType.TreeItem)
                                 {
                                     return navChild;
                                 }
@@ -151,6 +152,30 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             throw new UITestControlNotFoundException("No resources found");
         }
 
+        public void SingleClickFirstWorkflow()
+        {
+            var localHostExplorerTree = GetLocalHostExplorerTree();
+            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            {
+                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
+                if(workflowsAutoID.Contains("WORKFLOW"))
+                {
+                    UITestControlCollection uiTestControlCollection = treeChild.GetChildren();
+                    UITestControl firstFolder = uiTestControlCollection.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+
+                    Mouse.DoubleClick(firstFolder, new Point(57, 9));
+                    Playback.Wait(300);
+                    UITestControlCollection firstFolderChildren = firstFolder.GetChildren();
+                    UITestControl firstWorkflow = firstFolderChildren.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+                    Mouse.Click(firstWorkflow, new Point(57, 9));
+                    Playback.Wait(100);
+                    return;
+                }
+            }
+            throw new UITestControlNotFoundException("Folder not found");
+        }
+
+
         /// <summary>
         /// DoubleClickAFolder
         /// </summary>
@@ -160,16 +185,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             foreach(var treeChild in localHostExplorerTree.GetChildren())
             {
                 var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                if (workflowsAutoID.Contains("WORKFLOW"))
+                if(workflowsAutoID.Contains("WORKFLOW"))
                 {
-                    var firstFolder = treeChild.GetChildren()[6];
-                    if (firstFolder.ControlType == "TreeItem")
-                    {
-                        Mouse.Click(firstFolder, new Point(57,9));
-                        Playback.Wait(100);
-                        Mouse.DoubleClick(firstFolder, new Point(57, 9));
-                        return;
-                    }
+                    UITestControlCollection uiTestControlCollection = treeChild.GetChildren();
+                    var firstFolder = uiTestControlCollection[6];
+                    UITestControl firstOrDefault = uiTestControlCollection.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+
+                    Mouse.Click(firstOrDefault, new Point(57, 9));
+                    Playback.Wait(100);
+                    Mouse.DoubleClick(firstOrDefault, new Point(57, 9));
+                    return;
                 }
             }
             throw new UITestControlNotFoundException("Folder not found");
@@ -186,17 +211,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
                 var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
                 if(workflowsAutoID.Contains("WORKFLOW"))
                 {
-                    var firstFolder = treeChild.GetChildren()[6];
-                    if(firstFolder.ControlType == "TreeItem")
-                    {
-                        var firstResource = firstFolder.GetChildren()[7];
-                        if(firstResource.ControlType == "TreeItem")
-                        {
-                            Mouse.DoubleClick(firstResource, new Point(73, 9));
-                            Playback.Wait(150);
-                            return;
-                        }
-                    }
+                    var firstFolder = treeChild.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+                    var firstResource = firstFolder.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
+
+                    Mouse.DoubleClick(firstResource, new Point(73, 9));
+                    Playback.Wait(150);
+                    return;
+
                 }
             }
             throw new UITestControlNotFoundException("No resources found");

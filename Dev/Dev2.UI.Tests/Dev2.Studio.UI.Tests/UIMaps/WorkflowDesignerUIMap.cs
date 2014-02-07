@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.CodedUI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Common;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -938,31 +940,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return flowchartDesigner;
         }
 
-
-
-
-        /// <summary>
-        /// Adorner_s the get all text boxes.
-        /// </summary>
-        /// <param name="theTab">The tab.</param>
-        /// <returns></returns>
-        public List<UITestControl> Adorner_GetAllTextBoxes(UITestControl theTab)
-        {
-            UITestControl aControl = FindControlByAutomationId(theTab, "AdornerScrollViewer");
-            UITestControlCollection uiTestControlCollection = aControl.GetChildren();
-
-            foreach(UITestControl uiTestControl in uiTestControlCollection)
-            {
-                if(uiTestControl.GetProperty("AutomationId").ToString() == "LargeViewContent")
-                {
-                    UITestControlCollection testControlCollection = uiTestControl.GetChildren();
-                    List<UITestControl> uiTestControls = testControlCollection.Where(c => c.ClassName == "Uia.TextBox").ToList();
-                    return uiTestControls;
-                }
-            }
-            return null;
-        }
-
         /// <summary>
         /// Tool_s the get all text boxes.
         /// </summary>
@@ -1427,6 +1404,22 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 return true;
             }
             return false;
+        }
+
+        public string Adorner_GetHelpText(UITestControl resourceToGetHelpTextFor)
+        {
+            UITestControl parentControl = resourceToGetHelpTextFor.GetParent();
+            List<UITestControl> uiTestControlCollection = parentControl.GetChildren().Where(c => c.ControlType == ControlType.Text).ToList();
+            try
+            {
+                WpfText lbl = (WpfText)uiTestControlCollection[1];
+                return lbl.DisplayText;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
         }
     }
 }

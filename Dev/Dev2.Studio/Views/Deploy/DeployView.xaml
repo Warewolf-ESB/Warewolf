@@ -8,7 +8,8 @@
              xmlns:Dev2="clr-namespace:Dev2.UI"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:help="clr-namespace:Dev2.Help"
-             Name="DeployUserControl">
+             Name="DeployUserControl"
+             >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -40,9 +41,17 @@
                                      LabelText="Source Server:"                                    
                                      NewButtonAutomationID="UI_SourceNewServerbtn_AutoID"
                                      EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
+                                     IngoreSelectionChangedMessage="False"
                                      ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"                                     
                                      BindToActiveEnvironment="False"
-                                     Context="{Binding SourceContext}" />
+                                     Context="{Binding SourceContext}" >
+                    <Dev2:ConnectControl.IsDropDownEnabled>
+                        <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
+                            <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                        </MultiBinding>
+                    </Dev2:ConnectControl.IsDropDownEnabled>
+                </Dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="1"
                                    DataContext="{Binding Source}"
@@ -148,12 +157,20 @@
 
                 <Dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
-                                     LabelText="Destination Server:"                                     
+                                     LabelText="Destination Server:"
                                      Context="{Binding DestinationContext}"
+                                     IngoreSelectionChangedMessage="False"
                                      NewButtonAutomationID="UI_DestinationServerNewbtn_AutoID"
                                      EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
                                      ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"
-                                     BindToActiveEnvironment="False"/>
+                                     BindToActiveEnvironment="False">
+                    <Dev2:ConnectControl.IsDropDownEnabled>
+                        <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
+                            <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                        </MultiBinding>
+                    </Dev2:ConnectControl.IsDropDownEnabled>
+                </Dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="2"
                                    DataContext="{Binding Target}"

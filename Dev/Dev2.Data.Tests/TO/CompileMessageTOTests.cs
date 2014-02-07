@@ -8,7 +8,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.TO
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CompileMessageTOTests
     {
         [TestMethod]
@@ -64,12 +65,12 @@ namespace Dev2.Data.Tests.TO
             //------------Execute Test---------------------------
             var clonedTO = message.Clone();
             //------------Assert Results-------------------------
-            Assert.AreEqual(workspaceID,clonedTO.WorkspaceID);
-            Assert.AreEqual(messageID,clonedTO.MessageID);
-            Assert.AreEqual(serviceID,clonedTO.ServiceID);
-            Assert.AreEqual(uniqueID,clonedTO.UniqueID);
-            Assert.AreEqual(serviceName,clonedTO.ServiceName);
-            Assert.AreEqual(errorType,clonedTO.ErrorType);
+            Assert.AreEqual(workspaceID, clonedTO.WorkspaceID);
+            Assert.AreEqual(messageID, clonedTO.MessageID);
+            Assert.AreEqual(serviceID, clonedTO.ServiceID);
+            Assert.AreEqual(uniqueID, clonedTO.UniqueID);
+            Assert.AreEqual(serviceName, clonedTO.ServiceName);
+            Assert.AreEqual(errorType, clonedTO.ErrorType);
             Assert.AreEqual(fixType, clonedTO.ToFixType());
             Assert.AreEqual(messageType, clonedTO.MessageType);
             Assert.AreEqual(messagePayload, clonedTO.MessagePayload);

@@ -4,9 +4,12 @@ using Dev2.PathOperations;
 using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Unlimited.UnitTest.Framework.PathOperationTests {
-    [TestClass][ExcludeFromCodeCoverage]
-    public class ActivityIOFactoryTests {
+namespace Unlimited.UnitTest.Framework.PathOperationTests
+{
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class ActivityIOFactoryTests
+    {
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -41,9 +44,10 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// Create type of the path from string expected activity IO path file system.
         /// </summary>
         [TestMethod]
-        public void CreatePathFromString_Expected_IActivityIOPath_FileSystem_Type() {
+        public void CreatePathFromString_Expected_IActivityIOPath_FileSystem_Type()
+        {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path,"","");
+            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
 
             Assert.AreEqual(enActivityIOPathType.FileSystem, result.PathType);
         }
@@ -52,7 +56,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// Create type of the path from string expected activity IO path FTP.
         /// </summary>
         [TestMethod]
-        public void CreatePathFromString_Expected_IActivityIOPath_FTP_Type() {
+        public void CreatePathFromString_Expected_IActivityIOPath_FTP_Type()
+        {
 
             IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
 
@@ -63,7 +68,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// Create type of the path from string expected activity IO path FTPS.
         /// </summary>
         [TestMethod]
-        public void CreatePathFromString_Expected_IActivityIOPath_FTPS_Type() {
+        public void CreatePathFromString_Expected_IActivityIOPath_FTPS_Type()
+        {
 
             IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath, "", "");
 
@@ -79,7 +85,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// provider.
         /// </summary>
         [TestMethod]
-        public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FileSysytemProvider_Type() {
+        public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FileSysytemProvider_Type()
+        {
 
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
             IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
@@ -92,7 +99,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// end point FTP provider.
         /// </summary>
         [TestMethod]
-        public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FTPProvider_Type() {
+        public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FTPProvider_Type()
+        {
 
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
             IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
@@ -108,7 +116,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests {
         /// Create type of the operations broker expected activity operations broker file sysytem provider.
         /// </summary>
         [TestMethod]
-        public void CreateOperationsBroker_Expected_IActivityOperationsBroker_FileSysytemProvider_Type() {
+        public void CreateOperationsBroker_Expected_IActivityOperationsBroker_FileSysytemProvider_Type()
+        {
 
             IActivityOperationsBroker result = ActivityIOFactory.CreateOperationsBroker();
 
