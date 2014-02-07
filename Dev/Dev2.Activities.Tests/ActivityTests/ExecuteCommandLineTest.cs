@@ -457,7 +457,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Ignore] // flipping test
         public void ExecuteCommandLineGetDebugInputOutputExpectedCorrectResults()
         {
             var assembly = Assembly.GetExecutingAssembly();
