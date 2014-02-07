@@ -22,28 +22,25 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void AllToolsTestExpectPass()
         {
+            string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
 
-            Assert.Fail("Fix hanging issue caused by this test");
+            var responseData = string.Empty;
+            try
+            {
+                responseData = TestHelper.PostDataToWebserver(PostData);
+            }
+            catch(WebException e)
+            {
+                if(e.Message.Contains("timed out"))
+                {
+                    Assert.Inconclusive("Tools test workflow took to long to run");
+                }
+            }
 
-            //string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
+            // Find Record Index: PASS
+            const string Expected = @"<DataList><Test><Result>ForEach: PASS</Result></Test><Test><Result>Switch: PASS</Result></Test><Test><Result>Decision: PASS</Result></Test><Test><Result>Count Records: PASS</Result></Test><Test><Result>Delete Record: PASS</Result></Test><Test><Result>Sort Records: PASS</Result></Test><Test><Result>Find Record Index: PASS</Result></Test><Test><Result>Assign: PASS</Result></Test><Test><Result>Base Conversion: PASS</Result></Test><Test><Result>Case Convert: PASS</Result></Test><Test><Result>Data Merge: PASS</Result></Test><Test><Result>Data Split: PASS</Result></Test><Test><Result>Date and Time: PASS</Result></Test><Test><Result>Date and Time Difference: PASS</Result></Test><Test><Result>Find Index: PASS</Result></Test><Test><Result>Format Number: INCONCLUSIVE</Result></Test><Test><Result>Javascript:PASS</Result></Test><Test><Result>Unique: PASS</Result></Test><Test><Result>XPath Tool: PASS</Result></Test><Test><Result>GetWebRequest: PASS</Result></Test><Test><Result>File Copy: Pass</Result></Test><Test><Result>Success</Result></Test><Test><Result>Find Record Index: PASS</Result></Test></DataList>";
 
-            //var responseData = string.Empty;
-            //try
-            //{
-            //    responseData = TestHelper.PostDataToWebserver(PostData);
-            //}
-            //catch(WebException e)
-            //{
-            //    if(e.Message.Contains("timed out"))
-            //    {
-            //        Assert.Inconclusive("Tools test workflow took to long to run");
-            //    }
-            //}
-
-            //// Find Record Index: PASS
-            //string Expected = @"<DataList><Test><Result>ForEach: PASS</Result></Test><Test><Result>Switch: PASS</Result></Test><Test><Result>Decision: PASS</Result></Test><Test><Result>Count Records: PASS</Result></Test><Test><Result>Delete Record: PASS</Result></Test><Test><Result>Sort Records: PASS</Result></Test><Test><Result>Find Record Index: PASS</Result></Test><Test><Result>Assign: PASS</Result></Test><Test><Result>Base Conversion: PASS</Result></Test><Test><Result>Case Convert: PASS</Result></Test><Test><Result>Data Merge: PASS</Result></Test><Test><Result>Data Split: PASS</Result></Test><Test><Result>Date and Time: PASS</Result></Test><Test><Result>Date and Time Difference: PASS</Result></Test><Test><Result>Find Index: PASS</Result></Test><Test><Result>Format Number: INCONCLUSIVE</Result></Test><Test><Result>Javascript:PASS</Result></Test><Test><Result>Unique: PASS</Result></Test><Test><Result>XPath Tool: PASS</Result></Test><Test><Result>GetWebRequest: PASS</Result></Test><Test><Result>File Copy: Pass</Result></Test><Test><Result>Success</Result></Test><Test><Result>Find Record Index: PASS</Result></Test></DataList>";
-
-            //Assert.IsTrue(responseData.Contains(Expected), "Expected [ " + Expected + ", But Got [ " + responseData + " ]");
+            Assert.IsTrue(responseData.Contains(Expected), "Expected [ " + Expected + ", But Got [ " + responseData + " ]");
         }
 
         [TestMethod]
