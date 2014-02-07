@@ -682,18 +682,15 @@ namespace Dev2.Common
 
         static void LogError(string className, string methodName, Exception e)
         {
-            Task.Run(() =>
-            {
-                Tracker.TrackException(className, methodName, e);
+            Tracker.TrackException(className, methodName, e);
 
-                if(EnableErrorOutput)
-                {
-                    var errors = new StringBuilder();
-                    errors.AppendLine(CreateMessage(className, methodName, e.Message));
-                    errors.AppendLine(e.GetAllMessages());
-                    InternalLogMessage(errors.ToString(), "ERROR");
-                }
-            });
+            if(EnableErrorOutput)
+            {
+                var errors = new StringBuilder();
+                errors.AppendLine(CreateMessage(className, methodName, e.Message));
+                errors.AppendLine(e.GetAllMessages());
+                InternalLogMessage(errors.ToString(), "ERROR");
+            }
 
         }
 

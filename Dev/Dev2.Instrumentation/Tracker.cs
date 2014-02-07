@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Threading.Tasks;
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation
@@ -45,12 +46,15 @@ namespace Dev2.Instrumentation
 
         static void Start(string productID, string callHomeUrl)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            var productVersion = fvi.FileVersion;
-            var productBuildNumber = fvi.FileBuildPart.ToString(CultureInfo.InvariantCulture);
-            var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
-            App.Start(config);
+            Task.Run(() =>
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var productVersion = fvi.FileVersion;
+                var productBuildNumber = fvi.FileBuildPart.ToString(CultureInfo.InvariantCulture);
+                var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
+                App.Start(config);
+            });
         }
 
         /// <summary>
@@ -74,7 +78,10 @@ namespace Dev2.Instrumentation
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, double? eventValue = null)
         {
 #if !TEST
-            TrackEvent(eventGroup, eventName.ToString(), eventValue);
+            Task.Run(() =>
+            {
+                TrackEvent(eventGroup, eventName.ToString(), eventValue);
+            });
 #endif
         }
 
@@ -87,7 +94,10 @@ namespace Dev2.Instrumentation
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, double? eventValue = null)
         {
 #if !TEST
-            App.EventTrack(eventGroup.ToString(), customText, eventValue);
+            Task.Run(() =>
+            {
+                App.EventTrack(eventGroup.ToString(), customText, eventValue);
+            });
 #endif
         }
 
@@ -100,7 +110,11 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !TEST
-            App.ExceptionTrack(className, methodName, ex);
+            Task.Run(() =>
+            {
+                App.ExceptionTrack(className, methodName, ex); ;
+            });
+
 #endif
         }
     }
