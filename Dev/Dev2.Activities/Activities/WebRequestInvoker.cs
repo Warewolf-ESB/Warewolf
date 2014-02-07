@@ -6,8 +6,6 @@ namespace Dev2.Activities
 {
     public class WebRequestInvoker : IWebRequestInvoker
     {
-        #region Implementation of IWebRequestInvoker
-
         public string ExecuteRequest(string method, string url)
         {
             return ExecuteRequest(method, url, new List<Tuple<string, string>>());
@@ -15,23 +13,47 @@ namespace Dev2.Activities
 
         public string ExecuteRequest(string method, string url, List<Tuple<string, string>> headers)
         {
-            using (var webClient = new WebClient())
+            return ExecuteRequest(method, url, null, headers);
+        }
+
+        public string ExecuteRequest(string method, string url, string data, List<Tuple<string, string>> headers = null, Action<string> asyncCallback = null)
+        {
+            using(var webClient = new WebClient())
             {
                 webClient.Credentials = CredentialCache.DefaultCredentials;
 
-                foreach (var header in headers)
+                if(headers != null)
                 {
-                    webClient.Headers.Add(header.Item1, header.Item2);
+                    foreach(var header in headers)
+                    {
+                        webClient.Headers.Add(header.Item1, header.Item2);
+                    }
                 }
 
-                if (method == "GET")
+                var uri = new Uri(url.Contains("http://") || url.Contains("https://") ? url : "http://" + url);
+
+                switch(method)
                 {
-                    var pUrl = url.Contains("http://") || url.Contains("https://") ? url : "http://" + url;
-                    return webClient.DownloadString(pUrl);
+                    case "GET":
+                        if(asyncCallback == null)
+                        {
+                            return webClient.DownloadString(uri);
+                        }
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringAsync(uri, null);
+                        break;
+                    case "POST":
+                        if(asyncCallback == null)
+                        {
+                            return webClient.UploadString(uri, data);
+                        }
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringAsync(uri, data);
+                        break;
                 }
             }
-            return "";
+            return string.Empty;
         }
-        #endregion
+
     }
 }

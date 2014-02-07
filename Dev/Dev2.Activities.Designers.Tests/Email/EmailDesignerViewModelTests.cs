@@ -2,8 +2,8 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.DynamicServices;
@@ -11,6 +11,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -20,132 +21,164 @@ namespace Dev2.Activities.Designers.Tests.Email
     [ExcludeFromCodeCoverage]
     public class EmailDesignerViewModelTests
     {
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EmailDesignerViewModel_Constructor")]
-        public void EmailDesignerViewModel_Constructor_PropertiesInitialized()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmailDesignerViewModel_Constructor_AsyncWorkerIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new EmailDesignerViewModel(CreateModelItem());
+            var viewModel = new EmailDesignerViewModel(CreateModelItem(), null, null, null);
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(viewModel.EditEmailSourceCommand);
-            Assert.IsNotNull(viewModel.EmailSourceList);
-            Assert.AreEqual(1, viewModel.EmailSourceList.Count);
         }
 
         [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("EmailDesignerViewModel_CreateNewEmailSource")]
-        public void EmailDesignerViewModel_CreateNewEmailSource_MailSourceCreated_EventPublishedTwice()
-        {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<IMessage>())).Verifiable();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            viewModel.CreateNewEmailSource();
-            mockEventPublisher.Verify(m => m.Publish(It.IsAny<IMessage>()), Times.Once());
-            mockEventPublisher.Verify(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>()), Times.AtLeast(2));
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("EmailDesignerViewModel_EditEmailSource")]
-        public void EmailDesignerViewModel_EditEmailSource_MailSourceEdited_EventPublisherCalledOnce()
-        {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            viewModel.EditEmailSource();
-            mockEventPublisher.Verify(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>()), Times.AtLeast(2));
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("EmailDesignerViewModel_GetSources")]
-        public void EmailDesignerViewModel_GetSources_TwoMailSourcesOnServer_TwoSourcesAreReturned()
-        {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            var sources = viewModel.GetSources(new Mock<IEnvironmentModel>().Object);
-            Assert.AreEqual(2, sources.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("EmailDesignerViewModel_UpdateEnvironmentResourcesCallback")]
-        public void EmailDesignerViewModel_UpdateEnvironmentResourcesCallback_FetchEmailSourcesWithNoSelectedEmailSource_FirstEmailSourceSetAsSelected()
-        {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.SetupGet(p => p.WorkspaceID).Returns(Guid.NewGuid);
-            mockConnection.Setup(m => m.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
-            mockEnvironmentModel.SetupGet(p => p.Connection).Returns(mockConnection.Object);
-            viewModel.UpdateEnvironmentResourcesCallback(mockEnvironmentModel.Object);
-            Assert.IsTrue(viewModel.SelectedEmailSource == viewModel.EmailSourceList[1]);
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
+        [Owner("Trevor Williams-Ros")]
         [TestCategory("EmailDesignerViewModel_Constructor")]
-        public void EmailDesignerViewModel_Constructor_KeepsUserData_UserDataStillPresent()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmailDesignerViewModel_Constructor_EnvironmentModelIsNull_ThrowsArgumentNullException()
         {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            const string TestMailAccount = "test@mydomain.com";
-            viewModel.FromAccount = TestMailAccount;
+            //------------Setup for test--------------------------
 
-            viewModel.TheSelectedEmailSource = new EmailSource
+            //------------Execute Test---------------------------
+            var viewModel = new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void EmailDesignerViewModel_Constructor_EventAggregatorIsNull_ThrowsArgumentNullException()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var viewModel = new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_Constructor")]
+        public void EmailDesignerViewModel_Constructor_ModelItemIsNew_InitializesProperties()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = CreateModelItem();
+            var propertyChanged = false;
+            modelItem.PropertyChanged += (sender, args) =>
             {
-                UserName = "MyUser",
+                propertyChanged = true;
+            };
+            const int EmailSourceCount = 2;
+            var sources = CreateEmailSources(EmailSourceCount);
+
+            //------------Execute Test---------------------------
+            var viewModel = CreateViewModel(sources, modelItem);
+
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ModelItem);
+            Assert.IsNotNull(viewModel.EditEmailSourceCommand);
+            Assert.IsNotNull(viewModel.TestPasswordCommand);
+            Assert.IsNotNull(viewModel.ChooseAttachmentsCommand);
+            Assert.IsNotNull(viewModel.EmailSources);
+            Assert.IsNotNull(viewModel.Priorities);
+            Assert.IsFalse(viewModel.IsEmailSourceSelected);
+            Assert.IsFalse(viewModel.IsRefreshing);
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            Assert.AreEqual(EmailSourceCount + 2, viewModel.EmailSources.Count);
+            Assert.AreEqual(viewModel.EmailSources[0], viewModel.SelectedEmailSource);
+            Assert.AreEqual("Select an Email Source...", viewModel.EmailSources[0].ResourceName);
+
+            Assert.IsNull(viewModel.EmailSource);
+
+            Assert.IsFalse(propertyChanged);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_Constructor")]
+        public void EmailDesignerViewModel_Constructor_ModelItemIsNotNew_InitializesProperties()
+        {
+            //------------Setup for test--------------------------
+            const int EmailSourceCount = 2;
+            var sources = CreateEmailSources(EmailSourceCount);
+            var selectedEmailSource = sources.First();
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
+
+            var propertyChanged = false;
+            modelItem.PropertyChanged += (sender, args) =>
+            {
+                propertyChanged = true;
+            };
+
+            //------------Execute Test---------------------------
+            var viewModel = CreateViewModel(sources, modelItem);
+
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ModelItem);
+            Assert.IsNotNull(viewModel.EditEmailSourceCommand);
+            Assert.IsNotNull(viewModel.TestPasswordCommand);
+            Assert.IsNotNull(viewModel.ChooseAttachmentsCommand);
+            Assert.IsNotNull(viewModel.EmailSources);
+            Assert.IsNotNull(viewModel.Priorities);
+            Assert.IsTrue(viewModel.IsEmailSourceSelected);
+            Assert.IsFalse(viewModel.IsRefreshing);
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            Assert.AreEqual(EmailSourceCount + 1, viewModel.EmailSources.Count);
+            Assert.AreEqual(selectedEmailSource, viewModel.SelectedEmailSource);
+
+            Assert.AreEqual("New Email Source...", viewModel.EmailSources[0].ResourceName);
+            Assert.AreNotEqual(Guid.Empty, viewModel.EmailSources[0].ResourceID);
+
+            Assert.IsNotNull(viewModel.EmailSource);
+
+            Assert.IsFalse(propertyChanged);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_Constructor")]
+        public void EmailDesignerViewModel_Constructor_DoesNotAutoCopyEmailSourceUserNameIntoFromAccount()
+        {
+            Verify_Constructor_DoesNotAutoCopyEmailSourceUserNameIntoFromAccount("test@mydomain.com");
+            Verify_Constructor_DoesNotAutoCopyEmailSourceUserNameIntoFromAccount("");
+        }
+
+        void Verify_Constructor_DoesNotAutoCopyEmailSourceUserNameIntoFromAccount(string expectedFromAccount)
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfSendEmailActivity { FromAccount = expectedFromAccount };
+
+            var emailSource = new EmailSource
+            {
+                UserName = "bob@mydomain.com",
                 Password = "MyPassword",
                 EnableSsl = false,
                 Host = "mx.mydomain.com",
                 Port = 25,
-                TestFromAddress = "bob@mydomain.com",
                 ResourceID = Guid.NewGuid()
             };
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+            var viewModel = CreateViewModel(null, modelItem);
 
-            Assert.AreEqual(TestMailAccount, viewModel.FromAccount);
-        }
+            //------------Execute Test---------------------------
+            viewModel.SelectedEmailSource = emailSource;
 
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("EmailDesignerViewModel_Constructor")]
-        public void EmailDesignerViewModel_Constructor_HydratesFromSource_SourceDataOverwritesBlankUserData()
-        {
-            var modelItem = CreateModelItem();
-            var mockEventPublisher = new Mock<IEventAggregator>();
-            mockEventPublisher.Setup(m => m.Publish(It.IsAny<ICallBackMessage<IEnvironmentModel>>())).Verifiable();
-            var viewModel = new TestEmailDesignerViewModel(modelItem, mockEventPublisher.Object);
-            const string TestMailAccount = "";
-            viewModel.FromAccount = TestMailAccount;
-
-            viewModel.TheSelectedEmailSource = new EmailSource
-            {
-                UserName = "MyUser",
-                Password = "MyPassword",
-                EnableSsl = false,
-                Host = "mx.mydomain.com",
-                Port = 25,
-                TestFromAddress = "bob@mydomain.com",
-                ResourceID = Guid.NewGuid()                
-            };
-
-            Assert.AreEqual("MyUser", viewModel.FromAccount);
+            //------------Assert Results-------------------------
+            var fromAccount = modelItem.GetProperty<string>("FromAccount");
+            Assert.AreEqual(expectedFromAccount, fromAccount);
         }
 
         [TestMethod]
@@ -154,58 +187,100 @@ namespace Dev2.Activities.Designers.Tests.Email
         public void EmailDesignerViewModel_EditEmailSource_PublishesShowEditResourceWizardMessage()
         {
             //------------Setup for test--------------------------
+            var emailSources = CreateEmailSources(2);
+
+            var selectedEmailSource = emailSources.First();
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
+
+            ShowEditResourceWizardMessage message = null;
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>())).Callback((object m) => message = m as ShowEditResourceWizardMessage).Verifiable();
+
             var resourceModel = new Mock<IResourceModel>();
 
-            var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(resourceModel.Object);
-            env.Setup(e => e.Connection.WorkspaceID).Returns(Guid.Empty);
-            env.Setup(e => e.Connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
-
-            var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<GetActiveEnvironmentCallbackMessage>()))
-                .Callback((object message) => ((GetActiveEnvironmentCallbackMessage)message).Callback(env.Object));
-            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>())).Verifiable();
-
-            var viewModel = new TestEmailDesignerViewModel(CreateModelItem(), eventPublisher.Object);
-            viewModel.SelectedEmailSource = new EmailSource();
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
 
             //------------Execute Test---------------------------
-            viewModel.EditEmailSource();
+            viewModel.EditEmailSourceCommand.Execute(null);
+
 
             //------------Assert Results-------------------------
             eventPublisher.Verify(p => p.Publish(It.IsAny<ShowEditResourceWizardMessage>()));
+            Assert.AreSame(resourceModel.Object, message.ResourceModel);
         }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("EmailDesignerViewModel_GetSources")]
-        public void EmailDesignerViewModel_GetSources_ReturnsListOfObjects()
+        [TestCategory("EmailDesignerViewModel_CreateEmailSource")]
+        public void EmailDesignerViewModel_CreateEmailSource_PublishesShowNewResourceWizard()
         {
             //------------Setup for test--------------------------
-            var repo = new Mock<IResourceRepository>();
+            var emailSources = CreateEmailSources(2);
 
-            EmailSource es = new EmailSource();
-            List<EmailSource> src = new List<EmailSource> {es};
+            var selectedEmailSource = emailSources.First();
 
-            repo.Setup(r => r.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource)).Returns(src);
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", selectedEmailSource);
 
-            var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-            env.Setup(e => e.Connection.WorkspaceID).Returns(Guid.Empty);
-
+            ShowNewResourceWizard message = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            var viewModel = new EmailDesignerViewModel(CreateModelItem(), eventPublisher.Object);
+            eventPublisher.Setup(p => p.Publish(It.IsAny<ShowNewResourceWizard>())).Callback((object m) => message = m as ShowNewResourceWizard).Verifiable();
+
+            var resourceModel = new Mock<IResourceModel>();
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
+
+            var createEmailSource = viewModel.EmailSources[0];
+            Assert.AreEqual("New Email Source...", createEmailSource.ResourceName);
 
             //------------Execute Test---------------------------
-            var sources = viewModel.GetSources(env.Object);
+            viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(sources);
+            eventPublisher.Verify(p => p.Publish(It.IsAny<ShowNewResourceWizard>()));
+            Assert.AreSame("EmailSource", message.ResourceType);
         }
+
+
+        // TODO: TestPassword, ChooseAttachments, Validate
 
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new DsfSendEmailActivity());
+        }
+
+        static List<EmailSource> CreateEmailSources(int count)
+        {
+            var result = new List<EmailSource>();
+
+            for(var i = 0; i < count; i++)
+            {
+                result.Add(new EmailSource
+                {
+                    ResourceID = Guid.NewGuid(),
+                    ResourceName = "Email" + i,
+                });
+            }
+
+            return result;
+        }
+
+        static TestEmailDesignerViewModel CreateViewModel(List<EmailSource> sources, ModelItem modelItem)
+        {
+            return CreateViewModel(sources, modelItem, new Mock<IEventAggregator>().Object, new Mock<IResourceModel>().Object);
+        }
+
+        static TestEmailDesignerViewModel CreateViewModel(List<EmailSource> sources, ModelItem modelItem, IEventAggregator eventPublisher, IResourceModel resourceModel)
+        {
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
+                .Returns(sources);
+            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>()))
+                .Returns(resourceModel);
+
+            return new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher);
         }
     }
 }

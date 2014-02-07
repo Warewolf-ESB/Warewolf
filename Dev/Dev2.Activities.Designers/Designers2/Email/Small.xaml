@@ -32,7 +32,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Label Grid.Column="0"
@@ -49,8 +48,8 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Style="{StaticResource ActivityComboBoxStyle}"
-                      SelectedValue="{Binding TheSelectedEmailSource, Mode=TwoWay,NotifyOnSourceUpdated=True}"
-                      ItemsSource="{Binding EmailSourceList}"
+                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding EmailSources}"
                       ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
                       DisplayMemberPath="ResourceName">
                 <i:Interaction.Behaviors>
@@ -58,7 +57,7 @@
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="TheSelectedEmailSource"
-                                         SourcePropertyValue="{Binding TheSelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
@@ -68,35 +67,13 @@
                     ToolTip="Edit Email Source"
                     Style="{StaticResource ActivityEditButtonStyle}" />
         </Grid>
-        
+
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="From Account" />
-        <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="1"                                
-                                DefaultText="Account or email address"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipFromAccount}"
-                                Text="{Binding ModelItem.FromAccount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fromAcctxt_AutoID}">
-            <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpFromAccount}"
-                                 DataContext="{Binding}" />
-                <errors:ErrorsSetter Source="{Binding}"
-                                     SourcePropertyName="ModelItem.FromAccount"
-                                     SourcePropertyValue="{Binding ModelItem.FromAccount, UpdateSourceTrigger=PropertyChanged}"
-                                     Target="{Binding}" />
-            </i:Interaction.Behaviors>
-
-        </ui:IntellisenseTextBox>
-
-        <Label Grid.Column="0"
-               Grid.Row="2"
-               Style="{StaticResource ActivityLabelStyle}"
                Content="To" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="2"
+                                Grid.Row="1"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 DefaultText="Account or email address"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipTo}"
@@ -113,11 +90,11 @@
         </ui:IntellisenseTextBox>
 
         <Label Grid.Column="0"
-               Grid.Row="3"
+               Grid.Row="2"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Subject" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="3"
+                                Grid.Row="2"
                                 DefaultText="Message Subject"
                                 Text="{Binding ModelItem.Subject,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
@@ -134,11 +111,11 @@
         </ui:IntellisenseTextBox>
 
         <Label Grid.Column="0"
-               Grid.Row="4"
+               Grid.Row="3"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Body"/>
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="4"
+                                Grid.Row="3"
                                 DefaultText="Email Content"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipBody}"
                                 Text="{Binding ModelItem.Body,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -163,11 +140,11 @@
         </ui:IntellisenseTextBox>
         
         <Label Grid.Column="0"
-               Grid.Row="5"
+               Grid.Row="4"
                Style="{StaticResource ActivityLabelStyle}"
                Content="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="5"                               
+                                Grid.Row="4"                               
                                 DefaultText="[[EmailSuccess]]"
                                 ToolTip="{x:Static help:HelpTextResources.EmailToolTipResult}"
                                 Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

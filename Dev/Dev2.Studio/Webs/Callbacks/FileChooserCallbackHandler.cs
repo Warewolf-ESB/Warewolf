@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
+using Dev2.Communication;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Webs.Callbacks;
-using Newtonsoft.Json.Linq;
 
 // ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class FileChooserCallbackHandler : WebsiteCallbackHandler
@@ -28,32 +29,33 @@ namespace Dev2.Studio.Webs.Callbacks
             VerifyArgument.IsNotNull("fileChooserMessage", fileChooserMessage);
         }
 
-        //public override void Save(string value, bool closeBrowserWindow = true)
-        //{
-        //    Save(value, EnvironmentRepository.Instance.Source, closeBrowserWindow);
-        //    if(closeBrowserWindow)
-        //    {
-        //        Close();
-        //    }
+        public override void Save(string value, bool closeBrowserWindow = true)
+        {
+            if(string.IsNullOrEmpty(value))
+            {
+                _fileChooserMessage.SelectedFiles = null;
+            }
+            else
+            {
+                var scrubbedValue = JSONUtils.ScrubJSON(value).Replace(@"\\", @"\");
 
-        //    if(string.IsNullOrEmpty(value))
-        //    {
-        //        throw new ArgumentNullException("value");
-        //    }
-        //    value = JSONUtils.ScrubJSON(value);
+                var result = new Dev2JsonSerializer().Deserialize<FileChooserResult>(scrubbedValue);
+                _fileChooserMessage.SelectedFiles = result.FilePaths;
+            }
+            if(closeBrowserWindow)
+            {
+                Close();
+            }
+        }
 
-        //    dynamic jsonObj = jso
-        //}
+        public override void Save(string value, IEnvironmentModel environmentModel, bool closeBrowserWindow = true)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override void Save(IEnvironmentModel environmentModel, dynamic jsonObj)
         {
-            var result = jsonObj as FileChooserResult;
-            _fileChooserMessage.SelectedFiles = result.FilePaths;
-        }
-
-        public override void Cancel()
-        {
-            Close();
+            throw new NotImplementedException();
         }
 
         public class FileChooserResult
@@ -61,4 +63,5 @@ namespace Dev2.Studio.Webs.Callbacks
             public IEnumerable<string> FilePaths { get; set; }
         }
     }
+
 }

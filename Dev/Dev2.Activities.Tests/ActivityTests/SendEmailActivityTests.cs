@@ -16,22 +16,24 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for CountRecordsTest
-    /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class SendEmailActivityTests : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
+        [TestMethod]
+        [TestCategory("SendEmail_Constructor")]
+        public void SendEmail_Constructor_TypeIsAbstractString()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var activity = GetSendEmailActivity();
+            //------------Assert Results-------------------------
+            Assert.IsInstanceOfType(activity, typeof(DsfActivityAbstract<string>));
+        }
 
         [TestMethod]
-        public void SendEmailActivityWhereEmailSenderIsNullExpectConcreateImplementation()
+        [TestCategory("SendEmail_Constructor")]
+        public void SendEmail_Constructor_EmailSenderIsNotAssigned_GetsNonNullValue()
         {
             //------------Setup for test--------------------------
             var activity = GetSendEmailActivity();
@@ -42,17 +44,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailActivityWhereConstructedExpectIsAbstractString()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var activity = GetSendEmailActivity();
-            //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(activity, typeof(DsfActivityAbstract<string>));
-        }
-
-        [TestMethod]
-        public void EmailSenderWhereGivenAnIEmailSenderExpectGetGivenValue()
+        [TestCategory("SendEmail_Constructor")]
+        public void SendEmail_Constructor_EmailSenderIsAssigned_GetsGivenValue()
         {
             //------------Setup for test--------------------------
             var activity = GetSendEmailActivity();
@@ -65,9 +58,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotInstanceOfType(actual, typeof(EmailSender));
         }
 
-
         [TestMethod]
-        public void GetFindMissingTypeExpectDataGridActivityType()
+        [TestCategory("SendEmail_GetFindMissingType")]
+        public void SendEmail_GetFindMissingType_StaticActivityType()
         {
             //------------Setup for test--------------------------
             var activity = GetSendEmailActivity();
@@ -78,7 +71,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailExecuteWhereStaticValuesExpectCorrectResults()
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_StaticValues_CorrectResults()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -118,7 +112,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailExecuteWhereScalarValuesExpectCorrectResults()
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_ScalarValuesExpectCorrectResults()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -134,7 +129,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
             activity.Body = "[[Body]]";
-            activity.FromAccount = "[[FromAccount]]";
             activity.To = "[[ToAccount]]";
             activity.Subject = "[[Subject]]";
             TestStartNode = new FlowStep
@@ -158,9 +152,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("SubJectValue", mailMessage.Subject);
         }
 
-
         [TestMethod]
-        public void SendEmailExecuteWhereScalarValuesHasToListExpectCorrectResults()
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_ScalarValuesHasToList_CorrectResults()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -176,7 +170,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
             activity.Body = "[[Body]]";
-            activity.FromAccount = "[[FromAccount]]";
             activity.To = "[[ToAccount]]";
             activity.Subject = "[[Subject]]";
             TestStartNode = new FlowStep
@@ -200,7 +193,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailExecuteWhereScalarValuesHasBCCListExpectCorrectResults()
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_ScalarValuesHasBCCList_CorrectResults()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -240,7 +234,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailExecuteWhereScalarValuesHasCCListExpectCorrectResults()
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_ScalarValuesHasCCList_CorrectResults()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -256,7 +251,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
             activity.Body = "[[Body]]";
-            activity.FromAccount = "[[FromAccount]]";
             activity.Cc = "[[CC]]";
             activity.Subject = "[[Subject]]";
             TestStartNode = new FlowStep
@@ -279,20 +273,122 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("to.so2meone@amail.account", mailMessage.CC[4].Address);
         }
 
-        static Mock<IEsbChannel> CreateMockEsbChannel(EmailSource emailSourceForTesting)
+        [TestMethod]
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_MixedScalarsRecordsetData_CorrectExcecution()
         {
-            Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();
-            ErrorResultTO errorResultTO;
-            esbChannelMock.Setup(channel => channel.FetchServerModel<EmailSource>(
-                It.IsAny<IDSFDataObject>(),
-                It.IsAny<Guid>(),
-                out errorResultTO)).Returns(emailSourceForTesting);
-            return esbChannelMock;
+            var emailSourceForTesting = EmailSourceForTesting();
+            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
+            var mock = new Mock<IEmailSender>();
+            mock.Setup(sender =>
+                sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
+                Callback<EmailSource, MailMessage>((client, message) =>
+                { });
+            var activity = GetSendEmailActivity(mock);
+            activity.SelectedEmailSource = emailSourceForTesting;
+            activity.Body = "[[mails(*).to]]" + Environment.NewLine + "[[Body]]";
+            activity.To = "[[mails(*).to]]";
+            activity.Subject = "This is the subject!";
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><Body>Body TextQWERXC@#$%</Body><FromAccount>from.someone@amail.account</FromAccount><mails><to>to.someone@amail.account</to></mails><mails><to>to1.someone@amail.account</to></mails><mails><to>to.someone1@amail.account</to></mails><mails><to>to.someone@amail1.account</to></mails></root>";
+            CurrentDl = "<ADL><Body></Body><FromAccount></FromAccount><mails><to/></mails></ADL>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            //------------Assert Results-------------------------
+            mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Exactly(4));
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_FromAccount_EmailSourceIsCorrect()
+        {
+            Verify_Execute_FromAccount_EmailSourceIsCorrect(isFromAccountGiven: true);
+            Verify_Execute_FromAccount_EmailSourceIsCorrect(isFromAccountGiven: false);
+        }
+
+        void Verify_Execute_FromAccount_EmailSourceIsCorrect(bool isFromAccountGiven)
+        {
+            //------------Setup for test--------------------------
+            const string TestSourceAccount = "someone@mydomain.com";
+            const string TestSourcePassword = "xxxx";
+            const string TestFromAccount = "someonelse@mydomain.com";
+            const string TestFromPassword = "yyyy";
+
+            var testSource = new EmailSource
+            {
+                Host = "TestHost",
+                UserName = TestSourceAccount,
+                Password = TestSourcePassword
+            };
+
+            EmailSource sendSource = null;
+            MailMessage sendMessage = null;
+            var emailSender = new Mock<IEmailSender>();
+            emailSender.Setup(sender => sender.Send(It.IsAny<EmailSource>(), It.IsAny<MailMessage>()))
+                .Callback<EmailSource, MailMessage>((source, message) =>
+                {
+                    sendSource = source;
+                    sendMessage = message;
+                });
+
+            var activity = GetSendEmailActivity(emailSender);
+            activity.SelectedEmailSource = testSource;
+            activity.Body = "Hello world";
+            activity.To = "myrecipient@mydomain.com";
+            activity.Subject = "This is the subject!";
+            if(isFromAccountGiven)
+            {
+                activity.FromAccount = TestFromAccount;
+                activity.Password = TestFromPassword;
+            }
+            else
+            {
+                activity.FromAccount = string.Empty;
+                activity.Password = string.Empty;
+            }
+
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root></root>";
+            CurrentDl = "<ADL></ADL>";
+            var esbChannelMock = CreateMockEsbChannel(testSource);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            //------------Assert Results-------------------------
+            emailSender.Verify(sender => sender.Send(It.IsAny<EmailSource>(), It.IsAny<MailMessage>()), Times.Once());
+            Assert.IsNotNull(sendSource);
+            Assert.IsNotNull(sendMessage);
+            Assert.AreNotSame(testSource, sendSource);
+            if(isFromAccountGiven)
+            {
+                Assert.AreEqual(TestFromAccount, sendSource.UserName);
+                Assert.AreEqual(TestFromPassword, sendSource.Password);
+                Assert.AreEqual(TestFromAccount, sendMessage.From.Address);
+            }
+            else
+            {
+                Assert.AreEqual(TestSourceAccount, sendSource.UserName);
+                Assert.AreEqual(TestSourcePassword, sendSource.Password);
+                Assert.AreEqual(TestSourceAccount, sendMessage.From.Address);
+            }
+        }
 
         [TestMethod]
-        public void EmailSenderGetDebugInputOutputExpectedCorrectResults()
+        [TestCategory("SendEmail_GetDebugInputOutput")]
+        public void SendEmail_GetDebugInputOutput_CorrectResults()
         {
             var emailSourceForTesting = EmailSourceForTesting();
             var mock = new Mock<IEmailSender>();
@@ -303,7 +399,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = GetSendEmailActivity(mock);
             activity.SelectedEmailSource = emailSourceForTesting;
             activity.Body = "[[Body]]";
-            activity.FromAccount = "[[FromAccount]]";
             activity.To = "[[CC]]";
             activity.Subject = "[[Subject]]";
             TestStartNode = new FlowStep
@@ -337,9 +432,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-
         [TestMethod]
-        public void SendEmailUpdateForEachInputsWhereScalarValuesShouldSetValues()
+        [TestCategory("SendEmail_UpdateForEachInputs")]
+        public void SendEmail_UpdateForEachInputs_ScalarValuesShouldSetValues()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -389,7 +484,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void SendEmailUpdateForEachOutsputsWhereScalarValuesShouldSetValues()
+        [TestCategory("SendEmail_UpdateForEachOutsputs")]
+        public void SendEmail_UpdateForEachOutsputs_ScalarValuesShouldSetValues()
         {
             //------------Setup for test--------------------------
             var emailSourceForTesting = EmailSourceForTesting();
@@ -414,34 +510,15 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("TheResult", activity.Result);
         }
 
-        [TestMethod]
-        public void ExecuteWhereMixedScalarsRecordsetDataExpectCorrectExcecution()
+        static Mock<IEsbChannel> CreateMockEsbChannel(EmailSource emailSourceForTesting)
         {
-            var emailSourceForTesting = EmailSourceForTesting();
-            var esbChannelMock = CreateMockEsbChannel(emailSourceForTesting);
-            var mock = new Mock<IEmailSender>();
-            mock.Setup(sender =>
-                sender.Send(emailSourceForTesting, It.IsAny<MailMessage>())).
-                Callback<EmailSource, MailMessage>((client, message) =>
-                { });
-            var activity = GetSendEmailActivity(mock);
-            activity.SelectedEmailSource = emailSourceForTesting;
-            activity.Body = "[[mails(*).to]]" + Environment.NewLine + "[[Body]]";
-            activity.FromAccount = "[[FromAccount]]";
-            activity.To = "[[mails(*).to]]";
-            activity.Subject = "This is the subject!";
-            TestStartNode = new FlowStep
-            {
-                Action = activity
-            };
-            TestData = "<root><Body>Body TextQWERXC@#$%</Body><FromAccount>from.someone@amail.account</FromAccount><mails><to>to.someone@amail.account</to></mails><mails><to>to1.someone@amail.account</to></mails><mails><to>to.someone1@amail.account</to></mails><mails><to>to.someone@amail1.account</to></mails></root>";
-            CurrentDl = "<ADL><Body></Body><FromAccount></FromAccount><mails><to/></mails></ADL>";
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess(channel: esbChannelMock.Object, isDebug: true);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-            //------------Assert Results-------------------------
-            mock.Verify(sender => sender.Send(emailSourceForTesting, It.IsAny<MailMessage>()), Times.Exactly(4));
+            Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();
+            ErrorResultTO errorResultTO;
+            esbChannelMock.Setup(channel => channel.FetchServerModel<EmailSource>(
+                It.IsAny<IDSFDataObject>(),
+                It.IsAny<Guid>(),
+                out errorResultTO)).Returns(emailSourceForTesting);
+            return esbChannelMock;
         }
 
         static DsfSendEmailActivity GetSendEmailActivity(Mock<IEmailSender> mock)
@@ -462,7 +539,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var emailSourceForTesting = new EmailSource();
             emailSourceForTesting.Host = "TestHost";
-            emailSourceForTesting.UserName = "TestUserName";
+            emailSourceForTesting.UserName = "from.someone@amail.account";
             emailSourceForTesting.Password = "TestPassword";
             return emailSourceForTesting;
         }

@@ -68,8 +68,8 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Style="{StaticResource ActivityComboBoxStyle}"
-                      SelectedValue="{Binding TheSelectedEmailSource,Mode=TwoWay,NotifyOnSourceUpdated=True}"
-                      ItemsSource="{Binding EmailSourceList}"
+                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding EmailSources}"
                       ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
                       DisplayMemberPath="ResourceName"
                       attachedProperties:FocusSetter.IsFocused="{Binding IsEmailSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -78,7 +78,7 @@
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="TheSelectedEmailSource"
-                                         SourcePropertyValue="{Binding TheSelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
+                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
@@ -127,6 +127,7 @@
                          x:Name="ThePasswordBox"
                          ToolTip="{x:Static help:HelpTextResources.EmailToolTipPassword}"
                          PasswordChanged="OnPasswordChanged"
+                         attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpPassword}"
@@ -140,6 +141,7 @@
             <Button Grid.Column="1"
                     Width="40"
                     Content="Test"
+                    IsEnabled="{Binding CanTestEmailAccount, Mode=TwoWay}"
                     Command="{Binding TestPasswordCommand}"
                     ToolTip="Test Password"
                     Style="{StaticResource ActivityEditButtonStyle}"/>
@@ -218,7 +220,7 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="6"
                   SelectedValue="{Binding ModelItem.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ItemsSource="{Binding PrioritiesList}"
+                  ItemsSource="{Binding Priorities}"
                   Style="{StaticResource ActivityComboBoxStyle}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpPriorityType}"

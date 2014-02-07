@@ -116,9 +116,11 @@
     <Compile Include="Providers\Validation\IErrorsSource.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
+    <Compile Include="Providers\Validation\Rules\IsRequiredWhenOtherIsNotEmptyRule.cs" />
+    <Compile Include="Providers\Validation\Rules\HasAtLeastOneRule.cs" />
     <Compile Include="Providers\Validation\Rules\IRuleSet.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidCollectionRule.cs" />
-    <Compile Include="Providers\Validation\Rules\IsValidEmailRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsValidEmailAccountRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsSingleCharRule.cs" />

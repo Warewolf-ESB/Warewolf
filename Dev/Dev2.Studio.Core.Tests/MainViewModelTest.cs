@@ -1355,6 +1355,20 @@ namespace Dev2.Core.Tests
             Assert.IsInstanceOfType(_mainViewModel, typeof(IHandle<ShowDependenciesMessage>));
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("MainViewModel_Handle")]
+        public void MainViewModel_Handle_FileChooserMessage_True()
+        {
+            //------------Setup for test--------------------------
+            
+            //------------Execute Test---------------------------
+            CreateFullExportsAndVm();
+
+            //------------Assert Results-------------------------
+            Assert.IsInstanceOfType(_mainViewModel, typeof(IHandle<FileChooserMessage>));
+        }
+
         #endregion
 
         #region DeactivateItem
