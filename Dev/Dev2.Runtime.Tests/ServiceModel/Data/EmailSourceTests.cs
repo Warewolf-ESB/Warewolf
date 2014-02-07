@@ -11,7 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EmailSourceTests
     {
         #region Save
@@ -32,7 +33,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.EmailSource, testResource.ResourceID.ToString());
             const string PathStartText = "<Category>";
             int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if (start > 0)
+            if(start > 0)
             {
                 start += PathStartText.Length;
                 int end = (getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal));
