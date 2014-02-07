@@ -93,7 +93,6 @@ namespace Dev2.Integration.Tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("LifecycleManager_StartServer")]
-        [Ignore]
         public void LifecycleManager_StartServer_WhenAServerIsRunning_ExpectSecondServerToCrash()
         {
             int runningServerID = FetchRunningServerID();
