@@ -39,7 +39,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new WorkSurfaceContextViewModel(null, new Mock<IWorkSurfaceViewModel>().Object);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
 
@@ -52,7 +54,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
             new WorkSurfaceContextViewModel(new WorkSurfaceKey(), null);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
 
@@ -96,10 +100,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = false;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel);
-            workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
             mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
             //------------Assert Results-------------------------
@@ -119,8 +121,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
             var environmentModel = mockEnvironmentModel.Object;
             var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(environmentModel);
-            var connectedEventArgs = new ConnectedEventArgs();
-            connectedEventArgs.IsConnected = true;
+            var connectedEventArgs = new ConnectedEventArgs { IsConnected = true };
             workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
             //------------Execute Test---------------------------
             mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
@@ -223,7 +224,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_HandleUpdateDisplayName_NewName_ContextualResourceModelNameChanged()
         {
             var WorksurfaceResourceID = Guid.NewGuid();
-            var newName = "RenamedResource";
+            const string newName = "RenamedResource";
             string actualNewName = null;
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(WorksurfaceResourceID);
@@ -351,7 +352,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            
+
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new DebugResourceMessage(mockResourceModel.Object));
             //------------Assert---------------------------------

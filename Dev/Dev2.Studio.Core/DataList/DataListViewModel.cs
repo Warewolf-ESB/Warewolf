@@ -10,7 +10,6 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
@@ -651,7 +650,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
-        void CheckDataListItemsForDuplicates(ObservableCollection<IDataListItemModel> itemsToCheck)
+        void CheckDataListItemsForDuplicates(IEnumerable<IDataListItemModel> itemsToCheck)
         {
             List<IGrouping<string, IDataListItemModel>> duplicates = itemsToCheck.ToLookup(x => x.Name).ToList();
             foreach(var duplicate in duplicates)
@@ -1121,8 +1120,9 @@ namespace Dev2.Studio.ViewModels.DataList
                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.Name,
                                                                                               String.Empty,
                                                                                               dataListItem.Description));
-                                // ReSharper disable once LoopCanBeConvertedToQuery
+                                // ReSharper disable LoopCanBeConvertedToQuery
                                 foreach(var child in dataListItem.Children)
+                                // ReSharper restore LoopCanBeConvertedToQuery
                                 {
                                     if(!(String.IsNullOrEmpty(child.Name)))
                                     {
@@ -1139,8 +1139,9 @@ namespace Dev2.Studio.ViewModels.DataList
                         }
                         else
                         {
-                            // ReSharper disable once LoopCanBeConvertedToQuery
+                            // ReSharper disable LoopCanBeConvertedToQuery
                             foreach(var child in dataListItem.Children)
+                                // ReSharper restore LoopCanBeConvertedToQuery
                                 if(partsToVerify.Count(part => part.Field == child.Name && part.Recordset == child.Parent.Name) == 0)
                                 {
                                     //19.09.2012: massimo.guerrera - Added in the description to creating the part

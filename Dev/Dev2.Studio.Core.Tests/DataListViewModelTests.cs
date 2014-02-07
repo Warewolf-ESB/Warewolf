@@ -1713,8 +1713,7 @@ namespace Dev2.Core.Tests
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName);
-            scalarItem.IsUsed = false;
+            var scalarItem = new DataListItemModel(scalarName) { IsUsed = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
             //------------Execute Test---------------------------
@@ -1782,8 +1781,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName);
-            scalarItem.IsVisable = true;
+            var scalarItem = new DataListItemModel(scalarName) { IsVisable = true };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "test";
@@ -1799,8 +1797,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             const string scalarName = "scalar";
-            var scalarItem = new DataListItemModel(scalarName);
-            scalarItem.IsVisable = false;
+            var scalarItem = new DataListItemModel(scalarName) { IsVisable = false };
             dataListViewModel.ScalarCollection.Add(scalarItem);
             //------------Execute Test---------------------------
             dataListViewModel.SearchText = "sca";
@@ -1969,7 +1966,7 @@ namespace Dev2.Core.Tests
             return part;
         }
 
-        IList<IDataListItemModel> CreateDataListItems(IDataListViewModel viewModel, IList<IDataListVerifyPart> parts, bool isAdd)
+        IEnumerable<IDataListItemModel> CreateDataListItems(IDataListViewModel viewModel, IEnumerable<IDataListVerifyPart> parts, bool isAdd)
         {
             var results = new List<IDataListItemModel>();
 
@@ -2029,8 +2026,7 @@ namespace Dev2.Core.Tests
 
         void AddRecordSetItem(IDataListViewModel viewModel, IDataListVerifyPart part, List<IDataListItemModel> results)
         {
-            IDataListItemModel item;
-            item = DataListItemModelFactory.CreateDataListItemViewModel(viewModel, part.Recordset, part.Description, null, true);
+            IDataListItemModel item = DataListItemModelFactory.CreateDataListItemViewModel(viewModel, part.Recordset, part.Description, null, true);
             results.Add(item);
         }
     }

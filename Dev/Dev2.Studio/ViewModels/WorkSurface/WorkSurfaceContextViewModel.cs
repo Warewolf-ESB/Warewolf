@@ -532,9 +532,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void FindMissing()
         {
-            if(WorkSurfaceViewModel is WorkflowDesignerViewModel)
+            WorkflowDesignerViewModel model = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            if(model != null)
             {
-                var vm = (WorkflowDesignerViewModel)WorkSurfaceViewModel;
+                var vm = model;
                 vm.AddMissingWithNoPopUpAndFindUnusedDataListItems();
             }
         }
