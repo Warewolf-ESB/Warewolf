@@ -686,7 +686,7 @@
                                         <InArgument x:TypeArguments="x:Int32">[WebRequestTimeOut]</InArgument>
                                       </Assign.Value>
                                     </Assign>
-                                    <InvokeMethod DisplayName="Log Event" sap2010:WorkflowViewState.IdRef="InvokeMethod_79" MethodName="GetResponse" RunAsynchronously="True">
+                                    <InvokeMethod DisplayName="Insert Results" sap2010:WorkflowViewState.IdRef="InvokeMethod_79" MethodName="GetResponse" RunAsynchronously="True">
                                       <InvokeMethod.TargetObject>
                                         <InArgument x:TypeArguments="sn:WebRequest">[agentWebRequest]</InArgument>
                                       </InvokeMethod.TargetObject>
