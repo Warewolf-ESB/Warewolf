@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Threading;
 using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,12 +19,16 @@ namespace Dev2.Studio.UI.Tests.Utils
         private static Process _studioProc;
         private const string ServerName = "Warewolf Server.exe";
         private const string StudioName = "Warewolf Studio.exe";
+        private const string ServerProcName = "Warewolf Server";
+        private const string StudioProcName = "Warewolf Studio";
         private const int ServerTimeOut = 30000;
         private const int StudioTimeOut = 30000;
         private const string ChangesetIDPathFileName = "ForChangesetID.txt";//For getting the changeset ID
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
         private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
 
+        public static string ServerLocation;
+        public static string StudioLocation;
 
         private static object _tumbler = new object();
 
@@ -33,10 +39,23 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
-            if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901") return;
-
             lock(_tumbler)
             {
+                var serverProcess = TryGetProcess(ServerProcName);
+                var studioProcess = TryGetProcess(StudioProcName);
+                if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+                {
+                    ServerLocation = GetProcessPath(serverProcess);
+                    StudioLocation = GetProcessPath(studioProcess);
+                    return;
+                }
+
+                // term any existing studio processes ;)
+                KillProcess(studioProcess);
+
+                // term any existing server processes ;)
+                KillProcess(serverProcess);
+
                 var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
                 var changesetID = GetChangestID(getChangesetIDPathFilePath);
                 GetChangesetBuild(changesetID);
@@ -137,6 +156,58 @@ namespace Dev2.Studio.UI.Tests.Utils
             catch(Exception)
             {
 
+            }
+        }
+
+        private static ManagementObjectCollection TryGetProcess(string procName)
+        {
+            var processName = procName;
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+            //initialize the searcher with the query it is
+            //supposed to execute
+            using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            {
+                //execute the query
+                ManagementObjectCollection processes = searcher.Get();
+                if(processes.Count <= 0)
+                {
+                    return null;
+                }
+                return processes;
+            }
+        }
+
+        private static string GetProcessPath(ManagementObjectCollection processes)
+        {
+            if(processes == null || processes.Count == 0)
+            {
+                return null;
+            }
+            return (from ManagementObject process in processes select process.Properties["ExecutablePath"].Value.ToString()).FirstOrDefault();
+        }
+
+        static void KillProcess(ManagementObjectCollection processes)
+        {
+            if(processes == null)
+            {
+                return;
+            }
+            foreach(ManagementObject process in processes)
+            {
+                //print process properties
+                process.Get();
+                var pid = process.Properties["ProcessID"].Value.ToString();
+
+                var proc = Process.GetProcessById(Int32.Parse(pid));
+
+                try
+                {
+                    proc.Kill();
+                }
+                catch
+                {
+                    // Do nothing
+                }
             }
         }
     }

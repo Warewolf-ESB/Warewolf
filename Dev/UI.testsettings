@@ -5,7 +5,6 @@
     <DeploymentItem filename="ForChangesetID.txt" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" cleanupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Buckets size="5" />

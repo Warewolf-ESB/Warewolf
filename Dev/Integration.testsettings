@@ -6,7 +6,6 @@
     <DeploymentItem filename="TestData\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" cleanupScript="\\rsaklfsvrtfsbld\Automated Builds\TestRunStaging\ExitProcesses.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="60" />
