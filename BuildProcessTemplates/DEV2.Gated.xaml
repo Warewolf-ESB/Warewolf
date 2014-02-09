@@ -1344,7 +1344,7 @@
                         <mtbwa:CopyDirectory Destination="[BinariesDirectory &amp; &quot;\Webs&quot;]" DisplayName="Copy Webs Dir into Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_6" Source="[SourcesDirectory &amp; &quot;\Dev2.Server\bin\Debug\Webs&quot;]" />
                         <InvokeMethod DisplayName="Label Build" sap2010:WorkflowViewState.IdRef="InvokeMethod_30" MethodName="WriteAllText" TargetType="si:File">
                           <InArgument x:TypeArguments="x:String">[BinariesDirectory &amp; "\" &amp; BuildLabelFilename]</InArgument>
-                          <InArgument x:TypeArguments="x:String">["BuildID: " &amp; SpecifiedChangesetID &amp; "/nLogging: " &amp; DirectCast(IIf(Not LoggingUrl = String.Empty, "On", "Off"), String)]</InArgument>
+                          <InArgument x:TypeArguments="x:String">["BuildID: " &amp; SpecifiedChangesetID &amp; "\nLogging: " &amp; DirectCast(IIf(Not LoggingUrl = String.Empty, "On", "Off"), String)]</InArgument>
                         </InvokeMethod>
                         <Sequence DisplayName="Zip and create staging directory" sap2010:WorkflowViewState.IdRef="Sequence_95">
                           <mtbwa:CopyDirectory Destination="C:\Binaries" DisplayName="Create C:\Binaries" sap2010:WorkflowViewState.IdRef="CopyDirectory_15" Source="[BinariesDirectory]" />
