@@ -13,7 +13,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PluginSourceTests
     {
         #region Save
@@ -34,7 +35,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var getSavedResource = Resources.ReadXml(GlobalConstants.ServerWorkspaceID, ResourceType.PluginSource, testResource.ResourceID.ToString());
             const string PathStartText = "<Category>";
             int start = getSavedResource.IndexOf(PathStartText, StringComparison.Ordinal);
-            if (start > 0)
+            if(start > 0)
             {
                 start += PathStartText.Length;
                 int end = (getSavedResource.IndexOf("</Category>", start, StringComparison.Ordinal));
