@@ -1,77 +1,62 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Management;
+using System.Reflection;
 using System.Threading;
-using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Studio.UI.Tests.Utils
+namespace Dev2.Integration.Tests
 {
     /// <summary>
-    /// Used to bootstrap the server for coded UI test runs
+    /// Used to bootstrap the server for integration test runs ;)
     /// </summary>
     [TestClass()]
     public class Bootstrap
     {
         private static Process _serverProc;
         private static Process _studioProc;
-        private const string ServerName = "Warewolf Server.exe";
-        private const string StudioName = "Warewolf Studio.exe";
-        private const string ServerProcName = "Warewolf Server";
-        private const string StudioProcName = "Warewolf Studio";
-        private const int ServerTimeOut = 30000;
-        private const int StudioTimeOut = 30000;
-        private const string ChangesetIDPathFileName = "ForChangesetID.txt";//For getting the changeset ID
-        private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
-        private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
+        private const string _serverName = "Warewolf Server.exe";
+        private const string _studioName = "Warewolf Studio.exe";
 
-        public static string ServerLocation;
-        public static string StudioLocation;
 
         private static object _tumbler = new object();
 
         /// <summary>
-        /// Inits the specified test CTX.
+        /// Inits the specified text CTX.
         /// </summary>
-        /// <param name="textCtx">The test CTX.</param>
+        /// <param name="textCtx">The text CTX.</param>
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
+            if(textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
+
             lock(_tumbler)
             {
-                var serverProcess = TryGetProcess(ServerProcName);
-                var studioProcess = TryGetProcess(StudioProcName);
-                if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+                if(File.Exists("C:\\Users\\IntegrationTester\\Desktop\\uitest.log"))
                 {
-                    ServerLocation = GetProcessPath(serverProcess);
-                    StudioLocation = GetProcessPath(studioProcess);
-                    return;
+                    File.Delete("C:\\Users\\IntegrationTester\\Desktop\\uitest.log");
                 }
 
-                // term any existing studio processes ;)
-                KillProcess(studioProcess);
+                var assembly = Assembly.GetExecutingAssembly();
+                var loc = assembly.Location;
 
-                // term any existing server processes ;)
-                KillProcess(serverProcess);
+                var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+                var studioLoc = Path.Combine(Path.GetDirectoryName(loc), _studioName);
 
-                var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
-                var changesetID = GetChangestID(getChangesetIDPathFilePath);
-                GetChangesetBuild(changesetID);
-
-                var serverLoc = Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), changesetID, "Binaries", ServerName);
-                var studioLoc = Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), changesetID, "Binaries", StudioName);
+                //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
 
                 var args = "-t";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
+                ProcessStartInfo startInfo = new ProcessStartInfo();
+                startInfo.CreateNoWindow = false;
+                startInfo.UseShellExecute = true;
+                startInfo.FileName = serverLoc;
                 //startInfo.RedirectStandardOutput = true;
                 //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.Arguments = args;
 
                 var started = false;
                 var startCnt = 0;
-                startInfo.FileName = serverLoc;
 
                 while(!started && startCnt < 5)
                 {
@@ -80,14 +65,23 @@ namespace Dev2.Studio.UI.Tests.Utils
                         _serverProc = Process.Start(startInfo);
 
                         // Wait for server to start
-                        Thread.Sleep(ServerTimeOut); // wait for server to start ;)
+                        Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
                         if(_serverProc != null && !_serverProc.HasExited)
                         {
                             started = true;
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
+                        try
+                        {
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
+                        }
+                        // ReSharper disable once EmptyGeneralCatchClause
+                        catch
+                        {
+                        }
+
                         // most likely a server is already running, kill it and try again ;)
                         startCnt++;
                     }
@@ -104,34 +98,27 @@ namespace Dev2.Studio.UI.Tests.Utils
                         _studioProc = Process.Start(startInfo);
 
                         // Wait for studio to start
-                        Thread.Sleep(StudioTimeOut); // wait for server to start ;)
+                        Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
                         if(_studioProc != null && !_studioProc.HasExited)
                         {
                             started = true;
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
+                        try
+                        {
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
+                        }
+                        // ReSharper disable once EmptyGeneralCatchClause
+                        catch
+                        {
+                        }
+
                         // most likely a studio is already running, kill it and try again ;)
                         startCnt++;
                     }
                 }
-            }
-        }
-
-        static string GetChangestID(string path)
-        {
-            var changesetID = File.ReadAllText(path);
-            return changesetID;
-        }
-
-        static void GetChangesetBuild(string changesetID)
-        {
-            var remoteBuildPath = Path.Combine(Path.GetDirectoryName(RemoteBuildDirectory), changesetID + ".zip");
-
-            using(var zippedBuild = ZipFile.Read(remoteBuildPath))
-            {
-                zippedBuild.ExtractAll(Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), changesetID), ExtractExistingFileAction.OverwriteSilently);
             }
         }
 
@@ -148,66 +135,6 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(_studioProc != null)
             {
                 _studioProc.Kill();
-            }
-            try
-            {
-                Directory.Delete(LocalBuildRunDirectory, true);
-            }
-            catch(Exception)
-            {
-
-            }
-        }
-
-        private static ManagementObjectCollection TryGetProcess(string procName)
-        {
-            var processName = procName;
-            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
-            //initialize the searcher with the query it is
-            //supposed to execute
-            using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
-            {
-                //execute the query
-                ManagementObjectCollection processes = searcher.Get();
-                if(processes.Count <= 0)
-                {
-                    return null;
-                }
-                return processes;
-            }
-        }
-
-        private static string GetProcessPath(ManagementObjectCollection processes)
-        {
-            if(processes == null || processes.Count == 0)
-            {
-                return null;
-            }
-            return (from ManagementObject process in processes select process.Properties["ExecutablePath"].Value.ToString()).FirstOrDefault();
-        }
-
-        static void KillProcess(ManagementObjectCollection processes)
-        {
-            if(processes == null)
-            {
-                return;
-            }
-            foreach(ManagementObject process in processes)
-            {
-                //print process properties
-                process.Get();
-                var pid = process.Properties["ProcessID"].Value.ToString();
-
-                var proc = Process.GetProcessById(Int32.Parse(pid));
-
-                try
-                {
-                    proc.Kill();
-                }
-                catch
-                {
-                    // Do nothing
-                }
             }
         }
     }
