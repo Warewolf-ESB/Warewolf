@@ -14,9 +14,7 @@ namespace Dev2.Integration.Tests
     public class Bootstrap
     {
         private static Process _serverProc;
-        private static Process _studioProc;
         private const string _serverName = "Warewolf Server.exe";
-        private const string _studioName = "Warewolf Studio.exe";
 
 
         private static object _tumbler = new object();
@@ -41,7 +39,6 @@ namespace Dev2.Integration.Tests
                 var loc = assembly.Location;
 
                 var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
-                var studioLoc = Path.Combine(Path.GetDirectoryName(loc), _studioName);
 
                 //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
 
@@ -86,39 +83,6 @@ namespace Dev2.Integration.Tests
                         startCnt++;
                     }
                 }
-
-                started = false;
-                startCnt = 0;
-                startInfo.FileName = studioLoc;
-
-                while(!started && startCnt < 5)
-                {
-                    try
-                    {
-                        _studioProc = Process.Start(startInfo);
-
-                        // Wait for studio to start
-                        Thread.Sleep(30000); // wait up to 30 seconds for server to start ;)
-                        if(_studioProc != null && !_studioProc.HasExited)
-                        {
-                            started = true;
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        try
-                        {
-                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
-                        }
-                        // ReSharper disable once EmptyGeneralCatchClause
-                        catch
-                        {
-                        }
-
-                        // most likely a studio is already running, kill it and try again ;)
-                        startCnt++;
-                    }
-                }
             }
         }
 
@@ -131,10 +95,6 @@ namespace Dev2.Integration.Tests
             if(_serverProc != null)
             {
                 _serverProc.Kill();
-            }
-            if(_studioProc != null)
-            {
-                _studioProc.Kill();
             }
         }
     }
