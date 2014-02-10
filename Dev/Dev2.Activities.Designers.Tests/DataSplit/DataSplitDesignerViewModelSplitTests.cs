@@ -101,7 +101,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
         static void VerifySplitTypeAgainstIsEscapeCharEnabled(string splitType, bool expectedIsEscapeCharEnabled)
         {
-            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, "", 0) { EscapeChar = "'"} };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, "", 0) { EscapeChar = "'" } };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             viewModel.SplitTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
@@ -194,7 +194,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             StringAssert.Contains(viewModel.Errors[0].Message, "'Results' - Invalid expression: opening and closing brackets don't match");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsOutputVariableFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a whole number");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a positive whole number");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
         }
 

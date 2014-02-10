@@ -191,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         case SplitTypeIndex:
                             var atIndexExprRule = new IsValidExpressionRule(() => At, "1");
                             ruleSet.Add(atIndexExprRule);
-                            ruleSet.Add(new IsNumericRule(() => atIndexExprRule.ExpressionValue));
+                            ruleSet.Add(new IsPositiveNumberRule(() => atIndexExprRule.ExpressionValue));
                             break;
                         case SplitTypeChars:
                             var atCharsExprRule = new IsValidExpressionRule(() => At, ",");

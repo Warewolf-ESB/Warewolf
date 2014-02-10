@@ -324,18 +324,6 @@ namespace Dev2.Tests.Activities.TOTests
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
-        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsNotNumeric_ValidateRulesReturnsFalse()
-        {
-            //------------Setup for test--------------------------
-            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "h", SplitType = DataSplitDTO.SplitTypeIndex };
-
-            //------------Execute Test---------------------------
-            Verify_RuleSet(dto, "At", "must be a whole number");
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("DataSplitDTO_GetRuleSet")]
         public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsNumeric_ValidateRulesReturnsTrue()
         {
             //------------Setup for test--------------------------
@@ -388,6 +376,42 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = ",", SplitType = DataSplitDTO.SplitTypeChars };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsLessThan0_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "-1", SplitType = DataSplitDTO.SplitTypeIndex };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", " must be a positive whole number");
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIsGreaterThan0_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "5", SplitType = DataSplitDTO.SplitTypeIndex };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "At", null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetAt_SplitTypeIsIndexAndIs0_ValidateRulesReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[rs]]", At = "0", SplitType = DataSplitDTO.SplitTypeIndex };
 
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
