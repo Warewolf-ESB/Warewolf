@@ -516,9 +516,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
         }
 
-        public void Save(bool isLocalSave = false)
+        public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            Save(ContextualResourceModel, isLocalSave);
+            Save(ContextualResourceModel, isLocalSave, isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
@@ -544,7 +544,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
         {
             if(resource == null || !resource.UserPermissions.IsContributor())
             {
@@ -568,7 +568,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
 
             BindToModel();
+
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
+            // shutdown - just save to workspace
+            if(isStudioShutdown)
+            {
+                return true;
+            }
+
             resource.Environment.ResourceRepository.Save(resource);
             DisplaySaveResult(result, resource);
             if(!isLocalSave)

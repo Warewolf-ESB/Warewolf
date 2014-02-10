@@ -604,7 +604,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         public int SaveHitCount { get; private set; }
 
-        protected override bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected override bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true, bool isStudioShutdown = false)
         {
             SaveHitCount++;
             return true;

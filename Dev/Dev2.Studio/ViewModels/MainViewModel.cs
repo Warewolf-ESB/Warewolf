@@ -1410,7 +1410,7 @@ namespace Dev2.Studio.ViewModels
         /// <summary>
         ///     Saves all open tabs locally and writes the open tabs the to collection of workspace items
         /// </summary>
-        public bool PersistTabs()
+        public bool PersistTabs(bool isStudioShutdown = false)
         {
             SaveWorkspaceItems();
             var savingCompleted = false;
@@ -1419,7 +1419,7 @@ namespace Dev2.Studio.ViewModels
                 var ctx = Items[index];
                 if(ctx.IsEnvironmentConnected())
                 {
-                    ctx.Save(true);
+                    ctx.Save(true, isStudioShutdown);
                 }
                 if(index == Items.Count - 1)
                 {

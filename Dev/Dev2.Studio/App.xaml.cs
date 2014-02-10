@@ -89,9 +89,11 @@ namespace Dev2.Studio
         protected override void OnExit(ExitEventArgs e)
         {
             Tracker.Stop();
+
+            // this is already handled ;)
             if(_mainViewModel != null)
             {
-                _mainViewModel.PersistTabs();
+                _mainViewModel.PersistTabs(true);
             }
 
             HasShutdownStarted = true;
