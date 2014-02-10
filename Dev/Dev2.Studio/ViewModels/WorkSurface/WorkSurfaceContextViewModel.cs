@@ -570,6 +570,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             BindToModel();
 
             var result = _workspaceItemRepository.UpdateWorkspaceItem(resource, isLocalSave);
+
             // shutdown - just save to workspace
             if(isStudioShutdown)
             {
