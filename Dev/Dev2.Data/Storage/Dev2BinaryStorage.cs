@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Data.Storage.ProtocolBuffers;
@@ -93,7 +92,7 @@ namespace Dev2.Data.Storage
     {
         public static InternalStorageBuffer scrubBuffer;
 
-        private static readonly object _lock = new object();
+        //private static readonly object _lock = new object();
 
         public static void Init(int bufCap)
         {
@@ -107,36 +106,36 @@ namespace Dev2.Data.Storage
         /// <param name="indexs">The indexes.</param>
         public static void Compact(ref InternalStorageBuffer fromBuffer, ref ConcurrentDictionary<string, BinaryStorageKey> indexs)
         {
-            lock(_lock)
+            // lock(_lock)
+            //{
+            scrubBuffer.ResetBuffer();
+
+            foreach(var storageKey in indexs.Keys)
             {
-                scrubBuffer.ResetBuffer();
-
-                foreach(var storageKey in indexs.Keys)
+                // Scrub out old data ;)
+                BinaryStorageKey tmpKey;
+                if(indexs.TryRemove(storageKey, out tmpKey))
                 {
-                    // Scrub out old data ;)
-                    BinaryStorageKey tmpKey;
-                    if(indexs.TryRemove(storageKey, out tmpKey))
-                    {
-                        long pos = tmpKey.Position;
-                        int len = tmpKey.Length;
+                    long pos = tmpKey.Position;
+                    int len = tmpKey.Length;
 
-                        var bytes = fromBuffer.FetchFromBuffer(pos, len);
+                    var bytes = fromBuffer.FetchFromBuffer(pos, len);
 
-                        var idx = scrubBuffer.InsertSegment(bytes);
+                    var idx = scrubBuffer.InsertSegment(bytes);
 
-                        tmpKey.Position = idx;
+                    tmpKey.Position = idx;
 
-                        indexs[storageKey] = tmpKey;
-                    }
-
-                    Thread.Sleep(10);
+                    indexs[storageKey] = tmpKey;
                 }
 
-                // now copy over the data ;)
-                fromBuffer.ResetBuffer();
-                scrubBuffer.TransferTo(ref fromBuffer);
+                //Thread.Sleep(10);
             }
+
+            // now copy over the data ;)
+            fromBuffer.ResetBuffer();
+            scrubBuffer.TransferTo(ref fromBuffer);
         }
+        // }
     }
 
     /// <summary>
@@ -684,8 +683,12 @@ namespace Dev2.Data.Storage
             // compact when we get to a set size ;)
             if(force || _runningRemoveCnt > GlobalConstants.MemoryItemCountCompactLevel)
             {
-                CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
-                _runningRemoveCnt = 0;
+                lock(_opsLock)
+                {
+                    ServerLogger.LogMessage("**** Compacting Memory");
+                    CompactBuffer.Compact(ref _internalBuffer, ref _bufferIndexes);
+                    _runningRemoveCnt = 0;
+                }
             }
         }
 

@@ -101,6 +101,7 @@ namespace Dev2.Data.Binary_Objects
                     // now we need to pack memory to reclaim space ;)
                     if(doCompact)
                     {
+                        // turned force off ;)
                         BinaryDataListStorageLayer.CompactMemory(true);
                     }
                 }
