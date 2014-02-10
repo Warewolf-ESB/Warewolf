@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests
         [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
-            if(textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
+            if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
 
             lock(_tumbler)
             {
