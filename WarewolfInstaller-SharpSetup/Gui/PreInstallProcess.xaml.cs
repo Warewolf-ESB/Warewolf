@@ -91,6 +91,8 @@ namespace Gui
         /// </summary>
         private void OpenPorts()
         {
+            // Use : netsh.exe http show urlacl - To view urlacl rules ;)
+
             var args = new[] { @"http add urlacl url=http://*:3142/  user=\Everyone", @"http add urlacl url=https://*:3143/ user=\Everyone" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
