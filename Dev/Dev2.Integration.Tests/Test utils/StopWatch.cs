@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Dev2.Integration.Tests.MEF
 {
@@ -15,14 +12,14 @@ namespace Dev2.Integration.Tests.MEF
 
         public void Start()
         {
-            this.startTime = DateTime.Now;
-            this.isRunning = true;
+            startTime = DateTime.Now;
+            isRunning = true;
         }
 
         public void Stop()
         {
-            this.stopTime = DateTime.Now;
-            this.isRunning = false;
+            stopTime = DateTime.Now;
+            isRunning = false;
         }
 
         // elapsed time in milliseconds
@@ -30,7 +27,7 @@ namespace Dev2.Integration.Tests.MEF
         {
             TimeSpan interval;
 
-            if (isRunning)
+            if(isRunning)
                 interval = DateTime.Now - startTime;
             else
                 interval = stopTime - startTime;

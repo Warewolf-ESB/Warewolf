@@ -308,7 +308,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             Verify_FetchStoredProcedures_Pr_CitiesGetCountries(procedureCommand, procedureCommandParameters, procedureHelpText);
             Verify_FetchStoredProcedures_Fn_Greeting(functionCommand, functionCommandParameters, functionHelpText);
         }
-  
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("SqlServer_FetchStoredProcedures")]
@@ -400,11 +400,11 @@ order by Description asc
         {
             Assert.IsNotNull(actualParameters);
             Assert.IsNotNull(actualHelpText);
-            
+
             Assert.AreEqual(2, actualParameters.Count);
             Assert.AreEqual("@ServerUri", actualParameters[0].ParameterName);
             Assert.AreEqual(DbType.String, actualParameters[0].DbType);
-            
+
             Assert.AreEqual("@RecordsetName", actualParameters[1].ParameterName);
             Assert.AreEqual(DbType.String, actualParameters[1].DbType);
 

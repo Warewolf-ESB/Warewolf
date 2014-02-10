@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Text;
 
 namespace Dev2.Integration.Tests.Utils
 {
@@ -16,9 +14,9 @@ namespace Dev2.Integration.Tests.Utils
             request.ContentLength = 0;
             try
             {
-                return request.GetResponse().ReadAllContent().ToString();
+                return request.GetResponse().ReadAllContent();
             }
-            catch (WebException httpex)
+            catch(WebException httpex)
             { return httpex.Message; }
         }
 
@@ -35,14 +33,14 @@ namespace Dev2.Integration.Tests.Utils
         {
             var request = WebRequest.Create(url);
             request.Method = "POST";
-            if (data == null)
+            if(data == null)
             {
                 request.ContentLength = 0;
             }
             else
             {
-                using (var requestStream = request.GetRequestStream())
-                using (var writer = new StreamWriter(requestStream, new UTF8Encoding(false)))
+                using(var requestStream = request.GetRequestStream())
+                using(var writer = new StreamWriter(requestStream, new UTF8Encoding(false)))
                 {
                     writer.Write(data);
                 }
@@ -61,11 +59,16 @@ namespace Dev2.Integration.Tests.Utils
     {
         public static string ReadAllContent(this WebResponse response)
         {
-            using (var streamReader = new StreamReader(response.GetResponseStream()))
+            if(response != null)
             {
-                var result = streamReader.ReadToEnd();
-                return result;
+                using(var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    return result;
+                }
             }
+
+            return string.Empty;
         }
     }
 

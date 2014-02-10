@@ -1,6 +1,6 @@
-﻿using Dev2.Integration.Tests.Helpers;
+﻿using System;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -10,33 +10,15 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfSortActivityTest
     {
-        public DsfSortActivityTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-        private string WebserverURI = ServerSettings.WebserverURI;
-        private string _sortBackwardsWorkflow = "SortBackwardsTest";
-        private string _sortForwardsWorkflow = "SortForwardsTest";
-        private string _sortDateTimeWorkflow = "SortActivity_DateSort";
+        private readonly string WebserverURI = ServerSettings.WebserverURI;
+        const string _sortBackwardsWorkflow = "SortBackwardsTest";
+        const string _sortForwardsWorkflow = "SortForwardsTest";
+        const string _sortDateTimeWorkflow = "SortActivity_DateSort";
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //

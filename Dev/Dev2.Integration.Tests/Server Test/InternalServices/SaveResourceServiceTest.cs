@@ -28,7 +28,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         public void SaveResource_WhenHasNoIDPassed_SavesToWorkspace()
         {
             //------------Setup for test--------------------------
-            string service = "<Payload><Roles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,DEV2 Limited Internet Access</Roles><ResourceXml>" + BlankService + "</ResourceXml></Payload>";
+            const string service = "<Payload><Roles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,DEV2 Limited Internet Access</Roles><ResourceXml>" + BlankService + "</ResourceXml></Payload>";
             var webserverURI = ServerSettings.WebserverURI + "SaveResourceService?" + service;
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserver(webserverURI).Unescape();

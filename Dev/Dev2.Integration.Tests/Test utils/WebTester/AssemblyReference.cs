@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Reflection;
 
@@ -28,7 +26,10 @@ namespace Dev2.Integration.Tests.WebTester
         public void ExecuteMethod(string methodName, string[] parameters)
         {
             object obj = _assembly.CreateInstance(methodName, true);
-            obj.GetType().GetProperties();
+            if(obj != null)
+            {
+                obj.GetType().GetProperties();
+            }
         }
 
         public string[] GetParamsForMethod(string MethodName)
@@ -37,8 +38,7 @@ namespace Dev2.Integration.Tests.WebTester
 
             //Need to query the Dictionary using a LINQ query
             // for the time being
-            List<string> param = new List<string>();
-            param = GetParametersForMethod(MethodName);
+            List<string> param = GetParametersForMethod(MethodName);
             return param.ToArray();
         }
 
@@ -58,7 +58,7 @@ namespace Dev2.Integration.Tests.WebTester
             {
                 _assembly = Assembly.LoadFile(FullAssemblyPath);
             }
-            catch (FileNotFoundException fnfex)
+            catch(FileNotFoundException fnfex)
             {
                 throw fnfex;
             }
@@ -67,11 +67,11 @@ namespace Dev2.Integration.Tests.WebTester
         private void GetMethods()
         {
             Type[] types = _assembly.GetTypes();
-            
-            foreach (Type type in types)
+
+            foreach(Type type in types)
             {
                 MethodInfo[] _methods = type.GetMethods();
-                foreach (MethodInfo method in _methods)
+                foreach(MethodInfo method in _methods)
                 {
                     ParameterInfo[] parameters = method.GetParameters();
                     methodParamMap.Add(method.Name, parameters);

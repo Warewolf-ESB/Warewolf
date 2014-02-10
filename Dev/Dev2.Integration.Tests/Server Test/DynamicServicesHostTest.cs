@@ -1,7 +1,7 @@
 ﻿
+using System;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
@@ -21,7 +21,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             set;
         }
 
-        
+
         [TestMethod]
         public void TestPluginNull_Expected_AnonymousSend()
         {
@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         }
 
-        
+
         [TestMethod]
         public void WorkflowWithPluginActivity_Integration_ExpectedReturnsPluginData()
         {
@@ -51,11 +51,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
             //------------Assert Results-------------------------
-            string expectedReturnValue = "<Name>Dev2</Name><Departments><Name>Dev</Name></Departments><Departments><Name>Accounts</Name></Departments>" +
-                                         "<Departments_Employees><Name>Brendon</Name></Departments_Employees><Departments_Employees><Name>Jayd</Name>" +
-                                         "</Departments_Employees><Departments_Employees><Name>Bob</Name></Departments_Employees>" +
-                                         "<Departments_Employees><Name>Jo</Name></Departments_Employees>";
-            StringAssert.Contains(result,expectedReturnValue);
+            const string expectedReturnValue = "<Name>Dev2</Name><Departments><Name>Dev</Name></Departments><Departments><Name>Accounts</Name></Departments>" +
+                                               "<Departments_Employees><Name>Brendon</Name></Departments_Employees><Departments_Employees><Name>Jayd</Name>" +
+                                               "</Departments_Employees><Departments_Employees><Name>Bob</Name></Departments_Employees>" +
+                                               "<Departments_Employees><Name>Jo</Name></Departments_Employees>";
+            StringAssert.Contains(result, expectedReturnValue);
         }
     }
 }

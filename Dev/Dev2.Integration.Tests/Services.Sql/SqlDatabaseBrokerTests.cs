@@ -61,7 +61,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [ExpectedException(typeof(SqlException))]
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.User);
+            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.User);
+            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             var broker = new SqlDatabaseBroker();
             var result = broker.GetServiceMethods(dbSource);
             Assert.AreEqual(true, result.Count > 0);
@@ -158,7 +158,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [ExpectedException(typeof(SqlException))]
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.User);
+            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
             dbSource.Password = "invalidPassword";
 
@@ -185,7 +185,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_TestService")]
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
         {
-            var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.User);
+            var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             var serviceConn = new DbService
             {
                 ResourceID = Guid.NewGuid(),
@@ -226,7 +226,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                 {
                     Name = "Collections",
                 },
-                Source = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.User)
+                Source = SqlServerTests.CreateDev2TestingDbSource()
             };
 
             var broker = new SqlDatabaseBroker();

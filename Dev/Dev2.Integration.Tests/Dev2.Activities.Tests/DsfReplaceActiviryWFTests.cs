@@ -1,6 +1,6 @@
-﻿using Dev2.Integration.Tests.Helpers;
+﻿using System;
+using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -10,38 +10,19 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfReplaceActivityWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public DsfReplaceActivityWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void ReplaceToolUsingRecordsetWithStar()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReplaceToolUsingRecordsetWithStar");
-            string expected =
-                @"<ReplacementCount>3</ReplacementCount><People><Name>Wallis Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Barney Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Jurie Smit</Name><Province>GP</Province></People><People><Name>Massimo Guerrera</Name><Province>Kwa-Zulu Natal</Province></People>";
+            const string expected = @"<ReplacementCount>3</ReplacementCount><People><Name>Wallis Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Barney Buchan</Name><Province>Kwa-Zulu Natal</Province></People><People><Name>Jurie Smit</Name><Province>GP</Province></People><People><Name>Massimo Guerrera</Name><Province>Kwa-Zulu Natal</Province></People>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

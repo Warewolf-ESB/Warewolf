@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Integration.Tests.Interfaces;
+﻿using Dev2.Integration.Tests.Interfaces;
 
 namespace Dev2.Integration.Tests.MEF.WebTester
 {
@@ -38,7 +34,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         {
             AsynchronousRequest async = new AsynchronousRequest();
             async.ScanSite(_url, _postData);
-            _responseData =  async.GetResponseData();
+            _responseData = async.GetResponseData();
         }
 
         private string[] SplitPostFromUrl(string PostWithUrl)

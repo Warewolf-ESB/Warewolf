@@ -15,8 +15,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     [TestClass]
     public class GetDatabaseTablesServiceTest
     {
-
-        string _webserverURI = ServerSettings.WebserverURI;
+        readonly string _webserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -51,13 +50,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         [TestMethod]
         public void GetTablesForDatabase_GivenDatabaseSource_Expected_AllTablesForDatabase()
         {
-            var dbSource = new DbSource();
-            dbSource.DatabaseName = "Cities";
-            dbSource.Server = "RSAKLFSVRGENDEV";
-            dbSource.AuthenticationType = AuthenticationType.User;
-            dbSource.ServerType = enSourceType.SqlDatabase;
-            dbSource.UserID = "testUser";
-            dbSource.Password = "test123";
+            var dbSource = new DbSource { DatabaseName = "Cities", Server = "RSAKLFSVRGENDEV", AuthenticationType = AuthenticationType.User, ServerType = enSourceType.SqlDatabase, UserID = "testUser", Password = "test123" };
             //dbSource.ConnectionString = "Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Cities;User ID=testUser;Password=test123;";
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
@@ -75,13 +68,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         [TestMethod]
         public void GetTablesForDatabase_GivenDatabaseSource_InvalidCredentials_Expected_HasErrors()
         {
-            var dbSource = new DbSource();
-            dbSource.DatabaseName = "Cities";
-            dbSource.Server = "RSAKLFSVRGENDEV";
-            dbSource.AuthenticationType = AuthenticationType.User;
-            dbSource.ServerType = enSourceType.SqlDatabase;
-            dbSource.UserID = "testUser";
-            dbSource.Password = Guid.NewGuid().ToString();  // Random invalid password
+            var dbSource = new DbSource { DatabaseName = "Cities", Server = "RSAKLFSVRGENDEV", AuthenticationType = AuthenticationType.User, ServerType = enSourceType.SqlDatabase, UserID = "testUser", Password = Guid.NewGuid().ToString() };
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));
             var response = TestHelper.PostDataToWebserver(postData);
@@ -100,14 +87,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         {
             //------------Setup for test--------------------------
 
-            var dbSource = new DbSource();
-            dbSource.DatabaseName = "DemoDB";
-            dbSource.Server = "RSAKLFSVRGENDEV";
-            dbSource.AuthenticationType = AuthenticationType.User;
-            dbSource.ServerType = enSourceType.SqlDatabase;
-            dbSource.UserID = "DemoDBPublicUser";
-            dbSource.Password = "P@ssword1";
-
+            var dbSource = new DbSource { DatabaseName = "DemoDB", Server = "RSAKLFSVRGENDEV", AuthenticationType = AuthenticationType.User, ServerType = enSourceType.SqlDatabase, UserID = "DemoDBPublicUser", Password = "P@ssword1" };
 
             //------------Execute Test---------------------------
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseTablesService?Database={0}", dbSource));

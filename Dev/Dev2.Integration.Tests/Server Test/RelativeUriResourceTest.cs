@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
@@ -12,13 +9,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     {
         private const string _workflowName = "RelativeUriResourceTest";
 
-        public RelativeUriResourceTest()
-        {
-        }
-
-        private TestContext _context;
-
-        public TestContext TestContext { get { return _context; } set { _context = value; } }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void RelativeUriResource_TestMethod()

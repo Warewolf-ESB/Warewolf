@@ -31,11 +31,11 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string PostDataToWebserver(string postandUrl)
         {
-            if (postandUrl.Split('?').Count() == 1)
+            if(postandUrl.Split('?').Count() == 1)
             {
                 ExecuteGetWorker(postandUrl);
             }
-            else if (postandUrl.Split('?').Count() > 1)
+            else if(postandUrl.Split('?').Count() > 1)
             {
                 ExecutePostWorker(postandUrl);
             }
@@ -47,7 +47,7 @@ namespace Dev2.Integration.Tests.Helpers
             return _responseData;
         }
 
-        public static string PostDataToWebserver(string postandUrl, out bool  wasHTTPS)
+        public static string PostDataToWebserver(string postandUrl, out bool wasHTTPS)
         {
             wasHTTPS = false;
             if(postandUrl.Split('?').Count() == 1)
@@ -74,14 +74,14 @@ namespace Dev2.Integration.Tests.Helpers
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
-            using (var response = req.GetResponse() as HttpWebResponse)
+            using(var response = req.GetResponse() as HttpWebResponse)
             {
-                if (response != null)
+                if(response != null)
                 {
-                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         var data = reader.ReadToEnd();
-                        if (data != null)
+                        if(data != null)
                         {
                             return JsonConvert.DeserializeObject<List<DebugState>>(data);
                         }
@@ -91,26 +91,26 @@ namespace Dev2.Integration.Tests.Helpers
 
             return null;
 
-        } 
+        }
 
         public static string PostDataToWebserverAsRemoteAgent(string postandUrl, Guid requestID)
         {
-            if (postandUrl.Split('?').Count() == 1)
+            if(postandUrl.Split('?').Count() == 1)
             {
                 string result = string.Empty;
 
-                WebRequest req = HttpWebRequest.Create(postandUrl);
+                WebRequest req = WebRequest.Create(postandUrl);
                 req.Credentials = CredentialCache.DefaultCredentials;
                 req.Method = "GET";
 
                 req.Headers.Add(HttpRequestHeader.From, requestID.ToString()); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
 
-                using (var response = req.GetResponse() as HttpWebResponse)
+                using(var response = req.GetResponse() as HttpWebResponse)
                 {
-                    if (response != null)
+                    if(response != null)
                     {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        using(StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
                             result = reader.ReadToEnd();
                         }
@@ -128,10 +128,10 @@ namespace Dev2.Integration.Tests.Helpers
             string result = string.Empty;
 
             int start = canidate.IndexOf(startStr);
-            if (start >= 0)
+            if(start >= 0)
             {
                 int end = canidate.LastIndexOf(endStr);
-                if (end > start)
+                if(end > start)
                 {
                     result = canidate.Substring(start, ((end + endStr.Length) - start));
                 }
@@ -165,13 +165,13 @@ namespace Dev2.Integration.Tests.Helpers
         {
             List<string> HTMLElems = new List<string>();
             XElement elements = XElement.Parse(payload);
-            if (elements.HasElements)
+            if(elements.HasElements)
             {
-                foreach (XElement elem in elements.Descendants())
+                foreach(XElement elem in elements.Descendants())
                 {
-                    if (elem.Name != "script")
+                    if(elem.Name != "script")
                     {
-                        if (elem.HasElements)
+                        if(elem.HasElements)
                         {
 
                         }

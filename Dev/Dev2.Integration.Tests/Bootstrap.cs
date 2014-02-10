@@ -10,20 +10,20 @@ namespace Dev2.Integration.Tests
     /// <summary>
     /// Used to bootstrap the server for integration test runs ;)
     /// </summary>
-    [TestClass()]
+    [TestClass]
     public class Bootstrap
     {
         private static Process _serverProc;
         private const string _serverName = "Warewolf Server.exe";
 
 
-        private static object _tumbler = new object();
+        private static readonly object _tumbler = new object();
 
         /// <summary>
         /// Inits the specified text CTX.
         /// </summary>
         /// <param name="textCtx">The text CTX.</param>
-        [AssemblyInitialize()]
+        [AssemblyInitialize]
         public static void Init(TestContext textCtx)
         {
             if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].Equals("localhost:6901")) return;
@@ -38,19 +38,17 @@ namespace Dev2.Integration.Tests
                 var assembly = Assembly.GetExecutingAssembly();
                 var loc = assembly.Location;
 
+                // ReSharper disable AssignNullToNotNullAttribute
                 var serverLoc = Path.Combine(Path.GetDirectoryName(loc), _serverName);
+                // ReSharper restore AssignNullToNotNullAttribute
 
                 //var args = "/endpointAddress=http://localhost:4315/dsf /nettcpaddress=net.tcp://localhost:73/dsf /webserverport=2234 /webserversslport=2236 /managementEndpointAddress=net.tcp://localhost:5421/dsfManager";
 
-                var args = "-t";
+                const string args = "-t";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo();
-                startInfo.CreateNoWindow = false;
-                startInfo.UseShellExecute = true;
-                startInfo.FileName = serverLoc;
+                ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = serverLoc, Arguments = args };
                 //startInfo.RedirectStandardOutput = true;
                 //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                startInfo.Arguments = args;
 
                 var started = false;
                 var startCnt = 0;
@@ -72,10 +70,11 @@ namespace Dev2.Integration.Tests
                     {
                         try
                         {
-                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", "Exception : " + e.Message + " " + serverLoc);
+                            File.WriteAllText("C:\\Users\\IntegrationTester\\Desktop\\uitest.log", @"Exception : " + e.Message + @" " + serverLoc);
                         }
-                        // ReSharper disable once EmptyGeneralCatchClause
+                        // ReSharper disable EmptyGeneralCatchClause
                         catch
+                        // ReSharper restore EmptyGeneralCatchClause
                         {
                         }
 
@@ -89,7 +88,7 @@ namespace Dev2.Integration.Tests
         /// <summary>
         /// Teardowns this instance.
         /// </summary>
-        [AssemblyCleanup()]
+        [AssemblyCleanup]
         public static void Teardown()
         {
             if(_serverProc != null)

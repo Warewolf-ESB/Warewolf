@@ -1,7 +1,6 @@
-﻿using System.IO;
+﻿using System;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -11,31 +10,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class PathOperationsWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public PathOperationsWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Language Tests
 
@@ -155,7 +136,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "ReadFolderFromFileSystemTest");
-            string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult>";
+            const string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult><results>C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -166,11 +147,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFolderInForEachLoop_Expected_NoNotImplementedError()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "FolderReadInForEachTest");
-            string notExpected = "<InnerError>The method or operation is not implemented.</InnerError>";
+            const string notExpected = "<InnerError>The method or operation is not implemented.</InnerError>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.IsFalse(ResponseData.Contains(notExpected));            
+            Assert.IsFalse(ResponseData.Contains(notExpected));
         }
 
 
@@ -178,7 +159,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void FolderReadUsingScalar()
         {
             string postData = String.Format("{0}{1}", WebserverURI, "FolderReadUsingScalar");
-            string expected = ",";
+            const string expected = ",";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
@@ -193,7 +174,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CopyFile()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CopyFileLocalToLocalTest");
-            string expected = @"<CreateFileRes>Success</CreateFileRes><CopyFileRes>Success</CopyFileRes><DeleteFileRes>Success</DeleteFileRes>";
+            const string expected = @"<CreateFileRes>Success</CreateFileRes><CopyFileRes>Success</CopyFileRes><DeleteFileRes>Success</DeleteFileRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -204,7 +185,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CopyFileToFTP()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "CreateFileCopyToFTP");
-            string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><LocalDeleteRes>Success</LocalDeleteRes>";
+            const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><LocalDeleteRes>Success</LocalDeleteRes>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

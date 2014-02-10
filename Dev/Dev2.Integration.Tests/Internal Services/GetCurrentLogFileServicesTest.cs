@@ -9,7 +9,7 @@ namespace Dev2.Integration.Tests.Internal_Services
     [TestClass]
     public class GetCurrentLogFileServicesTest
     {
-        private string _webServerURI = ServerSettings.WebserverURI;
+        private readonly string _webServerURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -46,10 +46,10 @@ namespace Dev2.Integration.Tests.Internal_Services
             var first = TestHelper.PostDataToWebserver(postData);
             Assert.IsFalse(string.IsNullOrEmpty(first));
             var second = TestHelper.PostDataToWebserver(postData);
-            
+
             Assert.IsTrue(first.Length >= second.Length);
-           
+
         }
-        
+
     }
 }

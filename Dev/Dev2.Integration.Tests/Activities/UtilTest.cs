@@ -23,12 +23,11 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void IsBetweenIsFalseIfStartIsNullAndEndIsNull()
         {
-            string value = "2010-01-01";
+            const string value = "2010-01-01";
             object comparisonValueStart = "2009-12-01";
             object comparisonValueEnd = "2009-01-01";
-            bool expected = false;
-            bool actual;
-            actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw(value, comparisonValueStart, comparisonValueEnd);
+            const bool expected = false;
+            bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw(value, comparisonValueStart, comparisonValueEnd);
             Assert.AreEqual(expected, actual);
         }
 
@@ -40,9 +39,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq(value, comparisonValue);
+            const bool expected = false; // TODO: Initialize to an appropriate value
+            bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq(value, comparisonValue);
             Assert.AreEqual(expected, actual);
         }
 
@@ -54,9 +52,8 @@ namespace Dev2.Integration.Tests.Activities
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh(value, comparisonValue);
+            const bool expected = false; // TODO: Initialize to an appropriate value
+            bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh(value, comparisonValue);
             Assert.AreEqual(expected, actual);
         }
 
@@ -69,8 +66,7 @@ namespace Dev2.Integration.Tests.Activities
             string value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
-            bool actual;
-            actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq(value, comparisonValue);
+            bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq(value, comparisonValue);
             Assert.AreEqual(expected, actual);
             //Assert.Inconclusive("Verify the correctness of this test method.");
         }
@@ -83,7 +79,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             string value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
-            bool expected = false; // TODO: Initialize to an appropriate value
+            const bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh(value, comparisonValue);
             Assert.AreEqual(expected, actual);

@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Integration.Tests.Enums;
-using Dev2.Integration.Tests.Helpers;
-using System.IO;
-using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -17,31 +11,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfMultiAssignActivityWFTests
     {
-        string WebserverURI = ServerSettings.WebserverURI;
-        public DsfMultiAssignActivityWFTests()
-        {
-            //
-            // TODO: Add constructor logic here 
-            //
-        }
-
-        private TestContext testContextInstance;
+        readonly string WebserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region RecordSet Tests
 
@@ -87,7 +63,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "MultiAssignUsingBlankIntegrationTest");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            
+
             string expected1 = "<someRec><Name>NAME1</Name><Surname>SURNAME1</Surname></someRec>";
             string expected2 = "<someRec><Name>Name2</Name><Surname>Surname2</Surname></someRec>";
             string expected3 = "<someRec><Name>name3</Name><Surname>SURNAME3</Surname></someRec>";
@@ -137,11 +113,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string actualCalcResult = null;
             string actualNoCalcResult = null;
 
-            if (index != -1)
+            if(index != -1)
             {
                 int next = responseData.IndexOf("</CalcResult>", index + 1);
 
-                if (next != -1)
+                if(next != -1)
                 {
                     actualCalcResult = responseData.Substring(index + 12, next - (index + 12));
                 }
@@ -149,11 +125,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 
             index = responseData.IndexOf("<NoCalcResult>");
 
-            if (index != -1)
+            if(index != -1)
             {
                 int next = responseData.IndexOf("</NoCalcResult>", index + 1);
 
-                if (next != -1)
+                if(next != -1)
                 {
                     actualNoCalcResult = responseData.Substring(index + 14, next - (index + 14));
                 }

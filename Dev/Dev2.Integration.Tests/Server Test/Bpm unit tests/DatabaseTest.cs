@@ -20,7 +20,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("RecordsetMapping_NestedWorkflows")]
-        // Ensure we can map portions of a recordset as input and other portionas as output
+        // Ensure we can map portions of a recordset as input and other portions as output
         public void RecordsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
         {
             //------------Setup for test--------------------------

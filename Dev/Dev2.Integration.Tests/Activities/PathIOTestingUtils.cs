@@ -95,43 +95,36 @@ namespace Dev2.Integration.Tests.Activities
                                           byte[] data)
         {
             SafeTokenHandle safeTokenHandle;
-            try
+            bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2",
+                                     ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE,
+                                     LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
+
+            if(loginOk)
             {
-                bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2",
-                                         ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE,
-                                         LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
-
-                if(loginOk)
+                using(safeTokenHandle)
                 {
-                    using(safeTokenHandle)
+                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                    using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                     {
-                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using(WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                        if(!isDir)
                         {
-                            if(!isDir)
-                            {
-                                // Do the operation here
-                                File.WriteAllBytes(path, data);
-                            }
-                            else
-                            {
-                                Directory.CreateDirectory(path);
-                            }
-
-                            // remove impersonation now
-                            impersonatedUser.Undo();
+                            // Do the operation here
+                            File.WriteAllBytes(path, data);
                         }
+                        else
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        // remove impersonation now
+                        impersonatedUser.Undo();
                     }
                 }
-                else
-                {
-                    // login failed
-                    throw new Exception("Failed to authenticate for resource [ " + path + " ] ");
-                }
             }
-            catch(Exception e)
+            else
             {
-                throw e;
+                // login failed
+                throw new Exception("Failed to authenticate for resource [ " + path + " ] ");
             }
         }
 
@@ -142,12 +135,12 @@ namespace Dev2.Integration.Tests.Activities
             const int LOGON32_LOGON_INTERACTIVE = 2;
 
             // handle UNC path
-            SafeTokenHandle safeTokenHandle;
 
             string contents;
 
             try
             {
+                SafeTokenHandle safeTokenHandle;
                 bool loginOk = LogonUser(ParserStrings.PathOperations_Correct_Username, "DEV2",
                                          ParserStrings.PathOperations_Correct_Password, LOGON32_LOGON_INTERACTIVE,
                                          LOGON32_PROVIDER_DEFAULT, out safeTokenHandle);
@@ -221,12 +214,11 @@ namespace Dev2.Integration.Tests.Activities
         {
             string path = basePath + Guid.NewGuid() + ".test";
 
-            FtpWebRequest request = null;
             FtpWebResponse response = null;
 
             try
             {
-                request = (FtpWebRequest)FtpWebRequest.Create(path);
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(path);
                 request.Method = WebRequestMethods.Ftp.UploadFile;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -273,8 +265,6 @@ namespace Dev2.Integration.Tests.Activities
 
         public static string CreateFileFTP(string basePath, string userName, string password, bool ftps, string fileName, string dataString, bool createDirectory, string testFile = "")
         {
-
-            FtpWebRequest request = null;
             FtpWebResponse response = null;
             string remoteDirectoy = basePath + Guid.NewGuid();
             string path = remoteDirectoy + "/" + fileName;
@@ -283,7 +273,7 @@ namespace Dev2.Integration.Tests.Activities
             {
                 if(createDirectory)
                 {
-                    request = (FtpWebRequest)FtpWebRequest.Create(remoteDirectoy);
+                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(remoteDirectoy);
                     request.UseBinary = true;
                     request.KeepAlive = false;
                     request.EnableSsl = ftps;
@@ -295,7 +285,7 @@ namespace Dev2.Integration.Tests.Activities
                     request.GetResponse();
 
 
-                    request = (FtpWebRequest)FtpWebRequest.Create(path);
+                    request = (FtpWebRequest)WebRequest.Create(path);
                     request.UseBinary = true;
                     request.KeepAlive = false;
                     request.EnableSsl = ftps;
@@ -306,7 +296,7 @@ namespace Dev2.Integration.Tests.Activities
 
                     request.Method = WebRequestMethods.Ftp.UploadFile;
 
-                    byte[] data = null;
+                    byte[] data;
 
                     if(string.IsNullOrEmpty(testFile))
                     {
@@ -336,11 +326,6 @@ namespace Dev2.Integration.Tests.Activities
                     }
                 }
             }
-            catch(Exception exception)
-            {
-                var ex = exception;
-                throw;
-            }
             finally
             {
                 if(response != null)
@@ -367,7 +352,7 @@ namespace Dev2.Integration.Tests.Activities
 
                 FTPPro.CreateDirectory(pathFromString, new Dev2CRUDOperationTO(false));
 
-                byte[] data = null;
+                byte[] data;
 
                 if(string.IsNullOrEmpty(testFile))
                 {
@@ -462,12 +447,11 @@ namespace Dev2.Integration.Tests.Activities
 
         public static Stream FileExistsFTP(string path, string userName, string password, bool isFTPS)
         {
-            FtpWebRequest request = null;
             FtpWebResponse response = null;
             Stream ftpStream = Stream.Null;
             try
             {
-                request = (FtpWebRequest)FtpWebRequest.Create(path);
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(path);
                 request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
                 request.UseBinary = true;
                 request.KeepAlive = false;

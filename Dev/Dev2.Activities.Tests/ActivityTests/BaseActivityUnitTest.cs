@@ -81,7 +81,7 @@ namespace ActivityUnitTests
                 },
                     Implementation = new Flowchart
                     {
-                        
+
                         Variables = {
                          new Variable<List<string>>{Name = "InstructionList"},
                          new Variable<string>{Name = "LastResult"},
@@ -142,10 +142,10 @@ namespace ActivityUnitTests
                 ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
                 if(dataObject != null)
                 {
-                    dataObject.DataListID = ExecutionID;                    
+                    dataObject.DataListID = ExecutionID;
                     dataObject.ExecutingUser = User;
                 }
-                
+
             }
 
             if(errors.HasErrors())
@@ -173,7 +173,7 @@ namespace ActivityUnitTests
             dataObject.IsDebug = isDebug;
 
             // we now need to set a thread ID ;)
-            dataObject.ParentThreadID = 1; 
+            dataObject.ParentThreadID = 1;
 
             if(isRemoteInvoke)
             {
@@ -190,7 +190,7 @@ namespace ActivityUnitTests
 
             errors.ClearErrors();
             dataObject.DataListID = wfec.Execute(out errors);
-            
+
 
             return dataObject;
         }
@@ -299,64 +299,64 @@ namespace ActivityUnitTests
         public dynamic CheckActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape, string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults, bool isRemoteInvoke = false)
         {
 
-                ErrorResultTO errors;
-                TestStartNode = new FlowStep
-                {
-                    Action = activity
-                };
+            ErrorResultTO errors;
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
 
-                TestData = dataListWithData;
-                CurrentDl = dataListShape;
+            TestData = dataListWithData;
+            CurrentDl = dataListShape;
 
-                Compiler = DataListFactory.CreateDataListCompiler();
-                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-                IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
 
-                var result = ExecuteProcess(null, true, null, isRemoteInvoke);
-                inputResults = activity.GetDebugInputs(dl);
-                outputResults = activity.GetDebugOutputs(dl);
+            var result = ExecuteProcess(null, true, null, isRemoteInvoke);
+            inputResults = activity.GetDebugInputs(dl);
+            outputResults = activity.GetDebugOutputs(dl);
 
-                return result;
-            }
+            return result;
+        }
 
         public dynamic CheckPathOperationActivityDebugInputOutput<T>(DsfNativeActivity<T> activity, string dataListShape,
                                                   string dataListWithData, out List<DebugItem> inputResults, out List<DebugItem> outputResults, IPrincipal user = null)
         {
-                ErrorResultTO errors;
-                TestStartNode = new FlowStep
-                {
-                    Action = activity
-                };
+            ErrorResultTO errors;
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
 
-                TestData = dataListWithData;
-                CurrentDl = dataListShape;
+            TestData = dataListWithData;
+            CurrentDl = dataListShape;
             User = user;
-                Compiler = DataListFactory.CreateDataListCompiler();
-                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);                
-                IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
-                var result = ExecuteProcess(null, true);
-                inputResults = activity.GetDebugInputs(dl);
-                outputResults = activity.GetDebugOutputs(dl);
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            var result = ExecuteProcess(null, true);
+            inputResults = activity.GetDebugInputs(dl);
+            outputResults = activity.GetDebugOutputs(dl);
 
-                return result;
-            }
+            return result;
+        }
 
         public IPrincipal User { get; set; }
 
         public bool CreateDataListWithRecsetAndCreateShape(List<string> recsetData, string recsetName, string fieldName, out string dataListShape, out string dataListWithData)
         {
-            bool result = false;
+            const bool result = false;
 
             dataListShape = "<ADL>";
             dataListWithData = "<ADL>";
             #region Create DataList With Data
-            
+
             foreach(string rowData in recsetData)
             {
                 dataListWithData = string.Concat(dataListWithData, "<", recsetName, ">", "<", fieldName, ">", rowData, "</", fieldName, ">", "</", recsetName, ">");
             }
             dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
-            
+
             #endregion
 
             #region Create Shape
@@ -384,7 +384,7 @@ namespace ActivityUnitTests
                 }
                 dataListShape = string.Concat(dataListShape, "<", recsetName[i], ">", "<", fieldName[i], ">", "</", fieldName[i], ">", "</", recsetName[i], ">");
             }
-            
+
             dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
 
             #endregion
@@ -405,7 +405,7 @@ namespace ActivityUnitTests
         {
             ErrorResultTO errorResult;
             IBinaryDataListEntry entry;
-           
+
 
             bool fine = Compiler.FetchBinaryDataList(dataListId, out errorResult).TryGetEntry(fieldToRetrieve, out entry, out error);
             if(entry != null && fine)
@@ -470,7 +470,6 @@ namespace ActivityUnitTests
             return retVals;
         }
 
-        IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
         protected void DataListRemoval(Guid dlID)
         {
             //dlc.ForceDeleteDataListByID(dlID);
@@ -480,9 +479,9 @@ namespace ActivityUnitTests
 
         #region Retrieve Errors
         public static string FetchErrors(Guid dataListId)
-         {
-           return Compiler.FetchErrors(dataListId);
-         }
+        {
+            return Compiler.FetchErrors(dataListId);
+        }
         #endregion
     }
 }

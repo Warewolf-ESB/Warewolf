@@ -1,7 +1,5 @@
 ﻿using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.Sql;
-
 
 namespace Dev2.Integration.Tests.Sql
 {

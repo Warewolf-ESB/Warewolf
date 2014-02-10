@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Integration.Tests.Helpers;
 using System.Text.RegularExpressions;
+using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -14,30 +11,11 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfDateTimeDifferenceWFTests
     {
-        public DsfDateTimeDifferenceWFTests()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void Test_DateTimeDifference_Simple()
@@ -59,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void Test_DateTimeDifference_Complex()
         {
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "DateTimeDifference_Complex_Test");
-            string expected = @"<DataList><MyDayOfBirth>1988/10/14 08:32:21 AM</MyDayOfBirth><DateFormat>yyyy/mm/dd 12h:min:ss am/pm</DateFormat><MyAgeInYears>27</MyAgeInYears><TenThousandDaysAlive>2016/03/01 08:32:21 AM</TenThousandDaysAlive>";
+            const string expected = @"<DataList><MyDayOfBirth>1988/10/14 08:32:21 AM</MyDayOfBirth><DateFormat>yyyy/mm/dd 12h:min:ss am/pm</DateFormat><MyAgeInYears>27</MyAgeInYears><TenThousandDaysAlive>2016/03/01 08:32:21 AM</TenThousandDaysAlive>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

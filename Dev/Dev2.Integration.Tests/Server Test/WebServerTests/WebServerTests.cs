@@ -357,7 +357,9 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
         {
             foreach(var endPoint in endpoints)
             {
+#pragma warning disable 219
                 var requestPos = 0;
+#pragma warning restore 219
                 foreach(var request in requests)
                 {
                     //------------Setup for test--------------------------

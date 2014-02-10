@@ -33,8 +33,8 @@ namespace Dev2.Integration.Tests.Activities
         [TestInitialize]
         public void CreateFiles()
         {
-            tmpfile1 = System.IO.Path.GetTempFileName();
-            tmpfile2 = System.IO.Path.GetTempFileName();
+            tmpfile1 = Path.GetTempFileName();
+            tmpfile2 = Path.GetTempFileName();
 
             FileStream fs1 = File.Create(tmpfile1);
             string tmp = "abc";
@@ -48,9 +48,9 @@ namespace Dev2.Integration.Tests.Activities
             fs2.Write(data, 0, data.Length);
             fs2.Close();
 
-            tmpdir1 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
-            tmpdir2 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
-            tmpdir3 = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+            tmpdir1 = Path.GetTempPath() + Path.GetRandomFileName();
+            tmpdir2 = Path.GetTempPath() + Path.GetRandomFileName();
+            tmpdir3 = Path.GetTempPath() + Path.GetRandomFileName();
 
             Directory.CreateDirectory(tmpdir1);
             Directory.CreateDirectory(tmpdir2);
@@ -65,8 +65,8 @@ namespace Dev2.Integration.Tests.Activities
             // create UNC reources
             uncfile1 = TestResource.PathOperations_UNC_Path + Guid.NewGuid();
             uncfile2 = TestResource.PathOperations_UNC_Path + Guid.NewGuid();
-            File.WriteAllText(uncfile1, "abc");
-            File.WriteAllText(uncfile2, "abc-def");
+            File.WriteAllText(uncfile1, @"abc");
+            File.WriteAllText(uncfile2, @"abc-def");
 
             uncdir1 = TestResource.PathOperations_UNC_Path + Guid.NewGuid() + "_dir";
 
@@ -113,7 +113,9 @@ namespace Dev2.Integration.Tests.Activities
                 Directory.Delete(tmpdir3, true);
                 Directory.Delete(uncdir1, true);
             }
-            catch (Exception) { }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception) { }
+            // ReSharper restore EmptyGeneralCatchClause
         }
 
         #endregion
@@ -125,7 +127,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpfile1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
-            Stream result = FileSystemPro.Get(path);
+            FileSystemPro.Get(path);
             Assert.IsTrue(FileSystemPro is Dev2FileSystemProvider);
         }
 
@@ -153,12 +155,12 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                Stream result = FileSystemPro.Get(path);
+                FileSystemPro.Get(path);
                 Assert.Fail();
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -182,12 +184,12 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                Stream result = FileSystemPro.Get(path);
+                FileSystemPro.Get(path);
                 Assert.Fail();
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -217,12 +219,12 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                Stream result = FileSystemPro.Get(path);
+                FileSystemPro.Get(path);
                 Assert.Fail();
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -241,16 +243,15 @@ namespace Dev2.Integration.Tests.Activities
             {
                 Stream result = FileSystemPro.Get(path);
 
-                int len = (int)result.Length;
                 result.Close();
 
                 PathIOTestingUtils.DeleteAuthedUNCPath(uncPath);
                 Assert.Fail();
             }
-            catch (Exception)
+            catch(Exception)
             {
                 PathIOTestingUtils.DeleteAuthedUNCPath(uncPath);
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
 
         }
@@ -263,7 +264,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteFalse_File_Not_Present_Expected_NewFileCreated()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             File.Delete(tmp); // remove it is not there
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
@@ -280,7 +281,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteFalse_File_Present_Expect_FileExists()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
@@ -296,7 +297,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_FileNot_Present_Expect_FileReadAndDataInputToStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
@@ -315,7 +316,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_File_Present_Expect_FileDataReadIntoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
@@ -349,7 +350,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteFalse_UNCPath_File_Present_Expect_LenNegative()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
@@ -364,7 +365,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_UNCPath_FileNot_Present_Expect_FileReadIntoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
@@ -381,7 +382,7 @@ namespace Dev2.Integration.Tests.Activities
         public void PutWithOverwriteTrue_UNCPath_File_Present_Expected_FileReadIntoStream()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string tmp = System.IO.Path.GetTempFileName();
+            string tmp = Path.GetTempFileName();
             File.Delete(tmp);
             IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "", "");
             IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmpfile2, "", "");
@@ -409,27 +410,6 @@ namespace Dev2.Integration.Tests.Activities
 
             Assert.IsTrue(len > 0);
         }
-
-        //BUILD
-        //[TestMethod]
-        //public void PutWithOverwriteFalse_UNCPathValidUser_File_Present_Expected_Error() {
-        //    Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-        //    string tmp = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-        //    string tmp2 = TestResource.PathOperations_UNC_Path_Secure + Guid.NewGuid() + ".test";
-        //    PathIOTestingUtils.CreateAuthedUNCPath(tmp);
-        //    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(tmp, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
-        //    IActivityIOPath src = ActivityIOFactory.CreatePathFromString(tmp2, "DEV2\\" + TestResource.PathOperations_Correct_Username, TestResource.PathOperations_Correct_Password);
-        //    IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-        //    Stream stream = new MemoryStream(File.ReadAllBytes(tmpfile1));
-        //    int len = FileSystemPro.Put(stream, dst, opTO);
-        //    stream.Close();
-
-        //    PathIOTestingUtils.DeleteAuthedUNCPath(tmp);
-        //    PathIOTestingUtils.DeleteAuthedUNCPath(tmp2);
-
-        //    Assert.IsTrue(len == -1);
-        //}
-
 
         [TestMethod]
         public void PutWithOverwriteTrue_UNCPathValidUser_FileNot_Present_Expected_NewFileCreated()
@@ -497,7 +477,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(tmpdir1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path) as Dev2FileSystemProvider;
-            bool ok = FileSystemPro.Delete(path);
+            bool ok = FileSystemPro != null && FileSystemPro.Delete(path);
 
             Assert.IsTrue(ok);
         }
@@ -540,7 +520,7 @@ namespace Dev2.Integration.Tests.Activities
         {
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(uncdir1, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path) as Dev2FileSystemProvider;
-            bool ok = FileSystemPro.Delete(path);
+            bool ok = FileSystemPro != null && FileSystemPro.Delete(path);
 
             Assert.IsTrue(ok);
         }
@@ -625,8 +605,8 @@ namespace Dev2.Integration.Tests.Activities
             CreateDirectory(tmpFolderLocal2);
             CreateLocalPath(tmpFileLocal1);
             CreateLocalPath(tmpFileLocal2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");            
-            
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + @"\ListDirectoryTestFolder", "", "");
+
             //------------Execute Test---------------------------
 
             IList<IActivityIOPath> folderList = dev2FileSystemProvider.ListFoldersInDirectory(path);
@@ -634,7 +614,7 @@ namespace Dev2.Integration.Tests.Activities
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual(2,folderList.Count);
+            Assert.AreEqual(2, folderList.Count);
             Assert.IsTrue(folderList[0].Path.EndsWith("Folder1"));
             Assert.IsTrue(folderList[1].Path.EndsWith("Folder2"));
 
@@ -690,7 +670,7 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
-            foreach (IActivityIOPath p in result)
+            foreach(IActivityIOPath p in result)
             {
                 File.Delete(p.Path);
             }
@@ -709,12 +689,12 @@ namespace Dev2.Integration.Tests.Activities
 
             try
             {
-                IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
+                FileSystemPro.ListDirectory(path);
                 Assert.Fail("Missing Directory Found Data");
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -722,11 +702,11 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void ListDirectory_Star_With_Contents_ListAllFilesInDir()
         {
-            string tmpFileLocal = System.IO.Path.GetTempPath() + "1.testfile";
-            string tmpFileLocal2 = System.IO.Path.GetTempPath() + "2.testfile";
+            string tmpFileLocal = Path.GetTempPath() + "1.testfile";
+            string tmpFileLocal2 = Path.GetTempPath() + "2.testfile";
             CreateLocalPath(tmpFileLocal);
             CreateLocalPath(tmpFileLocal2);
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(System.IO.Path.GetTempPath() + "*.testfile", "", "");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + "*.testfile", "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
@@ -749,7 +729,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void ListDirectory_StarDotStar_With_Contents_Expected_ListOfDirectoriesAndFiles()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(System.IO.Path.GetTempPath() + "\\*.*", "", "");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(Path.GetTempPath() + "\\*.*", "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
 
@@ -806,12 +786,12 @@ namespace Dev2.Integration.Tests.Activities
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {
-                IList<IActivityIOPath> result = FileSystemPro.ListDirectory(path);
+                FileSystemPro.ListDirectory(path);
                 Assert.Fail("Missing Directory Found Data");
             }
-            catch (Exception)
+            catch(Exception)
             {
-                Assert.IsTrue(1 == 1);
+                Assert.IsTrue(true);
             }
         }
 
@@ -889,7 +869,7 @@ namespace Dev2.Integration.Tests.Activities
         public void CreateDirectoryWithOverwriteFalse_NotPresent_Expected_DirectoryCreated()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(false);
-            string dir = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+            string dir = Path.GetTempPath() + Path.GetRandomFileName();
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(dir, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.CreateDirectory(path, opTO);
@@ -914,7 +894,7 @@ namespace Dev2.Integration.Tests.Activities
         public void CreateDirectoryWithOverwriteTrue_NotPresent_Expected_DirectoryCreated()
         {
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(true);
-            string dir = System.IO.Path.GetTempPath() + System.IO.Path.GetRandomFileName();
+            string dir = Path.GetTempPath() + Path.GetRandomFileName();
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(dir, "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             bool ok = FileSystemPro.CreateDirectory(path, opTO);

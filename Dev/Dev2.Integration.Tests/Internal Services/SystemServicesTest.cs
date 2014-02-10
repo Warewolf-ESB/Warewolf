@@ -1,8 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Integration.Tests.Helpers;
+﻿using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Internal_Services
@@ -13,32 +9,13 @@ namespace Dev2.Integration.Tests.Internal_Services
     [TestClass]
     public class SystemServicesTest
     {
-        private string _webServerURI = ServerSettings.WebserverURI;
-
-        public SystemServicesTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
+        private readonly string _webServerURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -71,10 +48,10 @@ namespace Dev2.Integration.Tests.Internal_Services
             const string expected = @"<graph title=""Dependency Graph Of Bug6619""><node id=""Bug6619"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep"" /></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""><dependency id=""Bug6619Dep2"" /></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep2"" x="""" y="""" broken=""false""></node><node id=""Bug6619Dep"" x="""" y="""" broken=""false""></node><node id=""Bug6619"" x="""" y="""" broken=""false""></node></graph>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
-            
+
             StringAssert.Contains(actual, expected);
         }
-        
+
         [TestMethod]
         public void DepenendcyViewerReturnsOnlyValidDependenciesExpectTwoDependenciesWithTravsCrazyWorkflow()
         {
@@ -87,11 +64,11 @@ namespace Dev2.Integration.Tests.Internal_Services
 
             StringAssert.Contains(actual, expected);
         }
-        
+
         [TestMethod]
         public void DepenendcyViewerReturnsValidDependentsWhenGetDependsOnMeTrueExpectOneDependantWithTravsCrazyWorkflow()
         {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug9245a","GetDependsOnMe=True");
+            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug9245a", "GetDependsOnMe=True");
 
             // The expected graph to be returned 
             const string expected = @"<graph title=""Local Dependants Graph: Bug9245a""><node id=""Bug9245"" x="""" y="""" broken=""false""><dependency id=""Bug9245a"" /></node><node id=""Bug9245a"" x="""" y="""" broken=""false""></node></graph>";
@@ -99,12 +76,12 @@ namespace Dev2.Integration.Tests.Internal_Services
             string actual = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(actual, expected);
-        } 
-        
+        }
+
         [TestMethod]
         public void DepenendcyViewerReturnsValidMultipleFirstLevelDependantsWhenGetDependsOnMeTrueExpectTwoDependendant()
         {
-            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug_9303","GetDependsOnMe=True");
+            string postData = string.Format("{0}{1}?{2}&{3}", _webServerURI, "FindDependencyService", "ResourceName=Bug_9303", "GetDependsOnMe=True");
 
             // The expected graph to be returned 
             const string expectedTitle = @"<graph title=""Local Dependants Graph: Bug_9303"">";

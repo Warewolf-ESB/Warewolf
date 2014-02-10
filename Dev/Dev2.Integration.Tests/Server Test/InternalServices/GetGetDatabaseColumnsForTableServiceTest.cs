@@ -15,7 +15,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     public class GetGetDatabaseColumnsForTableServiceTest
     {
 
-        private string _webserverURI = ServerSettings.WebserverURI;
+        private readonly string _webserverURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -49,14 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         // ReSharper disable once InconsistentNaming
         public void GetDatabaseColumnsForTable_GivenDatabaseSourceWithTableName_Expected_AllColumnsForTableInDatabase()
         {
-            var dbSource = new DbSource();
-            dbSource.DatabaseName = "Cities";
-            dbSource.Server = "RSAKLFSVRGENDEV";
-            dbSource.AuthenticationType = AuthenticationType.User;
-            dbSource.ServerType = enSourceType.SqlDatabase;
-            dbSource.UserID = "testUser";
-            dbSource.Password = "test123";
-
+            var dbSource = new DbSource { DatabaseName = "Cities", Server = "RSAKLFSVRGENDEV", AuthenticationType = AuthenticationType.User, ServerType = enSourceType.SqlDatabase, UserID = "testUser", Password = "test123" };
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseColumnsForTableService?Database={0}&TableName={1}", dbSource, "Country"));
             var response = TestHelper.PostDataToWebserver(postData);
@@ -87,13 +80,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
         [TestMethod]
         public void GetDatabaseColumnsForTable_GivenDatabaseSource_InvalidCredentials_Expected_HasErrors()
         {
-            var dbSource = new DbSource();
-            dbSource.DatabaseName = "Cities";
-            dbSource.Server = "RSAKLFSVRGENDEV";
-            dbSource.AuthenticationType = AuthenticationType.User;
-            dbSource.ServerType = enSourceType.SqlDatabase;
-            dbSource.UserID = "testUser";
-            dbSource.Password = Guid.NewGuid().ToString();  // Random invalid password
+            var dbSource = new DbSource { DatabaseName = "Cities", Server = "RSAKLFSVRGENDEV", AuthenticationType = AuthenticationType.User, ServerType = enSourceType.SqlDatabase, UserID = "testUser", Password = Guid.NewGuid().ToString() };
 
             string postData = String.Format("{0}{1}", _webserverURI, string.Format("GetDatabaseColumnsForTableService?Database={0}&TableName={1}", dbSource, "Country"));
             var response = TestHelper.PostDataToWebserver(postData);

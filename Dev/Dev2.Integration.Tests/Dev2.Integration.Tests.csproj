@@ -310,23 +310,13 @@
     <Compile Include="Enums\enViewModelType.cs" />
     <Compile Include="Enums\enViewTypes.cs" />
     <Compile Include="Helpers\AssemblyResolver.cs" />
-    <Compile Include="Internal Services\ClearLogServiceTest.cs" />
-    <Compile Include="Internal Services\DeleteLogServiceTests.cs" />
-    <Compile Include="Internal Services\FindLogDirectoryServiceTest.cs" />
     <Compile Include="Internal Services\GetCurrentLogFileServicesTest.cs" />
-    <Compile Include="Internal Services\GetDebugStateTests.cs" />
     <Compile Include="Internal Services\RenameResourceCategoryServicesTest.cs" />
     <Compile Include="Internal Services\SystemServicesTest.cs" />
-    <Compile Include="Mocks\MockConfigurationReader.cs" />
-    <Compile Include="Mocks\MockDSFObject.cs" />
     <Compile Include="Activities\UtilTest.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\Models\EnvironmentConnectionTests.cs" />
     <Compile Include="Dev2.Studio.Core.Tests\WebCommunicationTest.cs" />
     <Compile Include="Mocks\DataObject.cs" />
-    <Compile Include="Mocks\Dev2ApplicationServerMockFactory.cs" />
-    <Compile Include="Mocks\MockFilePersistanceProvider.cs" />
-    <Compile Include="Mocks\MockPopup.cs" />
-    <Compile Include="Mocks\ModelItemCreator.cs" />
     <Compile Include="ParserStrings.Designer.cs">
       <DependentUpon>ParserStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -348,7 +338,6 @@
     <Compile Include="Runtime.ServiceModel\EmailSourceTest.cs" />
     <Compile Include="Runtime.ServiceModel\DbSourceTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
-    <Compile Include="Mocks\MockSecurityProvider.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
     <Compile Include="TestResource.Designer.cs">
@@ -397,8 +386,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommonTest\" />
-    <Folder Include="Server Test\Bpm unit tests\EndpointInterrogator\" />
-    <Folder Include="Server Test\Channel Tests\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />

@@ -80,8 +80,6 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
 
         #endregion Environment Connection Tests
 
-
-
         #region LoginAyncTest
 
         #endregion

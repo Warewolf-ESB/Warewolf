@@ -37,18 +37,18 @@ Michael's surname name is Cullen
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            StringAssert.Contains(ResponseData.Unescape(), expected.Replace("\r\n","\n"));
+            StringAssert.Contains(ResponseData.Unescape(), expected.Replace("\r\n", "\n"));
         }
 
         [TestMethod]
         public void DataMergeWithScalarsAndTabMerge()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "DataMergeWithScalarsAndTabMerge");
-            string expected = @"<res>Dev2	0317641234</res>";
+            const string expected = @"<res>Dev2	0317641234</res>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             StringAssert.Contains(ResponseData, expected);
-        }       
+        }
     }
 }

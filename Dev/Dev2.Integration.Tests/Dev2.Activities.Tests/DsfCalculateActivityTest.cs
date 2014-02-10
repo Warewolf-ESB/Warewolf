@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Integration.Tests.Helpers;
+﻿using Dev2.Integration.Tests.Helpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
@@ -9,32 +9,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     [TestClass]
     public class DsfCalculateActivityTest
     {
-        public DsfCalculateActivityTest()
-        {
-
-        }
-
-        private string _webServerURI = ServerSettings.WebserverURI;
-
-        private TestContext testContextInstance;
+        private readonly string _webServerURI = ServerSettings.WebserverURI;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-
+        public TestContext TestContext { get; set; }
 
         #region Calculate Static Values Tests
 

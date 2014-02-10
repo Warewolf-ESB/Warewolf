@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
-using System.Net;
-using System.IO;
-using System.Threading;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Text;
+using System.Threading;
 using Dev2.Integration.Tests.Interfaces;
 
 namespace Dev2.Integration.Tests.MEF.WebTester
@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         public void ScanSite(string url)
         {
             request = CreateRequest(url);
-            MethodGet(url);
+            MethodGet();
         }
 
         public void ScanResponse(string url)
@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         static WebRequest CreateRequest(string url)
         {
-            var result = HttpWebRequest.Create(url);
+            var result = WebRequest.Create(url);
             result.Credentials = CredentialCache.DefaultCredentials;
             return result;
         }
@@ -53,23 +53,26 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             state._requestData.Append(postData);
             request.ContentLength = (Encoding.ASCII.GetBytes(state._requestData.ToString())).Length;
 
-            byte[] bytedata = UTF8Encoding.UTF8.GetBytes(state._requestData.ToString());
-            using (Stream postStream = request.GetRequestStream())
+            byte[] bytedata = Encoding.UTF8.GetBytes(state._requestData.ToString());
+            using(Stream postStream = request.GetRequestStream())
             {
                 postStream.Write(bytedata, 0, bytedata.Length);
                 postStream.Close();
             }
 
-            using (var responseStream = request.GetResponse() as HttpWebResponse)
+            using(var responseStream = request.GetResponse() as HttpWebResponse)
             {
-                using (StreamReader reader = new StreamReader(responseStream.GetResponseStream()))
+                if(responseStream != null)
                 {
-                    responseData = reader.ReadToEnd();
+                    using(StreamReader reader = new StreamReader(responseStream.GetResponseStream()))
+                    {
+                        responseData = reader.ReadToEnd();
+                    }
                 }
             }
         }
 
-        private void MethodGet(string url)
+        private void MethodGet()
         {
             request.Method = "GET";
             request.Timeout = 300000; // wait up to five minutes ;) 
@@ -80,16 +83,19 @@ namespace Dev2.Integration.Tests.MEF.WebTester
                     return true;
                 };
 
-            using (var response = request.GetResponse() as HttpWebResponse)
+            using(var response = request.GetResponse() as HttpWebResponse)
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                if(response != null)
+                {
+                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
-                            responseData = reader.ReadToEnd();
+                        responseData = reader.ReadToEnd();
                     }
+                }
             }
 
         }
-        
+
         private void MethodGetResponse()
         {
             request.Method = "GET";
@@ -102,7 +108,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         {
             return responseData;
         }
-        
+
         public HttpWebResponse GetResponse()
         {
             return _response;
@@ -112,15 +118,15 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         public void ScanSiteStopWatch(string url, string postData)
         {
-            request = HttpWebRequest.Create(url);
+            request = WebRequest.Create(url);
             stopWatch = new Stopwatch();
             stopWatch.Start();
 
             state = new RequestState(request);
 
-            if (postData == null)
+            if(postData == null)
             {
-                MethodGet(url);
+                MethodGet();
             }
             else
             {
@@ -132,7 +138,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             stopWatch.Reset();
         }
 
-        #endregion 
+        #endregion
 
         #region AsyncCallBack
 
@@ -189,13 +195,6 @@ namespace Dev2.Integration.Tests.MEF.WebTester
         //}
 
         #endregion
-
-        private void WriteData(RequestState state)
-        {
-            Console.WriteLine("--------------------------------------------------");
-            Console.WriteLine("Return Data: {0}", state._requestData.ToString());
-            Console.WriteLine("--------------------------------------------------");
-        }
 
         public void WriteToLog()
         {

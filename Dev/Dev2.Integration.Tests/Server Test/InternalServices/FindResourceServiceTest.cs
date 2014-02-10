@@ -1,10 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Xml;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Xml;
 
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
 {
@@ -14,30 +10,11 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
     [TestClass]
     public class FindResourceServiceTest
     {
-        public FindResourceServiceTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -72,7 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(result);
             // 1 == 1, else an error will be thrown
-            Assert.IsTrue(1==1);
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -86,7 +63,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(result);
             // 1 == 1, else an error will be thrown
-            Assert.IsTrue(1 == 1);
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -100,7 +77,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(result);
             // 1 == 1, else an error will be thrown
-            Assert.IsTrue(1 == 1);
+            Assert.IsTrue(true);
         }
 
         [TestMethod]
@@ -114,7 +91,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(result);
             // 1 == 1, else an error will be thrown
-            Assert.IsTrue(1 == 1);
+            Assert.IsTrue(true);
         }
     }
 }

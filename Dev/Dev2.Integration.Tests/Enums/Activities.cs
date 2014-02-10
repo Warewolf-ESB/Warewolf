@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Dev2.Integration.Tests.Enums {
-    enum Activities {
+﻿namespace Dev2.Integration.Tests.Enums
+{
+    enum Activities
+    {
         DsfActivity = 1,
         DsfWebpageActivity = 2,
         DsfMultiAssignActivity = 3,

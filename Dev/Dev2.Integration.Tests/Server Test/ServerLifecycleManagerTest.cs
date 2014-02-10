@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -110,7 +111,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                         // This is the correct way to retrieve process information from a 64-bit process using a 32-bit process
                         int processID = serverProcess.Id;
 
-                        string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processID.ToString();
+                        string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processID.ToString(CultureInfo.InvariantCulture);
                         using(var searcher = new ManagementObjectSearcher(wmiQueryString))
                         {
                             using(var results = searcher.Get())
@@ -212,11 +213,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             Process serverProcess = new Process();
 
-            ProcessStartInfo startInfo = new ProcessStartInfo(_lifecycleServerExecutable);
-            startInfo.WorkingDirectory = _lifecycleServerRootDirectory;
-            startInfo.RedirectStandardInput = true;
-            startInfo.RedirectStandardOutput = true;
-            startInfo.UseShellExecute = false;
+            ProcessStartInfo startInfo = new ProcessStartInfo(_lifecycleServerExecutable) { WorkingDirectory = _lifecycleServerRootDirectory, RedirectStandardInput = true, RedirectStandardOutput = true, UseShellExecute = false };
 
             serverProcess.StartInfo = startInfo;
 
