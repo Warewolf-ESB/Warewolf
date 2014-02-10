@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.DynamicServices;
@@ -25,7 +26,7 @@ using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Email
 {
-    public class EmailDesignerViewModel : ActivityDesignerViewModel
+    public class EmailDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
     {
         static readonly EmailSource NewEmailSource = new EmailSource { ResourceID = Guid.NewGuid(), ResourceName = "New Email Source..." };
         static readonly EmailSource SelectEmailSource = new EmailSource { ResourceID = Guid.NewGuid(), ResourceName = "Select an Email Source..." };
@@ -50,6 +51,7 @@ namespace Dev2.Activities.Designers2.Email
             _asyncWorker = asyncWorker;
             _environmentModel = environmentModel;
             _eventPublisher = eventPublisher;
+            _eventPublisher.Subscribe(this);
 
             AddTitleBarLargeToggle();
             AddTitleBarHelpToggle();
@@ -392,5 +394,12 @@ namespace Dev2.Activities.Designers2.Email
             }
             return ruleSet;
         }
+
+        public void Handle(UpdateResourceMessage message)
+        {
+            var selectedSource = new EmailSource(message.ResourceModel.WorkflowXaml.ToXElement());
+            EmailSource = selectedSource;
+        }
+        
     }
 }

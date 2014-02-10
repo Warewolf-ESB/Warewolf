@@ -13,7 +13,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         {
         }
 
-        public EmailSource EmailSource
+        public EmailSource SelectedEmailSourceModelItemValue
         {
             // ReSharper disable ExplicitCallerInfoArgument
             get { return GetProperty<EmailSource>("SelectedEmailSource"); }

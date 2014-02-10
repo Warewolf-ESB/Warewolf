@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
@@ -109,7 +110,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.AreEqual(viewModel.EmailSources[0], viewModel.SelectedEmailSource);
             Assert.AreEqual("Select an Email Source...", viewModel.EmailSources[0].ResourceName);
 
-            Assert.IsNull(viewModel.EmailSource);
+            Assert.IsNull(viewModel.SelectedEmailSourceModelItemValue);
 
             Assert.IsFalse(propertyChanged);
         }
@@ -154,7 +155,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.AreEqual("New Email Source...", viewModel.EmailSources[0].ResourceName);
             Assert.AreNotEqual(Guid.Empty, viewModel.EmailSources[0].ResourceID);
 
-            Assert.IsNotNull(viewModel.EmailSource);
+            Assert.IsNotNull(viewModel.SelectedEmailSourceModelItemValue);
 
             Assert.IsFalse(propertyChanged);
         }
@@ -911,6 +912,49 @@ namespace Dev2.Activities.Designers.Tests.Email
             }
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_Handles")]
+        public void EmailDesignerViewModel_Handles_UpdateResourceMessage_EmailSourceIsUpdated()
+        {
+            //------------Setup for test--------------------------
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "Email1",
+                UserName = "user1@test.com",
+                Password = "pasword1"
+            };
+
+            var emailSources = CreateEmailSources(2);
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfSendEmailActivity
+            {
+                SelectedEmailSource = emailSource                
+            });
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+
+            var updatedEmailSource = new EmailSource(emailSources[0].ToXml())
+            {
+                UserName = "UpdateEmail@test.com", 
+                Password = "UpdatedPassword"
+            };
+
+            //var xaml = new StringBuilder
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.WorkflowXaml).Returns( new StringBuilder(updatedEmailSource.ToXml().ToString()));
+
+            var message = new UpdateResourceMessage(resourceModel.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Handle(message);
+
+            //------------Assert Results-------------------------
+            var selectedSource = viewModel.SelectedEmailSourceModelItemValue;
+            Assert.AreEqual(updatedEmailSource.UserName, selectedSource.UserName);
+            Assert.AreEqual(updatedEmailSource.Password, selectedSource.Password);
+        }
+
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new DsfSendEmailActivity());
@@ -926,6 +970,8 @@ namespace Dev2.Activities.Designers.Tests.Email
                 {
                     ResourceID = Guid.NewGuid(),
                     ResourceName = "Email" + i,
+                    UserName = "user" + i + "@test.com",
+                    Password = "pasword" + i
                 });
             }
 
