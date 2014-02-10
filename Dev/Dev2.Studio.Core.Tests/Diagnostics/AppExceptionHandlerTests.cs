@@ -37,14 +37,14 @@ namespace Dev2.Core.Tests.Diagnostics
         [ExpectedException(typeof(ArgumentNullException))]
         public void AppExceptionHandlerConstructorWithNullEventAggregatorExpectedThrowsArgumentNullException()
         {
-            var handler = new AppExceptionHandler(null, null);
+            new AppExceptionHandler(null, null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void AppExceptionHandlerConstructorWithNullAppExpectedThrowsArgumentNullException()
         {
-            var handler = new AppExceptionHandler(null, null);
+            new AppExceptionHandler(null, null);
         }
 
         [TestMethod]
@@ -52,8 +52,7 @@ namespace Dev2.Core.Tests.Diagnostics
         public void AppExceptionHandlerConstructorWithNullMainViewModelExpectedThrowsArgumentNullException()
         {
             var app = new Mock<IApp>();
-            var handler = new AppExceptionHandler(app.Object, null);
-
+            new AppExceptionHandler(app.Object, null);
         }
 
         #region Handle
