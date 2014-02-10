@@ -86,8 +86,14 @@ namespace Gui
                 return;
             }
 
-            var readmePath = Path.Combine(InstallVariables.InstallRoot, "Samples\\Readme.txt");
-            Process.Start(readmePath);
+            try
+            {
+                var readmePath = Path.Combine(InstallVariables.InstallRoot, "Samples\\Readme.txt");
+                Process.Start(readmePath);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch { }
+            // ReSharper restore EmptyGeneralCatchClause
         }
 
         /// <summary>

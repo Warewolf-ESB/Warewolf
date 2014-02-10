@@ -99,18 +99,20 @@ namespace Gui
 
         private void ClosePorts()
         {
-            var args = new[] { "http delete urlacl url={http://*:3142}/", "http delete urlacl url={https://*:3143}/" };
+            var args = new[] { "http delete urlacl url=http://*:3142/", "http delete urlacl url=https://*:3143/" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
                 foreach(var arg in args)
                 {
-                    ProcessHost.Invoke(null, "netsh.exe", arg);
+                    ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
                 }
 
             }
-            catch(Exception e)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
             }

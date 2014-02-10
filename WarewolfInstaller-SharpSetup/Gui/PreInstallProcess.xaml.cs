@@ -91,14 +91,14 @@ namespace Gui
         /// </summary>
         private void OpenPorts()
         {
-            var args = new[] { "http add urlacl url=http://*:3142/  user=\\Everyone", "http add urlacl url=https://*:3143/ user=\\Everyone" };
+            var args = new[] { @"http add urlacl url=http://*:3142/  user=\Everyone", @"http add urlacl url=https://*:3143/ user=\Everyone" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
             {
                 foreach(var arg in args)
                 {
-                    bool invoke = ProcessHost.Invoke(null, "netsh.exe", arg);
+                    bool invoke = ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
                     if(!invoke)
                     {
                         SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
