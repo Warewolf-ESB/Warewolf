@@ -41,34 +41,16 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UITheNavigationViewCustom.UINavigationTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1">
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIOutputCustom.UIDebugOutputCustom.UIItemButton.UIItemTree">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="74" Y="4" />
+      <Location X="103" Y="88" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="PinnedExplorerClick">
-      <ParameterName />
-      <StepId>-1</StepId>
-      <Direction>Start</Direction>
-      <Outcome />
-      <Disabled>false</Disabled>
-      <WorkItemId>0</WorkItemId>
-      <MarkerRegionType>Action</MarkerRegionType>
-    </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UISystemActivitiesStatTreeItem.UISwitchText.UISwitchText1">
-      <ParameterName />
-      <ModifierKeys>None</ModifierKeys>
-      <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="10" Y="8" />
-      <WheelDirection>0</WheelDirection>
-      <ActionType>Click</ActionType>
-      <MouseButton>Left</MouseButton>
-    </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickSwitch">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickDebugOutput">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -95,16 +77,16 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIItemCustom1.UIScalarExplorerTree.UIDev2StudioCoreModelsTreeItem.UIDev2StudioCoreModelsTreeItem1.UINameTxtEdit">
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIZf1166e575b5d43bb89fCustom.UIZ3d0e8544bdbd4fbc8b0TabList.UIExplorerTabPage.UIExplorerCustom.UIExplorerText">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="43" Y="5" />
+      <Location X="37" Y="6" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickVariables">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickExplorerLabel">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -113,16 +95,16 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIOutputCustom.UIDebugOutputCustom.UIItemButton.UIItemTree">
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="103" Y="88" />
+      <Location X="16" Y="14" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickDebugOutput">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickExplorerSearch">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -149,16 +131,16 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIZf1166e575b5d43bb89fCustom.UIZ3d0e8544bdbd4fbc8b0TabList.UIExplorerTabPage.UIExplorerCustom.UIExplorerText">
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIItemCustom.UIPART_ToolsTree.UIControlFlowTreeItem.UISystemActivitiesStatTreeItem.UISwitchText.UISwitchText1">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="37" Y="6" />
+      <Location X="10" Y="8" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickExplorerLabel">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickSwitch">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -185,16 +167,34 @@
       <WorkItemId>0</WorkItemId>
       <MarkerRegionType>Action</MarkerRegionType>
     </TestStepMarkerAction>
-    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UITheNavigationViewCustom.UIFilterTextBoxEdit.UIUI_DataListSearchtxtEdit">
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UIItemCustom1.UIScalarExplorerTree.UIDev2StudioCoreModelsTreeItem.UIDev2StudioCoreModelsTreeItem1.UINameTxtEdit">
       <ParameterName />
       <ModifierKeys>None</ModifierKeys>
       <IsGlobalHotkey>false</IsGlobalHotkey>
-      <Location X="16" Y="14" />
+      <Location X="43" Y="5" />
       <WheelDirection>0</WheelDirection>
       <ActionType>Click</ActionType>
       <MouseButton>Left</MouseButton>
     </MouseAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="ClickExplorerSearch">
+    <TestStepMarkerAction Comment="" MarkerInformation="ClickVariables">
+      <ParameterName />
+      <StepId>-1</StepId>
+      <Direction>Start</Direction>
+      <Outcome />
+      <Disabled>false</Disabled>
+      <WorkItemId>0</WorkItemId>
+      <MarkerRegionType>Action</MarkerRegionType>
+    </TestStepMarkerAction>
+    <MouseAction UIObjectName="UIMap.UIWarewolfWindow.UITheNavigationViewCustom.UINavigationTree.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1.UIDev2StudioViewModelsTreeItem.UIDev2StudioViewModelsTreeItem1">
+      <ParameterName />
+      <ModifierKeys>None</ModifierKeys>
+      <IsGlobalHotkey>false</IsGlobalHotkey>
+      <Location X="74" Y="4" />
+      <WheelDirection>0</WheelDirection>
+      <ActionType>Click</ActionType>
+      <MouseButton>Left</MouseButton>
+    </MouseAction>
+    <TestStepMarkerAction Comment="" MarkerInformation="PinnedExplorerClick">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>

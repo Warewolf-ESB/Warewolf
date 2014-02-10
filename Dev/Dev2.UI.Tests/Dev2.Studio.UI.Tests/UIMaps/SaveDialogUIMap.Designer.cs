@@ -28,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
 
 
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
-    public partial class SaveDialogUIMap
+    public partial class SaveDialogUIMap : UIMapBase
     {
 
         /// <summary>
@@ -53,6 +53,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         /// </summary>
         public void ClickAndTypeInNameTextbox(string textToType)
         {
+            WizardsUIMap.WaitForWizard();
             #region Variable Declarations
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             #endregion
@@ -99,7 +100,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         public void ClickSave()
         {
             Playback.Wait(3500);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
+            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{ENTER}");
         }
 
         #region Properties

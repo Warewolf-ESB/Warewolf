@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Enums;
+using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,7 +14,6 @@ namespace Dev2.Studio.UI.Tests
     ///     These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    [Ignore]
     // ALL TEST HAVE Item with same key bug when reselecting server in connect control
     public class RemoteServerUiTests : UIMapBase
     {
@@ -20,6 +21,16 @@ namespace Dev2.Studio.UI.Tests
 
         const string RemoteServerName = "Remote Connection";
         const string LocalHostServerName = "localhost";
+
+        #endregion
+
+        #region Setup
+
+        [TestInitialize]
+        public void MyTestInit()
+        {
+            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
+        }
 
         #endregion
 
@@ -55,14 +66,10 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore]
-        // Test passed but messes up others
         public void RemoteServerUITests_ConnectToRemoteServerFromExplorer_RemoteServerConnected()
         {
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
             var selectedSeverName = ExplorerUIMap.GetSelectedSeverName();
             Assert.AreEqual(RemoteServerName, selectedSeverName);
-
         }
 
         [TestMethod]
@@ -70,7 +77,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_CreateRemoteWorkFlow_WorkflowIsCreated()
         {
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
             RibbonUIMap.CreateNewWorkflow();
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Unsaved"));
@@ -82,12 +88,10 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWorkFlow_WorkflowIsEdited()
         {
-
-            const string TextToSearchWith = "Find Records";
-            OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var uiControl = WorkflowDesignerUIMap.FindControlByAutomationId(TabManagerUIMap.GetActiveTab(), "Assign");
-            var p = WorkflowDesignerUIMap.GetPointUnderControl(uiControl);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", p);
+            UITestControl tab = ExplorerUIMap.DoubleClickWorkflow("Find Records", "TESTS", RemoteServerName);
+            ActivityUiMapBase activityUiMapBase = new DsfActivityUiMap(false);
+            activityUiMapBase.TheTab = tab;
+            activityUiMapBase.DragToolOntoDesigner(ToolType.Assign);
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             Assert.IsTrue(activeTabName.Contains("Find Records - Remote Connection *"));
 
@@ -99,8 +103,7 @@ namespace Dev2.Studio.UI.Tests
         public void RemoteServerUITests_ViewRemoteWorkFlowInBrowser_WorkflowIsExecuted()
         {
 
-            const string TextToSearchWith = "Find Records";
-            OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
+            ExplorerUIMap.DoubleClickWorkflow("Find Records", "TESTS", RemoteServerName);
             SendKeys.SendWait("{F7}");
             Playback.Wait(5000);
             //assert error dialog not showing
@@ -129,27 +132,18 @@ namespace Dev2.Studio.UI.Tests
 
             //Ensure that we're in localhost
             ExplorerUIMap.ClickServerInServerDDL(LocalHostServerName);
-            StudioWindow.WaitForControlReady();
 
-            //Create a workflow
-            RibbonUIMap.CreateNewWorkflow();
-            var theTab = TabManagerUIMap.GetActiveTab();
-            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-
-            //Drag on a remote workflow
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.EnterExplorerSearchText(remoteWorkflowName);
-            ExplorerUIMap.DragControlToWorkflowDesigner(RemoteServerName, "WORKFLOWS", "UTILITY", remoteWorkflowName, point);
+            //Create new workflow and drag a remote workflow onto it
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap();
+            activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "UTILITY", RemoteServerName);
 
             //Should be able to get clean debug output
-            OpenMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
-            DebugUIMap.ClickExecute();
+            RibbonUIMap.DebugShortcutKeyPress();
             OutputUIMap.WaitForExecution();
 
             //Assert that the workflow really is on the design surface and debug output is clean
             Assert.IsFalse(OutputUIMap.IsAnyStepsInError(), "The remote workflow threw errors when executed locally");
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(theTab, remoteWorkflowName));
+            Assert.IsNotNull(activityUiMap.Activity);
         }
 
         [TestMethod]
@@ -160,12 +154,10 @@ namespace Dev2.Studio.UI.Tests
 
             const string TextToSearchWith = "Find Records";
 
-            OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
+            var remoteTab = ExplorerUIMap.DoubleClickWorkflow(TextToSearchWith, "TESTS", RemoteServerName);
             Assert.IsNotNull(remoteTab);
 
-            OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
+            var localHostTab = ExplorerUIMap.DoubleClickWorkflow(TextToSearchWith, "TESTS");
             Assert.IsNotNull(localHostTab);
 
         }
@@ -175,27 +167,21 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_DebugARemoteWorkflowWhenLocalWorkflowWithSameNameIsOpen_WorkflowIsExecuted()
         {
-
             const string TextToSearchWith = "Find Records";
 
-            OpenWorkFlow(LocalHostServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-            var localHostTab = TabManagerUIMap.FindTabByName(TextToSearchWith);
-            Assert.IsNotNull(localHostTab);
+            var localTab = ExplorerUIMap.DoubleClickWorkflow(TextToSearchWith, "TESTS");
+            Assert.IsNotNull(localTab);
 
-            OpenWorkFlow(RemoteServerName, "WORKFLOWS", "TESTS", TextToSearchWith);
-
-            OpenMenuItem("Debug");
-            PopupDialogUIMap.WaitForDialog();
-            DebugUIMap.ClickExecute();
-            OutputUIMap.WaitForExecution();
-
-            var remoteTab = TabManagerUIMap.FindTabByName(TextToSearchWith + " - " + RemoteServerName);
-            var canidateTab = TabManagerUIMap.GetActiveTab();
+            var remoteTab = ExplorerUIMap.DoubleClickWorkflow(TextToSearchWith, "TESTS", RemoteServerName);
             Assert.IsNotNull(remoteTab);
+
+            RibbonUIMap.DebugShortcutKeyPress();
+
+            var canidateTab = TabManagerUIMap.GetActiveTab();
+
             // verify the active tab is the remote tab
             Assert.AreEqual(remoteTab, canidateTab);
             Assert.IsTrue(OutputUIMap.IsExecutionRemote());
-
         }
 
         [TestMethod]
@@ -209,23 +195,22 @@ namespace Dev2.Studio.UI.Tests
             try
             {
                 //Edit remote db source
-                OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-                Keyboard.SendKeys("{TAB}{TAB}{RIGHT}");
-                Playback.Wait(100);
-                Keyboard.SendKeys("{TAB}testuser{TAB}test123{TAB}");
-                Playback.Wait(100);
-                Keyboard.SendKeys("{ENTER}{TAB}");
-                Playback.Wait(100);
-                Keyboard.SendKeys("{TAB}{ENTER}");
+                ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+
+                DatabaseSourceUIMap.ChangeAuthenticationTypeToUserFromWindows();
+                DatabaseSourceUIMap.EnterUsernameAndPassword();
+                DatabaseSourceUIMap.TestConnection();
+                DatabaseSourceUIMap.ClickSaveDbConnectionFromTestConnection();
+
                 SaveDialogUIMap.ClickSave();
             }
             finally
             {
                 //Change it back
-                ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+                ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
                 userName = DatabaseSourceUIMap.GetUserName();
-                SendKeys.SendWait("{TAB}{TAB}{LEFT}{TAB}{TAB}{ENTER}");
-                Playback.Wait(100);
+                DatabaseSourceUIMap.ChangeAuthenticationTypeToWindowsFromUser();
+                DatabaseSourceUIMap.ClickSaveDbConnectionFromWindowsRadioButton();
                 SaveDialogUIMap.ClickSave();
             }
 
@@ -235,27 +220,28 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore] // FLIPPING FAULTY EXTERNAL RESOURCE
+        [Ignore]//Uses broken web source which is an external resource
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
         {
             const string TextToSearchWith = "WebSource";
             string query;
 
             //Edit remote web source
-            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(7000);
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}?CountryName=Canada{TAB}{TAB}{TAB}{ENTER}");
-            Playback.Wait(1000);
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+            WebSourceWizardUIMap.EnterDefaultQuery("?CountryName=Canada");
+            WebSourceWizardUIMap.ClickSave();
             SaveDialogUIMap.ClickSave();
 
             //Change it back
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(7000);
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+            //Get textbox text
             var persistClipboard = Clipboard.GetText();
-            Keyboard.SendKeys("{TAB}{TAB}{TAB}{CTRL}c?CountryName=South Africa{TAB}{TAB}{TAB}{ENTER}");
+            WebSourceWizardUIMap.DefaultQuerySetFocus();
+            WebSourceWizardUIMap.PressCtrlC();
+            WebSourceWizardUIMap.EnterTextForDefaultQueryIfFocusIsSet("?CountryName=South Africa");
+            WebSourceWizardUIMap.ClickSave();
             query = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
-            Playback.Wait(1000);
             SaveDialogUIMap.ClickSave();
 
             Assert.AreEqual("?CountryName=Canada", query, "Cannot change remote web source");
@@ -266,14 +252,9 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteWebService_WebServiceIsEdited()
         {
-            const string TextToSearchWith = "WebService";
-            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(3500);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
-            Playback.Wait(1000);
-            SaveDialogUIMap.ClickSave();
-
-
+            const string TextToSearchWith = "WebService1234";
+            ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
+            WebServiceWizardUIMap.ClickSaveButton(10);
         }
 
         [TestMethod]
@@ -285,22 +266,17 @@ namespace Dev2.Studio.UI.Tests
             string actionName;
 
             //Edit remote db service
-            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(2000);
+            ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             DatabaseServiceWizardUIMap.ClickScrollActionListUp();
             DatabaseServiceWizardUIMap.ClickFirstAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
             DatabaseServiceWizardUIMap.ClickOK();
-            Playback.Wait(2000);
             //Change it back
-            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            Playback.Wait(2000);
+            ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             actionName = DatabaseServiceWizardUIMap.GetActionName();
             DatabaseServiceWizardUIMap.ClickSecondAction();
             DatabaseServiceWizardUIMap.ClickTestAction();
-            Playback.Wait(1000);
             DatabaseServiceWizardUIMap.ClickOK();
-            Playback.Wait(2000);
             //Assert remote db service changed its action
             Assert.AreEqual("dbo.fn_diagramob", actionName, "Cannot edit remote db service");
         }
@@ -315,33 +291,33 @@ namespace Dev2.Studio.UI.Tests
             string timeout;
 
             //Edit remote email source
-            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}1234{TAB}{ENTER}");
-            wizard.WaitForControlReady();
-            SendKeys.SendWait("@gmail.com{TAB}dev2developer@yahoo.com");
-            Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(12000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+            //Change Timeout
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(6, "1234");
+            //Test Email Source
+            EmailSourceWizardUIMap.PressButtonOnWizard(1, 1000);
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "@gmail.com");
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, "dev2developer@yahoo.com");
+            EmailSourceWizardUIMap.PressButtonOnWizard(1, 12000);
+            EmailSourceWizardUIMap.PressButtonOnWizard(8);
             SaveDialogUIMap.ClickSave();
 
             //Change it back
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+            //Get the Timeout text
             var persistClipboard = Clipboard.GetText();
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}");
-            wizard.WaitForControlReady();
-            Keyboard.SendKeys(wizard, "{CTRL}c");
-            SendKeys.SendWait("100{TAB}{ENTER}");
+            EmailSourceWizardUIMap.SendTabsForWizard(6);
+            EmailSourceWizardUIMap.PressCtrlC();
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "100");
+            EmailSourceWizardUIMap.PressButtonOnWizard(1);
             timeout = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
-            wizard.WaitForControlReady();
-            SendKeys.SendWait("@gmail.com{TAB}dev2developer@yahoo.com");
-            Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            Playback.Wait(12000);
-            SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}");
+
+            //Test Email Source
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "@gmail.com");
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, "dev2developer@yahoo.com");
+            EmailSourceWizardUIMap.PressButtonOnWizard(1, 12000);
+            EmailSourceWizardUIMap.PressButtonOnWizard(8);
             SaveDialogUIMap.ClickSave();
 
             //Assert remote email source changed its timeout
@@ -357,48 +333,17 @@ namespace Dev2.Studio.UI.Tests
             string path;
 
             //Edit remote plugin source
-            OpenWorkFlow(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
             PluginSourceMap.ClickPluginSourceAssemblyPath();
-            Keyboard.SendKeys("{LEFT}{LEFT}{LEFT}{LEFT}");
-            Keyboard.SendKeys(" ");
-            Keyboard.SendKeys("-");
-            Keyboard.SendKeys(" ");
-            Keyboard.SendKeys("C");
-            Keyboard.SendKeys("o");
-            Keyboard.SendKeys("p");
-            Keyboard.SendKeys("y");
-            Playback.Wait(100);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT} - Copy"), 100);
+            PluginServiceWizardUIMap.PressButtonOnWizard(1);
             SaveDialogUIMap.ClickSave();
 
             //Change it back                        
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SOURCES", "REMOTETESTS", TextToSearchWith);
-            Playback.Wait(4500);
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
             path = PluginSourceMap.GetAssemblyPathText();
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{LEFT}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{BACK}");
-            Playback.Wait(1000);
-            Keyboard.SendKeys("{TAB}{ENTER}");
+            PluginSourceMap.EnterTextIntoWizardTextBox(0, ("{LEFT}{LEFT}{LEFT}{LEFT}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}{BACK}"), 100);
+            PluginServiceWizardUIMap.PressButtonOnWizard(1);
             SaveDialogUIMap.ClickSave();
 
             Assert.AreEqual(@"C:\DevelopmentDropOff\Integration Tests\Pugin1 - Copy.dll", path, "Cannot change remote plugin source");
@@ -413,19 +358,16 @@ namespace Dev2.Studio.UI.Tests
             string actionName;
 
             //Edit remote plugin service
-            OpenWorkFlow(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
+            ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             PluginServiceWizardUIMap.ClickActionAtIndex(3);
             PluginServiceWizardUIMap.ClickTest();
-            Playback.Wait(7000);
             PluginServiceWizardUIMap.ClickOK();
 
             //Change it back
-            ExplorerUIMap.DoubleClickOpenProject(RemoteServerName, "SERVICES", "REMOTEUITESTS", TextToSearchWith);
-            WizardsUIMap.WaitForWizard();
+            ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
             actionName = PluginServiceWizardUIMap.GetActionName();
             PluginServiceWizardUIMap.ClickActionAtIndex(4);
             PluginServiceWizardUIMap.ClickTest();
-            Playback.Wait(7000);
             PluginServiceWizardUIMap.ClickOK();
 
             Assert.AreEqual("ToString", actionName, "Cannot change remote plugin service");
@@ -434,64 +376,28 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore]
-        // Test setup issue - Delete dialog prompt
         public void RemoteServerUITests_AddRenameAndDeleteARemoteWorkFlow_CompletesSuccessfully()
         {
-
-            var serviceType = "WORKFLOWS";
-            var folderName = "Unassigned";
-
-            ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            Playback.Wait(4000);
+            const string CategoryName = "Unassigned";
 
             //CREATE A WORKFLOW
-            RibbonUIMap.CreateNewWorkflow();
-            Playback.Wait(4000);
-
-            var point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap();
+            activityUiMap.DragToolOntoDesigner(ToolType.Assign);
 
             //SAVE A WORKFLOW
-            OpenMenuItem("Save");
-            Playback.Wait(4000);
+            RibbonUIMap.ClickSave();
             string InitialName = Guid.NewGuid().ToString();
-            EnternameAndSave(InitialName);
+            SaveDialogUIMap.ClickAndTypeInNameTextbox(InitialName);
 
             //RENAME A WORKFLOW
-            ExplorerUIMap.EnterExplorerSearchText(InitialName);
-            Playback.Wait(3500);
-            ExplorerUIMap.RightClickRenameProject(RemoteServerName, serviceType, folderName, InitialName);
             string RenameTo = Guid.NewGuid().ToString();
-            SendKeys.SendWait(RenameTo + "{ENTER}");
+            ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, ServiceType.Workflows, RenameTo, RemoteServerName);
 
             //DELETE A WORKFLOW
             ExplorerUIMap.EnterExplorerSearchText(RenameTo);
-            ExplorerUIMap.RightClickDeleteProject(RemoteServerName, serviceType, folderName, RenameTo);
-            Assert.IsFalse(ExplorerUIMap.ServiceExists(RemoteServerName, serviceType, folderName, RenameTo));
+            ExplorerUIMap.RightClickDeleteResource(InitialName, CategoryName, ServiceType.Workflows, RemoteServerName);
+            Assert.IsFalse(ExplorerUIMap.ValidateServiceExists(RenameTo, CategoryName, RemoteServerName));
 
-        }
-
-        #endregion
-
-        #region Utils
-
-        void EnternameAndSave(string tempName)
-        {
-            SaveDialogUIMap.ClickAndTypeInNameTextbox(tempName);
-        }
-
-        void OpenMenuItem(string itemType)
-        {
-            RibbonUIMap.ClickRibbonMenuItem(itemType);
-        }
-
-        void OpenWorkFlow(string serverName, string serviceType, string foldername, string textToSearchWith)
-        {
-            ExplorerUIMap.ClickServerInServerDDL(serverName);
-            ExplorerUIMap.EnterExplorerSearchText(textToSearchWith);
-            ExplorerUIMap.DoubleClickOpenProject(serverName, serviceType, foldername, textToSearchWith);
-            Playback.Wait(4500);
         }
 
         #endregion

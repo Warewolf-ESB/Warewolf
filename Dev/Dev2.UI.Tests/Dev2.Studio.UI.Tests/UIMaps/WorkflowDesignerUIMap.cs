@@ -1272,9 +1272,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             return pixelGrabber.GetPixel(5, 0) == Color.Red;
         }
 
-        public Point GetStartNodeBottomAutoConnectorPoint()
+        public Point GetStartNodeBottomAutoConnectorPoint(UITestControl theTab)
         {
-            var startNode = FindStartNode(TabManagerUIMap.GetActiveTab());
+            var startNode = FindStartNode(theTab);
             //Note that 85 is the relative vertical distance in pixels from the top corner of the start node bounding rectangle
             // and 25 is the relative horizontal distance in pixels from that point
             return GetPointUnderControl(startNode, 85, 25);

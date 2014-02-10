@@ -153,7 +153,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                                 kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
                                 kid.ClassName.ToUpper().Contains(arg.ToUpper()))
                             {
-                                canidate = kid;
+                                if(arg == projectName)
+                                {
+                                    if(id == "UI_" + projectName + "_AutoID")
+                                    {
+                                        canidate = kid;
+                                    }
+                                }
+                                else
+                                {
+                                    canidate = kid;
+                                }
                             }
                         }
                     }

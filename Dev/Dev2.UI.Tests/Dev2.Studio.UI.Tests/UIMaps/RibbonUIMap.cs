@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.UI.Tests;
+﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -98,7 +99,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public void ClickSave()
         {
             ClickRibbonMenuItem("UI_RibbonHomeTabSaveBtn_AutoID");
-            WizardsUIMap.WaitForWizard();
+            Playback.Wait(2000);
         }
 
         public void ClickNewWebService()
@@ -154,6 +155,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             var control = children.FirstOrDefault(c => c.FriendlyName == name || c.GetChildren().Any(child => child.FriendlyName.Contains(name)));
 
             return control;
+        }
+
+        public void DebugShortcutKeyPress()
+        {
+            SendKeys.SendWait("{F6}");
+            OutputUIMap.WaitForExecution();
         }
     }
 }

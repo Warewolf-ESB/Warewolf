@@ -57,7 +57,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Get some variables
-            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Get some variables
-            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
@@ -168,7 +168,7 @@ namespace Dev2.Studio.UI.Tests
             var theTab = TabManagerUIMap.GetActiveTab();
 
             // Get some variables
-            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
@@ -201,7 +201,7 @@ namespace Dev2.Studio.UI.Tests
             RibbonUIMap.CreateNewWorkflow();
             var theTab = TabManagerUIMap.GetActiveTab();
 
-            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            var startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow

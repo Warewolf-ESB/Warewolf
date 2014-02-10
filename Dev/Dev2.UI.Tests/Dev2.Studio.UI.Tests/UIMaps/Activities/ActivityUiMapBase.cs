@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Dev2.Common.ExtMethods;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
@@ -12,9 +14,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         private UITestControl _activity;
         private UITestControl _theTab;
 
-        protected ActivityUiMapBase()
+        protected ActivityUiMapBase(bool createNewtab = true)
         {
-            _theTab = RibbonUIMap.CreateNewWorkflow();
+            if(createNewtab)
+            {
+                _theTab = RibbonUIMap.CreateNewWorkflow();
+            }
         }
 
         #region Properties
@@ -46,6 +51,32 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         #endregion
 
         #region Public Methods
+
+        public void DragToolOntoDesigner(ToolType toolType, Point pointToDragTo = new Point())
+        {
+            if(toolType == ToolType.Workflow || toolType == ToolType.Service)
+            {
+                ToolboxUIMap.DragControlToWorkflowDesigner(toolType.GetDescription(), TheTab, new Point(), false);
+                PopupDialogUIMap.WaitForDialog();
+            }
+            else
+            {
+                Activity = ToolboxUIMap.DragControlToWorkflowDesigner(toolType.GetDescription(), TheTab);
+            }
+        }
+
+        public void DragWorkflowOntoDesigner(string workflowName, string categoryName, string serverName = "localhost", Point pointToDragTo = new Point())
+        {
+            ExplorerUIMap.EnterExplorerSearchText(workflowName);
+            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, workflowName, categoryName, ServiceType.Workflows, serverName, pointToDragTo);
+        }
+
+        public void DragServiceOntoDesigner(string serviceName, string categoryName, string serverName = "localhost", Point pointToDragTo = new Point())
+        {
+            ExplorerUIMap.EnterExplorerSearchText(serviceName);
+            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, serviceName, categoryName, ServiceType.Services, serverName, pointToDragTo);
+        }
+
 
         public string GetHelpText()
         {

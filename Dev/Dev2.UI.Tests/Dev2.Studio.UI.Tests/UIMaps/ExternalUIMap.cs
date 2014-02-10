@@ -21,7 +21,7 @@
             subMap.SearchProperties[UITestControl.PropertyNames.ClassName] = "Internet Explorer_Server";
             subMap.Find();
             UITestControl bodyText = subMap.GetChildren()[0];
-            
+
             string body = bodyText.GetProperty("InnerText").ToString();
             return body;
         }
@@ -37,12 +37,12 @@
 
         public void CloseAllInstancesOfIE()
         {
-            var browsers = new[]{"iexplore", "chrome"};
+            var browsers = new[] { "iexplore", "chrome" };
 
-            foreach (var browser in browsers)
+            foreach(var browser in browsers)
             {
                 Process[] processList = Process.GetProcessesByName(browser);
-                foreach (Process p in processList)
+                foreach(Process p in processList)
                 {
                     try
                     {
@@ -53,9 +53,9 @@
                     // ReSharper restore EmptyGeneralCatchClause
                     {
                     }
-                }    
+                }
             }
-            
+
         }
 
         public bool Outlook_HasOpened()

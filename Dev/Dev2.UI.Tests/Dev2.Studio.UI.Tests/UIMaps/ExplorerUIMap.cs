@@ -207,6 +207,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             // Get the base control
             UITestControl ddlBase = GetServerDDL();
 
+            //Wait for the connect control to be ready
+            int counter = 0;
+            while(!ddlBase.Enabled && counter < 5)
+            {
+                Playback.Wait(2000);
+                counter++;
+            }
+            if(!ddlBase.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
+
             // Click it to expand it
             Mouse.Click(ddlBase, new Point(10, 10));
             Playback.Wait(500);
@@ -225,6 +237,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public string GetSelectedSeverName()
         {
             UITestControl ddlBase = GetServerDDL();
+
+            int counter = 0;
+            while(!ddlBase.Enabled && counter < 5)
+            {
+                Playback.Wait(2000);
+                counter++;
+            }
+            if(!ddlBase.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
 
             var theDdl = ddlBase as WpfComboBox;
             if(theDdl != null)
@@ -252,10 +275,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return uITvExplorerTree.GetChildren().Count;
         }
 
-        public void RightClickDeleteProject(string serverName, string serviceType, string folderName, string projectName)
+        public void RightClickDeleteResource(string resourceName, string categoryName, ServiceType serviceType, string serverName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
+            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
+            Point p = new Point(theControl.BoundingRectangle.X + 200, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
@@ -497,12 +520,36 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="serverName">Name of the server (Will default to "localhost").</param>
         /// <param name="pointToDragTo">The point to drop the resource on the designer (Will default to just below the start node).</param>
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
+        public UITestControl DoubleClickWorkflow(string resourceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        {
+            DoubleClickResource(ServiceType.Workflows, resourceName, categoryName, serverName, overrideDblClickBehavior);
+            UITestControl newTab = TabManagerUIMap.GetActiveTab();
+
+            int counter = 0;
+            while(newTab == null || !TabManagerUIMap.GetActiveTabName().Contains(resourceName) && counter < 7)
+            {
+                Playback.Wait(1000);
+                newTab = TabManagerUIMap.GetActiveTab();
+                counter++;
+            }
+            return newTab;
+        }
+
+        /// <summary>
+        /// Drags the resource from the explorer to the active tab.
+        /// </summary>
+        /// <param name="tabToDropOnto">The tab to drop the resource onto.</param>
+        /// <param name="resourceName">The name of the resource.</param>
+        /// <param name="categoryName">The name of the category.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="serverName">Name of the server (Will default to "localhost").</param>
+        /// <param name="pointToDragTo">The point to drop the resource on the designer (Will default to just below the start node).</param>
+        /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
         public UITestControl DragResourceOntoWorkflowDesigner(UITestControl tabToDropOnto, string resourceName, string categoryName, ServiceType serviceType, string serverName = "localhost", Point pointToDragTo = new Point(), bool overrideDblClickBehavior = false)
         {
             if(pointToDragTo.X == 0 && pointToDragTo.Y == 0)
             {
-                UITestControl theStartButton = WorkflowDesignerUIMap.FindStartNode(tabToDropOnto);
-                pointToDragTo = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
+                pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(tabToDropOnto);
             }
 
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
@@ -544,27 +591,24 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <summary>
         /// Rights the click rename project.
         /// </summary>
-        /// <param name="serverName">Name of the server.</param>
+        /// <param name="resourceName"></param>
         /// <param name="serviceType">Type of the service.</param>
-        /// <param name="folderName">Name of the folder.</param>
-        /// <param name="projectName">Name of the project.</param>
-        public void RightClickRenameProject(string serverName, string serviceType, string folderName, string projectName)
+        /// <param name="categoryName"></param>
+        /// <param name="newName"></param>
+        /// <param name="serverName"></param>
+        public void RightClickRenameResource(string resourceName, string categoryName, ServiceType serviceType, string newName, string serverName = "localhost")
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
-            Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
+            Point p = new Point(theControl.BoundingRectangle.X + 200, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Mouse.Click(MouseButtons.Left, ModifierKeys.None, p);
             Playback.Wait(500);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(500);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
+            SendKeys.SendWait("{F2}");
+            Playback.Wait(50);
+            SendKeys.SendWait(newName);
+            Playback.Wait(50);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(500);
         }
 
         public void ClickNewServerButton()
@@ -577,20 +621,50 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         private bool ValidateResourceExists(string resourceName, string folderName, ServiceType serviceType, string serverName = "localhost")
         {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
-            Playback.Wait(1000);
-            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), folderName, resourceName);
-            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
-            Mouse.Click(p);
-
-            var kids = theControl.GetChildren();
-
-            if(kids != null && kids.Count > 0)
+            try
             {
-                return kids.Any(kid => kid.Name == resourceName);
-            }
+                ExplorerUIMap.EnterExplorerSearchText(resourceName);
+                Playback.Wait(1000);
+                UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), folderName, resourceName);
+                if(theControl == null)
+                {
+                    return false;
+                }
+                Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
+                Mouse.Click(p);
 
-            return false;
+                var kids = theControl.GetChildren();
+
+                if(kids != null && kids.Count > 0)
+                {
+                    return kids.Any(kid => kid.Name == resourceName);
+                }
+
+                return false;
+            }
+            catch(Exception)
+            {
+
+                return false;
+            }
+        }
+
+        public void DoubleClickSource(string sourceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        {
+            DoubleClickResource(ServiceType.Sources, sourceName, categoryName, serverName, overrideDblClickBehavior);
+        }
+
+        public void DoubleClickService(string serviceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        {
+            DoubleClickResource(ServiceType.Services, serviceName, categoryName, serverName, overrideDblClickBehavior);
+        }
+
+        private void DoubleClickResource(ServiceType serviceType, string resourceName, string categoryName, string serverName, bool overrideDblClickBehavior = false)
+        {
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
+            Mouse.DoubleClick(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
+            Playback.Wait(4000);
         }
     }
 }

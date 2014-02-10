@@ -250,11 +250,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             // to do remove below once performance is sorted!
             if(idx == -1)
             {
-                Playback.Wait(3500);
                 idx = tabMgr.SelectedIndex;
                 if(idx == -1)
                 {
-                    throw new Exception("The selected tab index was -1");
+                    return null;
                 }
             }
 

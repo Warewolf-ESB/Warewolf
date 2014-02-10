@@ -65,6 +65,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
             // Click image
             Mouse.Click(control, new Point(889, 84));
+            Playback.Wait(1000);
         }
 
         /// <summary>
@@ -150,6 +151,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
 
             // Click image
             Mouse.Click(uIItemImage, new Point(774, 520));
+            Playback.Wait(2000);
 
         }
 

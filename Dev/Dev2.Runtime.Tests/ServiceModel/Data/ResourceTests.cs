@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -14,7 +13,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // ReSharper disable InconsistentNaming
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceTests
     {
         #region Equals
@@ -85,8 +85,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.AreEqual("1736ca6e-b870-467f-8d25-262972d8c3e8", resource.ResourceID.ToString());
             Assert.AreEqual("Bug6619", resource.ResourceName);
             Assert.AreEqual(ResourceType.WorkflowService, resource.ResourceType);
-        }  
-        
+        }
+
         [TestMethod]
         public void ToXMLWhereValidResourceWIthErrorInfoDataIsValidFalse()
         {
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resource = new Resource(element);
             resource.Errors.Clear();
             resource.IsValid = false;
-            resource.Errors.Add(new ErrorInfo{ErrorType =  ErrorType.Critical,FixType = FixType.None,Message = "Fix Me",StackTrace = "Line 1"});
+            resource.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, FixType = FixType.None, Message = "Fix Me", StackTrace = "Line 1" });
             //------------Execute Test---------------------------
             var xElement = resource.ToXml();
             //------------Assert Results-------------------------
@@ -106,10 +106,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(errorMessagesElement);
             var errorMessageElement = errorMessagesElement.Element("ErrorMessage");
             Assert.IsNotNull(errorMessageElement);
-            Assert.AreEqual("Fix Me",errorMessageElement.Attribute("Message").Value);
-            Assert.AreEqual("Line 1",errorMessageElement.Attribute("StackTrace").Value);
-            Assert.AreEqual("None",errorMessageElement.Attribute("FixType").Value);
-            Assert.AreEqual("Critical",errorMessageElement.Attribute("ErrorType").Value);
+            Assert.AreEqual("Fix Me", errorMessageElement.Attribute("Message").Value);
+            Assert.AreEqual("Line 1", errorMessageElement.Attribute("StackTrace").Value);
+            Assert.AreEqual("None", errorMessageElement.Attribute("FixType").Value);
+            Assert.AreEqual("Critical", errorMessageElement.Attribute("ErrorType").Value);
         }
 
         [TestMethod]
@@ -123,11 +123,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
-            Assert.AreEqual(3,resource.Errors.Count);
-            Assert.AreEqual("Line 1",resource.Errors[0].StackTrace);
-            Assert.AreEqual(ErrorType.None,resource.Errors[2].ErrorType);
-            Assert.AreEqual("Error Message 2",resource.Errors[1].Message);
-            Assert.AreEqual(FixType.None,resource.Errors[1].FixType);
+            Assert.AreEqual(3, resource.Errors.Count);
+            Assert.AreEqual("Line 1", resource.Errors[0].StackTrace);
+            Assert.AreEqual(ErrorType.None, resource.Errors[2].ErrorType);
+            Assert.AreEqual("Error Message 2", resource.Errors[1].Message);
+            Assert.AreEqual(FixType.None, resource.Errors[1].FixType);
         }
 
         [TestMethod]
@@ -218,11 +218,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
-            Assert.AreEqual(4,resource.Dependencies.Count);
+            Assert.AreEqual(4, resource.Dependencies.Count);
             ResourceForTree serverDependency = resource.Dependencies.Find(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
             Assert.IsNotNull(serverDependency);
             Assert.AreEqual("server - tfs bld", serverDependency.ResourceName);
-            Assert.AreEqual(ResourceType.Server,serverDependency.ResourceType);
+            Assert.AreEqual(ResourceType.Server, serverDependency.ResourceType);
         }
 
         [TestMethod]
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Resource_LoadDependencies_HasEmailSource_ShouldHaveEmailSourceInDepencyList()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("EmailTest");            
+            XElement element = XmlResource.Fetch("EmailTest");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -248,7 +248,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Resource_LoadDependencies_HasDatabaseSourceFromSqlBulkInsertTool_ShouldHaveDatabaseSourceInDepencyList()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("Big Bulk Testing");            
+            XElement element = XmlResource.Fetch("Big Bulk Testing");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -386,11 +386,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            var expected = resource.DataList.Replace(Environment.NewLine,"").Replace(" ","");
-            var actual = dataList.Replace(" ","");
-            Assert.AreEqual(expected,actual);
-        } 
-        
+            var expected = resource.DataList.Replace(Environment.NewLine, "").Replace(" ", "");
+            var actual = dataList.Replace(" ", "");
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("Resource_XmlConstructor")]
@@ -400,16 +400,16 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                                   "<Input Name=\"CityName\" Source=\"CityName\" EmptyToNull=\"false\" DefaultValue=\"Paris-Aeroport Charles De Gaulle\" />" +
                                   "<Input Name=\"CountryName\" Source=\"CountryName\" EmptyToNull=\"false\" DefaultValue=\"France\" />" +
                                   "</Inputs>";
-            var outputs = "<Outputs>"+
-                "<Output OriginalName=\"Location\" Name=\"Location\" MapsTo=\"Location\" Value=\"[[Location]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" /> "+
-                "<Output OriginalName=\"Time\" Name=\"Time\" MapsTo=\"Time\" Value=\"[[Time]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 "+
-                "<Output OriginalName=\"Wind\" Name=\"Wind\" MapsTo=\"Wind\" Value=\"[[Wind]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 "+
-               "<Output OriginalName=\"Visibility\" Name=\"Visibility\" MapsTo=\"Visibility\" Value=\"[[Visibility]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
-               "<Output OriginalName=\"Temperature\" Name=\"Temperature\" MapsTo=\"Temperature\" Value=\"[[Temperature]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
-               "<Output OriginalName=\"DewPoint\" Name=\"DewPoint\" MapsTo=\"DewPoint\" Value=\"[[DewPoint]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
-               "<Output OriginalName=\"RelativeHumidity\" Name=\"RelativeHumidity\" MapsTo=\"RelativeHumidity\" Value=\"[[RelativeHumidity]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
-               "<Output OriginalName=\"Pressure\" Name=\"Pressure\" MapsTo=\"Pressure\" Value=\"[[Pressure]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
-               "<Output OriginalName=\"Status\" Name=\"Status\" MapsTo=\"Status\" Value=\"[[Status]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />"+
+            var outputs = "<Outputs>" +
+                "<Output OriginalName=\"Location\" Name=\"Location\" MapsTo=\"Location\" Value=\"[[Location]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" /> " +
+                "<Output OriginalName=\"Time\" Name=\"Time\" MapsTo=\"Time\" Value=\"[[Time]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 " +
+                "<Output OriginalName=\"Wind\" Name=\"Wind\" MapsTo=\"Wind\" Value=\"[[Wind]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />                 " +
+               "<Output OriginalName=\"Visibility\" Name=\"Visibility\" MapsTo=\"Visibility\" Value=\"[[Visibility]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
+               "<Output OriginalName=\"Temperature\" Name=\"Temperature\" MapsTo=\"Temperature\" Value=\"[[Temperature]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
+               "<Output OriginalName=\"DewPoint\" Name=\"DewPoint\" MapsTo=\"DewPoint\" Value=\"[[DewPoint]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
+               "<Output OriginalName=\"RelativeHumidity\" Name=\"RelativeHumidity\" MapsTo=\"RelativeHumidity\" Value=\"[[RelativeHumidity]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
+               "<Output OriginalName=\"Pressure\" Name=\"Pressure\" MapsTo=\"Pressure\" Value=\"[[Pressure]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
+               "<Output OriginalName=\"Status\" Name=\"Status\" MapsTo=\"Status\" Value=\"[[Status]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
             "</Outputs>";
             //------------Setup for test--------------------------
             XElement element = XmlResource.Fetch("WebService");
@@ -417,7 +417,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            Assert.AreEqual("<DataList />",resource.DataList);
+            Assert.AreEqual("<DataList />", resource.DataList);
             inputs = inputs.Replace(Environment.NewLine, "").Replace(" ", "");
             outputs = outputs.Replace(Environment.NewLine, "").Replace(" ", "");
             var actual = resource.Inputs.Replace(Environment.NewLine, "").Replace(" ", "");
@@ -437,7 +437,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            Assert.AreEqual("<DataList />",resource.DataList);
+            Assert.AreEqual("<DataList />", resource.DataList);
             Assert.IsFalse(String.IsNullOrEmpty(resource.Inputs));
             Assert.IsFalse(String.IsNullOrEmpty(resource.Outputs));
         }
@@ -530,7 +530,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                 "<ErrorMessage Message=\"Error Message 1\" FixType=\"None\" ErrorType=\"Critical\" StackTrace=\"Line 1\" />" +
                 "<ErrorMessage Message=\"Error Message 2\" FixType=\"None\" ErrorType=\"Warning\" StackTrace=\"Line 2\" />" +
                 "<ErrorMessage Message=\"Error Message 3\" FixType=\"None\" ErrorType=\"None\" StackTrace=\"Line 3\" />" +
-                "</ErrorMessages>"+
+                "</ErrorMessages>" +
                 "<UnitTestTargetWorkflowService />" +
                 "<HelpLink />" +
                 "<BizRule />" +

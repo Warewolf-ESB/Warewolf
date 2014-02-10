@@ -38,7 +38,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         #endregion
-        
+
         #region Tests
 
         [TestMethod]
@@ -49,11 +49,11 @@ namespace Dev2.Studio.UI.Tests
             CreateWorkflow();
 
             ExplorerUIMap.EnterExplorerSearchText("email service");
-            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            if (point != newPoint)
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
+            if(point != newPoint)
             {
                 WorkflowDesignerUIMap.DragControl("Email Service", newPoint);
             }
@@ -69,11 +69,11 @@ namespace Dev2.Studio.UI.Tests
         {
             CreateWorkflow();
 
-            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             if(point != newPoint)
             {
                 WorkflowDesignerUIMap.DragControl("Assign", newPoint);
@@ -96,7 +96,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Drag a tool to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            if (control != null)
+            if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
@@ -130,11 +130,11 @@ namespace Dev2.Studio.UI.Tests
             // Drag another service to over the line between two connectors
             ExplorerUIMap.EnterExplorerSearchText("email service");
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            if (control != null)
+            if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "SERVICES", "COMMUNICATION", "Email Service", point);
-                if (WorkflowDesignerUIMap.TryCloseMappings("Email Service"))
+                if(WorkflowDesignerUIMap.TryCloseMappings("Email Service"))
                 {
                     //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
                     var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
@@ -147,7 +147,7 @@ namespace Dev2.Studio.UI.Tests
                 {
                     //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
                     var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                    if (point != newPoint)
+                    if(point != newPoint)
                     {
                         WorkflowDesignerUIMap.DragControl("Email Service", newPoint);
                     }
@@ -174,7 +174,7 @@ namespace Dev2.Studio.UI.Tests
 
             //Drag a decision to the design surface
             //Note that this point is a position relative to the multi assign on the design surface. This is to ensure that the tool is dropped exactly on the line
-            if (control != null)
+            if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
@@ -185,7 +185,7 @@ namespace Dev2.Studio.UI.Tests
             }
 
             Playback.Wait(3500);
-    
+
             DecisionWizardUIMap.ClickCancel();
             var connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
@@ -199,14 +199,14 @@ namespace Dev2.Studio.UI.Tests
         {
             CreateWorkflow();
 
-            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             //Drag a control to the design surface
             ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
             Playback.Wait(3500);
             DecisionWizardUIMap.ClickCancel();
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
-            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
-            if (point != newPoint)
+            Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
+            if(point != newPoint)
             {
                 WorkflowDesignerUIMap.DragControl("Decision", newPoint);
             }

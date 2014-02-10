@@ -89,6 +89,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         {
             UITestControl uIItemImage = UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
             Mouse.Click(uIItemImage, new Point(892, 79));
+            Playback.Wait(7000);
         }
 
         public void ClickOK()

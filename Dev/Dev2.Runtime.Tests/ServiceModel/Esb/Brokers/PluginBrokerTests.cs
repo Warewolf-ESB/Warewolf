@@ -9,7 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ESB.Brokers
 {
     // BUG 9500 - 2013.05.31 - TWR : refactored to this class
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PluginBrokerTests
     {
         #region ApplyMappings

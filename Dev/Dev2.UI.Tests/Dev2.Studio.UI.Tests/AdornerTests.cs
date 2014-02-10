@@ -672,7 +672,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Get some variables
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint();
+            Point startPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(theTab);
             Point point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow

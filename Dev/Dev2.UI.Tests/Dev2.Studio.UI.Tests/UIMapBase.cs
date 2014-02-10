@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_connectViewUIMap == null)
+                if(_connectViewUIMap == null)
                 {
                     _connectViewUIMap = new ServerWizard();
                 }
@@ -95,8 +95,10 @@ namespace Dev2.Studio.UI.Tests
 
         public DatabaseServiceWizardUIMap DatabaseServiceWizardUIMap
         {
-            get {
-                if (_databaseServiceWizardUIMap == null) {
+            get
+            {
+                if(_databaseServiceWizardUIMap == null)
+                {
                     _databaseServiceWizardUIMap = new DatabaseServiceWizardUIMap();
                 }
 
@@ -135,7 +137,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_debugUIMap == null)
+                if(_debugUIMap == null)
                 {
                     _debugUIMap = new DebugUIMap();
                 }
@@ -171,7 +173,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_dependancyGraphUIMap == null)
+                if(_dependancyGraphUIMap == null)
                 {
                     _dependancyGraphUIMap = new DependencyGraph();
                 }
@@ -189,7 +191,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_deployUIMap == null)
+                if(_deployUIMap == null)
                 {
                     _deployUIMap = new DeployViewUIMap();
                 }
@@ -208,7 +210,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_dockManagerUIMap == null)
+                if(_dockManagerUIMap == null)
                 {
                     _dockManagerUIMap = new DocManagerUIMap();
                 }
@@ -244,7 +246,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_explorerUIMap == null)
+                if(_explorerUIMap == null)
                 {
                     _explorerUIMap = new ExplorerUIMap();
                 }
@@ -262,7 +264,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_externalUIMap == null)
+                if(_externalUIMap == null)
                 {
                     _externalUIMap = new ExternalUIMap();
                 }
@@ -280,7 +282,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_feedbackUIMap == null)
+                if(_feedbackUIMap == null)
                 {
                     _feedbackUIMap = new FeedbackUIMap();
                 }
@@ -300,7 +302,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_formatNumberUIMap == null)
+                if(_formatNumberUIMap == null)
                 {
                     _formatNumberUIMap = new FormatNumberUIMap();
                 }
@@ -319,8 +321,9 @@ namespace Dev2.Studio.UI.Tests
 
         public NewServerUIMap NewServerUIMap
         {
-            get {
-                if (_newServerUIMap == null)
+            get
+            {
+                if(_newServerUIMap == null)
                     _newServerUIMap = new NewServerUIMap();
                 return _newServerUIMap;
             }
@@ -352,7 +355,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_pluginServiceWizardUIMap == null)
+                if(_pluginServiceWizardUIMap == null)
                     _pluginServiceWizardUIMap = new PluginServiceWizardUIMap();
                 return _pluginServiceWizardUIMap;
             }
@@ -416,13 +419,14 @@ namespace Dev2.Studio.UI.Tests
 
         public RibbonUIMap RibbonUIMap
         {
-            get {
-                if (_ribbonUIMap == null)
+            get
+            {
+                if(_ribbonUIMap == null)
                     _ribbonUIMap = new RibbonUIMap();
                 return _ribbonUIMap;
             }
-            
-                
+
+
         }
 
         private RibbonUIMap _ribbonUIMap;
@@ -452,7 +456,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_serviceDetailsWizardUIMap == null)
+                if(_serviceDetailsWizardUIMap == null)
                     _serviceDetailsWizardUIMap = new ServiceDetailsUIMap();
                 return _serviceDetailsWizardUIMap;
             }
@@ -503,7 +507,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_tabManagerUIMap == null)
+                if(_tabManagerUIMap == null)
                     _tabManagerUIMap = new TabManagerUIMap();
                 return _tabManagerUIMap;
             }
@@ -519,7 +523,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_toolboxUIMap == null)
+                if(_toolboxUIMap == null)
                     _toolboxUIMap = new ToolboxUIMap();
                 return _toolboxUIMap;
             }
@@ -536,7 +540,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_variablesUIMap == null)
+                if(_variablesUIMap == null)
                     _variablesUIMap = new VariablesUIMap();
                 return _variablesUIMap;
             }
@@ -550,8 +554,9 @@ namespace Dev2.Studio.UI.Tests
 
         public WebpageServiceWizardUIMap WebpageServiceWizardUIMap
         {
-            get {
-                if (_webpageServiceWizardUIMap == null)
+            get
+            {
+                if(_webpageServiceWizardUIMap == null)
                     _webpageServiceWizardUIMap = new WebpageServiceWizardUIMap();
                 return _webpageServiceWizardUIMap;
             }
@@ -615,7 +620,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_workflowDesignerUIMap == null)
+                if(_workflowDesignerUIMap == null)
                     _workflowDesignerUIMap = new WorkflowDesignerUIMap();
                 return _workflowDesignerUIMap;
             }
@@ -631,7 +636,7 @@ namespace Dev2.Studio.UI.Tests
         {
             get
             {
-                if (_workflowWizardUIMap == null)
+                if(_workflowWizardUIMap == null)
                     _workflowWizardUIMap = new WorkflowWizardUIMap();
                 return _workflowWizardUIMap;
             }
@@ -655,7 +660,45 @@ namespace Dev2.Studio.UI.Tests
             }
         }
 
-        private LargeViewUtilMethods _largeViewUtilMethods;        
+        private LargeViewUtilMethods _largeViewUtilMethods;
+
+        public void TypeText(string textToType)
+        {
+            Keyboard.SendKeys(textToType);
+        }
+
+        public void PressCtrlC()
+        {
+            Keyboard.SendKeys("{CTRL}c");
+        }
+
+        public void EnterTextIntoWizardTextBox(int numberOfTabsToGetToTextBox, string textToEnter, int waitAftertextEntered = 0)
+        {
+            for(int i = 0; i < numberOfTabsToGetToTextBox; i++)
+            {
+                Keyboard.SendKeys("{TAB}");
+            }
+            Keyboard.SendKeys(textToEnter);
+            Playback.Wait(waitAftertextEntered);
+        }
+
+        public void PressButtonOnWizard(int numberOfTabsToGetToButton, int waitAfterButtonPress = 0)
+        {
+            for(int i = 0; i < numberOfTabsToGetToButton; i++)
+            {
+                Keyboard.SendKeys("{TAB}");
+            }
+            Keyboard.SendKeys("{ENTER}");
+            Playback.Wait(waitAfterButtonPress);
+        }
+
+        public void SendTabsForWizard(int numberOfTabs)
+        {
+            for(int i = 0; i < numberOfTabs; i++)
+            {
+                Keyboard.SendKeys("{TAB}");
+            }
+        }
 
         #endregion
     }

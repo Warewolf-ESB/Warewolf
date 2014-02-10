@@ -41,8 +41,11 @@ namespace Dev2.Integration.Tests.Activities
         public void TestTearDown()
         {
             // stop the server                                                                         
-            server.Bindings.Clear();
-            server.Stop();
+            if(server != null)
+            {
+                server.Bindings.Clear();
+                server.Stop();
+            }
             server = null;
         }
 

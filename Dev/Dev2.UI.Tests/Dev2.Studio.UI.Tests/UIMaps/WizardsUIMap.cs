@@ -22,5 +22,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var type = tryGetDialog.GetType();
             return type == typeof(WpfImage);
         }
+
     }
 }

@@ -10,6 +10,23 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var control = StudioWindow.GetChildren()[0].GetChildren()[0];
             control.WaitForControlEnabled();
             Mouse.Click(control, new Point(648, 501));
+            Playback.Wait(1000);
+        }
+
+        public void EnterDefaultQuery(string textToEnter)
+        {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}" + textToEnter);
+        }
+
+
+        public void DefaultQuerySetFocus()
+        {
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}");
+        }
+
+        public void EnterTextForDefaultQueryIfFocusIsSet(string textToEnter)
+        {
+            Keyboard.SendKeys(textToEnter);
         }
     }
 }
