@@ -1,10 +1,7 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.IO;
 using System.Net;
-using System.IO;
+using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests
 {
@@ -14,30 +11,11 @@ namespace Dev2.Integration.Tests
     [TestClass]
     public class ComplexWebpages
     {
-        public ComplexWebpages()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -74,63 +52,68 @@ namespace Dev2.Integration.Tests
             WebResponse wrsp = wr.GetResponse();
 
             Stream s = wrsp.GetResponseStream();
-            StreamReader sr = new StreamReader(s);
-
-            string payload = sr.ReadToEnd();
-
-            sr.Close();
-            s.Close();
-            wrsp.Close();
-
-            // Now chop up for action to fake it ;)
-            // action="/services/Button.wiz/instances/343e68c2-90de-4fae-89b1-6f42b34a0783/bookmarks/dsfResumption"
-
-            int start = payload.IndexOf("action=");
-            if (start > 0)
+            if(s != null)
             {
-                start += 8;
+                StreamReader sr = new StreamReader(s);
 
-                int end = (payload.IndexOf('"', start));
+                string payload = sr.ReadToEnd();
 
-                string action = "http://localhost:1234" + payload.Substring(start, (end - start));
+                sr.Close();
+                s.Close();
+                wrsp.Close();
 
+                // Now chop up for action to fake it ;)
+                // action="/services/Button.wiz/instances/343e68c2-90de-4fae-89b1-6f42b34a0783/bookmarks/dsfResumption"
 
-                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(action);
-
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                string postData = "Dev2elementNameButton=ResumptionTestName";
-                //postData += "&password=pass";
-                byte[] data = encoding.GetBytes(postData);
-
-                httpWReq.Method = "POST";
-                httpWReq.ContentType = "application/x-www-form-urlencoded";
-                httpWReq.ContentLength = data.Length;
-
-                using (Stream newStream = httpWReq.GetRequestStream())
+                int start = payload.IndexOf("action=", System.StringComparison.Ordinal);
+                if(start > 0)
                 {
-                    newStream.Write(data, 0, data.Length);
+                    start += 8;
+
+                    int end = (payload.IndexOf('"', start));
+
+                    string action = "http://localhost:1234" + payload.Substring(start, (end - start));
+
+
+                    HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(action);
+
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    const string postData = "Dev2elementNameButton=ResumptionTestName";
+                    //postData += "&password=pass";
+                    byte[] data = encoding.GetBytes(postData);
+
+                    httpWReq.Method = "POST";
+                    httpWReq.ContentType = "application/x-www-form-urlencoded";
+                    httpWReq.ContentLength = data.Length;
+
+                    using(Stream newStream = httpWReq.GetRequestStream())
+                    {
+                        newStream.Write(data, 0, data.Length);
+                    }
+
+                    string result;
+
+                    using(Stream rStream = httpWReq.GetResponse().GetResponseStream())
+                    {
+                        if(rStream != null)
+                        {
+                            sr = new StreamReader(rStream);
+                        }
+
+                        result = sr.ReadToEnd();
+
+                        sr.Close();
+                    }
+
+                    // Ensure we can see the "saved" data in the result
+                    Assert.AreNotEqual(-1, result.IndexOf("<Dev2elementNameButton>ResumptionTestName</Dev2elementNameButton>", System.StringComparison.Ordinal));
+
                 }
-
-                string result = string.Empty;
-
-                using (Stream rStream = httpWReq.GetResponse().GetResponseStream())
+                else
                 {
-                    sr = new StreamReader(rStream);
-
-                    result = sr.ReadToEnd();
-
-                    sr.Close();
+                    Assert.Fail("Bad data");
                 }
-
-                // Ensure we can see the "saved" data in the result
-                Assert.AreNotEqual(-1, result.IndexOf("<Dev2elementNameButton>ResumptionTestName</Dev2elementNameButton>") );
-
             }
-            else
-            {
-                Assert.Fail("Bad data");
-            }
-
         }
 
         /// <summary>
@@ -149,62 +132,65 @@ namespace Dev2.Integration.Tests
             WebResponse wrsp = wr.GetResponse();
 
             Stream s = wrsp.GetResponseStream();
-            StreamReader sr = new StreamReader(s);
-
-            string payload = sr.ReadToEnd();
-
-            sr.Close();
-            s.Close();
-            wrsp.Close();
-
-            // Now chop up for action to fake it ;)
-            // action="/services/Button.wiz/instances/343e68c2-90de-4fae-89b1-6f42b34a0783/bookmarks/dsfResumption"
-
-            int start = payload.IndexOf("action=");
-            if (start > 0)
+            if(s != null)
             {
-                start += 8;
+                StreamReader sr = new StreamReader(s);
 
-                int end = (payload.IndexOf('"', start));
+                string payload = sr.ReadToEnd();
 
-                string action = "http://localhost:1234" + payload.Substring(start, (end - start));
+                sr.Close();
+                s.Close();
+                wrsp.Close();
 
-                HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(action);
+                // Now chop up for action to fake it ;)
+                // action="/services/Button.wiz/instances/343e68c2-90de-4fae-89b1-6f42b34a0783/bookmarks/dsfResumption"
 
-                ASCIIEncoding encoding = new ASCIIEncoding();
-                string postData = "inputRegion=TestValue";
-                //postData += "&password=pass";
-                byte[] data = encoding.GetBytes(postData);
-
-                httpWReq.Method = "POST";
-                httpWReq.ContentType = "application/x-www-form-urlencoded";
-                httpWReq.ContentLength = data.Length;
-
-                using (Stream newStream = httpWReq.GetRequestStream())
+                int start = payload.IndexOf("action=", System.StringComparison.Ordinal);
+                if(start > 0)
                 {
-                    newStream.Write(data, 0, data.Length);
+                    start += 8;
+
+                    int end = (payload.IndexOf('"', start));
+
+                    string action = "http://localhost:1234" + payload.Substring(start, (end - start));
+
+                    HttpWebRequest httpWReq = (HttpWebRequest)WebRequest.Create(action);
+
+                    ASCIIEncoding encoding = new ASCIIEncoding();
+                    const string postData = "inputRegion=TestValue";
+                    //postData += "&password=pass";
+                    byte[] data = encoding.GetBytes(postData);
+
+                    httpWReq.Method = "POST";
+                    httpWReq.ContentType = "application/x-www-form-urlencoded";
+                    httpWReq.ContentLength = data.Length;
+
+                    using(Stream newStream = httpWReq.GetRequestStream())
+                    {
+                        newStream.Write(data, 0, data.Length);
+                    }
+
+                    using(Stream rStream = httpWReq.GetResponse().GetResponseStream())
+                    {
+                        if(rStream != null)
+                        {
+                            sr = new StreamReader(rStream);
+                        }
+
+                        sr.ReadToEnd();
+
+                        sr.Close();
+                    }
+
+                    // Ensure we can see the "saved" data in the result
+                    Assert.Inconclusive("This test has been converted to an Inconclusive since the Web Framework has been removed.");
+                    //Assert.AreNotEqual(-1, result.IndexOf("<inputRegion>TestValue</inputRegion>"));
                 }
-
-                string result = string.Empty;
-
-                using (Stream rStream = httpWReq.GetResponse().GetResponseStream())
+                else
                 {
-                    sr = new StreamReader(rStream);
-
-                    result = sr.ReadToEnd();
-
-                    sr.Close();
+                    Assert.Fail("Bad data");
                 }
-
-                // Ensure we can see the "saved" data in the result
-                Assert.Inconclusive("This test has been converted to an Inconclusive since the Web Framework has been removed.");
-                //Assert.AreNotEqual(-1, result.IndexOf("<inputRegion>TestValue</inputRegion>"));
             }
-            else
-            {
-                Assert.Fail("Bad data");
-            }
-
         }
     }
 }

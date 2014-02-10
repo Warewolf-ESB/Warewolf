@@ -13,7 +13,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
     /// PBI 5278 ServerLifecycleManagerTest
     /// </summary>
     [TestClass]
-    [Ignore]
     public class ServerLifecycleManagerTest
     {
         #region Constants
@@ -22,23 +21,25 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         #region Static Members
         private static readonly object _syncLock = new object();
-        private static string _lifecycleServerExecutable = null;
-        private static string _lifecycleServerAppConfigFile = null;
-        private static string _lifecycleServerConfigFile = null;
-        private static string _lifecycleServerRootDirectory = null;
+        private static string _lifecycleServerExecutable;
+        private static string _lifecycleServerAppConfigFile;
+        private static string _lifecycleServerConfigFile;
+        private static string _lifecycleServerRootDirectory;
         private static bool _hasInitialized;
         #endregion
 
         #region Instance Fields
-        private TestContext _context;
+
         #endregion
 
         #region Public Properties
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext { get { return _context; } set { _context = value; } }
+        public TestContext TestContext { get; set; }
+
         #endregion
 
         #region Initialization Handling
@@ -53,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 _hasInitialized = true;
             }
 
-            string name = "Dev2.Server";
+            const string name = "Dev2.Server";
 
             Process[] allProcess = Process.GetProcesses();
             Process serverProcess = null;
@@ -62,7 +63,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             for(int i = 0; i < allProcess.Length; i++)
             {
                 Process current = allProcess[i];
-                string title = null;
+                string title;
 
                 try
                 {
@@ -156,24 +157,27 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
                 {
                     string dirName = Path.GetDirectoryName(filePath);
                     string parentDirName = Path.GetDirectoryName(dirName);
-                    string destinationDirectory = _lifecycleServerRootDirectory = Path.Combine(parentDirName, "LifecycleTestTemp");
-                    _lifecycleServerExecutable = Path.Combine(destinationDirectory, Path.GetFileName(filePath));
-
-                    if(_lifecycleServerExecutable.EndsWith(".vshost.exe", StringComparison.OrdinalIgnoreCase))
-                        _lifecycleServerExecutable = _lifecycleServerExecutable.Replace(".vshost.exe", ".exe");
-
-                    _lifecycleServerAppConfigFile = _lifecycleServerExecutable + ".config";
-
-                    if(Directory.Exists(destinationDirectory))
+                    if(parentDirName != null)
                     {
-                        Directory.Delete(destinationDirectory, true);
+                        string destinationDirectory = _lifecycleServerRootDirectory = Path.Combine(parentDirName, "LifecycleTestTemp");
+                        _lifecycleServerExecutable = Path.Combine(destinationDirectory, Path.GetFileName(filePath));
+
+                        if(_lifecycleServerExecutable.EndsWith(".vshost.exe", StringComparison.OrdinalIgnoreCase))
+                            _lifecycleServerExecutable = _lifecycleServerExecutable.Replace(".vshost.exe", ".exe");
+
+                        _lifecycleServerAppConfigFile = _lifecycleServerExecutable + ".config";
+
+                        if(Directory.Exists(destinationDirectory))
+                        {
+                            Directory.Delete(destinationDirectory, true);
+                        }
+
+                        Directory.CreateDirectory(destinationDirectory);
+                        CopyContents(dirName, destinationDirectory);
+
+                        if(File.Exists(_lifecycleServerConfigFile = Path.Combine(destinationDirectory, "LifecycleConfig.xml")))
+                            File.Delete(_lifecycleServerConfigFile);
                     }
-
-                    Directory.CreateDirectory(destinationDirectory);
-                    CopyContents(dirName, destinationDirectory);
-
-                    if(File.Exists(_lifecycleServerConfigFile = Path.Combine(destinationDirectory, "LifecycleConfig.xml")))
-                        File.Delete(_lifecycleServerConfigFile);
 
                     File.WriteAllText(_lifecycleServerAppConfigFile, TestResource.LifecycleServerAppConfig);
                 }
@@ -216,12 +220,12 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             serverProcess.StartInfo = startInfo;
 
-            bool success = serverProcess.Start();
+            serverProcess.Start();
 
             StreamWriter writer = serverProcess.StandardInput;
             StreamReader reader = serverProcess.StandardOutput;
             string theLine = "";
-            while(theLine.Contains("Press any key to exit"))
+            while(theLine != null && theLine.Contains("Press any key to exit"))
             {
                 theLine = reader.ReadLine();
             }
@@ -241,6 +245,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
         // Bug 8930 - Sashen To Fix these three tests
         [TestMethod]
+        [Ignore]
+        // Broken Test
         public void ExternalDependencies_Test()
         {
             if(File.Exists(_lifecycleServerConfigFile))
@@ -272,6 +278,8 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
 
         [TestMethod]
+        [Ignore]
+        // Broken Test
         public void MalformedXML_Test()
         {
             StringBuilder builder = new StringBuilder();

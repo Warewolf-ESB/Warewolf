@@ -154,7 +154,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             coms.AddPayloadArgument("ResourceXml", wtf);
             coms.AddPayloadArgument("WorkspaceID", Guid.Empty.ToString());
 
-            string expected = @"Updated WorkflowService 'ServiceToBindFrom'";
+            const string expected = @"Updated WorkflowService 'ServiceToBindFrom'";
 
             var result = coms.ExecuteCommand<ExecuteMessage>(_connection, Guid.Empty);
 

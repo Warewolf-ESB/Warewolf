@@ -9,7 +9,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
     public class PluginSourceTests
     {
         [TestMethod]
-        [Ignore]
         public void PluginSource_Load_XmlReturnedProperly()
         {
             string webServerAddress = ServerSettings.WebserverURI.Replace("services/", "wwwroot/sources/pluginsource?rid=2f93aa19-d507-4ed0-9b7e-a8b1b07ce12f#");

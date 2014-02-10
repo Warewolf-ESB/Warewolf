@@ -32,7 +32,6 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestMethod]
         [Owner("Ashley.Lewis")]
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        [Ignore] // Fails when run in a batch but passes when run by itself ???? 
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
             Exception exception = null;

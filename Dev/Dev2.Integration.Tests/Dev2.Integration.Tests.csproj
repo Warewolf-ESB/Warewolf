@@ -279,7 +279,6 @@
     <Compile Include="Dev2.Activities.Tests\ToolingWorkflowTest.cs" />
     <Compile Include="Internal Services\RenameResourceServiceTests.cs" />
     <Compile Include="Server Test\Bpm unit tests\DatabaseTest.cs" />
-    <Compile Include="Server Test\Bpm unit tests\EndpointInterrogator\EndpointInterrogatorTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\NestedWorkflow.cs" />
     <Compile Include="Server Test\Bpm unit tests\OnErrorTest.cs" />
     <Compile Include="Server Test\Bpm unit tests\PluginTest.cs" />
@@ -398,6 +397,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CommonTest\" />
+    <Folder Include="Server Test\Bpm unit tests\EndpointInterrogator\" />
     <Folder Include="Server Test\Channel Tests\" />
   </ItemGroup>
   <ItemGroup>
