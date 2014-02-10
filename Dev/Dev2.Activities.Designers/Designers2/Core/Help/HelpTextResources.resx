@@ -1435,17 +1435,21 @@ Using recordset () will add a new record and (*) will assign every record.</valu
     <value>Enter the path to the attachments you want to send separated by a semicolon ;</value>
   </data>
   <data name="EmailHelpBcc" xml:space="preserve">
-    <value>List the accounts or email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;</value>
+    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
   </data>
   <data name="EmailHelpBody" xml:space="preserve">
     <value>The main body of the email goes in here.</value>
   </data>
   <data name="EmailHelpCc" xml:space="preserve">
-    <value>List the accounts or email addresses you want to carbon copy on the email you are sending separated by a semicolon ;</value>
+    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
   </data>
-  <data name="EmailHelpFromAccount" xml:space="preserve">
+  <data name="EmailHelpFromAddress" xml:space="preserve">
     <value>Any data or variable can go in here.
-To send an email, enter the email address or account name of the account you want to send from.</value>
+To send an email, enter the email address of the account you want to send from.
+If you are on a domain, you still need to provide the email address of the account you are sending from.
+If you leave it blank, the account used to setup the Email Source will be used.</value>
   </data>
   <data name="EmailHelpMailSource" xml:space="preserve">
     <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
@@ -1464,7 +1468,8 @@ Returns Success or Failure depending on the success of the send action.</value>
     <value>Enter the subject for your email.</value>
   </data>
   <data name="EmailHelpTo" xml:space="preserve">
-    <value>List the accounts or email addresses you want to send to separated by a semicolon ;</value>
+    <value>List the email addresses you want to send to separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
   </data>
   <data name="EmailToolTipBcc" xml:space="preserve">
     <value>Data   
@@ -1490,7 +1495,7 @@ Data
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="EmailToolTipFromAccount" xml:space="preserve">
+  <data name="EmailToolTipFromAddress" xml:space="preserve">
     <value>Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   

@@ -120,7 +120,7 @@
     <Compile Include="Providers\Validation\Rules\HasAtLeastOneRule.cs" />
     <Compile Include="Providers\Validation\Rules\IRuleSet.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidCollectionRule.cs" />
-    <Compile Include="Providers\Validation\Rules\IsValidEmailAccountRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsValidEmailAddressRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsPositiveNumberRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsSingleCharRule.cs" />

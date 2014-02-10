@@ -1,6 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
+﻿using System.Activities.Presentation.Model;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Runtime.ServiceModel.Data;
@@ -13,13 +11,6 @@ namespace Dev2.Activities.Designers.Tests.Email
         public TestEmailDesignerViewModel(ModelItem modelItem, IEnvironmentModel environmentModel, IEventAggregator eventPublisher)
             : base(modelItem, new TestAsyncWorker(), environmentModel, eventPublisher)
         {
-        }
-
-        public Func<IEnumerable<EmailSource>> FetchSources { get; set; }
-
-        public IEnumerable<EmailSource> TestGetEmailSources()
-        {
-            return base.GetEmailSources();
         }
 
         public EmailSource EmailSource
@@ -40,6 +31,12 @@ namespace Dev2.Activities.Designers.Tests.Email
         {
             OnSelectedEmailSourceChangedHitCount++;
             base.OnSelectedEmailSourceChanged();
+        }
+
+        public IWebRequestInvoker WebRequestInvoker { get; set; }
+        protected override IWebRequestInvoker CreateWebRequestInvoker()
+        {
+            return WebRequestInvoker;
         }
     }
 }

@@ -77,7 +77,7 @@
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpMailSource}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="TheSelectedEmailSource"
+                                         SourcePropertyName="SelectedEmailSource"
                                          SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
                 </i:Interaction.Behaviors>
@@ -93,17 +93,17 @@
         <Label Grid.Column="0"
                Grid.Row="1"
                Style="{StaticResource ActivityLabelStyle}"
-               Content="From Account" />
+               Content="From Address" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"                                
                                 DefaultText="Account or email address"
-                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipFromAccount}"
+                                ToolTip="{x:Static help:HelpTextResources.EmailToolTipFromAddress}"
                                 Text="{Binding ModelItem.FromAccount,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsFromAccountFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fromAcctxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpFromAccount}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpFromAddress}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.FromAccount"
@@ -141,8 +141,7 @@
             <Button Grid.Column="1"
                     Width="40"
                     Content="Test"
-                    IsEnabled="{Binding CanTestEmailAccount, Mode=TwoWay}"
-                    Command="{Binding TestPasswordCommand}"
+                    Command="{Binding TestEmailAccountCommand}"
                     ToolTip="Test Password"
                     Style="{StaticResource ActivityEditButtonStyle}"/>
         </Grid>

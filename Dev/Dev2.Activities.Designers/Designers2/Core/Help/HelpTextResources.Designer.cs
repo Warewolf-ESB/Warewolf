@@ -1253,7 +1253,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the accounts or email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;.
+        ///   Looks up a localized string similar to List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailHelpBcc {
             get {
@@ -1271,7 +1272,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the accounts or email addresses you want to carbon copy on the email you are sending separated by a semicolon ;.
+        ///   Looks up a localized string similar to List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailHelpCc {
             get {
@@ -1281,11 +1283,13 @@ namespace Dev2.Activities.Designers2.Core.Help {
         
         /// <summary>
         ///   Looks up a localized string similar to Any data or variable can go in here.
-        ///To send an email, enter the email address or account name of the account you want to send from..
+        ///To send an email, enter the email address of the account you want to send from.
+        ///If you are on a domain, you still need to provide the email address of the account you are sending from.
+        ///If you leave it blank, the account used to setup the Email Source will be used..
         /// </summary>
-        public static string EmailHelpFromAccount {
+        public static string EmailHelpFromAddress {
             get {
-                return ResourceManager.GetString("EmailHelpFromAccount", resourceCulture);
+                return ResourceManager.GetString("EmailHelpFromAddress", resourceCulture);
             }
         }
         
@@ -1336,7 +1340,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List the accounts or email addresses you want to send to separated by a semicolon ;.
+        ///   Looks up a localized string similar to List the email addresses you want to send to separated by a semicolon ;
+        ///If you are on a domain, you still need to provide the email address of the account you are sending to..
         /// </summary>
         public static string EmailHelpTo {
             get {
@@ -1393,9 +1398,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///[[Recordset(*).Field]]   
         ///[[Recordset().Field]].
         /// </summary>
-        public static string EmailToolTipFromAccount {
+        public static string EmailToolTipFromAddress {
             get {
-                return ResourceManager.GetString("EmailToolTipFromAccount", resourceCulture);
+                return ResourceManager.GetString("EmailToolTipFromAddress", resourceCulture);
             }
         }
         

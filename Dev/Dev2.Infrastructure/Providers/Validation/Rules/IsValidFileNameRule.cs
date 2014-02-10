@@ -1,12 +1,14 @@
 using System;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Dev2.Providers.Validation.Rules
 {
     public class IsValidFileNameRule : IsValidCollectionRule
     {
-        // see http://stackoverflow.com/questions/12039679/regular-expression-on-filename
-        static readonly Regex TheRegex = new Regex(@"^[a-z]+(?:[ -][a-z]+)*\s+\d+H\s+[a-z]+\s+\d{2}-\d{2}-\d{4}\.dwg$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        static readonly char[] InvalidFileNameChars = Path.GetInvalidFileNameChars();
+        static readonly char[] InvalidPathChars = Path.GetInvalidPathChars();
 
         public IsValidFileNameRule(Func<string> getValue, char splitToken = ';')
             : base(getValue, "file name", splitToken)
@@ -15,8 +17,45 @@ namespace Dev2.Providers.Validation.Rules
 
         protected override bool IsValid(string item)
         {
-            var result = TheRegex.IsMatch(item);
-            return result;
+            try
+            {
+                var extension = Path.GetExtension(item);
+                if(string.IsNullOrEmpty(extension))
+                {
+                    return false;
+                }
+
+                var dir = Path.GetDirectoryName(item);
+                if(string.IsNullOrEmpty(dir) || HasIllegalCharacters(InvalidPathChars, dir))
+                {
+                    return false;
+                }
+
+                if(!dir.EndsWith("\\"))
+                {
+                    dir += "\\";
+                }
+                // NOTE: Path.GetFileName(@"c:\myfile:name.txt") returns "name.txt" instead of "myfile:name.txt"
+                var fileName = item.Replace(dir, "").Replace(extension, "");
+
+                if(string.IsNullOrEmpty(fileName) || HasIllegalCharacters(InvalidFileNameChars, fileName))
+                {
+                    return false;
+                }
+
+            }
+            catch(Exception)
+            {
+                // Illegal characters in path
+                return false;
+            }
+
+            return true;
+        }
+
+        static bool HasIllegalCharacters(IEnumerable<char> invalidChars, string path)
+        {
+            return path.Any(pathChar => invalidChars.Any(invalidChar => pathChar == invalidChar));
         }
     }
 }

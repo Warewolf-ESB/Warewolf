@@ -165,18 +165,13 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, viewModel.Errors.Count);
+            Assert.AreEqual(2, viewModel.Errors.Count);
 
             StringAssert.Contains(viewModel.Errors[0].Message, "'Using' - Invalid expression: opening and closing brackets don't match");
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsAtFocused");
 
-            // reset before next test!
-            dtoModelItem.SetProperty("IsAtFocused", false);
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' must be a positive whole number");
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
-
-            StringAssert.Contains(viewModel.Errors[2].Message, "'Padding' must be a single character");
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[2].Do, "IsPaddingFocused");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Padding' must be a single character");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsPaddingFocused");
         }
 
         void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)

@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -21,6 +25,14 @@ namespace Dev2.Activities.Designers.Tests.Email
     [ExcludeFromCodeCoverage]
     public class EmailDesignerViewModelTests
     {
+        const string AppLocalhost = "http://localhost:3142";
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            AppSettings.LocalHost = AppLocalhost;
+        }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EmailDesignerViewModel_Constructor")]
@@ -85,7 +97,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.EditEmailSourceCommand);
-            Assert.IsNotNull(viewModel.TestPasswordCommand);
+            Assert.IsNotNull(viewModel.TestEmailAccountCommand);
             Assert.IsNotNull(viewModel.ChooseAttachmentsCommand);
             Assert.IsNotNull(viewModel.EmailSources);
             Assert.IsNotNull(viewModel.Priorities);
@@ -128,7 +140,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.EditEmailSourceCommand);
-            Assert.IsNotNull(viewModel.TestPasswordCommand);
+            Assert.IsNotNull(viewModel.TestEmailAccountCommand);
             Assert.IsNotNull(viewModel.ChooseAttachmentsCommand);
             Assert.IsNotNull(viewModel.EmailSources);
             Assert.IsNotNull(viewModel.Priorities);
@@ -243,8 +255,661 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.AreSame("EmailSource", message.ResourceType);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
+        public void EmailDesignerViewModel_ChooseAttachments_PublishesFileChooserMessage()
+        {
+            //------------Setup for test--------------------------
+            var emailSources = CreateEmailSources(2);
+            var modelItem = CreateModelItem();
 
-        // TODO: TestPassword, ChooseAttachments, Validate
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Verifiable();
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.ChooseAttachmentsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
+        public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_AddsFilesToAttachments()
+        {
+            Verify_ChooseAttachments(new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" });
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
+        public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNull_DoesAddNotFilesToAttachments()
+        {
+            Verify_ChooseAttachments(null);
+        }
+
+        void Verify_ChooseAttachments(List<string> selectedFiles)
+        {
+            //------------Setup for test--------------------------
+            var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
+
+            var expectedFiles = new List<string>();
+            expectedFiles.AddRange(existingFiles);
+            if(selectedFiles != null)
+            {
+                expectedFiles.AddRange(selectedFiles);
+            }
+
+            var emailSources = CreateEmailSources(2);
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("Attachments", string.Join(";", existingFiles));
+
+            var eventPublisher = new Mock<IEventAggregator>();
+            eventPublisher.Setup(p => p.Publish(It.IsAny<FileChooserMessage>())).Callback((object m) =>
+            {
+                ((FileChooserMessage)m).SelectedFiles = selectedFiles;
+            });
+
+            var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, new Mock<IResourceModel>().Object);
+
+            //------------Execute Test---------------------------
+            viewModel.ChooseAttachmentsCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
+            var attachments = modelItem.GetProperty<string>("Attachments");
+            Assert.AreEqual(string.Join(";", expectedFiles), attachments);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
+        public void EmailDesignerViewModel_TestEmailAccount_TestIsValid_InvokesEmailSourcesTestAndNoErrors()
+        {
+            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: true);
+            Verify_TestEmailAccount(isTestResultValid: true, hasFromAccount: false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
+        public void EmailDesignerViewModel_TestEmailAccount_TestIsNotValid_InvokesEmailSourcesTestAndSetsErrors()
+        {
+            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: true);
+            Verify_TestEmailAccount(isTestResultValid: false, hasFromAccount: false);
+        }
+
+        void Verify_TestEmailAccount(bool isTestResultValid, bool hasFromAccount)
+        {
+            //------------Setup for test--------------------------
+            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
+            const string TestToAddress = "test@mydomain.com";
+            const string TestFromAccount = "from@mydomain.com";
+            const string TestFromPassword = "FromPassword";
+
+            var result = new ValidationResult { IsValid = isTestResultValid };
+            if(!isTestResultValid)
+            {
+                result.ErrorMessage = "Unable to connect to SMTP server";
+            }
+
+            var emailSource = new EmailSource
+            {
+                ResourceID = Guid.NewGuid(),
+                ResourceName = "EmailTest",
+                UserName = "user@mydomain.com",
+                Password = "SourcePassword",
+            };
+
+            var modelItem = CreateModelItem();
+            modelItem.SetProperty("SelectedEmailSource", emailSource);
+            modelItem.SetProperty("To", TestToAddress);
+
+
+            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
+            if(hasFromAccount)
+            {
+                modelItem.SetProperty("FromAccount", TestFromAccount);
+                modelItem.SetProperty("Password", TestFromPassword);
+                expectedSource.UserName = TestFromAccount;
+                expectedSource.Password = TestFromPassword;
+                expectedSource.TestFromAddress = TestFromAccount;
+            }
+            else
+            {
+                expectedSource.TestFromAddress = emailSource.UserName;
+            }
+
+            var expectedPostData = expectedSource.ToString();
+
+            string postData = null;
+            var webRequestInvoker = new Mock<IWebRequestInvoker>();
+            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
+                .Callback((string method, string url, string data, List<Tuple<string, string>> headers, Action<string> asyncCallback) =>
+                {
+                    postData = data;
+                    asyncCallback(new Dev2JsonSerializer().Serialize(result));
+                }).Returns(string.Empty)
+                .Verifiable();
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+            viewModel.WebRequestInvoker = webRequestInvoker.Object;
+
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+
+            //------------Execute Test---------------------------
+            viewModel.TestEmailAccountCommand.Execute(null);
+
+            //------------Assert Results-------------------------
+            webRequestInvoker.Verify(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()));
+            Assert.IsNotNull(postData);
+            Assert.AreEqual(expectedPostData, postData);
+            Assert.IsTrue(viewModel.CanTestEmailAccount);
+            if(isTestResultValid)
+            {
+                Assert.IsNull(viewModel.Errors);
+            }
+            else
+            {
+                Assert.IsNotNull(viewModel.Errors);
+                Assert.AreEqual(result.ErrorMessage, viewModel.Errors[0].Message);
+                Assert.IsFalse(viewModel.IsFromAccountFocused);
+                viewModel.Errors[0].Do();
+                Assert.IsTrue(viewModel.IsFromAccountFocused);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_EmailSourceIsNull_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Email Source' cannot be null", EmailDesignerViewModel.IsEmailSourceFocusedProperty, false);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_RecipientsIsEmpty_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "Please supply at least one of the following: 'To', 'Cc' or 'Bcc'", EmailDesignerViewModel.IsToFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_RecipientsToIsNotEmpty_DoesHaveNotErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, null);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_RecipientsCcIsNotEmpty_DoesHaveNotErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "user2@mydomain.com",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_RecipientsBccIsNotEmpty_DoesHaveNotErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "user2@mydomain.com",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_SubjectAndBodyIsEmpty_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "",
+                Attachments = "",
+                Body = "",
+            };
+            Verify_ValidateThis(activity, "Please supply at least one of the following: 'Subject' or 'Body'", EmailDesignerViewModel.IsSubjectFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_SubjectIsNotEmpyAndBodyIsEmpty_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_SubjectIsEmpyAndBodyIsNotEmpty_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "",
+                Attachments = "",
+                Body = "The Body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_FromAccountIsNotValidExpression_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "h]]",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'From Account' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsFromAccountFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_FromAccountIsValidExpression_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "[[h]]",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_FromAccountIsNotValidEmailAddress_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1#mydomain.com",
+                Password = "xxx",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'From Account' contains an invalid email address", EmailDesignerViewModel.IsFromAccountFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_FromAccountIsValidAndPasswordBlank_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "",
+                To = "user2@mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Password' cannot be empty", EmailDesignerViewModel.IsPasswordFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_ToIsNotValidExpression_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "h]]",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'To' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsToFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_ToIsValidExpression_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "[[h]]",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_ToIsNotValidEmailAddress_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "user2#mydomain.com",
+                Cc = "",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'To' contains an invalid email address", EmailDesignerViewModel.IsToFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_CcIsNotValidExpression_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "h]]",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Cc' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsCcFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_CcIsValidExpression_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "[[h]]",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_CcIsNotValidEmailAddress_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "user2#mydomain.com",
+                Bcc = "",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Cc' contains an invalid email address", EmailDesignerViewModel.IsCcFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_BccIsNotValidExpression_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "h]]",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Bcc' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsBccFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_BccIsValidExpression_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "[[h]]",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_BccIsNotValidEmailAddress_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "user2#mydomain.com",
+                Subject = "The Subject",
+                Attachments = "",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Bcc' contains an invalid email address", EmailDesignerViewModel.IsBccFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidExpression_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "user2@mydomain.com",
+                Subject = "The Subject",
+                Attachments = "h]]",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Attachments' - Invalid expression: opening and closing brackets don't match", EmailDesignerViewModel.IsAttachmentsFocusedProperty);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsValidExpression_DoesNotHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "user2@mydomain.com",
+                Subject = "The Subject",
+                Attachments = "[[h]]",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("EmailDesignerViewModel_ValidateThis")]
+        public void EmailDesignerViewModel_ValidateThis_AttachmentsIsNotValidFileName_DoesHaveErrors()
+        {
+            var activity = new DsfSendEmailActivity
+            {
+                FromAccount = "user1@mydomain.com",
+                Password = "xxx",
+                To = "",
+                Cc = "",
+                Bcc = "user2@mydomain.com",
+                Subject = "The Subject",
+                Attachments = "c:\\logs",
+                Body = "The body",
+            };
+            Verify_ValidateThis(activity, "'Attachments' contains an invalid file name", EmailDesignerViewModel.IsAttachmentsFocusedProperty);
+        }
+
+        void Verify_ValidateThis(DsfSendEmailActivity activity, string expectedErrorMessage = null, DependencyProperty isFocusedProperty = null, bool setSelectedEmailSource = true)
+        {
+            var sources = CreateEmailSources(1);
+            if(setSelectedEmailSource)
+            {
+                activity.SelectedEmailSource = sources[0];
+            }
+
+            var modelItem = ModelItemUtils.CreateModelItem(activity);
+
+            var viewModel = CreateViewModel(sources, modelItem);
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            if(string.IsNullOrEmpty(expectedErrorMessage))
+            {
+                Assert.IsNull(viewModel.Errors);
+            }
+            else
+            {
+                Assert.IsNotNull(viewModel.Errors);
+                Assert.AreEqual(1, viewModel.Errors.Count);
+                StringAssert.Contains(viewModel.Errors[0].Message, expectedErrorMessage);
+
+                viewModel.Errors[0].Do();
+                var isFocused = (bool)viewModel.GetValue(isFocusedProperty);
+                Assert.IsTrue(isFocused);
+            }
+        }
 
         static ModelItem CreateModelItem()
         {

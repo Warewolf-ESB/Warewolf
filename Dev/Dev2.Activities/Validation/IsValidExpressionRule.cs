@@ -23,7 +23,15 @@ namespace Dev2.Validation
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            return value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
+            var result = value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
+            if(result != null)
+            {
+                if(string.Equals(value, _outputValue))
+                {
+                    _outputValue = _variableValue;
+                }
+            }
+            return result;
         }
 
     }

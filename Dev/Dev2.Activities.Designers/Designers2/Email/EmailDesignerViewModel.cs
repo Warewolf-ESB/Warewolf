@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.Email
             Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
 
             EditEmailSourceCommand = new RelayCommand(o => EditEmailSource(), o => IsEmailSourceSelected);
-            TestPasswordCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
+            TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new RelayCommand(o => ChooseAttachments(), o => true);
 
             RefreshSources(true);
@@ -77,8 +77,8 @@ namespace Dev2.Activities.Designers2.Email
             viewModel.OnSelectedEmailSourceChanged();
         }
 
-        public ICommand EditEmailSourceCommand { get; private set;  }
-        public ICommand TestPasswordCommand { get; private set; }
+        public ICommand EditEmailSourceCommand { get; private set; }
+        public ICommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
         public bool IsEmailSourceSelected { get { return SelectedEmailSource != SelectEmailSource; } }
@@ -277,13 +277,14 @@ namespace Dev2.Activities.Designers2.Email
             });
         }
 
-        protected virtual IEnumerable<EmailSource> GetEmailSources()
+        IEnumerable<EmailSource> GetEmailSources()
         {
             return _environmentModel.ResourceRepository.FindSourcesByType<EmailSource>(_environmentModel, enSourceType.EmailSource);
         }
 
         void ChooseAttachments()
         {
+            const string Separator = ";";
             var message = new FileChooserMessage();
             message.PropertyChanged += (sender, args) =>
             {
@@ -291,7 +292,7 @@ namespace Dev2.Activities.Designers2.Email
                 {
                     if(message.SelectedFiles != null)
                     {
-                        Attachments = string.Join(";", message.SelectedFiles);
+                        Attachments = string.Join(Separator, Attachments, string.Join(Separator, message.SelectedFiles));
                     }
                 }
             };
@@ -355,30 +356,30 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsNullRule(() => EmailSource));
                     break;
                 case "FromAccount":
-                    var fromExprRule = new IsValidExpressionRule(() => FromAccount);
+                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, "user@test.com");
                     ruleSet.Add(fromExprRule);
-                    ruleSet.Add(new IsValidEmailAccountRule(() => fromExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailAddressRule(() => fromExprRule.ExpressionValue));
                     break;
                 case "Password":
                     ruleSet.Add(new IsRequiredWhenOtherIsNotEmptyRule(() => Password, () => FromAccount));
                     break;
                 case "To":
-                    var toExprRule = new IsValidExpressionRule(() => To);
+                    var toExprRule = new IsValidExpressionRule(() => To, "user@test.com");
                     ruleSet.Add(toExprRule);
-                    ruleSet.Add(new IsValidEmailAccountRule(() => toExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailAddressRule(() => toExprRule.ExpressionValue));
                     break;
                 case "Cc":
-                    var ccExprRule = new IsValidExpressionRule(() => Cc);
+                    var ccExprRule = new IsValidExpressionRule(() => Cc, "user@test.com");
                     ruleSet.Add(ccExprRule);
-                    ruleSet.Add(new IsValidEmailAccountRule(() => ccExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailAddressRule(() => ccExprRule.ExpressionValue));
                     break;
                 case "Bcc":
-                    var bccExprRule = new IsValidExpressionRule(() => Bcc);
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc, "user@test.com");
                     ruleSet.Add(bccExprRule);
-                    ruleSet.Add(new IsValidEmailAccountRule(() => bccExprRule.ExpressionValue));
+                    ruleSet.Add(new IsValidEmailAddressRule(() => bccExprRule.ExpressionValue));
                     break;
                 case "Attachments":
-                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments);
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, @"c:\test.txt");
                     ruleSet.Add(attachmentsExprRule);
                     ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;
