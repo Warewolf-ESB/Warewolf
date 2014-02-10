@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Activities;
 using System.Activities.Statements;
-using System.Diagnostics;
-using System.Threading;
+using System.Text.RegularExpressions;
 using ActivityUnitTests;
 using Dev2.Data.Enums;
-using Dev2.Data.Storage;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Integration.Tests.Helpers;
-using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
-
+namespace Dev2.Integration.Tests.Dev2.Activities.Tests
+{
 
     /// <summary>
     /// Summary description for DsfForEachActivityWFTests
@@ -21,41 +18,27 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
     public class DsfForEachActivityWFTests : BaseActivityUnitTest
     {
         readonly string WebserverURI = ServerSettings.WebserverURI;
-        public DsfForEachActivityWFTests() {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region ForEach Behaviour Tests
 
         // Blocked by Bug 7926
-        
+
         [TestMethod]
         public void ForEachNestedWorkFlow()
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNestedForEachTest");
-            string expected = @"<innerScalar>11</innerScalar>";
+            const string expected = @"<innerScalar>11</innerScalar>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
         }
 
         [TestMethod]
@@ -63,31 +46,33 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         {
 
             string PostData = String.Format("{0}{1}", WebserverURI, "ForEachWithStarAndStaticIndex");
-            string expected = @"DataList><results><res>50</res></results></DataList";
+            const string expected = @"DataList><results><res>50</res></results></DataList";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
         }
-        
+
         #endregion ForEach Behaviour Tests
 
         #region Iteration Number Tests
 
         [TestMethod]
-        public void ForEachNumber() {
+        public void ForEachNumber()
+        {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachNumber");
-            string expected = "<Rec><Each>1</Each></Rec><Rec><Each>2</Each></Rec><Rec><Each>4</Each></Rec><Rec><Each>8</Each></Rec><Rec><Each>16</Each></Rec>";
+            const string expected = "<Rec><Each>1</Each></Rec><Rec><Each>2</Each></Rec><Rec><Each>4</Each></Rec><Rec><Each>8</Each></Rec><Rec><Each>16</Each></Rec>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
         }
 
 
         // Sashen: 28-01-2012 : Once the fix is made and this test passes, please put your name and a comment regarding the test.
         // Bug 8366
-        [TestMethod]   
-        public void ForEachAssign_Expected_AssignWorksForEveryIteration() {
+        [TestMethod]
+        public void ForEachAssign_Expected_AssignWorksForEveryIteration()
+        {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachAssign");
             string expected = @"<Result> Dummy_String Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner Dummy_String_Inner</Result>    <Input>Dummy_String_Inner</Input>";
 
@@ -104,16 +89,17 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
         #endregion Iteration Number Tests
 
         #region Scalar Tests
-        
+
         [TestMethod]
         // TODO : Update WF in TFS
-        public void ForEachInputOutputMappingTest() {          
+        public void ForEachInputOutputMappingTest()
+        {
             string PostData = String.Format("{0}{1}", WebserverURI, "NewForEachScalarTest");
-            string expected = @"<var>5</var><recset><rec1>1</rec1></recset><recset><rec1>2</rec1></recset><recset><rec1>3</rec1></recset><recset><rec1>4</rec1></recset><recset><rec1>5</rec1></recset><recset><rec1>6</rec1></recset>";
+            const string expected = @"<var>5</var><recset><rec1>1</rec1></recset><recset><rec1>2</rec1></recset><recset><rec1>3</rec1></recset><recset><rec1>4</rec1></recset><recset><rec1>5</rec1></recset><recset><rec1>6</rec1></recset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected));
+            Assert.AreNotEqual(-1, ResponseData.IndexOf(expected, StringComparison.Ordinal));
         }
 
         #endregion Scalar Tests
@@ -131,7 +117,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests {
             Assert.AreNotEqual(-1, ResponseData.IndexOf(expected), "Expected [ " + expected + "] Got [ " + ResponseData + " ]");
         }
 
-        #endregion Scalar Tests       
+        #endregion Scalar Tests
 
         #region Private Test Methods
 

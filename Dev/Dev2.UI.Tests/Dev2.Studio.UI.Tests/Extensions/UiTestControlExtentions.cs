@@ -112,7 +112,14 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 }
                 else
                 {
-                    Mouse.DoubleClick();
+                    try
+                    {
+                        Mouse.DoubleClick();
+                    }
+                    catch
+                    {
+                        // just to handle silly UI framework issues
+                    }
                 }
             }
             else

@@ -32,7 +32,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
 
             //------------Assert Results-------------------------
 
-            // Standardise the outputs (Remove newlines, etc)
+            // Standardize the outputs (Remove newlines, etc)
             expected = TestHelper.CleanUp(expected);
             responseData = TestHelper.CleanUp(responseData);
             StringAssert.Contains(responseData, expected);
