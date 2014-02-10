@@ -299,10 +299,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void ClearExplorerSearchText()
         {
             Mouse.Click(_explorerSearch, new Point(5, 5));
-            SendKeys.SendWait("{HOME}");
-            Playback.Wait(50);
-            SendKeys.SendWait("+{END}");
-            Playback.Wait(50);
+            Keyboard.SendKeys("{CTRL}a");
+            Playback.Wait(100);
             SendKeys.SendWait("{DELETE}");
         }
 
