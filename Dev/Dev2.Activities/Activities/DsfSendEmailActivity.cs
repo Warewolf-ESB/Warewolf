@@ -178,7 +178,16 @@ namespace Dev2.Activities
                     {
                         if(IsDebug)
                         {
-                            AddDebugInputItem(FromAccount, "From Account", fromAccountEntry, executionId, indexToUpsertTo);
+                            var fromAccount = FromAccount;
+                            if(String.IsNullOrEmpty(fromAccount))
+                            {
+                                fromAccount = runtimeSource.UserName;
+                                AddDebugInputItem("From Account", fromAccount);
+                            }
+                            else
+                            {
+                                AddDebugInputItem(FromAccount, "From Account", fromAccountEntry, executionId, indexToUpsertTo);
+                            }
                             AddDebugInputItem(To, "To", toEntry, executionId, indexToUpsertTo);
                             AddDebugInputItem(Subject, "Subject", subjectEntry, executionId, indexToUpsertTo);
                             AddDebugInputItem(Body, "Body", bodyEntry, executionId, indexToUpsertTo);
@@ -508,6 +517,15 @@ namespace Dev2.Activities
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (iterationCounter + 1).ToString() });
             itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
             _debugOutputs.Add(itemToAdd);
+        }
+
+        private void AddDebugInputItem(string label, string value)
+        {
+            DebugItem itemToAdd = new DebugItem();
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = label });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
+            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = value });
+            _debugInputs.Add(itemToAdd);
         }
 
         #endregion
