@@ -45,8 +45,8 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithStar");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string expected1 = "<recSet><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
-            string expected2 = "<recSet><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
+            const string expected1 = "<recSet><Val2>tHiS iS a TeSt RS1</Val2><Val>tHiS iS a TeSt RS1</Val></recSet>";
+            const string expected2 = "<recSet><Val2>ThIs Is A tEsT RS2</Val2><Val>ThIs Is A tEsT RS2</Val></recSet>";
 
             StringAssert.Contains(ResponseData, expected1);
             StringAssert.Contains(ResponseData, expected2);
@@ -59,7 +59,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BaseConvertRecsetWithIndex");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
-            string expected = "<recSet><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
+            const string expected = "<recSet><Name>RecSet1Name</Name><Surname>RecSet1Surname</Surname></recSet><recSet><Name>RecSet2Name</Name><Surname>RecSet2Surname</Surname></recSet>";
 
             StringAssert.Contains(ResponseData, expected);
         }
