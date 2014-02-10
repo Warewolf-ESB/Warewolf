@@ -7,6 +7,7 @@
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
+    <Buckets size="8" />
     <Hosts skipUnhostableTests="false" />
     <Timeouts runTimeout="5400000" testTimeout="300000" />
     <TestTypeSpecific>
