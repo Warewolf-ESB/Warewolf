@@ -25,6 +25,7 @@ namespace Dev2.Instrumentation
             // RELEASE
             Start("2386158864", "http://40589.tbnet1.com");
 #endif
+            App.StartAutoSync();
 #endif
         }
 
@@ -52,8 +53,8 @@ namespace Dev2.Instrumentation
                 var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 var productVersion = fvi.FileVersion;
                 var productBuildNumber = fvi.FileBuildPart.ToString(CultureInfo.InvariantCulture);
-                var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
-                App.Start(config);
+            var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
+            App.Start(config);
             });
         }
 
@@ -65,7 +66,7 @@ namespace Dev2.Instrumentation
         public static void Stop()
         {
 #if !TEST
-            App.Stop();
+                App.Stop();
 #endif
         }
 

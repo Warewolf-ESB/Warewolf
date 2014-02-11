@@ -1,0 +1,130 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Restricted Access</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        html {
+            margin: 0;
+            padding: 0;
+            background: #e0e0e0;
+            color: #171717;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #wrap {
+            padding: 15px;
+        }
+
+        #closeButton {
+            float: right;
+            font-size: 18px;
+            font-weight: normal;
+            padding: 0;
+            margin: 0 2px 0 0;
+            color: #171717;
+            text-decoration: none;
+        }
+
+            #closeButton:link, #closeButton:visited,
+            #closeButton:active, #closeButton:hover {
+                color: #171717;
+            }
+
+            #closeButton:hover {
+                font-weight: bolder;
+            }
+
+        h1 {
+            color: #F3700D;
+            font-family: 'Arial Black', sans-serif;
+            -webkit-margin-before: 0;
+            -webkit-margin-after: 0.25em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        h3 {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        p {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        ol {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+        }
+
+        li {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.25em;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+            td.img {
+                width: 130px;
+            }
+    </style>
+
+    <script type="text/javascript" language="javascript">
+        function closePage() {
+            if (typeof Dev2Awesomium != 'undefined') {
+                Dev2Awesomium.Close();
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div id="wrap">
+        <a id="closeButton" onclick="javascript: closePage();" href="#">X</a>
+        <table>
+            <tr>
+                <td class="img">
+                    <img src="PageRestrictedAccess.png" alt="Restricted Access" />
+                </td>
+                <td>
+                    <h1>Restricted Access</h1>
+                    <h3>You are not authorized to perform this task...</h3>
+                    <p>Please ensure that you've configured your <b>Internet Options</b> correctly:</p>
+                    <ol>
+                        <li>Open <b>Control Panel</b> then <b>Internet Options</b></li>
+                        <li>Click <b>Security</b> then <b>Local Intranet</b></li>
+                        <li>Click <b>Sites</b> and in the <b>Local Intranet</b> dialog:
+                                <ol>
+                                    <li>Click <b>Advanced</b></li>
+                                    <li>Enter <b>http://localhost</b> in the <b>Add this website to the zone</b> text box then click <b>Add</b></li>
+                                    <li>Enter <b>https://localhost</b> in the <b>Add this website to the zone</b> text box then click <b>Add</b></li>
+                                    <li>Click <b>Close</b></li>
+                                    <li>Click <b>OK</b></li>
+                                </ol>
+                        </li>
+                        <li>Click <b>OK</b></li>
+                    </ol>
+                    <p>Restart the Studio.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

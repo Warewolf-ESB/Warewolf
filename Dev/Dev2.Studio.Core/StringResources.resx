@@ -538,8 +538,8 @@ Would you like to start the setup now?</value>
   <data name="BrowserCacheFolder" xml:space="preserve">
     <value>BrowserCache</value>
   </data>
-  <data name="Uri_Studio_PageNotFound" xml:space="preserve">
-    <value>Help\PageNotFound.htm</value>
+  <data name="Uri_Studio_PageMissing" xml:space="preserve">
+    <value>Help\PageMissing.htm</value>
   </data>
   <data name="XmlOriginalLayout" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -758,13 +758,13 @@ Would you like to start the setup now?</value>
   <data name="Pack_Uri_Server_Image" xml:space="preserve">
     <value>pack://application:,,,/Warewolf Studio;component/images/ExplorerWarewolfConnection-32.png</value>
   </data>
-  <data name="Uri_Studio_PageForbidden" xml:space="preserve">
-    <value>Help\PageForbidden.htm</value>
+  <data name="Uri_Studio_PageRestrictedAccess" xml:space="preserve">
+    <value>Help\PageRestrictedAccess.htm</value>
   </data>
   <data name="String1" xml:space="preserve">
     <value />
   </data>
-  <data name="Uri_Studio_ServerDisconnected" xml:space="preserve">
-    <value>Help\ServerDisconnected.htm</value>
+  <data name="Uri_Studio_PageNotAvailable" xml:space="preserve">
+    <value>Help\PageNotAvailable.htm</value>
   </data>
 </root>

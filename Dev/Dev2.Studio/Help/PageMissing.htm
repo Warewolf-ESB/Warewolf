@@ -1,0 +1,131 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title>Page Missing</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+        html {
+            margin: 0;
+            padding: 0;
+            background: #e0e0e0;
+            color: #171717;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #wrap {
+            padding: 15px;
+        }
+
+        #closeButton {
+            float: right;
+            font-size: 18px;
+            font-weight: normal;
+            padding: 0;
+            margin: 0 2px 0 0;
+            color: #171717;
+            text-decoration: none;
+        }
+
+            #closeButton:link, #closeButton:visited,
+            #closeButton:active, #closeButton:hover {
+                color: #171717;
+            }
+
+            #closeButton:hover {
+                font-weight: bolder;
+            }
+
+        h1 {
+            color: #F3700D;
+            font-family: 'Arial Black', sans-serif;
+            -webkit-margin-before: 0;
+            -webkit-margin-after: 0.25em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        h3 {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        p {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+            -webkit-margin-start: 0;
+            -webkit-margin-end: 0;
+        }
+
+        ol {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.5em;
+        }
+
+        li {
+            -webkit-margin-before: 0.25em;
+            -webkit-margin-after: 0.25em;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+            td.img {
+                width: 130px;
+            }
+    </style>
+
+    <script type="text/javascript" language="javascript">
+        function closePage() {
+            if (typeof Dev2Awesomium != 'undefined') {
+                Dev2Awesomium.Close();
+            }
+        }
+
+        function setserverUrl() {
+            var url = window.location.protocol + "//" + window.location.hostname;
+            if (window.location.port) {
+                url += ":" + window.location.port;
+            }
+            var $span = window.document.getElementById("serverUrl");
+            $span.innerText = url;
+        }
+
+    </script>
+</head>
+<body onload="setserverUrl();">
+    <div id="wrap">
+        <a id="closeButton" onclick="javascript: closePage();" href="#">X</a>
+        <table>
+            <tr>
+                <td class="img">
+                    <img src="PageMissing.png" alt="Page Missing" />
+                </td>
+                <td>
+                    <h1>Missing</h1>
+                    <h3>We can’t find the server: <span id="serverUrl"></span></h3>
+                    <p>You can try the following to resolve this:</p>
+                    <ol>
+                        <li>Open <b>Services</b> in <b>Administrative Tools</b> and check that the Warewolf Server service is started.</li>
+                        <li>Check that your <b>network connection</b> is fully operational.</li>
+                        <li>Open <b>Windows Firewall</b> and check that the correct <b>ports</b> are open for the <b>TCP</b> protocol.</li>
+                        <li>Open the <b>server’s configuration</b> file and check that the <b>web server ports</b> are correct.</li>
+                    </ol>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1384,29 +1384,29 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\PageForbidden.htm.
+        ///   Looks up a localized string similar to Help\PageMissing.htm.
         /// </summary>
-        public static string Uri_Studio_PageForbidden {
+        public static string Uri_Studio_PageMissing {
             get {
-                return ResourceManager.GetString("Uri_Studio_PageForbidden", resourceCulture);
+                return ResourceManager.GetString("Uri_Studio_PageMissing", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\PageNotFound.htm.
+        ///   Looks up a localized string similar to Help\PageNotAvailable.htm.
         /// </summary>
-        public static string Uri_Studio_PageNotFound {
+        public static string Uri_Studio_PageNotAvailable {
             get {
-                return ResourceManager.GetString("Uri_Studio_PageNotFound", resourceCulture);
+                return ResourceManager.GetString("Uri_Studio_PageNotAvailable", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Help\ServerDisconnected.htm.
+        ///   Looks up a localized string similar to Help\PageRestrictedAccess.htm.
         /// </summary>
-        public static string Uri_Studio_ServerDisconnected {
+        public static string Uri_Studio_PageRestrictedAccess {
             get {
-                return ResourceManager.GetString("Uri_Studio_ServerDisconnected", resourceCulture);
+                return ResourceManager.GetString("Uri_Studio_PageRestrictedAccess", resourceCulture);
             }
         }
         

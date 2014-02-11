@@ -39,11 +39,11 @@ namespace Dev2.Studio.Core.AppResources.Browsers
         {
             if(string.IsNullOrEmpty(url) || url.ToLower().Contains("studiohomepage"))
             {
-                ShowErrorPage(browser, StringResources.Uri_Studio_PageNotFound);
+                ShowErrorPage(browser, StringResources.Uri_Studio_PageNotAvailable);
             }
             else
             {
-                ShowErrorPage(browser, StringResources.Uri_Studio_ServerDisconnected);
+                ShowErrorPage(browser, StringResources.Uri_Studio_PageMissing);
             }
             return true;
         }
@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core.AppResources.Browsers
             {
                 case 401:
                 case 403:
-                    ShowErrorPage(browser, StringResources.Uri_Studio_PageForbidden);
+                    ShowErrorPage(browser, StringResources.Uri_Studio_PageRestrictedAccess);
                     return;
             }
 

@@ -1156,14 +1156,23 @@
     <Resource Include="Images\ToolSwitch-32.png" />
     <Resource Include="Images\ToolSequence-32.png" />
     <Resource Include="Images\ToolBaseConversion-32.png" />
-    <Content Include="Help\ServerDisconnected.htm">
+    <Content Include="Help\PageNotAvailable.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\PageForbidden.htm">
+    <Content Include="Help\PageRestrictedAccess.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Help\PageNotFound.htm">
+    <Content Include="Help\PageMissing.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\PageNotAvailable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\PageMissing.htm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Help\PageRestrictedAccess.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\PopupError-32.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
