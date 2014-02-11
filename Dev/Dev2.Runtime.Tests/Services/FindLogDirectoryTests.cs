@@ -7,7 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindLogDirectoryTests
     {
         static string _testDir;
@@ -41,7 +42,7 @@ namespace Dev2.Tests.Runtime.Services
         #endregion
 
         #region Execution
-        
+
         //[TestMethod]
         //public void FindLogDirectoryWithNoWebServerUriReturnsError()
         //{
