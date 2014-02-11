@@ -13,7 +13,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DeleteLogTests
     {
         readonly static object MonitorLock = new object();
