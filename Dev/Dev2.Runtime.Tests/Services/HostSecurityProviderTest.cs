@@ -1,21 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 using Dev2.Runtime.Security;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Dev2.Tests.Runtime.Services
 {
     /// <summary>
     /// Summary description for HostSecurityProviderTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class HostSecurityProviderTest
     {
         static XElement TestXml;
