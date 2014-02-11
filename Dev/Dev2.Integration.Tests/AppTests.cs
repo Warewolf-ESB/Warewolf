@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests
                 if(!File.Exists(studioPath))
                 {
                     // If this test is running in an environment this is where the Studio exe will be (otherwise this path could be resolved by getting the running server process location path)
-                    studioPath = @"C:\IntegrationRun\Binaries\Warewolf Studio.exe";
+                    studioPath = Bootstrap.ServerLocation.Replace("Server", "Studio");
 
                     if(!File.Exists(studioPath))
                     {
