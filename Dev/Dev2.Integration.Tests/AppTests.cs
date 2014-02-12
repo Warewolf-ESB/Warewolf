@@ -120,6 +120,10 @@ namespace Dev2.Integration.Tests
                     {
                         serverPath = @"C:\Development\Dev\Dev2.Server\bin\Debug\Warewolf Server.exe";
                     }
+                    else
+                    {
+                        serverPath = Path.Combine(executingAssemblyLocation, "Warewolf Server.exe");
+                    }
                 }
 
                 // fire off process 
