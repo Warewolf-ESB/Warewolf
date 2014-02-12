@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation
 {
+    // see http://docs.trackerbird.com/NET/
+
     /// <summary>
     /// Tracks feature and event usage.
     /// </summary>
@@ -19,13 +21,9 @@ namespace Dev2.Instrumentation
         public static void StartServer()
         {
 #if !TEST
-#if DEBUG
-            Start("2385158467", "http://27504.tbnet1.com");
-#else
             // RELEASE
             Start("2386158864", "http://40589.tbnet1.com");
-#endif
-            App.StartAutoSync();
+            TBApp.StartAutoSync();
 #endif
         }
 
@@ -36,25 +34,31 @@ namespace Dev2.Instrumentation
         public static void StartStudio()
         {
 #if !TEST
-#if DEBUG
-            Start("2385158467", "http://27504.tbnet1.com");
-#else
             // RELEASE
             Start("2386158962", "http://94687.tbnet1.com");
-#endif
 #endif
         }
 
         static void Start(string productID, string callHomeUrl)
         {
-            Task.Run(() =>
+            Perform(() =>
             {
-                var assembly = Assembly.GetExecutingAssembly();
-                var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var location = Assembly.GetExecutingAssembly().Location;
+                var filePath = Path.GetDirectoryName(location);
+#if DEBUG
+                // ReSharper disable ConvertToConstant.Local
+                var productVersion = "0.0.9999.0";
+                var productBuildNumber = "9999";
+                // ReSharper restore ConvertToConstant.Local
+#else
+                var fvi = FileVersionInfo.GetVersionInfo(location);
                 var productVersion = fvi.FileVersion;
-                var productBuildNumber = fvi.FileBuildPart.ToString(CultureInfo.InvariantCulture);
-            var config = new TBConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
-            App.Start(config);
+                var productBuildNumber = fvi.FileBuildPart.ToString(System.Globalization.CultureInfo.InvariantCulture);
+#endif
+                TBConfig.SetFilePath(filePath);
+                //TBConfig.SetProductEdition("LITE");                      
+                TBConfig.CreateConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
+                return TBApp.Start();
             });
         }
 
@@ -66,7 +70,7 @@ namespace Dev2.Instrumentation
         public static void Stop()
         {
 #if !TEST
-                App.Stop();
+            WriteError(TBApp.Stop());
 #endif
         }
 
@@ -76,13 +80,10 @@ namespace Dev2.Instrumentation
         /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="eventName">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
-        public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, double? eventValue = null)
+        public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue = null)
         {
 #if !TEST
-            Task.Run(() =>
-            {
-                TrackEvent(eventGroup, eventName.ToString(), eventValue);
-            });
+            TrackEvent(eventGroup, eventName.ToString(), eventValue);
 #endif
         }
 
@@ -92,13 +93,12 @@ namespace Dev2.Instrumentation
         /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="customText">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
-        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, double? eventValue = null)
+        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = null)
         {
 #if !TEST
-            Task.Run(() =>
-            {
-                App.EventTrack(eventGroup.ToString(), customText, eventValue);
-            });
+            Perform(() => string.IsNullOrEmpty(eventValue)
+                ? TBApp.EventTrack(eventGroup.ToString(), customText, null)
+                : TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
 #endif
         }
 
@@ -111,12 +111,30 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !TEST
-            Task.Run(() =>
-            {
-                App.ExceptionTrack(className, methodName, ex); ;
-            });
-
+            Perform(() => TBApp.ExceptionTrack(className, methodName, ex));
 #endif
+        }
+
+        static void Perform(Func<GenericReturn> action, bool async = false)
+        {
+            if(async)
+            {
+                Task.Run(action).ContinueWith(t => WriteError(t.Result));
+            }
+            else
+            {
+                var result = action();
+                WriteError(result);
+            }
+        }
+
+        static void WriteError(GenericReturn result)
+        {
+            if(result != GenericReturn.OK)
+            {
+                var format = string.Format("{0} :: Tracker Error -> {1}", DateTime.Now.ToString("g"), result);
+                Trace.WriteLine(format);
+            }
         }
     }
 }

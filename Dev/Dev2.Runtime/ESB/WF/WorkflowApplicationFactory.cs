@@ -141,7 +141,7 @@ namespace Dev2.Runtime.ESB.WF
         /// <returns></returns>
         private IDSFDataObject InvokeWorkflowImpl(Activity workflowActivity, IDSFDataObject dataTransferObject, IList<object> executionExtensions, Guid instanceId, IWorkspace workspace, string bookmarkName, bool isDebug, out ErrorResultTO errors)
         {
-            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.Executed);
+            Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.Executed, string.Format("RES-{0}", dataTransferObject.ResourceID));
 
             if(AllErrors == null)
             {
