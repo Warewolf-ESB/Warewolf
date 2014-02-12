@@ -44,6 +44,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DatabaseServiceWizardUIMapClasses
                 SendKeys.SendWait("{TAB}");
                 Playback.Wait(50);
             }
+            Keyboard.SendKeys(newMappingText);
         }
 
         public void ClickSaveButton(int numberOfTabsToSaveButton)

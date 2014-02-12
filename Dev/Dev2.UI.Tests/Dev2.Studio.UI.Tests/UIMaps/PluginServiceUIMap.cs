@@ -33,12 +33,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
                 SendKeys.SendWait("{TAB}");
                 Playback.Wait(50);
             }
+            Keyboard.SendKeys(newMappingText);
         }
 
         public void ClickSaveButton(int numberOfTabsToSaveButton)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
-            wizard.WaitForControlReady();
             for(int i = 0; i <= numberOfTabsToSaveButton; i++)
             {
                 SendKeys.SendWait("{TAB}");
@@ -57,10 +56,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
             {
                 throw new Exception("More than 1 wizard window opened");
             }
-            else
-            {
-                return uIPluginServiceDetailsWindow.WindowTitles[0].ToString();
-            }
+            return uIPluginServiceDetailsWindow.WindowTitles[0];
         }
 
         public void ClickCancel()
@@ -102,11 +98,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.PluginServiceWizardUIMapClasses
         {
             get
             {
-                if((this.mUIBusinessDesignStudioWindow == null))
+                if((mUIBusinessDesignStudioWindow == null))
                 {
-                    this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
+                    mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
-                return this.mUIBusinessDesignStudioWindow;
+                return mUIBusinessDesignStudioWindow;
             }
         }
         #endregion

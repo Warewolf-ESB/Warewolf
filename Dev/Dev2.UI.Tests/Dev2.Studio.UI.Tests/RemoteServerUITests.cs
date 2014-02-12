@@ -220,31 +220,30 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        [Ignore]//Uses broken web source which is an external resource
         public void RemoteServerUITests_EditRemoteWebSource_WebSourceIsEdited()
         {
-            const string TextToSearchWith = "WebSource";
-            string query;
+            const string TextToSearchWith = "Dev2GetCountriesWebService";
 
             //Edit remote web source
-            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
-            WebSourceWizardUIMap.EnterDefaultQuery("?CountryName=Canada");
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
+            WebSourceWizardUIMap.EnterDefaultQuery("?extension=json&prefix=b");
+            Playback.Wait(100);
             WebSourceWizardUIMap.ClickSave();
             SaveDialogUIMap.ClickSave();
 
             //Change it back
-            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
+            ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
             //Get textbox text
             var persistClipboard = Clipboard.GetText();
             WebSourceWizardUIMap.DefaultQuerySetFocus();
             WebSourceWizardUIMap.PressCtrlC();
-            WebSourceWizardUIMap.EnterTextForDefaultQueryIfFocusIsSet("?CountryName=South Africa");
+            WebSourceWizardUIMap.EnterTextForDefaultQueryIfFocusIsSet("?extension=json&prefix=a");
             WebSourceWizardUIMap.ClickSave();
-            query = Clipboard.GetText();
+            string query = Clipboard.GetText();
             Clipboard.SetText(persistClipboard);
             SaveDialogUIMap.ClickSave();
 
-            Assert.AreEqual("?CountryName=Canada", query, "Cannot change remote web source");
+            Assert.AreEqual("?extension=json&prefix=b", query, "Cannot change remote web source");
         }
 
         [TestMethod]
@@ -394,8 +393,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, ServiceType.Workflows, RenameTo, RemoteServerName);
 
             //DELETE A WORKFLOW
-            ExplorerUIMap.EnterExplorerSearchText(RenameTo);
-            ExplorerUIMap.RightClickDeleteResource(InitialName, CategoryName, ServiceType.Workflows, RemoteServerName);
+            ExplorerUIMap.RightClickDeleteResource(RenameTo, CategoryName, ServiceType.Workflows, RemoteServerName);
             Assert.IsFalse(ExplorerUIMap.ValidateServiceExists(RenameTo, CategoryName, RemoteServerName));
 
         }

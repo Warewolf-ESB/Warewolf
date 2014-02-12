@@ -213,7 +213,7 @@ namespace Dev2.UI
                 connectControlViewModel.LoadServers();
 
                 IMainViewModel mainViewModel = _mainApp.MainWindow.DataContext as IMainViewModel;
-                if(ViewModel.IsSourceServer || ViewModel.BindToActiveEnvironment)
+                if(ViewModel.IsSourceServer || ViewModel.BindToActiveEnvironment || IngoreSelectionChangedMessage)
                 {
                     if(mainViewModel != null)
                     {

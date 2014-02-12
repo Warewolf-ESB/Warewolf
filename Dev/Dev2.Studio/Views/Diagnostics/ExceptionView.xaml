@@ -4,7 +4,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
         xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-        Title="An unhandled exception has been encountered" 
+        Title="An unhandled exception has been encountered"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         WindowStartupLocation="CenterOwner"
@@ -12,25 +12,31 @@
         Width="680"
         Icon="{Binding ErrorIcon}"
         SizeToContent="Manual">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CancelCommand}"
+                    Key="Escape"/>
+    </Window.InputBindings>
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
     </i:Interaction.Behaviors>
     <Window.Resources>
-        <HierarchicalDataTemplate x:Key="ExceptionItemTemplate"  ItemsSource="{Binding Exception}">
+        <HierarchicalDataTemplate x:Key="ExceptionItemTemplate"
+                                  ItemsSource="{Binding Exception}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1" 
-				Text="{Binding Message}" 
-				TextWrapping="Wrap"	
-				MaxWidth="{Binding Width, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Message}"
+                           TextWrapping="Wrap"
+                           MaxWidth="{Binding Width, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
             </Grid>
         </HierarchicalDataTemplate>
     </Window.Resources>
 
-    <Grid x:Name="LayoutRoot" cal:Bind.Model="{Binding .}">
+    <Grid x:Name="LayoutRoot"
+          cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -40,16 +46,24 @@
                   ItemsSource="{Binding Exception}"
                   VerticalContentAlignment="Stretch"
                   Margin="10"
-                  HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                  HorizontalContentAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" />
 
-        <Expander Grid.Row="1" Margin="10,5" Header="View Trace">
-            <ScrollViewer MaxHeight="250" VerticalScrollBarVisibility="Auto">
+        <Expander Grid.Row="1"
+                  Margin="10,5"
+                  Header="View Trace">
+            <ScrollViewer MaxHeight="250"
+                          VerticalScrollBarVisibility="Auto">
                 <TextBlock Text="{Binding StackTrace}"
-                           TextWrapping="WrapWithOverflow" ScrollViewer.CanContentScroll="True" />
+                           TextWrapping="WrapWithOverflow"
+                           ScrollViewer.CanContentScroll="True" />
             </ScrollViewer>
         </Expander>
         <Button x:Name="SendReport"
-                Grid.Row="3" 
-                HorizontalAlignment="Right" Content="Send Report" MinWidth="100" Margin="10,0,10,10" />
+                Grid.Row="3"
+                HorizontalAlignment="Right"
+                Content="Send Report"
+                MinWidth="100"
+                Margin="10,0,10,10" />
     </Grid>
 </Window>

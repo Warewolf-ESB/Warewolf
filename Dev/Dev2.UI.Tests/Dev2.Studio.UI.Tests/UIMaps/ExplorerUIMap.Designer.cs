@@ -298,9 +298,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void ClearExplorerSearchText()
         {
-            Mouse.Click(_explorerSearch, new Point(5, 5));
-            Keyboard.SendKeys("{CTRL}a");
+            Mouse.Click(_explorerSearch, new Point(_explorerSearch.BoundingRectangle.X + 5, _explorerSearch.BoundingRectangle.Y + 5));
             Playback.Wait(100);
+            Mouse.Click(_explorerSearch, new Point(_explorerSearch.BoundingRectangle.X + 5, _explorerSearch.BoundingRectangle.Y + 5));
+            Playback.Wait(1000);
+            Keyboard.SendKeys("{CTRL}a");
+            Playback.Wait(1000);
             SendKeys.SendWait("{DELETE}");
         }
 

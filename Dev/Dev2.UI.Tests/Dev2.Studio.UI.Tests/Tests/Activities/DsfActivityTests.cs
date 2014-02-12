@@ -1,5 +1,4 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
-using Dev2.Studio.UI.Tests.UIMaps.Activities;
+﻿using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -46,6 +45,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
+            TabManagerUIMap.CloseAllTabs();
             _dsfActivityUiMap.Dispose();
         }
 

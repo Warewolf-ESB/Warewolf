@@ -46,13 +46,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
 
         public void EnterDataIntoMappingTextBox(int textboxNumber, string newMappingText)
         {
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
-            wizard.WaitForControlReady();
             for(int i = 0; i <= textboxNumber; i++)
             {
                 SendKeys.SendWait("{TAB}");
                 Playback.Wait(50);
             }
+            Keyboard.SendKeys(newMappingText);
         }
 
         public void ClickSaveButton(int numberOfTabsToSaveButton)

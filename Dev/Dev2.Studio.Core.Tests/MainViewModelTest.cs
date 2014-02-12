@@ -1028,6 +1028,9 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
+            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            _environmentModel.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
             _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
             _mainViewModel.NewResourceCommand.Execute("Service");
             _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());
@@ -1088,6 +1091,9 @@ namespace Dev2.Core.Tests
             //Setup
             CreateFullExportsAndVmWithEmptyRepo();
             var environmentRepo = CreateMockEnvironment();
+            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            environmentRepo.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(c => c.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
@@ -1361,7 +1367,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_Handle_FileChooserMessage_True()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             CreateFullExportsAndVm();
 

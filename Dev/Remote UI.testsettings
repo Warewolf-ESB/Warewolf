@@ -1,15 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+<TestSettings name="UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
     <Description>These are default test settings for a local test run.</Description>
     <Deployment>
-        <DeploymentItem filename="TestData\" />
-        <DeploymentItem filename="BuildID.txt" />
+        <DeploymentItem filename="Dev2.Server\Bin\Test\" />
+        <DeploymentItem filename="Dev2.Studio\Bin\x86\Test\" />
     </Deployment>
-    <NamingScheme baseName="TestResults" appendTimeStamp="false" />
+    <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
     <RemoteController name="rsaklfsvrtfsbld:6901" />
-    <Execution location="Remote" parallelTestCount="0">
-        <Buckets size="80" />
-        <Timeouts testTimeout="120000" />
+    <Execution location="Remote">
+        <Buckets size="8" />
+        <Hosts skipUnhostableTests="false" />
+        <Timeouts runTimeout="5400000" testTimeout="300000" />
         <TestTypeSpecific>
             <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
                 <AssemblyResolution>

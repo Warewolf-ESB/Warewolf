@@ -277,6 +277,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void RightClickDeleteResource(string resourceName, string categoryName, ServiceType serviceType, string serverName)
         {
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
             Point p = new Point(theControl.BoundingRectangle.X + 200, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -600,7 +601,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
-            Point p = new Point(theControl.BoundingRectangle.X + 200, theControl.BoundingRectangle.Y + 5);
+            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Left, ModifierKeys.None, p);
             Playback.Wait(500);
@@ -663,6 +664,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
+            Mouse.Click(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
+            Playback.Wait(100);
             Mouse.DoubleClick(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
             Playback.Wait(4000);
         }

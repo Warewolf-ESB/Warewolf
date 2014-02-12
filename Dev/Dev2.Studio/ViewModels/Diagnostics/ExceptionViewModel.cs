@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -22,6 +23,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
     {
         #region private fields
         private BindableCollection<ExceptionUiModel> _exception;
+        private RelayCommand _cancelComand;
         private string _stackTrace;
 
         #endregion
@@ -102,7 +104,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion
 
+        public ICommand CancelCommand
+        {
+            get
+            {
+                if(_cancelComand == null)
+                {
+                    _cancelComand = new RelayCommand(param => Cancel(), param => true);
+                }
+                return _cancelComand;
+            }
+        }
+
         #region public methods
+
+        public void Cancel()
+        {
+            RequestClose();
+        }
+
         /// <summary>
         /// Shows this instance.
         /// </summary>

@@ -25,12 +25,12 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             var control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
 
-            if (control != null)
+            if(control != null)
             {
                 return control;
             }
 
-            while (parentCollection.Count > 0)
+            while(parentCollection.Count > 0)
             {
                 var uiTestControlCollection = parentCollection
                     .SelectMany(c => c.GetChildren())
@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 control = uiTestControlCollection
                     .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
 
-                if (control == null)
+                if(control == null)
                 {
                     parentCollection = uiTestControlCollection;
                 }
@@ -49,7 +49,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 }
             }
 
-            if (control == null)
+            if(control == null)
             {
                 string message = string.Format("Control with automation id : [{0}] was not found", automationId);
                 throw new Exception(message);
@@ -66,12 +66,12 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(friendlyName));
 
-            if (control != null)
+            if(control != null)
             {
                 return control;
             }
 
-            while (parentCollection.Count > 0)
+            while(parentCollection.Count > 0)
             {
                 var uiTestControlCollection = parentCollection
                     .SelectMany(c => c.GetChildren())
@@ -80,7 +80,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 control = uiTestControlCollection
                     .SingleOrDefault(b => b.FriendlyName.Equals(friendlyName));
 
-                if (control == null)
+                if(control == null)
                 {
                     parentCollection = uiTestControlCollection;
                 }
@@ -90,7 +90,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 }
             }
 
-            if (control == null)
+            if(control == null)
             {
                 string message = string.Format("Control with friendly name : [{0}] was not found", friendlyName);
                 throw new Exception(message);
@@ -102,11 +102,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
         public static void Click(this UITestControl control)
         {
             Point point;
-            if (control.TryGetClickablePoint(out point))
+            if(control.TryGetClickablePoint(out point))
             {
                 point.Offset(control.Left, control.Top);
                 Mouse.Move(point);
-                if (control.State == ControlStates.Focused)
+                if(control.State == ControlStates.Focused)
                 {
                     Mouse.Click();
                 }
@@ -130,17 +130,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void DoubleClick(this UITestControl control)
         {
-            Point point;
-            if (control.TryGetClickablePoint(out point))
-            {
-                point.Offset(control.Left, control.Top);
-                Mouse.Move(point);
-                Mouse.DoubleClick();
-            }
-            else
-            {
-                throw new Exception("Cannot get clickable point on control");
-            }
+            Point point = new Point(control.BoundingRectangle.X + 30, control.BoundingRectangle.Y + 5);
+            Mouse.Move(point);
+            Mouse.DoubleClick();
         }
 
         public static void EnterText(this UITestControl control, string text)
@@ -166,7 +158,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             var checkBox = control as WpfCheckBox;
 
-            if (checkBox == null)
+            if(checkBox == null)
             {
                 throw new Exception("Control must be a check box");
             }
@@ -178,7 +170,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             var checkBox = control as WpfCheckBox;
 
-            if (checkBox == null)
+            if(checkBox == null)
             {
                 throw new Exception("Control must be a check box");
             }
@@ -190,7 +182,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             var checkBox = control as WpfControl;
 
-            if (checkBox == null)
+            if(checkBox == null)
             {
                 throw new Exception("Control must be a valid WPF Control");
             }
@@ -202,7 +194,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             var editControl = control as WpfEdit;
 
-            if (editControl == null)
+            if(editControl == null)
             {
                 throw new Exception("This is not an editable control");
             }

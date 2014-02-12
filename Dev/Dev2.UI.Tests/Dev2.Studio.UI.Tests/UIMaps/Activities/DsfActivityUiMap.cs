@@ -19,6 +19,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         public void ClickEdit()
         {
             UITestControl button = AdornersGetButton("Edit");
+            Mouse.Move(button.GetParent(), new Point(5, 5));
             Mouse.Click(button, new Point(5, 5));
             Playback.Wait(2000);
         }

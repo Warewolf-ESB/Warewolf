@@ -171,9 +171,10 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ChangingResourceExpectedPopUpWarningWithShowAffected()
         {
+
+            const string ResourceName = "NewForeachUpgradeDifferentExecutionTests";
             // Open the workflow
-            ExplorerUIMap.EnterExplorerSearchText("NewForeachUpgrade");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "NewForeachUpgradeDifferentExecutionTests");
+            ExplorerUIMap.DoubleClickWorkflow(ResourceName, "INTEGRATION TEST SERVICES");
 
             //Edit the inputs and outputs
             VariablesUIMap.CheckScalarInputAndOuput(0);

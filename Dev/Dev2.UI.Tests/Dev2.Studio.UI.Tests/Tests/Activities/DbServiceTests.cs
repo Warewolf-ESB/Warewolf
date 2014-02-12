@@ -15,7 +15,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     {
         #region Fields
 
-        private static DsfActivityUiMap _dbServiceUiMap;
 
         #endregion
 
@@ -38,7 +37,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            _dbServiceUiMap = new DsfActivityUiMap();
         }
         #endregion
 
@@ -46,32 +44,36 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
-            _dbServiceUiMap.Dispose();
+            TabManagerUIMap.CloseAllTabs();
         }
         #endregion
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
-        [TestCategory("DbServiceTests_CodedUI")]        
+        [TestCategory("DbServiceTests_CodedUI")]
         public void DbServiceTests_CodedUI_EditService_ExpectErrorButton()
         {
             var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
             //Drag the service onto the design surface
-            _dbServiceUiMap.DragServiceOntoDesigner("TravsTestService", "TEST");
-            _dbServiceUiMap.ClickEdit();
+            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
+
+            UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "TravsTestService");
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+
+            activityUiMap.ClickEdit();
             //Wizard actions
             DatabaseServiceWizardUIMap.ClickMappingTab();
             DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
             DatabaseServiceWizardUIMap.ClickSaveButton(4);
-            //Close the mappings on the service
-            _dbServiceUiMap.ClickCloseMapping();
+            ResourceChangedPopUpUIMap.ClickCancel();
             //Assert the the error button is there
-            Assert.IsTrue(_dbServiceUiMap.IsFixErrorButtonShowing());
+            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
             //Click the fix errors button
-            _dbServiceUiMap.ClickFixErrors();
-            _dbServiceUiMap.ClickCloseMapping();
+            activityUiMap.ClickFixErrors();
+            activityUiMap.ClickCloseMapping();
             //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(_dbServiceUiMap.IsFixErrorButtonShowing());
+            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
         }
     }
 }

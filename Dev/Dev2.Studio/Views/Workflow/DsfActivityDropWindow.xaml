@@ -18,7 +18,11 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}">
+        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}">    
+    
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding CancelCommand}" Key="Escape" />
+    </Window.InputBindings>
     
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />

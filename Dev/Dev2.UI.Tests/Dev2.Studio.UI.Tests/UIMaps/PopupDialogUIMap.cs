@@ -9,7 +9,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     {
         #region AutomationId
         private const string DataListSearchTextBoxId = "UI_DataListSearchtxt_AutoID";
-        private const string RefreshButtonId = "UI_SourceServerRefreshbtn_AutoID";
         #endregion
 
         public UITestControl GetPopupWindow()
@@ -22,7 +21,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </summary>
         public void WaitForDialog()
         {
-            Playback.Wait(5000);
+            Playback.Wait(7000);
         }
 
         public void AddAResource(string serverName, string serviceType, string folderName, string projectName)
@@ -36,6 +35,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl control = GetServiceItem(serverName, serviceType, folderName, projectName);
+            //Mouse.DoubleClick(control,new Point(control.BoundingRectangle.X,control.BoundingRectangle.Y));
             if(control != null)
             {
                 control.DoubleClick();

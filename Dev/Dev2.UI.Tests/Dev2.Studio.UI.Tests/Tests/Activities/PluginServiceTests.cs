@@ -15,7 +15,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
     {
         #region Fields
 
-        private static DsfActivityUiMap _dsfActivityUiMap;
 
         #endregion
 
@@ -38,7 +37,6 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            _dsfActivityUiMap = new DsfActivityUiMap();
         }
         #endregion
 
@@ -46,7 +44,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         [TestCleanup]
         public void MyTestCleanup()
         {
-            _dsfActivityUiMap.Dispose();
+            TabManagerUIMap.CloseAllTabs();
         }
 
         #endregion
@@ -58,21 +56,24 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         {
             var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
             //Drag the service onto the design surface
-            _dsfActivityUiMap.DragServiceOntoDesigner("DummyService", "TRAV");
-            _dsfActivityUiMap.ClickEdit();
+            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
+
+            UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "DummyService");
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab };
+
+            activityUiMap.ClickEdit();
             //Wizard actions
             PluginServiceWizardUIMap.ClickMappingTab();
             PluginServiceWizardUIMap.EnterDataIntoMappingTextBox(4, newMapping);
-            PluginServiceWizardUIMap.ClickSaveButton(2);
-            //Close the mappings on the service
-            _dsfActivityUiMap.ClickCloseMapping();
+            PluginServiceWizardUIMap.ClickSaveButton(1);
             //Assert the the error button is there
-            Assert.IsTrue(_dsfActivityUiMap.IsFixErrorButtonShowing());
+            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
             //Click the fix errors button
-            _dsfActivityUiMap.ClickFixErrors();
-            _dsfActivityUiMap.ClickCloseMapping();
+            activityUiMap.ClickFixErrors();
+            activityUiMap.ClickCloseMapping();
             //Assert that the fix errors button isnt there anymore
-            Assert.IsFalse(_dsfActivityUiMap.IsFixErrorButtonShowing());
+            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing());
         }
     }
 }

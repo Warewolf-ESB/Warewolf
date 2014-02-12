@@ -25,14 +25,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
             string helpText = theBox.GetProperty("HelpText").ToString();
 
-            if (helpText == "You have entered invalid characters")
+            if(helpText == "Variable names can only contain letters.")
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public string GetVariableName(int position)
@@ -79,11 +76,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
         {
             UITestControlCollection variableList = GetScalarVariableList();
             UITestControlCollection collection = variableList[position].GetChildren();
-            List<UITestControl> theBoxs = collection.Where(c=>c.ControlType.Name == "CheckBox").ToList();
+            List<UITestControl> theBoxs = collection.Where(c => c.ControlType.Name == "CheckBox").ToList();
             foreach(UITestControl box in theBoxs)
             {
-                Mouse.Click(box);    
-            }                                                
+                Mouse.Click(box);
+            }
         }
 
         public void CheckScalarInput(int position)
@@ -115,14 +112,14 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
             UITestControlCollection variableList = GetScalarVariableList();
             var item = variableList[position];
-            if (item != null)
+            if(item != null)
             {
                 var children = item.GetChildren();
                 var button = children.Last(c => c.ClassName == "Uia.Button");
-                if (button != null && button.Height == -1)
+                if(button != null && button.Height == -1)
                 {
                     result = true;
-                }                
+                }
             }
 
             return result;

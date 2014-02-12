@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.Enums;
+﻿using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -39,15 +37,15 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RenameResource_WithDashes")]
         public void RenameResource_WithDashes_ResourceRenamed()
         {
-            const string newTestResourceWithDashes = "New-Test-Resource-With-Dashes";
-            const string oldResourceName = "OldResourceName";
-            ExplorerUIMap.RightClickRenameResource(oldResourceName, "Unassigned", ServiceType.Workflows, newTestResourceWithDashes);
-            Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(newTestResourceWithDashes, "Unassigned"));
-            ExplorerUIMap.DoubleClickWorkflow(newTestResourceWithDashes, "Unassigned");
+            const string NewTestResourceWithDashes = "New-Test-Resource-With-Dashes";
+            const string OldResourceName = "OldResourceName";
+            ExplorerUIMap.RightClickRenameResource(OldResourceName, "Unassigned", ServiceType.Workflows, NewTestResourceWithDashes);
+            Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(NewTestResourceWithDashes, "Unassigned"));
+            ExplorerUIMap.DoubleClickWorkflow(NewTestResourceWithDashes, "Unassigned");
             //Rename the resource back to the original name
-            ExplorerUIMap.RightClickRenameResource(newTestResourceWithDashes, "Unassigned", ServiceType.Workflows, oldResourceName);
-            Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(oldResourceName, "Unassigned"));
-            ExplorerUIMap.DoubleClickWorkflow(oldResourceName, "Unassigned");
+            ExplorerUIMap.RightClickRenameResource(NewTestResourceWithDashes, "Unassigned", ServiceType.Workflows, OldResourceName);
+            Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(OldResourceName, "Unassigned"));
+            ExplorerUIMap.DoubleClickWorkflow(OldResourceName, "Unassigned");
         }
     }
 }

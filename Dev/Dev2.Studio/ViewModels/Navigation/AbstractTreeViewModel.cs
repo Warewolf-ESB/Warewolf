@@ -474,7 +474,10 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public virtual bool CanDeploy
         {
-            get { return EnvironmentModel != null && EnvironmentModel.IsConnected && EnvironmentModel.IsAuthorizedDeployFrom; }
+            get
+            {
+                return EnvironmentModel != null && EnvironmentModel.IsConnected && EnvironmentModel.IsAuthorizedDeployFrom;
+            }
         }
 
         public virtual bool CanRename
@@ -486,7 +489,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return "Deploy";
+                return "Deploy " + DisplayName;
             }
         }
 
@@ -800,7 +803,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             {
                 if(TreeParent != null)
                 {
-                TreeParent.IsOverwrite = false;
+                    TreeParent.IsOverwrite = false;
                 }
                 IsOverwrite = false;
             }

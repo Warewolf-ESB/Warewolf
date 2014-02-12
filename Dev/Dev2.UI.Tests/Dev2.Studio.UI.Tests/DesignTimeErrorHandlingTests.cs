@@ -120,7 +120,7 @@ namespace Dev2.Studio.UI.Tests
             //set the first input to required
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
             wizard.WaitForControlReady();
-            Keyboard.SendKeys(wizard, "+{TAB 2}");
+            Keyboard.SendKeys(wizard, "{TAB}{TAB}");
             Playback.Wait(150);
             Keyboard.SendKeys("{SPACE}");
 
