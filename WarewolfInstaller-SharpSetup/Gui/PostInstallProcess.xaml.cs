@@ -319,6 +319,37 @@ namespace Gui
 
         }
 
+        private static string outputData = string.Empty;
+        private bool VerifyPortsAreOpen()
+        {
+            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false } };
+            p.OutputDataReceived += OutputHandler;
+            p.Start();
+
+            p.WaitForExit(30);
+
+            // Now scan outputData for magical strings ;)
+            if(outputData.IndexOf("http://*:3142/", StringComparison.Ordinal) >= 0)
+            {
+                if(outputData.IndexOf("https://*:3143/", StringComparison.Ordinal) >= 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
+        {
+            // Collect the sort command output. 
+            var data = outLine.Data;
+            if(!String.IsNullOrEmpty(data))
+            {
+                outputData += data;
+            }
+        }
+
         /// <summary>
         /// Cleanups the operation.
         /// </summary>
@@ -380,9 +411,11 @@ namespace Gui
 
                 // Get the BackgroundWorker that raised this event.
                 BackgroundWorker worker = new BackgroundWorker();
+                bool portAreOpen = false;
                 worker.DoWork += delegate
                 {
                     InstallService(InstallVariables.InstallRoot);
+                    portAreOpen = VerifyPortsAreOpen();
                 };
 
                 worker.RunWorkerCompleted += delegate
@@ -390,7 +423,15 @@ namespace Gui
 
                     if(_serviceInstalled && !_serviceInstallException)
                     {
-                        SetSuccessMessasge("Started server service");
+                        // verify ports opened
+                        if(!portAreOpen)
+                        {
+                            SetFailureMessage("Failed to open Firewall port 3142 and 3142");
+                        }
+                        else
+                        {
+                            SetSuccessMessasge("Started server service");
+                        }
                     }
                     else if(!_serviceInstalled && _serviceInstallException)
                     {
