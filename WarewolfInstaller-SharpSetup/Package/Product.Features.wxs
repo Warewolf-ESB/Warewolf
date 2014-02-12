@@ -4,7 +4,8 @@
     <Feature Id="MainFeature" Level="1" Title="!(loc.FEATURE.MAINFEATURE.TITLE)" Description="!(loc.FEATURE.MAINFEATURE.DESCRIPTION)" Display="collapse">
       <ComponentGroupRef Id="Server" />
       <ComponentGroupRef Id="Studio" />
-      <ComponentRef Id="pmd" /> 
+      <ComponentRef Id="ProgramMenuShortcut" /> 
+      <ComponentRef Id="DesktopShortcut" />
     </Feature>
     
     <!--<Feature Id="Documentation" Level="50" Title="!(loc.FEATURE.DOCUMENTATION.TITLE)" Description="!(loc.FEATURE.DOCUMENTATION.DESCRIPTION)" Display="expand">
