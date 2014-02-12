@@ -28,7 +28,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
             string result = TestHelper.PostDataToWebserver(postData);
 
-
             StringAssert.Contains(result, "Anonymous email sent");
         }
 

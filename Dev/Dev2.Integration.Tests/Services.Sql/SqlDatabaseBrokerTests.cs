@@ -34,9 +34,9 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
         {
-            Exception exception = null;
             Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
+                Exception exception = null;
                 var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 try
@@ -48,11 +48,11 @@ namespace Dev2.Integration.Tests.Services.Sql
                     // Need to do this because exceptions get swallowed by impersonator
                     exception = ex;
                 }
-            });
 
-            Assert.IsNotNull(exception);
-            Assert.IsInstanceOfType(exception, typeof(SqlException));
-            Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
+                Assert.IsNotNull(exception);
+                Assert.IsInstanceOfType(exception, typeof(SqlException));
+                Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
+            });
         }
 
         [TestMethod]

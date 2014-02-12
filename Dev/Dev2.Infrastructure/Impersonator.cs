@@ -144,6 +144,7 @@ namespace Dev2
 
         public static bool RunAs(string userName, string domain, string password, Action action)
         {
+
             var result = false;
             using(var impersonator = new Impersonator())
             {
@@ -153,7 +154,9 @@ namespace Dev2
                     result = true;
                 }
             }
+
             return result;
+
         }
     }
 }
