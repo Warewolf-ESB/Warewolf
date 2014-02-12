@@ -22,12 +22,12 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void AllToolsTestExpectPass()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
+            string postData = String.Format("{0}{1}", WebserverURI, "Tool Testing");
 
             var responseData = string.Empty;
             try
             {
-                responseData = TestHelper.PostDataToWebserver(PostData);
+                responseData = TestHelper.PostDataToWebserver(postData);
             }
             catch(WebException e)
             {
