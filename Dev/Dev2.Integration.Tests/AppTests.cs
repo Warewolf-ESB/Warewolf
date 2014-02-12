@@ -33,13 +33,10 @@ namespace Dev2.Integration.Tests
                     studioPath = tmpPath + @"\Dev2.Studio\bin\Debug\Warewolf Studio.exe";
                 }
 
-                // REMOVE : Dump current executing location
-                //File.AppendAllText(@"\\rsaklfsvrtfsbld\DevelopmentDropOff\UPDATE", @"STUDIO : " + executingAssemblyLocation);
-
                 if(!File.Exists(studioPath))
                 {
                     // If this test is running in an environment this is where the Studio exe will be (otherwise this path could be resolved by getting the running server process location path)
-                    studioPath = Bootstrap.ServerLocation.Replace("Server", "Studio");
+                    studioPath = @"C:\IntegrationRun\Binaries\Warewolf Studio.exe";
 
                     if(!File.Exists(studioPath))
                     {
@@ -123,19 +120,7 @@ namespace Dev2.Integration.Tests
                     {
                         serverPath = @"C:\Development\Dev\Dev2.Server\bin\Debug\Warewolf Server.exe";
                     }
-                    else
-                    {
-                        var dir = Path.GetDirectoryName(executingAssemblyLocation);
-                        if(dir != null)
-                        {
-                            serverPath = Path.Combine(dir, "Warewolf Server.exe");
-                        }
-                    }
                 }
-
-                // REMOVE : Dump current executing location
-                //File.AppendAllText(@"\\rsaklfsvrtfsbld\DevelopmentDropOff\UPDATE", @"SERVER : " + executingAssemblyLocation + " " + serverPath);
-
 
                 // fire off process 
                 Process p = new Process { StartInfo = { FileName = serverPath, RedirectStandardOutput = true, UseShellExecute = false } };
