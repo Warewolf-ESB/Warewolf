@@ -32,13 +32,13 @@ namespace Dev2.Integration.Tests
         private static TestContext testCtx;
         private static CredentialCache cc;
 
-        private static object _tumbler = new object();
+        private static readonly object _tumbler = new object();
 
         /// <summary>
         /// Inits the specified test CTX.
         /// </summary>
         /// <param name="textCtx">The test CTX.</param>
-        [AssemblyInitialize()]
+        [AssemblyInitialize]
         public static void Init(TestContext textCtx)
         {
             testCtx = textCtx;
@@ -52,8 +52,7 @@ namespace Dev2.Integration.Tests
                 }
 
                 //init logging
-                cc = new CredentialCache();
-                cc.Add(new Uri("http://RSAKLFSVRWRWBLD:3142/"), "NTLM", new NetworkCredential("IntegrationTester", "I73573r0", "DEV2"));
+                cc = new CredentialCache { { new Uri("http://RSAKLFSVRWRWBLD:3142/"), "NTLM", new NetworkCredential("IntegrationTester", "I73573r0", "DEV2") } };
 
                 // term any existing server processes ;)
                 KillProcess(serverProcess);
@@ -79,7 +78,7 @@ namespace Dev2.Integration.Tests
                 ServerLogger.LogMessage("Server Loc -> " + ServerLocation);
                 ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
 
-                var args = "-t";
+                const string args = "-t";
 
                 ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = ServerLocation, Arguments = args };
                 //startInfo.RedirectStandardOutput = true;
@@ -151,7 +150,9 @@ namespace Dev2.Integration.Tests
 
         static void GetChangesetBuild(string changesetID)
         {
+            // ReSharper disable AssignNullToNotNullAttribute
             var remoteBuildPath = Path.Combine(Path.GetDirectoryName(RemoteBuildDirectory), changesetID + ".zip");
+            // ReSharper restore AssignNullToNotNullAttribute
 
             using(var zippedBuild = ZipFile.Read(remoteBuildPath))
             {
@@ -162,7 +163,7 @@ namespace Dev2.Integration.Tests
         /// <summary>
         /// Teardowns this instance.
         /// </summary>
-        [AssemblyCleanup()]
+        [AssemblyCleanup]
         public static void Teardown()
         {
             if(ServerProc != null)
@@ -175,7 +176,9 @@ namespace Dev2.Integration.Tests
             {
                 Directory.Delete(LocalBuildRunDirectory, true);
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
             }
@@ -235,7 +238,9 @@ namespace Dev2.Integration.Tests
                 {
                     proc.Kill();
                 }
+                // ReSharper disable EmptyGeneralCatchClause
                 catch
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
                 }
