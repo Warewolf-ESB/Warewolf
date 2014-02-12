@@ -158,11 +158,18 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         static void LogBuildEvent(string LogData)
         {
-            var URL = LoggingURL + "?BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
-            var webRequest = WebRequest.Create(URL);
-            webRequest.Credentials = cc;
-            webRequest.Timeout = WebRequestTimeout;
-            webRequest.GetResponse();
+            try
+            {
+                var URL = LoggingURL + "?BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
+                var webRequest = WebRequest.Create(URL);
+                webRequest.Credentials = cc;
+                webRequest.Timeout = WebRequestTimeout;
+                webRequest.GetResponse();
+            }
+            catch
+            {
+                // best effort
+            }
         }
 
         static void ReadBuildLabel(string getChangesetIDPathFilePath)
