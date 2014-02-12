@@ -23,14 +23,13 @@ namespace Dev2.Integration.Tests
         private const string ChangesetIDPathFileName = "BuildID.txt";//For getting the changeset ID (.testsettings file describes its deployment, build process describes its creation)
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
         private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
-        private const string LoggingURL = "http://RSAKLFSVRWRWBLD:3142/Services/LogBuildEvent";
+        private static string LoggingURL = string.Empty;
         private const int WebRequestTimeout = 60000;
 
         public static string ServerLocation;
         public static Process ServerProc;
         private static string ChangesetID;
         private static TestContext testCtx;
-        private static bool Logging;
         private static CredentialCache cc;
 
         private static object _tumbler = new object();
@@ -63,13 +62,13 @@ namespace Dev2.Integration.Tests
                 var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
                 ReadBuildLabel(getChangesetIDPathFilePath);
 
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started downloading build for integration testing");
                 }
                 var timeBefore = DateTime.Now;
                 GetChangesetBuild(ChangesetID);
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " finished downloading build for integration testing");
                 }
@@ -120,7 +119,7 @@ namespace Dev2.Integration.Tests
                         }
                     }
                 }
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started running server for integration testing");
                 }
@@ -139,10 +138,10 @@ namespace Dev2.Integration.Tests
         static void ReadBuildLabel(string getChangesetIDPathFilePath)
         {
             var Lines = File.ReadAllLines(getChangesetIDPathFilePath);
-            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("Logging: "))
+            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("LoggingURL: "))
             {
                 ChangesetID = Lines[0].Replace("BuildID: ", string.Empty);
-                Logging = Lines[0].Replace("Logging: ", string.Empty) == "On";
+                LoggingURL = Lines[0].Replace("LoggingURL: ", string.Empty);
             }
             else
             {
@@ -180,7 +179,7 @@ namespace Dev2.Integration.Tests
             {
 
             }
-            if(Logging)
+            if(LoggingURL == string.Empty)
             {
                 LogBuildEvent("Test agent " + testCtx.Properties["AgentName"] + " finished integration testing");
             }

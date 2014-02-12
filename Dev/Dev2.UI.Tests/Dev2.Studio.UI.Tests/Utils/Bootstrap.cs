@@ -20,8 +20,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         private static Process _studioProc;
         private static string ChangesetID;
         private static TestContext testCtx;
-        private static bool Logging;
         private static CredentialCache cc;
+        private static string LoggingURL = string.Empty;
 
         private const string ServerName = "Warewolf Server.exe";
         private const string StudioName = "Warewolf Studio.exe";
@@ -32,7 +32,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string ChangesetIDPathFileName = "BuildID.txt";//For getting the changeset ID (.testsettings file describes its deployment, build process describes its creation)
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
         private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
-        private const string LoggingURL = "http://RSAKLFSVRWRWBLD:3142/Services/LogBuildEvent";
         private const int WebRequestTimeout = 60000;
 
         public static string ServerLocation;
@@ -76,12 +75,12 @@ namespace Dev2.Studio.UI.Tests.Utils
                 var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
                 ReadBuildLabel(getChangesetIDPathFilePath);
 
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started downloading build for coded ui testing");
                 }
                 GetChangesetBuild(ChangesetID);
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " finished downloading build for coded ui testing");
                 }
@@ -120,7 +119,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                         startCnt++;
                     }
                 }
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " has started running server for coded ui testing");
                 }
@@ -150,7 +149,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                         startCnt++;
                     }
                 }
-                if(Logging)
+                if(LoggingURL == string.Empty)
                 {
                     LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " has started running studio for coded ui testing");
                 }
@@ -169,10 +168,10 @@ namespace Dev2.Studio.UI.Tests.Utils
         static void ReadBuildLabel(string getChangesetIDPathFilePath)
         {
             var Lines = File.ReadAllLines(getChangesetIDPathFilePath);
-            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("Logging: "))
+            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("LoggingURL: "))
             {
                 ChangesetID = Lines[0].Replace("BuildID: ", string.Empty);
-                Logging = Lines[0].Replace("Logging: ", string.Empty) == "On";
+                LoggingURL = Lines[0].Replace("Logging: ", string.Empty);
             }
             else
             {
@@ -212,7 +211,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
 
             }
-            if(Logging)
+            if(LoggingURL == string.Empty)
             {
                 LogBuildEvent("Test agent " + testCtx.Properties["AgentName"] + " finished coded ui testing");
             }
