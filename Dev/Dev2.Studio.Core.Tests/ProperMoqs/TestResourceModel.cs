@@ -105,6 +105,10 @@ namespace Dev2.Core.Tests.ProperMoqs
         public event Action OnDataListChanged;
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
+        public void ClearErrors()
+        {
+        }
+
         public void RaiseEvents()
         {
             if(OnResourceSaved != null)

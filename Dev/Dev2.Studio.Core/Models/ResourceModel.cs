@@ -463,6 +463,11 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
+        public void ClearErrors()
+        {
+            _errors.Clear();
+        }
+
         public event EventHandler<DesignValidationMemo> OnEnvironmentValidationReceived;
 
         // BUG 9634 - 2013.07.17 - TWR : added

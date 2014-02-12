@@ -206,8 +206,10 @@ namespace Dev2.Runtime.WebServer.Hubs
             var serializedMemo = JsonConvert.SerializeObject(memo);
             var hubCallerConnectionContext = Clients;
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
+
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+
         }
 
         public void SendDebugState(DebugState debugState)
@@ -228,10 +230,10 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
 
             // we need to broadcast per service and per unique ID messages
-            var serviceGroupings = messageArray.GroupBy(to => to.ServiceID);
+            var serviceGroupings = messageArray.GroupBy(to => to.ServiceID).ToList();
             WriteEventProviderClientMessage(serviceGroupings, coalesceErrors);
 
-            var instanceGroupings = messageArray.GroupBy(to => to.UniqueID);
+            var instanceGroupings = messageArray.Where(to => to.UniqueID != Guid.Empty).GroupBy(to => to.UniqueID).ToList();
             WriteEventProviderClientMessage(instanceGroupings, coalesceErrors);
         }
 

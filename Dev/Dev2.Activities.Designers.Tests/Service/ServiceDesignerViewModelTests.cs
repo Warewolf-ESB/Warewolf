@@ -478,8 +478,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             var model = CreateServiceDesignerViewModel(instanceID);
 
             var memo = new DesignValidationMemo { InstanceID = instanceID };
-            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error." });
-            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error." });
+            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = "Critical error.", InstanceID = instanceID });
+            memo.Errors.Add(new ErrorInfo { ErrorType = ErrorType.Warning, Message = "Warning error.", InstanceID = instanceID });
 
             model.OnDesignValidationReceived += (s, m) =>
             {
@@ -706,7 +706,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var instanceID = Guid.NewGuid();
             var worstError = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = xml };
-            IErrorInfo[] resourceErrors = { worstError, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml }, new ErrorInfo { InstanceID = Guid.NewGuid(), ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml } };
+            IErrorInfo[] resourceErrors = { worstError, new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml }, new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Warning, FixType = FixType.ReloadMapping, FixData = xml } };
             var vm = CreateServiceDesignerViewModel(instanceID, new[] { inputMapping.Object, outputMapping.Object }, resourceErrors);
             vm.RootModel.AddError(resourceErrors[0]);
             vm.RootModel.AddError(resourceErrors[1]);

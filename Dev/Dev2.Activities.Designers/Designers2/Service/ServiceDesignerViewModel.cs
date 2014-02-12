@@ -451,7 +451,7 @@ namespace Dev2.Activities.Designers2.Service
             CheckRequiredMappingChangedErrors(memo);
             CheckIsDeleted(memo);
 
-            UpdateDesignValidationErrors(memo.Errors);
+            UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
 
             if(OnDesignValidationReceived != null)
             {

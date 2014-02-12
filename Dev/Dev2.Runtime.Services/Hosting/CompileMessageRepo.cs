@@ -226,6 +226,10 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         public bool AddMessage(Guid workspaceID, IList<CompileMessageTO> msgs)
         {
+            if(msgs.Count == 0)
+            {
+                return true;
+            }
             lock(Lock)
             {
                 IList<CompileMessageTO> messages;
