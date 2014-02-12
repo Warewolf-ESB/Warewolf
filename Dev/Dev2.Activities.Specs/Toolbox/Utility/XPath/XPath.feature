@@ -62,7 +62,7 @@ Scenario: Use XPath with no variable result but valid xpath
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'
 	And I have a variable "" output with xpath "//root/number/@id"
 	When the xpath tool is executed	
-	Then the execution has "AN" error
+	Then the execution has "NO" error
 
 Scenario: Use XPath to get multiple results into a scalar in CSV
 	Given I have this xml '<root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root>'

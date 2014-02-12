@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             string recordSetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
-            
+
             var count = new DsfCountRecordsetActivity
                 {
                     RecordsetName = string.IsNullOrEmpty(recordSetName) ? "rs()" : recordSetName + "()",
@@ -47,32 +47,32 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
 
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, "row"));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
                 }
-                variableList.Add(new Tuple<string, string>(t[0], ""));
+                variableList.Add(new Tuple<string, string>(t[0], "a"));
             }
         }
 
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
