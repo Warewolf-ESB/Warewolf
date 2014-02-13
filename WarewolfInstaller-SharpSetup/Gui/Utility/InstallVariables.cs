@@ -68,5 +68,11 @@
         ///   <c>true</c> if [view read memory]; otherwise, <c>false</c>.
         /// </value>
         public static bool ViewReadMe { get; set; }
+
+        // firewall rule names
+        public static readonly string OutboundHTTPWarewolfRule = "Warewolf HTT Outbound Ports";
+        public static readonly string OutboundHTTPSWarewolfRule = "Warewolf HTTPS Outbound Ports";
+        public static readonly string InboundHTTPWarewolfRule = "Warewolf HTTP Outbound Ports";
+        public static readonly string InboundHTTPSWarewolfRule = "Warewolf HTTPS Outbound Ports";
     }
 }

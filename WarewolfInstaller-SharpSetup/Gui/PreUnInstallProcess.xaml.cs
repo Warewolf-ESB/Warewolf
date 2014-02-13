@@ -5,6 +5,7 @@ using System.Configuration.Install;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using NetFwTypeLib;
 using SharpSetup.Base;
 
 namespace Gui
@@ -99,7 +100,8 @@ namespace Gui
 
         private void ClosePorts()
         {
-            var args = new[] { "http delete urlacl url=http://*:3142/", "http delete urlacl url=https://*:3143/" };
+
+            var args = new[] { @"http delete urlacl url=http://*:3142/", @"http delete urlacl url=https://*:3143/" };
 
             //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
             try
@@ -108,14 +110,26 @@ namespace Gui
                 {
                     ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
                 }
-
             }
             // ReSharper disable EmptyGeneralCatchClause
             catch
             // ReSharper restore EmptyGeneralCatchClause
-            {
+            { }
 
+            // remove firewall rules ;)
+            try
+            {
+                INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(
+                Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
+                firewallPolicy.Rules.Remove(InstallVariables.OutboundHTTPWarewolfRule);
+                firewallPolicy.Rules.Remove(InstallVariables.OutboundHTTPSWarewolfRule);
+                firewallPolicy.Rules.Remove(InstallVariables.InboundHTTPWarewolfRule);
+                firewallPolicy.Rules.Remove(InstallVariables.InboundHTTPSWarewolfRule);
             }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            { }
         }
 
         /// <summary>

@@ -70,4 +70,7 @@
   <ItemGroup>
     <IncludeInCab Include="Files\Ionic.Zip.Reduced.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\FirewallAPI.dll" />
+  </ItemGroup>
 </Project>

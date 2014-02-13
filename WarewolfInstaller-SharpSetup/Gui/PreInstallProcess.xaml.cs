@@ -87,36 +87,6 @@ namespace Gui
         }
 
         /// <summary>
-        /// Opens the ports.
-        /// </summary>
-        private void OpenPorts()
-        {
-            // NOTE Use : netsh.exe http show urlacl - To view urlacl rules ;)
-
-            var args = new[] { @"http add urlacl url=http://*:3142/  user=\Everyone", @"http add urlacl url=https://*:3143/ user=\Everyone" };
-
-            //var args = string.Format("http add urlacl url={0}/ user=\\Everyone", url);
-            try
-            {
-                foreach(var arg in args)
-                {
-                    bool invoke = ProcessHost.Invoke(null, @"C:\Windows\system32\netsh.exe", arg);
-                    if(!invoke)
-                    {
-                        SetFailureMessage(string.Format("There was an error adding url: {0}", arg));
-                    }
-                }
-
-            }
-            catch(Exception e)
-            {
-                SetFailureMessage(e.Message);
-            }
-        }
-
-
-
-        /// <summary>
         /// Handles the Entered event of the PreInstallStep control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -127,10 +97,9 @@ namespace Gui
             // Setup a cancel action ;)
             Cancel += OnCancel;
 
+            // Start Service
             try
             {
-                // Open the required ports ;)
-                OpenPorts();
 
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
                 if(sc.Status == ServiceControllerStatus.Running)
@@ -175,6 +144,7 @@ namespace Gui
                 // Service not present ;)
                 SetSuccessMessasge("Scan for server services complete");
             }
+
 
         }
 
