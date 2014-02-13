@@ -47,6 +47,9 @@ namespace Dev2.Network
             AppServerUri = new Uri(uriString);
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
 
+
+            this.LogTrace("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
+
             HubConnection = new HubConnection(uriString) { Credentials = CredentialCache.DefaultNetworkCredentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;

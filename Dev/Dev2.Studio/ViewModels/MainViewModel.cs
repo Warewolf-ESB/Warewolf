@@ -108,8 +108,8 @@ namespace Dev2.Studio.ViewModels
         #region Properties
 
         #region imports
-        [Import]
-        public FlowController FlowController { get; set; }
+        //[Import]
+        //public FlowController FlowController { get; set; }
 
         [Import(typeof(IWebController))]
         public IWebController WebController { get; set; }

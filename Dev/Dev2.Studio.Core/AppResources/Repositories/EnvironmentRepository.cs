@@ -229,17 +229,31 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                var xml = !string.IsNullOrEmpty(tryReadFile) ? XElement.Parse(tryReadFile) : new XElement("Environments");
-                var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
+                // ReSharper disable RedundantAssignment
+                var xml = new XElement("Environments");
+                // ReSharper restore RedundantAssignment
                 var result = new List<Guid>();
-                foreach(var guidStr in guids)
+
+                if(!string.IsNullOrEmpty(tryReadFile))
                 {
-                    Guid guid;
-                    if(Guid.TryParse(guidStr, out guid))
+                    try
                     {
-                        result.Add(guid);
+                        xml = XElement.Parse(tryReadFile);
+                        var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
+                        foreach(var guidStr in guids)
+                        {
+                            Guid guid;
+                            if(Guid.TryParse(guidStr, out guid))
+                            {
+                                result.Add(guid);
+                            }
+                        }
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
+                    catch { }
+                    // ReSharper restore EmptyGeneralCatchClause
                 }
+
                 return result;
             }
         }

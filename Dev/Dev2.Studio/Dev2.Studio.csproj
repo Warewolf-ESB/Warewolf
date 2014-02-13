@@ -275,7 +275,6 @@
     <Compile Include="Controller\PopupController.cs" />
     <Compile Include="Controller\ProcessController.cs" />
     <Compile Include="CustomControls\Connections\ConnectControlViewModel.cs" />
-    <Compile Include="CustomControls\Connections\IConnectControl.cs" />
     <Compile Include="CustomControls\Dev2StatusBar.cs" />
     <Compile Include="CustomControls\Progress\Dev2WebClient.cs" />
     <Compile Include="CustomControls\Progress\IDev2WebClient.cs" />
