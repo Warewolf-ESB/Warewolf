@@ -52,9 +52,9 @@ namespace Dev2.Network
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
             // Travis Logging
-            HubConnection.ConnectionSlow += () => this.LogError("************ Slow hub connection?!");
-            HubConnection.Reconnecting += () => this.LogError("************ Reconnect hub");
-            HubConnection.Closed += () => HubConnection.Dispose();
+            //HubConnection.ConnectionSlow += () => this.LogError("************ Slow hub connection?!");
+            //HubConnection.Reconnecting += () => this.LogError("************ Reconnect hub");
+            //HubConnection.Closed += () => HubConnection.Dispose();
             //HubConnection.TraceLevel = TraceLevels.All;
             //HubConnection.TraceWriter = Console.Out;
 
