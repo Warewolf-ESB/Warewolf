@@ -111,7 +111,7 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !TEST
-            Perform(() => TBApp.ExceptionTrack(className, methodName, ex));
+            Perform(() => TBApp.ExceptionTrack(className, methodName, ex), true);
 #endif
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -106,21 +107,16 @@ namespace Dev2.Studio.UI.Tests
 
             // Open the Workflow
             ExplorerUIMap.EnterExplorerSearchText(workflowResourceName);
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI TEST", workflowResourceName);
-            var theTab = TabManagerUIMap.GetActiveTab();
+            UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow(workflowResourceName, "UI TEST");
 
             // Edit the DbService
-            ExplorerUIMap.EnterExplorerSearchText(dbResourceName);
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "SERVICES", "INTEGRATION TEST SERVICES", dbResourceName);
+            ExplorerUIMap.DoubleClickService(dbResourceName, "INTEGRATION TEST SERVICES");
 
             // Get wizard window
-            WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUIMap.ClickMappingTab(450); // over-ride cuz silly chickens like long names in test ;(
 
             //set the first input to required
-            var wizard = StudioWindow.GetChildren()[0].GetChildren()[0];
-            wizard.WaitForControlReady();
-            Keyboard.SendKeys(wizard, "{TAB}{TAB}");
+            Keyboard.SendKeys("{TAB}{TAB}");
             Playback.Wait(150);
             Keyboard.SendKeys("{SPACE}");
 
@@ -128,19 +124,15 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickOK();
             ResourceChangedPopUpUIMap.ClickCancel();
 
-            // Fix Errors
-            if(WorkflowDesignerUIMap.Adorner_ClickFixErrors(theTab, dbResourceName))
-            {
-                //Assert mappings are prompting the user to add required mapping
-                var getCloseMappingToggle = WorkflowDesignerUIMap.Adorner_GetButton(theTab, dbResourceName,
-                                                                                    "Close Mapping");
-                Assert.IsNotNull(getCloseMappingToggle,
-                                    "Fix Error does not prompt the user to input required mappings");
-            }
-            else
-            {
-                Assert.Fail("'Fix Errors' button not visible");
-            }
+            UITestControl activity = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, dbResourceName);
+
+            DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { TheTab = theTab, Activity = activity };
+
+            Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button not visible");
+
+            activityUiMap.ClickFixErrors();
+            activityUiMap.ClickCloseMapping();
+            Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
         }
     }
 }
