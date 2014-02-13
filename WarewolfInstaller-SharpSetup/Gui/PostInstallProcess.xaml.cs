@@ -322,8 +322,9 @@ namespace Gui
         private static string outputData = string.Empty;
         private bool VerifyPortsAreOpen()
         {
-            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false } };
+            Process p = new Process { StartInfo = { FileName = @"C:\Windows\system32\netsh.exe", Arguments = "http show urlacl", RedirectStandardOutput = true, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden } };
             p.OutputDataReceived += OutputHandler;
+            p.BeginOutputReadLine();
             p.Start();
 
             p.WaitForExit(30);
@@ -415,7 +416,7 @@ namespace Gui
                 worker.DoWork += delegate
                 {
                     InstallService(InstallVariables.InstallRoot);
-                    portAreOpen = VerifyPortsAreOpen();
+                    //portAreOpen = VerifyPortsAreOpen();
                 };
 
                 worker.RunWorkerCompleted += delegate
@@ -424,14 +425,14 @@ namespace Gui
                     if(_serviceInstalled && !_serviceInstallException)
                     {
                         // verify ports opened
-                        if(!portAreOpen)
-                        {
-                            SetFailureMessage("Failed to open Firewall port 3142 and 3142");
-                        }
-                        else
-                        {
+                        //if(!portAreOpen)
+                        //{
+                            //SetFailureMessage("Failed to open Firewall port 3142 and 3142");
+                        //}
+                        //else
+                        //{
                             SetSuccessMessasge("Started server service");
-                        }
+                        //}
                     }
                     else if(!_serviceInstalled && _serviceInstallException)
                     {

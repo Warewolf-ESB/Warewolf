@@ -48,6 +48,12 @@
             <Component Id="cmpE9EC7D9921B14EE5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618EE58912}">
                 <File Id="filD16B434756BC4373AB0857E4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.Tracker.dll" />
             </Component>
+            <Component Id="cmpE9EC7D9921B14EE5BA2FB1817B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8171-1D1B-9C4E-DF618EE58912}">
+                <File Id="filD16B434756BC4373AB0857E4FAFA516C" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.x64.dll" />
+            </Component>
+            <Component Id="cmpF9EC7A8811B14EE5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-AD1B-9C1E-DF618EE58912}">
+                <File Id="filD16B434756BC4373CB0AAAA4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.x86.dll" />
+            </Component>
             <Component Id="cmpE9EC7D9921B14FF5BF2FB1807B977836" Directory="dirServerRoot" Guid="{A0FD2CA4-8174-4D4B-9C4E-DF618FF58912}">
                 <File Id="filD16B434756BC4373AB0857E4FBFA516C" KeyPath="yes" Source="..\ProductBuild\Server\Trackerbird.Tracker.xml" />
             </Component>
@@ -1033,6 +1039,12 @@
             </Component>
             <Component Id="cmp0F096C78207607B31C552A9CFCA9A89B_Studio" Directory="dirStudioRoot" Guid="{637E2388-D33D-1112-A2AC-7B4349240DAC}">
                 <File Id="fil7CBD05375326109CBE22A1FB26B49B6B_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Trackerbird.Tracker.xml" />
+            </Component>
+            <Component Id="cmpE9EC7D9921C14CC5BA2FB1817B977836" Directory="dirStudioRoot" Guid="{A0FD2CA4-8171-1DAA-AC4E-DF618EE58912}">
+                <File Id="filD16B434711AA4373AB0857E4FAFA516C" KeyPath="yes" Source="..\ProductBuild\Studio\Trackerbird.x64.dll" />
+            </Component>
+            <Component Id="cmpE9EC7D8811B14EE5BF2FB1807B977836" Directory="dirStudioRoot" Guid="{A0FD2CA4-8174-AD1B-9C1E-DF618EE589AA}">
+                <File Id="filD16B434756BC4373CB0857A4FBFA516A" KeyPath="yes" Source="..\ProductBuild\Studio\Trackerbird.x86.dll" />
             </Component>
             <Component Id="cmp3A06F0AF1D061729CD4DDDCC3A204218_Studio" Directory="dirStudioRoot" Guid="{28DC149E-9F4E-440F-96DF-F96160501E34}">
                 <File Id="fil6417112B391DE19504D2E8281BF8AE73_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\XPath20Api.dll" />
