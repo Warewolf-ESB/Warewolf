@@ -160,12 +160,12 @@ namespace Dev2.Studio.UI.Tests.Utils
         {
             try
             {
-                var URL = LoggingURL + "?BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
-                var webRequest = WebRequest.Create(URL);
-                webRequest.Credentials = cc;
-                webRequest.Timeout = WebRequestTimeout;
-                webRequest.GetResponse();
-            }
+            var URL = LoggingURL + "?BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
+            var webRequest = WebRequest.Create(URL);
+            webRequest.Credentials = cc;
+            webRequest.Timeout = WebRequestTimeout;
+            webRequest.GetResponse();
+        }
             catch
             {
                 // best effort

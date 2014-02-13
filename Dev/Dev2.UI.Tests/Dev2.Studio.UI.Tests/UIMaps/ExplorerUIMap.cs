@@ -227,6 +227,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             var item = vsw.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
 
             Mouse.Click(item, new Point(5, 5));
+
+            //Wait for the connect control to be ready
+            int afterCounter = 0;
+            while(!ddlBase.Enabled && afterCounter < 5)
+            {
+                Playback.Wait(2000);
+                afterCounter++;
+            }
+            if(!ddlBase.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
         }
 
         /// <summary>
@@ -668,6 +680,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(100);
             Mouse.DoubleClick(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
             Playback.Wait(4000);
+            if(serverName != "localhost")
+            {
+                Playback.Wait(3000);
+            }
         }
     }
 }
