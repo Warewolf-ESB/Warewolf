@@ -18,8 +18,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void ClickEdit()
         {
+            Mouse.Move(Activity, new Point(5, 5));
             UITestControl button = AdornersGetButton("Edit");
-            Mouse.Move(button.GetParent(), new Point(5, 5));
             Mouse.Click(button, new Point(5, 5));
             Playback.Wait(2000);
         }
@@ -39,11 +39,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         public bool IsFixErrorButtonShowing()
         {
             UITestControl fixErrorsButton = GetFixErrorsButton();
-            if(fixErrorsButton == null)
+            Point buttonPoint;
+            if(fixErrorsButton != null && fixErrorsButton.TryGetClickablePoint(out buttonPoint))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
 
         public void ClickFixErrors()
@@ -59,11 +60,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         UITestControl GetFixErrorsButton()
         {
-            List<UITestControl> buttons = Activity.GetChildren().Where(c => c.ControlType == ControlType.Button).ToList();
-            if(buttons.Any())
+            UITestControlCollection activityChildren = Activity.GetChildren();
+            UITestControl smallView = activityChildren.FirstOrDefault(c => c.FriendlyName.Contains("SmallView"));
+            if(smallView != null)
             {
-                return buttons[0];
+                List<UITestControl> buttons = smallView.GetChildren().Where(c => c.ControlType == ControlType.Button).ToList();
+                if(buttons.Any())
+                {
+                    return buttons[0];
+                }
             }
+
             return null;
         }
 

@@ -615,9 +615,15 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
-            Mouse.Click(MouseButtons.Left, ModifierKeys.None, p);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
             Playback.Wait(500);
-            SendKeys.SendWait("{F2}");
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(50);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(50);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(50);
+            SendKeys.SendWait("{ENTER}");
             Playback.Wait(50);
             SendKeys.SendWait(newName);
             Playback.Wait(50);
@@ -643,17 +649,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 {
                     return false;
                 }
-                Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
-                Mouse.Click(p);
-
-                var kids = theControl.GetChildren();
-
-                if(kids != null && kids.Count > 0)
-                {
-                    return kids.Any(kid => kid.Name == resourceName);
-                }
-
-                return false;
+                return true;
             }
             catch(Exception)
             {

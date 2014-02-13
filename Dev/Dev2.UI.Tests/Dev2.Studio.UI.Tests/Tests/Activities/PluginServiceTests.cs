@@ -65,8 +65,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             activityUiMap.ClickEdit();
             //Wizard actions
             PluginServiceWizardUIMap.ClickMappingTab();
-            PluginServiceWizardUIMap.EnterDataIntoMappingTextBox(4, newMapping);
+            PluginServiceWizardUIMap.EnterDataIntoMappingTextBox(3, newMapping);
             PluginServiceWizardUIMap.ClickSaveButton(1);
+            ResourceChangedPopUpUIMap.ClickCancel();
             //Assert the the error button is there
             Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
             //Click the fix errors button

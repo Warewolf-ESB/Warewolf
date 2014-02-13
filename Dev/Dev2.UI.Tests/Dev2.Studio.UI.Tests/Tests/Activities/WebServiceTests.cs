@@ -54,7 +54,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         public void WebServiceTests_CodedUI_EditService_ExpectErrorButton()
         {
             var newMapping = "ZZZ" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 6);
-          
+
             UITestControl theTab = ExplorerUIMap.DoubleClickWorkflow("ErrorFrameworkTestWorkflow", "UI TEST");
 
             UITestControl service = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FetchCities");
@@ -64,8 +64,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             activityUiMap.ClickEdit();
             //Wizard actions
             WebServiceWizardUIMap.ClickMappingTab();
-            WebServiceWizardUIMap.EnterDataIntoMappingTextBox(4, newMapping);
-            WebServiceWizardUIMap.ClickSaveButton(1);
+            WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
+            WebServiceWizardUIMap.ClickSaveButton(2);
             ResourceChangedPopUpUIMap.ClickCancel();
 
             //Assert the the error button is there

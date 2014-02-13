@@ -65,7 +65,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             //Wizard actions
             DatabaseServiceWizardUIMap.ClickMappingTab();
             DatabaseServiceWizardUIMap.EnterDataIntoMappingTextBox(0, newMapping);
-            DatabaseServiceWizardUIMap.ClickSaveButton(4);
+            DatabaseServiceWizardUIMap.ClickSaveButton(3);
             ResourceChangedPopUpUIMap.ClickCancel();
             //Assert the the error button is there
             Assert.IsTrue(activityUiMap.IsFixErrorButtonShowing());
