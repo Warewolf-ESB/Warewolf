@@ -745,9 +745,11 @@ namespace Dev2.Activities.Designers2.Service
         void UpdateDesignValidationErrors(IEnumerable<ErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
+            RootModel.ClearErrors();
             foreach(var error in errors)
             {
                 DesignValidationErrors.Add(error);
+                RootModel.AddError(error);
             }
             UpdateWorstError();
         }
