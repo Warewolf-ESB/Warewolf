@@ -127,7 +127,7 @@ namespace Dev2.Integration.Tests
 
         static void LogBuildEvent(string LogData)
         {
-            var URL = LoggingURL + "?BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
+            var URL = LoggingURL + "&BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
             var webRequest = WebRequest.Create(URL);
             webRequest.Credentials = cc;
             webRequest.Timeout = WebRequestTimeout;
