@@ -8,9 +8,11 @@
     <Versions>
         <VersionSpecification>
             <Release>WindowsVista</Release>
+            <ServicePack>1</ServicePack>
         </VersionSpecification>
         <VersionSpecification>
             <Release>Windows7</Release>
+            <ServicePack>1</ServicePack>
         </VersionSpecification>
         <VersionSpecification>
             <Release>Windows8</Release>
