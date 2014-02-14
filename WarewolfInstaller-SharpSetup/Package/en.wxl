@@ -16,7 +16,7 @@
   <String Id="FEATURE.ENGLISH.TITLE">English</String>
   <String Id="FEATURE.ENGLISH.DESCRIPTION">English documentation</String>
   <String Id="FEATURE.FRENCH.TITLE">French</String>
-  <String Id="FEATURE.FRENCH.DESCRIPTION">French documentaion</String>
+  <String Id="FEATURE.FRENCH.DESCRIPTION">French documentation</String>
   <String Id="FEATURE.GERMAN.TITLE">German</String>
   <String Id="FEATURE.GERMAN.DESCRIPTION">German documentation</String>
 </WixLocalization>
