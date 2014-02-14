@@ -70,7 +70,7 @@
         public static bool ViewReadMe { get; set; }
 
         // firewall rule names
-        public static readonly string OutboundHTTPWarewolfRule = "Warewolf HTT Outbound Ports";
+        public static readonly string OutboundHTTPWarewolfRule = "Warewolf HTTP Outbound Ports";
         public static readonly string OutboundHTTPSWarewolfRule = "Warewolf HTTPS Outbound Ports";
         public static readonly string InboundHTTPWarewolfRule = "Warewolf HTTP Inbound Ports";
         public static readonly string InboundHTTPSWarewolfRule = "Warewolf HTTPS Inbound Ports";
