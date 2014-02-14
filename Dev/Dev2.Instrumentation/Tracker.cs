@@ -111,7 +111,10 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !TEST
-            Perform(() => TBApp.ExceptionTrack(className, methodName, ex), true);
+            //Perform(() => TBApp.ExceptionTrack(className, methodName, ex), true);
+            var idx = className.LastIndexOf('.');
+            var newClassName = className.Substring(idx + 1);
+            TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
 #endif
         }
 

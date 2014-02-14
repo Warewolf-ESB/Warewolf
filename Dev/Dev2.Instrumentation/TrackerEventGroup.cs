@@ -8,6 +8,7 @@ namespace Dev2.Instrumentation
         ActivityExecution,
         Deploy,
         Settings,
+        Exception
     }
 
     public enum TrackerEventName
