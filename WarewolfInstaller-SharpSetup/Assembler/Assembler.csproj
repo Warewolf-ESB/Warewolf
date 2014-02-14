@@ -71,6 +71,11 @@
     <IncludeInCab Include="Files\Ionic.Zip.Reduced.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Files\FirewallAPI.dll" />
+    <IncludeInCab Include="Files\FirewallAPI.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Prerequisite Include="Prerequisites\dotnet3_5.sspf">
+      <SubType>Designer</SubType>
+    </Prerequisite>
   </ItemGroup>
 </Project>
