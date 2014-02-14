@@ -9,8 +9,6 @@
 </prerequisiteObject>
   <files>
     <file name="vcredist2008sp1_x86.exe">
-      <provider name="download" type="retrieve" executeOn="build" />
-      <provider name="local" type="store" executeOn="build" />
       <provider name="local" type="retrieve" />
       <provider name="download" type="retrieve" />
     </file>

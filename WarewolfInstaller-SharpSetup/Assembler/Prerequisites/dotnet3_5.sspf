@@ -10,8 +10,6 @@
 </prerequisiteObject>
   <files>
     <file name="dotnet35sp1.exe">
-      <provider name="download" type="retrieve" executeOn="build" />
-      <provider name="local" type="store" executeOn="build" />
       <provider name="local" type="retrieve" />
       <provider name="download" type="retrieve" />
     </file>
