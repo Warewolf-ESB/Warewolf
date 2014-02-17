@@ -16,6 +16,8 @@ namespace Dev2.Data.Binary_Objects
 
         private static readonly ConcurrentDictionary<int, int> _activityThreadToParentThreadID = new ConcurrentDictionary<int, int>();
 
+        private static object _lock = new object();
+
         /// <summary>
         /// Registers the activity thread automatic parent unique identifier.
         /// </summary>
@@ -38,22 +40,25 @@ namespace Dev2.Data.Binary_Objects
         /// <param name="dataListID">The data list unique identifier.</param>
         public static void RegisterDataListInScope(int transactionScopeID, Guid dataListID)
         {
-            IList<Guid> theList;
             int keyID = transactionScopeID;
 
-            // now we can correctly scope the data list creation ;)
-            if(_registrationRoster.TryGetValue(keyID, out theList))
+            lock(_lock)
             {
-                if(!theList.Contains(dataListID))
+                // now we can correctly scope the data list creation ;)
+                IList<Guid> theList;
+                if(_registrationRoster.TryGetValue(keyID, out theList))
                 {
-                    theList.Add(dataListID);
+                    if(!theList.Contains(dataListID))
+                    {
+                        theList.Add(dataListID);
+                    }
                 }
-            }
-            else
-            {
-                ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeID);
-                // its new, add it ;)
-                _registrationRoster[keyID] = new List<Guid> { dataListID };
+                else
+                {
+                    ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeID);
+                    // its new, add it ;)
+                    _registrationRoster[keyID] = new List<Guid> { dataListID };
+                }
             }
         }
 
@@ -71,23 +76,26 @@ namespace Dev2.Data.Binary_Objects
                 ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeID);
                 try
                 {
-                    IList<Guid> theList;
-                    if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
+                    lock(_lock)
                     {
-                        theList.Remove(rootRequestID);
-                        BinaryDataListStorageLayer.RemoveAll(theList);
-
-                        // finally reset
-                        IList<Guid> dummy;
-                        _registrationRoster.TryRemove(transactionScopeID, out dummy);
-
-                        // now remove children ;)
-                        foreach(var key in _activityThreadToParentThreadID.Keys)
+                        IList<Guid> theList;
+                        if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
                         {
-                            if(key == transactionScopeID)
+                            theList.Remove(rootRequestID);
+                            BinaryDataListStorageLayer.RemoveAll(theList);
+
+                            // finally reset
+                            IList<Guid> dummy;
+                            _registrationRoster.TryRemove(transactionScopeID, out dummy);
+
+                            // now remove children ;)
+                            foreach(var key in _activityThreadToParentThreadID.Keys)
                             {
-                                int dummyInt;
-                                _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
+                                if(key == transactionScopeID)
+                                {
+                                    int dummyInt;
+                                    _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
+                                }
                             }
                         }
                     }

@@ -9,14 +9,16 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.TO;
 using Dev2.Diagnostics;
 
-namespace Dev2.Server.Datalist {
+namespace Dev2.Server.Datalist
+{
 
-    public interface IEnvironmentModelDataListCompiler {
+    public interface IEnvironmentModelDataListCompiler
+    {
 
         #region Evaluation Operations
 
         /// <summary>
-        /// Used to evalaute an expression against a given datalist
+        /// Used to evaluate an expression against a given datalist
         /// </summary>
         /// <param name="ctx">The CTX.</param>
         /// <param name="curDLID">The cur DL ID.</param>
@@ -212,6 +214,7 @@ namespace Dev2.Server.Datalist {
         /// <summary>
         /// Converts from selected Type to binary
         /// </summary>
+        /// <param name="ctx">The CTX.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="shape">The shape.</param>
@@ -253,6 +256,17 @@ namespace Dev2.Server.Datalist {
         string ConvertAndFilter(NetworkContext ctx, Guid curDLID, string filterShape, DataListFormat typeOf, out ErrorResultTO errors);
 
         /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="ctx">The CTX.</param>
+        /// <param name="tyoeOf">The tyoe of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid ConvertAndOnlyMapInputs(NetworkContext ctx, DataListFormat tyoeOf, byte[] payload, string shape, out ErrorResultTO errors);
+
+        /// <summary>
         /// Fetches the translator types.
         /// </summary>
         /// <returns></returns>
@@ -265,6 +279,7 @@ namespace Dev2.Server.Datalist {
         /// <param name="error">The error.</param>
         /// <returns></returns>
         bool TryPushDataList(IBinaryDataList payload, out string error);
+
 
         #endregion
 
@@ -318,7 +333,7 @@ namespace Dev2.Server.Datalist {
         /// <param name="val">The val.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-         Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, IBinaryDataListEntry val, out ErrorResultTO errors);
+        Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, IBinaryDataListEntry val, out ErrorResultTO errors);
 
         #endregion
 

@@ -56,6 +56,21 @@ namespace Dev2.Server.DataList.Translators
             return tmp;
         }
 
+        /// <summary>
+        /// Converts from a binary representation in the specified <see cref="IDataListTranslator.Format" /> to the standard
+        /// binary representation of a datalist.
+        /// </summary>
+        /// <param name="input">The binary representation in the specified <see cref="IDataListTranslator.Format" /></param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns>
+        /// An array of bytes that represent the datalist in the standard format.
+        /// </returns>
+        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        {
+            return base.ConvertTo(input, shape, out errors);
+        }
+
         #region Private Methods
 
         #endregion

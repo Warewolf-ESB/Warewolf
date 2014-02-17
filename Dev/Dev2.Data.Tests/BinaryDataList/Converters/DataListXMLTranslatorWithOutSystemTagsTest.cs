@@ -36,9 +36,28 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var result = compiler.ConvertFrom(dlID, format, enTranslationDepth.Data, out errors);
 
             //------------Assert Results-------------------------
-            var expected = "<DataList><person><fname>sara</fname><lname>jones</lname></person></DataList>";
+            const string expected = "<DataList><person><fname>sara</fname><lname>jones</lname></person></DataList>";
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListXMLTranslatorWithOutSystemTags_ConvertAndOnlyMapInputs")]
+        public void DataListXMLTranslatorWithOutSystemTags_ConvertAndOnlyMapInputs_WhenCallingNormally_ExpectNotImplementedException()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, string.Empty, out errors);
+
+            //------------Assert Results-------------------------
+            var theErrors = errors.FetchErrors();
+            Assert.AreEqual(1, theErrors.Count);
+            StringAssert.Contains(theErrors[0], "The method or operation is not implemented.");
+
         }
     }
 }

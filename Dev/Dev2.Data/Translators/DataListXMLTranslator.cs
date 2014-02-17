@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Enums;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Translators;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -144,7 +146,27 @@ namespace Dev2.Server.DataList.Translators
             return tmp;
         }
 
+        // api level
         public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
+        {
+            return ConvertTo(input, targetShape, out errors, false);
+        }
+
+
+        /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        {
+            return ConvertTo(input, shape, out errors, true);
+        }
+
+        // internal to impl api methods
+        private IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors, bool onlyMapInputs)
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
@@ -182,10 +204,10 @@ namespace Dev2.Server.DataList.Translators
                             IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
                             // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
-                            TryConvert(children, result, indexCache, errors);
+                            TryConvert(children, result, indexCache, errors, onlyMapInputs);
                         }
 
-                        //// Transfer System Tags
+                        // Transfer System Tags
                         for(int i = 0; i < TranslationConstants.systemTags.Length; i++)
                         {
                             string key = TranslationConstants.systemTags.GetValue(i).ToString();
@@ -230,13 +252,24 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
 
-        // BUG 9626 - 2013.06.11 - TWR: refectored for recursion
-        static void TryConvert(XmlNodeList children, IBinaryDataList result, IDictionary<string, int> indexCache, ErrorResultTO errors, int level = 0)
+        static bool CanMapValue(bool onlyMapInputs, enDev2ColumnArgumentDirection direction)
+        {
+            if(!onlyMapInputs)
+            {
+                return true;
+            }
+
+            return (direction == enDev2ColumnArgumentDirection.Input || direction == enDev2ColumnArgumentDirection.Both);
+        }
+
+        // BUG 9626 - 2013.06.11 - TWR: refactored for recursion
+        static void TryConvert(XmlNodeList children, IBinaryDataList result, IDictionary<string, int> indexCache, ErrorResultTO errors, bool onlyMapInputs, int level = 0)
         {
             // spin through each element in the XML
             foreach(XmlNode c in children)
@@ -257,17 +290,25 @@ namespace Dev2.Server.DataList.Translators
                             var nl = c.ChildNodes;
                             foreach(XmlNode subc in nl)
                             {
-                                entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
-
-                                if(!string.IsNullOrEmpty(error))
+                                // Extract column being mapped to ;)
+                                var theCol = entry.Columns.FirstOrDefault(col => col.ColumnName == subc.Name);
+                                var dir = enDev2ColumnArgumentDirection.None;
+                                if(theCol != null)
                                 {
-                                    errors.AddError(error);
+                                    dir = theCol.ColumnIODirection;
                                 }
+
+                                if(CanMapValue(onlyMapInputs, dir))
+                                {
+                                    entry.TryPutRecordItemAtIndex(Dev2BinaryDataListFactory.CreateBinaryItem(subc.InnerXml, c.Name, subc.Name, idx), idx, out error);
+                                }
+
+                                errors.AddError(error);
                             }
                             // update this recordset index
                             indexCache[c.Name] = ++idx;
                         }
-                        else
+                        else if(CanMapValue(onlyMapInputs, entry.ColumnIODirection))
                         {
                             // process scalar
                             entry.TryPutScalar(Dev2BinaryDataListFactory.CreateBinaryItem(c.InnerXml, c.Name), out error);
@@ -283,7 +324,7 @@ namespace Dev2.Server.DataList.Translators
                         if(level == 0)
                         {
                             // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, result, indexCache, errors, ++level);
+                            TryConvert(c.ChildNodes, result, indexCache, errors, onlyMapInputs, ++level);
                         }
                         else
                         {

@@ -91,12 +91,13 @@ namespace Dev2.Instrumentation
         /// <param name="eventGroup">The text by which to group your event. If the length of this string and the 'eventName' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="customText">The text used to describe the feature. If the length of this string and the 'eventGroup' parameter is greater than 40 it will be truncated. Also ';' (semicolons) and '|' (pipeline) are not to be used inside this parameter.</param>
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
-        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = null)
+        public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = "")
         {
 #if !TEST
-            Perform(() => string.IsNullOrEmpty(eventValue)
-                ? TBApp.EventTrack(eventGroup.ToString(), customText, null)
-                : TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
+            Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
+            //Perform(() => string.IsNullOrEmpty(eventValue)
+            //    ? TBApp.EventTrack(eventGroup.ToString(), customText, null)
+            //    : TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
 #endif
         }
 
@@ -112,20 +113,30 @@ namespace Dev2.Instrumentation
             //Perform(() => TBApp.ExceptionTrack(className, methodName, ex), true);
             var idx = className.LastIndexOf('.');
             var newClassName = className.Substring(idx + 1);
+            newClassName = newClassName.Replace("`", "").Replace("1", "");
             TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
 #endif
         }
 
         static void Perform(Func<GenericReturn> action, bool async = false)
         {
-            if(async)
+            try
             {
-                Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                if(async)
+                {
+                    Task.Run(action).ContinueWith(t => WriteError(t.Result));
+                }
+                else
+                {
+                    var result = action();
+                    WriteError(result);
+                }
             }
-            else
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
-                var result = action();
-                WriteError(result);
+                // this is a tracker issue ;(
             }
         }
 

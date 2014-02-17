@@ -327,7 +327,7 @@ namespace Dev2.Server.DataList.Translators
             return result.ToString();
         }
 
-        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors, bool onlyMatchInputs = false)
         {
             errors = new ErrorResultTO();
             var payload = Encoding.UTF8.GetString(input);
@@ -351,6 +351,18 @@ namespace Dev2.Server.DataList.Translators
         public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)
         {
             errors = null;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        {
             throw new NotImplementedException();
         }
     }

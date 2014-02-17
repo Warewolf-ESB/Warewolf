@@ -128,6 +128,18 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        {
+           throw new NotImplementedException();
+        }
+
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {
             throw new NotImplementedException();

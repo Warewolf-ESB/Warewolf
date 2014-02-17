@@ -34,7 +34,6 @@ namespace Dev2.Server.DataList.Translators
         /// Converts from a binary representation in the standard format to the specified <see cref="Format" />.
         /// </summary>
         /// <param name="input">The binary representation of the datalist.</param>
-        /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns>
         /// An array of bytes that represent the datalist in the specified <see cref="Format" />
@@ -94,6 +93,18 @@ namespace Dev2.Server.DataList.Translators
         }
 
         public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

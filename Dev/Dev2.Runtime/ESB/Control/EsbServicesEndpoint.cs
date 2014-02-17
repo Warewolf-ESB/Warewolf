@@ -210,8 +210,10 @@ namespace Dev2.Runtime.ESB.Control
                     return resultID;
                 }
 
+                // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
-                dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
+                dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
+                //dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
 
@@ -444,7 +446,6 @@ namespace Dev2.Runtime.ESB.Control
 
             return result;
         }
-
 
         /// <summary>
         /// Fetches the execution payload.

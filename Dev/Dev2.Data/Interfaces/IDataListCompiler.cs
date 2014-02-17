@@ -329,6 +329,16 @@ namespace Dev2.DataList.Contract
         Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors);
 
         /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors);
+
+        /// <summary>
         /// Populates the data list.
         /// </summary>
         /// <param name="typeOf">The type of.</param>

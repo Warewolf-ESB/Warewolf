@@ -98,8 +98,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="BinaryDataList\Converters\DataListBinaryTranslatorTest.cs" />
+    <Compile Include="BinaryDataList\Converters\DataListDataTableTranslatorTest.cs" />
+    <Compile Include="BinaryDataList\Converters\DataListJsonTranslatorTest.cs" />
+    <Compile Include="BinaryDataList\Converters\DataListXMLTranslatorTest.cs" />
     <Compile Include="BinaryDataList\Converters\FetchStudioDataListXMLTranslatorTest.cs" />
     <Compile Include="BinaryDataList\Converters\DataListXMLTranslatorWithOutSystemTagsTest.cs" />
+    <Compile Include="BinaryDataList\Converters\StudioDebugTranslatorTest.cs" />
+    <Compile Include="BinaryDataList\Converters\XmlInputsOnlyTranslatorTest.cs" />
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\LoopedIndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\RecordsetGroupTest.cs" />

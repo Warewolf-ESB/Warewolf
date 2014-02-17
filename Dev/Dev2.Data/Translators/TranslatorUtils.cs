@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -67,6 +68,8 @@ namespace Dev2.Data.Translators
                     foreach(XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
+                        XmlAttribute ioDirection = null;
+
                         if(!DataListUtil.IsSystemTag(c.Name))
                         {
                             if(c.HasChildNodes)
@@ -84,15 +87,24 @@ namespace Dev2.Data.Translators
                                         if(subc.Attributes != null)
                                         {
                                             descAttribute = subc.Attributes["Description"];
+                                            ioDirection = subc.Attributes["ColumnIODirection"];
                                         }
+
+                                        // set column io direction
+                                        enDev2ColumnArgumentDirection dirCol = enDev2ColumnArgumentDirection.None;
+                                        if(ioDirection != null)
+                                        {
+                                            Enum.TryParse(ioDirection.Value, out dirCol);
+                                        }
+
 
                                         if(descAttribute != null)
                                         {
-                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value));
+                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value, true, dirCol));
                                         }
                                         else
                                         {
-                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty));
+                                            cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty, true, dirCol));
                                         }
                                     }
                                     string myError;
@@ -100,18 +112,28 @@ namespace Dev2.Data.Translators
                                     if(c.Attributes != null)
                                     {
                                         descAttribute = c.Attributes["Description"];
+                                        ioDirection = c.Attributes["ColumnIODirection"];
                                     }
+
+
+                                    // set column io direction
+                                    enDev2ColumnArgumentDirection dir = enDev2ColumnArgumentDirection.None;
+                                    if(ioDirection != null)
+                                    {
+                                        Enum.TryParse(ioDirection.Value, out dir);
+                                    }
+
 
                                     if(descAttribute != null)
                                     {
-                                        if(!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, out myError))
+                                        if(!result.TryCreateRecordsetTemplate(c.Name, descAttribute.Value, cols, true, true, dir, out myError))
                                         {
                                             errors.AddError(myError);
                                         }
                                     }
                                     else
                                     {
-                                        if(!result.TryCreateRecordsetTemplate(c.Name, String.Empty, cols, true, out myError))
+                                        if(!result.TryCreateRecordsetTemplate(c.Name, String.Empty, cols, true, true, dir, out myError))
                                         {
                                             errors.AddError(myError);
                                         }
@@ -135,16 +157,24 @@ namespace Dev2.Data.Translators
                                             if(subc.Attributes != null)
                                             {
                                                 descAttribute = subc.Attributes["Description"];
+                                                ioDirection = subc.Attributes["ColumnIODirection"];
                                             }
+
+                                            // set column io direction
+                                            enDev2ColumnArgumentDirection dir = enDev2ColumnArgumentDirection.None;
+                                            if(ioDirection != null)
+                                            {
+                                                Enum.TryParse(ioDirection.Value, out dir);
+                                            }
+
 
                                             if(descAttribute != null)
                                             {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name,
-                                                    descAttribute.Value));
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value, true, dir));
                                             }
                                             else
                                             {
-                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty));
+                                                cols.Add(DataListFactory.CreateDev2Column(subc.Name, String.Empty, true, dir));
                                             }
                                         }
 
@@ -162,15 +192,23 @@ namespace Dev2.Data.Translators
                                 if(c.Attributes != null)
                                 {
                                     descAttribute = c.Attributes["Description"];
+                                    ioDirection = c.Attributes["ColumnIODirection"];
+                                }
+
+                                // get column direction
+                                enDev2ColumnArgumentDirection dir = enDev2ColumnArgumentDirection.None;
+                                if(ioDirection != null)
+                                {
+                                    Enum.TryParse(ioDirection.Value, out dir);
                                 }
 
                                 if(descAttribute != null)
                                 {
-                                    result.TryCreateScalarTemplate(String.Empty, c.Name, descAttribute.Value, true, out error);
+                                    result.TryCreateScalarTemplate(String.Empty, c.Name, descAttribute.Value, true, true, dir, out error);
                                 }
                                 else
                                 {
-                                    result.TryCreateScalarTemplate(String.Empty, c.Name, String.Empty, true, out error);
+                                    result.TryCreateScalarTemplate(String.Empty, c.Name, String.Empty, true, true, dir, out error);
                                 }
                             }
                         }

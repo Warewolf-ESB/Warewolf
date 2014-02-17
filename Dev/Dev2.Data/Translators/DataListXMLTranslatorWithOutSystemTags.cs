@@ -267,6 +267,18 @@ namespace Dev2.Data.Translators
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        {
+           throw new NotImplementedException();
+        }
+
         // NOTE : This will be tested by the related WebServices and Plugin Integration Test
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
         {

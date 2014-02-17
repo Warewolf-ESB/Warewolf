@@ -13,16 +13,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
     [ExcludeFromCodeCoverage]
     public class FetchStudioDataListXMLTranslatorTest
     {
-        static IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
 
         private Guid CreateDataList(enDev2ColumnArgumentDirection dir)
         {
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-            IBinaryDataList dl1;
+            DataListFactory.CreateDataListCompiler();
             string error;
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
 
-            dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList(GlobalConstants.NullDataListID);
 
             IList<Dev2Column> cols = new List<Dev2Column>();
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1", dir));
@@ -41,6 +40,25 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
 
 
         #region XML Creation Test
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DataListXMLTranslatorWithOutSystemTags_ConvertAndOnlyMapInputs")]
+        public void DataListXMLTranslatorWithOutSystemTags_ConvertAndOnlyMapInputs_WhenCallingNormally_ExpectNotImplementedException()
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, string.Empty, out errors);
+
+            //------------Assert Results-------------------------
+            var theErrors = errors.FetchErrors();
+            Assert.AreEqual(1, theErrors.Count);
+            StringAssert.Contains(theErrors[0], "The method or operation is not implemented.");
+
+        }
 
         [TestMethod]
         public void Can_Create_XML_With_ColumnIODirection_Input()

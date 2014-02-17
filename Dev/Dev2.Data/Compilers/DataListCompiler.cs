@@ -475,6 +475,20 @@ namespace Dev2.DataList.Contract
         }
 
         /// <summary>
+        /// Converts the and only map inputs.
+        /// </summary>
+        /// <param name="typeOf">The type of.</param>
+        /// <param name="payload">The payload.</param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="errors">The errors.</param>
+        /// <returns></returns>
+        public Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(payload);
+            return _svrCompiler.ConvertAndOnlyMapInputs(null, typeOf, data, shape, out errors);
+        }
+
+        /// <summary>
         /// Populates the data list.
         /// </summary>
         /// <param name="typeOf">The type of.</param>
