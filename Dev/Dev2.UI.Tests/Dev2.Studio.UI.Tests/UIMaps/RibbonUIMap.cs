@@ -114,12 +114,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             WizardsUIMap.WaitForWizard();
         }
 
-        public void ClickDebug()
+        public UITestControl ClickDebug()
         {
-            ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
+            return ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
         }
 
-        public void ClickRibbonMenuItem(string itemName)
+        public UITestControl ClickRibbonMenuItem(string itemName)
         {
             var ribbonButtons = StudioWindow.GetChildren();
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName.Contains(itemName)));
@@ -133,8 +133,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
             Playback.Wait(100);
-
-
+            return control;
         }
 
         public UITestControl CreateNewWorkflow()

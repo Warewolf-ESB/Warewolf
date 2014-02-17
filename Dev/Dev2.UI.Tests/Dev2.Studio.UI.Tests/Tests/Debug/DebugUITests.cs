@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -231,32 +232,37 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             }
         }
 
-        //[TestMethod]
-        //[Owner("Jai Holloway")]
-        //[TestCategory("DebugOutput_WhenStopped")]
-        //public void DebugOutput_WhenStopped_WaitsForRenderToCompleteBeforeStoppedMessage()
-        //{
-        //    try
-        //    {
-        //        //------------Setup for test--------------------------
-        //        //Open the correct workflow
-        //        ExplorerUIMap.DoubleClickWorkflow("CodedUI_DebugOutputStop", "Tests");
-        //        RibbonUIMap.ClickDebug();
-        //        DebugUIMap.ClickExecute();
-        //        Playback.Wait(2000);
-        //        RibbonUIMap.ClickDebug();
+        [TestMethod]
+        [Owner("Jai Holloway")]
+        [TestCategory("DebugOutput_WhenStopped")]
+        public void DebugOutput_WhenStopped_WaitsForRenderToCompleteBeforeStoppedMessage()
+        {
+            try
+            {
+                //------------Setup for test--------------------------
+                //Open the correct workflow
+                ExplorerUIMap.DoubleClickWorkflow("CodedUI_DebugOutputStop", "Tests");
+                string status = OutputUIMap.GetStatusBarStatus();
+                Assert.AreEqual("Ready", status);
+                UITestControl debugButton = RibbonUIMap.ClickDebug();
+                Point debugButtonPoint = new Point(debugButton.BoundingRectangle.X + 5, debugButton.BoundingRectangle.Y + 5);
+                DebugUIMap.ClickExecute();
+                Playback.Wait(1000);
+                Mouse.Click(debugButtonPoint);
+                Playback.Wait(500);
 
-        //        ////------------Assert Results-------------------------
-        //        Playback.Wait(1000);
-        //        string status = OutputUIMap.GetStatusBarStatus();
-        //        Assert.AreEqual("Stopping", status);
-        //        Playback.Wait(3000);
-        //        Assert.AreEqual("Ready", OutputUIMap.GetStatusBarStatus());
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
-        //    }
-        //}
+                ////------------Assert Results-------------------------
+
+                status = OutputUIMap.GetStatusBarStatus();
+                Assert.AreEqual("Stopping", status);
+                Playback.Wait(9000);
+                status = OutputUIMap.GetStatusBarStatus();
+                Assert.AreEqual("Ready", status);
+            }
+            catch(Exception e)
+            {
+                Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
+            }
+        }
     }
 }
