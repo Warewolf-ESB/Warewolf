@@ -48,16 +48,14 @@ namespace Dev2.Instrumentation
 #if DEBUG
                 // ReSharper disable ConvertToConstant.Local
                 var productVersion = "0.0.9999.0";
-                var productBuildNumber = "9999";
                 // ReSharper restore ConvertToConstant.Local
 #else
                 var fvi = FileVersionInfo.GetVersionInfo(location);
                 var productVersion = fvi.FileVersion;
-                var productBuildNumber = fvi.FileBuildPart.ToString(System.Globalization.CultureInfo.InvariantCulture);
 #endif
                 TBConfig.SetFilePath(filePath);
                 //TBConfig.SetProductEdition("LITE");                      
-                TBConfig.CreateConfig(callHomeUrl, productID, productVersion, productBuildNumber, false);
+                TBConfig.CreateConfig(callHomeUrl, productID, productVersion, productVersion, false);
                 return TBApp.Start();
             });
         }
