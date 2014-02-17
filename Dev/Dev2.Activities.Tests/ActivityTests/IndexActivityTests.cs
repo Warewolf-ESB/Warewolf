@@ -224,8 +224,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(6, actual.Count);
-            Assert.AreEqual("2,4", actual[1]);
+            Assert.AreEqual(7, actual.Count);
+            Assert.AreEqual("2", actual[3]);
 
         }
 
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
             Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
 
-            Assert.AreEqual(10, outRes.Count);
+            Assert.AreEqual(1, outRes.Count);
             Assert.AreEqual(30, outRes[0].FetchResultsList().Count);
         }
 
