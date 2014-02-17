@@ -60,11 +60,13 @@ namespace Dev2.Activities.Designers2.DataMerge
                 else
                 {
                     mi.SetProperty("EnablePadding", false);
+                    mi.SetProperty("Padding", string.Empty);
                 }
             }
             else
             {
                 mi.SetProperty("At", string.Empty);
+                mi.SetProperty("Padding", string.Empty);
                 mi.SetProperty("EnableAt", false);
                 mi.SetProperty("EnablePadding", false);
             }
