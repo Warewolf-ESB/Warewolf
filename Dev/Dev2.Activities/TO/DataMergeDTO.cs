@@ -29,6 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         int _indexNum;
         bool _enableAt;
         bool _isAtFocused;
+        bool _enablePadding;
         bool _isPaddingFocused;
         string _alignment;
 
@@ -91,6 +92,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
+
+        public bool EnablePadding { get { return _enablePadding; } set { OnPropertyChanged(ref _enablePadding, value); } }
 
         public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
 

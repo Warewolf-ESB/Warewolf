@@ -53,11 +53,20 @@ namespace Dev2.Activities.Designers2.DataMerge
             if(mergeType == "Index" || mergeType == "Chars")
             {
                 mi.SetProperty("EnableAt", true);
+                if(mergeType == "Index")
+                {
+                    mi.SetProperty("EnablePadding", true);
+                }
+                else
+                {
+                    mi.SetProperty("EnablePadding", false);
+                }
             }
             else
             {
                 mi.SetProperty("At", string.Empty);
                 mi.SetProperty("EnableAt", false);
+                mi.SetProperty("EnablePadding", false);
             }
         }
 

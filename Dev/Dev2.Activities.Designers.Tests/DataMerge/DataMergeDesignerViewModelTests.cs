@@ -116,6 +116,34 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             VerifyMergeTypeAgaintsEnabledAt("Chars", true);
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataMergeDesignerViewModel_OnMergeTypeChanged")]
+        public void DataMergeDesignerViewModel_OnMergeTypeChanged_SetMergeTypeToChars_EnablePaddingIsSetToFalse()
+        {
+            VerifyMergeTypeAgaintsEnabledApdding("Chars", false);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("DataMergeDesignerViewModel_OnMergeTypeChanged")]
+        public void DataMergeDesignerViewModel_OnMergeTypeChanged_SetMergeTypeToIndex_EnablePaddingIsSetToTrue()
+        {
+            VerifyMergeTypeAgaintsEnabledApdding("Index", true);
+        }
+
+        static void VerifyMergeTypeAgaintsEnabledApdding(string mergeType, bool expectedEnablePadding)
+        {
+            var items = new List<DataMergeDTO> { new DataMergeDTO("", mergeType, "", 0, "", "Left") };
+            var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
+            viewModel.MergeTypeUpdatedCommand.Execute(0);
+            dynamic mi = viewModel.ModelItemCollection[0];
+            var at = mi.At as string;
+            var actualEnablePadding = mi.EnablePadding as bool?;
+            Assert.AreEqual("", at);
+            Assert.AreEqual(expectedEnablePadding, actualEnablePadding);
+        }
+
         static void VerifyMergeTypeAgaintsEnabledAt(string mergeType, bool expectedEnableAt)
         {
             var items = new List<DataMergeDTO> { new DataMergeDTO("", mergeType, "", 0, "", "Left") };

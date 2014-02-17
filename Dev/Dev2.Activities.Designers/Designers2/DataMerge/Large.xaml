@@ -46,12 +46,9 @@
         <controls:Dev2DataGrid x:Name="LargeDataGrid"
                                Grid.Row="0"
                                Grid.Column="0"
-                               MinHeight="60"
-                               MaxHeight="500"
                                ItemsSource="{Binding ModelItem.MergeCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               HeadersVisibility="Column"
-                               Style="{StaticResource SpacedActivityDataGridStyle}">
-             <i:Interaction.Behaviors>
+                               Style="{StaticResource ActivityMapppingDataGridStyle}">
+            <i:Interaction.Behaviors>
                 <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
                     <behaviors2:DataGridWatermarkModifier.WatermarkText>
                         <sys:String>[[Recordset().F1]]</sys:String>
@@ -63,56 +60,59 @@
             </i:Interaction.Behaviors>
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
-        <DataGrid.Columns>
-            <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}"
-                                    Header="#"
-                                    IsReadOnly="True">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
-                        <Label Content="{Binding IndexNumber}"
-                               VerticalAlignment="Center" />
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Width="25"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}"
+                                        Header="#"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding IndexNumber}"
+                                   VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="*"
-                                    Header="Input"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                <DataGridTemplateColumn Width="*"
+                                        Header="Input"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="False"
                                                     Text="{Binding InputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"                                                    
+                                                    ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipInput}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpInput}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="InputVariable"
-                                                     SourcePropertyValue="{Binding InputVariable, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ui:IntellisenseTextBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpInput}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="InputVariable"
+                                                         SourcePropertyValue="{Binding InputVariable, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_InputVariable_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ui:IntellisenseTextBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="75"                                    
-                                    Header="With"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                <DataGridTemplateColumn Width="75"
+                                        Header="With"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
@@ -124,31 +124,32 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                                 <i:Interaction.Behaviors>
-                                <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpWithType}"
-                                                 DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                <errors:ErrorsSetter Source="{Binding}"
-                                                     SourcePropertyName="MergeType"
-                                                     SourcePropertyValue="{Binding MergeType, UpdateSourceTrigger=PropertyChanged}"
-                                                     Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                            </i:Interaction.Behaviors>
-                            <AutomationProperties.AutomationId>
-                                <MultiBinding StringFormat="UI_{0}_Row{1}_MergeType_AutoID">
-                                    <Binding Path="DataContext.ModelItem.AutomationID"
-                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
-                                    <Binding Path="IndexNumber" />
-                                </MultiBinding>
-                            </AutomationProperties.AutomationId>
-                        </ComboBox>
-                    </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            
-            <DataGridTemplateColumn Width=".5*"
-                                    MinWidth="40"
-                                    Header="Using"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.DataMergeHelpWithType}"
+                                                     DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                    <errors:ErrorsSetter Source="{Binding}"
+                                                         SourcePropertyName="MergeType"
+                                                         SourcePropertyValue="{Binding MergeType, UpdateSourceTrigger=PropertyChanged}"
+                                                         Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
+                                </i:Interaction.Behaviors>
+                                <AutomationProperties.AutomationId>
+                                    <MultiBinding StringFormat="UI_{0}_Row{1}_MergeType_AutoID">
+                                        <Binding Path="DataContext.ModelItem.AutomationID"
+                                                 RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                        <Binding Path="IndexNumber" />
+                                    </MultiBinding>
+                                </AutomationProperties.AutomationId>
+                            </ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width=".5*"
+                                        MinWidth="40"
+                                        Header="Using"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     WrapInBrackets="False"
@@ -174,18 +175,20 @@
                                 </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
-            
-            <DataGridTemplateColumn Width=".5*"
-                                    MinWidth="50"
-                                    Header="Padding"
-                                    d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
-                <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Width=".5*"
+                                        MinWidth="50"
+                                        Header="Padding"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
+                                        d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     WrapInBrackets="False"
+                                                    IsEnabled="{Binding EnablePadding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding Padding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static help:HelpTextResources.DataMergeToolTipPadding}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
@@ -207,11 +210,12 @@
                                 </AutomationProperties.AutomationId>
                             </ui:IntellisenseTextBox>
                         </DataTemplate>
-                </DataGridTemplateColumn.CellTemplate>
-            </DataGridTemplateColumn>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-            <DataGridTemplateColumn Width="50"
+                <DataGridTemplateColumn Width="50"
                                         Header="Align"
+                                        HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
                                         d:DataContext="{d:DesignInstance Type=activities:DataMergeDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -270,9 +274,9 @@
                 </i:Interaction.Behaviors>
             </ui:IntellisenseTextBox>
         </Grid>
-        
+
         <errors:OnError Grid.Column="0"
                         Grid.Row="2"
-                        Grid.ColumnSpan="3"/>
+                        Grid.ColumnSpan="3" />
     </Grid>
 </core:ActivityDesignerTemplate>
