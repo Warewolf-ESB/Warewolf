@@ -456,10 +456,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             CommandManager.InvalidateRequerySuggested();
 
             var result = ContextualResourceModel.Environment.ResourceRepository.StopExecution(ContextualResourceModel);
-
             DispatchServerDebugMessage(result, ContextualResourceModel);
 
-            SetDebugStatus(DebugStatus.Finished);
+            //Bug 10912 - Only set the Debug Status to Finished when rendering has completed
+            //SetDebugStatus(DebugStatus.Finished);
         }
 
         public void ViewInBrowser()
