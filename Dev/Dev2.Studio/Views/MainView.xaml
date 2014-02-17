@@ -449,6 +449,7 @@
                                         </Grid>
                                     </Button>
                                     <Button Command="{Binding DebugCommand}"
+                                            AutomationProperties.AutomationId="UI_RibbonDebugBtn_AutoID"
                                             Style="{DynamicResource ButtonStyleRibbon}">
                                         <Grid>
 

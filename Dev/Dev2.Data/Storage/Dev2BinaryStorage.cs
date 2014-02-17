@@ -620,7 +620,8 @@ namespace Dev2.Data.Storage
             int removedItems = 0;
             lock(_opsLock)
             {
-                Parallel.ForEach(_bufferIndexes.Keys.Where(c => theList.Any(guid => c.IndexOf(guid.ToString(), StringComparison.Ordinal) >= 0)), theKey =>
+                IList<string> listOfKeys = _bufferIndexes.Keys.Where(c => theList.Any(guid => c.IndexOf(guid.ToString(), StringComparison.Ordinal) >= 0)).ToList();
+                Parallel.ForEach(listOfKeys, theKey =>
                 {
                     BinaryStorageKey tmp;
                     _bufferIndexes.TryRemove(theKey, out tmp);

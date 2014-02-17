@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Studio.UI.Tests
+namespace Dev2.Studio.UI.Tests.Tests.Debug
 {
     [CodedUITest]
     public class DebugUITests : UIMapBase
@@ -230,5 +230,33 @@ namespace Dev2.Studio.UI.Tests
                 Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
             }
         }
+
+        //[TestMethod]
+        //[Owner("Jai Holloway")]
+        //[TestCategory("DebugOutput_WhenStopped")]
+        //public void DebugOutput_WhenStopped_WaitsForRenderToCompleteBeforeStoppedMessage()
+        //{
+        //    try
+        //    {
+        //        //------------Setup for test--------------------------
+        //        //Open the correct workflow
+        //        ExplorerUIMap.DoubleClickWorkflow("CodedUI_DebugOutputStop", "Tests");
+        //        RibbonUIMap.ClickDebug();
+        //        DebugUIMap.ClickExecute();
+        //        Playback.Wait(2000);
+        //        RibbonUIMap.ClickDebug();
+
+        //        ////------------Assert Results-------------------------
+        //        Playback.Wait(1000);
+        //        string status = OutputUIMap.GetStatusBarStatus();
+        //        Assert.AreEqual("Stopping", status);
+        //        Playback.Wait(3000);
+        //        Assert.AreEqual("Ready", OutputUIMap.GetStatusBarStatus());
+        //    }
+        //    catch(Exception e)
+        //    {
+        //        Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
+        //    }
+        //}
     }
 }

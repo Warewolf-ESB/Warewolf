@@ -107,7 +107,7 @@
     <Compile Include="Enums\ServiceType.cs" />
     <Compile Include="Utils\Extensions\BaseEnumExtensions.cs" />
     <Compile Include="SecuritySettingsUiTests.cs" />
-    <Compile Include="DebugUITests.cs" />
+    <Compile Include="Tests\Debug\DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />
     <Compile Include="SqlBulkInsertUITests.cs" />
     <Compile Include="DesignTimeErrorHandlingTests.cs" />

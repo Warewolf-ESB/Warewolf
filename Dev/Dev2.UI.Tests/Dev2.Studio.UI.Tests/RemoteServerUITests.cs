@@ -176,6 +176,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(remoteTab);
 
             RibbonUIMap.DebugShortcutKeyPress();
+            OutputUIMap.WaitForExecution();
 
             var canidateTab = TabManagerUIMap.GetActiveTab();
 

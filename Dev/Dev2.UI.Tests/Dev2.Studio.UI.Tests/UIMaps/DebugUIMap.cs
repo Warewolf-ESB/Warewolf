@@ -6,8 +6,8 @@
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.Windows.Forms;
-    
-    
+
+
     public partial class DebugUIMap : UIMapBase
     {
         public void ClickItem(int row)
@@ -44,9 +44,20 @@
         public void ClickExecute()
         {
             var debugWindow = GetDebugWindow();
-            foreach (var child in debugWindow.GetChildren())
+            int counter = 0;
+            while(debugWindow == null && counter < 5)
             {
-                if (child.GetProperty("AutomationId").ToString() == "UI_Executebtn_AutoID")
+                Playback.Wait(1000);
+                debugWindow = GetDebugWindow();
+                counter++;
+            }
+            if(debugWindow == null)
+            {
+                throw new Exception("The debug popup couldnt be found");
+            }
+            foreach(var child in debugWindow.GetChildren())
+            {
+                if(child.GetProperty("AutomationId").ToString() == "UI_Executebtn_AutoID")
                 {
                     Mouse.Click(child);
                     break;
@@ -56,9 +67,9 @@
 
         public bool DebugWindowExists()
         {
-            WpfWindow uIDebugWindow = this.UIDebugWindow;
+            WpfWindow uIDebugWindow = UIDebugWindow;
             Point p = new Point();
-            if (uIDebugWindow.TryGetClickablePoint(out p))
+            if(uIDebugWindow.TryGetClickablePoint(out p))
             {
                 return true;
             }

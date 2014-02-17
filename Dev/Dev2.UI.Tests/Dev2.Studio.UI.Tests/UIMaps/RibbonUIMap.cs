@@ -114,6 +114,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             WizardsUIMap.WaitForWizard();
         }
 
+        public void ClickDebug()
+        {
+            ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
+        }
+
         public void ClickRibbonMenuItem(string itemName)
         {
             var ribbonButtons = StudioWindow.GetChildren();
@@ -160,7 +165,6 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
         public void DebugShortcutKeyPress()
         {
             SendKeys.SendWait("{F6}");
-            OutputUIMap.WaitForExecution();
         }
     }
 }
