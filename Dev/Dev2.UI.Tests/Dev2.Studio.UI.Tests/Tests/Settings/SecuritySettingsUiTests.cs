@@ -1,8 +1,15 @@
-﻿using Dev2.Studio.UI.Tests.UIMaps.Settings;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.Windows.Documents;
+using Dev2.Services.Security;
+using Dev2.Studio.UI.Tests.UIMaps.Settings;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
-namespace Dev2.Studio.UI.Tests
+namespace Dev2.Studio.UI.Tests.Tests.Settings
 {
     /// <summary>
     /// Summary description for CodedUITest1
@@ -54,6 +61,39 @@ namespace Dev2.Studio.UI.Tests
                 securityWrapper.ToggleResourceHelpButton();
                 Assert.IsTrue(securityWrapper.IsCloseHelpViewButtonEnabled());
                 securityWrapper.ToggleResourceHelpButton();
+            }
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("SecuritySettingsUiTests")]
+        public void SecuritySettingsUiTestsAdd15ResourcesMakeSureScrollBarIsThere()
+        {
+            //Set the settings file to have 20 resource permissions
+            List<WindowsGroupPermission> permissionList = new List<WindowsGroupPermission>();
+            for(int i = 0; i < 20; i++)
+            {
+                permissionList.Add(new WindowsGroupPermission() { ResourceName = "Utility - Email", ResourceID = new Guid(), View = true, IsServer = false });
+            }
+            permissionList.Add(WindowsGroupPermission.CreateAdministrators());
+            var securityTO = new SecuritySettingsTO(permissionList);
+            using(var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials, Encoding = Encoding.UTF8 })
+            {
+                webClient.UploadString("http://localhost:3142/services/SecurityWriteService", "POST", string.Format("<DataList><SecuritySettings>{0}</SecuritySettings></DataList>", JsonConvert.SerializeObject(securityTO)));
+            }
+
+            using(var securityWrapper = new SecuritySettingsUiMap())
+            {
+                Assert.IsTrue(securityWrapper.IsResourcePermissionScrollbarVisible());
+            }
+
+            //Set the settings file back to original state
+            permissionList.Clear();
+            permissionList.Add(WindowsGroupPermission.CreateAdministrators());
+            securityTO = new SecuritySettingsTO(permissionList);
+            using(var webClient = new WebClient { Credentials = CredentialCache.DefaultCredentials, Encoding = Encoding.UTF8 })
+            {
+                webClient.UploadString("http://localhost:3142/services/SecurityWriteService", "POST", string.Format("<DataList><SecuritySettings>{0}</SecuritySettings></DataList>", JsonConvert.SerializeObject(securityTO)));
             }
         }
 

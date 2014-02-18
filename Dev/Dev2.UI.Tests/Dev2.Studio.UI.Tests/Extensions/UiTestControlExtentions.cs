@@ -17,6 +17,47 @@ namespace Dev2.Studio.UI.Tests.Extensions
             return new VisualTreeWalker().GetChildByAutomationIDPath(parent, automationIDs);
         }
 
+        public static List<UITestControl> FindControlsControlByAutomationID(this UITestControl container, string automationId)
+        {
+            List<UITestControl> parentCollection = container.GetChildren()
+                                                            .Where(c => !(c is WpfListItem) && c is WpfControl)
+                                                            .ToList();
+
+            var control = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId)).ToList();
+
+            if(control != null)
+            {
+                return control;
+            }
+
+            while(parentCollection.Count > 0)
+            {
+                var uiTestControlCollection = parentCollection
+                    .SelectMany(c => c.GetChildren())
+                    .ToList();
+
+                control = uiTestControlCollection
+                    .Where(b => ((WpfControl)b).AutomationId.Equals(automationId)).ToList();
+
+                if(control == null)
+                {
+                    parentCollection = uiTestControlCollection;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if(control == null)
+            {
+                string message = string.Format("Controls with automation id : [{0}] was not found", automationId);
+                throw new Exception(message);
+            }
+
+            return control;
+        }
+
         public static UITestControl FindByAutomationId(this UITestControl container, string automationId)
         {
             List<UITestControl> parentCollection = container.GetChildren()

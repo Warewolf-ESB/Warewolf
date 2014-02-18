@@ -1,6 +1,8 @@
 using System;
+using System.Windows.Automation;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Settings
 {
@@ -120,5 +122,24 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
         }
 
         #endregion
+
+        public bool IsResourcePermissionScrollbarVisible()
+        {
+            UITestControl control = _activeTab.GetChildByAutomationIDPath(_resourceGridPath);
+            WpfTable wpfTable = control as WpfTable;
+            if(wpfTable != null)
+            {
+                AutomationElement automationElement = wpfTable.NativeElement as AutomationElement;
+                if(automationElement != null)
+                {
+                    ScrollPattern scrollPattern = automationElement.GetCurrentPattern(ScrollPattern.Pattern) as ScrollPattern;
+                    if(scrollPattern != null && scrollPattern.Current.VerticalScrollPercent >= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

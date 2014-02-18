@@ -68,6 +68,9 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -78,6 +81,7 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
+    <Reference Include="UIAutomationClient" />
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -88,6 +92,18 @@
   </ItemGroup>
   <!--  Linked Configs -->
   <ItemGroup>
+    <Compile Include="..\..\Dev2.Infrastructure\ObservableObject.cs">
+      <Link>Resources\ObservableObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Dev2.Infrastructure\Services\Security\Permissions.cs">
+      <Link>Resources\Permissions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Dev2.Infrastructure\Services\Security\SecuritySettingsTO.cs">
+      <Link>Resources\SecuritySettingsTO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Dev2.Infrastructure\Services\Security\WindowsGroupPermission.cs">
+      <Link>Resources\WindowsGroupPermission.cs</Link>
+    </Compile>
     <Compile Include="AdornerTests.cs" />
     <Compile Include="AutoConnectorTests.cs" />
     <Compile Include="AllToolsUITests.cs" />
@@ -106,7 +122,7 @@
     <Compile Include="UIMaps\Activities\DsfActivityUiMap.cs" />
     <Compile Include="Enums\ServiceType.cs" />
     <Compile Include="Utils\Extensions\BaseEnumExtensions.cs" />
-    <Compile Include="SecuritySettingsUiTests.cs" />
+    <Compile Include="Tests\Settings\SecuritySettingsUiTests.cs" />
     <Compile Include="Tests\Debug\DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />
     <Compile Include="SqlBulkInsertUITests.cs" />
