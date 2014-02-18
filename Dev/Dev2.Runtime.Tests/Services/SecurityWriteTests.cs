@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             var securitySettingsValue = JsonConvert.SerializeObject(securitySettings);
             var securityWrite = new SecurityWrite();
             //------------Execute Test---------------------------
-            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(securitySettingsValue) }}, null);
+            securityWrite.Execute(new Dictionary<string, StringBuilder> { { "SecuritySettings", new StringBuilder(securitySettingsValue) } }, null);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists("secure.config"));
             var fileData = File.ReadAllText("secure.config");
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             var esb = new SecurityWrite();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList><SecuritySettings/><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification);
+            Assert.AreEqual("<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.DataListSpecification);
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.Services
         public void SecurityWrite_Write_SecuritySettingsIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-            
+
             //------------Execute Test---------------------------
             SecurityWrite.Write(null);
 
