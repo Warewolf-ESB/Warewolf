@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using System.Windows.Documents;
 using Dev2.Services.Security;
 using Dev2.Studio.UI.Tests.UIMaps.Settings;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -73,7 +72,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Settings
             List<WindowsGroupPermission> permissionList = new List<WindowsGroupPermission>();
             for(int i = 0; i < 20; i++)
             {
-                permissionList.Add(new WindowsGroupPermission() { ResourceName = "Utility - Email", ResourceID = new Guid(), View = true, IsServer = false });
+                permissionList.Add(new WindowsGroupPermission { ResourceName = "Utility - Email", ResourceID = new Guid(), View = true, IsServer = false });
             }
             permissionList.Add(WindowsGroupPermission.CreateAdministrators());
             var securityTO = new SecuritySettingsTO(permissionList);

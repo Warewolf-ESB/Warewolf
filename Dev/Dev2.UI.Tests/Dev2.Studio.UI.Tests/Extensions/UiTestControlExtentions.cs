@@ -1,12 +1,12 @@
-﻿using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.Extensions
 {
@@ -25,34 +25,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             var control = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId)).ToList();
 
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(control != null)
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 return control;
-            }
-
-            while(parentCollection.Count > 0)
-            {
-                var uiTestControlCollection = parentCollection
-                    .SelectMany(c => c.GetChildren())
-                    .ToList();
-
-                control = uiTestControlCollection
-                    .Where(b => ((WpfControl)b).AutomationId.Equals(automationId)).ToList();
-
-                if(control == null)
-                {
-                    parentCollection = uiTestControlCollection;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            if(control == null)
-            {
-                string message = string.Format("Controls with automation id : [{0}] was not found", automationId);
-                throw new Exception(message);
             }
 
             return control;
@@ -157,7 +134,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     {
                         Mouse.DoubleClick();
                     }
+                    // ReSharper disable EmptyGeneralCatchClause
                     catch
+                    // ReSharper restore EmptyGeneralCatchClause
                     {
                         // just to handle silly UI framework issues
                     }
