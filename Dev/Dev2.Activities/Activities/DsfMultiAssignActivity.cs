@@ -87,6 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugOutputs.Clear();
+            _debugInputs.Clear();
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -117,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var debugItem = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
                                 var dataList = compiler.FetchBinaryDataList(executionID, out errors);
-                                
+
                                 string error;
                                 IBinaryDataListEntry theEntry;
 
