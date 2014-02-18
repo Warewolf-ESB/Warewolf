@@ -1,7 +1,7 @@
-using Dev2.PathOperations;
-using Nuane.Net;
 using System;
 using System.Net;
+using Dev2.PathOperations;
+using Nuane.Net;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -61,7 +61,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                 ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
                 true);
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-            broker.Delete(sourceEndPoint);
+            try
+            {
+                broker.Delete(sourceEndPoint);
+            }
+            catch(Exception)
+            {
+                //The file may already be deleted
+            }
 
             if(_server != null)
             {
