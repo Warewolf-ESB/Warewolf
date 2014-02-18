@@ -44,14 +44,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             string database = null;
             StringBuilder tmp;
             values.TryGetValue("Database", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 database = tmp.ToString();
             }
 
             if(string.IsNullOrEmpty(database))
             {
-                var res =  new DbTableList("No database set.");
+                var res = new DbTableList("No database set.");
                 return serializer.SerializeToBuilder(res);
             }
 
@@ -130,7 +130,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><Database/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

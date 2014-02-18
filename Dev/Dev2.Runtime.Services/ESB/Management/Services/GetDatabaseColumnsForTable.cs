@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string tableName = null;
             StringBuilder tmp;
             values.TryGetValue("Database", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 database = tmp.ToString();
             }
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            
+
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbColumnList("No database set.");
@@ -121,7 +121,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><Database/><TableName/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

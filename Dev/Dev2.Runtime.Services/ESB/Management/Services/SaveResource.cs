@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("ResourceXml", out resourceDefinition);
             StringBuilder tmp;
             values.TryGetValue("WorkspaceID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 workspaceIDString = tmp.ToString();
             }
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 workspaceID = theWorkspace.ID;
             }
-            
+
             if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
                 throw new InvalidDataContractException("Roles or ResourceXml is missing");
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     });
 
-                    res.SetMessage(Resources.CompilerMessage_BuildFailed + " " +DateTime.Now);
+                    res.SetMessage(Resources.CompilerMessage_BuildFailed + " " + DateTime.Now);
                 }
             }
             catch(Exception)
@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             if(compiledResources != null)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID,resourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID, resourceDefinition);
                 // TMP FIX
                 ResourceCatalog.Instance.SaveResource(Guid.Empty, resourceDefinition);
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService newDs = new DynamicService();
             newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><Roles/><ResourceXml/><WorkspaceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            newDs.DataListSpecification = "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;

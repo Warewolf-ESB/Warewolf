@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serviceID = null;
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
-            
+
             if(tmp != null)
             {
                 serviceID = tmp.ToString();
@@ -47,37 +47,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-            var startIdx = result.IndexOf(payloadStart, 0, false);
+                var startIdx = result.IndexOf(payloadStart, 0, false);
 
-            if(startIdx >= 0)
-            {
-                // remove beginning junk
-                startIdx += payloadStart.Length;
-                result = result.Remove(0, startIdx);
+                if(startIdx >= 0)
+                {
+                    // remove beginning junk
+                    startIdx += payloadStart.Length;
+                    result = result.Remove(0, startIdx);
 
                     startIdx = result.IndexOf(payloadEnd, 0, false);
 
-                if(startIdx > 0)
-                {
-                    var len = result.Length - startIdx;
-                    result = result.Remove(startIdx, len);
-                    
-                    res.Message.Append(result.Unescape());
-                }
-            }
-            else
-            {
-                // handle services ;)
-                startIdx = result.IndexOf(altPayloadStart, 0, false);
-                    if(startIdx >= 0)
-                {
-                    // remove begging junk
-                    startIdx += altPayloadStart.Length;
-                    result = result.Remove(0, startIdx);
-
-                    startIdx = result.IndexOf(altPayloadEnd, 0, false);
-
-                        if(startIdx > 0)
+                    if(startIdx > 0)
                     {
                         var len = result.Length - startIdx;
                         result = result.Remove(startIdx, len);
@@ -87,10 +67,30 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 else
                 {
-                    // send the entire thing ;)
-                    res.Message.Append(result);
+                    // handle services ;)
+                    startIdx = result.IndexOf(altPayloadStart, 0, false);
+                    if(startIdx >= 0)
+                    {
+                        // remove begging junk
+                        startIdx += altPayloadStart.Length;
+                        result = result.Remove(0, startIdx);
+
+                        startIdx = result.IndexOf(altPayloadEnd, 0, false);
+
+                        if(startIdx > 0)
+                        {
+                            var len = result.Length - startIdx;
+                            result = result.Remove(startIdx, len);
+
+                            res.Message.Append(result.Unescape());
+                        }
+                    }
+                    else
+                    {
+                        // send the entire thing ;)
+                        res.Message.Append(result);
+                    }
                 }
-            }
             }
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             serviceEntry.Actions.Add(serviceAction);
 
             return serviceEntry;

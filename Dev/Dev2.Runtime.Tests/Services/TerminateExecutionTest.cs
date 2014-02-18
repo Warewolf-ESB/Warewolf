@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.Services
             var ds = terminateExecution.CreateServiceEntry();
             Assert.AreEqual(_handleType, terminateExecution.HandlesType());
             Assert.AreEqual(enActionType.InvokeManagementDynamicService, ds.Actions.First().ActionType);
-            Assert.AreEqual("<DataList><Roles/><ResourceID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", ds.DataListSpecification);
+            Assert.AreEqual("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", ds.DataListSpecification);
         }
 
         [TestMethod]

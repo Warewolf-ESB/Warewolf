@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             values.TryGetValue("ResourceDefinition", out resourceDefinition);
 
-            if(resourceDefinition ==null || resourceDefinition.Length == 0)
+            if(resourceDefinition == null || resourceDefinition.Length == 0)
             {
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition);
             WorkspaceRepository.Instance.RefreshWorkspaces();
 
-            var result = new ExecuteMessage() {HasError = false};
+            var result = new ExecuteMessage() { HasError = false };
             result.SetMessage(msg.Message);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService deployResourceDynamicService = new DynamicService();
             deployResourceDynamicService.Name = HandlesType();
-            deployResourceDynamicService.DataListSpecification = "<DataList><ResourceDefinition/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            deployResourceDynamicService.DataListSpecification = "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction deployResourceServiceAction = new ServiceAction();
             deployResourceServiceAction.Name = HandlesType();

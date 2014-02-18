@@ -90,7 +90,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (protectionLevel != string.Empty)
             {
                 // only include public methods
-                if (protectionLevel.ToLower() == "public")
+                if (protectionLevel != null && protectionLevel.ToLower() == "public")
                 {
                     includePrivate = false;
                 }
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     .ToList()
                     .ForEach(plugin =>
                     {
-                        int pos = plugin.LastIndexOf(@"\");
+                        int pos = plugin.LastIndexOf(@"\", StringComparison.Ordinal);
                         pos += 1;
                         string shortName = plugin.Substring(pos, (plugin.Length - pos));
 
@@ -184,7 +184,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService pluginMetaDataService = new DynamicService();
             pluginMetaDataService.Name = HandlesType();
-            pluginMetaDataService.DataListSpecification = "<DataList><AssemblyLocation/><ProtectionLevel/><NameSpace/><MethodName/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            pluginMetaDataService.DataListSpecification = "<DataList><AssemblyLocation ColumnIODirection=\"Input\"/><ProtectionLevel ColumnIODirection=\"Input\"/><NameSpace ColumnIODirection=\"Input\"/><MethodName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction pluginMetaDataAction = new ServiceAction();
             pluginMetaDataAction.Name = HandlesType();

@@ -73,7 +73,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><IsLocalSave/><ItemXml/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><IsLocalSave ColumnIODirection=\"Input\"/><ItemXml ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
             var workspaceItemAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             workspaceItemService.Actions.Add(workspaceItemAction);

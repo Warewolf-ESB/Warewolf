@@ -23,21 +23,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("Domain", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 domain = tmp.ToString();
             }
 
             values.TryGetValue("Username", out tmp);
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 username = tmp.ToString();
             }
 
             values.TryGetValue("Password", out tmp);
 
-            if (tmp != null)
+            if(tmp != null)
             {
                 password = tmp.ToString();
             }
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("Domain or Username or Password is missing");
             }
 
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
 
             try
             {
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var checkCredentialsService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Domain/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var checkCredentialsServiceAction = new ServiceAction

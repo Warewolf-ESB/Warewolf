@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     Name = HandlesType(),
                     DataListSpecification =
-                        "<DataList><Domain/><Username/><Password/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                        "<DataList><Domain ColumnIODirection=\"Input\"/><Username ColumnIODirection=\"Input\"/><Password ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
                 };
 
             ServiceAction findDriveServiceAction = new ServiceAction

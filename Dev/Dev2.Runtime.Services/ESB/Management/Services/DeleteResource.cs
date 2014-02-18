@@ -21,13 +21,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("ResourceName", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceName = tmp.ToString();
             }
 
             values.TryGetValue("ResourceType", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 type = tmp.ToString();
             }
@@ -36,16 +36,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceName, type);
 
-            var result = new ExecuteMessage {HasError = false};
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg.Message);
 
             // Delete resource from server workspace
-            if (theWorkspace.ID != GlobalConstants.ServerWorkspaceID && msg.Status == ExecStatus.Success)
+            if(theWorkspace.ID != GlobalConstants.ServerWorkspaceID && msg.Status == ExecStatus.Success)
             {
                 var serverResult = ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID,
                                                                            resourceName, type);
 
-                if (serverResult.Status != ExecStatus.Success)
+                if(serverResult.Status != ExecStatus.Success)
                 {
                     // If delete from server workspace failed, then sync server workspace back to client workspace and return server result
                     var workspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var deleteResourceService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><ResourceName/><ResourceType/><Roles/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var deleteResourceAction = new ServiceAction

@@ -21,16 +21,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             var result = new ExecuteMessage() { HasError = false };
 
             string resourceName = null;
-            string dependsOnMeString= null;
+            string dependsOnMeString = null;
             bool dependsOnMe = false;
             StringBuilder tmp;
             values.TryGetValue("ResourceName", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceName = tmp.ToString();
             }
             values.TryGetValue("GetDependsOnMe", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 dependsOnMeString = tmp.ToString();
             }
@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
 
-            if (dependsOnMe)
+            if(dependsOnMe)
             {
                 // FindWhatDependsOnMe(resourceName, theWorkspace.ID)
                 result.Message.Append(string.Format("<graph title=\"Local Dependants Graph: {0}\">", resourceName));
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">",resourceName));
+                result.Message.Append(string.Format("<graph title=\"Dependency Graph Of {0}\">", resourceName));
                 result.Message.Append(FindDependenciesRecursive(resourceName, theWorkspace.ID));
                 result.Message.Append("</graph>");
             }
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = @"<DataList><ResourceName/><GetDependsOnMe/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = @"<DataList><ResourceName ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>"
             };
 
             var sa = new ServiceAction

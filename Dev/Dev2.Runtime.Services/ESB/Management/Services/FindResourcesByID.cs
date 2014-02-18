@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("GuidCsv", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 guidCsv = tmp.ToString();
             }
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var findResourcesByIDAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
-            var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv/><ResourceType/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             findResourcesByIDService.Actions.Add(findResourcesByIDAction);
 
             return findResourcesByIDService;

@@ -22,7 +22,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("InvokerID", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 invokerID = tmp.ToString();
             }
@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService newDs = new DynamicService();
             newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><InvokerID/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            newDs.DataListSpecification = "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;

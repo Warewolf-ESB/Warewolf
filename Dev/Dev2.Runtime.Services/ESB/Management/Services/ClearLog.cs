@@ -14,13 +14,13 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage result = new ExecuteMessage {HasError = false};
+            ExecuteMessage result = new ExecuteMessage { HasError = false };
             StringBuilder msg = new StringBuilder();
             string directory = null;
 
             StringBuilder tmp;
             values.TryGetValue("Directory", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 directory = tmp.ToString();
             }
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findDirectoryService = new DynamicService();
             findDirectoryService.Name = HandlesType();
-            findDirectoryService.DataListSpecification = "<DataList><Directory/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            findDirectoryService.DataListSpecification = "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
 
             ServiceAction findDirectoryServiceAction = new ServiceAction();
             findDirectoryServiceAction.Name = HandlesType();

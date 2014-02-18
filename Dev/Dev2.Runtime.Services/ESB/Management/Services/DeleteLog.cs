@@ -17,11 +17,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             string filePath = null;
             string directory = null;
 
-            ExecuteMessage msg = new ExecuteMessage() {HasError = false};
+            ExecuteMessage msg = new ExecuteMessage() { HasError = false };
 
             StringBuilder tmp;
             values.TryGetValue("FilePath", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 filePath = tmp.ToString();
             }
@@ -81,9 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService();
-            findDirectoryService.Name = HandlesType();
-            findDirectoryService.DataListSpecification = "<DataList><Directory/><FilePath/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Directory ColumnIODirection=\"Input\"/><FilePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
             ServiceAction findDirectoryServiceAction = new ServiceAction();
             findDirectoryServiceAction.Name = HandlesType();

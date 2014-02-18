@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService newDs = new DynamicService();
             newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><ServiceID/><WorkspaceID/><FilterList/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            newDs.DataListSpecification = "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;

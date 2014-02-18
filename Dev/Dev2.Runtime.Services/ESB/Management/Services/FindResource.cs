@@ -22,12 +22,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             StringBuilder tmp;
             values.TryGetValue("ResourceName", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceName = tmp.ToString();
             }
             values.TryGetValue("ResourceType", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 type = tmp.ToString();
             }
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceType/><Roles/><ResourceName/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
             var findServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 

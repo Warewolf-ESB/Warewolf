@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var getLatestAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
-            var getLatestService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><EditedItemsXml/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var getLatestService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><EditedItemsXml ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             getLatestService.Actions.Add(getLatestAction);
 
             return getLatestService;
