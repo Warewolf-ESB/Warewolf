@@ -165,6 +165,58 @@
       <DependentUpon>Replace.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Replace\ReplaceSteps.cs" />
+    <Compile Include="Toolbox\FileAndFolder\Copy\Copy.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Copy.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Copy\CopySteps.cs" />
+    <Compile Include="Toolbox\FileAndFolder\Create\Create.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Create.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Create\CreateSteps.cs" />
+    <Compile Include="Toolbox\FileAndFolder\Delete\Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Move\Move.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Move.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Read File.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Read Folder.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rename.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Unzip.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Write File.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Zip\Zip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Zip.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -348,6 +400,46 @@
     <None Include="Toolbox\Data\Replace\Replace.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Copy\Copy.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Copy.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Create\Create.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Create.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Delete\Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Move\Move.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Move.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Read File.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Read Folder.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Rename\Rename.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Rename.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Unzip\Unzip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Unzip.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Write File\Write File.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Write File.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\Zip\Zip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Zip.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\LoopConstructs\ForEach\ForEach.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
