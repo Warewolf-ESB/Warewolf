@@ -178,6 +178,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
+
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 

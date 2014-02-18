@@ -71,7 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItemOverwrite(executionId, Overwrite);
                 AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
             }
 
