@@ -72,7 +72,7 @@ namespace Dev2.Services.Security
 
             foreach(var perm in _securityService.Permissions)
             {
-                this.LogError("SERVER PERM -> " +perm.WindowsGroup);
+                this.LogError("SERVER PERM -> " + perm.WindowsGroup);
                 this.LogError("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
             }
         }
@@ -86,12 +86,17 @@ namespace Dev2.Services.Security
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
-            return _securityService.Permissions.Where(p => principal.IsInRole(p.WindowsGroup) && p.Matches(resource));
+            return _securityService.Permissions.Where(p => IsInRole(principal, p) && p.Matches(resource));
+        }
+
+        static bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        {
+            return principal.IsInRole(p.WindowsGroup) || p.IsBuiltInGuests;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
         {
-            return _securityService.Permissions.Where(p => principal.IsInRole(p.WindowsGroup));
+            return _securityService.Permissions.Where(p => IsInRole(principal, p));
         }
 
         public string JsonPermissions()

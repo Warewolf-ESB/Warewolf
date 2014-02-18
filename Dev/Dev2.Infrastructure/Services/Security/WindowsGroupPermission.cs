@@ -6,6 +6,7 @@ namespace Dev2.Services.Security
     public class WindowsGroupPermission : ObservableObject
     {
         public const string BuiltInAdministratorsText = "BuiltIn\\Administrators";
+        public const string BuiltInGuestsText = "BuiltIn\\Public";
 
         bool _isServer;
         Guid _resourceID;
@@ -77,6 +78,15 @@ namespace Dev2.Services.Security
         }
 
         [JsonIgnore]
+        public bool IsBuiltInGuests
+        {
+            get
+            {
+                return IsServer && WindowsGroup.Equals(BuiltInGuestsText, StringComparison.InvariantCultureIgnoreCase);
+            }
+        }
+
+        [JsonIgnore]
         public bool IsValid
         {
             get
@@ -117,6 +127,22 @@ namespace Dev2.Services.Security
                 Administrator = true
             }
 ;
+        }
+
+        public static WindowsGroupPermission CreateGuests()
+        {
+            return new WindowsGroupPermission
+            {
+                IsServer = true,
+                WindowsGroup = BuiltInGuestsText,
+                View = false,
+                Execute = false,
+                Contribute = false,
+                DeployTo = false,
+                DeployFrom = false,
+                Administrator = false
+
+            };
         }
     }
 }

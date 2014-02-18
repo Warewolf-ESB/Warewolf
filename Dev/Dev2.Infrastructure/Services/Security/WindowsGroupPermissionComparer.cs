@@ -50,6 +50,17 @@ namespace Dev2.Services.Security
                 return int.MaxValue;
             }
 
+            if(px.IsBuiltInGuests)
+            {
+                // px is less than py
+                return int.MinValue + 1;
+            }
+            if(py.IsBuiltInGuests)
+            {
+                // px is greater than py
+                return int.MaxValue - 1;
+            }
+
             var result = Compare(px, py);
             return _direction * result;
         }

@@ -2,6 +2,7 @@
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
@@ -30,7 +31,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void WindowsGroupPermission_Permissions_SetNone_CorrectlyApplied()
         {
             //------------Setup for test--------------------------            
-            
+
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.None };
 
@@ -49,7 +50,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void WindowsGroupPermission_Permissions_SetView_CorrectlyApplied()
         {
             //------------Setup for test--------------------------            
-            
+
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.View };
 
@@ -200,6 +201,48 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
+        public void WindowsGroupPermission_IsBuiltInGuests_IsNotServer_False()
+        {
+            //------------Setup for test--------------------------            
+
+            //------------Execute Test---------------------------
+            var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText };
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(p.IsBuiltInGuests);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
+        public void WindowsGroupPermission_IsBuiltInGuests_IsServerAndWindowsGroupIsNotBuiltInAdministrators_False()
+        {
+            //------------Setup for test--------------------------            
+
+            //------------Execute Test---------------------------
+            var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = "xxxx" };
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(p.IsBuiltInGuests);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
+        public void WindowsGroupPermission_IsBuiltInGuests_IsServerAndWindowsGroupIsBuiltInAdministrators_True()
+        {
+            //------------Setup for test--------------------------            
+
+            //------------Execute Test---------------------------
+            var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText };
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(p.IsBuiltInGuests);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsServerAndWindowsGroupIsEmpty_False()
@@ -289,6 +332,29 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             Assert.IsTrue(p.Administrator);
             Assert.AreEqual(WindowsGroupPermission.BuiltInAdministratorsText, p.WindowsGroup);
             Assert.AreEqual(Guid.Empty, p.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermission_CreateGuestGroup")]
+        public void WindowsGroupPermission_CreateGuestGroup_IsNotNull_NoAccess()
+        {
+            //------------Setup for test--------------------------
+
+
+            //------------Execute Test---------------------------
+            var guestPermissions = WindowsGroupPermission.CreateGuests();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(guestPermissions);
+            Assert.IsTrue(guestPermissions.IsServer);
+            Assert.IsFalse(guestPermissions.View);
+            Assert.IsFalse(guestPermissions.Execute);
+            Assert.IsFalse(guestPermissions.Contribute);
+            Assert.IsFalse(guestPermissions.DeployTo);
+            Assert.IsFalse(guestPermissions.DeployFrom);
+            Assert.IsFalse(guestPermissions.Administrator);
+            Assert.AreEqual(WindowsGroupPermission.BuiltInGuestsText, guestPermissions.WindowsGroup);
+            Assert.AreEqual(Guid.Empty, guestPermissions.ResourceID);
         }
 
         [TestMethod]

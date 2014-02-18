@@ -13,6 +13,9 @@ Global
 		SccProjectName1 = Dev2.UI.Tests/Dev2.Studio.UI.Tests
 		SccLocalPath1 = Dev2.UI.Tests\\Dev2.Studio.UI.Tests
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

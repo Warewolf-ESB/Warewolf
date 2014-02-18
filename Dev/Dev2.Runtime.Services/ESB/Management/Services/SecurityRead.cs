@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -8,6 +9,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
+using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -25,6 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return new List<WindowsGroupPermission>
                 {
                    WindowsGroupPermission.CreateAdministrators(),
+                   WindowsGroupPermission.CreateGuests()
                    //new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText, Permissions = Permissions.View | Permissions.Execute }
                 };
             }
@@ -45,6 +48,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
+                    var currentSecuritySettingsTO = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
+                    var hasGuestPermission = currentSecuritySettingsTO.WindowsGroupPermissions.Any(permission => permission.IsBuiltInGuests);
+                    if(!hasGuestPermission)
+                    {
+                        currentSecuritySettingsTO.WindowsGroupPermissions.Add(WindowsGroupPermission.CreateGuests());
+                        currentSecuritySettingsTO.WindowsGroupPermissions.Sort(QuickSortForPermissions);
+                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTO);
+                    }
                     return new StringBuilder(decryptData);
                 }
                 // ReSharper disable EmptyGeneralCatchClause
@@ -58,6 +69,55 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             var securitySettingsTO = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
             return serializer.SerializeToBuilder(securitySettingsTO);
+        }
+
+        int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
+        {
+            var px = x;
+            var py = y;
+
+            if(px == null || py == null)
+            {
+                return 1;
+            }
+
+            // New items must be last
+            //
+            if(px.IsNew)
+            {
+                // px is greater than py
+                return int.MaxValue;
+            }
+            if(py.IsNew)
+            {
+                // px is less than py
+                return int.MinValue;
+            }
+
+            // BuiltInAdministrators must be first
+            if(px.IsBuiltInAdministrators)
+            {
+                // px is less than py
+                return int.MinValue;
+            }
+            if(py.IsBuiltInAdministrators)
+            {
+                // px is greater than py
+                return int.MaxValue;
+            }
+            // IsBuiltInGuests must be second
+            if(px.IsBuiltInGuests)
+            {
+                // px is less than py
+                return int.MinValue + 1;
+            }
+            if(py.IsBuiltInGuests)
+            {
+                // px is greater than py
+                return int.MaxValue - 1;
+            }
+
+            return 1;
         }
 
         public DynamicService CreateServiceEntry()

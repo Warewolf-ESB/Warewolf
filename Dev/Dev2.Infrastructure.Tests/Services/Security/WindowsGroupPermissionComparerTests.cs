@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.Services.Security
 {
     [TestClass]
@@ -19,7 +20,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
-            var comparer = new WindowsGroupPermissionComparer(ListSortDirection.Ascending, null);
+            new WindowsGroupPermissionComparer(ListSortDirection.Ascending, null);
 
             //------------Assert Results-------------------------
         }
@@ -99,6 +100,36 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.AreEqual(int.MaxValue, result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissionComparer_Compare")] //This is to ensure that Public comes after adminstrators
+        public void WindowsGroupPermissionComparer_Compare_XIsBuiltInGuest_ReturnsMinValuePlusOne()
+        {
+            //------------Setup for test-------------------------
+            var comparer = new WindowsGroupPermissionComparer(ListSortDirection.Ascending, "WindowsGroup");
+
+            //------------Execute Test---------------------------
+            var result = comparer.Compare(new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText }, new WindowsGroupPermission());
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(int.MinValue + 1, result);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WindowsGroupPermissionComparer_Compare")]//This is to ensure that Public comes after adminstrators
+        public void WindowsGroupPermissionComparer_Compare_YIsBuiltInGuest_ReturnsMaxValueLessOne()
+        {
+            //------------Setup for test-------------------------
+            var comparer = new WindowsGroupPermissionComparer(ListSortDirection.Ascending, "WindowsGroup");
+
+            //------------Execute Test---------------------------
+            var result = comparer.Compare(new WindowsGroupPermission(), new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText });
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(int.MaxValue - 1, result);
         }
 
         [TestMethod]
