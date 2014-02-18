@@ -129,12 +129,12 @@
       <DependentUpon>Assign.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Assign\AssignSteps.cs" />
-    <Compile Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversion.feature.cs">
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseConversion.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\BaseConversion\BaseConversionSteps.cs" />
     <Compile Include="Toolbox\Data\CaseConversion\CaseConversion.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -182,41 +182,49 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Delete.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Delete\DeleteSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Move\Move.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Move.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read File\Read File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read File.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Read File\ReadFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Read Folder.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Read Folder\ReadFolderSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Rename\Rename.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Rename.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Unzip.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Unzip\UnzipSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Write File\Write File.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Write File.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Write File\WriteFileSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Zip\Zip.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Zip.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\FileAndFolder\Zip\ZipSteps.cs" />
     <Compile Include="Toolbox\LoopConstructs\ForEach\ForEach.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,7 +385,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Assign.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversion.feature">
+    <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>

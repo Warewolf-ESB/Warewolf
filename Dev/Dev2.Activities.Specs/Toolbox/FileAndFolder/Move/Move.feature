@@ -1,57 +1,57 @@
-﻿Feature: Move
+﻿@fileFeature
+Feature: Move
 	In order to be able to Move a File or Folder 
 	as a Warewolf user
 	I want a tool that will Move File(s) or Folder(s) from a given location to another location
-
-
+	
 Scenario Outline: Move file at location
-	Given I have a variable '<variable>' with value '<location>'
-	And input username as '<username>' and password '<password>'
-	And I have a  destination variable '<variable1>' with value '<location1>'
-    And input  destination username as '<username1>' and password '<password1>'
+	Given I have a source path '<source>' with value '<sourceLocation>'
+	And source credentials as '<username>' and '<password>'
+	And I have a destination path '<destination>' with value '<destinationLocation>'
+    And destination credentials as '<destUsername>' and '<destPassword>'
 	And overwrite is '<selected>'
+	And result as '<resultVar>'
     When the Move file tool is executed
 	Then the result variable '<resultVar>' will be '<result>'
-	And the execution has '<errorOccured>' error
+	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | File or Folder              | Username     | Password     | Destination                   | Username      | Password      | Overwrite    |
-         | '<variable>' = '<location>' | '<username>' | '<password>' | '<variable1>' = '<location1>' | '<username1>' | '<password1>' | '<selected>' |
-         
+         | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <destination> = <destinationLocation> | <destUsername>       | String               | <selected> |       
 	And the debug output as
-		| Result                     |
-		| '<resultVar>' = '<result>' |
+		| Result                 |
+		| <resultVar> = <result> |
 	Examples: 
-		| variable | location                                    | username          | password | variable1 | Location1                                   | username1         | password1 | selected | resultVar  | result  | errorOccured |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | ftp:\\dev2.co.za\testing\test.txt           |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0  | True     | [[result]] | Success | NO           |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]   | True     | [[result]] | Success | NO           |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | c:\myfile.txt                               |                   |          | [[path1]] | c:\myfile1.txt                              |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | ftp:\\dev2.co.za\testing\test.txt           |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0  | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]   | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | c:\myfile.txt                               |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |          | [[path1]] | \\rsaklfsvrtfsbld\test\test4.txt            |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0  | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]   | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | c:\myfile.txt                               |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftp:\\dev2.co.za\testing\test.txt           |                   |          | [[path1]] | ftp:\\dev2.co.za\test\test3.txt             |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | ftp:\\dev2.co.za\testing\test.txt           |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | ftps:\\dev2ftps.dev2.local\test\test2.txt   | integrationtester | I73573r0  | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0 | [[path1]] | c:\myfile.txt                               |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | D:\copy.txt                                 |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | \\rsaklfsvrtfsbld\testing\test.txt          |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | ftp:\\dev2.co.za\testing\test.txt           |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | ftps:\\dev2ftps.dev2.local\testing\test.txt | integrationtester | I73573r0  | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | c:\myfile.txt                               |                   |           | True     | [[result]] | Success | NO           |
-		| [[path]] | sftp:\\dev2.co.za\testing\test.txt          | dev2              | Q/ulw&]  | [[path1]] | sftp:\\dev2.co.za\test\test1.txt            | dev2              | Q/ulw&]   | True     | [[result]] | Success | NO           |
+		| source         | sourceLocation                                              | username          | password | destination  | destinationLocation                                      | destUsername      | destPassword | selected | resultVar  | result  | errorOccured |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved.txt          | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | sftp://localhost/moved.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\moved.txt | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | c:\movefile.txt                                             | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved.txt          | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | sftp://localhost/moved.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\movefile.txt | ""                | ""       | [[destPath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\moved.txt | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                | ""       | [[destPath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\moved.txt | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                | ""       | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                | ""       | [[destPath]] | sftp://localhost/moved.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                | ""       | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/movefile.txt          | ""                |          | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved.txt          | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\moved.txt | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved.txt          | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/movefile.txt          | integrationtester | I73573r0 | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\moved.txt | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/moved.txt          | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/moved.txt          | integrationtester | I73573r0     | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | C:\moved.txt                                             | ""                | ""           | True     | [[result]] | Success | NO           |
+		| [[sourcePath]] | sftp://localhost/movefile.txt                               | dev2              | Q/ulw&]  | [[destPath]] | sftp://localhost/moved.txt                               | dev2              | Q/ulw&]      | True     | [[result]] | Success | NO           |
 
 
 

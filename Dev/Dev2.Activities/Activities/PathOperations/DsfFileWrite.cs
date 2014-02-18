@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -68,15 +69,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(OutputPath, "Output Path", inputPathEntry, executionId);
-
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Method" });
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetMethod() });
-                _debugInputs.Add(itemToAdd);
-
+                AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
                 AddDebugInputItemOverwrite(executionId, Overwrite);
-
                 AddDebugInputItem(FileContents, "File Contents", contentsEntry, executionId);
             }
 

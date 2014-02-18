@@ -137,14 +137,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                                     }
                                 }
-                                //                                string tmpRes = Result;
-                                //                                if(tmpRes.Contains("()."))
-                                //                                {
-                                //                                    tmpRes = tmpRes.Replace("().", "(*).");
-                                //                                }
-                                //                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
-                                //                                allErrors.MergeErrors(error);
-                                //                                AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
                             }
                         }
 
@@ -165,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                     }
 
-                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                    if(dataObject.IsDebugMode())
                     {
                         DispatchDebugState(context, StateType.Before);
                         DispatchDebugState(context, StateType.After);
@@ -295,10 +287,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugInputItemOverwrite(Guid executionId, bool overWrite)
         {
-            var itemToAdd = new DebugItem();
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Overwrite" });
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = overWrite ? "True" : "False" });
-            _debugInputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemStaticDataParams(overWrite ? "True" : "False", "Overwrite"));
         }
 
         static string GetBlankedOutPassword(string password)

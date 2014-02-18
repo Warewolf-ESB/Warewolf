@@ -56,7 +56,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if(dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);

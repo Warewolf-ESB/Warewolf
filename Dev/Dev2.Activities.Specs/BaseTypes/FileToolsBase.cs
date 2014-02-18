@@ -1,7 +1,7 @@
-using System;
-using System.Net;
 using Dev2.PathOperations;
 using Nuane.Net;
+using System;
+using System.Net;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.BaseTypes
@@ -45,12 +45,16 @@ namespace Dev2.Activities.Specs.BaseTypes
         protected static void RemovedFilesCreatedForTesting()
         {
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualDestinationHolder),
-                ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
-                ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
-                true);
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-            broker.Delete(dstEndPoint);
+            string destLocation;
+            if(ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            {
+                IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
+                    ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
+                    ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
+                    true);
+                IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                broker.Delete(dstEndPoint);
+            }
 
             IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
                 ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),

@@ -14,7 +14,7 @@ Scenario Outline: Create file at location
 	Then the result variable '<resultVar>' will be '<result>'
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
-         | File or Folder             | Overwrite  | Username   | Password |
+         | File or Folder                        | Overwrite  | Username   | Password |
          | <destination> = <destinationLocation> | <selected> | <username> | String   |
 	And the debug output as
 		| Result                 |
