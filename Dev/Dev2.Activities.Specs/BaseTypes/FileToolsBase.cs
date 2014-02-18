@@ -53,7 +53,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                     ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
                     true);
                 IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                broker.Delete(dstEndPoint);
+                try
+                {
+                    broker.Delete(dstEndPoint);
+                }
+                catch(Exception)
+                {
+                    //The file may already be deleted
+                }
             }
 
             IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),

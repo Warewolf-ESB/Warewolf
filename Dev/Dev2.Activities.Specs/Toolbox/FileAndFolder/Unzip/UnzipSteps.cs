@@ -1,5 +1,8 @@
 ﻿using System.Activities.Statements;
+using System.IO;
+using System.Reflection;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.PathOperations;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -8,6 +11,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
+
+        [Given(@"zip credentials as '(.*)' and '(.*)'")]
+        public void GivenZipCredentialsAsAnd(string userName, string password)
+        {
+            ScenarioContext.Current.Add(CommonSteps.SourceUsernameHolder, userName.Replace('"', ' ').Trim());
+            ScenarioContext.Current.Add(CommonSteps.SourcePasswordHolder, password.Replace('"', ' ').Trim());
+        }
+
+
         [When(@"the Unzip file tool is executed")]
         public void WhenTheUnzipFileToolIsExecuted()
         {
@@ -19,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
-
+            CopyZipFileToSourceLocation();
             var unzip = new DsfUnZip
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
@@ -39,6 +51,25 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             };
 
             ScenarioContext.Current.Add("activity", unzip);
+        }
+
+        void CopyZipFileToSourceLocation()
+        {
+            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
+                            ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                            ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                            true);
+            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+
+            const string ResourceName = "Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using(Stream stream = assembly.GetManifestResourceStream(ResourceName))
+            {
+                if(stream != null)
+                {
+                    sourceEndPoint.Put(stream, sourceEndPoint.IOPath, new Dev2CRUDOperationTO(true), null);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Dev2.Activities;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.Activities.PathOperations;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;
@@ -6,9 +9,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -37,26 +37,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            foreach (Tuple<string, string> t in updates)
+            foreach(Tuple<string, string> t in updates)
             {
-                if (t.Item1 == ArchivePassword)
+                if(t.Item1 == ArchivePassword)
                 {
                     ArchivePassword = t.Item2;
                 }
 
-                if (t.Item1 == Overwrite.ToString())
+                if(t.Item1 == Overwrite.ToString())
                 {
                     bool tmpOverwrite;
                     bool.TryParse(t.Item2, out tmpOverwrite);
                     Overwrite = tmpOverwrite;
                 }
 
-                if (t.Item1 == InputPath)
+                if(t.Item1 == InputPath)
                 {
                     InputPath = t.Item2;
                 }
 
-                if (t.Item1 == OutputPath)
+                if(t.Item1 == OutputPath)
                 {
                     OutputPath = t.Item2;
                 }
@@ -75,7 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void AddDebugInputItems(Guid executionId)
         {
-            //AddDebugInputItemPassword("Archive Password", ArchivePassword);
+            AddDebugInputItemPassword("Archive Password", ArchivePassword);
         }
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             return broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
         }
-        
+
         #region GetForEachInputs/Outputs
         public override IList<DsfForEachItem> GetForEachInputs()
         {
