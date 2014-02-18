@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -213,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void Index_Recordset_With_Star_AllOccurrences_Expected_Six_Different_Indexs_Returned()
+        public void Index_Recordset_With_Star_AllOccurrences_Expected_Seven_Different_Indexs_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(*).field2]]", "All Occurrences", "2", "Left To Right", "[[Customers(*).FirstName]]", "0");
@@ -225,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(7, actual.Count);
-            Assert.AreEqual("2", actual[3]);
+            Assert.AreEqual("2", actual[1]);
 
         }
 

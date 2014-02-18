@@ -331,10 +331,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
             if(getDecisionText != null)
             {
-                var displayValue = getDecisionText.Text;
+            var displayValue = getDecisionText.Text;
 
-                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
-            }
+            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+        }
             else
             {
                 Assert.Fail();

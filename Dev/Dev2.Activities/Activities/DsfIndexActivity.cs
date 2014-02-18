@@ -1,4 +1,9 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
@@ -10,10 +15,6 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -123,7 +124,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 IDev2IteratorCollection outerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
                 IDev2IteratorCollection innerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-               
+
                 allErrors.MergeErrors(errors);
 
 
@@ -163,7 +164,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
-                                completeResultList.AddRange(returedData.Select(value => value.ToString()).ToList());
+                                completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
 
                             }
