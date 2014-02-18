@@ -47,10 +47,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             var sendEmail = new DsfSendEmailActivity
                 {
                     Result = ResultVariable,
-                    Body = body,
-                    Subject = subject,
-                    FromAccount = fromAccount,
-                    To = to,
+                    Body = string.IsNullOrEmpty(body) ? "" : body,
+                    Subject = string.IsNullOrEmpty(subject) ? "" : subject,
+                    FromAccount = string.IsNullOrEmpty(fromAccount) ? "" : fromAccount,
+                    To = string.IsNullOrEmpty(to) ? "" : to,
                     SelectedEmailSource = new EmailSource
                         {
                             Host = "localhost",
@@ -64,18 +64,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 {
                     Action = sendEmail
                 };
-        }
-
-        [Given(@"I have an email address input ""(.*)""")]
-        public void GivenIHaveAnEmailAddressInput(string to)
-        {
-            ScenarioContext.Current.Add("to", to);
+            ScenarioContext.Current.Add("activity", sendEmail);
         }
 
         [Given(@"the from account is ""(.*)""")]
         public void GivenTheFromAccountIs(string fromAccount)
         {
             ScenarioContext.Current.Add("fromAccount", fromAccount);
+        }
+
+        [Given(@"to address is ""(.*)""")]
+        public void GivenToAddressIs(string to)
+        {
+            ScenarioContext.Current.Add("to", to);
         }
 
         [Given(@"the subject is ""(.*)""")]
@@ -104,7 +105,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(variable, string.Empty));
+            variableList.Add(new Tuple<string, string>(variable, value));
         }
 
         [Given(@"body is ""(.*)""")]
@@ -131,7 +132,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
         public void WhenTheEmailToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

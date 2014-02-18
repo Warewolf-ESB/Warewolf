@@ -17,7 +17,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -34,13 +34,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             ScenarioContext.Current.TryGetValue("input2", out input2);
             string outputIn;
             ScenarioContext.Current.TryGetValue("outputIn", out outputIn);
-            
+
             var dateTimeDifference = new DsfDateTimeDifferenceActivity
                 {
                     Result = ResultVariable,
-                    InputFormat = inputFormat,
-                    Input1 = input1,
-                    Input2 = input2,
+                    InputFormat = string.IsNullOrEmpty(inputFormat) ? "" : inputFormat,
+                    Input1 = string.IsNullOrEmpty(input1) ? "" : input1,
+                    Input2 = string.IsNullOrEmpty(input2) ? "" : input2,
                     OutputType = outputIn
                 };
 
@@ -48,6 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
                 {
                     Action = dateTimeDifference
                 };
+            ScenarioContext.Current.Add("activity", dateTimeDifference);
         }
 
         [Given(@"I have a first date ""(.*)""")]
@@ -80,7 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -92,7 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         public void WhenTheDatetimeDifferenceToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

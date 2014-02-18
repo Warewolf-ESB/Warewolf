@@ -232,67 +232,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Index Negative Tests
 
-        #region GetDebugInputs/Outputs
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Index_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfIndexActivity act = new DsfIndexActivity { InField = "[[CompanyName]]", Index = "First Occurance", Characters = "2", Direction = "Left To Right", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-
-            Assert.AreEqual(3, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Index_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfIndexActivity act = new DsfIndexActivity { InField = "[[Customers(*).FirstName]]", Index = "First Occurance", Characters = "b", Direction = "Left To Right", Result = "[[Numeric(*).num]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(3, inRes.Count);
-            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(30, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
         #region Get Input/Output Tests
 
         [TestMethod]

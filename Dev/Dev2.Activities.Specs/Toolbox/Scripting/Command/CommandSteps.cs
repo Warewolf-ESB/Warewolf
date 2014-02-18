@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -40,6 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
                 {
                     Action = commandLine
                 };
+            ScenarioContext.Current.Add("activity", commandLine);
         }
 
         [Given(@"I have this command script to execute ""(.*)""")]
@@ -53,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         {
             List<TableRow> commands = table.Rows.ToList();
             var commandBuilder = new StringBuilder();
-            foreach (TableRow tableRow in commands)
+            foreach(TableRow tableRow in commands)
             {
                 commandBuilder.AppendLine(tableRow[0]);
             }
@@ -65,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         public void WhenTheCommandToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -87,7 +88,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);

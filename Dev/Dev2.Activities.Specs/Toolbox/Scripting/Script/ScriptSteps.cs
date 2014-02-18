@@ -17,7 +17,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -42,6 +42,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 {
                     Action = dsfScripting
                 };
+            ScenarioContext.Current.Add("activity", dsfScripting);
         }
 
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
@@ -50,7 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -61,9 +62,17 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Given(@"I have this script to execute ""(.*)""")]
         public void GivenIHaveThisScriptToExecute(string scriptFileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Scripting.Script.testfiles.{0}",
-                                                scriptFileName);
-            var scriptToExecute = ReadFile(resourceName);
+            string scriptToExecute;
+            if(DataListUtil.IsEvaluated(scriptFileName))
+            {
+                scriptToExecute = scriptFileName;
+            }
+            else
+            {
+                string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.Scripting.Script.testfiles.{0}",
+                                                    scriptFileName);
+                scriptToExecute = ReadFile(resourceName);
+            }
             ScenarioContext.Current.Add("scriptToExecute", scriptToExecute);
         }
 
@@ -77,7 +86,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public void WhenIExecuteTheScriptTool()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

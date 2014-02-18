@@ -324,63 +324,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(res);
         }
-
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void FindRecord_Get_Debug_Input_Output_With_Recordset_Using_Star_Index_With_Field_Expected_Pass()
-        {
-            DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*).DOB]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(3, inRes.Count);
-            Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
-            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
-            Assert.AreEqual("1,2,3,4,5,6,7,8,9,10", outRes[0].ResultsList[2].Value);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void FindRecord_Get_Debug_Input_Output_With_Recordset_With_Star_Index_Expected_Pass()
-        {
-            DsfFindRecordsActivity act = new DsfFindRecordsActivity { FieldsToSearch = "[[Customers(*)]]", SearchType = "Contains", SearchCriteria = "/", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(3, inRes.Count);
-            Assert.AreEqual(90, inRes[1].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("[[res]]", outRes[0].ResultsList[0].Value);
-            Assert.AreEqual("=", outRes[0].ResultsList[1].Value);
-            Assert.AreEqual("1,2,3,4,5,6,7,8,9,10", outRes[0].ResultsList[2].Value);
-        }
-
-        #endregion
-
+        
         #region Get Input/Output Tests
 
         [TestMethod]

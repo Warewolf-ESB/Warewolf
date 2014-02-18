@@ -75,7 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void AddDebugInputItems(Guid executionId)
         {
-            AddDebugInputItemPassword("Archive Password", ArchivePassword);
+            //AddDebugInputItemPassword("Archive Password", ArchivePassword);
         }
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)

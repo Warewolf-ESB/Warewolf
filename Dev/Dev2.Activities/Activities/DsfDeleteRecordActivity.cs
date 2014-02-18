@@ -1,17 +1,20 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfDeleteRecordActivity : DsfActivityAbstract<string>
     {
@@ -59,11 +62,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
+// ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
 
         }
+// ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -76,43 +81,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
-
+            InitializeDebug(dataObject);
             try
             {
+                var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
+                IBinaryDataListEntry indexEntry = compiler.Evaluate(executionID, enActionType.User, tmpRecsetIndex, false, out errors);
+
                 if(DataListUtil.IsValueRecordset(RecordsetName))
                 {
-
-                    var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
-
-                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionID, enActionType.User, tmpRecsetIndex, false, out errors);
-
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(indexEntry);
                     IDev2IteratorCollection collection = Dev2ValueObjectFactory.CreateIteratorCollection();
                     collection.AddIterator(itr);
 
-                    while(collection.HasMoreData())
+                    if(!allErrors.HasErrors())
                     {
-                        var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
-                        if(dataObject.IsDebugMode())
+                        while(collection.HasMoreData())
                         {
-                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset.Replace("()", "(*)"), false, out errors);
-                    AddDebugInputItem(RecordsetName, "Records", tmpentry, executionID);
-                }
+                            var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
+                            if(dataObject.IsDebugMode())
+                            {
+                                IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset.Replace("()", "(*)"), false, out errors);
+                                AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionID));
+                            }
 
-                        IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, evaluatedRecordset, false, out errors);
-               
-                allErrors.MergeErrors(errors);
-                compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
+                            IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, evaluatedRecordset, false, out errors);
 
-                        if(dataObject.IsDebugMode())
-                {
-                    AddDebugOutputItem(Result, entry.FetchScalar().TheValue, executionID);
-                }
-                allErrors.MergeErrors(errors);
+                            allErrors.MergeErrors(errors);
+                            compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
+
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(Result, "Result", entry, executionID));
+                            }
+                            allErrors.MergeErrors(errors);
+                        }
                     }
                 }
                 else
                 {
+                    AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", indexEntry, executionID));
                     allErrors.AddError("Invalid Input : Input must be a recordset.");
                     compiler.Upsert(executionID, Result, "Failure", out errors);
                 }
@@ -120,7 +127,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -128,50 +136,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionID, 0));
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
         }
-
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
-                {
-                    itemToAdd.AddRange(CreateDebugItemsFromRecordsetWithIndexAndNoField(expression, valueEntry, executionId, enDev2ArgumentType.Input));    
-                }
-                else
-                {
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));    
-                }
-                
-            }
-
-            _debugInputs.Add(itemToAdd);          
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            //Changed for BUG 9473 - Massimo Guerrera
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
-        #endregion
-
+        
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs

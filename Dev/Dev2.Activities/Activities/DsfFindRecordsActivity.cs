@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList;
@@ -16,7 +17,9 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies
@@ -25,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Fields
 
-        private string searchType;
+        private string _searchType;
 
         #endregion
 
@@ -47,11 +50,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             get
             {
-                return searchType;
+                return _searchType;
             }
             set
             {
-                searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
+                _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
             }
         }
 
@@ -105,10 +108,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+// ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+// ReSharper restore RedundantOverridenMember
 
         /// <summary>
         /// Executes the logic of the activity and calls the backend code to do the work
@@ -121,10 +126,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = dataObject.DataListID;
 
+            InitializeDebug(dataObject);
             try
             {
 
@@ -144,7 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(bdle);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                    int idx = 1;
+                    int idx;
                     if(!Int32.TryParse(StartIndex, out idx))
                     {
                         idx = 1;
@@ -190,7 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         toUpsert.FlushIterationFrame();
                                         if(dataObject.IsDebug)
                                         {
-                                            AddDebugOutputItem(region, concatRes, executionID, iterationIndex);
+                                            AddDebugOutputItem(new DebugOutputParams(region, concatRes, executionID, iterationIndex));
                                         }
                                     }
                                     else
@@ -203,7 +209,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                             toUpsert.FlushIterationFrame();
                                             if(dataObject.IsDebug)
                                             {
-                                                AddDebugOutputItem(region, r, executionID, iterationIndex);
+                                                AddDebugOutputItem(new DebugOutputParams(region, r, executionID, iterationIndex));
                                             }
 
                                             iterationIndex++;
@@ -249,13 +255,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(labelText == "Where")
             {
-                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Label, Value = "Where" });
-                itemToAdd.Add(new DebugItemResult() { Type = DebugItemResultType.Value, Value = SearchType });
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                AddDebugItem(new DebugItemStaticDataParams(SearchType, "Where"), itemToAdd);
+                AddDebugItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId), itemToAdd);
                 _debugInputs.Add(itemToAdd);
                 return;
             }
-
 
             if(!string.IsNullOrWhiteSpace(labelText))
             {
@@ -264,19 +268,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(valueEntry != null)
             {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                AddDebugItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId), itemToAdd);
             }
 
             _debugInputs.Add(itemToAdd);
         }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationIndex)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationIndex, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
+        
         /// <summary>
         /// Creates a new instance of the SearchTO object
         /// </summary>

@@ -363,58 +363,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion GetWizardData Tests
-
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void CaseConvert_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { new CaseConvertTO("[[CompanyName]]", "UPPER", "[[CompanyName]]", 1) };
-            DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(7, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void CaseConvert_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        {
-            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { new CaseConvertTO("[[Customers(*).FirstName]]", "UPPER", "[[Customers(*).FirstName]]", 1) };
-            DsfCaseConvertActivity act = new DsfCaseConvertActivity { ConvertCollection = convertCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(34, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(10, outRes.Count);
-            Assert.AreEqual(4, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
+        
 
         #region ForEach Update/Get Inputs/Outputs
 

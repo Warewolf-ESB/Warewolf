@@ -107,6 +107,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\Debug\DebugConcatValues.cs" />
+    <Compile Include="Activities\Debug\DebugItemStaticDataParams.cs" />
+    <Compile Include="Activities\Debug\DebugItemVariableParams.cs" />
+    <Compile Include="Activities\Debug\DebugOutputParams.cs" />
+    <Compile Include="Activities\Debug\DebugOutputBase.cs" />
     <Compile Include="Activities\DsfFindRecordsMultipleCriteriaActivity.cs" />
     <Compile Include="Activities\DsfPluginActivity.cs" />
     <Compile Include="Activities\DsfDatabaseActivity.cs" />

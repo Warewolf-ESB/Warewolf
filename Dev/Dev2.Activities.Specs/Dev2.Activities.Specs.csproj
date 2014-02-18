@@ -67,6 +67,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -105,6 +109,7 @@
       <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTests.cs</Link>
     </Compile>
     <Compile Include="BaseTypes\CommonSteps.cs" />
+    <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
@@ -124,12 +129,12 @@
       <DependentUpon>Assign.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Data\Assign\AssignSteps.cs" />
-    <Compile Include="Toolbox\Data\BaseConversion\BaseConversion.feature.cs">
+    <Compile Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversion.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BaseConversion.feature</DependentUpon>
     </Compile>
-    <Compile Include="Toolbox\Data\BaseConversion\BaseConversionSteps.cs" />
+    <Compile Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversionSteps.cs" />
     <Compile Include="Toolbox\Data\CaseConversion\CaseConversion.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -209,6 +214,28 @@
       <DependentUpon>Unique.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Recordset\Unique\UniqueSteps.cs" />
+    <Compile Include="Toolbox\Resources\Service\DatabaseService\DatabaseServiceExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DatabaseServiceExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Service\PluginService\PluginServiceExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PluginServiceExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Service\WebService\WebServiceActivity.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebServiceActivity.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Service\WebService\WebServiceActivitySteps.cs" />
+    <Compile Include="Toolbox\Resources\Workflow\WorkflowExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WorkflowExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Workflow\WorkflowExecutionSteps.cs" />
     <Compile Include="Toolbox\Scripting\Command\Command.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -298,7 +325,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Assign.feature.cs</LastGenOutput>
     </None>
-    <None Include="Toolbox\Data\BaseConversion\BaseConversion.feature">
+    <None Include="Toolbox\Data\CaseConversion\BaseConversion\BaseConversion.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>BaseConversion.feature.cs</LastGenOutput>
     </None>
@@ -353,6 +380,22 @@
     <None Include="Toolbox\Recordset\Unique\Unique.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Unique.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Service\DatabaseService\DatabaseServiceExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DatabaseServiceExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Service\PluginService\PluginServiceExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PluginServiceExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Service\WebService\WebServiceActivity.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebServiceActivity.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Workflow\WorkflowExecution.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Scripting\Command\Command.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -420,6 +463,10 @@
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
+      <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
+      <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
@@ -431,6 +478,10 @@
     <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Services.Execution\Dev2.Services.Execution.csproj">
+      <Project>{019A92B9-9209-4930-BC96-381CB8B1C0EA}</Project>
+      <Name>Dev2.Services.Execution</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
@@ -473,10 +524,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Toolbox\FileAndFolder\" />
-    <Folder Include="Toolbox\Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

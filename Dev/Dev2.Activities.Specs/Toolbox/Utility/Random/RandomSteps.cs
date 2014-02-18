@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -42,17 +42,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                     Result = ResultVariable
                 };
 
-            if (!string.IsNullOrEmpty(length))
+            if(!string.IsNullOrEmpty(length))
             {
                 dsfRandom.Length = length;
             }
 
-            if (!string.IsNullOrEmpty(rangeFrom))
+            if(!string.IsNullOrEmpty(rangeFrom))
             {
                 dsfRandom.From = rangeFrom;
             }
 
-            if (!string.IsNullOrEmpty(rangeTo))
+            if(!string.IsNullOrEmpty(rangeTo))
             {
                 dsfRandom.To = rangeTo;
             }
@@ -61,12 +61,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
                 {
                     Action = dsfRandom
                 };
+
+            ScenarioContext.Current.Add("activity", dsfRandom);
         }
 
         [Given(@"I have a type as ""(.*)""")]
         public void GivenIHaveATypeAs(string randomType)
         {
-            ScenarioContext.Current.Add("randomType", (enRandomType) Enum.Parse(typeof (enRandomType), randomType));
+            ScenarioContext.Current.Add("randomType", (enRandomType)Enum.Parse(typeof(enRandomType), randomType));
         }
 
         [Given(@"I have a length as ""(.*)""")]
@@ -87,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         public void WhenTheRandomToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

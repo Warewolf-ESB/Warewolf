@@ -470,12 +470,45 @@
                     <b:TreeviewScrollToEndOnNewContent />
                 </i:Interaction.Behaviors>
                 <TreeView.Resources>
+                        <DataTemplate x:Key="DebugGroupLineItemTemplate">
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Variable}" Padding="2,0,0,0"
+                                               Foreground="{StaticResource DebugItemVariableBrush}" />
+                                    <TextBlock Text="{Binding Operator}" Padding="2,0,0,0"/>
+                                    <TextBlock Text="{Binding Value}" Padding="2,0,0,0"
+                                               Foreground="{StaticResource DebugItemValueBrush}" />
+                                </StackPanel>
+                                <Button x:Name="MoreLink"
+                                        Focusable="False"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Left"
+                                        Width="15"
+                                        Visibility="{Binding MoreLink, Converter={StaticResource StringToVisibilityConverter}}"
+                                        cal:Message.Attach="OpenMoreLink($DataContext)"
+                                        cal:Action.TargetWithoutContext="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView}}">
+                                    <TextBlock Margin="0 -7"
+                                               Padding="0,0,0,5">...</TextBlock>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                        
                     <DataTemplate x:Key="DebugLineItemTemplate">
                         <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Value}"
-                                           Margin="3,0,3,0"
-                                           Foreground="{Binding Type, Converter={StaticResource DebugItemResultTypeToColorConverter}}" />
-                                <Button x:Name="MoreLink" Focusable="False"
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Top"
+                                               Text="{Binding Label}" Padding="2,0,0,0" />
+                                    <TextBlock VerticalAlignment="Top"
+                                               Text="{Binding Variable}" Padding="2,0,0,0"
+                                               Foreground="{StaticResource DebugItemVariableBrush}" />
+                                    <TextBlock Text="{Binding Operator}" Padding="2,0,0,0"
+                                               VerticalAlignment="Top" />
+                                    <TextBlock Text="{Binding Value}" Padding="2,0,0,0"
+                                               VerticalAlignment="Top"
+                                               Foreground="{StaticResource DebugItemValueBrush}" />
+                                </StackPanel>
+                                <Button x:Name="MoreLink"
+                                        Focusable="False"
                                         VerticalAlignment="Bottom"
                                         HorizontalAlignment="Left"
                                 Width="15" 
@@ -490,7 +523,7 @@
 
                     <DataTemplate x:Key="DebugLineGroupRowTemplate">
                         <ItemsControl ItemsSource="{Binding Value.LineItems}" 
-                                          ItemTemplate="{StaticResource DebugLineItemTemplate}">
+                                          ItemTemplate="{StaticResource DebugGroupLineItemTemplate}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                         <VirtualizingStackPanel Orientation="Horizontal" />
@@ -500,11 +533,13 @@
                     </DataTemplate>
 
                     <DataTemplate x:Key="DebugLineGroupTemplate">
-                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding GroupLabel}"
+                                           VerticalAlignment="Top" />
                             <Expander Header="{Binding GroupName}" 
                                       AutomationProperties.AutomationId="UI_DefaultRecordSetIOTemplate_AutoID" 
-                                      Style="{StaticResource PlusMinusExpander}">
-                                <Grid>
+                                          Style="{StaticResource PlusMinusExpander}" Margin="-3,-3,0,0">
+                                    <Grid Margin="18,0,0,0">
                                         <ScrollViewer MaxHeight="200"
                                                       VerticalScrollBarVisibility="Auto"
                                                   HorizontalScrollBarVisibility="Auto">
@@ -522,11 +557,13 @@
 
                     <DataTemplate x:Key="DebugLinesTemplate">
                         <Grid>
-                                <ItemsControl ItemsSource="{Binding LineItems}" Focusable="False"
+                                <ItemsControl ItemsSource="{Binding LineItems}"
+                                              Focusable="False"
                                               ItemTemplateSelector="{StaticResource DebugLineTemplateSelector}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal" Focusable="False"  />
+                                            <VirtualizingStackPanel Orientation="Horizontal"
+                                                                    Focusable="False" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                             </ItemsControl>
@@ -580,7 +617,8 @@
                                             Command="{Binding DataContext.OpenItemCommand, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"
                                         CommandParameter="{Binding Content}" 
                                         Style="{StaticResource BlueHeadingStyle}" 
-                                            HorizontalAlignment="Left" Focusable="False"
+                                            HorizontalAlignment="Left"
+                                            Focusable="False"
                                         IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
                                     <TextBlock Text="(In Simulation Mode)"
                                                Style="{StaticResource SimulationModeVisibility}"
@@ -668,7 +706,8 @@
                                             Orientation="Horizontal"
                                             Grid.IsSharedSizeScope="True" 
                                             Style="{StaticResource InputsVisibility}">
-                                    <ItemsControl ItemsSource="{Binding Inputs}"  Focusable="False"
+                                    <ItemsControl ItemsSource="{Binding Inputs}"
+                                                  Focusable="False"
                                                   ItemTemplate="{StaticResource DebugLinesTemplate}"
                                                   AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
                             </StackPanel>
@@ -684,7 +723,8 @@
                                             Orientation="Horizontal"
                                             Grid.IsSharedSizeScope="True" 
                                             Style="{StaticResource OutputsVisibility}">
-                                    <ItemsControl ItemsSource="{Binding Outputs}" Focusable="False"
+                                    <ItemsControl ItemsSource="{Binding Outputs}"
+                                                  Focusable="False"
                                                   ItemTemplate="{StaticResource DebugLinesTemplate}"
                                                   AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
                             </StackPanel>

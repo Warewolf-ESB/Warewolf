@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Parsers;
-using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -27,6 +25,7 @@ namespace Dev2.Activities
 
         IList<XPathDTO> _resultsCollection;
         string _sourceString;
+        bool _isDebugMode;
 
         #endregion
 
@@ -87,109 +86,112 @@ namespace Dev2.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
-            toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
+            _isDebugMode = dataObject.IsDebugMode();
+            toUpsert.IsDebug = _isDebugMode;
             toUpsert.ResourceID = dataObject.ResourceID;
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = DataListExecutionID.Get(context);
             XPathParser parser = new XPathParser();
             int i = 0;
+
+            InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
                     IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, SourceString, false, out errors);
 
-                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    if(_isDebugMode)
                     {
                         AddSourceStringDebugInputItem(SourceString, expressionsEntry, executionID);
-                        AddResultDebugInputs(ResultsCollection, executionID, compiler);
+                        AddResultDebugInputs(ResultsCollection, executionID, compiler, out errors);
+                        allErrors.MergeErrors(errors);
                     }
-
-                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                    while(itr.HasMoreRecords())
+                    if(!allErrors.HasErrors())
                     {
-                        IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                        foreach(IBinaryDataListItem c in cols)
+                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                        while(itr.HasMoreRecords())
                         {
-                            for(i = 0; i < ResultsCollection.Count; i++)
+                            IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
+                            foreach(IBinaryDataListItem c in cols)
                             {
-
-                                if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
+                                for(i = 0; i < ResultsCollection.Count; i++)
                                 {
 
-                                    IBinaryDataListEntry xpathEntry = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].XPath, false, out errors);
-                                    IDev2DataListEvaluateIterator xpathItr = Dev2ValueObjectFactory.CreateEvaluateIterator(xpathEntry);
-                                    while(xpathItr.HasMoreRecords())
+                                    if(!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                                     {
-                                        IList<IBinaryDataListItem> xpathCols = xpathItr.FetchNextRowData();
-                                        foreach(IBinaryDataListItem xPathCol in xpathCols)
+                                        IBinaryDataListEntry xpathEntry = compiler.Evaluate(executionID, enActionType.User, ResultsCollection[i].XPath, false, out errors);
+                                        IDev2DataListEvaluateIterator xpathItr = Dev2ValueObjectFactory.CreateEvaluateIterator(xpathEntry);
+                                        while(xpathItr.HasMoreRecords())
                                         {
-                                            List<string> eval = parser.ExecuteXPath(c.TheValue, xPathCol.TheValue).ToList();
-
-                                            //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
-                                            string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
-                                            string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
-                                            if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
+                                            IList<IBinaryDataListItem> xpathCols = xpathItr.FetchNextRowData();
+                                            foreach(IBinaryDataListItem xPathCol in xpathCols)
                                             {
-                                                foreach(var newFieldName in openParts)
+                                                List<string> eval = parser.ExecuteXPath(c.TheValue, xPathCol.TheValue).ToList();
+
+                                                //2013.06.03: Ashley Lewis for bug 9498 - handle line breaks in multi assign
+                                                string[] openParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\[\[");
+                                                string[] closeParts = Regex.Split(ResultsCollection[i].OutputVariable, @"\]\]");
+                                                if(openParts.Count() == closeParts.Count() && openParts.Count() > 2 && closeParts.Count() > 2)
                                                 {
-                                                    if(!string.IsNullOrEmpty(newFieldName))
+                                                    foreach(var newFieldName in openParts)
                                                     {
-                                                        string cleanFieldName = null;
-                                                        if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
+                                                        if(!string.IsNullOrEmpty(newFieldName))
                                                         {
-                                                            cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
+                                                            string cleanFieldName;
+                                                            if(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2 < newFieldName.Length)
+                                                            {
+                                                                cleanFieldName = "[[" + newFieldName.Remove(newFieldName.IndexOf("]]", StringComparison.Ordinal) + 2);
+                                                            }
+                                                            else
+                                                            {
+                                                                cleanFieldName = "[[" + newFieldName;
+                                                            }
+                                                            toUpsert.Add(cleanFieldName, eval);
                                                         }
-                                                        else
-                                                        {
-                                                            cleanFieldName = "[[" + newFieldName;
-                                                        }
-                                                        toUpsert.Add(cleanFieldName, eval);
                                                     }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                toUpsert.Add(ResultsCollection[i].OutputVariable, eval);
+                                                else
+                                                {
+                                                    toUpsert.Add(ResultsCollection[i].OutputVariable, eval);
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                compiler.Upsert(executionID, toUpsert, out errors);
                             }
 
-                            compiler.Upsert(executionID, toUpsert, out errors);
+                            allErrors.MergeErrors(errors);
                         }
-                        if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                    }
+                    if(_isDebugMode)
+                    {
+                        var innerCount = 1;
+                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
                         {
-                            int innerCount = 0;
-                            foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
-                            {
-                                var expression = ResultsCollection[innerCount].OutputVariable;
-                                enRecordsetIndexType indexType = DataListUtil.GetRecordsetIndexType(expression);
-                                if(indexType == enRecordsetIndexType.Blank)
-                                {
-                                    expression = expression.Replace("().", "(*).");
-                                }
-                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errors);
-                                AddDebugOutputItemFromEntry(expression, binaryDataListEntry, innerCount + 1, executionID);
-                                innerCount++;
-                                if(debugOutputTO.FromEntry != null)
-                                    debugOutputTO.FromEntry.Dispose();
-                                if(debugOutputTO.TargetEntry != null)
-                                    debugOutputTO.TargetEntry.Dispose();
-                            }
-                            toUpsert.DebugOutputs.Clear();
+                            var itemToAdd = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                            AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), itemToAdd);
+                            _debugOutputs.Add(itemToAdd);
+                            innerCount++;
                         }
-                        allErrors.MergeErrors(errors);
+                        toUpsert.DebugOutputs.Clear();
                     }
                 }
 
             }
-
             catch(Exception ex)
             {
-                ResultsCollection[i].XPath = "";
+                if(_isDebugMode)
+                {
+                    ResultsCollection[i].XPath = "";
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", (i + 1).ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    _debugOutputs.Add(itemToAdd);
+                    AddDebugOutputItem(new DebugOutputParams(ResultsCollection[i].OutputVariable, "", executionID, i + 1, ""));
+                }
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -200,7 +202,7 @@ namespace Dev2.Activities
                     DisplayAndWriteError("DsfXPathActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(_isDebugMode)
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -209,30 +211,35 @@ namespace Dev2.Activities
 
         }
 
-        void AddResultDebugInputs(IList<XPathDTO> resultsCollection, Guid executionID, IDataListCompiler compiler)
+        void AddResultDebugInputs(IList<XPathDTO> resultsCollection, Guid executionID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
+            var i = 1;
             foreach(var xPathDto in resultsCollection)
             {
                 if(!String.IsNullOrEmpty(xPathDto.OutputVariable))
                 {
-                    var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = xPathDto.OutputVariable });
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, xPathDto.XPath, false, out errorsTo);
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(xPathDto.XPath, expressionsEntry, executionID, enDev2ArgumentType.Input));
-                    _debugInputs.Add(itemToAdd);
+                    var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, xPathDto.XPath, false, out errorsTo);
+                    errors.MergeErrors(errorsTo);
+                    compiler.Evaluate(executionID, enActionType.User, xPathDto.OutputVariable, false, out errorsTo);
+                    errors.MergeErrors(errorsTo);
+                    if(errors.HasErrors() && _isDebugMode)
+                    {
+                        var itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        _debugOutputs.Add(itemToAdd);
+                        AddDebugOutputItem(new DebugOutputParams(xPathDto.OutputVariable, "", executionID, i, ""));
+                    }
+
+                    AddDebugInputItem(new DebugItemVariableParams(xPathDto.OutputVariable, "", expressionsEntry, executionID));
+                    i++;
                 }
             }
         }
 
         private void AddSourceStringDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "XML Source" });
-
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-
-            _debugInputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemVariableParams(expression, "XML", valueEntry, executionId));
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -243,18 +250,6 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-
-
-        void AddDebugOutputItemFromEntry(string expression, IBinaryDataListEntry value, int indexCount, Guid dlId)
-        {
-            var itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
-
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
@@ -337,23 +332,6 @@ namespace Dev2.Activities
             }
             currentName = currentName + " (" + (count - 1) + ")";
             return currentName;
-        }
-
-
-        void CleanArguments(IList<XPathDTO> args)
-        {
-            var count = 0;
-            while(count < args.Count)
-            {
-                if(string.IsNullOrEmpty(args[count].OutputVariable))
-                {
-                    args.RemoveAt(count);
-                }
-                else
-                {
-                    count++;
-                }
-            }
         }
 
         #endregion Private Methods

@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -49,6 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
                 {
                     Action = findIndex
                 };
+            ScenarioContext.Current.Add("activity", findIndex);
         }
 
         [Given(@"the sentence ""(.*)""")]
@@ -81,7 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -94,7 +95,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         public void WhenTheDataFindIndexToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -124,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             Assert.AreEqual(tableRows.Count, records.Count);
 
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][0], records[i]);
             }

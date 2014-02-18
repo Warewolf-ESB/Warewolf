@@ -380,69 +380,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-
-        [TestMethod]
-        public void XPathGetDebugInputOutputWithRecordsetsExpectedPass()
-        {
-            IList<XPathDTO> resultsCollection = new List<XPathDTO>();
-            resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//type/method/@signature", 1));
-            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, _source, _resultsCollection);
-            DsfXPathActivity act = new DsfXPathActivity { SourceString = _source, ResultsCollection = resultsCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, dataSplitPreDataList,
-                dataSplitPreDataList, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(2, inRes.Count);
-            IList<DebugItemResult> sourceResultsList = inRes[0].FetchResultsList();
-            Assert.AreEqual(2, sourceResultsList.Count);
-            Assert.AreEqual("XML Source", sourceResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, sourceResultsList[0].Type);
-            Assert.AreEqual("<excludelist><namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" /><namespace n", sourceResultsList[1].Value);
-            Assert.AreEqual(DebugItemResultType.Value, sourceResultsList[1].Type);
-            StringAssert.Contains(sourceResultsList[1].MoreLink, "/Services/FetchDebugItemFileService?DebugItemFilePath=");
-            Assert.AreEqual(1, outRes.Count);
-            IList<DebugItemResult> outputDebugItemResults = outRes[0].FetchResultsList();
-            Assert.AreEqual(19, outputDebugItemResults.Count);
-        }
-
-        [TestMethod]
-        public void XpathGetDebugInputOutputWithRecordsetAppendExpectedPass()
-        {
-            IList<XPathDTO> resultsCollection = new List<XPathDTO>();
-            resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 1));
-            const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
-            SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, _source, _resultsCollection);
-            DsfXPathActivity act = new DsfXPathActivity { SourceString = _source, ResultsCollection = resultsCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, dataSplitPreDataList,
-                dataSplitPreDataList, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(2, inRes.Count);
-            IList<DebugItemResult> fetchResultsList = inRes[0].FetchResultsList();
-            Assert.AreEqual(2, fetchResultsList.Count);
-            Assert.AreEqual("XML Source", fetchResultsList[0].Value);
-            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
-            Assert.AreEqual("<excludelist><namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" /><namespace n", fetchResultsList[1].Value);
-            Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[1].Type);
-            StringAssert.Contains(fetchResultsList[1].MoreLink, "/Services/FetchDebugItemFileService?DebugItemFilePath=");
-            Assert.AreEqual(1, outRes.Count);
-            IList<DebugItemResult> outputDebugItemResults = outRes[0].FetchResultsList();
-            Assert.AreEqual(22, outputDebugItemResults.Count);
-        }
-
+        
         [TestMethod]
         [TestCategory("XPathActivity_Execution")]
         [Description("XPathActivity execute upserts one result only")]

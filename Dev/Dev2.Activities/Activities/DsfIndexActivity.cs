@@ -1,6 +1,6 @@
 ﻿using Dev2;
 using Dev2.Activities;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Operations;
@@ -16,7 +16,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfIndexActivity : DsfActivityAbstract<string>
     {
@@ -91,10 +93,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        // ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+        // ReSharper restore RedundantOverridenMember
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
@@ -110,14 +114,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
-
+            InitializeDebug(dataObject);
+            IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            toUpsert.IsDebug = dataObject.IsDebugMode();
             try
             {
 
 
                 IDev2IteratorCollection outerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
                 IDev2IteratorCollection innerIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IDev2DataListUpsertPayloadBuilder<List<string>> toUpsert = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+               
                 allErrors.MergeErrors(errors);
 
 
@@ -129,17 +135,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #region Iterate and Find Index
 
-                string result = string.Empty;
                 expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+
+                if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(InField, "Look In Field", expressionsEntry, executionId);
-                    AddDebugInputItem(Characters, string.Empty, itrChar.FetchEntry(), executionId);
+                    AddDebugInputItem(new DebugItemVariableParams(InField, "In Field", expressionsEntry, executionId));
+                    AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
+                    AddDebugInputItem(new DebugItemVariableParams(Characters, "Characters", itrChar.FetchEntry(), executionId));
+                    AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
                 }
-                int iterationCount = 0;
+
                 var completeResultList = new List<string>();
 
-                while (outerIteratorCollection.HasMoreData())
+                while(outerIteratorCollection.HasMoreData())
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
@@ -147,12 +155,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     innerIteratorCollection.AddIterator(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextRow(itrChar).TheValue;
-                    while (innerIteratorCollection.HasMoreData())
+                    while(innerIteratorCollection.HasMoreData())
                     {
-                        if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+                        if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
                             var val = innerIteratorCollection.FetchNextRow(itrInField);
-                            if (val != null)
+                            if(val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
                                 completeResultList.AddRange(returedData.Select(value => value.ToString()).ToList());
@@ -161,18 +169,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
                     }
-                   
+
                 }
-                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
                 {
                     toUpsert.Add(region, completeResultList);
                     compiler.Upsert(executionId, toUpsert, out errors);
-                    if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                    {
-                        AddDebugOutputItem(region, result, executionId, iterationCount);
-                    }
-                    iterationCount++;
+                    toUpsert.FlushIterationFrame();
                 }
+
                 #endregion
 
                 #region Add Result to DataList
@@ -181,16 +186,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion Add Result to DataList
 
+                if(!allErrors.HasErrors() && dataObject.IsDebugMode())
+                {
+                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                    {
+                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                    }
+                }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
             finally
             {
                 #region Handle Errors
-
-                if (allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
@@ -198,8 +210,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
 
-                if (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        {
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                        }
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -208,45 +227,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();
 
-            if (string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Find" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Index });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Of" });
-            }
-
-            if (!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if (valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
-
-            if (string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Direction" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Direction });
-                _debugInputs.Add(itemToAdd);
-            }
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCount)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCount, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
 
         #endregion Private Methods
 
@@ -259,7 +240,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -268,7 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -281,17 +262,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null)
+            if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
 
-                    if (t.Item1 == InField)
+                    if(t.Item1 == InField)
                     {
                         InField = t.Item2;
                     }
 
-                    if (t.Item1 == Characters)
+                    if(t.Item1 == Characters)
                     {
                         Characters = t.Item2;
                     }
@@ -301,7 +282,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

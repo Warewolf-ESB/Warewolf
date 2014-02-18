@@ -1,11 +1,13 @@
-﻿using System;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using System;
 using System.Activities;
 using System.Collections.Generic;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfCommentActivity : DsfActivityAbstract<string>
     {
@@ -15,7 +17,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Comment";
         }
         public string Text { get; set; }
-        
+
 
         #region Get Debug Inputs/Outputs
 
@@ -53,7 +55,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Text = updates[0].Item2;
             }

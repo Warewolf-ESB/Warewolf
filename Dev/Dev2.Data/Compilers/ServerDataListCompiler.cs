@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Enums;
+using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Builders;
 using Dev2.Data.Compilers;
@@ -24,6 +20,11 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -1693,31 +1694,7 @@ namespace Dev2.Server.Datalist
             return r;
         }
 
-        /// <summary>
-        /// Determines whether [is calc evaluation] [the specified expression].
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="newExpression">The new expression.</param>
-        /// <returns>
-        ///   <c>true</c> if [is calc evaluation] [the specified expression]; otherwise, <c>false</c>.
-        /// </returns>
-        private bool IsCalcEvaluation(string expression, out string newExpression)
-        {
-            bool result = false;
 
-            newExpression = string.Empty;
-
-            if(expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
-            {
-                if(expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
-                {
-                    newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
-                    result = true;
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Internals the calc evaluation.
@@ -1760,7 +1737,7 @@ namespace Dev2.Server.Datalist
             ErrorResultTO allErrors = new ErrorResultTO();
             string calcExp;
 
-            if(IsCalcEvaluation(expression, out calcExp))
+            if(DataListUtil.IsCalcEvaluation(expression, out calcExp))
             {
                 expression = calcExp;
                 string r = InternalCalcEvaluation(expression, bdl, out errors);
@@ -2014,10 +1991,12 @@ namespace Dev2.Server.Datalist
             {
                 // Fetch will force a commit if any frames are hanging ;)
                 string error;
+                DebugOutputTO debugOutputTO = new DebugOutputTO();
                 foreach(IDataListPayloadIterationFrame<T> f in payload.FetchFrames())
                 {
                     IBinaryDataListEntry entryUsed = null;
                     // iterate per frame fetching frame items
+
                     while(f.HasData())
                     {
                         if(typeof(T) == typeof(RecordsetGroup))
@@ -2027,7 +2006,10 @@ namespace Dev2.Server.Datalist
                             continue;
                         }
 
-                        DebugOutputTO debugOutputTO = new DebugOutputTO();
+                        if(!payload.IsIterativePayload())
+                        {
+                            debugOutputTO = new DebugOutputTO();
+                        }
                         DataListPayloadFrameTO<T> frameItem = f.FetchNextFrameItem();
 
                         // find the part to use
@@ -2144,11 +2126,14 @@ namespace Dev2.Server.Datalist
                                     if(!evaluatedValue.IsRecordset)
                                     {
                                         // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                        IBinaryDataListItem tmpI = evaluatedValue.FetchScalar().Clone();
+                                        var scalar = evaluatedValue.FetchScalar();
+                                        IBinaryDataListItem tmpI = scalar.Clone();
 
                                         tmpI.UpdateField(field);
                                         entry.TryPutScalar(tmpI, out error);
                                         allErrors.AddError(error);
+                                        BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
+
                                     }
                                     else
                                     {
@@ -2163,6 +2148,7 @@ namespace Dev2.Server.Datalist
                                             allErrors.AddError(error);
 
                                             allErrors.AddError(error);
+                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                         }
                                         else
                                         {
@@ -2171,6 +2157,7 @@ namespace Dev2.Server.Datalist
                                             tmpI.UpdateField(field);
                                             entry.TryPutScalar(tmpI, out error);
                                             allErrors.AddError(error);
+                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                         }
                                     }
                                 } // else do nothing
@@ -2180,7 +2167,7 @@ namespace Dev2.Server.Datalist
                             {
                                 bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
 
-                                if(payload.IsDebug)
+                                if(payload.IsDebug && (!payload.IsIterativePayload() || debugOutputTO.TargetEntry == null))
                                 {
                                     debugOutputTO.TargetEntry = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
                                 }
@@ -2213,17 +2200,20 @@ namespace Dev2.Server.Datalist
                                                             {
                                                                 int next = ii.FetchNextIndex();
                                                                 // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                                tmpI = evaluatedValue.FetchScalar().Clone();
+                                                                var scalar = evaluatedValue.FetchScalar();
+                                                                tmpI = scalar.Clone();
                                                                 tmpI.UpdateField(field);
                                                                 entry.TryPutRecordItemAtIndex(tmpI, next, out error);
                                                                 allErrors.AddError(error);
+                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
                                                             }
                                                         }
                                                         else
                                                         {
                                                             // we need to move the iteration overwrite indexs ?
                                                             // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                            tmpI = evaluatedValue.FetchScalar().Clone();
+                                                            var scalar = evaluatedValue.FetchScalar();
+                                                            tmpI = scalar.Clone();
                                                             tmpI.UpdateField(field);
                                                             tmpI.UpdateRecordset(rs);
                                                             tmpI.UpdateIndex(idx);
@@ -2231,6 +2221,7 @@ namespace Dev2.Server.Datalist
                                                             entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
 
                                                             allErrors.AddError(error);
+                                                            BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                                         }
                                                         break;
 
@@ -2243,12 +2234,14 @@ namespace Dev2.Server.Datalist
                                                         // scalar to index
                                                         // 01.02.2013 - Travis.Frisinger : Bug 8579 
 
-                                                        tmpI = evaluatedValue.FetchScalar().Clone();
+                                                        var dataListItem = evaluatedValue.FetchScalar();
+                                                        tmpI = dataListItem.Clone();
                                                         tmpI.UpdateRecordset(rs);
                                                         tmpI.UpdateField(field);
                                                         tmpI.UpdateIndex(idx);
                                                         entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
                                                         allErrors.AddError(error);
+                                                        BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                                         break;
                                                 }
                                             }
@@ -2310,6 +2303,7 @@ namespace Dev2.Server.Datalist
                                                                 tmpI.UpdateIndex(index);
                                                                 entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                                 allErrors.AddError(error);
+                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                                             }
                                                             else if(itms != null && itms.Count > 1)
                                                             {
@@ -2325,6 +2319,7 @@ namespace Dev2.Server.Datalist
 
                                                                     entry.TryPutRecordItemAtIndex(tmpI, index, out error);
                                                                     allErrors.AddError(error);
+                                                                    BuildComplexExpressionsForDebug(debugOutputTO, part, tmpI, tmpI.DisplayValue);
                                                                 }
                                                             }
                                                         }
@@ -2366,8 +2361,8 @@ namespace Dev2.Server.Datalist
                                                             // all good move it
                                                             foreach(IBinaryDataListItem i in itms)
                                                             {
-
                                                                 entry.TryPutRecordItemAtIndex(i, i.ItemCollectionIndex, out error);
+                                                                BuildComplexExpressionsForDebug(debugOutputTO, part, i, i.DisplayValue);
                                                                 allErrors.AddError(error);
                                                             }
                                                         }
@@ -2446,7 +2441,7 @@ namespace Dev2.Server.Datalist
                             }
                         }
 
-                        if(payload.IsDebug)
+                        if(payload.IsDebug && !payload.IsIterativePayload())
                         {
 
                             payload.DebugOutputs.Add(debugOutputTO);
@@ -2460,7 +2455,10 @@ namespace Dev2.Server.Datalist
                         rsis.MoveIndexesToNextPosition();
                     }
                 }
-
+                if(payload.IsIterativePayload())
+                {
+                    payload.DebugOutputs.Add(debugOutputTO);
+                }
                 // Now flush all the entries to the bdl for this iteration ;)
                 if(TryPushDataList(bdl, out error))
                 {
@@ -2473,6 +2471,18 @@ namespace Dev2.Server.Datalist
             errors = allErrors;
 
             return result;
+        }
+
+        static void BuildComplexExpressionsForDebug(DebugOutputTO debugOutputTO, IIntellisenseResult part, IBinaryDataListItem tmpI, string displayValue)
+        {
+            if(debugOutputTO.TargetEntry != null)
+            {
+                if(debugOutputTO.TargetEntry.ComplexExpressionAuditor == null)
+                {
+                    debugOutputTO.TargetEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                }
+                debugOutputTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, tmpI.TheValue, DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+            }
         }
 
         #endregion

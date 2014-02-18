@@ -13,7 +13,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
-        protected const string ResultVariable = "[[resultVar]]";
+        protected const string ResultVariable = "[[result]]";
 
         protected abstract void BuildDataList();
 
@@ -25,6 +25,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             var data = new StringBuilder();
             data.Append("<root>");
 
+            // ReSharper disable NotAccessedVariable
             int row = 0;
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
@@ -125,19 +126,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
-            string rawRef = DataListUtil.StripBracketsFromValue(value);
-            string objRef = string.Empty;
-
-            if(partType == enIntellisensePartType.RecorsetsOnly)
-            {
-                objRef = DataListUtil.ExtractRecordsetNameFromValue(rawRef);
-            }
-            else if(partType == enIntellisensePartType.RecordsetFields)
-            {
-                objRef = DataListUtil.ExtractFieldNameFromValue(rawRef);
-            }
-
-            return objRef;
+            return CommonSteps.RetrieveItemForEvaluation(partType, value);
         }
 
         protected string ReadFile(string resourceName)

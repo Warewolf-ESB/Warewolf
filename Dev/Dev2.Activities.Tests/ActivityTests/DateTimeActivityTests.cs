@@ -259,62 +259,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion DateTime Tests
 
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DateTime_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
-        {
-            //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(1).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(3, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DateTime_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        {
-            DsfDateTimeActivity act = new DsfDateTimeActivity { DateTime = "[[Customers(*).DOB]]", InputFormat = "yyyy/mm/dd", OutputFormat = "yyyy/mm/dd", TimeModifierAmount = 1, TimeModifierAmountDisplay = "1", TimeModifierType = "Years", Result = "[[Numeric(*).num]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(3, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(10, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
         #region Get Input/Output Tests
 
         [TestMethod]

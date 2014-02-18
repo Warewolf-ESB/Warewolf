@@ -340,55 +340,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void Calculate_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        {
-            DsfCalculateActivity act = new DsfCalculateActivity { Expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void Calculate_Get_Debug_Input_Output_With_Recordsets_Using_Star_Expected_Pass()
-        {
-            DsfCalculateActivity act = new DsfCalculateActivity { Expression = "sum([[Numeric(*).num]])", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_GetForEachInputs")]
@@ -417,24 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expression, dsfForEachItems[0].Name);
             Assert.AreEqual(expression, dsfForEachItems[0].Value);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("DsfCalculateActivity_GetForEachOutputs")]
-        public void DsfCalculateActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
-        {
-            //------------Setup for test--------------------------
-            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
-            const string result = "[[res]]";
-            var act = new DsfCalculateActivity { Expression = expression, Result = result };
-            //------------Execute Test---------------------------
-            var dsfForEachItems = act.GetForEachOutputs();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(1, dsfForEachItems.Count);
-            Assert.AreEqual(result, dsfForEachItems[0].Name);
-            Assert.AreEqual(result, dsfForEachItems[0].Value);
-        }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCalculateActivity_UpdateForEachInputs")]

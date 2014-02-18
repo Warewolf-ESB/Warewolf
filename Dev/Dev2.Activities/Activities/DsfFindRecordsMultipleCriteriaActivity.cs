@@ -1,12 +1,6 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList;
@@ -17,9 +11,17 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     /// <New>
     /// Activity for finding records accoring to a search criteria that the user specifies
@@ -93,6 +95,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var errorResultTO = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
             var executionID = dataObject.DataListID;
+
+            InitializeDebug(dataObject);
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(',');
@@ -220,9 +224,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         toUpsert.Add(region, concatRes);
                         toUpsert.FlushIterationFrame();
-                        if(dataObject.IsDebug)
+                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            AddDebugOutputItem(region, concatRes, executionID, iterationIndex);
+                            AddDebugOutputItem(new DebugOutputParams(region, concatRes, executionID, iterationIndex));
                         }
                     }
                     else
@@ -233,9 +237,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             toUpsert.Add(region, r);
                             toUpsert.FlushIterationFrame();
-                            if(dataObject.IsDebug)
+                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                             {
-                                AddDebugOutputItem(region, r, executionID, iterationIndex);
+                                AddDebugOutputItem(new DebugOutputParams(region, r, executionID, iterationIndex));
                             }
 
                             iterationIndex++;
@@ -245,16 +249,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errorResultTO);
                 }
             }
+            catch(Exception exception)
+            {
+                allErrors.AddError(exception.Message);
+            }
             finally
             {
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
                 }
 
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        var iterationIndex = 0;
+                        var regions = DataListCleaningUtils.SplitIntoRegions(Result);
+                        foreach(var region in regions)
+                        {
+                            AddDebugOutputItem(new DebugOutputParams(region, "-1", executionID, iterationIndex));
+                            iterationIndex++;
+                        }
+                    }
+
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -295,11 +315,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, IDataListCompiler compiler, Guid executionID, ref ErrorResultTO errorTos)
         {
-            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
-                var itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Fields To Search" });
-                _debugInputs.Add(itemToAdd);
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
                 foreach(var s in toSearch)
                 {
                     var searchFields = s;
@@ -308,96 +327,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         searchFields = searchFields.Replace("()", "(*)");
                     }
                     IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, searchFields, false, out errorTos);
-                    AddDebugInputItem(searchFields, string.Empty, tmpEntry, executionID);
+                    AddDebugItem(new DebugItemVariableParams(searchFields, "", tmpEntry, executionID), debugItem);
                 }
-                AddRequireAllFieldsToMatchDebug();
+                _debugInputs.Add(debugItem);
                 AddResultDebugInputs(ResultsCollection, executionID, compiler);
-                AddRequireAllToBeTrueDebugItem();
+                AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
+                AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
             }
-        }
-
-        void AddRequireAllToBeTrueDebugItem()
-        {
-            var itemToAdd = new DebugItem();
-            var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Label, Value = "Require All Matches To Be True" };
-            var requireAllToMatch = RequireAllTrue ? "YES" : "NO";
-            var debugItemResult2 = new DebugItemResult { Type = DebugItemResultType.Variable, Value = requireAllToMatch };
-            itemToAdd.Add(debugItemResult);
-            itemToAdd.Add(debugItemResult2);
-            _debugInputs.Add(itemToAdd);
-        }
-
-        void AddRequireAllFieldsToMatchDebug()
-        {
-            var itemToAdd = new DebugItem();
-            var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Label, Value = "Require All Fields To Match" };
-            var requireAllFieldsToMatch = RequireAllFieldsToMatch ? "YES" : "NO";
-            var debugItemResult2 = new DebugItemResult { Type = DebugItemResultType.Variable, Value = requireAllFieldsToMatch };
-            itemToAdd.Add(debugItemResult);
-            itemToAdd.Add(debugItemResult2);
-            _debugInputs.Add(itemToAdd);
         }
 
         #region Private Methods
 
         void AddResultDebugInputs(IEnumerable<FindRecordsTO> resultsCollection, Guid executionID, IDataListCompiler compiler)
         {
-            var itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Where" });
-            _debugInputs.Add(itemToAdd);
             var indexCount = 1;
             foreach(var findRecordsTO in resultsCollection)
             {
+                DebugItem debugItem = new DebugItem();
                 if(!String.IsNullOrEmpty(findRecordsTO.SearchType))
                 {
-                    itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = findRecordsTO.SearchType });
-                    if(!String.IsNullOrEmpty(findRecordsTO.SearchCriteria))
+                    AddDebugItem(new DebugItemStaticDataParams("", indexCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(findRecordsTO.SearchType, ""), debugItem);
+
+                    if(!string.IsNullOrEmpty(findRecordsTO.SearchCriteria))
                     {
                         var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.SearchCriteria, false, out errorsTo);
-                        itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.SearchCriteria, expressionsEntry, executionID, enDev2ArgumentType.Input));
+                        AddDebugItem(new DebugItemVariableParams(findRecordsTO.SearchCriteria, "", expressionsEntry, executionID), debugItem);
                     }
+
                     if(findRecordsTO.SearchType == "Is Between" || findRecordsTO.SearchType == "Not Between")
                     {
                         var expressionsEntryFrom = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.From, false, out errorsTo);
-                        itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.From, expressionsEntryFrom, executionID, enDev2ArgumentType.Input));
-
-                        itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = " And " });
+                        AddDebugItem(new DebugItemVariableParams(findRecordsTO.From, "", expressionsEntryFrom, executionID), debugItem);
 
                         var expressionsEntryTo = compiler.Evaluate(executionID, enActionType.User, findRecordsTO.To, false, out errorsTo);
-                        itemToAdd.AddRange(CreateDebugItemsFromEntry(findRecordsTO.To, expressionsEntryTo, executionID, enDev2ArgumentType.Input));
+                        AddDebugItem(new DebugItemVariableParams(findRecordsTO.To, " And", expressionsEntryTo, executionID), debugItem);
                     }
 
-                    _debugInputs.Add(itemToAdd);
+                    _debugInputs.Add(debugItem);
                     indexCount++;
                 }
             }
-
-        }
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            var itemToAdd = new DebugItem();
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationIndex)
-        {
-            var itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationIndex, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
         }
 
         /// <summary>

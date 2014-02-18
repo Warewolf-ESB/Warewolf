@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -12,6 +7,11 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
@@ -63,7 +63,6 @@ namespace Dev2.Activities
         /// <param name="compiler">The compiler.</param>
         /// <param name="token">The token.</param>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="debugIndex">Index of the debug.</param>
         /// <param name="evaluateForDebug">if set to <c>true</c> [evaluate for debug].</param>
         /// <param name="errors">The errors.</param>
         /// <param name="rsEntry">The rs entry.</param>
@@ -71,7 +70,7 @@ namespace Dev2.Activities
         /// <exception cref="System.Exception">Mismatched Recordsets. Encountered {  + rs +  } , but already processed {  + masterRs +  }
         /// or
         /// Invalid field {  + col +  } for recordset {  + masterRs +  }</exception>
-        private List<string> BreakAndValidate(Guid dlID, IDataListCompiler compiler, string token, IDSFDataObject dataObject, int debugIndex, bool evaluateForDebug, out ErrorResultTO errors, out IBinaryDataListEntry rsEntry)
+        private List<string> BreakAndValidate(Guid dlID, IDataListCompiler compiler, string token, IDSFDataObject dataObject, bool evaluateForDebug, out ErrorResultTO errors, out IBinaryDataListEntry rsEntry)
         {
             var searchFields = DataListCleaningUtils.SplitIntoRegions(token);
             errors = new ErrorResultTO();
@@ -127,27 +126,30 @@ namespace Dev2.Activities
             {
                 if(evaluateForDebug)
                 {
-                    int idx = debugIndex;
-
+                    AddDebugInputItem(new DebugItemStaticDataParams("", "In Field(s)"));
                     foreach(var field in searchFields)
                     {
                         // TODO : if EvaluateforDebug
-                        var debugField = field.Replace("()", "(*)");
-                        var debugEval = compiler.Evaluate(dlID, enActionType.User, debugField, false, out invokeErrors);
-                        errors.MergeErrors(invokeErrors);
-
-                        AddDebugInputItem(debugField, "In Fields", debugEval, dlID, (idx + 1));
-                        idx++;
+                        if(!string.IsNullOrEmpty(field))
+                        {
+                            var debugField = field.Replace("()", "(*)");
+                            var debugEval = compiler.Evaluate(dlID, enActionType.User, debugField, false, out invokeErrors);
+                            errors.MergeErrors(invokeErrors);
+                            if(errors.HasErrors())
+                            {
+                                AddDebugInputItem(new DebugItemStaticDataParams("", debugField, ""));
+                            }
+                            else
+                            {
+                                AddDebugInputItem(new DebugItemVariableParams(debugField, "", debugEval, dlID));
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    DebugItem itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Return Fields" });
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = token });
-                    _debugInputs.Add(itemToAdd);
+                    AddDebugInputItem(new DebugItemStaticDataParams(token, "Return Fields"));
                 }
-
             }
 
             return toProcessColumns;
@@ -167,24 +169,24 @@ namespace Dev2.Activities
             var allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
-
+            InitializeDebug(dataObject);
             try
             {
-                IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert =
-                Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
-                toUpsert.IsDebug = false;
+                IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
+                toUpsert.IsDebug = dataObject.IsDebugMode();
                 toUpsert.AttachDebugFromExpression = false;
                 toUpsert.RecordSetDataAsCSVToScalar = true;
                 toUpsert.ReplaceStarWithFixedIndex = true;
+
                 IBinaryDataListEntry rsEntry;
 
                 // We need to break up by , for InFields ;)
-                List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, 0, true, out errors,
+                List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, true, out errors,
                                                      out rsEntry);
                 allErrors.MergeErrors(errors);
 
                 // Use row data?!, nope use row indexes ;)
-                List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject, (cols.Count + 1),
+                List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject,
                                                              false, out errors, out rsEntry);
                 allErrors.MergeErrors(errors);
 
@@ -195,81 +197,59 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(errors);
 
                 // Fetch the unique data ;)
-                List<int> uniqueRowIndexes = rsEntry.GetDistinctRows(cols);
-
-                var shadowList = new List<IBinaryDataListEntry>();
-
-                // And break and validate the target expressions ;)
-                List<string> targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
-
                 if(!allErrors.HasErrors())
                 {
-                    // process each row ;)
-                    foreach(var uidx in uniqueRowIndexes)
+                    List<int> uniqueRowIndexes = rsEntry.GetDistinctRows(cols);
+
+                    var shadowList = new List<IBinaryDataListEntry>();
+
+                    // And break and validate the target expressions ;)
+                    List<string> targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
+
+                    if(!allErrors.HasErrors())
                     {
-                        int idx = 0;
-
-                        // something in here is off ;)
-                        foreach(var targetExp in targetExpressions)
+                        // process each row ;)
+                        foreach(var uidx in uniqueRowIndexes)
                         {
-                            string error;
-                            // clone, prep and shove into the upsert payload builder ;)
-                            var clone = rsEntry.Clone(enTranslationDepth.Data, dlID, out error);
-                            allErrors.AddError(error);
-                            clone.MakeRecordsetEvaluateReady(uidx, resultFields[idx], out error);
-                            allErrors.AddError(error);
+                            int idx = 0;
 
-                            // We need to replace * with fixed index? else we will over write all data all the time ;)
-                            toUpsert.Add(targetExp, clone);
+                            // something in here is off ;)
+                            foreach(var targetExp in targetExpressions)
+                            {
+                                string error;
+                                // clone, prep and shove into the upsert payload builder ;)
+                                var clone = rsEntry.Clone(enTranslationDepth.Data, dlID, out error);
+                                allErrors.AddError(error);
+                                clone.MakeRecordsetEvaluateReady(uidx, resultFields[idx], out error);
+                                allErrors.AddError(error);
 
-                            shadowList.Add(clone);
+                                // We need to replace * with fixed index? else we will over write all data all the time ;)
+                                toUpsert.Add(targetExp, clone);
 
-                            idx++;
+                                shadowList.Add(clone);
+
+                                idx++;
+                            }
+
+                            toUpsert.FlushIterationFrame();
                         }
 
-                        toUpsert.FlushIterationFrame();
-                    }
-
-                    compiler.Upsert(executionId, toUpsert, out errors);
-
-                    // If in debug mode, we have data and there is the correct debug info balance ;)
-                    if(dataObject.IsDebugMode())
-                    {
-                        if(targetExpressions != null && (shadowList.Count % targetExpressions.Count) == 0)
+                        compiler.Upsert(executionId, toUpsert, out errors);
+                        allErrors.MergeErrors(errors);
+                        // If in debug mode, we have data and there is the correct debug info balance ;)
+                        if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            int innerCount = 0;
-                            foreach(var field in targetExpressions)
+                            int innerCount = 1;
+                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
                             {
-
-                                var outputVariable = field;
-
-                                if(outputVariable.Contains("()."))
-                                {
-                                    outputVariable =
-                                        outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
-                                    outputVariable = outputVariable.Replace("()", "(*)") + "]]";
-                                }
-
-                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User,
-                                                                                             outputVariable, false,
-                                                                                             out errors);
-
-                                string expression = field;
-                                if(expression.Contains("()."))
-                                {
-                                    expression = expression.Replace("().", "(*).");
-                                }
-
-                                AddDebugOutputItemFromEntry(expression, binaryDataListEntry, (innerCount + 1), dlID);
+                                var itemToAdd = new DebugItem();
+                                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
+                                _debugOutputs.Add(itemToAdd);
                                 innerCount++;
                             }
                         }
-                        else
-                        {
-                            throw new Exception("Fatal internal error");
-                        }
                     }
-
                 }
             }
             catch(Exception e)
@@ -351,75 +331,6 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-        private void AddDebugOutputItemFromEntry(string expression, IBinaryDataListEntry value, int indexCount, Guid dlId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = indexCount.ToString(CultureInfo.InvariantCulture) });
-
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, value, dlId, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId, int idx)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = idx.ToString(CultureInfo.InvariantCulture) });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                expression = expression.TrimEnd(new[] { '\r', '\n' });
-
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                if(DataListUtil.IsEvaluated(expression))
-                {
-                    var makeParts = DataListFactory.CreateLanguageParser().MakeParts(expression);
-                    if(makeParts.Count > 1)
-                    {
-                        var r = DataListUtil.AddBracketsToValueIfNotExist(makeParts[0].Payload);
-                        var s = DataListUtil.AddBracketsToValueIfNotExist(makeParts[1].Payload);
-
-                        if(DataListUtil.IsEvaluated(s))
-                        {
-                            if(valueEntry.IsRecordset)
-                            {
-                                var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                foreach(var debugItemResult in debugItemsFromEntry)
-                                {
-                                    debugItemResult.GroupName = debugItemResult.GroupName + " " + s;
-                                    if(debugItemResult.Type == DebugItemResultType.Variable)
-                                    {
-                                        debugItemResult.Value = debugItemResult.Value + " " + s;
-                                    }
-                                }
-                                itemToAdd.AddRange(debugItemsFromEntry);
-                            }
-                            else
-                            {
-                                var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                itemToAdd.AddRange(debugItemsFromEntry);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var debugItemsFromEntry = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
-                        itemToAdd.AddRange(debugItemsFromEntry);
-                    }
-                }
-                else
-                {
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-                }
-
-            }
-            _debugInputs.Add(itemToAdd);
-        }
 
         #endregion
 

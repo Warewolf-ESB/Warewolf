@@ -294,6 +294,7 @@
     <Compile Include="Diagnostics\DebugLineGroupRow.cs" />
     <Compile Include="Diagnostics\DebugLineItem.cs" />
     <Compile Include="Diagnostics\DebugLine.cs" />
+    <Compile Include="Diagnostics\DebugLineItemDetail.cs" />
     <Compile Include="Diagnostics\DebugStyleSelector.cs" />
     <Compile Include="Diagnostics\AppExceptionHandler.cs" />
     <Compile Include="Diagnostics\ErrorSeverity.cs" />

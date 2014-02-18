@@ -1,11 +1,11 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -36,13 +36,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             ScenarioContext.Current.TryGetValue("requireAllTrue", out requireAllTrue);
             bool requireAllFieldsToMatch;
             ScenarioContext.Current.TryGetValue("requireAllFieldsToMatch", out requireAllFieldsToMatch);
-
-            string recordsetName;
-            ScenarioContext.Current.TryGetValue("recordset", out recordsetName);
-
+            
             var findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
-                    FieldsToSearch = string.IsNullOrEmpty(fieldsToSearch) ? recordsetName + "()" : fieldsToSearch,
+                    FieldsToSearch = fieldsToSearch,
                     ResultsCollection = searchList,
                     RequireAllTrue = requireAllTrue,
                     RequireAllFieldsToMatch = requireAllFieldsToMatch,
@@ -53,18 +50,18 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 {
                     Action = findRecordsMultipleIndex
                 };
+            ScenarioContext.Current.Add("activity", findRecordsMultipleIndex);
         }
 
         [Given(@"I have the following recordset to search for multiple criteria")]
         public void GivenIHaveTheFollowingRecordsetToSearchForMultipleCriteria(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
+            var rs = table.Header.ToArray()[0];
+            var field = table.Header.ToArray()[1];
 
-            if(tableRows.Count == 0)
+            if(tableRows.Count == 1)
             {
-                var rs = table.Header.ToArray()[0];
-                var field = table.Header.ToArray()[1];
-
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
@@ -94,12 +91,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void GivenTheFieldsToSearchIs(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
+            var rs = table.Header.ToArray()[0];
+            var field = table.Header.ToArray()[1];
 
             if(tableRows.Count == 0)
             {
-                var rs = table.Header.ToArray()[0];
-                var field = table.Header.ToArray()[1];
-
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
@@ -110,18 +106,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
+        }
 
-            string fieldsToSearch = string.Empty;
-
-            foreach(TableRow t in tableRows)
-            {
-                fieldsToSearch += t[0] + ",";
-            }
-            if(fieldsToSearch.EndsWith(","))
-            {
-                fieldsToSearch = fieldsToSearch.Remove(fieldsToSearch.Length - 1);
-            }
-            ScenarioContext.Current.Add("fieldsToSearch", fieldsToSearch);
+        [Given(@"field to search is ""(.*)""")]
+        public void GivenFieldToSearchIs(string fieldToSearch)
+        {
+            ScenarioContext.Current.Add("fieldsToSearch", fieldToSearch);
         }
 
 
@@ -223,7 +213,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

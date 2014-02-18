@@ -10,6 +10,12 @@ Scenario: Execute Javascript Variable is 1
 	When I execute the script tool
 	Then the script result should be "one"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = one |
 
 Scenario: Execute Javascript blank script	
 	Given I have this script to execute ""
@@ -17,6 +23,12 @@ Scenario: Execute Javascript blank script
 	When I execute the script tool
 	Then the script result should be ""
 	And the execution has "AN" error
+	And the debug inputs as  
+	| Language   | Script |
+	| JavaScript | ""     |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 
 Scenario: Execute Javascript Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"
@@ -25,6 +37,12 @@ Scenario: Execute Javascript Variable is 2
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Javascript Variable is 3
 	Given I have a script variable "[[val]]" with this value "3"
@@ -33,6 +51,12 @@ Scenario: Execute Javascript Variable is 3
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute Javascript Variable is 100
 	Given I have a script variable "[[val]]" with this value "100"
@@ -41,6 +65,12 @@ Scenario: Execute Javascript Variable is 100
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Javascript
 	Given I have a script variable "[[val]]" with this value "1"
@@ -48,6 +78,12 @@ Scenario: Execute badly formed Javascript
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 	
 Scenario: Execute Javascript with 2 variables
 	Given I have a script variable "[[val1]]" with this value "1"
@@ -57,6 +93,12 @@ Scenario: Execute Javascript with 2 variables
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language   | Script          |
+	| JavaScript | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Python Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"
@@ -65,6 +107,13 @@ Scenario: Execute Python Variable is 1
 	When I execute the script tool
 	Then the script result should be "one"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = one |
+
 
 Scenario: Execute Python blank script	
 	Given I have this script to execute ""
@@ -72,6 +121,12 @@ Scenario: Execute Python blank script
 	When I execute the script tool
 	Then the script result should be ""
 	And the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script |
+	| Python   | ""     |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 
 Scenario: Execute Python Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"
@@ -80,6 +135,12 @@ Scenario: Execute Python Variable is 2
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Python Variable is 3
 	Given I have a script variable "[[val]]" with this value "3"
@@ -88,6 +149,12 @@ Scenario: Execute Python Variable is 3
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute Python Variable is 100
 	Given I have a script variable "[[val]]" with this value "100"
@@ -96,6 +163,12 @@ Scenario: Execute Python Variable is 100
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Python
 	Given I have a script variable "[[val]]" with this value "1"
@@ -103,6 +176,12 @@ Scenario: Execute badly formed Python
 	And I have selected the language as "Python"
 	When I execute the script tool
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 	
 Scenario: Execute Python with 2 variables
 	Given I have a script variable "[[val1]]" with this value "1"
@@ -112,6 +191,12 @@ Scenario: Execute Python with 2 variables
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Python   | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Ruby Variable is 1
 	Given I have a script variable "[[val]]" with this value "1"
@@ -120,6 +205,12 @@ Scenario: Execute Ruby Variable is 1
 	When I execute the script tool
 	Then the script result should be "one"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = one |
 
 Scenario: Execute Ruby blank script	
 	Given I have this script to execute ""
@@ -127,6 +218,12 @@ Scenario: Execute Ruby blank script
 	When I execute the script tool
 	Then the script result should be ""
 	And the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script |
+	| Ruby     | ""     |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 
 Scenario: Execute Ruby Variable is 2
 	Given I have a script variable "[[val]]" with this value "2"
@@ -135,6 +232,12 @@ Scenario: Execute Ruby Variable is 2
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Ruby Variable is 3
 	Given I have a script variable "[[val]]" with this value "3"
@@ -143,6 +246,12 @@ Scenario: Execute Ruby Variable is 3
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute Ruby Variable is 100
 	Given I have a script variable "[[val]]" with this value "100"
@@ -151,6 +260,12 @@ Scenario: Execute Ruby Variable is 100
 	When I execute the script tool
 	Then the script result should be "not one or two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result                      |
+	| [[result]] = not one or two |
 
 Scenario: Execute badly formed Ruby
 	Given I have a script variable "[[val]]" with this value "1"
@@ -158,6 +273,12 @@ Scenario: Execute badly formed Ruby
 	And I have selected the language as "Ruby"
 	When I execute the script tool
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 	
 Scenario: Execute Ruby with 2 variables
 	Given I have a script variable "[[val1]]" with this value "1"
@@ -167,21 +288,45 @@ Scenario: Execute Ruby with 2 variables
 	When I execute the script tool
 	Then the script result should be "two"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| Language | Script          |
+	| Ruby     | String = String |
+	And the debug output as 
+	| Result           |
+	| [[result]] = two |
 
 Scenario: Execute Ruby with a negative recordset index
 	Given I have this script to execute "[[my(-1).val]]"
 	And I have selected the language as "Ruby"
 	When I execute the script tool
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script           |
+	| Ruby     | [[my(-1).val]] = |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
 
 Scenario: Execute JavaScript with a negative recordset index
 	Given I have this script to execute "[[my(-1).val]]"
 	And I have selected the language as "JavaScript"
 	When I execute the script tool
 	Then the execution has "AN" error
-
+	And the debug inputs as  
+	| Language   | Script           |
+	| JavaScript | [[my(-1).val]] = |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |
+	
 Scenario: Execute Python with a negative recordset index
 	Given I have this script to execute "[[my(-1).val]]"
 	And I have selected the language as "Python"
 	When I execute the script tool
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| Language | Script           |
+	| Python   | [[my(-1).val]] = |
+	And the debug output as 
+	| Result       |
+	| [[result]] = |

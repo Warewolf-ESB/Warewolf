@@ -1,18 +1,20 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfCountRecordsetActivity : DsfActivityAbstract<string>
     {
@@ -86,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
             allErrors.MergeErrors(errors);
-
+            InitializeDebug(dataObject);
             // Process if no errors
             try
             {
@@ -105,8 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-
-                        AddDebugInputItem(RecordsetName, "Recordset", recset, executionId);
+                        AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
                     }
 
                     if(recset != null)
@@ -119,9 +120,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                 {
                                     compiler.Upsert(executionId, region, "0", out errors);
-                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                                    if(dataObject.IsDebugMode())
                                     {
-                                        AddDebugOutputItem(region, "0", executionId);
+                                        AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
                                     }
                                     allErrors.MergeErrors(errors);
                                 }
@@ -134,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
                                     if(dataObject.IsDebugMode())
                                     {
-                                        AddDebugOutputItem(region, cnt.ToString(CultureInfo.InvariantCulture), executionId);
+                                        AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
                                     }
                                     allErrors.MergeErrors(errors);
                                 }
@@ -163,48 +164,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", "Result"));
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
             }
         }
-
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                var res = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
-                itemToAdd.AddRange(res);
-            }
-
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
-        {
-            var itemToAdd = new DebugItem();
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
-        #endregion
 
         #region Get Debug Inputs/Outputs
 

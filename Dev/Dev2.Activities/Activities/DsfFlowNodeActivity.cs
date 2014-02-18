@@ -1,10 +1,6 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
-using Dev2.Common;
-using Dev2.Data.Decisions.Operations;
+using Dev2.Activities.Debug;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -13,6 +9,10 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -80,6 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            InitializeDebug(dataObject);
             if(dataObject != null && dataObject.IsDebugMode())
             {
                 DispatchDebugState(context, StateType.Before);
@@ -140,51 +141,78 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResults(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, dev2Decision.EvaluationFn);
-                    AddInputDebugItemResults(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, dev2Decision.EvaluationFn);
-                    AddInputDebugItemResults(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, dev2Decision.EvaluationFn);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3);
                 }
 
                 var itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Statement" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
+
+                userModel = userModel.Replace("OR", " OR\r\n")
+                                     .Replace("AND", " AND\r\n")
+                                     .Replace("\r\n ", "\r\n")
+                                     .Replace("\r\n\r\n", "\r\n")
+                                     .Replace("  ", " ");
+
+                AddDebugItem(new DebugItemStaticDataParams(userModel, "Statement"), itemToAdd);
+                result.Add(itemToAdd);
+
+                itemToAdd = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
                 result.Add(itemToAdd);
 
             }
             catch(JsonSerializationException)
             {
-                Dev2Switch ds = new Dev2Switch() { SwitchVariable = val };
-
-                string userModel = ds.GenerateUserFriendlyModel(dataList.UID, Dev2DecisionMode.AND);
-
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = val };
                 DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Switch" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = userModel });
+                ErrorResultTO errors;
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
+                var debugResult = new DebugItemVariableParams(ds.SwitchVariable, "Switch on", expressionsEntry, dataList.UID);
+                itemToAdd.AddRange(debugResult.GetDebugItemResult());
                 result.Add(itemToAdd);
-
             }
             catch(Exception e)
             {
                 DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Error" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = e.Message });
+                var debugItem = new DebugItemStaticDataParams(e.Message, "Error");
+                itemToAdd.AddRange(debugItem.GetDebugItemResult());
                 result.Add(itemToAdd);
             }
 
             return result;
         }
 
-        void AddInputDebugItemResults(List<DebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, enDecisionType decisionType, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<DebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, DebugItem parent = null)
         {
             if(expression != null && DataListUtil.IsEvaluated(expression))
             {
-                userModel = userModel.Replace(expression, EvaluateExpressiomToStringValue(expression, decisionMode, dataList, decisionType));
-                var itemResults = DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star
-                    ? CreateDebugItemsFromString(expression, EvaluateExpressiomToStringValue(expression.Replace(DataListUtil.ExtractIndexRegionFromRecordset(expression), "0"), decisionMode, dataList, decisionType), dataList.UID, 0, enDev2ArgumentType.Input)
-                    : CreateDebugItemsFromString(expression, EvaluateExpressiomToStringValue(expression, decisionMode, dataList, decisionType), dataList.UID, 0, enDev2ArgumentType.Input);
+                var expressiomToStringValue = EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+
+                userModel = userModel.Replace(expression, expressiomToStringValue);
+
+                ErrorResultTO errors;
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
+
+                var debugResult = new DebugItemVariableParams(expression, "", expressionsEntry, dataList.UID);
+                var itemResults = debugResult.GetDebugItemResult();
+
+                List<DebugItemResult> allReadyAdded = new List<DebugItemResult>();
+
+                itemResults.ForEach(a =>
+                    {
+                        var found = result.SelectMany(r => r.FetchResultsList())
+                                          .SingleOrDefault(r => r.Variable.Equals(a.Variable));
+                        if(found != null)
+                        {
+                            allReadyAdded.Add(a);
+                        }
+                    });
+
+                allReadyAdded.ForEach(i => itemResults.Remove(i));
+
                 if(parent == null)
                 {
                     result.Add(new DebugItem(itemResults));
@@ -195,6 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
 
 
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
@@ -218,38 +247,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     resultString = dds.FalseArmText;
                 }
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+
+                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "Result").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
             catch(Exception)
             {
                 //2013.02.11: Ashley lewis - Bug 8725: Task 8730 - This means it is a swith, not a decision
-
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = resultString });
+                itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "Result").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
 
             return result;
-
         }
 
         #endregion
 
         #region Private Debug Methods
 
-        private string EvaluateExpressiomToStringValue(string Expression, Dev2DecisionMode mode, IBinaryDataList dataList, enDecisionType type)
+        private string EvaluateExpressiomToStringValue(string expression, Dev2DecisionMode mode, IBinaryDataList dataList)
         {
             string result = string.Empty;
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
 
-            ErrorResultTO errors = new ErrorResultTO();
-            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, Expression, true, out errors);
+            ErrorResultTO errors;
+            var dlEntry = c.Evaluate(dataList.UID, enActionType.User, expression, true, out errors);
             if(dlEntry.IsRecordset)
             {
-                if(DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Numeric)
+                if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
                 {
                     int index;
-                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(Expression), out index))
+                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(expression), out index))
                     {
                         string error;
                         IList<IBinaryDataListItem> listOfCols = dlEntry.FetchRecordAt(index, out error);
@@ -264,11 +292,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    if(DataListUtil.GetRecordsetIndexType(Expression) == enRecordsetIndexType.Star)
+                    if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
                     {
                         IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                        IBinaryDataListEntry Entry = c.Evaluate(dataList.UID, enActionType.User, Expression, false, out errors);
-                        IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(Entry);
+                        IBinaryDataListEntry entry = c.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
+                        IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(entry);
                         colItr.AddIterator(col1Iterator);
 
                         bool firstTime = true;

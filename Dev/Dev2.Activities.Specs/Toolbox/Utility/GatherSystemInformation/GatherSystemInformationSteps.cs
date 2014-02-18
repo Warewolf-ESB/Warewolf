@@ -31,6 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
                 {
                     Action = dsfGatherSystemInformationActivity
                 };
+            ScenarioContext.Current.Add("activity", dsfGatherSystemInformationActivity);
         }
 
         [Given(@"I have a variable ""(.*)"" and I selected ""(.*)""")]
@@ -39,7 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             int row;
 
             bool isRowAdded = ScenarioContext.Current.TryGetValue("row", out row);
-            if (isRowAdded)
+            if(isRowAdded)
             {
                 ScenarioContext.Current.Add("row", row);
             }
@@ -48,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -57,12 +58,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             variableList.Add(new Tuple<string, string>(variable, string.Empty));
             var type =
                 (enTypeOfSystemInformationToGather)
-                Enum.Parse(typeof (enTypeOfSystemInformationToGather), informationType);
-            
+                Enum.Parse(typeof(enTypeOfSystemInformationToGather), informationType);
+
             List<GatherSystemInformationTO> systemInformationCollection;
             ScenarioContext.Current.TryGetValue("systemInformationCollection", out systemInformationCollection);
 
-            if (systemInformationCollection == null)
+            if(systemInformationCollection == null)
             {
                 systemInformationCollection = new List<GatherSystemInformationTO>();
                 ScenarioContext.Current.Add("systemInformationCollection", systemInformationCollection);
@@ -74,7 +75,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         public void WhenTheGatherSystemInfomartionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -84,14 +85,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            if (DataListUtil.IsValueRecordset(variable))
+            if(DataListUtil.IsValueRecordset(variable))
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
                 List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.DataListID, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
-                foreach (string recordSetValue in recordSetValues)
+                foreach(string recordSetValue in recordSetValues)
                 {
                     Verify(type, recordSetValue, error);
                 }
@@ -109,7 +110,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         {
             Type component = Type.GetType("System." + type);
             TypeConverter converter = TypeDescriptor.GetConverter(component);
-            object res = converter.ConvertFrom(actualValue);
+            converter.ConvertFrom(actualValue);
             Assert.AreEqual(string.Empty, error);
         }
     }

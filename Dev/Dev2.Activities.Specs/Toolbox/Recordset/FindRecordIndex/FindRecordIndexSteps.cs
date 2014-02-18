@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
 
             string recordsetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordsetName);
-            
+
             var searchType = ScenarioContext.Current.Get<string>("searchType");
             var criteria = ScenarioContext.Current.Get<string>("criteria");
 
@@ -46,14 +46,16 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
                 {
                     Action = findRecordsIndex
                 };
+            ScenarioContext.Current.Add("activity", findRecordsIndex);
         }
+
 
         [Given(@"I have the following recordset to search")]
         public void GivenIHaveTheFollowingRecordsetToSearch(Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -61,20 +63,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -95,10 +97,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndex
         public void WhenTheFindRecordsIndexToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
-        
+
         [Then(@"the index result should be (.*)")]
         public void ThenTheIndexResultShouldBe(string expectedResult)
         {

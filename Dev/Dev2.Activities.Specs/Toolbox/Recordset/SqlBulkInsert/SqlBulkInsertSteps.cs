@@ -21,7 +21,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         public void SetupScenerio()
         {
             var sqlBulkInsert = new DsfSqlBulkInsertActivity();
-            
             var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             ScenarioContext.Current.Add("dbSource", dbSource);
             sqlBulkInsert.Database = dbSource;
@@ -73,7 +72,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
                                                enTranslationDepth.Data, out errors);
             CurrentDl = dataShape;
             TestData = data;
-            ScenarioContext.Current.Add("sqlBulkInsert", sqlBulkInsert);
+            ScenarioContext.Current.Add("activity", sqlBulkInsert);
         }
 
         [Given(@"I have this data")]
@@ -87,13 +86,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
         private void ClearCountColumn()
         {
             var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string q2 = "update SqlBulkInsertSpecFlowTestTableForeign " +
                                   "set Col2 = 0 " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
-                using (var cmd = new SqlCommand(q2, connection))
+                using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -106,11 +105,11 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             ScenarioContext.Current.Add("compiler", compiler);
             // build up DataTable
             var dbData = new DataTable("rs");
-            foreach (string columnName in table.Header)
+            foreach(string columnName in table.Header)
             {
                 dbData.Columns.Add(columnName);
             }
-            foreach (TableRow row in table.Rows)
+            foreach(TableRow row in table.Rows)
             {
                 dbData.Rows.Add(row[0], row[1], row[2]);
             }
@@ -119,6 +118,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             var dataShape = "<root><rs><Col1/><Col2/><Col3/></rs></root>";
             var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, dataShape,
                                         out errors);
+            dataShape = "<root><rs><Col1/><Col2/><Col3/></rs><result/></root>";
             ScenarioContext.Current.Add("dlID", dlID);
             ScenarioContext.Current.Add("dataShape", dataShape);
         }
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             string timeout;
             ScenarioContext.Current.TryGetValue("timeout", out timeout);
 
-            var sqlBulkInsert = ScenarioContext.Current.Get<DsfSqlBulkInsertActivity>("sqlBulkInsert");
+            var sqlBulkInsert = ScenarioContext.Current.Get<DsfSqlBulkInsertActivity>("activity");
 
             sqlBulkInsert.CheckConstraints = checkConstraints;
             sqlBulkInsert.IgnoreBlankRows = ignoreBlankRows;
@@ -153,8 +153,8 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.FireTriggers = fireTriggers;
             sqlBulkInsert.BatchSize = batchSize;
             sqlBulkInsert.Timeout = timeout;
-
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            sqlBulkInsert.Result = "[[result]]";
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -165,14 +165,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
             var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string Query = "SELECT * FROM SqlBulkInsertSpecFlowTestTable";
 
-                using (var cmd = new SqlCommand(Query, connection))
+                using(var cmd = new SqlCommand(Query, connection))
                 {
-                    using (var a = new SqlDataAdapter(cmd))
+                    using(var a = new SqlDataAdapter(cmd))
                     {
                         a.Fill(t1);
                     }
@@ -183,12 +183,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             List<DataRow> dataRows = t1.Rows.Cast<DataRow>().ToList();
             List<TableRow> tableRows = table.Rows.ToList();
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 string q1 = "truncate table SqlBulkInsertSpecFlowTestTable";
 
-                using (var cmd = new SqlCommand(q1, connection))
+                using(var cmd = new SqlCommand(q1, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -196,7 +196,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
 
             Assert.AreEqual(dataRows.Count, tableRows.Count);
 
-            for (int i = 0; i < dataRows.Count; i++)
+            for(int i = 0; i < dataRows.Count; i++)
             {
                 Assert.AreEqual(dataRows[i][0].ToString(), tableRows[i][0]);
                 Assert.AreEqual(dataRows[i][1].ToString(), tableRows[i][1]);
@@ -228,21 +228,21 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             object numberOfRowsInDb;
             var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string q1 = "SELECT Count(*) FROM SqlBulkInsertSpecFlowTestTable";
-                using (var cmd = new SqlCommand(q1, connection))
+                using(var cmd = new SqlCommand(q1, connection))
                 {
                     numberOfRowsInDb = cmd.ExecuteScalar();
                 }
             }
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string q2 = "truncate table SqlBulkInsertSpecFlowTestTable";
-                using (var cmd = new SqlCommand(q2, connection))
+                using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
@@ -296,22 +296,22 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.SqlBulkInsert
             object actualInserts;
             var dbSource = ScenarioContext.Current.Get<DbSource>("dbSource");
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string q1 = "select col2 from SqlBulkInsertSpecFlowTestTableForeign " +
                                   "where Col1 = '23EF3ADB-5A4F-4785-B311-E121FF7ACB67'";
-                using (var cmd = new SqlCommand(q1, connection))
+                using(var cmd = new SqlCommand(q1, connection))
                 {
                     actualInserts = cmd.ExecuteScalar();
                 }
             }
 
-            using (var connection = new SqlConnection(dbSource.ConnectionString))
+            using(var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 const string q2 = "truncate table SqlBulkInsertSpecFlowTestTable";
-                using (var cmd = new SqlCommand(q2, connection))
+                using(var cmd = new SqlCommand(q2, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }

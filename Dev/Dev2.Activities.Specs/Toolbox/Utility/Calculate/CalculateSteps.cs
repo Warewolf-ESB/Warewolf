@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -40,6 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 {
                     Action = calculate
                 };
+            ScenarioContext.Current.Add("activity", calculate);
         }
 
         [Given(@"I have the formula ""(.*)""")]
@@ -52,7 +53,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void WhenTheCalculateToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -62,7 +63,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -75,12 +76,12 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void GivenIHaveACalculateVariableEqualTo(string recordset, Table table)
         {
             List<TableRow> tableRows = table.Rows.ToList();
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);

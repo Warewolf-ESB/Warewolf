@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Dev2.Activities;
+﻿using Dev2.Activities;
+using System.Collections.Generic;
 // ReSharper disable CheckNamespace
 
 
@@ -17,12 +17,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override void UpdateForEachInputs(System.Collections.Generic.IList<System.Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
+        public override void UpdateForEachInputs(IList<System.Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
         {
             throw new System.NotImplementedException();
         }
 
-        public override void UpdateForEachOutputs(System.Collections.Generic.IList<System.Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
+        public override void UpdateForEachOutputs(IList<System.Tuple<string, string>> updates, System.Activities.NativeActivityContext context)
         {
             throw new System.NotImplementedException();
         }

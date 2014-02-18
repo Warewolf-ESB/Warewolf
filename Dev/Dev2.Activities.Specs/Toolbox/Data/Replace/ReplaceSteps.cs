@@ -12,14 +12,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     [Binding]
     public class ReplaceSteps : RecordSetBases
     {
-        private const string InFields = "[[sentence]]";
-       
+        private string _inFields = "[[sentence]]";
+
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -33,10 +33,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             string replaceWith;
             ScenarioContext.Current.TryGetValue("replaceWith", out replaceWith);
 
+            string sentence;
+            if(ScenarioContext.Current.TryGetValue("sentence", out sentence))
+            {
+                _inFields = sentence;
+            }
+
             var replace = new DsfReplaceActivity
                 {
                     Result = ResultVariable,
-                    FieldsToSearch = InFields,
+                    FieldsToSearch = _inFields,
                     Find = find,
                     ReplaceWith = replaceWith
                 };
@@ -45,6 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
                 {
                     Action = replace
                 };
+            ScenarioContext.Current.Add("activity", replace);
         }
 
         [Given(@"I have a sentence ""(.*)""")]
@@ -59,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -83,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         public void WhenTheReplaceToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

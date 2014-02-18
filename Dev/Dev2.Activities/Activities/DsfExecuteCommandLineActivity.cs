@@ -6,7 +6,7 @@ using System.IO;
 using System.Management;
 using System.Text;
 using System.Threading;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -89,70 +89,89 @@ namespace Dev2.Activities
 
 
             var exeToken = _nativeActivityContext.GetExtension<IExecutionToken>();
-
+            InitializeDebug(dataObject);
             try
             {
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, CommandFileName, false, out errors);
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(CommandFileName, "Command to execute", expressionsEntry, dlID);
+                    AddDebugInputItem(new DebugItemVariableParams(CommandFileName, "Command", expressionsEntry, dlID));
                 }
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                while(itr.HasMoreRecords())
+                toUpsert.IsDebug = dataObject.IsDebugMode();
+                if(!allErrors.HasErrors())
                 {
-                    IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                    foreach(IBinaryDataListItem c in cols)
+                    while(itr.HasMoreRecords())
                     {
-                        if(c.IsDeferredRead)
+                        IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
+                        foreach(IBinaryDataListItem c in cols)
                         {
-                            toUpsert.HasLiveFlushing = true;
-                            toUpsert.LiveFlushingLocation = dlID;
-                        }
-
-                        if(string.IsNullOrEmpty(c.TheValue))
-                        {
-                            throw new Exception("Empty script to execute");
-                        }
-
-                        string val = c.TheValue;
-                        StreamReader errorReader;
-                        StringBuilder outputReader;
-                        if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
-
-                        allErrors.AddError(errorReader.ReadToEnd());
-                        var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
-                        string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
-
-                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
-                        {
-                            toUpsert.Add(region, readValue);
-                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
+                            if(c.IsDeferredRead)
                             {
-                                AddDebugOutputItem(region, readValue, dlID);
+                                if(toUpsert != null)
+                                {
+                                    toUpsert.HasLiveFlushing = true;
+                                    toUpsert.LiveFlushingLocation = dlID;
+                                }
+                            }
+
+                            if(string.IsNullOrEmpty(c.TheValue))
+                            {
+                                throw new Exception("Empty script to execute");
+                            }
+
+                            string val = c.TheValue;
+                            StreamReader errorReader;
+                            StringBuilder outputReader;
+                            if(!ExecuteProcess(val, exeToken, out errorReader, out outputReader)) return;
+
+                            allErrors.AddError(errorReader.ReadToEnd());
+                            var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
+                            string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
+
+                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                            {
+                                if(toUpsert != null)
+                                {
+                                    toUpsert.Add(region, readValue);
+                                }
+
+                            }
+
+                            errorReader.Close();
+
+                            if(toUpsert != null && toUpsert.HasLiveFlushing)
+                            {
+                                try
+                                {
+                                    toUpsert.FlushIterationFrame();
+                                    toUpsert = null;
+                                }
+                                catch(Exception e)
+                                {
+                                    allErrors.AddError(e.Message);
+                                }
+                            }
+                            else
+                            {
+                                compiler.Upsert(dlID, toUpsert, out errors);
+                                allErrors.MergeErrors(errors);
                             }
                         }
+                    }
 
-                        errorReader.Close();
-
-                        if(toUpsert.HasLiveFlushing)
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    {
+                        if(toUpsert == null)
                         {
-                            try
-                            {
-                                toUpsert.FlushIterationFrame(true);
-                                toUpsert = null;
-                            }
-                            catch(Exception e)
-                            {
-                                allErrors.AddError(e.Message);
-                            }
+                            return;
                         }
-                        else
+                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
                         {
-                            compiler.Upsert(dlID, toUpsert, out errors);
-                            allErrors.MergeErrors(errors);
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                         }
                     }
                 }
@@ -163,15 +182,19 @@ namespace Dev2.Activities
             }
             finally
             {
-                // Handle Errors
-
-                if(allErrors.HasErrors())
+                // Handle Errors    
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
+                    if(hasErrors)
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(CommandResult, "", dlID, 1));
+                    }
                     DispatchDebugState(_nativeActivityContext, StateType.Before);
                     DispatchDebugState(_nativeActivityContext, StateType.After);
                 }
@@ -188,7 +211,9 @@ namespace Dev2.Activities
 
                 if(processStartInfo == null)
                 {
+                    // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("processStartInfo");
+                    // ReSharper restore NotResolvedInText
                 }
 
                 _process.StartInfo = processStartInfo;
@@ -245,19 +270,13 @@ namespace Dev2.Activities
 
         #region Overrides of NativeActivity<string>
 
-        void StopProcess()
-        {
-            _process.Close();
-            _process.Dispose();
-        }
-
         #endregion
 
         private void KillProcessAndChildren(int pid)
         {
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
             ManagementObjectCollection moc = searcher.Get();
-            foreach(ManagementObject mo in moc)
+            foreach(var mo in moc)
             {
                 KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
             }
@@ -432,34 +451,6 @@ namespace Dev2.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(CommandResult);
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            var itemToAdd = new DebugItem();
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
-        {
-            var itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
         }
 
         #endregion

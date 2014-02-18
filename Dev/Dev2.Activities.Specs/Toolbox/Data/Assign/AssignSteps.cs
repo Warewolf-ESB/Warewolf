@@ -16,8 +16,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     {
         protected override void BuildDataList()
         {
-            var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             BuildShapeAndTestData();
+
+            List<ActivityDTO> fieldCollection;
+            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
 
             var multiAssign = new DsfMultiAssignActivity();
 
@@ -26,12 +28,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                     Action = multiAssign
                 };
 
-            int row = 1;
-            foreach (var variable in variableList)
+            foreach(var field in fieldCollection)
             {
-                multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
-                row++;
+                multiAssign.FieldsCollection.Add(field);
             }
+            ScenarioContext.Current.Add("activity", multiAssign);
         }
 
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]
@@ -39,7 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             value = value.Replace('"', ' ').Trim();
 
-            if (value.StartsWith("="))
+            if(value.StartsWith("="))
             {
                 value = value.Replace("=", "");
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
@@ -48,20 +49,30 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            List<ActivityDTO> fieldCollection;
+            ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            variableList.Add(new Tuple<string, string>(variable, value));
+            if(fieldCollection == null)
+            {
+                fieldCollection = new List<ActivityDTO>();
+                ScenarioContext.Current.Add("fieldCollection", fieldCollection);
+            }
+
+            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
+            variableList.Add(new Tuple<string, string>(variable, ""));
         }
 
         [When(@"the assign tool is executed")]
         public void WhenTheAssignToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -71,7 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             string error;
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
 
-            if (DataListUtil.IsValueRecordset(variable))
+            if(DataListUtil.IsValueRecordset(variable))
             {
                 string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecorsetsOnly, variable);
                 string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
@@ -80,13 +91,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 value = value.Replace('"', ' ').Trim();
 
-                if (string.IsNullOrEmpty(value))
+                if(string.IsNullOrEmpty(value))
                 {
                     Assert.IsTrue(recordSetValues.Count == 0);
                 }
                 else
                 {
-                    Assert.AreEqual(recordSetValues[1], value);
+                    Assert.AreEqual(recordSetValues[0], value);
                 }
             }
             else

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
-using Dev2.Common;
+using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
@@ -12,6 +8,10 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects;
 using Unlimited.Framework;
@@ -25,7 +25,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         string _previousParentID;
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        Dev2ActivityIOIteration inputItr = new Dev2ActivityIOIteration();
+        Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         // ReSharper restore FieldCanBeMadeReadOnly.Local
         #region Variables
 
@@ -115,16 +115,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         // REMOVE : Travis.Frisinger - 28.11.2012 : The two variables below are no longer required
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        private Variable<IEnumerator<UnlimitedObject>> dataTags = new Variable<IEnumerator<UnlimitedObject>>("dataTags");
-        private Variable<UnlimitedObject> inputData = new Variable<UnlimitedObject>("inputData");
+        private Variable<IEnumerator<UnlimitedObject>> _dataTags = new Variable<IEnumerator<UnlimitedObject>>("dataTags");
+        private Variable<UnlimitedObject> _inputData = new Variable<UnlimitedObject>("inputData");
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 #pragma warning disable 169
-        private List<bool> results = new List<bool>();
+        private List<bool> _results = new List<bool>();
 #pragma warning restore 169
 
         // REMOVE : No longer used
 #pragma warning disable 169
-        DelegateInArgument<string> actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
+        DelegateInArgument<string> _actionArgument = new DelegateInArgument<string>("explicitDataFromParent");
 #pragma warning restore 169
 
         // used to avoid IO mapping adjustment issues ;)
@@ -158,8 +158,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(DataFunc);
-            metadata.AddImplementationVariable(dataTags);
-            metadata.AddImplementationVariable(inputData);
+            metadata.AddImplementationVariable(_dataTags);
+            metadata.AddImplementationVariable(_inputData);
             metadata.AddImplementationVariable(_origInput);
             metadata.AddImplementationVariable(_origOutput);
 
@@ -178,7 +178,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
@@ -186,6 +185,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             Guid executionID = DataListExecutionID.Get(context);
 
+            InitializeDebug(dataObject);
             try
             {
                 ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionID, compiler, out errors);
@@ -219,7 +219,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     int idx = exePayload.IndexIterator.FetchNextIndex();
                     if(exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
-                        // set the iteration data ;)
                         IterateIOMapping(idx, context);
                     }
                     else
@@ -272,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // (*) == ({idx}) ;)
                 newInputs = operationalData.InnerActivity.OrigInnerInputMapping;
-                newInputs = inputItr.IterateMapping(newInputs, idx);
+                newInputs = _inputItr.IterateMapping(newInputs, idx);
                 newInputs = newInputs.Replace("(*)", "(" + idx + ")");
             }
             else
@@ -386,7 +385,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // (*) == ({idx}) ;)
                 newOutputs = operationalData.InnerActivity.OrigInnerOutputMapping;
-                newOutputs = inputItr.IterateMapping(newOutputs, idx);
+                newOutputs = _inputItr.IterateMapping(newOutputs, idx);
             }
 
             var dev2ActivityIoMapping = DataFunc.Handler as IDev2ActivityIOMapping;
@@ -465,43 +464,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <returns></returns>                
         private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
         {
-            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = ForEachType.GetDescription() });
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
                     IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlID, enActionType.User, NumOfExections, false, out errors);
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Number" });
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(NumOfExections, numOfExectionsEntry, dlID, enDev2ArgumentType.Input));
+                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlID), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
                     IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlID, enActionType.User, CsvIndexes, false, out errors);
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Csv Indexes" });
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(CsvIndexes, csvIndexesEntry, dlID, enDev2ArgumentType.Input));
+                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlID), debugItem);
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
                     IBinaryDataListEntry fromEntry = compiler.Evaluate(dlID, enActionType.User, From, false, out errors);
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "From" });
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(From, fromEntry, dlID, enDev2ArgumentType.Input));
+                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlID), debugItem);
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
                     IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, To, false, out errors);
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(To, toEntry, dlID, enDev2ArgumentType.Input));
+                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlID), debugItem);
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
                     var toEmit = Recordset.Replace("()", "(*)");
                     IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, toEmit, false, out errors);
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Recordset" });
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(Recordset, toEntry, dlID, enDev2ArgumentType.Input));
+                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlID), debugItem);
                 }
-                _debugInputs.Add(itemToAdd);
-
+                _debugInputs.Add(debugItem);
             }
 
             var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID, compiler, out errors);

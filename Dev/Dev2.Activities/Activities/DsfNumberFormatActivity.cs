@@ -3,11 +3,11 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Factories;
 using Dev2.Data.Operations;
 using Dev2.Data.TO;
-using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
@@ -52,7 +52,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string Expression { get; set; }
 
-        [Inputs("RoundingType")]        
+        [Inputs("RoundingType")]
         public string RoundingType { get; set; }
 
         [Inputs("RoundingDecimalPlaces")]
@@ -83,51 +83,50 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            var dataObject = context.GetExtension<IDSFDataObject>();            
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            var compiler = DataListFactory.CreateDataListCompiler();
 
             var allErrors = new ErrorResultTO();
             ErrorResultTO errors;
 
-            Guid executionId = DataListExecutionID.Get(context);
-
+            var executionId = DataListExecutionID.Get(context);
+            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
+            InitializeDebug(dataObject);
             try
             {
-                string expression = Expression ?? string.Empty;
-                string roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
-                string decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
-
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                IDev2DataListEvaluateIterator expressionIterator = CreateDataListEvaluateIterator(expression, executionId, compiler, colItr, allErrors);
-
-                IDev2DataListEvaluateIterator roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, executionId, compiler, colItr, allErrors);
-
-                IDev2DataListEvaluateIterator decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
+                var expression = Expression ?? string.Empty;
+                var roundingDecimalPlaces = RoundingDecimalPlaces ?? string.Empty;
+                var decimalPlacesToShow = DecimalPlacesToShow ?? string.Empty;
+                var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
+                var expressionIterator = CreateDataListEvaluateIterator(expression, executionId, compiler, colItr, allErrors);
+                var roundingDecimalPlacesIterator = CreateDataListEvaluateIterator(roundingDecimalPlaces, executionId, compiler, colItr, allErrors);
+                var decimalPlacesToShowIterator = CreateDataListEvaluateIterator(decimalPlacesToShow, executionId, compiler, colItr, allErrors);
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(expression, "Number To Format", expressionIterator.FetchEntry(), executionId);
-                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Decimal Places", roundingDecimalPlacesIterator.FetchEntry(), executionId);
-
-                    AddDebugInputItem(decimalPlacesToShow, "Decimals To Show", decimalPlacesToShowIterator.FetchEntry(), executionId);
+                    AddDebugInputItem(expression, "Number", expressionIterator.FetchEntry(), executionId);
+                    if(!String.IsNullOrEmpty(RoundingType))
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams(RoundingType, "Rounding"));
+                    }
+                    AddDebugInputItem(roundingDecimalPlaces, "Rounding Value", roundingDecimalPlacesIterator.FetchEntry(), executionId);
+                    AddDebugInputItem(decimalPlacesToShow, "Decimals to show", decimalPlacesToShowIterator.FetchEntry(), executionId);
                 }
-                int iterationCounter = 0;
                 // Loop data ;)
                 while(colItr.HasMoreData())
                 {
                     int decimalPlacesToShowValue;
-                    string tmpDecimalPlacesToShow = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue;
-                    bool adjustDecimalPlaces = tmpDecimalPlacesToShow.IsWholeNumber(out decimalPlacesToShowValue);
+                    var tmpDecimalPlacesToShow = colItr.FetchNextRow(decimalPlacesToShowIterator).TheValue;
+                    var adjustDecimalPlaces = tmpDecimalPlacesToShow.IsWholeNumber(out decimalPlacesToShowValue);
                     if(!string.IsNullOrEmpty(tmpDecimalPlacesToShow) && !adjustDecimalPlaces)
                     {
                         throw new Exception("Decimals to show is not valid");
                     }
 
 
-                    string tmpDecimalPlaces = colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue;
-                    int roundingDecimalPlacesValue = 0;
+                    var tmpDecimalPlaces = colItr.FetchNextRow(roundingDecimalPlacesIterator).TheValue;
+                    var roundingDecimalPlacesValue = 0;
                     if(!string.IsNullOrEmpty(tmpDecimalPlaces) && !tmpDecimalPlaces.IsWholeNumber(out roundingDecimalPlacesValue))
                     {
                         throw new Exception("Rounding decimal places is not valid");
@@ -136,48 +135,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var binaryDataListItem = colItr.FetchNextRow(expressionIterator);
                     var val = binaryDataListItem.TheValue;
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
-                    string result = _numberFormatter.Format(formatNumberTo);
+                    var result = _numberFormatter.Format(formatNumberTo);
 
-                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                    {
-                        toUpsert.Add(region, result);
-                        toUpsert.FlushIterationFrame();
-                        if(dataObject.IsDebugMode())
-                        {
-                            if(DataListUtil.IsValueRecordset(region))
-                            {
-                                enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(region);
-                                if(recsetIndexType == enRecordsetIndexType.Blank)
-                                {
-
-                                    AddDebugOutputItem(region, result, executionId, iterationCounter);
-                                }
-                                iterationCounter++;
-                            }
-                        }                        
-                    }
+                    UpdateResultRegions(toUpsert, result);
                 }
                 compiler.Upsert(executionId, toUpsert, out errors);
-                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                allErrors.MergeErrors(errors);
+                if(!allErrors.HasErrors())
                 {
-                    if(dataObject.IsDebugMode())
+                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
                     {
-                        if(DataListUtil.IsValueRecordset(region))
-                        {
-                            enRecordsetIndexType recsetIndexType = DataListUtil.GetRecordsetIndexType(region);
-                            if(recsetIndexType == enRecordsetIndexType.Star)
-                            {
-                                AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
-                            }                            
-                        }
-                        else
-                        {
-                            AddDebugOutputItem(region, string.Empty, executionId, iterationCounter);
-                        }
-                        iterationCounter++;
+                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
                     }
-                    allErrors.MergeErrors(errors);
                 }
             }
             catch(Exception e)
@@ -186,21 +155,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                #region Handle Errors
-
                 if(allErrors.HasErrors())
                 {
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                    }
                     DisplayAndWriteError("DsfNumberFormatActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-
-                #endregion
 
                 if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+            }
+        }
+
+        void UpdateResultRegions(IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
+        {
+            foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+            {
+                toUpsert.Add(region, result);
+                toUpsert.FlushIterationFrame();
             }
         }
 
@@ -211,28 +189,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
             DebugItem itemToAdd = new DebugItem();
-
-            if(labelText == "Rounding Decimal Places")
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Rounding Type" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = RoundingType });                
-            }
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-
             if(valueEntry != null)
             {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
+                AddDebugItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId), itemToAdd);
+            }
+            else
+            {
+                AddDebugItem(new DebugItemStaticDataParams("", labelText, expression), itemToAdd);
             }
 
-            _debugInputs.Add(itemToAdd);            
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId, int iterationCounter)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
+            _debugInputs.Add(itemToAdd);
         }
 
         #endregion

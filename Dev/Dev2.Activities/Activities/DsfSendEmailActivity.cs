@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
@@ -26,8 +27,8 @@ namespace Dev2.Activities
 
         IEmailSender _emailSender;
         IDSFDataObject _dataObject;
-        private new List<DebugItem> _debugInputs = new List<DebugItem>();
-        private new List<DebugItem> _debugOutputs = new List<DebugItem>();
+        //        private new List<DebugItem> _debugInputs = new List<DebugItem>();
+        //        private new List<DebugItem> _debugOutputs = new List<DebugItem>();
 
         #endregion
 
@@ -103,7 +104,7 @@ namespace Dev2.Activities
                 {
                     return false;
                 }
-                return _dataObject.IsDebug || ServerLogger.ShouldLog(_dataObject.ResourceID);
+                return _dataObject.IsDebugMode();
             }
         }
         /// <summary>
@@ -116,21 +117,22 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             _dataObject = dataObject;
-            IEsbChannel esbChannel = context.GetExtension<IEsbChannel>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid dlID = dataObject.DataListID;
-            var workspaceID = dataObject.WorkspaceID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
-            int indexToUpsertTo = 0;
+            int indexToUpsertTo = 0;   
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
 
+            InitializeDebug(dataObject);
             try
             {
                 var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                IBinaryDataListEntry fromAccountEntry = compiler.Evaluate(dlID, enActionType.User, FromAccount, false, out errors);
+                IBinaryDataListEntry fromAccountEntry = compiler.Evaluate(dlID, enActionType.User, FromAccount ?? string.Empty, false, out errors);
+
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator fromAccountItr = Dev2ValueObjectFactory.CreateEvaluateIterator(fromAccountEntry);
                 colItr.AddIterator(fromAccountItr);
@@ -145,27 +147,27 @@ namespace Dev2.Activities
                 IDev2DataListEvaluateIterator toItr = Dev2ValueObjectFactory.CreateEvaluateIterator(toEntry);
                 colItr.AddIterator(toItr);
 
-                IBinaryDataListEntry ccEntry = compiler.Evaluate(dlID, enActionType.User, Cc, false, out errors);
+                IBinaryDataListEntry ccEntry = compiler.Evaluate(dlID, enActionType.User, Cc ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator ccItr = Dev2ValueObjectFactory.CreateEvaluateIterator(ccEntry);
                 colItr.AddIterator(ccItr);
 
-                IBinaryDataListEntry bccEntry = compiler.Evaluate(dlID, enActionType.User, Bcc, false, out errors);
+                IBinaryDataListEntry bccEntry = compiler.Evaluate(dlID, enActionType.User, Bcc ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator bccItr = Dev2ValueObjectFactory.CreateEvaluateIterator(bccEntry);
                 colItr.AddIterator(bccItr);
 
-                IBinaryDataListEntry subjectEntry = compiler.Evaluate(dlID, enActionType.User, Subject, false, out errors);
+                IBinaryDataListEntry subjectEntry = compiler.Evaluate(dlID, enActionType.User, Subject ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator subjectItr = Dev2ValueObjectFactory.CreateEvaluateIterator(subjectEntry);
                 colItr.AddIterator(subjectItr);
 
-                IBinaryDataListEntry bodyEntry = compiler.Evaluate(dlID, enActionType.User, Body, false, out errors);
+                IBinaryDataListEntry bodyEntry = compiler.Evaluate(dlID, enActionType.User, Body ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator bodyItr = Dev2ValueObjectFactory.CreateEvaluateIterator(bodyEntry);
                 colItr.AddIterator(bodyItr);
 
-                IBinaryDataListEntry attachmentsEntry = compiler.Evaluate(dlID, enActionType.User, Attachments, false, out errors);
+                IBinaryDataListEntry attachmentsEntry = compiler.Evaluate(dlID, enActionType.User, Attachments ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator attachmentsItr = Dev2ValueObjectFactory.CreateEvaluateIterator(attachmentsEntry);
                 colItr.AddIterator(attachmentsItr);
@@ -186,33 +188,58 @@ namespace Dev2.Activities
                             }
                             else
                             {
-                                AddDebugInputItem(FromAccount, "From Account", fromAccountEntry, executionId, indexToUpsertTo);
+                                AddDebugInputItem(new DebugItemVariableParams(FromAccount, "From Account", fromAccountEntry, executionId));
                             }
-                            AddDebugInputItem(To, "To", toEntry, executionId, indexToUpsertTo);
-                            AddDebugInputItem(Subject, "Subject", subjectEntry, executionId, indexToUpsertTo);
-                            AddDebugInputItem(Body, "Body", bodyEntry, executionId, indexToUpsertTo);
+                            AddDebugInputItem(new DebugItemVariableParams(To, "To", toEntry, executionId));
+                            AddDebugInputItem(new DebugItemVariableParams(Subject, "Subject", subjectEntry, executionId));
+                            AddDebugInputItem(new DebugItemVariableParams(Body, "Body", bodyEntry, executionId));
                         }
 
                         var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
                         allErrors.MergeErrors(errors);
-                        indexToUpsertTo = UpsertResult(indexToUpsertTo, toUpsert, result, dataObject, executionId);
+                        if(!allErrors.HasErrors())
+                        {
+                            indexToUpsertTo = UpsertResult(indexToUpsertTo, toUpsert, result);
+                        }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
+                    allErrors.MergeErrors(errors);
+                    if(IsDebug && !allErrors.HasErrors())
+                    {
+                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        {
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                        }
+                    }
+                }
+                else
+                {
+                    if(IsDebug)
+                    {
+                        AddDebugInputItem(FromAccount, "From Account");
+                        AddDebugInputItem(To, "To");
+                        AddDebugInputItem(Subject, "Subject");
+                        AddDebugInputItem(Body, "Body");
+                    }
                 }
             }
             catch(Exception e)
             {
                 allErrors.AddError(e.Message);
             }
-
+                
             finally
             {
                 // Handle Errors
 
                 if(allErrors.HasErrors())
                 {
-                    UpsertResult(indexToUpsertTo, toUpsert, "Failure", dataObject, executionId);
+                    UpsertResult(indexToUpsertTo, toUpsert, "Failure");
                     compiler.Upsert(executionId, toUpsert, out errors);
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(Result, "Failure", executionId, indexToUpsertTo));
+                    }
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
@@ -222,18 +249,23 @@ namespace Dev2.Activities
                     DispatchDebugState(context, StateType.After);
                 }
             }
-
         }
 
-        private int UpsertResult(int indexToUpsertTo, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result,
-                                 IDSFDataObject dataObject, Guid executionId)
+        void AddDebugInputItem(string value, string label)
+        {
+            if(string.IsNullOrEmpty(value) || string.IsNullOrEmpty(label))
+            {
+                return;
+            }
+            AddDebugInputItem(new DebugItemStaticDataParams(value, label));
+        }
+
+        private int UpsertResult(int indexToUpsertTo, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
         {
             string expression;
-            if(DataListUtil.IsValueRecordset(Result) &&
-                DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
             {
-                expression = Result.Replace(GlobalConstants.StarExpression,
-                                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
             }
             else
             {
@@ -244,10 +276,7 @@ namespace Dev2.Activities
             {
                 toUpsert.Add(region, result);
                 toUpsert.FlushIterationFrame();
-                if(dataObject.IsDebugMode())
-                {
-                    AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
-                }
+
                 indexToUpsertTo++;
             }
             return indexToUpsertTo;
@@ -272,7 +301,7 @@ namespace Dev2.Activities
             }
             mailMessage.Subject = subjectValue;
             AddToAddresses(toValue, mailMessage);
-            try
+              try
             {
                 // Always use source account unless specifically overridden by From Account
                 if(!string.IsNullOrEmpty(fromAccountValue))
@@ -283,18 +312,18 @@ namespace Dev2.Activities
                 mailMessage.From = new MailAddress(runtimeSource.UserName);
             }
             catch(Exception)
-            {
+              {
                 errors.AddError(string.Format("From address is not in the valid format: {0}", fromAccountValue));
                 return "Failure";
-            }
+              }
             mailMessage.Body = bodyValue;
             if(!String.IsNullOrEmpty(ccValue))
             {
-                AddCCAddresses(ccValue, mailMessage);
+                AddCcAddresses(ccValue, mailMessage);
             }
             if(!String.IsNullOrEmpty(bccValue))
             {
-                AddBCCAddresses(bccValue, mailMessage);
+                AddBccAddresses(bccValue, mailMessage);
             }
             if(!String.IsNullOrEmpty(attachmentsValue))
             {
@@ -321,15 +350,15 @@ namespace Dev2.Activities
         }
         void AddAttachmentsValue(string attachmentsValue, MailMessage mailMessage)
         {
-            try
+             try
             {
-                var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
-                attachements.ForEach(s => mailMessage.Attachments.Add(new Attachment(s)));
+            var attachements = GetSplitValues(attachmentsValue, new[] { ',', ';' });
+            attachements.ForEach(s => mailMessage.Attachments.Add(new Attachment(s)));
             }
             catch(Exception exception)
-            {
-                throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
-            }
+             {
+                 throw new Exception(string.Format("Attachments is not in the valid format: {0}", attachmentsValue), exception);
+             }
         }
 
         void AddToAddresses(string toValue, MailMessage mailMessage)
@@ -345,30 +374,30 @@ namespace Dev2.Activities
             }
         }
 
-        void AddCCAddresses(string toValue, MailMessage mailMessage)
+        void AddCcAddresses(string toValue, MailMessage mailMessage)
         {
-            try
+             try
             {
-                var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-                ccAddresses.ForEach(s => mailMessage.CC.Add(new MailAddress(s)));
+            var ccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
+            ccAddresses.ForEach(s => mailMessage.CC.Add(new MailAddress(s)));
             }
             catch(FormatException exception)
-            {
-                throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
-            }
+             {
+                 throw new Exception(string.Format("CC address is not in the valid format: {0}", toValue), exception);
+             }
         }
 
-        void AddBCCAddresses(string toValue, MailMessage mailMessage)
+        void AddBccAddresses(string toValue, MailMessage mailMessage)
         {
-            try
+              try
             {
-                var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
-                bccAddresses.ForEach(s => mailMessage.Bcc.Add(new MailAddress(s)));
+            var bccAddresses = GetSplitValues(toValue, new[] { ',', ';' });
+            bccAddresses.ForEach(s => mailMessage.Bcc.Add(new MailAddress(s)));
             }
             catch(FormatException exception)
-            {
-                throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
-            }
+              {
+                  throw new Exception(string.Format("BCC address is not in the valid format: {0}", toValue), exception);
+              }
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -446,86 +475,6 @@ namespace Dev2.Activities
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId, int indexToUpsertTo)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexToUpsertTo + 1).ToString() });
-
-            if(!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if(valueEntry != null)
-            {
-                expression = expression.TrimEnd(new[] { '\r', '\n' });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                if(expression.Contains("[[") && expression.Contains("]]"))
-                {
-                    var makeParts = DataListFactory.CreateLanguageParser().MakeParts(expression);
-                    if(makeParts.Count > 1)
-                    {
-                        var r = "[[" + makeParts[0].Payload + "]]";
-                        var s = "[[" + makeParts[1].Payload + "]]";
-                        if(s.Contains("[[") && s.Contains("]]"))
-                        {
-                            if(valueEntry.IsRecordset)
-                            {
-                                var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                foreach(var debugItemResult in debugItemsFromEntry)
-                                {
-                                    debugItemResult.GroupName = debugItemResult.GroupName + " " + s;
-                                    if(debugItemResult.Type == DebugItemResultType.Variable)
-                                    {
-                                        debugItemResult.Value = debugItemResult.Value + " " + s;
-                                    }
-                                }
-                                itemToAdd.AddRange(debugItemsFromEntry);
-                            }
-                            else
-                            {
-                                var debugItemsFromEntry = CreateDebugItemsFromEntry(r, valueEntry, executionId, enDev2ArgumentType.Input);
-                                itemToAdd.AddRange(debugItemsFromEntry);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var debugItemsFromEntry = CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input);
-                        itemToAdd.AddRange(debugItemsFromEntry);
-                    }
-                }
-                else
-                {
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-                }
-
-            }
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (iterationCounter + 1).ToString() });
-            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
-        private void AddDebugInputItem(string label, string value)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = label });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = value });
-            _debugInputs.Add(itemToAdd);
         }
 
         #endregion

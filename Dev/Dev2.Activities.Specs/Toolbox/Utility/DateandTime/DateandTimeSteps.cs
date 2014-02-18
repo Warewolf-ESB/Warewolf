@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -19,7 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -53,6 +53,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
                 {
                     Action = dateTime
                 };
+
+            ScenarioContext.Current.Add("activity", dateTime);
         }
 
 
@@ -85,7 +87,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         public void WhenTheDatetimeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

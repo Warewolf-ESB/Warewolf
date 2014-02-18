@@ -372,57 +372,6 @@ WallisBuchan
 
         #endregion GetWizardData Tests
 
-        #region Get Debug Input/Output Tests
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DataMerge_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
-        {
-            _mergeCollection.Clear();
-            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ",", 1, " ", "Left"));
-            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(8, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DataMerge_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        {
-            _mergeCollection.Clear();
-            _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", ",", 1, " ", "Left"));
-            DsfDataMergeActivity act = new DsfDataMergeActivity { Result = "[[res]]", MergeCollection = _mergeCollection };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(35, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDataMergeActivity_UpdateForEachInputs")]

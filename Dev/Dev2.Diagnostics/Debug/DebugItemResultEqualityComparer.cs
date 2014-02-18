@@ -9,6 +9,8 @@ namespace Dev2.Diagnostics
             if(x != null && y != null)
             {
                 return x.Type == y.Type
+                       && x.Label == y.Label
+                       && x.Variable == y.Variable
                        && x.Value == y.Value
                        && x.GroupName == y.GroupName
                        && x.GroupIndex == y.GroupIndex

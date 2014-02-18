@@ -12,6 +12,12 @@ Scenario: Find the first Occurrence of a character in a sentence
 	When the data find index tool is executed
 	Then the find index result is "49"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field                                                                               | Index            | Characters | Direction     |
+	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | First Occurrence | since      | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = 49 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to scalar going left to right
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
@@ -22,6 +28,12 @@ Scenario: Find all Occurrences of a word in a sentence and output to scalar goin
 	When the data find index tool is executed
 	Then the find index result is "4,9,11,35,43,59,72"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field                                                                               | Index           | Characters | Direction     |
+	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | All Occurrences | a          | Left to Right |
+	And the debug output as
+	| Result                          |
+	| [[result]] = 4,9,11,35,43,59,72 |
 
 Scenario: Find all Occurrences of a word in a sentence and output to recordset going right to left 
 	Given I have a findindex variable "[[a]]" equal to "I have managed to spend time in real innovation since I started using Warewolf"
@@ -40,6 +52,12 @@ Scenario: Find all Occurrences of a word in a sentence and output to recordset g
 	| 70     |
 	| 75     |
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field                                                                               | Index           | Characters | Direction     |
+	| [[a]] = I have managed to spend time in real innovation since I started using Warewolf | All Occurrences | a          | Right to Left |
+	And the debug output as
+	| Result                           |
+	| [[result]] = 7,20,36,44,68,70,75 |
 
 Scenario: Find last Occurrence of a bracket in a sentence
 	Given I have a findindex variable "[[a]]" equal to "!@#$%)@#$%)"
@@ -50,6 +68,12 @@ Scenario: Find last Occurrence of a bracket in a sentence
 	When the data find index tool is executed
 	Then the find index result is "11"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field            | Index           | Characters | Direction     |
+	| [[a]] = !@#$%)@#$%) | Last Occurrence | )          | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = 11 |
 
 Scenario: Find first Occurrence of a character in a blank string
 	Given I have a findindex variable "[[a]]" equal to ""
@@ -60,6 +84,12 @@ Scenario: Find first Occurrence of a character in a blank string
 	When the data find index tool is executed
 	Then the find index result is "-1"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field | Index            | Characters | Direction     |
+	| [[a]] =  | First Occurrence | a          | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = -1 |
 
 Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to "fff"
@@ -70,6 +100,12 @@ Scenario: Find first Occurrence of a character in a string where it doesnt exist
 	When the data find index tool is executed
 	Then the find index result is "-1"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field    | Index            | Characters | Direction     |
+	| [[a]] = fff | First Occurrence | a          | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = -1 |
 
 Scenario: Find all Occurrences of a character in a string where it doesnt exist
 	Given I have a findindex variable "[[a]]" equal to ""
@@ -80,6 +116,12 @@ Scenario: Find all Occurrences of a character in a string where it doesnt exist
 	When the data find index tool is executed
 	Then the find index result is "-1"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field | Index          | Characters | Direction     |
+	| [[a]] =  | All Occurrence | a          | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = -1 |
 
 Scenario: Find an xml fragment in a bigger xml document
 	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
@@ -91,6 +133,12 @@ Scenario: Find an xml fragment in a bigger xml document
 	When the data find index tool is executed
 	Then the find index result is "4"
 	And the execution has "NO" error
+	And the debug inputs as
+	| In Field                         | Index            | Characters                   | Direction     |
+	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | <b id="[[id]]"> = <b id="1"> | Left to Right |
+	And the debug output as
+	| Result         |
+	| [[result]] = 4 |
 
 Scenario: Find a negative recordset index in a string
 	Given I have a findindex variable "[[a]]" equal to "<x><b id="1">One</b></x>"
@@ -100,6 +148,12 @@ Scenario: Find a negative recordset index in a string
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the execution has "AN" error
+	And the debug inputs as
+	| In Field                         | Index            | Characters        | Direction     |
+	| [[a]] = <x><b id="1">One</b></x> | First Occurrence | [[my(-1).data]] = | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = -1 |
 
 Scenario: Find something with a negative recordset index as Input
 	Given the sentence "[[a(-1).b]]"
@@ -108,4 +162,25 @@ Scenario: Find something with a negative recordset index as Input
 	And I selected direction as "Left to Right"
 	When the data find index tool is executed
 	Then the execution has "AN" error
+	And the debug inputs as
+	| In Field      | Index            | Characters | Direction     |
+	| [[a(-1).b]] = | First Occurrence | 12         | Left to Right |
+	And the debug output as
+	| Result          |
+	| [[result]] = -1 |
 
+#Scenario: Output values in recordset
+#    Given the sentence "abc3cde3fgh3"
+#	And I selected Index "First Occurrence"
+#	And I search for characters "3"
+#	And I selected direction as "Left to Right"
+#	When the data find index tool is executed
+#	Then the execution has "NO" error
+#	And the debug inputs as
+#	| In Field     | Index            | Characters | Direction     |
+#	| abc3cde3fgh3 | First Occurrence | 3          | Left to Right |
+#	And the debug output as
+#	| Result           |
+#	| [[rs(1).a]] = 4  |
+#	| [[rs(2).a]] = 8  |
+#	| [[rs(3).a]] = 12 | 

@@ -27,11 +27,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             int row = 1;
 
             var caseConversion = ScenarioContext.Current.Get<List<Tuple<string, string>>>("caseConversion");
-            foreach (dynamic variable in caseConversion)
+            foreach(dynamic variable in caseConversion)
             {
                 caseConvert.ConvertCollection.Add(new CaseConvertTO(variable.Item1, variable.Item2, variable.Item1, row));
                 row++;
             }
+            ScenarioContext.Current.Add("activity", caseConvert);
         }
 
         [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
@@ -40,7 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -55,12 +56,12 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
             List<Tuple<string, string>> caseConversion;
             ScenarioContext.Current.TryGetValue("caseConversion", out caseConversion);
 
-            if (caseConversion == null)
+            if(caseConversion == null)
             {
                 caseConversion = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("caseConversion", caseConversion);
             }
-            
+
             caseConversion.Add(new Tuple<string, string>(variable, toCase));
         }
 
@@ -68,7 +69,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void WhenTheCaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -77,15 +78,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         {
             List<TableRow> records = table.Rows.ToList();
 
-            if (records.Count == 0)
+            if(records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string ,string>> emptyRecordset;
+                List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("rs", emptyRecordset);
@@ -93,17 +94,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow record in records)
+            foreach(TableRow record in records)
             {
-                List<Tuple<string, string, string>> variableList;
+                List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
-                    variableList = new List<Tuple<string, string, string>>();
+                    variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
                 }
-                variableList.Add(new Tuple<string, string, string>(record[0], record[1], ""));
+                variableList.Add(new Tuple<string, string>(record[0], record[1]));
             }
         }
 
@@ -121,7 +122,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
             List<TableRow> tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }

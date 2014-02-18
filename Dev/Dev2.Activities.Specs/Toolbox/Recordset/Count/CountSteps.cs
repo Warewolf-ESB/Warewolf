@@ -29,10 +29,12 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
 
             string recordSetName;
             ScenarioContext.Current.TryGetValue("recordset", out recordSetName);
+            
+            var recordset = ScenarioContext.Current.Get<string>("recordset");
 
             var count = new DsfCountRecordsetActivity
                 {
-                    RecordsetName = string.IsNullOrEmpty(recordSetName) ? "rs()" : recordSetName + "()",
+                    RecordsetName = recordset,
                     CountNumber = ResultVariable
                 };
 
@@ -40,6 +42,13 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
                 {
                     Action = count
                 };
+            ScenarioContext.Current.Add("activity", count);
+        }
+
+        [Given(@"count on record ""(.*)""")]
+        public void GivenCountOnRecord(string recordset)
+        {
+            ScenarioContext.Current.Add("recordset", recordset);
         }
 
         [Given(@"I have a recordset with this shape")]
@@ -57,7 +66,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                    ScenarioContext.Current.Add("rs", emptyRecordset);
+                     ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, "row"));
             }
@@ -72,7 +81,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
                 }
-                variableList.Add(new Tuple<string, string>(t[0], "a"));
+                variableList.Add(new Tuple<string, string>(t[0], t[1]));
             }
         }
 
@@ -80,7 +89,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

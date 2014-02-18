@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
@@ -55,14 +56,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
-                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
-                AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItem(new DebugItemVariableParams(OutputPath, "File or Folder", outputPathEntry, executionId));
+                AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
+                //                AddDebugInputItem(new DebugItemVariableParams(Username, "Username", usernameEntry, executionId));
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
 
                 string error = string.Empty;
@@ -80,7 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     string result = broker.Create(dstEndPoint, opTO, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
                     allErrors.AddError(e.Message);
@@ -117,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 OutputPath = updates[0].Item2;
             }
@@ -125,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

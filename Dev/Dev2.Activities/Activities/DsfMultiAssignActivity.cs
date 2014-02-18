@@ -1,11 +1,6 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.TO;
@@ -15,6 +10,12 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
 using Dev2.Diagnostics;
 using Dev2.Enums;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -90,12 +91,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
-            toUpsert.IsDebug = (dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke);
+            toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
 
-            if(dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebugMode())
             {
-                DispatchDebugState(context, StateType.Before);
+                InitializeDebug(dataObject);
             }
 
             ErrorResultTO errors = new ErrorResultTO();
@@ -106,8 +107,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if(!errors.HasErrors())
                 {
+                    var index = 1;
                     foreach(ActivityDTO t in FieldsCollection)
                     {
+                        if(dataObject.IsDebugMode())
+                        {
+                            if(!string.IsNullOrEmpty(t.FieldName))
+                            {
+                                var debugItem = new DebugItem();
+                                AddDebugItem(new DebugItemStaticDataParams("", index.ToString(CultureInfo.InvariantCulture)), debugItem);
+                                var dataList = compiler.FetchBinaryDataList(executionID, out errors);
+                                
+                                string error;
+                                IBinaryDataListEntry theEntry;
+
+                                var found = dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(t.FieldName), out theEntry, out error);
+                                if((found && theEntry.IsEmpty()) || !found)
+                                {
+                                    AddDebugInputForEmptyVariable(t, debugItem);
+                                }
+                                else
+                                {
+                                    AddDebugInputForVariableInDataList(compiler, executionID, t, debugItem);
+                                }
+                                _debugInputs.Add(debugItem);
+                                index++;
+                            }
+                        }
+
                         if(!string.IsNullOrEmpty(t.FieldName))
                         {
                             string eval = t.FieldValue;
@@ -122,21 +149,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     compiler.Upsert(executionID, toUpsert, out errors);
+                    allErrors.MergeErrors(errors);
 
-                    if(dataObject.IsDebugMode())
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        int innerCount = 0;
-                        foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
-                        {
-                            AddDebugItem(debugOutputTO.TargetEntry, FieldsCollection[innerCount].FieldValue,
-                                         debugOutputTO.FromEntry, executionID, innerCount,
-                                         debugOutputTO.UsedRecordsetIndex, dataObject, context);
-                            innerCount++;
-                            if(debugOutputTO.FromEntry != null)
-                                debugOutputTO.FromEntry.Dispose();
-                            if(debugOutputTO.TargetEntry != null)
-                                debugOutputTO.TargetEntry.Dispose();
-                        }
+                        AddDebugTos(toUpsert);
                     }
                     allErrors.MergeErrors(errors);
                 }
@@ -150,15 +167,69 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {
+                    DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+            }
+        }
+
+        void AddDebugInputForVariableInDataList(IDataListCompiler compiler, Guid executionID, ActivityDTO t, DebugItem debugItem)
+        {
+            ErrorResultTO errors;
+            IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionID, enActionType.User, t.FieldName, false, out errors);
+            AddDebugItem(new DebugItemVariableParams(t.FieldName, "Variable", expressionsEntry, executionID), debugItem);
+            string calculationExpression;
+            if(DataListUtil.IsCalcEvaluation(t.FieldValue, out calculationExpression))
+            {
+                AddDebugItem(new DebugItemStaticDataParams(string.Format("={0}", calculationExpression), "New Value"), debugItem);
+            }
+            else
+            {
+                expressionsEntry = compiler.Evaluate(executionID, enActionType.User, t.FieldValue, false, out errors);
+                AddDebugItem(new DebugItemVariableParams(t.FieldValue, "New Value", expressionsEntry, executionID), debugItem);
+            }
+        }
+
+        void AddDebugInputForEmptyVariable(ActivityDTO t, DebugItem debugItem)
+        {
+            AddDebugItem(new DebugItemStaticDataParams("", t.FieldName, "Variable"), debugItem);
+            string calculationExpression;
+            if(DataListUtil.IsCalcEvaluation(t.FieldValue, out calculationExpression))
+            {
+                AddDebugItem(new DebugItemStaticDataParams(string.Format("={0}", calculationExpression), "New Value"), debugItem);
+            }
+            else
+            {
+                if(DataListUtil.IsEvaluated(t.FieldValue))
+                {
+                    AddDebugItem(new DebugItemStaticDataParams("", t.FieldValue, "New Value"), debugItem);
+                }
+                else
+                {
+                    AddDebugItem(new DebugItemStaticDataParams(t.FieldValue, "New Value"), debugItem);
+                }
+            }
+        }
+
+        void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert)
+        {
+            int innerCount = 1;
+
+            foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+            {
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
+                AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), debugItem);
+                innerCount++;
+                _debugOutputs.Add(debugItem);
             }
         }
 
@@ -208,12 +279,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             string error;
             IBinaryDataList result = Dev2BinaryDataListFactory.CreateDataList();
-            const string recordsetName = "FieldsCollection";
-            result.TryCreateRecordsetTemplate(recordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
+            const string RecordsetName = "FieldsCollection";
+            result.TryCreateRecordsetTemplate(RecordsetName, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column("FieldName", string.Empty), DataListFactory.CreateDev2Column("FieldValue", string.Empty) }, true, out error);
             foreach(ActivityDTO item in FieldsCollection)
             {
-                result.TryCreateRecordsetValue(item.FieldName, "FieldName", recordsetName, item.IndexNumber, out error);
-                result.TryCreateRecordsetValue(item.FieldValue, "FieldValue", recordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.FieldName, "FieldName", RecordsetName, item.IndexNumber, out error);
+                result.TryCreateRecordsetValue(item.FieldValue, "FieldValue", RecordsetName, item.IndexNumber, out error);
             }
             return result;
         }
@@ -224,25 +295,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            return DebugItem.EmptyList;
+            return _debugInputs;
         }
 
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
-            IList<IDebugItem> invalidDebugItems = new List<IDebugItem>();
-            foreach(IDebugItem debugOutput in _debugOutputs)
-            {
-                debugOutput.FlushStringBuilder();
-                if(string.IsNullOrEmpty(debugOutput.FetchResultsList()[1].Value))
-                {
-                    invalidDebugItems.Add(debugOutput);
-                }
-            }
-            foreach(DebugItem invalidDebugItem in invalidDebugItems)
-            {
-                _debugOutputs.Remove(invalidDebugItem);
-            }
-
             return _debugOutputs;
         }
 
@@ -270,17 +327,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void RemoveItem()
         {
-            List<int> BlankCount = (from dynamic item in FieldsCollection
+            List<int> blankCount = (from dynamic item in FieldsCollection
                                     where String.IsNullOrEmpty(item.FieldName) && String.IsNullOrEmpty(item.FieldValue)
                                     select item.IndexNumber).Cast<int>().ToList();
 
-            if(BlankCount.Count <= 1 || FieldsCollection.Count <= 2)
+            if(blankCount.Count <= 1 || FieldsCollection.Count <= 2)
             {
                 return;
             }
 
-            FieldsCollection.Remove(FieldsCollection[BlankCount[0] - 1]);
-            for(int i = BlankCount[0] - 1; i < FieldsCollection.Count; i++)
+            FieldsCollection.Remove(FieldsCollection[blankCount[0] - 1]);
+            for(int i = blankCount[0] - 1; i < FieldsCollection.Count; i++)
             {
                 // ReSharper disable RedundantCast
                 dynamic tmp = FieldsCollection[i] as dynamic;
@@ -308,43 +365,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return eval;
         }
-
-        private void AddDebugItem(IBinaryDataListEntry fieldEntry, string fieldValue, IBinaryDataListEntry valueEntry, Guid executionId, int indexNumToUse, int rsIdx, IDSFDataObject dataObject, NativeActivityContext context)
-        {
-            if(valueEntry != null)
-            {
-                if(fieldValue.Contains("@"))
-                {
-                    string eval = GetEnviromentVariable(dataObject, context, fieldValue);
-                    var results = CreateDebugItemsFromString(FieldsCollection[indexNumToUse].FieldName, FieldsCollection[indexNumToUse].FieldValue, DataListExecutionID.Get(context), indexNumToUse, enDev2ArgumentType.Output);
-                    var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-                    results.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = eval });
-                    itemToAdd.AddRange(results);
-                    _debugOutputs.Add(itemToAdd);
-                }
-                else
-                {
-                    var itemToAdd = new DebugItem();
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexNumToUse + 1).ToString(CultureInfo.InvariantCulture) });
-                    string fieldName = FieldsCollection[indexNumToUse].FieldName;
-                    if(fieldEntry != null && fieldEntry.IsRecordset &&
-                        (DataListUtil.GetRecordsetIndexType(FieldsCollection[indexNumToUse].FieldName)
-                        == enRecordsetIndexType.Blank))
-                    {
-                        fieldName = fieldName.Replace("().", string.Concat("(", rsIdx.ToString(CultureInfo.InvariantCulture), ")."));
-                    }
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = fieldName });
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(fieldValue, valueEntry, executionId, enDev2ArgumentType.Output, valueEntry.FetchAppendRecordsetIndex()));
-
-                    _debugOutputs.Add(itemToAdd);
-                }
-            }
-        }
-
         #endregion
     }
 }

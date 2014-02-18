@@ -14,6 +14,7 @@ namespace Dev2.Activities.Designers2.DateTime
         {
             AddTitleBarHelpToggle();
             TimeModifierTypes = new List<string>(DateTimeFormatter.TimeModifierTypes);
+            SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
         }
 
         public List<string> TimeModifierTypes { get; private set; }
@@ -42,7 +43,7 @@ namespace Dev2.Activities.Designers2.DateTime
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set { SetProperty(value); } }
+        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
         string TimeModifierAmountDisplay { set { SetProperty(value); } }
 
         public override void Validate()

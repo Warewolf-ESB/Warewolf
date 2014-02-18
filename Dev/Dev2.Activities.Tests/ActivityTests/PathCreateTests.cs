@@ -54,78 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-
-        #region GetDebugInputs/Outputs
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Create_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfPathCreate act = new DsfPathCreate { OutputPath = string.Concat(TestContext.TestRunDirectory, "\\", "[[CompanyName]].txt"), Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Create_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            List<string> fileNames = new List<string>();
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, Guid.NewGuid() + ".txt"));
-
-            string dataListWithData;
-            string dataListShape;
-
-            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
-
-            DsfPathCreate act = new DsfPathCreate { OutputPath = "[[FileNames(*).Name]]", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckPathOperationActivityDebugInputOutput(act, dataListShape,
-                                                                dataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(13, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(1, inRes[2].FetchResultsList().Count);            
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);            
-        }
-
-        #endregion
-
+        
         // ReSharper disable InconsistentNaming
 
         [TestMethod]

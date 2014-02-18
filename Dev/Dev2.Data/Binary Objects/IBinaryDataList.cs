@@ -148,6 +148,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         IList<string> FetchAllUserKeys();
 
         /// <summary>
+        /// Fetches only the recordset user keys
+        /// </summary>
+        /// <returns></returns>
+        IList<string> FetchAllRecordSetKeys();
+
+        /// <summary>
         /// Merges the specified left.
         /// </summary>
         /// <param name="right">The right.</param>
@@ -195,5 +201,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         void ClearErrors();
 
         #endregion
+
+
     }
 }

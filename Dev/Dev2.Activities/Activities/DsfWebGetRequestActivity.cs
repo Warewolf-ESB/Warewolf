@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
@@ -74,34 +75,37 @@ namespace Dev2.Activities
             var dlID = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
             var executionId = DataListExecutionID.Get(context);
+            var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
+
+            InitializeDebug(dataObject);
             try
             {
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false,
-                                                                          out errorsTo);
+                var expressionsEntry = compiler.Evaluate(executionId, enActionType.User, Url, false, out errorsTo);
                 allErrors.MergeErrors(errorsTo);
-
-                IBinaryDataListEntry headersEntry = compiler.Evaluate(executionId, enActionType.User, Headers, false,
-                                                                      out errorsTo);
+                var headersEntry = compiler.Evaluate(executionId, enActionType.User, Headers, false, out errorsTo);
                 allErrors.MergeErrors(errorsTo);
-
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
-                    AddUrlDebugInputItem(Url, expressionsEntry, executionId);
+                    DebugItem debugItem = new DebugItem();
+                    if(expressionsEntry == null)
+                    {
+                        AddDebugItem(new DebugItemStaticDataParams("", Url, "URL"), debugItem);
+                    }
+                    else
+                    {
+                        AddDebugItem(new DebugItemVariableParams(Url, "URL", expressionsEntry, executionId), debugItem);
+                    }
+                    _debugInputs.Add(debugItem);
                 }
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert =
-                    Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-
                 var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
-                IDev2DataListEvaluateIterator urlitr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                IDev2DataListEvaluateIterator headerItr = Dev2ValueObjectFactory.CreateEvaluateIterator(headersEntry);
-
+                var urlitr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
+                var headerItr = Dev2ValueObjectFactory.CreateEvaluateIterator(headersEntry);
                 colItr.AddIterator(urlitr);
                 colItr.AddIterator(headerItr);
-                int indexToUpsertTo = 1;
+                const int IndexToUpsertTo = 1;
                 while(colItr.HasMoreData())
                 {
-                    IList<IBinaryDataListItem> cols = headerItr.FetchNextRowData();
                     var c = colItr.FetchNextRow(urlitr);
                     var headerValue = colItr.FetchNextRow(headerItr).TheValue;
                     var headers = string.IsNullOrEmpty(headerValue)
@@ -115,51 +119,34 @@ namespace Dev2.Activities
                         var headerSegments = header.Split(':');
                         headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
 
+                        if(dataObject.IsDebugMode())
+                        {
+                            DebugItem debugItem = new DebugItem();
+                            AddDebugItem(new DebugItemVariableParams(Headers, "Header", headersEntry, executionId), debugItem);
+                            _debugInputs.Add(debugItem);
+                        }
                     }
 
-                    string result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
+                    var result = WebRequestInvoker.ExecuteRequest(Method, c.TheValue, headersEntries);
                     allErrors.MergeErrors(errorsTo);
-                    string expression;
-                    if(DataListUtil.IsValueRecordset(Result) &&
-                           DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                    {
-                        expression = Result.Replace(GlobalConstants.StarExpression,
-                                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        expression = Result;
-                    }
-                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                    {
-                        toUpsert.Add(region, result);
-                        toUpsert.FlushIterationFrame();
-                        if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) ||
-                            dataObject.RemoteInvoke)
-                        {
-                            AddDebugOutputItem(region, result, executionId, indexToUpsertTo);
-                        }
-                        indexToUpsertTo++;
-                    }
-                    compiler.Upsert(executionId, toUpsert, out errorsTo);
-                    allErrors.MergeErrors(errorsTo);
+                    var expression = GetExpression(IndexToUpsertTo);
+                    PushResultsToDataList(expression, toUpsert, result, dataObject, executionId, IndexToUpsertTo, compiler, allErrors);
                 }
             }
             catch(Exception e)
             {
+                var expression = GetExpression(1);
+                PushResultsToDataList(expression, toUpsert, "", dataObject, executionId, 1, compiler, allErrors);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                // Handle Errors
-
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
                     compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -167,23 +154,44 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddUrlDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId)
+        string GetExpression(int indexToUpsertTo)
         {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "URL To Execute" });
-
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-
-            _debugInputs.Add(itemToAdd);
+            string expression;
+            if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            {
+                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                expression = Result;
+            }
+            return expression;
         }
 
-        void AddDebugOutputItem(string region, string result, Guid executionId, int indexToUpsertTo)
+        void PushResultsToDataList(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, IDSFDataObject dataObject, Guid executionId, int indexToUpsertTo, IDataListCompiler compiler, ErrorResultTO allErrors)
         {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = (indexToUpsertTo).ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.AddRange(CreateDebugItemsFromString(region, result, executionId, indexToUpsertTo, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
+            UpdateResultRegions(expression, toUpsert, result, indexToUpsertTo);
+            compiler.Upsert(executionId, toUpsert, out errorsTo);
+            if(dataObject.IsDebugMode())
+            {
+                foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                {
+                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                }
+            }
+            allErrors.MergeErrors(errorsTo);
         }
+
+        void UpdateResultRegions(string expression, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result, int indexToUpsertTo)
+        {
+            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+            {
+                toUpsert.Add(region, result);
+                toUpsert.FlushIterationFrame();
+                indexToUpsertTo++;
+            }
+        }
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs

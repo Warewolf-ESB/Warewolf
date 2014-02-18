@@ -2,10 +2,10 @@
 using System.Activities;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Operations;
 using Dev2.DataList.Contract;
@@ -23,7 +23,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Class Members
 
         private string _result;
-        int _indexCounter = 1;
+        //int _indexCounter = 1;
 
         #endregion Class Members
 
@@ -88,14 +88,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            _indexCounter = 1;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errorResultTO = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = dataObject.IsDebugMode();
 
+            InitializeDebug(dataObject);
             try
             {
                 CleanArguments(MergeCollection);
@@ -106,7 +108,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+
+
                 allErrors.MergeErrors(errorResultTO);
                 Dictionary<int, List<IDev2DataListEvaluateIterator>> listOfIterators = new Dictionary<int, List<IDev2DataListEvaluateIterator>>();
 
@@ -115,48 +118,85 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 int dictionaryKey = 0;
                 foreach(DataMergeDTO row in MergeCollection)
                 {
-                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTO);
+                    IBinaryDataListEntry inputVariableExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTO);
                     allErrors.MergeErrors(errorResultTO);
 
-                    IBinaryDataListEntry atEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTO);
+                    IBinaryDataListEntry atExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
+
+                    IBinaryDataListEntry paddingExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.Padding, false, out errorResultTO);
                     allErrors.MergeErrors(errorResultTO);
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(row.InputVariable, row.At, row.MergeType, expressionsEntry, atEntry, executionId);
+                        DebugItem debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", row.IndexNumber.ToString()), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(row.InputVariable, "Input", inputVariableExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(row.At, "Using", atExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(row.Padding, "Pad", paddingExpressionEntry, executionId), debugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
+                        _debugInputs.Add(debugItem);
                     }
-                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
-                    IDev2DataListEvaluateIterator atItr = Dev2ValueObjectFactory.CreateEvaluateIterator(atEntry);
+
+                    IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputVariableExpressionEntry);
+                    IDev2DataListEvaluateIterator atItr = Dev2ValueObjectFactory.CreateEvaluateIterator(atExpressionEntry);
+                    IDev2DataListEvaluateIterator padItr = Dev2ValueObjectFactory.CreateEvaluateIterator(paddingExpressionEntry);
 
                     iteratorCollection.AddIterator(itr);
                     iteratorCollection.AddIterator(atItr);
+                    iteratorCollection.AddIterator(padItr);
 
-                    listOfIterators.Add(dictionaryKey, new List<IDev2DataListEvaluateIterator> { itr, atItr });
+                    listOfIterators.Add(dictionaryKey, new List<IDev2DataListEvaluateIterator> { itr, atItr, padItr });
                     dictionaryKey++;
                 }
 
                 #endregion
 
                 #region Iterate and Merge Data
-
-                while(iteratorCollection.HasMoreData())
+                if(!allErrors.HasErrors())
                 {
-                    int pos = 0;
-                    foreach(var iterator in listOfIterators)
+                    while(iteratorCollection.HasMoreData())
                     {
-                        var val = iteratorCollection.FetchNextRow(iterator.Value[0]);
-                        var at = iteratorCollection.FetchNextRow(iterator.Value[1]);
-
-                        if(val != null)
+                        int pos = 0;
+                        foreach(var iterator in listOfIterators)
                         {
-                            if(at != null)
+                            var val = iteratorCollection.FetchNextRow(iterator.Value[0]);
+                            var at = iteratorCollection.FetchNextRow(iterator.Value[1]);
+                            var pad = iteratorCollection.FetchNextRow(iterator.Value[2]);
+
+                            if(val != null)
                             {
-                                if((MergeCollection[pos].MergeType == "Index" || MergeCollection[pos].MergeType == "Chars") && string.IsNullOrEmpty(at.TheValue))
+                                if(at != null)
                                 {
-                                    allErrors.AddError("The At value cannot be blank.");
+                                    if(pad != null)
+                                    {
+                                        if((MergeCollection[pos].MergeType == "Index" || MergeCollection[pos].MergeType == "Chars") && string.IsNullOrEmpty(at.TheValue))
+                                        {
+                                            allErrors.AddError("The At value cannot be blank.");
+                                        }
+                                        mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, pad.TheValue, MergeCollection[pos].Alignment);
+                                        pos++;
+                                    }
                                 }
-                                mergeOperations.Merge(val.TheValue, MergeCollection[pos].MergeType, at.TheValue, MergeCollection[pos].Padding, MergeCollection[pos].Alignment);
-                                pos++;
+                            }
+                        }
+                    }
+                    if(!allErrors.HasErrors())
+                    {
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        {
+                            toUpsert.Add(region, mergeOperations.MergeData.ToString());
+                            toUpsert.FlushIterationFrame();
+                            compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                            allErrors.MergeErrors(errorResultTO);
+                        }
+
+                        if(dataObject.IsDebugMode())
+                        {
+                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                             }
                         }
                     }
@@ -166,18 +206,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #region Add Result to DataList
                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                {
-                    toUpsert.Add(region, mergeOperations.MergeData.ToString());
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(region, mergeOperations.MergeData.ToString(), executionId);
-                    }
-
-                    toUpsert.FlushIterationFrame();
-                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
-                }
 
                 #endregion Add Result to DataList
             }
@@ -191,6 +219,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(allErrors.HasErrors())
                 {
+                    if(dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                    }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
                 }
@@ -213,38 +245,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Private Methods
-
-        private void AddDebugInputItem(string expression, string atExpression, string mergeType, IBinaryDataListEntry inputValueEntry, IBinaryDataListEntry atValueEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Merge" });
-
-
-            if(inputValueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, inputValueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "With" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = mergeType });
-
-            if(inputValueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(atExpression, atValueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
 
         private void CleanArguments(IList<DataMergeDTO> args)
         {

@@ -44,6 +44,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
                 {
                     Action = unique
                 };
+            ScenarioContext.Current.Add("activity", unique);
         }
 
         [Given(@"I have the following empty recordset")]
@@ -119,7 +120,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Unique
         public void WhenTheUniqueToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

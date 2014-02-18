@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Activities.Debug;
 using Dev2.Common.Enums;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -13,6 +15,7 @@ using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Activities
 {
     /// <summary>
@@ -21,9 +24,6 @@ namespace Dev2.Activities
     public class DsfScriptingActivity : DsfActivityAbstract<string>
     {
         #region Fields
-
-        new List<DebugItem> _debugInputs;
-        new List<DebugItem> _debugOutputs;
 
         #endregion
 
@@ -61,8 +61,6 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            _debugInputs = new List<DebugItem>();
-            _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
@@ -72,33 +70,30 @@ namespace Dev2.Activities
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = dlID;
             allErrors.MergeErrors(errors);
-
-
+            InitializeDebug(dataObject);
             try
             {
                 if(!errors.HasErrors())
                 {
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                    toUpsert.IsDebug = dataObject.IsDebugMode();
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
                     IDev2DataListEvaluateIterator scriptItr = CreateDataListEvaluateIterator(Script, executionId, compiler, colItr, allErrors);
-                    if(allErrors.HasErrors())
-                    {
-                        return;
-                    }
+
                     IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errors);
                     allErrors.MergeErrors(errors);
+
+                    if(dataObject.IsDebugMode())
+                    {
+                        var language = ScriptType.GetDescription();
+                        AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                        AddDebugInputItem(new DebugItemVariableParams(Script, "Script", scriptEntry, executionId));
+                    }
                     if(allErrors.HasErrors())
                     {
                         return;
                     }
-
-                    if(dataObject.IsDebug)
-                    {
-                        AddDebugInputItem(Script, scriptEntry, executionId);
-                    }
-
-                    int iterationCounter = 0;
 
                     while(colItr.HasMoreData())
                     {
@@ -112,18 +107,17 @@ namespace Dev2.Activities
                         {
                             toUpsert.Add(region, value);
                             toUpsert.FlushIterationFrame();
-
-                            if(dataObject.IsDebug)
-                            {
-                                AddDebugOutputItem(region, value, executionId, iterationCounter);
-                                iterationCounter++;
-                            }
                         }
-
                     }
-
                     compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
+                    if(dataObject.IsDebug && !allErrors.HasErrors())
+                    {
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                        {
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                        }
+                    }
                 }
             }
             catch(Exception e)
@@ -149,6 +143,10 @@ namespace Dev2.Activities
 
                 if(dataObject.IsDebug)
                 {
+                    if(allErrors.HasErrors())
+                    {
+                        AddDebugOutputItem(new DebugOutputParams(Result, "", executionId, 1));
+                    }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
@@ -179,22 +177,6 @@ namespace Dev2.Activities
         #endregion
 
         #region Private Methods
-
-
-        private void AddDebugInputItem(string scriptExpression, IBinaryDataListEntry scriptEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Script to execute" });
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(scriptExpression, scriptEntry, executionId, enDev2ArgumentType.Input));
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
 
         #endregion
 

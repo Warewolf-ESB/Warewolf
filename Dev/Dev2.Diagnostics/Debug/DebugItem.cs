@@ -90,21 +90,19 @@ namespace Dev2.Diagnostics
                         _isMoreLinkCreated = true;
                         return;
                     }
-                    else
+                    
+                    _stringBuilder.Append(itemToAdd.Value);
+                    if(itemToAdd.Type == DebugItemResultType.Value)
                     {
-                        _stringBuilder.Append(itemToAdd.Value);
-                        if(itemToAdd.Type == DebugItemResultType.Value)
-                        {
-                            _stringBuilder.Append(Environment.NewLine);
-                        }
-                        if(_stringBuilder.Length > 10000)
-                        {
-                            SaveFile(_stringBuilder.ToString(), _fileName);
-                            _stringBuilder.Clear();
-                        }
-
-                        return;
+                        _stringBuilder.Append(Environment.NewLine);
                     }
+                    if(_stringBuilder.Length > 10000)
+                    {
+                        SaveFile(_stringBuilder.ToString(), _fileName);
+                        _stringBuilder.Clear();
+                    }
+
+                    return;
                 }
 
             }

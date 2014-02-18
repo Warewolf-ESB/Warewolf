@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Converters;
 using Dev2.Data.Factories;
@@ -77,11 +78,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
+            IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+
+            InitializeDebug(dataObject);
 
             try
             {
                 CleanArgs();
-                IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                toUpsert.IsDebug = dataObject.IsDebugMode();
 
                 foreach(BaseConvertTO item in ConvertCollection)
                 {
@@ -93,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
 
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
-                    if(dataObject.IsDebug)
+                    if(dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(item.FromExpression, tmp, executionId, item.FromType, item.ToType);
                     }
@@ -114,11 +118,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                             foreach(IBinaryDataListItem c in cols)
                             {
-                                if(string.IsNullOrEmpty(c.TheValue))
-                                {
-                                    continue;
-                                }
-
                                 // set up live flushing iterator details
                                 if(c.IsDeferredRead)
                                 {
@@ -130,7 +129,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
 
                                 int indexToUpsertTo = c.ItemCollectionIndex;
-                                string val = broker.Convert(c.TheValue);
+                                string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
                                 if(DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
@@ -138,17 +137,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 }
 
-
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     if(toUpsert != null)
                                     {
                                         toUpsert.Add(region, val);
-                                    }
-                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                                    {
-                                        AddDebugOutputItem(region, val, executionId);
                                     }
                                 }
 
@@ -165,28 +159,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                 }
                             }
-
-
-                            if(toUpsert != null && toUpsert.HasLiveFlushing)
-                            {
-                                try
-                                {
-                                    toUpsert.FlushIterationFrame();
-                                }
-                                catch(Exception e)
-                                {
-                                    allErrors.AddError(e.Message);
-                                }
-                            }
-                            else
-                            {
-                                compiler.Upsert(executionId, toUpsert, out errors);
-                                allErrors.MergeErrors(errors);
-                            }
-
-                            toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
-                            // Upsert the entire payload                            
                         }
+                    }
+                }
+                
+                if(toUpsert != null && toUpsert.HasLiveFlushing)
+                {
+                    try
+                    {
+                        toUpsert.FlushIterationFrame();
+                    }
+                    catch(Exception e)
+                    {
+                        allErrors.AddError(e.Message);
+                    }
+                }
+                else
+                {
+                    compiler.Upsert(executionId, toUpsert, out errors);
+                    allErrors.MergeErrors(errors);
+                }
+
+                if(!allErrors.HasErrors() && toUpsert != null)
+                {
+                    var outIndex = 1;
+                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(debugOutputTO, ""), debugItem);
+                        _debugOutputs.Add(debugItem);
+                        outIndex++;
                     }
                 }
             }
@@ -197,12 +200,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                if(allErrors.HasErrors())
+                var hasErrors = allErrors.HasErrors();
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfBaseConvertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -283,27 +287,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(string expression, IBinaryDataListEntry valueEntry, Guid executionId, string fromType, string toType)
         {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Convert" });
-
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "From" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = fromType });
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "To" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = toType });
-
-            _debugInputs.Add(itemToAdd);
-        }
-
-        private void AddDebugOutputItem(string expression, string value, Guid dlId)
-        {
             var itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, 0, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
+            AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+            AddDebugItem(new DebugItemVariableParams(expression, "Convert", valueEntry, executionId), itemToAdd);
+            AddDebugItem(new DebugItemStaticDataParams(fromType, "From"), itemToAdd);
+            AddDebugItem(new DebugItemStaticDataParams(toType, "To"), itemToAdd);
+            _debugInputs.Add(itemToAdd);
         }
 
         private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)

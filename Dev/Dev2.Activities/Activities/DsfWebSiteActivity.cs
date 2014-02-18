@@ -3,7 +3,9 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
 
     public class DsfWebSiteActivity : DsfActivityAbstract<bool>

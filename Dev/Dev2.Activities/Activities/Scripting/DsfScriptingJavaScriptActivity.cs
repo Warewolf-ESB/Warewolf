@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Activities.Debug;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -110,7 +111,7 @@ namespace Dev2.Activities
                             if(dataObject.IsDebug || dataObject.RemoteInvoke)
                             {
                                 // ReSharper disable ExpressionIsAlwaysNull
-                                AddDebugOutputItem(region, value, executionId, iterationCounter);
+                                AddDebugOutputItem(new DebugOutputParams(region, value, executionId, iterationCounter));
                                 // ReSharper restore ExpressionIsAlwaysNull
                             }
                         }
@@ -178,20 +179,9 @@ namespace Dev2.Activities
 
         private void AddDebugInputItem(string scriptExpression, IBinaryDataListEntry scriptEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Script to execute" });
-            itemToAdd.AddRange(CreateDebugItemsFromEntry(scriptExpression, scriptEntry, executionId, enDev2ArgumentType.Input));
-            _debugInputs.Add(itemToAdd);
-
+            AddDebugInputItem(new DebugItemVariableParams(scriptExpression, "Script", scriptEntry, executionId));
         }
-
-        private void AddDebugOutputItem(string result, string value, Guid dlId, int iterationCounter)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.AddRange(CreateDebugItemsFromString(result, value, dlId, iterationCounter, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
-        }
-
+        
         #endregion
 
         #region Get Debug Inputs/Outputs

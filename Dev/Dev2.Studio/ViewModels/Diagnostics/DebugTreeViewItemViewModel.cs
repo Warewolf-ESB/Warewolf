@@ -174,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         DebugLineGroup group;
                         if(!groups.TryGetValue(result.GroupName, out group))
                         {
-                            group = new DebugLineGroup(result.GroupName)
+                            group = new DebugLineGroup(result.GroupName, result.Label)
                             {
                                 MoreLink = result.MoreLink
                             };

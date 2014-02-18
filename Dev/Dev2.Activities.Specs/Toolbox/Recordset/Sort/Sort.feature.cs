@@ -140,6 +140,52 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table3.AddRow(new string[] {
+                        "[[rs(1).row]] = You",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(2).row]] = are",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(3).row]] = the",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(4).row]] = best",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(5).row]] = Warewolf",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(6).row]] = user",
+                        ""});
+            table3.AddRow(new string[] {
+                        "[[rs(7).row]] = so far",
+                        "Forward"});
+#line 29
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table4.AddRow(new string[] {
+                        "[[rs(1).row]] = are"});
+            table4.AddRow(new string[] {
+                        "[[rs(2).row]] = best"});
+            table4.AddRow(new string[] {
+                        "[[rs(3).row]] = so far"});
+            table4.AddRow(new string[] {
+                        "[[rs(4).row]] = the"});
+            table4.AddRow(new string[] {
+                        "[[rs(5).row]] = user"});
+            table4.AddRow(new string[] {
+                        "[[rs(6).row]] = Warewolf"});
+            table4.AddRow(new string[] {
+                        "[[rs(7).row]] = You"});
+#line 38
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
+#line hidden
             this.ScenarioCleanup();
         }
         
@@ -149,81 +195,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetBackwardsUsingStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset backwards using star notation", ((string[])(null)));
-#line 30
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table3.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-#line 31
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table3, "Given ");
-#line 40
- testRunner.And("I sort a record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
- testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table4.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-#line 43
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table4, "Then ");
-#line 52
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort a recordset forwards")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
-        public virtual void SortARecordsetForwards()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset forwards", ((string[])(null)));
-#line 54
+#line 48
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
@@ -250,13 +222,13 @@ this.ScenarioSetup(scenarioInfo);
             table5.AddRow(new string[] {
                         "rs().row",
                         "so far"});
-#line 55
+#line 49
  testRunner.Given("I have the following recordset to sort", ((string)(null)), table5, "Given ");
-#line 64
- testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
- testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 58
+ testRunner.And("I sort a record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
@@ -264,29 +236,195 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table6.AddRow(new string[] {
                         "rs().row",
-                        "are"});
-            table6.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table6.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-            table6.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table6.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
+                        "You"});
             table6.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
             table6.AddRow(new string[] {
                         "rs().row",
-                        "You"});
-#line 67
+                        "user"});
+            table6.AddRow(new string[] {
+                        "rs().row",
+                        "the"});
+            table6.AddRow(new string[] {
+                        "rs().row",
+                        "so far"});
+            table6.AddRow(new string[] {
+                        "rs().row",
+                        "best"});
+            table6.AddRow(new string[] {
+                        "rs().row",
+                        "are"});
+#line 61
  testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table6, "Then ");
-#line 76
+#line 70
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table7.AddRow(new string[] {
+                        "[[rs(1).row]] = You",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(2).row]] = are",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(3).row]] = the",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(4).row]] = best",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(5).row]] = Warewolf",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(6).row]] = user",
+                        ""});
+            table7.AddRow(new string[] {
+                        "[[rs(7).row]] = so far",
+                        "Backwards"});
+#line 71
+ testRunner.And("the debug inputs as", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table8.AddRow(new string[] {
+                        "[[rs(1).row]] = You"});
+            table8.AddRow(new string[] {
+                        "[[rs(2).row]] = Warewolf"});
+            table8.AddRow(new string[] {
+                        "[[rs(3).row]] = user"});
+            table8.AddRow(new string[] {
+                        "[[rs(4).row]] = the"});
+            table8.AddRow(new string[] {
+                        "[[rs(5).row]] = so far"});
+            table8.AddRow(new string[] {
+                        "[[rs(6).row]] = best"});
+            table8.AddRow(new string[] {
+                        "[[rs(7).row]] = are"});
+#line 80
+ testRunner.And("the debug output as", ((string)(null)), table8, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort a recordset forwards")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
+        public virtual void SortARecordsetForwards()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset forwards", ((string[])(null)));
+#line 90
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "You"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "are"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "the"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "best"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "user"});
+            table9.AddRow(new string[] {
+                        "rs().row",
+                        "so far"});
+#line 91
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table9, "Given ");
+#line 100
+ testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 101
+ testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "are"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "best"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "so far"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "the"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "user"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "Warewolf"});
+            table10.AddRow(new string[] {
+                        "rs().row",
+                        "You"});
+#line 103
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table10, "Then ");
+#line 112
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table11.AddRow(new string[] {
+                        "[[rs(1).row]] = You",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(2).row]] = are",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(3).row]] = the",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(4).row]] = best",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(5).row]] = Warewolf",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(6).row]] = user",
+                        ""});
+            table11.AddRow(new string[] {
+                        "[[rs(7).row]] = so far",
+                        "Forward"});
+#line 113
+ testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table12.AddRow(new string[] {
+                        "[[rs(1).row]] = are"});
+            table12.AddRow(new string[] {
+                        "[[rs(2).row]] = best"});
+            table12.AddRow(new string[] {
+                        "[[rs(3).row]] = so far"});
+            table12.AddRow(new string[] {
+                        "[[rs(4).row]] = the"});
+            table12.AddRow(new string[] {
+                        "[[rs(5).row]] = user"});
+            table12.AddRow(new string[] {
+                        "[[rs(6).row]] = Warewolf"});
+            table12.AddRow(new string[] {
+                        "[[rs(7).row]] = You"});
+#line 122
+ testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -297,70 +435,116 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetBackwards()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset backwards", ((string[])(null)));
-#line 78
+#line 132
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "You"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "are"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "the"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "best"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "user"});
-            table7.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "rs().row",
                         "so far"});
-#line 79
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table7, "Given ");
-#line 88
- testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 133
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table13, "Given ");
+#line 142
+ testRunner.And("I sort a record \"[[rs(*).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 143
  testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 90
+#line 144
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "You"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "user"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "the"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "so far"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "best"});
-            table8.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "rs().row",
                         "are"});
-#line 91
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table8, "Then ");
-#line 100
+#line 145
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table14, "Then ");
+#line 154
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table15.AddRow(new string[] {
+                        "[[rs(1).row]] = You",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(2).row]] = are",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(3).row]] = the",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(4).row]] = best",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(5).row]] = Warewolf",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(6).row]] = user",
+                        ""});
+            table15.AddRow(new string[] {
+                        "[[rs(7).row]] = so far",
+                        "Backwards"});
+#line 155
+ testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table16.AddRow(new string[] {
+                        "[[rs(1).row]] = You"});
+            table16.AddRow(new string[] {
+                        "[[rs(2).row]] = Warewolf"});
+            table16.AddRow(new string[] {
+                        "[[rs(3).row]] = user"});
+            table16.AddRow(new string[] {
+                        "[[rs(4).row]] = the"});
+            table16.AddRow(new string[] {
+                        "[[rs(5).row]] = so far"});
+            table16.AddRow(new string[] {
+                        "[[rs(6).row]] = best"});
+            table16.AddRow(new string[] {
+                        "[[rs(7).row]] = are"});
+#line 164
+ testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -371,28 +555,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetForwardsEmptyRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset forwards empty recordset", ((string[])(null)));
-#line 102
+#line 174
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-#line 103
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table9, "Given ");
-#line 105
+#line 175
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table17, "Given ");
+#line 177
  testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 178
  testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 179
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-#line 108
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table10, "Then ");
-#line 110
+#line 180
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table18, "Then ");
+#line 182
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table19.AddRow(new string[] {
+                        "",
+                        "Forward"});
+#line 183
+ testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table20.AddRow(new string[] {
+                        ""});
+#line 186
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -403,28 +603,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetBackwardsEmptyRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset backwards empty recordset", ((string[])(null)));
-#line 112
+#line 190
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-#line 113
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table11, "Given ");
-#line 115
+#line 191
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table21, "Given ");
+#line 193
  testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
+#line 194
  testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 195
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-#line 118
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table12, "Then ");
-#line 120
+#line 196
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table22, "Then ");
+#line 198
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table23.AddRow(new string[] {
+                        "",
+                        "Backwards"});
+#line 199
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table24.AddRow(new string[] {
+                        ""});
+#line 202
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -435,34 +651,50 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetForwardsWithOneRow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset forwards with one row", ((string[])(null)));
-#line 122
+#line 206
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table13.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-#line 123
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table13, "Given ");
-#line 126
+#line 207
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table25, "Given ");
+#line 210
  testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 211
  testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 212
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table14.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-#line 129
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table14, "Then ");
-#line 132
+#line 213
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table26, "Then ");
+#line 216
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table27.AddRow(new string[] {
+                        "[[rs(1).row]] = Warewolf",
+                        "Forward"});
+#line 217
+ testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table28.AddRow(new string[] {
+                        "[[rs(1).row]] = Warewolf"});
+#line 220
+ testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -473,182 +705,50 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SortARecordsetBackwardsRecordsetWithOneRow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset backwards recordset  with one row", ((string[])(null)));
-#line 134
+#line 224
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table15.AddRow(new string[] {
+            table29.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-#line 135
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table15, "Given ");
-#line 138
+#line 225
+ testRunner.Given("I have the following recordset to sort", ((string)(null)), table29, "Given ");
+#line 228
  testRunner.And("I sort a record \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 139
+#line 229
  testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
+#line 230
  testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table16.AddRow(new string[] {
+            table30.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-#line 141
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table16, "Then ");
-#line 144
+#line 231
+ testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table30, "Then ");
+#line 234
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort a recordset backwards using negative recordset index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
-        public virtual void SortARecordsetBackwardsUsingNegativeRecordsetIndex()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset backwards using negative recordset index", ((string[])(null)));
-#line 146
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table31.AddRow(new string[] {
+                        "[[rs(1).row]] = Warewolf",
+                        "Backwards"});
+#line 235
+ testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table17.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-#line 147
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table17, "Given ");
-#line 156
- testRunner.And("I sort a record \"[[rs(-1).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 157
- testRunner.And("my sort order is \"Backwards\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 158
- testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table18.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-#line 159
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table18, "Then ");
-#line 168
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Sort a recordset forwards using negative recordset index")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Sort")]
-        public virtual void SortARecordsetForwardsUsingNegativeRecordsetIndex()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sort a recordset forwards using negative recordset index", ((string[])(null)));
-#line 170
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table19.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-#line 171
- testRunner.Given("I have the following recordset to sort", ((string)(null)), table19, "Given ");
-#line 180
- testRunner.And("I sort a record \"[[rs(-1).row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 181
- testRunner.And("my sort order is \"Forward\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 182
- testRunner.When("the sort records tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "are"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "best"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "so far"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "the"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "user"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "Warewolf"});
-            table20.AddRow(new string[] {
-                        "rs().row",
-                        "You"});
-#line 183
- testRunner.Then("the sorted recordset \"[[rs().row]]\"  will be", ((string)(null)), table20, "Then ");
-#line 192
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Result"});
+            table32.AddRow(new string[] {
+                        "[[rs(1).row]] = Warewolf"});
+#line 238
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

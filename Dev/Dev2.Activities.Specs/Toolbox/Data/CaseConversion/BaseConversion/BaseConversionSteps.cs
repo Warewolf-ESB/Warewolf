@@ -26,12 +26,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
 
             var baseCollection = ScenarioContext.Current.Get<List<Tuple<string, string, string>>>("baseCollection");
 
-            foreach (dynamic variable in baseCollection)
+            foreach(dynamic variable in baseCollection)
             {
                 baseConvert.ConvertCollection.Add(new BaseConvertTO(variable.Item1, variable.Item2, variable.Item3,
                                                                     variable.Item1, row));
                 row++;
             }
+            ScenarioContext.Current.Add("activity", baseConvert);
         }
 
         [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
@@ -40,7 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -55,7 +56,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
             List<Tuple<string, string, string>> baseCollection;
             ScenarioContext.Current.TryGetValue("baseCollection", out baseCollection);
 
-            if (baseCollection == null)
+            if(baseCollection == null)
             {
                 baseCollection = new List<Tuple<string, string, string>>();
                 ScenarioContext.Current.Add("baseCollection", baseCollection);
@@ -68,7 +69,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         public void WhenTheBaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

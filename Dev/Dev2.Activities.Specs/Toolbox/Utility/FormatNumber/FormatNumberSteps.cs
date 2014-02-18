@@ -17,7 +17,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -48,6 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
                 {
                     Action = numberFormat
                 };
+            ScenarioContext.Current.Add("activity", numberFormat);
         }
 
         [Given(@"I have a number (.*)")]
@@ -77,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
             variable = variable.Replace('"', ' ').Trim();
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -89,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         public void WhenTheFormatNumberIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

@@ -68,7 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void AddDebugInputItems(Guid executionId)
         {
-            AddDebugInputItemPassword("Archive Password", ArchivePassword);
+            //AddDebugInputItemPassword("Archive Password", ArchivePassword);
             AddDebugInputItem(CompressionRatio, "Compression Ratio", _compressionRatioEntry, executionId);
         }
 

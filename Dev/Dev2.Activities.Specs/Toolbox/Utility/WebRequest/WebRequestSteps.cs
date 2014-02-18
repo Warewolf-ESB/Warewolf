@@ -16,7 +16,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -26,9 +26,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             BuildShapeAndTestData();
 
             string header;
-                ScenarioContext.Current.TryGetValue("header", out header);
+            ScenarioContext.Current.TryGetValue("header", out header);
             string url;
-                ScenarioContext.Current.TryGetValue("url", out url);
+            ScenarioContext.Current.TryGetValue("url", out url);
 
             var webGet = new DsfWebGetRequestActivity
                 {
@@ -41,6 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 {
                     Action = webGet
                 };
+            ScenarioContext.Current.Add("activity", webGet);
         }
 
         [Given(@"I have the url ""(.*)""")]
@@ -53,7 +54,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         public void WhenTheWebRequestToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -63,7 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);

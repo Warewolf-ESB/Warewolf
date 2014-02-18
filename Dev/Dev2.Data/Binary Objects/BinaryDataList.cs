@@ -220,6 +220,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return _templateDict.Keys.Where(key => key.IndexOf(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal) < 0).ToList();
         }
 
+        public IList<string> FetchAllRecordSetKeys()
+        {
+            return (from kvp in _templateDict
+                    where kvp.Value.IsRecordset
+                    select kvp.Key).ToList();
+        }
+
         public bool TryCreateScalarValue(string value, string fieldName, out string error)
         {
 

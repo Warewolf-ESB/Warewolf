@@ -3,6 +3,7 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -10,7 +11,9 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfSortRecordsActivity : DsfActivityAbstract<string>
     {
@@ -33,13 +36,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             SortField = string.Empty;
             SelectedSort = "Forward";
-            this.DisplayName = "Sort Records";
+            DisplayName = "Sort Records";
         }
 
+// ReSharper disable RedundantOverridenMember
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
+// ReSharper restore RedundantOverridenMember
 
 
         protected override void OnExecute(NativeActivityContext context)
@@ -48,10 +53,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-            string error = string.Empty;
+            string error;
             Guid executionID = DataListExecutionID.Get(context);
+
+            InitializeDebug(dataObject);
 
             try
             {
@@ -86,15 +93,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if (dataObject.IsDebugMode())
                             {
                                 bdl.TryGetEntry(rawRecsetName, out rsData, out error);
-                                var itemToAdd = new DebugItem();
                                 //Added for Bug 9479 
                                 string tmpExpression = SortField;
                                 if (tmpExpression.Contains("()."))
                                 {
                                     tmpExpression = tmpExpression.Replace("().", "(*).");
                                 }
-                                itemToAdd.AddRange(CreateDebugItemsFromEntry(tmpExpression, rsData, executionID, enDev2ArgumentType.Output));
-                                _debugOutputs.Add(itemToAdd);
+                                AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "Result", rsData, executionID));
                             }
                     }
                 }
@@ -124,14 +129,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Private Methods
 
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
-        {
-            DebugItem itemToAdd = new DebugItem();            
-
-            if (!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
+        {    
             if (valueEntry != null)
             {
                 //Added for Bug 9479 - Massimo Guerrera
@@ -139,15 +137,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     expression = expression.Replace("().", "(*).");
                 }
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
             }
-
-            _debugInputs.Add(itemToAdd);
-
-              itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Sort Order" });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value =  SelectedSort});
-            _debugInputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
+            AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
         }        
 
         private string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)

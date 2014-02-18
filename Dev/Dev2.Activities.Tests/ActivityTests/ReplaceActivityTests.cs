@@ -493,70 +493,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-
-        #region GetDebugInputs/Outputs
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Replace_Get_Debug_Input_Output_With_Scalar_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfReplaceActivity act = new DsfReplaceActivity { FieldsToSearch = "[[CompanyName]]", Find = "2", ReplaceWith = "3", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(1, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(3, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        // ReSharper disable InconsistentNaming
-        public void Replace_Get_Debug_Input_Output_With_Recordset_Using_Star_Notation_Expected_Pass()
-        // ReSharper restore InconsistentNaming
-        {
-            DsfReplaceActivity act = new DsfReplaceActivity { FieldsToSearch = "[[Customers(*).DOB]]", Find = "/", ReplaceWith = ".", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(1, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(30, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
-
+        
         // ReSharper disable InconsistentNaming
 
         [TestMethod]

@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 {
                     Action = dataSplit
                 };
-            ScenarioContext.Current.Add("Activity", dataSplit);
+            ScenarioContext.Current.Add("activity", dataSplit);
         }
 
         [Given(@"A file ""(.*)"" to split")]
@@ -144,7 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         public void WhenTheDataSplitToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

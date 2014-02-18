@@ -18,7 +18,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
-            
+
             var recordsetName = ScenarioContext.Current.Get<string>("recordset");
             var sortOrder = ScenarioContext.Current.Get<string>("sortOrder");
             var sortRecords = new DsfSortRecordsActivity
@@ -39,6 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
                 {
                     Action = sortRecords
                 };
+            ScenarioContext.Current.Add("activity", sortRecords);
         }
 
         [Given(@"I have the following recordset to sort")]
@@ -46,7 +47,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         {
             List<TableRow> tableRows = table.Rows.ToList();
 
-            if (tableRows.Count == 0)
+            if(tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -54,20 +55,20 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
                 List<Tuple<string, string>> emptyRecordset;
 
                 bool isAdded = ScenarioContext.Current.TryGetValue("rs", out emptyRecordset);
-                if (!isAdded)
+                if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
 
-            foreach (TableRow t in tableRows)
+            foreach(TableRow t in tableRows)
             {
                 List<Tuple<string, string>> variableList;
                 ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-                if (variableList == null)
+                if(variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     ScenarioContext.Current.Add("variableList", variableList);
@@ -92,7 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
         public void WhenTheSortRecordsToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -110,7 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Sort
 
             List<TableRow> tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
-            for (int i = 0; i < tableRows.Count; i++)
+            for(int i = 0; i < tableRows.Count; i++)
             {
                 Assert.AreEqual(tableRows[i][1], recordSetValues[i]);
             }

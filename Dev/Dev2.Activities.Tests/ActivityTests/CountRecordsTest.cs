@@ -204,54 +204,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Error Test Cases
 
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void CountRecordsetGetDebugInputOutputWithRecordsetExpectedPass()
-        {
-            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(91, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8875 
-        /// </summary>
-        [TestMethod]
-        public void CountRecordsetGetDebugInputOutputWithEmptyRecordsetExpectedPass()
-        {
-            DsfCountRecordsetActivity act = new DsfCountRecordsetActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, "<ADL><Customers><Fname></Fname></Customers><res></res></ADL>", "<ADL></ADL>", out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("0", outRes[0].FetchResultsList()[2].Value);
-        }
-
-        #endregion
-
         #region Get Input/Output Tests
 
         [TestMethod]

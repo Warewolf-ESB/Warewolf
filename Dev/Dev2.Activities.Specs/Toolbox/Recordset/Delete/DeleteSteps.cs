@@ -14,8 +14,6 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
     [Binding]
     public class DeleteSteps : RecordSetBases
     {
-        private DsfDeleteRecordActivity _delete;
-
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -31,7 +29,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             BuildShapeAndTestData();
 
             var recordset = ScenarioContext.Current.Get<string>("recordset");
-            _delete = new DsfDeleteRecordActivity
+            var delete = new DsfDeleteRecordActivity
                 {
                     RecordsetName = recordset,
                     Result = ResultVariable
@@ -39,8 +37,9 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
 
             TestStartNode = new FlowStep
                 {
-                    Action = _delete
+                    Action = delete
                 };
+            ScenarioContext.Current.Add("activity", delete);
         }
 
         [Given(@"I have the following recordset")]
@@ -59,7 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
                 if(!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
-                     ScenarioContext.Current.Add("rs", emptyRecordset);
+                    ScenarioContext.Current.Add("rs", emptyRecordset);
                 }
                 emptyRecordset.Add(new Tuple<string, string>(rs, field));
             }
@@ -113,7 +112,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
         public void WhenTheDeleteToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

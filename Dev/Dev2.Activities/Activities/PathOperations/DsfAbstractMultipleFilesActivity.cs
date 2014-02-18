@@ -1,12 +1,13 @@
 ﻿
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using Dev2.Activities.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.PathOperations;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -87,17 +88,17 @@ namespace Dev2.Activities.PathOperations
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
-                AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
+                AddDebugInputItem(new DebugItemVariableParams(InputPath, "Source Path", inputPathEntry, executionId));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
-                AddDebugInputItem(OutputPath, "Output Path", outputPathEntry, executionId);
+                AddDebugInputItem(new DebugItemVariableParams(OutputPath, "Destination Path", outputPathEntry, executionId));
                 AddDebugInputItemDestinationUsernamePassword(executionId, destinationUsernameEntry, DestinationPassword, DestinationUsername);
-                AddDebugInputItemOverwrite(executionId, Overwrite);
+                AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
                 AddDebugInputItems(executionId);
             }
 
-            while (ColItr.HasMoreData())
+            while(ColItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = GetOperationBroker();
 
@@ -118,7 +119,7 @@ namespace Dev2.Activities.PathOperations
                     var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     outputs[0].OutputStrings.Add("Failure");
                     allErrors.AddError(e.Message);
@@ -179,17 +180,17 @@ namespace Dev2.Activities.PathOperations
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null)
+            if(updates != null)
             {
-                foreach (Tuple<string, string> t in updates)
+                foreach(Tuple<string, string> t in updates)
                 {
 
-                    if (t.Item1 == InputPath)
+                    if(t.Item1 == InputPath)
                     {
                         InputPath = t.Item2;
                     }
 
-                    if (t.Item1 == OutputPath)
+                    if(t.Item1 == OutputPath)
                     {
                         OutputPath = t.Item2;
                     }
@@ -199,7 +200,7 @@ namespace Dev2.Activities.PathOperations
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
-            if (updates != null && updates.Count == 1)
+            if(updates != null && updates.Count == 1)
             {
                 Result = updates[0].Item2;
             }

@@ -4,10 +4,11 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
+using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -87,19 +88,32 @@ namespace Dev2.Activities
             Guid executionId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
+            InitializeDebug(dataObject);
             try
             {
                 CleanArgs();
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                if(dataObject.IsDebugMode())
+                {
+                    toUpsert.IsDebug = true;
+                }
                 foreach(GatherSystemInformationTO item in SystemInformationCollection)
                 {
                     _indexCounter++;
 
-                    IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
+                    IBinaryDataListEntry resultEntry = compiler.Evaluate(executionId, enActionType.User, item.Result, false, out errors);
                     allErrors.MergeErrors(errors);
-                    if(tmp != null)
+                    var hasErrors = allErrors.HasErrors();
+                    if(hasErrors)
                     {
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
+                        var itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugOutputParams(item.Result, "", executionId, 1), itemToAdd);
+                        _debugOutputs.Add(itemToAdd);
+                    }
+                    if(resultEntry != null && !hasErrors)
+                    {
+                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(resultEntry);
                         while(itr.HasMoreRecords())
                         {
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
@@ -117,13 +131,21 @@ namespace Dev2.Activities
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                                 {
                                     toUpsert.Add(region, val);
-                                    if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
-                                    {
-                                        AddDebugOutputItem(region, val, item.EnTypeOfSystemInformation);
-                                    }
                                 }
                             }
                             compiler.Upsert(executionId, toUpsert, out errors);
+                            if(dataObject.IsDebugMode())
+                            {
+                                int innerCount = 1;
+                                foreach(DebugOutputTO debugOutputTO in toUpsert.DebugOutputs)
+                                {
+                                    var itemToAdd = new DebugItem();
+                                    AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                                    AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
+                                    _debugOutputs.Add(itemToAdd);
+                                    innerCount++;
+                                }
+                            }
                             allErrors.MergeErrors(errors);
                             toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                         }
@@ -137,13 +159,12 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
                     compiler.UpsertSystemTag(executionId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -265,18 +286,6 @@ namespace Dev2.Activities
 
         #region Private Methods
 
-        private void AddDebugOutputItem(string expression, string value, enTypeOfSystemInformationToGather informationToGather)
-        {
-            DebugItem itemToAdd = new DebugItem();
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = _indexCounter.ToString(CultureInfo.InvariantCulture) });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Variable, Value = expression });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = informationToGather.GetDescription() });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = GlobalConstants.EqualsExpression });
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = value });
-            _debugOutputs.Add(itemToAdd);
-        }
-
         private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
@@ -315,11 +324,11 @@ namespace Dev2.Activities
                 if(mic != null)
                 {
                     int startIndex = 0;
-                    const enTypeOfSystemInformationToGather enTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
+                    const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
                     mic.Clear();
                     foreach(string s in listToAdd)
                     {
-                        mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformation, s, startIndex + 1));
+                        mic.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
                         startIndex++;
                     }
                     CleanUpCollection(mic, modelItem, startIndex);

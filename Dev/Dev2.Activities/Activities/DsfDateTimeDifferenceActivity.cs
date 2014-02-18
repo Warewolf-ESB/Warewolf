@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Converters.DateAndTime;
 using Dev2.Converters.DateAndTime.Interfaces;
@@ -17,7 +18,9 @@ using Dev2.Diagnostics;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
@@ -100,34 +103,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
             allErrors.MergeErrors(errors);
-
+            InitializeDebug(dataObject);
             // Process if no errors
             try
             {
 
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+                toUpsert.IsDebug = dataObject.IsDebugMode();
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                IBinaryDataListEntry Input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
+                IBinaryDataListEntry input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
                 allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input1Entry);
+                IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(input1Entry);
                 colItr.AddIterator(input1Itr);
 
-                IBinaryDataListEntry Input2Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, false, out errors);
+                IBinaryDataListEntry input2Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, false, out errors);
                 allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator input2Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(Input2Entry);
+                IDev2DataListEvaluateIterator input2Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(input2Entry);
                 colItr.AddIterator(input2Itr);
 
-                IBinaryDataListEntry InputFormatEntry = compiler.Evaluate(executionId, enActionType.User, InputFormat, false, out errors);
+                IBinaryDataListEntry inputFormatEntry = compiler.Evaluate(executionId, enActionType.User, InputFormat ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
-                IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(InputFormatEntry);
+                IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputFormatEntry);
                 colItr.AddIterator(ifItr);
 
-                if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID) || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Start Date", Input1Entry, executionId);
-                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "End Date", Input2Entry, executionId);
-                    AddDebugInputItem(InputFormat, "Input Format", InputFormatEntry, executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", input1Entry, executionId);
+                    AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", input2Entry, executionId);
+                    AddDebugInputItem(InputFormat, "Input Format", inputFormatEntry, executionId);
+                    AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
                 }
 
                 int indexToUpsertTo = 1;
@@ -160,15 +165,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
                         {
                             toUpsert.Add(region, result);
-
-                            if(dataObject.IsDebug || ServerLogger.ShouldLog(dataObject.ResourceID))
-                            {
-                                AddDebugOutputItem(region, result, indexToUpsertTo - 1, executionId);
-                            }
                         }
                     }
                     else
                     {
+                        DoDebugOutput(dataObject, Result, result, executionId, indexToUpsertTo);
                         allErrors.AddError(error);
                     }
                     indexToUpsertTo++;
@@ -176,6 +177,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
+                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                {
+                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                    {
+                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                    }
+                }
             }
             catch(Exception e)
             {
@@ -190,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -198,36 +206,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        void DoDebugOutput(IDSFDataObject dataObject, string region, string result, Guid executionId, int indexToUpsertTo)
+        {
+            if(dataObject.IsDebugMode())
+            {
+                AddDebugOutputItem(new DebugOutputParams(region, result, executionId, indexToUpsertTo - 1));
+            }
+        }
+
         #region Private Methods
 
         private void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-
-            if(valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
-
-            if(labelText == "Input Format")
-            {
-                itemToAdd = new DebugItem();
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Output In" });
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = OutputType });
-                _debugInputs.Add(itemToAdd);
-            }
-        }
-
-        private void AddDebugOutputItem(string expression, string value, int iterationCounter, Guid dlId)
-        {
-            DebugItem itemToAdd = new DebugItem();
-
-            itemToAdd.AddRange(CreateDebugItemsFromString(expression, value, dlId, iterationCounter, enDev2ArgumentType.Output));
-            _debugOutputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
         }
 
         /// <summary>

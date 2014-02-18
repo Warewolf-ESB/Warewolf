@@ -8,9 +8,9 @@ namespace Dev2.Studio.Diagnostics
     {
         public DebugLineGroupRow()
         {
-            LineItems = new List<DebugLineItem>();
+            LineItems = new List<IDebugLineItem>();
         }
 
-        public List<DebugLineItem> LineItems { get; private set; }
+        public List<IDebugLineItem> LineItems { get; private set; }
     }
 }

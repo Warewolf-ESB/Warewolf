@@ -24,9 +24,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string SimulationOutput { get; set; }
         // END TODO: Remove legacy properties 
 
-        protected List<DebugItem> _debugInputs = new List<DebugItem>();
-        protected List<DebugItem> _debugOutputs = new List<DebugItem>();
-
         public OutArgument<bool> HasError { get; set; }
         public OutArgument<bool> IsValid { get; set; }
         public InArgument<string> ExplicitDataList { get; set; }

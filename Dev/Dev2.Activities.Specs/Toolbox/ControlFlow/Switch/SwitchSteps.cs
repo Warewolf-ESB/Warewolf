@@ -1,10 +1,10 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -13,15 +13,13 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     [Binding]
     public class SwitchSteps : RecordSetBases
     {
-        private DsfFlowSwitchActivity _flowSwitch;
-
         protected override void BuildDataList()
         {
             var variableList = ScenarioContext.Current.Get<List<Tuple<string, string>>>("variableList");
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
             BuildShapeAndTestData();
-            _flowSwitch = new DsfFlowSwitchActivity
+            var flowSwitch = new DsfFlowSwitchActivity
                 {
                     ExpressionText =
                         string.Format(
@@ -31,8 +29,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
 
             TestStartNode = new FlowStep
                 {
-                    Action = _flowSwitch
+                    Action = flowSwitch
                 };
+            ScenarioContext.Current.Add("activity", flowSwitch);
         }
 
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
@@ -54,7 +53,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         public void WhenTheSwitchToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

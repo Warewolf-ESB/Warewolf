@@ -107,7 +107,13 @@ namespace Dev2.Diagnostics
         /// </summary>
         public ActivityType ActivityType { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public TimeSpan Duration
+        {
+            get
+            {
+                return EndTime - StartTime;
+            }
+        }
 
         // XmlSerializer does not support TimeSpan, so use this property for serialization 
         // instead.
@@ -119,8 +125,8 @@ namespace Dev2.Diagnostics
             }
             set
             {
-                Duration = string.IsNullOrEmpty(value) ?
-                    TimeSpan.Zero : XmlConvert.ToTimeSpan(value);
+                //Duration = string.IsNullOrEmpty(value) ?
+                //    TimeSpan.Zero : XmlConvert.ToTimeSpan(value);
             }
         }
 
@@ -133,11 +139,6 @@ namespace Dev2.Diagnostics
             set
             {
                 _startTime = value;
-                if(EndTime != DateTime.MinValue)
-                {
-                    Duration = StartTime - EndTime;
-                }
-
             }
         }
 
@@ -153,11 +154,6 @@ namespace Dev2.Diagnostics
             set
             {
                 _endTime = value;
-                if(StartTime != DateTime.MinValue)
-                {
-                    Duration = StartTime - EndTime;
-                }
-
             }
         }
 
@@ -347,6 +343,8 @@ namespace Dev2.Diagnostics
                 {
                     var itemResult = items[i].FetchResultsList()[j];
                     writer.Write((int)itemResult.Type);
+                    writer.Write(itemResult.Label);
+                    writer.Write(itemResult.Variable);
                     writer.Write(itemResult.Value);
                     writer.Write(itemResult.GroupName);
                     writer.Write(itemResult.GroupIndex);
@@ -368,6 +366,8 @@ namespace Dev2.Diagnostics
                     item.Add(new DebugItemResult
                         {
                             Type = (DebugItemResultType)reader.ReadInt32(),
+                            Label = reader.ReadString(),
+                            Variable = reader.ReadString(),
                             Value = reader.ReadString(),
                             GroupName = reader.ReadString(),
                             GroupIndex = reader.ReadInt32(),
@@ -380,7 +380,7 @@ namespace Dev2.Diagnostics
 
         #endregion
 
-       
+
         public XmlSchema GetSchema()
         {
             return null;
@@ -564,7 +564,7 @@ namespace Dev2.Diagnostics
             //Type
             if(settings.IsTypeLogged)
             {
-                writer.WriteElementString("Name", Name); 
+                writer.WriteElementString("Name", Name);
                 writer.WriteElementString("ActivityType", ActivityType.ToString());
             }
 
@@ -582,14 +582,14 @@ namespace Dev2.Diagnostics
             {
                 if(StartTime != DateTime.MinValue)
                 {
-                    writer.WriteElementString("StartTime", StartTime.ToString("O"));
+                    writer.WriteElementString("StartTime", StartTime.ToString("G"));
                 }
                 if(EndTime != DateTime.MinValue)
                 {
-                    writer.WriteElementString("EndTime", EndTime.ToString("O"));
+                    writer.WriteElementString("EndTime", EndTime.ToString("G"));
                 }
             }
-       
+
 
             //Input
             if(settings.IsInputLogged && Inputs.Count > 0)

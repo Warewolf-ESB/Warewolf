@@ -463,64 +463,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
          */
 
         #endregion
-
-        #region Get Debug Input/Output Tests
-
-        [TestMethod]
-        public void ScriptingGetDebugInputOutputWithRecordsetsExpectedPass()
-        {
-            DsfScriptingActivity act = new DsfScriptingActivity { Script = "return [[Numeric(1).num]],[[Numeric(2).num]];", Result = "[[res]]", ScriptType = enScriptType.JavaScript };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
-            Assert.AreEqual("return [[Numeric(1).num]],[[Numeric(2).num]];", inRes[0].FetchResultsList()[1].Value);
-            Assert.AreEqual("=", inRes[0].FetchResultsList()[2].Value);
-            Assert.AreEqual("return 654,668416154;", inRes[0].FetchResultsList()[3].Value);            
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("[[res]]", outRes[0].FetchResultsList()[0].Value);
-            Assert.AreEqual("=", outRes[0].FetchResultsList()[1].Value);
-            Assert.AreEqual("668416154", outRes[0].FetchResultsList()[2].Value);
-        }
-
-        [TestMethod]
-        public void ScriptingGetDebugInputOutputWithRecordsetsUsingStarExpectedPass()
-        {
-            DsfScriptingActivity act = new DsfScriptingActivity { Script = "return [[Numeric(*).num]]", Result = "[[res]]", ScriptType = enScriptType.JavaScript };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape, ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, inRes.Count);
-            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual("Script to execute", inRes[0].FetchResultsList()[0].Value);
-            Assert.AreEqual("return [[Numeric(1).num]]", inRes[0].FetchResultsList()[1].Value);
-            Assert.AreEqual("=", inRes[0].FetchResultsList()[2].Value);
-            Assert.AreEqual("return 654", inRes[0].FetchResultsList()[3].Value);
-            Assert.AreEqual(10, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-            Assert.AreEqual("[[res]]", outRes[0].FetchResultsList()[0].Value);
-            Assert.AreEqual("=", outRes[0].FetchResultsList()[1].Value);
-            Assert.AreEqual("654", outRes[0].FetchResultsList()[2].Value);
-        }
-
-        #endregion
-
+        
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string result, string script, enScriptType type)

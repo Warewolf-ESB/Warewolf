@@ -24,9 +24,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
             var decisionModels =
                 ScenarioContext.Current.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
-            var dds = new Dev2DecisionStack {TheStack = new List<Dev2Decision>(), Mode = mode};
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode };
+           
+            dds.TrueArmText = "YES";
+            dds.FalseArmText = "NO";
 
-            foreach (var dm in decisionModels)
+            foreach(var dm in decisionModels)
             {
                 var dev2Decision = new Dev2Decision
                     {
@@ -48,37 +51,39 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
 
-            
+
             var multiAssign = new DsfMultiAssignActivity();
             int row = 1;
-            foreach (var variable in variableList)
+            foreach(var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
-            
+
             TestStartNode = new FlowStep
                 {
-                    Action = multiAssign , Next = new FlowStep
+                    Action = multiAssign,
+                    Next = new FlowStep
                         {
                             Action = decisionActivity
                         }
                 };
+            ScenarioContext.Current.Add("activity", decisionActivity);
         }
-        
+
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
         public void GivenADecisionVariableValue(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
 
-            if (variableList == null)
+            if(variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
@@ -86,20 +91,20 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
             variableList.Add(new Tuple<string, string>(variable, value));
         }
-        
+
         [Given(@"the decision mode is ""(.*)""")]
         public void GivenTheDecisionModeIs(string mode)
         {
-            ScenarioContext.Current.Add("mode", (Dev2DecisionMode) Enum.Parse(typeof (Dev2DecisionMode), mode));
+            ScenarioContext.Current.Add("mode", (Dev2DecisionMode)Enum.Parse(typeof(Dev2DecisionMode), mode));
         }
-        
+
         [Given(@"is ""(.*)"" ""(.*)"" ""(.*)""")]
         public void GivenIs(string variable1, string decision, string variable2)
         {
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
             ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
 
-            if (decisionModels == null)
+            if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 ScenarioContext.Current.Add("decisionModels", decisionModels);
@@ -117,7 +122,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
             ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
 
-            if (decisionModels == null)
+            if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 ScenarioContext.Current.Add("decisionModels", decisionModels);
@@ -135,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
             ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
 
-            if (decisionModels == null)
+            if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 ScenarioContext.Current.Add("decisionModels", decisionModels);
@@ -153,7 +158,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             List<Tuple<string, enDecisionType, string, string>> decisionModels;
             ScenarioContext.Current.TryGetValue("decisionModels", out decisionModels);
 
-            if (decisionModels == null)
+            if(decisionModels == null)
             {
                 decisionModels = new List<Tuple<string, enDecisionType, string, string>>();
                 ScenarioContext.Current.Add("decisionModels", decisionModels);
@@ -169,7 +174,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void WhenTheDecisionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException:false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 

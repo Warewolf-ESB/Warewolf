@@ -445,50 +445,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
 
-
-
-        [TestMethod]
-        public void GatherSystemInformationGetDebugInputOutputExpectedCorrectResults()
-        {
-            IList<GatherSystemInformationTO> systemInformationCollection = new List<GatherSystemInformationTO>() { new GatherSystemInformationTO(enTypeOfSystemInformationToGather.CPUAvailable, "[[testVar]]", 1) };
-            var mock = new Mock<IGetSystemInformation>();
-            const string expectedValue = "Intel i7";
-            mock.Setup(information => information.GetCPUAvailableInformation()).Returns(expectedValue);
-            var activity = DsfGatherSystemInformationActivity(mock);
-            activity.SystemInformationCollection = systemInformationCollection;
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(activity, "<root><testVar /></root>",
-                                                                "<root><testVar /></root>", out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(1, outRes.Count);
-            var fetchResultsList = outRes[0].FetchResultsList();
-            Assert.AreEqual(6, fetchResultsList.Count);
-
-            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[0].Type);
-            Assert.AreEqual("1", fetchResultsList[0].Value);
-            
-            Assert.AreEqual(DebugItemResultType.Variable, fetchResultsList[1].Type);
-            Assert.AreEqual("[[testVar]]", fetchResultsList[1].Value);
-
-            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[2].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, fetchResultsList[2].Value);
-
-            Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[3].Type);
-            Assert.AreEqual(enTypeOfSystemInformationToGather.CPUAvailable.GetDescription(), fetchResultsList[3].Value);
-
-            Assert.AreEqual(DebugItemResultType.Label, fetchResultsList[4].Type);
-            Assert.AreEqual(GlobalConstants.EqualsExpression, fetchResultsList[4].Value);
-
-            Assert.AreEqual(DebugItemResultType.Value, fetchResultsList[5].Type);
-            Assert.AreEqual(expectedValue, fetchResultsList[5].Value);
-        }
-
         [TestMethod]
         public void GetCollectionCountWhereSystemInformationCollectionHasTwoItemsExpectTwo()
         {

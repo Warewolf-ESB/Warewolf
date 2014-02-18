@@ -1,10 +1,10 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Data.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -13,8 +13,6 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     [Binding]
     public class DataMergeSteps : RecordSetBases
     {
-        private DsfDataMergeActivity _dataMerge;
-
         protected override void BuildDataList()
         {
             List<Tuple<string, string>> variableList;
@@ -29,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            _dataMerge = new DsfDataMergeActivity { Result = ResultVariable };
+            var dataMerge = new DsfDataMergeActivity { Result = ResultVariable };
 
             List<Tuple<string, string, string, string, string>> mergeCollection;
             ScenarioContext.Current.TryGetValue("mergeCollection", out mergeCollection);
@@ -37,16 +35,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             int row = 1;
             foreach(var variable in mergeCollection)
             {
-                _dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
+                dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
                                                                 variable.Item4, variable.Item5));
                 row++;
             }
 
             TestStartNode = new FlowStep
                 {
-                    Action = _dataMerge
+                    Action = dataMerge
                 };
 
+            ScenarioContext.Current.Add("activity", dataMerge);
         }
 
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
@@ -123,7 +122,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void WhenTheDataMergeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(throwException: false);
+            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);
         }
 
@@ -137,7 +136,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                                        out actualValue, out error);
             Assert.AreEqual(value, actualValue);
         }
-        
+
         [Then(@"the merged result is the same as file ""(.*)""")]
         public void ThenTheMergedResultIsTheSameAsFile(string fileName)
         {

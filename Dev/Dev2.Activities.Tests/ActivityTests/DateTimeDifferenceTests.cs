@@ -225,62 +225,6 @@ namespace ActivityUnitTests.ActivityTests
 
         #endregion Error Test Cases
 
-        #region Get Debug Input/Output Tests
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DateTimeDiffernce_Get_Debug_Input_Output_With_Scalars_Expected_Pass()
-        {
-            //Used recordset with a numeric index as a scalar because it the only place were i had date values and it evalues to a scalar 
-            DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(1).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[res]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(4, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(1, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        /// <summary>
-        /// Author : Massimo Guerrera Bug 8104 
-        /// </summary>
-        [TestMethod]
-        public void DateTimeDiffernce_Get_Debug_Input_Output_With_Recordsets_Expected_Pass()
-        {
-            DsfDateTimeDifferenceActivity act = new DsfDateTimeDifferenceActivity { Input1 = "[[Customers(*).DOB]]", Input2 = "[[Customers(2).DOB]]", InputFormat = "yyyy/mm/dd", OutputType = "Days", Result = "[[Numeric(*).num]]" };
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            var result = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
-
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(4, inRes.Count);
-            Assert.AreEqual(31, inRes[0].FetchResultsList().Count);
-            Assert.AreEqual(4, inRes[1].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[2].FetchResultsList().Count);
-            Assert.AreEqual(2, inRes[3].FetchResultsList().Count);
-            Assert.AreEqual(10, outRes.Count);
-            Assert.AreEqual(3, outRes[0].FetchResultsList().Count);
-        }
-
-        #endregion
-
         #region Get Input/Output Tests
 
         [TestMethod]

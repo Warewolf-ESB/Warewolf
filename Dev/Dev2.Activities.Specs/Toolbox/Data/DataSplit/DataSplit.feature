@@ -3,19 +3,28 @@
 	As a Warewolf user
 	I want a tool that splits two or more pieces of data
 
-
 Scenario: Split text to a recordset using Index 
 	Given A string to split with value "abcde"
 	And  assign to variable "[[vowels(*).letters]]" split type "Index" at "1" and Include "unselected"
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	| a		  |
-	| b		  |
-	| c		  |
-	| d		  |
-	| e		  |
+	| a                |
+	| b                |
+	| c                |
+	| d                |
+	| e                |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	| abcde           | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 1     | No      |        |
+    And the debug output as
+	| # |                     |
+	| 1 | [[vowels(1).letters]] = a |
+	|   | [[vowels(2).letters]] = b |
+	|   | [[vowels(3).letters]] = c |
+	|   | [[vowels(4).letters]] = d |
+	|   | [[vowels(5).letters]] = e |
 
 Scenario: Split characters using Index Going Backwards
 	Given A string to split with value "@!?><":}{+_)(*&^~"
@@ -28,6 +37,14 @@ Scenario: Split characters using Index Going Backwards
 	| ><":}{+        |
 	| @!?            |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split   | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	| @!?><":}{+_)(*&^~ | Backward          | No              | 1 | [[vowels(*).chars]] =| Index | 7     | No      |        |
+	And the debug output as
+	| # |                         | 
+	| 1 | [[vowels(1).chars]] = _)(*&^~ | 
+	|   | [[vowels(2).chars]] = ><":}{+ | 
+	|   | [[vowels(3).chars]] = @!?     | 
 
 Scenario: Split characters using Index Going Forward
 	Given A string to split with value "@!?><":}{+_)(*&^~"
@@ -40,12 +57,18 @@ Scenario: Split characters using Index Going Forward
 	| }{+_)(*	|
 	| &^~		|
 	And the execution has "NO" error
-
-
+	And the debug inputs as  
+	| String to Split   | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	| @!?><":}{+_)(*&^~ | Forward           | No              | 1 | [[vowels(*).chars]] =| Index | 7     | No      |        |
+	And the debug output as
+	| # |                         | 
+	| 1 | [[vowels(1).chars]] = @!?><": | 
+	|   | [[vowels(2).chars]] = }{+_)(* | 
+	|   | [[vowels(3).chars]] = &^~     | 
 
 Scenario: Split text using All split types - Some with Include selected
 	Given A string to split with value "IndexTab	Chars,space end"
-	And assign to variable "[[vowels(*).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	And assign to variable "[[vowels(*).letters]]" split type "Index" at "5" and Include "Selected" and Escape ''	
 	And  assign to variable "[[vowels(*).letters]]" split type "Tab" at "" and Include "unselected"
 	And  assign to variable "[[vowels(*).letters]]" split type "Chars" at "ars," and Include "Selected" and Escape '' 
 	And  assign to variable "[[vowels(*).letters]]" split type "Space" at "1" and Include "unselected" and Escape '\'
@@ -59,6 +82,40 @@ Scenario: Split text using All split types - Some with Include selected
 	| space		  |
 	| end		  |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split          | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
+	| IndexTab	Chars,space end | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 5     | Yes     |        |
+	|                          |                   |                  | 2 | [[vowels(*).letters]] = | Tab   |       | No      |        |
+	|                          |                   |                  | 3 | [[vowels(*).letters]] = | Chars | ars,  | Yes     | " "    |
+	|                          |                   |                  | 4 | [[vowels(*).letters]] = | Space |       | No      |        |
+	|                          |                   |                  | 5 | [[vowels(*).letters]] = | End   |       | No      |        |
+	And the debug output as
+	| # |                          |
+	| 1 | [[vowels(1).letters]] = Index  |
+	|   | [[vowels(2).letters]] = Tab    |
+	|   | [[vowels(3).letters]] = Chars, |
+	|   | [[vowels(4).letters]] = space  |
+	|   | [[vowels(5).letters]] = end    |
+	| 2 | [[vowels(1).letters]] = Index  |
+	|   | [[vowels(2).letters]] = Tab    |
+	|   | [[vowels(3).letters]] = Chars, |
+	|   | [[vowels(4).letters]] = space  |
+	|   | [[vowels(5).letters]] = end    |
+	| 3 | [[vowels(1).letters]] = Index  |
+	|   | [[vowels(2).letters]] = Tab    |
+	|   | [[vowels(3).letters]] = Chars, |
+	|   | [[vowels(4).letters]] = space  |
+	|   | [[vowels(5).letters]] = end    |
+	| 4 | [[vowels(1).letters]] = Index  |
+	|   | [[vowels(2).letters]] = Tab    |
+	|   | [[vowels(3).letters]] = Chars, |
+	|   | [[vowels(4).letters]] = space  |
+	|   | [[vowels(5).letters]] = end    |
+	| 5 | [[vowels(1).letters]] = Index  |
+	|   | [[vowels(2).letters]] = Tab    |
+	|   | [[vowels(3).letters]] = Chars, |
+	|   | [[vowels(4).letters]] = space  |
+	|   | [[vowels(5).letters]] = end    |
 
 Scenario: Split CSV file format into recordset - some fields blank
 	Given A file "CSVExample.txt" to split	
@@ -75,6 +132,30 @@ Scenario: Split CSV file format into recordset - some fields blank
 	|          |            |             |
 	| 3        | Mo         |             |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                   | With     | Using | Include | Escape |
+	| String          | Forward           | No              | 1 | [[rec().id]]    = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 2 | [[rec().name]]  = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 3 | " "             = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 4 | [[rec().phone]] = | New Line |       | No      |        |
+	And the debug output as
+	| # |                    |
+	| 1 | [[rec(1).id]] = ID       |
+	|   | [[rec(2).id]] = 1        |
+	|   | [[rec(3).id]] = 2        |
+	|   | [[rec(4).id]] =          |
+	|   | [[rec(5).id]] = 3        |
+	| 2 | [[rec(1).name]] = NAME   |
+	|   | [[rec(2).name]] = Barney |
+	|   | [[rec(3).name]] = Tshepo |
+	|   | [[rec(4).name]] =        |
+	|   | [[rec(5).name]] = Mo     |
+	| 3 | " "                      | 
+	| 4 | [[rec(1).phone]] = PHONE | 
+	|   | [[rec(2).phone]] = 1234  | 
+	|   | [[rec(3).phone]] = 5678  | 
+	|   | [[rec(4).phone]] =       | 
+	|   | [[rec(5).phone]] =       | 
 
 Scenario: Split CSV file format into recordset - Skip blank rows selected
 	Given A file "CSVExample.txt" to split	
@@ -91,10 +172,31 @@ Scenario: Split CSV file format into recordset - Skip blank rows selected
 	| 2        | Tshepo     | 5678        |
 	| 3        | Mo         | 01          |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                   | With     | Using | Include | Escape |
+	| String          | Forward           | Yes             | 1 | [[rec().id]]    = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 2 | [[rec().name]]  = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 3 | " "             = | Chars    | ,     | No      | " "    |
+	|                 |                   |                 | 4 | [[rec().phone]] = | New Line |       | No      |        |
+	And the debug output as
+	| # |                    |
+	| 1 | [[rec(1).id]] = ID       |
+	|   | [[rec(2).id]] = 1        |
+	|   | [[rec(3).id]] = 2        |
+	|   | [[rec(4).id]] = 3        |
+	| 2 | [[rec(1).name]] = NAME   |
+	|   | [[rec(2).name]] = Barney |
+	|   | [[rec(3).name]] = Tshepo |
+	|   | [[rec(4).name]] = Mo     |
+	| 3 | " "                      | 
+	| 4 | [[rec(1).phone]] = PHONE |
+	|   | [[rec(2).phone]] = 1234  |
+	|   | [[rec(3).phone]] = 5678  |
+	|   | [[rec(4).phone]] =       |
 
 Scenario: Split blank text using All split types
 	Given A string to split with value ""
-	And  assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
+	And  assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape ''	
 	And  assign to variable "[[vowels().letters]]" split type "Tab" at "" and Include "unselected"	
 	And  assign to variable "[[vowels().letters]]" split type "Chars" at "ars," and Include "selected" and Escape '' 
 	And  assign to variable "[[vowels().letters]]" split type "Space" at "" and Include "unselected" and Escape '\'
@@ -104,6 +206,16 @@ Scenario: Split blank text using All split types
 	Then the split result will be
 	| vowels().letters |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                        | With    | Using | Include | Escape |
+	| " "             | Forward           | No              | 1 | [[vowels().letters]] = | Index   | 5     | Yes     |        |
+	|                 |                   |                 | 2 | [[vowels().letters]] = | Tab     |       | No      |        |
+	|                 |                   |                 | 3 | [[vowels().letters]] = | Chars   | ars,  | Yes     | " "    |
+	|                 |                   |                 | 4 | [[vowels().letters]] = | Space   |       | No      |        |
+	|                 |                   |                 | 5 | [[vowels().letters]] = | End     |       | No      |        |
+	|                 |                   |                 | 6 | [[vowels().letters]] = | NewLine |       |         |        |	
+	And the debug output as
+	| # |                  |	
 
 Scenario: Split text using Index where and Space > 
 	Given A string to split with value "123"	
@@ -112,21 +224,40 @@ Scenario: Split text using Index where and Space >
 	When the data split tool is executed	
     Then the split result for "[[var]]" will be ""
     And the execution has "AN" error
+    And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
+	| 123             | Forward           | No              | 1 | [[var]]    =           | Index | ,     | Yes     |        |
+	|                 |                   |                 | 2 | [[vowels().letters]] = | Space |       | No      |        |
+	And the debug output as
+	| # |                   |
+	| 1 | [[var]] =               |
+	| 2 | [[vowels(1).letters]] = |
 
 Scenario: Split text using Char and Escape character
-	Given A string to split with value "123|,45,1"
-	And assign to variable "[[var]]" split type "Chars" at "," and Include "Unselected" and Escape '|'
+	Given A string to split with value "123\,45,1"
+	And assign to variable "[[var]]" split type "Chars" at "," and Include "Unselected" and Escape '\'
 	When the data split tool is executed
-	Then the split result for "[[var]]" will be "123|,45"
+	Then the split result for "[[var]]" will be "123\,45"
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |            | With  | Using | Include | Escape |
+	| 123\,45,1       | Forward           | No              | 1 | [[var]]  = | Chars | ,     | No      | \      |
+	And the debug output as
+	| # |             |
+	| 1 | [[var]] = 123\,45 |
 
 Scenario: Split blank text	
 	Given A string to split with value ""
-	And assign to variable "[[vowels(*).letters]]" split type "Index" at "1" and Include "Unselected" and Escape '|'
+	And assign to variable "[[vowels(*).letters]]" split type "Index" at "1" and Include "Unselected" and Escape ''
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
 	And the execution has "NO" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	| " "             | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 1     | No      |        |
+	And the debug output as
+	| # |                   | 
 
 Scenario: Split text to a recordset using a negative Index 
 	Given A string to split with value "abcde"
@@ -135,18 +266,12 @@ Scenario: Split text to a recordset using a negative Index
 	Then the split result will be
 	| vowels().letters |
 	And the execution has "AN" error
-
-Scenario: Split negative record index as Input
-	Given A string to split with value "[[my(-1).var]]"
-	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
-	When the data split tool is executed
-	Then the execution has "AN" error
-
-Scenario: Split text into negative recordset index
-	Given A string to split with value "abcd"
-	And assign to variable "[[vowels(-1).letters]]" split type "Index" at "5" and Include "Selected" and Escape '\'	
-	When the data split tool is executed
-	Then the execution has "AN" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+	| abcde           | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | -1    | No      |        |
+	And the debug output as
+	| # |                   |
+	| 1 | [[vowels(1).letters]] = |
 
 Scenario: Split text into negative recordset index as the index to split at
 	Given A string to split with value "abcd"
@@ -159,6 +284,13 @@ Scenario: Split text using a negative recordset index as escape character
 	And assign to variable "[[vowels().letters]]" split type "Index" at "2" and Include "Selected" and Escape '[[my(-1).escape]]'	
 	When the data split tool is executed
 	Then the execution has "AN" error
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                        | With  | Using | Include | Escape |
+	| abcd            | Forward           | No              | 1 | [[vowels().letters]] = | Index | 2     | Yes     |        |
+	And the debug output as
+	| # |                   |
+	| 1 | [[vowels(1).letters]] = |
+
 
 Scenario: Split text using a index with "," and space  
      Given A string to split with value "a bc, def"
@@ -182,43 +314,44 @@ Scenario: Split text using a index with "," and space
      Then the split result for "[[var]]" will be "123"
      And the execution has "NO" error
 
+#    Scenario: Sending Error in error variable and calling webservice
+#    Given A string to split with value "@!?><":}{+_)(*&^~"
+#	And assign to variable "[[vowels(*).chars]]" split type "Index" at "*" and Include "unselected"
+#	And the direction is "Backward"
+#    And assign error to variable "[[error]]"
+#    And call the web service "http://localhost:3142/services/Unsaved%2046.xml?content=[[error]]"
+#    When the data split tool is executed
+#    Then the execution has "AN" error
+#    And the debug Input as
+#	|   |            | With  | Using        | Include      | Escape |
+#	| 1 | @!?><":}{+_)(*&^~|  *    | Index        | unselected   |        |
+#
+#    And the debug output as
+#	|   |    | With  | Using | Include      | Escape |
+#	| 1 |          |  *    | Index |   unselected |        |
 
 
+Scenario: Split negative record index as Input
+	Given A string to split with value "[[my(-1).var]]"
+	And assign to variable "[[vowels().letters]]" split type "Index" at "5" and Include "Selected" and Escape ''	
+	When the data split tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| String to Split  | Process Direction | Skip blank rows | # |  | With | Using | Include | Escape |
+	| [[my(-1).var]] = | Forward           | No              |   |        |      |       |         |        |
+	And the debug output as
+	| # |                   |
+	| 1 | [[vowels(1).letters]] = |
 
-
-#Debug output
-#	
-#	Scenario:  Ensure that user must be able to see type as "Data Split" in debug output
-#	Given I have created a workflow with Data split 
-#	When the data split tool is executed
-#	Then the execution has "Data split" in the debug output
-#
-#	Scenario:  Ensure that user can be able to see inputs in debug output 
-#	Given I have created a workflow with Data split 
-#	When the data split tool is executed
-#	Then the execution has inputs of the Data split in the debug output
-#
-#	Scenario:  Ensure that user must be able to seeData split output variables in debug output
-#	Given I have created a Data split workflow 
-#	When the data split tool is executed
-#	Then the execution has output variables in the debug output
-#
-#
-#	Scenario:  Ensure that user must be able to see duration in the debug output
-#	Given I have created a workflow
-#	When the data split tool is executed
-#	Then click on the options button on top of the debug output
-#	And select duration on the list
-#	Then the execution has duration in the debug output
-#
-#	Scenario: Ensure that user must be able to see error in red in the debug output
-#	Given I have created aData split workflow with error 
-#	When the data split tool is executed
-#	Then the execution has error in red in debug output
-#
-#	Scenario: Ensure that system should show the values selected in the option menu of the debug output
-#	Given I have created a workflow with Data split
-#	When the data split tool is executed
-#	Then click on the options button on top of the debug output
-#	And select options in the list
-#	Then the execution has selected option value in the debug output
+Scenario: Split text into negative recordset index
+	Given A string to split with value "abcd"
+	And assign to variable "[[vowels(-1).letters]]" split type "Index" at "5" and Include "Selected" and Escape ''	
+	When the data split tool is executed
+	Then the execution has "AN" error	 
+	And the debug inputs as  
+	| String to Split | Process Direction | Skip blank rows | # |                          | With  | Using | Include | Escape |
+	| abcd            | Forward           | No              | 1 | [[vowels(-1).letters]] = | Index | 5     | Yes     |        |
+	And the debug output as
+	| # |                    |
+	| 1 | [[vowels(-1).letters]] = |
+	

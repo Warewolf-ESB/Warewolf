@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Authentication;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Enums;
@@ -228,6 +229,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
             var oldResourceID = dataObject.ResourceID;
+
+            InitializeDebug(dataObject);
 
             try
             {
@@ -536,10 +539,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, dev2Definition.RawValue, false, out errors);
 
                 DebugItem itemToAdd = new DebugItem();
-
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = displayName });
-
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Input));
+                AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
                 results.Add(itemToAdd);
             }
 
@@ -566,10 +566,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(tmpEntry != null)
                 {
                     DebugItem itemToAdd = new DebugItem();
-
-                    itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = dev2Definition.Name });
-
-                    itemToAdd.AddRange(CreateDebugItemsFromEntry(dev2Definition.RawValue, tmpEntry, dataList.UID, enDev2ArgumentType.Output));
+                    AddDebugItem(new DebugItemVariableParams(dev2Definition.RawValue, "", tmpEntry, dataList.UID), itemToAdd);
                     results.Add(itemToAdd);
                 }
                 else

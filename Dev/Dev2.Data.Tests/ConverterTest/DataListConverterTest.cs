@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Translators;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.DataList.Contract;
-using Dev2.Common;
 using Newtonsoft.Json;
-using System.Data;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.ConverterTest
 {
     /// <summary>
@@ -19,30 +20,11 @@ namespace Dev2.Data.Tests.ConverterTest
     [ExcludeFromCodeCoverage]
     public class DataListConverterTest
     {
-        public DataListConverterTest()
-        {
-            //
-            // TODO: Add constructor logic here
-            //
-        }
-
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
         //
@@ -75,9 +57,9 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar><rs><val>1</val><val>2</val></rs></root>", "<root><scalar/><rs><val/></rs></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
 
-            string expected = "<DataList><scalar>s1</scalar><rs><val>2</val></rs></DataList>";
+            const string Expected = "<DataList><scalar>s1</scalar><rs><val>2</val></rs></DataList>";
 
-            Assert.AreEqual(expected, data, "Expected [ " + expected + " ] but got [ " + data + " ]");
+            Assert.AreEqual(Expected, data, "Expected [ " + Expected + " ] but got [ " + data + " ]");
         }
 
         [TestMethod]
@@ -89,15 +71,18 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar></root>", "<root><scalar/></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
 
-            string expected = "<DataList><scalar>s1</scalar></DataList>";
+            const string Expected = "<DataList><scalar>s1</scalar></DataList>";
 
-            Assert.AreEqual(expected, data, "Expected [ " + expected + " ] but got [ " + data + " ]");
+            Assert.AreEqual(Expected, data, "Expected [ " + Expected + " ] but got [ " + data + " ]");
         }
 
         #region JSONClasses
 
-        private class TestClassRSWithScalar
+        // ReSharper disable ClassNeverInstantiated.Local
+        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        private class TestClassRsWithScalar
         {
+
 
             public string scalar { get; set; }
 
@@ -107,7 +92,7 @@ namespace Dev2.Data.Tests.ConverterTest
         private class TestClassRS
         {
             public string val { get; set; }
-        } 
+        }
 
         #endregion
 
@@ -120,7 +105,7 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "<root><scalar>s1</scalar><rs><val>1</val></rs><rs><val>2</val></rs></root>", "<root><scalar/><rs><val/></rs></root>", out errors);
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._JSON), enTranslationDepth.Data, out errors);
 
-            var result = JsonConvert.DeserializeObject<TestClassRSWithScalar>(data);
+            var result = JsonConvert.DeserializeObject<TestClassRsWithScalar>(data);
 
             Assert.AreEqual("s1", result.scalar);
             Assert.AreEqual("1", result.rs[0].val);
@@ -172,6 +157,63 @@ namespace Dev2.Data.Tests.ConverterTest
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("BinaryDataList_FetchAllRecordSetKeys")]
+        public void BinaryDataList_FetchAllRecordSetKeys_WhenHasRecordSetAndScalars_ShouldReturnOnlyRecordSets()
+        {
+            //------------Setup for test--------------------------
+            // BuildTargetShape
+            const string targetShape = "<DataList><result Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /><rs><Col1/><Col2/></rs></DataList>";
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+            var dl = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+            //------------Execute Test---------------------------
+            var keys = dl.FetchAllRecordSetKeys();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, invokeErrors.FetchErrors().Count);
+            Assert.AreEqual(1, keys.Count);
+            Assert.AreEqual("rs", keys[0]);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("BinaryDataList_FetchAllRecordSetKeys")]
+        public void BinaryDataList_FetchAllRecordSetKeys_WhenHasScalars_ShouldReturn0()
+        {
+            //------------Setup for test--------------------------
+            // BuildTargetShape
+            const string targetShape = "<DataList><result Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" /></DataList>";
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+            var dl = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+            //------------Execute Test---------------------------
+            var keys = dl.FetchAllRecordSetKeys();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, invokeErrors.FetchErrors().Count);
+            Assert.AreEqual(0, keys.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("BinaryDataList_FetchAllRecordSetKeys")]
+        public void BinaryDataList_FetchAllRecordSetKeys_WhenHasRecordSetsOnly_ShouldReturn0()
+        {
+            //------------Setup for test--------------------------
+            // BuildTargetShape
+            const string targetShape = "<DataList><rs><Col1/><Col2/></rs><rec><Col4/><Col5/></rec></DataList>";
+            ErrorResultTO invokeErrors;
+            TranslatorUtils tu = new TranslatorUtils();
+            var dl = tu.TranslateShapeToObject(targetShape, false, out invokeErrors);
+            //------------Execute Test---------------------------
+            var keys = dl.FetchAllRecordSetKeys();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, invokeErrors.FetchErrors().Count);
+            Assert.AreEqual(2, keys.Count);
+            Assert.AreEqual("rs", keys[0]);
+            Assert.AreEqual("rec", keys[1]);
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("TranslatorUtils_TranslateShapeToObject")]
         public void TranslatorUtils_TranslateShapeToObject_whenRsBothAndColumnsMixed_FullRSPresentInShape()
@@ -185,7 +227,7 @@ namespace Dev2.Data.Tests.ConverterTest
     <val Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   </rs>
 </DataList>";
-            
+
             //------------Execute Test---------------------------
 
             ErrorResultTO invokeErrors;
@@ -227,7 +269,7 @@ namespace Dev2.Data.Tests.ConverterTest
             // Execute Translator
             ErrorResultTO errors;
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs></root>", out errors);
-            
+
             string data = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
 
             Assert.AreEqual("<DataList><rs><val>aaa</val><otherVal>1</otherVal></rs><rs><val>zzz</val><otherVal>2</otherVal></rs></DataList>", data);
@@ -250,15 +292,15 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs></root>", out errors);
             var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
             //------------Execute Test---------------------------
-            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors );
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(convertToDataTable);
-            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.AreEqual(2, convertToDataTable.Columns.Count);
             Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
             Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
-            Assert.AreEqual(2,convertToDataTable.Rows.Count);
-            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
-            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual(2, convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa", convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1", convertToDataTable.Rows[0]["otherVal"]);
             Assert.AreEqual("zzz", convertToDataTable.Rows[1]["val"]);
             Assert.AreEqual("2", convertToDataTable.Rows[1]["otherVal"]);
         }
@@ -275,15 +317,15 @@ namespace Dev2.Data.Tests.ConverterTest
             Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<root><rs><val>aaa</val><otherVal>1</otherVal></rs><rs><val></val><otherVal></otherVal></rs><rs><val>zzz</val><otherVal>2</otherVal></rs></root>", "<root><rs><val/><otherVal/></rs></root>", out errors);
             var fetchBinaryDataList = compiler.FetchBinaryDataList(dlID, out errors);
             //------------Execute Test---------------------------
-            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors, PopulateOptions.IgnoreBlankRows);
+            var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(convertToDataTable);
-            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.AreEqual(2, convertToDataTable.Columns.Count);
             Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
             Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
-            Assert.AreEqual(2,convertToDataTable.Rows.Count);
-            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
-            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual(2, convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa", convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1", convertToDataTable.Rows[0]["otherVal"]);
             Assert.AreEqual("zzz", convertToDataTable.Rows[1]["val"]);
             Assert.AreEqual("2", convertToDataTable.Rows[1]["otherVal"]);
         }
@@ -303,12 +345,12 @@ namespace Dev2.Data.Tests.ConverterTest
             var convertToDataTable = compiler.ConvertToDataTable(fetchBinaryDataList, "rs", out errors, PopulateOptions.PopulateBlankRows);
             //------------Assert Results-------------------------
             Assert.IsNotNull(convertToDataTable);
-            Assert.AreEqual(2,convertToDataTable.Columns.Count);
+            Assert.AreEqual(2, convertToDataTable.Columns.Count);
             Assert.IsTrue(convertToDataTable.Columns.Contains("val"));
             Assert.IsTrue(convertToDataTable.Columns.Contains("otherVal"));
-            Assert.AreEqual(3,convertToDataTable.Rows.Count);
-            Assert.AreEqual("aaa",convertToDataTable.Rows[0]["val"]);
-            Assert.AreEqual("1",convertToDataTable.Rows[0]["otherVal"]);
+            Assert.AreEqual(3, convertToDataTable.Rows.Count);
+            Assert.AreEqual("aaa", convertToDataTable.Rows[0]["val"]);
+            Assert.AreEqual("1", convertToDataTable.Rows[0]["otherVal"]);
             Assert.AreEqual("", convertToDataTable.Rows[1]["val"]);
             Assert.AreEqual("", convertToDataTable.Rows[1]["otherVal"]);
             Assert.AreEqual("zzz", convertToDataTable.Rows[2]["val"]);
@@ -383,7 +425,7 @@ namespace Dev2.Data.Tests.ConverterTest
 
             // Execute Translator
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs><rs2><val/></rs2></root>", out errors);
+            compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, "<root><rs><val/><otherVal/></rs><rs2><val/></rs2></root>", out errors);
 
             Assert.AreEqual(1, errors.FetchErrors().Count, "Did not return the correct number of errors");
             Assert.AreEqual("DataTable translator can only map to a single recordset!", errors.FetchErrors()[0], "Did not return the correct error message");
@@ -445,7 +487,7 @@ namespace Dev2.Data.Tests.ConverterTest
             dbData.Columns.Add("One", typeof(string));
             dbData.Columns.Add("Two", typeof(string));
             dbData.Columns.Add("Three", typeof(string));
-            dbData.Rows.Add("aaa","bbb","ccc");
+            dbData.Rows.Add("aaa", "bbb", "ccc");
 
             // Execute Translator
             Guid dlID = compiler.PopulateDataList(DataListFormat.CreateFormat(GlobalConstants._DATATABLE), dbData, outputDefs, dataListID, out errors);

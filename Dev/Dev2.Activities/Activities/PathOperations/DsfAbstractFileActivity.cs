@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using Dev2;
+using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.PathOperations.Interfaces;
@@ -52,8 +53,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors = new ErrorResultTO();
 
             IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsertDeferred = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
+            toUpsertDeferred.IsDebug = true;
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            toUpsert.IsDebug = true;
             // Process if no errors
+
+            if(dataObject.IsDebugMode())
+            {
+                InitializeDebug(dataObject);
+            }
+
             if(!errors.HasErrors())
             {
                 try
@@ -110,19 +119,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             // deferred read ;)
                             compiler.Upsert(dlID, toUpsertDeferred, out errors);
                         }
-                        if(dataObject.IsDebug || dataObject.RemoteInvoke)
+                        if(dataObject.IsDebugMode())
                         {
-                            ErrorResultTO error;
                             if(!String.IsNullOrEmpty(Result))
                             {
-                                string tmpRes = Result;
-                                if(tmpRes.Contains("()."))
+                                if(_isStandardUpsert)
                                 {
-                                    tmpRes = tmpRes.Replace("().", "(*).");
+                                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                                    {
+                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                                    }
                                 }
-                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
-                                allErrors.MergeErrors(error);
-                                AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
+                                else
+                                {
+                                    foreach(var debugOutputTO in toUpsertDeferred.DebugOutputs)
+                                    {
+                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                                    }
+                                }
+                                //                                string tmpRes = Result;
+                                //                                if(tmpRes.Contains("()."))
+                                //                                {
+                                //                                    tmpRes = tmpRes.Replace("().", "(*).");
+                                //                                }
+                                //                                IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, tmpRes, true, out error);
+                                //                                allErrors.MergeErrors(error);
+                                //                                AddDebugOutputItem(tmpRes, string.Empty, binaryDataListEntry, dlID);
                             }
                         }
 
@@ -221,7 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            foreach (IDebugItem debugInput in _debugInputs)
+            foreach(IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FetchResultsList();
             }
@@ -231,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
 
-            foreach (IDebugItem debugOutput in _debugOutputs)
+            foreach(IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -244,58 +266,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         internal void AddDebugInputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
-
-            if (!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }           
-
-            if (valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Input));
-            }
-
-            _debugInputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
         }
 
         internal void AddDebugOutputItem(string expression, string labelText, IBinaryDataListEntry valueEntry, Guid executionId)
         {
-            DebugItem itemToAdd = new DebugItem();
-
-            if (!string.IsNullOrWhiteSpace(labelText))
-            {
-                itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = labelText });
-            }
-
-            if (valueEntry != null)
-            {
-                itemToAdd.AddRange(CreateDebugItemsFromEntry(expression, valueEntry, executionId, enDev2ArgumentType.Output));
-            }
-
-            _debugOutputs.Add(itemToAdd);
+            AddDebugOutputItem(new DebugItemVariableParams(expression, labelText, valueEntry, executionId));
         }
 
         #endregion
 
         protected void AddDebugInputItemUserNamePassword(Guid executionId, IBinaryDataListEntry usernameEntry)
         {
-            AddDebugInputItem(Username, "Username", usernameEntry, executionId);
+            AddDebugInputItem(new DebugItemVariableParams(Username, "Username", usernameEntry, executionId));
             AddDebugInputItemPassword("Password", Password);
         }
 
         protected void AddDebugInputItemDestinationUsernamePassword(Guid executionId, IBinaryDataListEntry destUsernameEntry, string destinationPassword, string userName)
         {
-            AddDebugInputItem(userName, "Username", destUsernameEntry, executionId);
-            AddDebugInputItemPassword("Password", destinationPassword);
+            AddDebugInputItem(new DebugItemVariableParams(userName, "Destination Username", destUsernameEntry, executionId));
+            AddDebugInputItemPassword("Destination Password", destinationPassword);
         }
 
         protected void AddDebugInputItemPassword(string label, string password)
         {
-            var itemToAdd = new DebugItem();
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = label });
-            itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetBlankedOutPassword(password) });
-            _debugInputs.Add(itemToAdd);
+            AddDebugInputItem(new DebugItemStaticDataParams(GetBlankedOutPassword(password), label));
         }
 
         protected void AddDebugInputItemOverwrite(Guid executionId, bool overWrite)
