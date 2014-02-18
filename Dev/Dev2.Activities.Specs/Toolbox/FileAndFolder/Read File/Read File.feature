@@ -16,13 +16,13 @@ Scenario Outline: Read File at location
          | Input Path                  | Username   | Password |
          | <source> = <sourceLocation> | <username> | String   |
 	And the debug output as
-		| Result                     |
-		| '<resultVar>' = '<result>' |
+		| Result                 |
+		| <resultVar> = <result> |
 	Examples: 
-		| source   | sourceLocation                                                       | username               | password | resultVar  | result | errorOccured |
-		| [[path]] | c:\filetoread.txt                                                    | ""                     | ""       | [[result]] | String | NO           |
-		| [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                     | ""       | [[result]] | String | NO           |
-		| [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | Dev2\IntegrationTester | I73573r0 | [[result]] | String | NO           |
-		| [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                     | ""       | [[result]] | String | NO           |
-		| [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester      | I73573r0 | [[result]] | String | NO           |
-		| [[path]] | sftp://localhost/filetoread.txt                                      | dev2                   | Q/ulw&]  | [[result]] | String | NO           |
+	| Name       | source   | sourceLocation                                                       | username               | password | resultVar  | result | errorOccured |
+	| Local      | [[path]] | c:\filetoread.txt                                                    | ""                     | ""       | [[result]] | Guid   | NO           |
+	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                     | ""       | [[result]] | Guid   | NO           |
+	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | Dev2\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |
+	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                     | ""       | [[result]] | Guid   | NO           |
+	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester      | I73573r0 | [[result]] | Guid   | NO           |
+	| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                   | Q/ulw&]  | [[result]] | Guid   | NO           |

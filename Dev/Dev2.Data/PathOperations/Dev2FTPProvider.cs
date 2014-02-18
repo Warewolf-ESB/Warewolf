@@ -7,10 +7,10 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
+using Dev2.Providers.Logs;
 using Tamir.SharpSsh;
 using Tamir.SharpSsh.jsch;
 
@@ -24,7 +24,7 @@ namespace Dev2.Data.PathOperations
     [Serializable]
     public class Dev2FTPProvider : IActivityIOOperationsEndPoint
     {
-        const int SFTP_TIMEOUT_MILLISECONDS = 3000;
+        const int SFTPTimeoutMilliseconds = 3000;
 
         // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
         // Make sure to replace Uri with IActivity references
@@ -66,11 +66,11 @@ namespace Dev2.Data.PathOperations
 
         void ReadFromFTP(IActivityIOPath path, ref Stream result)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(path.Path));
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.UseBinary = true;
             request.KeepAlive = true;
-            request.EnableSsl = EnableSSL(path);
+            request.EnableSsl = EnableSsl(path);
 
             if(path.IsNotCertVerifiable)
             {
@@ -132,7 +132,7 @@ namespace Dev2.Data.PathOperations
         Sftp BuildSftpClient(IActivityIOPath path)
         {
             var hostName = ExtractHostNameFromPath(path.Path);
-            var sftp = new Sftp(hostName, path.Username, path.Password, SFTP_TIMEOUT_MILLISECONDS);
+            var sftp = new Sftp(hostName, path.Username, path.Password, SFTPTimeoutMilliseconds);
 
             try
             {
@@ -191,7 +191,7 @@ namespace Dev2.Data.PathOperations
             return "";
         }
 
-        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut)
+        public int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut)
         {
             var result = -1;
 
@@ -235,11 +235,11 @@ namespace Dev2.Data.PathOperations
 
         int WriteToFTP(Stream src, IActivityIOPath dst)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(dst.Path));
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.KeepAlive = false;
-            request.EnableSsl = EnableSSL(dst);
+            request.EnableSsl = EnableSsl(dst);
 
             if(dst.Username != string.Empty)
             {
@@ -347,11 +347,11 @@ namespace Dev2.Data.PathOperations
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(src.Path));
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(src.Path));
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.UseBinary = true;
                 request.KeepAlive = false;
-                request.EnableSsl = EnableSSL(src);
+                request.EnableSsl = EnableSsl(src);
 
                 if(src.Username != string.Empty)
                 {
@@ -487,12 +487,12 @@ namespace Dev2.Data.PathOperations
             FtpWebResponse response = null;
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(dst.Path));
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
                 request.Method = WebRequestMethods.Ftp.MakeDirectory;
 
                 request.UseBinary = true;
                 request.KeepAlive = false;
-                request.EnableSsl = EnableSSL(dst);
+                request.EnableSsl = EnableSsl(dst);
 
                 if(dst.Username != string.Empty)
                 {
@@ -585,7 +585,7 @@ namespace Dev2.Data.PathOperations
             List<string> dirs;
             try
             {
-                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src),
+                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
                                                  src.IsNotCertVerifiable);
                 dirs = ExtractDirectoryList(src.Path, tmpDirData);
 
@@ -612,7 +612,7 @@ namespace Dev2.Data.PathOperations
             List<string> dirs;
             try
             {
-                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSSL(src),
+                var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
                                                  src.IsNotCertVerifiable);
                 dirs = ExtractFileList(src.Path, tmpDirData);
             }
@@ -638,7 +638,7 @@ namespace Dev2.Data.PathOperations
         /// </summary>
         /// <param name="path">The path.</param>
         /// <returns></returns>
-        private static string ConvertSSLToPlain(string path)
+        private static string ConvertSslToPlain(string path)
         {
             string result = path;
 
@@ -699,24 +699,24 @@ namespace Dev2.Data.PathOperations
         /// <param name="user"></param>
         /// <param name="pass"></param>
         /// <param name="ssl"></param>
-        /// <param name="IsNotCertVerifiable"></param>
+        /// <param name="isNotCertVerifiable"></param>
         /// <returns></returns>
-        string ExtendedDirList(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        string ExtendedDirList(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
         {
             if(path.Contains("sftp://"))
             {
                 return ExtendedDirListSFTP(path, user, pass);
             }
-            return ExtendedDirListStandardFTP(path, user, pass, ssl, IsNotCertVerifiable);
+            return ExtendedDirListStandardFTP(path, user, pass, ssl, isNotCertVerifiable);
         }
 
-        string ExtendedDirListStandardFTP(string path, string user, string pass, bool ssl, bool IsNotCertVerifiable)
+        string ExtendedDirListStandardFTP(string path, string user, string pass, bool ssl, bool isNotCertVerifiable)
         {
             FtpWebResponse resp = null;
             string result = null;
             try
             {
-                FtpWebRequest req = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(path));
+                FtpWebRequest req = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path));
 
                 if(user != string.Empty)
                 {
@@ -727,7 +727,7 @@ namespace Dev2.Data.PathOperations
                 req.KeepAlive = false;
                 req.EnableSsl = ssl;
 
-                if(IsNotCertVerifiable)
+                if(isNotCertVerifiable)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = AcceptAllCertifications;
                 }
@@ -775,7 +775,7 @@ namespace Dev2.Data.PathOperations
                 foreach(ChannelSftp.LsEntry filePath in fileList)
                 {
                     string filename = filePath.getFilename();
-                    if(filename.Contains(".."))
+                    if(filename.Contains("..") || filename.Contains("."))
                     {
                         continue;
                     }
@@ -891,7 +891,7 @@ namespace Dev2.Data.PathOperations
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(src.Path));
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(src.Path));
 
                 if(PathIs(src) == enPathType.Directory)
                 {
@@ -904,7 +904,7 @@ namespace Dev2.Data.PathOperations
 
                 request.UseBinary = true;
                 request.KeepAlive = false;
-                request.EnableSsl = EnableSSL(src);
+                request.EnableSsl = EnableSsl(src);
 
                 if(src.IsNotCertVerifiable)
                 {
@@ -964,7 +964,7 @@ namespace Dev2.Data.PathOperations
             return true;
         }
 
-        private static bool EnableSSL(IActivityIOPath path)
+        private static bool EnableSsl(IActivityIOPath path)
         {
             var result = path.PathType == enActivityIOPathType.FTPS || path.PathType == enActivityIOPathType.FTPES;
             return result;
@@ -984,11 +984,11 @@ namespace Dev2.Data.PathOperations
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(path.Path));
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
                 request.Method = WebRequestMethods.Ftp.GetFileSize;
                 request.UseBinary = true;
                 request.KeepAlive = false;
-                request.EnableSsl = EnableSSL(path);
+                request.EnableSsl = EnableSsl(path);
 
                 if(path.Username != string.Empty)
                 {
@@ -1077,11 +1077,11 @@ namespace Dev2.Data.PathOperations
 
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSSLToPlain(path.Path));
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.UseBinary = true;
                 request.KeepAlive = false;
-                request.EnableSsl = EnableSSL(path);
+                request.EnableSsl = EnableSsl(path);
 
                 if(path.Username != string.Empty)
                 {

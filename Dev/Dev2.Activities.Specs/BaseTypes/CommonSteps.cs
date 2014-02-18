@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using ActivityUnitTests;
+using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -86,7 +87,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                             true);
             var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, Guid.NewGuid().ToString());
             IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-            broker.PutRaw(sourceEndPoint, ops);
+            if(sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
+            {
+                broker.PutRaw(sourceEndPoint, ops);
+            }
 
         }
 
@@ -181,7 +185,30 @@ namespace Dev2.Activities.Specs.BaseTypes
                 GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
-                Assert.AreEqual(value, actualValue);
+                var type = "";
+                if(value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")
+                {
+                    type = value;
+                }
+                if(string.IsNullOrEmpty(type))
+                {
+                    Assert.AreEqual(value, actualValue);
+                }
+                else
+                {
+                    Type component = Type.GetType("System." + type);
+                    TypeConverter converter = TypeDescriptor.GetConverter(component);
+
+                    try
+                    {
+                        converter.ConvertFrom(actualValue);
+                    }
+                    catch
+                    {
+                        Assert.Fail("Value is not expected type");
+                    }
+                }
+
             }
         }
 

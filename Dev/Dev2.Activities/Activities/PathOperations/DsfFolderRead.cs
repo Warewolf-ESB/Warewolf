@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
+using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
@@ -61,17 +61,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2DataListEvaluateIterator passItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
             colItr.AddIterator(passItr);
 
-            if (dataObject.IsDebug || dataObject.RemoteInvoke)
+            if(dataObject.IsDebug || dataObject.RemoteInvoke)
             {
                 AddDebugInputItem(InputPath, "Input Path", inputPathEntry, executionId);
-                DebugItem itemToAdd = new DebugItem();
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Label, Value = "Read" });                
-                itemToAdd.ResultsList.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = GetReadType().GetDescription() });
-                _debugInputs.Add(itemToAdd);
+                AddDebugInputItem(new DebugItemStaticDataParams(GetReadType().GetDescription(), "Read"));
                 AddDebugInputItemUserNamePassword(executionId, usernameEntry);
             }
 
-            while (colItr.HasMoreData())
+            while(colItr.HasMoreData())
             {
 
 
@@ -84,10 +81,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try
                 {
-                    IList<IActivityIOPath> ListOfDir = broker.ListDirectory(endPoint,GetReadType());
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+                    IList<IActivityIOPath> ListOfDir = broker.ListDirectory(endPoint, GetReadType());
+                    if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                     {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                        if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
                             string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
                             string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
@@ -104,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                             }
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                         {
                             if(ListOfDir != null)
                             {
@@ -125,12 +122,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO("Failure"));
                     allErrors.AddError(e.Message);
                 }
-            }        
+            }
 
             return outputs;
 
@@ -234,5 +231,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
-    }    
+    }
 }

@@ -27,7 +27,7 @@ namespace Dev2.PathOperations {
         /// </summary>
         /// <param name="src"></param>
         /// <param name="args"></param>
-        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo WhereToPut);
+        int Put(Stream src, IActivityIOPath dst, Dev2CRUDOperationTO args, DirectoryInfo whereToPut);
 
         /// <summary>
         /// Delete a file/folder at a location
