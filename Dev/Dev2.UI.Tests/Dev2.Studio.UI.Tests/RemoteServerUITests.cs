@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -287,18 +288,21 @@ namespace Dev2.Studio.UI.Tests
         // DO NOT REMOVE UNTIL CONFIGURED TO USE LOCAL SERVER!!!
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
+            var emailServer = TestUtils.StartEmailServer();
+            var machineName = Environment.MachineName;
             const string TextToSearchWith = "EmailSource";
             string timeout;
 
             //Edit remote email source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "REMOTETESTS", RemoteServerName);
             //Change Timeout
-            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(6, "1234");
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, machineName);
+            EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(5, "1234");
             //Test Email Source
             EmailSourceWizardUIMap.PressButtonOnWizard(1, 1000);
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "@gmail.com");
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, "dev2developer@yahoo.com");
-            EmailSourceWizardUIMap.PressButtonOnWizard(1, 12000);
+            EmailSourceWizardUIMap.PressButtonOnWizard(1, 1000);
             EmailSourceWizardUIMap.PressButtonOnWizard(8);
             SaveDialogUIMap.ClickSave();
 
@@ -316,12 +320,14 @@ namespace Dev2.Studio.UI.Tests
             //Test Email Source
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(0, "@gmail.com");
             EmailSourceWizardUIMap.EnterTextIntoWizardTextBox(1, "dev2developer@yahoo.com");
-            EmailSourceWizardUIMap.PressButtonOnWizard(1, 12000);
+            EmailSourceWizardUIMap.PressButtonOnWizard(1, 1000);
             EmailSourceWizardUIMap.PressButtonOnWizard(8);
             SaveDialogUIMap.ClickSave();
 
             //Assert remote email source changed its timeout
             Assert.AreEqual("1234", timeout, "Cannot edit remote email source");
+
+            TestUtils.StopEmailServer(emailServer);
         }
 
         [TestMethod]

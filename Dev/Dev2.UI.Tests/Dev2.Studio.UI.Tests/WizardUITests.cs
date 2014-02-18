@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -194,6 +195,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void WizardUiTests_EmailSourceWizard_CreateNewSource_ExpectedSourceCreated()
         {
             //Initialization
+            var startEmailServer = TestUtils.StartEmailServer();
+
             var sourceName = Guid.NewGuid().ToString().Substring(0, 5);
             var name = "codeduitest" + sourceName;
 
@@ -205,6 +208,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             //Assert
             Assert.IsTrue(ExplorerUIMap.ValidateSourceExists(name, "Unassigned"));
+
+            TestUtils.StopEmailServer(startEmailServer);
         }
 
         #endregion

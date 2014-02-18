@@ -31,11 +31,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
         {
             SendKeys.SendWait("{TAB}");
             Playback.Wait(50);
-            SendKeys.SendWait("smtp.afrihost.co.za{TAB}");
+            SendKeys.SendWait("localhost{TAB}");
             Playback.Wait(50);
-            SendKeys.SendWait("dev2test{TAB}");
+            SendKeys.SendWait("test{TAB}");
             Playback.Wait(50);
-            SendKeys.SendWait("Password{TAB}{TAB}");
+            SendKeys.SendWait("test{TAB}{TAB}");
             Playback.Wait(50);
             SendKeys.SendWait("{TAB}{TAB}");
             Playback.Wait(50);
@@ -44,7 +44,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.EmailSourceWizardUIMapClasses
             SendKeys.SendWait("dev2warewolf@gmail.com{TAB}");
             Playback.Wait(50);
             SendKeys.SendWait("{ENTER}");
-            Playback.Wait(30000);//wait for test
+            Playback.Wait(1000);//wait for test
             ClickSave();
 
             SendKeys.SendWait("{TAB}{TAB}{TAB}{TAB}");

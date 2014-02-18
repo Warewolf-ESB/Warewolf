@@ -68,6 +68,9 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="netDumbster">
+      <HintPath>..\..\packages\netDumbster.1.3.0.7\lib\net40\netDumbster.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -140,6 +143,7 @@
     <Compile Include="UIMaps\WebSourceWizardUIMap.cs" />
     <Compile Include="Extensions\UiTestControlExtentions.cs" />
     <Compile Include="Utils\LargeViewUtilMethods.cs" />
+    <Compile Include="Utils\TestUtils.cs" />
     <Compile Include="WorkflowDesignerUITests.cs" />
     <Compile Include="TestBase.cs" />
     <Compile Include="UIMapBase.cs" />
