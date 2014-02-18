@@ -608,6 +608,38 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(3, _mainViewModel.Items.Count);
             Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
         }
+        
+        [TestMethod]
+        [Owner("Jai Holloway")]
+        [TestCategory("MainViewModel_ChangeActiveItem")]
+        public void MainViewModel_CloseWorkSurfaceContext_PreviousItemActivatedAndCorrectlySet()
+        {
+            CreateFullExportsAndVm();
+            AddAdditionalContext();
+            AddAdditionalContext();
+            Assert.AreEqual(3, _mainViewModel.Items.Count);
+
+            _firstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            _secondResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            
+
+            var firstCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_firstResource.Object);
+            var secondCtx = _mainViewModel.FindWorkSurfaceContextViewModel(_secondResource.Object);
+
+            _mainViewModel.ActivateItem(firstCtx);
+            _mainViewModel.ActivateItem(secondCtx);
+            _mainViewModel.ActivateItem(firstCtx);
+            var msg = new ShowDependenciesMessage(_firstResource.Object);
+            _mainViewModel.Handle(msg);
+            var dependencyCtx = _mainViewModel.ActiveItem;
+            var vm = dependencyCtx.WorkSurfaceViewModel as DependencyVisualiserViewModel;
+            Assert.IsNotNull(vm);
+            //Assert.IsTrue(vm.ResourceModel.Equals(_firstResource.Object));
+            
+            _mainViewModel.DeactivateItem(dependencyCtx, false);
+            
+            Assert.IsTrue(_mainViewModel.ActiveItem.Equals(firstCtx));
+        }
 
         [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrue_PreviousItemActivatedAndOneLessItem()
@@ -1437,6 +1469,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(null, mockMainViewModel.ActiveItem);
         }
 
+       
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("MainViewModel_UnsavedWorkflowDialog")]

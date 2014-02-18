@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Dev2.Studio.Core.AppResources.ExtensionMethods;
+using Dev2.Studio.ViewModels;
+using Infragistics.Windows.DockManager;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
-using Dev2.Studio.ViewModels;
-using Infragistics.Windows.DockManager;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -47,7 +47,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if(itemsControlBindingBehavior == null)
+            if (itemsControlBindingBehavior == null)
             {
                 return;
             }
@@ -55,12 +55,12 @@ namespace Dev2.Studio.AppResources.Behaviors
             var oldValue = e.OldValue as DocumentContentHost;
             var newValue = e.NewValue as DocumentContentHost;
 
-            if(oldValue != null)
+            if (oldValue != null)
             {
                 oldValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
             }
 
-            if(newValue != null)
+            if (newValue != null)
             {
                 newValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
                 newValue.ActiveDocumentChanged += itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
@@ -79,20 +79,20 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if(itemsControlBindingBehavior == null)
+            if (itemsControlBindingBehavior == null)
             {
                 return;
             }
 
-            foreach(var tabGroupPane in itemsControlBindingBehavior.GetAllTabGroupPanes())
+            foreach (var tabGroupPane in itemsControlBindingBehavior.GetAllTabGroupPanes())
             {
                 FocusManager.AddGotFocusHandler(tabGroupPane, GotFocusHandler);
                 var found = false;
 
-                for(var i = 0; i < tabGroupPane.Items.Count; i++)
+                for (var i = 0; i < tabGroupPane.Items.Count; i++)
                 {
                     var frameworkElement = tabGroupPane.Items[i] as FrameworkElement;
-                    if(frameworkElement != null && frameworkElement.DataContext == e.NewValue)
+                    if (frameworkElement != null && frameworkElement.DataContext == e.NewValue)
                     {
                         tabGroupPane.SelectedIndex = i;
                         found = true;
@@ -100,7 +100,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                     }
                 }
 
-                if(found)
+                if (found)
                 {
                     break;
                 }
@@ -116,10 +116,10 @@ namespace Dev2.Studio.AppResources.Behaviors
         static void RefreshActiveEnvironment(object sender)
         {
             var frameworkElement = sender as FrameworkElement;
-            if(frameworkElement != null && frameworkElement.DataContext != null)
+            if (frameworkElement != null && frameworkElement.DataContext != null)
             {
                 var vm = frameworkElement.DataContext as MainViewModel;
-                if(vm != null)
+                if (vm != null)
                 {
                     vm.RefreshActiveEnvironment();
                 }
@@ -134,11 +134,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
-            if(routedPropertyChangedEventArgs.NewValue == null)
-            {
-                SelectedItem = null;
-            }
-            else
+            if (routedPropertyChangedEventArgs.NewValue != null)
             {
                 SelectedItem = routedPropertyChangedEventArgs.NewValue.DataContext;
             }
