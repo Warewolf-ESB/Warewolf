@@ -43,7 +43,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new EmailDesignerViewModel(CreateModelItem(), null, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new EmailDesignerViewModel(CreateModelItem(), null, null, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -57,7 +59,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -71,7 +75,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var viewModel = new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            // ReSharper disable ObjectCreationAsStatement
+            new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IEnvironmentModel>().Object, null);
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
         }
@@ -478,7 +484,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 Attachments = "",
                 Body = "The body",
             };
-            Verify_ValidateThis(activity, null);
+            Verify_ValidateThis(activity);
         }
 
         [TestMethod]
@@ -907,7 +913,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 StringAssert.Contains(viewModel.Errors[0].Message, expectedErrorMessage);
 
                 viewModel.Errors[0].Do();
-                var isFocused = (bool)viewModel.GetValue(isFocusedProperty);
+                var isFocused = isFocusedProperty != null && (bool)viewModel.GetValue(isFocusedProperty);
                 Assert.IsTrue(isFocused);
             }
         }
@@ -929,20 +935,20 @@ namespace Dev2.Activities.Designers.Tests.Email
             var emailSources = CreateEmailSources(2);
             var modelItem = ModelItemUtils.CreateModelItem(new DsfSendEmailActivity
             {
-                SelectedEmailSource = emailSource                
+                SelectedEmailSource = emailSource
             });
 
             var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
 
             var updatedEmailSource = new EmailSource(emailSources[0].ToXml())
             {
-                UserName = "UpdateEmail@test.com", 
+                UserName = "UpdateEmail@test.com",
                 Password = "UpdatedPassword"
             };
 
             //var xaml = new StringBuilder
             var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(r => r.WorkflowXaml).Returns( new StringBuilder(updatedEmailSource.ToXml().ToString()));
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(updatedEmailSource.ToXml().ToString()));
 
             var message = new UpdateResourceMessage(resourceModel.Object);
 

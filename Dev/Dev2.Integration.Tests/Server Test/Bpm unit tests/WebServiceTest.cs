@@ -25,7 +25,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             //------------Setup for test--------------------------
             string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "WebServiceTest");
 
-            string expected = @"<result>PASS</result>";
+            const string expected = @"<result>PASS</result>";
 
             //------------Execute Test---------------------------
             string ResponseData = TestHelper.PostDataToWebserver(postData);

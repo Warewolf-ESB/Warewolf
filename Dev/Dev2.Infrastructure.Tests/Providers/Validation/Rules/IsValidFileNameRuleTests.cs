@@ -49,7 +49,9 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             }
         }
 
+        // ReSharper disable UnusedParameter.Local
         void Verify_Check(bool isValid, params string[] values)
+        // ReSharper restore UnusedParameter.Local
         {
             //------------Setup for test--------------------------
             const char SplitToken = ',';

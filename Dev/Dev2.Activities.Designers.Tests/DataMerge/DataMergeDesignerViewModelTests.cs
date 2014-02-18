@@ -19,7 +19,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
         [TestCategory("DataMergeDesignerViewModel_Constructor")]
         public void DataMergeDesignerViewModel_Constructor__ModelItemIsValid_ListHasFourItems()
         {
-            var items = new List<DataMergeDTO> { new DataMergeDTO("", "None", "", 0, "", "Left", false) };
+            var items = new List<DataMergeDTO> { new DataMergeDTO("", "None", "", 0, "", "Left") };
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var expected = new List<string> { "None", "Index", "Chars", "New Line", "Tab" };
 
@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
         [TestCategory("DataMergeDesignerViewModel_Constructor")]
         public void DataMergeDesignerViewModel_Constructor__ModelItemIsValid_AlignmentTypesHasTwoItems()
         {
-            var items = new List<DataMergeDTO> { new DataMergeDTO("", "None", "", 0, "", "Left", false) };
+            var items = new List<DataMergeDTO> { new DataMergeDTO("", "None", "", 0, "", "Left") };
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var expected = new List<string> { "Left", "Right" };
 
@@ -161,10 +161,17 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDataMergeActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            var modelItemCollection = modelItem.Properties["MergeCollection"].Collection;
-            foreach(var dto in items)
+            var modelProperty = modelItem.Properties["MergeCollection"];
+            if(modelProperty != null)
             {
-                modelItemCollection.Add(dto);
+                var modelItemCollection = modelProperty.Collection;
+                foreach(var dto in items)
+                {
+                    if(modelItemCollection != null)
+                    {
+                        modelItemCollection.Add(dto);
+                    }
+                }
             }
             return modelItem;
         }

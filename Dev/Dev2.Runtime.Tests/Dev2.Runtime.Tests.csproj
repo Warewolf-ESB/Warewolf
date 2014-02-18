@@ -144,7 +144,6 @@
     <Compile Include="Json\JsonResource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelperTests.cs" />
     <Compile Include="Hosting\ServiceDefinitionLoaderTest.cs" />
-    <Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBrokerTests.cs" />
     <Compile Include="ESB\RemoteWorkflowExecutionContainerMock.cs" />
     <Compile Include="ESB\DatabaseServiceContainerTests.cs" />
     <Compile Include="ESB\DatabaseServiceContainerMock.cs" />

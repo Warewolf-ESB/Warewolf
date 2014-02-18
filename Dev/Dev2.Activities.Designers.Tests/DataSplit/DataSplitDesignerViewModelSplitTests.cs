@@ -230,7 +230,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
 
             // ReSharper disable PossibleNullReferenceException
             var miCollection = mi.Properties["ResultsCollection"].Collection;
-            var dtoModelItem = miCollection.Add(dto);
+            miCollection.Add(dto);
             // ReSharper restore PossibleNullReferenceException
 
             var viewModel = new DataSplitDesignerViewModel(mi);
