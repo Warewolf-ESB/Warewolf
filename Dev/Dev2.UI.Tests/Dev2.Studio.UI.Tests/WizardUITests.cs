@@ -24,18 +24,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-        private TestContext testContextInstance;
+        public TestContext TestContext { get; set; }
 
         #endregion
 
@@ -131,7 +120,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             var serviceNameId = Guid.NewGuid().ToString().Substring(0, 5);
             var serviceName = "codeduitest" + serviceNameId;
-            var sourceUrl = "http://www.webservicex.net/globalweather.asmx";
+            const string sourceUrl = "http://www.webservicex.net/globalweather.asmx";
 
             //Open wizard
             RibbonUIMap.ClickNewWebService();
@@ -166,7 +155,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var cat = "CODEDUITESTS" + serverSourceCategoryName.ToUpper();
             var serviceName = "codeduitest" + serviceNameID;
             var sourceName = "codeduitest" + sourceNameID;
-            var sourcePath = "RSAKLFSVRGENDEV";
+            const string sourcePath = "RSAKLFSVRGENDEV";
 
             //Open wizard
             RibbonUIMap.ClickNewDbWebService();
@@ -336,13 +325,20 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             SendKeys.SendWait("{ENTER}");
 
             // Assert Decision Title Updates Correctly
-            var expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
+            const string expected = "If [[VariableName]] Is Between [[VariableName]] and [[VariableName]]";
 
             var getDecision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
-            var displayValue = getDecisionText.Text;
+            if(getDecisionText != null)
+            {
+                var displayValue = getDecisionText.Text;
 
-            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         [TestMethod]

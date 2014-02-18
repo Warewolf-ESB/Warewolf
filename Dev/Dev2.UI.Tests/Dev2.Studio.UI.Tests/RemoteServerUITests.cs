@@ -285,7 +285,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
-        // DO NOT REMOVE UNTIL CONFIGURED TO USE LOCAL SERVER!!!
         public void RemoteServerUITests_EditRemoteEmailSource_EmailSourceIsEdited()
         {
             var emailServer = TestUtils.StartEmailServer();
