@@ -65,32 +65,37 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
             }
 
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(ScenarioContext.Current.Get<string>(CommonSteps.ActualSourceHolder),
-                ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
-                ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
-                true);
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
-            try
-            {
-                broker.Delete(sourceEndPoint);
-            }
-            catch(Exception)
-            {
-                //The file may already be deleted
-            }
+             string sourceLocation;
+             if(ScenarioContext.Current.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+             {
+                 IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
+                     ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                     ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
+                     true);
+                 IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                 try
+                 {
+                     broker.Delete(sourceEndPoint);
+                 }
+                 catch(Exception)
+                 {
+                     //The file may already be deleted
+                 }
+             }
+            
+             try
+             {
+                 if(Server != null)
+                 {
+                     Server.Bindings.Clear();
+                     Server.Stop();
+                 }
+             }
+             catch
+             {
+                 //Server may already be stopped
+             }
 
-            try
-            {
-                if(Server != null)
-                {
-                    Server.Bindings.Clear();
-                    Server.Stop();
-                }
-            }
-            catch
-            {
-                //Server may already be stopped
-            }
             Server = null;
         }
         #endregion
