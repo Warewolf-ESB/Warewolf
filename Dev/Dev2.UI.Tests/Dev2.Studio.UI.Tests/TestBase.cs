@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -80,7 +81,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             //Get Large View button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign",
@@ -131,7 +132,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             // Add the data!
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
@@ -206,7 +207,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Multi Assign on
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             // Click away
             Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
@@ -231,7 +232,7 @@ namespace Dev2.CodedUI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag a Calculate control on
-            ToolboxUIMap.DragControlToWorkflowDesigner("Calculate", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
 
             Playback.Wait(500);
             Mouse.Click();
@@ -329,7 +330,7 @@ namespace Dev2.CodedUI.Tests
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, workflowPoint1, "For Each");
 
             // Get a sample workflow, and drag it onto the "Drop Activity Here" part of the ForEach box
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");

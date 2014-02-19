@@ -1,4 +1,6 @@
 ﻿using System.Windows.Forms;
+using Dev2.Common.ExtMethods;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Utils;
 using System.Drawing;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -18,9 +20,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             _toolSearch = vstw.GetControlFromRoot(1, true, "Uia.ToolboxUserControl", "PART_Search");
         }
 
-        public void clickToolboxItem(string automationID)
+        public void clickToolboxItem(ToolType tool)
         {
-            UITestControl theControl = FindControl(automationID);
+            UITestControl theControl = FindControl(tool.GetDescription());
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(p);
         }
@@ -32,9 +34,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <param name="tabToDropOnto">The tab on which to drop the control</param>
         /// <param name="pointToDragTo">The point you wish to drop the control</param>
         /// <param name="getDroppedActivity">Get and return the dropped control</param>
-        public UITestControl DragControlToWorkflowDesigner(string toolName, UITestControl tabToDropOnto, Point pointToDragTo = new Point(), bool getDroppedActivity = true)
+        public UITestControl DragControlToWorkflowDesigner(ToolType tool, UITestControl tabToDropOnto, Point pointToDragTo = new Point(), bool getDroppedActivity = true)
         {
-            UITestControl theControl = FindToolboxItemByAutomationId(toolName);
+            UITestControl theControl = FindToolboxItemByAutomationId(tool);
             theControl.WaitForControlEnabled();
             if(pointToDragTo.X == 0 && pointToDragTo.Y == 0)
             {
@@ -50,12 +52,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl resourceOnDesignSurface = null;
             if(getDroppedActivity)
             {
-                resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, toolName);
+                resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, tool.ToString());
                 int counter = 0;
                 while(resourceOnDesignSurface == null && counter < 5)
                 {
                     Playback.Wait(1000);
-                    resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, toolName);
+                    resourceOnDesignSurface = WorkflowDesignerUIMap.FindControlByAutomationId(tabToDropOnto, tool.ToString());
                     Playback.Wait(500);
                     counter++;
                 }
@@ -70,17 +72,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <param name="controlId">The name of the control you to drag - Eg: Assign, Calculate, Etc</param>
         /// <param name="p">The point you wish to drop the control - Point p = WorkflowDesignerUIMap.GetPointUnderStartNode("someWorkflow"); is a good palce to start</param>
         /// <param name="searchID">The search unique identifier.</param>
-        public void DragControlToWorkflowDesigner(string controlId, Point p, string searchID = "")
+        public void DragControlToWorkflowDesigner(ToolType tool, Point p, string searchID = "")
         {
-            UITestControl theControl = FindToolboxItemByAutomationId(controlId, searchID);
+            UITestControl theControl = FindToolboxItemByAutomationId(tool, searchID);
             theControl.WaitForControlEnabled();
             Mouse.StartDragging(theControl, MouseButtons.Left);
             Mouse.StopDragging(p);
         }
 
-        public UITestControl FindToolboxItemByAutomationId(string automationId, string properSearchTerm = "")
+        public UITestControl FindToolboxItemByAutomationId(ToolType tool, string properSearchTerm = "")
         {
-            var theTerm = automationId;
+            var theTerm = tool.GetDescription();
             if(!string.IsNullOrEmpty(properSearchTerm))
             {
                 theTerm = properSearchTerm;
@@ -88,7 +90,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             SearchForControl(theTerm);
 
-            UITestControl theControl = FindControl(automationId);
+            UITestControl theControl = FindControl(tool.GetDescription());
             return theControl;
         }
 

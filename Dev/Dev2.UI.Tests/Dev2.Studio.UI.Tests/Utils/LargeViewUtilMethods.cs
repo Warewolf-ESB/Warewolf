@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -15,17 +13,17 @@ namespace Dev2.Studio.UI.Tests.Utils
 {
     public class LargeViewUtilMethods
     {
-        public void LargeViewTextboxesEnterTestData(string toolName, UITestControl theTab)
+        public void LargeViewTextboxesEnterTestData(ToolType tool, UITestControl theTab)
         {
             //Find the start point
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow               
-            ToolboxUIMap.DragControlToWorkflowDesigner(toolName, workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(tool, workflowPoint1);
 
             //Get Large View button
-            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, toolName,
+            UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, tool.ToString(),
                                                                            "Open Large View");
 
             // Click it
@@ -35,7 +33,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             // Add the data!
 
 
-            List<UITestControl> listOfTextboxes = GetAllTextBoxesFromLargeView(toolName, theTab);
+            List<UITestControl> listOfTextboxes = GetAllTextBoxesFromLargeView(tool.ToString(), theTab);
 
             int counter = 0;
             foreach(var textbox in listOfTextboxes)

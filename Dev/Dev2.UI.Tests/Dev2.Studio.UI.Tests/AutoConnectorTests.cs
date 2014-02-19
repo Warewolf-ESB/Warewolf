@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Drawing;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -71,7 +72,7 @@ namespace Dev2.Studio.UI.Tests
 
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             //Drag a control to the design surface
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, point);
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             Point newPoint = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             if(point != newPoint)
@@ -99,7 +100,7 @@ namespace Dev2.Studio.UI.Tests
             if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+                ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, point);
                 //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
                 var newPoint = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
                 if(point != newPoint)
@@ -177,7 +178,7 @@ namespace Dev2.Studio.UI.Tests
             if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 150);
-                ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+                ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, point);
             }
             else
             {
@@ -201,7 +202,7 @@ namespace Dev2.Studio.UI.Tests
 
             Point point = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(TabManagerUIMap.GetActiveTab());
             //Drag a control to the design surface
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", point);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, point);
             Playback.Wait(3500);
             DecisionWizardUIMap.ClickCancel();
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.Utils;
@@ -64,7 +65,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 Assert.Fail("Error - Clicking the new plugin service button does not create the new plugin service window");
             }
 
-            uiTestControl.WaitForControlEnabled();
+            if(uiTestControl != null)
+            {
+                uiTestControl.WaitForControlEnabled();
+            }
             WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{ESC}");
         }
@@ -224,7 +228,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             var pt = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", pt);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, pt);
             WizardsUIMap.WaitForWizard();
             _decisionWizardUiMap.SendTabs(4);
             Playback.Wait(500);
@@ -273,7 +277,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             VariablesUIMap.ClickScalarVariableName(0);
             SendKeys.SendWait("VariableName");
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
 
             //Save the decision with blank fields
             WizardsUIMap.WaitForWizard();
@@ -297,7 +301,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             VariablesUIMap.ClickScalarVariableName(0);
             SendKeys.SendWait("VariableName");
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             Playback.Wait(5000);
             //------------Execute Test---------------------------
             _decisionWizardUiMap.SendTabs(4);
@@ -331,10 +335,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
             if(getDecisionText != null)
             {
-            var displayValue = getDecisionText.Text;
+                var displayValue = getDecisionText.Text;
 
-            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
-        }
+                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+            }
             else
             {
                 Assert.Fail();
@@ -357,10 +361,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             requiredPoint.Offset(20, 20);
 
             // Drag a ForEach onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, workflowPoint1, "For Each");
 
             // Open the toolbox, and drag the control onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", requiredPoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, requiredPoint);
 
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
@@ -387,10 +391,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             requiredPoint.Offset(20, 20);
 
             // Drag a ForEach onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, workflowPoint1, "For Each");
 
             // Open the toolbox, and drag the control onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Switch", requiredPoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Switch, requiredPoint);
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
             {
@@ -415,7 +419,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             //Drag on two decisions
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
             WizardsUIMap.WaitForWizard();
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
@@ -424,7 +428,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             var clickPoint = new Point(newPoint.X, newPoint.Y);
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Decision", newPoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, newPoint);
             WizardsUIMap.WaitForWizard();
             Playback.Wait(3000);
 

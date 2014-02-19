@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -53,7 +54,7 @@ namespace Dev2.Studio.UI.Tests
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             WorkflowDesignerUIMap.AssignControl_ClickLeftTextboxInRow(theTab, "Assign", 0);
 
@@ -104,7 +105,7 @@ namespace Dev2.Studio.UI.Tests
                                              theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("BaseConvert", workflowPoint1, "Base Conv");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.BaseConvert, workflowPoint1, "Base Conv");
 
             // Enter some data
             UITestControl baseConversion = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "BaseConvert");
@@ -229,7 +230,7 @@ namespace Dev2.Studio.UI.Tests
             //Drag on multiassign
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
             var thePoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", thePoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, thePoint);
             //Recalculate point (it will have jumped during the drag if the screen res is low or the studio is windowed)
             var newPoint = new Point(theStartButton.BoundingRectangle.X + 30, theStartButton.BoundingRectangle.Y + 100);
             if(newPoint != thePoint)
@@ -301,10 +302,10 @@ namespace Dev2.Studio.UI.Tests
             requiredPoint.Offset(20, 50);
 
             // Drag a ForEach onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("ForEach", workflowPoint1, "For Each");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, workflowPoint1, "For Each");
 
             // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign",
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign,
                                                        new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
 
             // pause for drill down...
@@ -328,7 +329,7 @@ namespace Dev2.Studio.UI.Tests
             var workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag an assign onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", workflowPoint1);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             //Drag Start Node
             Mouse.StartDragging(theStartButton, MouseButtons.Left);

@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -61,7 +62,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.SqlBulkInsert, point, "Sql Bulk");
 
             var smallDataGrid = GetControlById("SmallDataGrid", theTab);
             Assert.IsTrue(smallDataGrid.GetChildren().Count == 0);
@@ -82,24 +83,30 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.SqlBulkInsert, point, "Sql Bulk");
 
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;
             Mouse.Click(dbDropDown, new Point(10, 10));
             Playback.Wait(2000);
-            var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
-            var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
-            Mouse.Click(databaseName, new Point(5, 5));
+            if(dbDropDown != null)
+            {
+                var listOfDbNames = dbDropDown.Items.Select(i => i as WpfListItem).ToList();
+                var databaseName = listOfDbNames.SingleOrDefault(i => i.DisplayText.Contains(TestingDB));
+                Mouse.Click(databaseName, new Point(5, 5));
+            }
             Playback.Wait(2000);
 
             //Select a table
             var tableDropDown = GetControlById("UI__TableName_AutoID", theTab) as WpfComboBox;
             Mouse.Click(tableDropDown, new Point(10, 10));
             Playback.Wait(2000);
-            var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
-            Playback.Wait(2000);
-            Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
+            if(tableDropDown != null)
+            {
+                var listOfTableNames = tableDropDown.Items.Select(i => i as WpfListItem).ToList();
+                Playback.Wait(2000);
+                Mouse.Click(listOfTableNames[TableIndex], new Point(5, 5));
+            }
             Playback.Wait(2000);
 
             //Open the large view
@@ -172,7 +179,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.SqlBulkInsert, point, "Sql Bulk");
 
             //Open the quick variable input view
             var toggleButton = GetControlByFriendlyName("Open Quick Variable Input");
@@ -205,7 +212,7 @@ namespace Dev2.Studio.UI.Tests
             var point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("DsfSqlBulkInsertActivity", point, "Sql Bulk");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.SqlBulkInsert, point, "Sql Bulk");
 
             //Select a database
             var dbDropDown = GetControlById("UI__Database_AutoID", theTab) as WpfComboBox;

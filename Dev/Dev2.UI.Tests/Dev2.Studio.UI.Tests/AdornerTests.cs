@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -44,6 +45,7 @@ namespace Dev2.Studio.UI.Tests
         public void ToolDesigners_RenameLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
             const string ToolName = "Rename";
+            const ToolType ToolType = ToolType.Rename;
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -53,7 +55,7 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolType, theTab);
 
             //Get all the textboxes off the large view
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
@@ -136,6 +138,7 @@ namespace Dev2.Studio.UI.Tests
         public void ToolDesigners_CopyLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
             const string ToolName = "Copy";
+            const ToolType ToolType = ToolType.Copy;
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -145,7 +148,7 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolType, theTab);
 
             //Get all the textboxes off the large view
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
@@ -228,6 +231,7 @@ namespace Dev2.Studio.UI.Tests
         public void ToolDesigners_UnzipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
             const string ToolName = "UnZip";
+            const ToolType ToolType = ToolType.Unzip;
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -237,7 +241,7 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolType, theTab);
 
             //Get all the textboxes off the large view
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
@@ -320,6 +324,7 @@ namespace Dev2.Studio.UI.Tests
         public void ToolDesigners_MoveLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
             const string ToolName = "Move";
+            const ToolType ToolType = ToolType.Move;
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -329,7 +334,7 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolType, theTab);
 
             //Get all the textboxes off the large view
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
@@ -410,6 +415,7 @@ namespace Dev2.Studio.UI.Tests
         public void ToolDesigners_ZipLargeView_TabOrderAndDestinationUserNameAndPassword_UiRepondingFine()
         {
             const string ToolName = "Zip";
+            const ToolType ToolType = ToolType.Zip;
             // Create the workflow
             RibbonUIMap.CreateNewWorkflow();
 
@@ -419,7 +425,7 @@ namespace Dev2.Studio.UI.Tests
             #region Test entering text into the textboxes
 
             //Enter test data into all the textboxes in the large view
-            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolName, theTab);
+            LargeViewUtilMethods.LargeViewTextboxesEnterTestData(ToolType, theTab);
 
             //Get all the textboxes off the large view
             List<UITestControl> allTextBoxesFromLargeView = LargeViewUtilMethods.GetAllTextBoxesFromLargeView(ToolName, theTab);
@@ -511,7 +517,7 @@ namespace Dev2.Studio.UI.Tests
             //Get a point
             Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
             //Drag a control to the design surface
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", requiredPoint);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, requiredPoint);
             //Get Adorner buttons
             var button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Help");
             Mouse.Click(button);
@@ -676,7 +682,7 @@ namespace Dev2.Studio.UI.Tests
             Point point = new Point(startPoint.X, startPoint.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("Assign", point);
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, point);
 
             //Get Mappings button
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");

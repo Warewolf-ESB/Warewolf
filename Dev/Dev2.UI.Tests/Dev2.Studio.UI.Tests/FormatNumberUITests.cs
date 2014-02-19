@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITest.Extension;
+﻿using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -48,7 +49,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.FormatNumber, workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
@@ -69,7 +70,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.FormatNumber, workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "None", "1", "3", "[[Result]]");
@@ -89,7 +90,7 @@ namespace Dev2.Studio.UI.Tests
             Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
 
             // Drag the tool onto the workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner("NumberFormat", workflowPoint1, "Format Number");
+            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.FormatNumber, workflowPoint1, "Format Number");
 
             UITestControl ctrl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "NumberFormat");
             FormatNumberUIMap.InputAllFormatNumberValues(ctrl, "1234.56", "Normal", "1", "3", "[[Result]]");
