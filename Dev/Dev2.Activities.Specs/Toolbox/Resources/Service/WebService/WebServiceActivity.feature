@@ -1,4 +1,5 @@
-﻿Feature: WebServiceActivity
+﻿@ignore
+Feature: WebServiceActivity
 	In order to use data from a webservice
 	As a Warewolf user
 	I want to be able to execute a webservice and use the data

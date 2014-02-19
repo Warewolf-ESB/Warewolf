@@ -1,10 +1,10 @@
-﻿Feature: DatabaseServiceExecution
+﻿@ignore
+Feature: DatabaseServiceExecution
 	In order to use Database service 
 	As a Warewolf user
 	I want a tool that calls the Database services into the workflow
 
 @mytag
-
 Scenario Outline: Executing Database service using numeric indexes and scalar
 	     Given I have a database service "mails"
 	     And the output is mapped as

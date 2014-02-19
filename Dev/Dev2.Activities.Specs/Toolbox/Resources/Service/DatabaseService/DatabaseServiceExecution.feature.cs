@@ -19,6 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.DatabaseService
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class DatabaseServiceExecutionFeature
     {
         
@@ -32,7 +33,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.DatabaseService
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DatabaseServiceExecution", "In order to use Database service \r\nAs a Warewolf user\r\nI want a tool that calls t" +
-                    "he Database services into the workflow", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "he Database services into the workflow", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

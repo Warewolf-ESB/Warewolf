@@ -1,4 +1,5 @@
-﻿Feature: WorkflowExecution
+﻿@ignore
+Feature: WorkflowExecution
 	In order to input data into a workflow and receive data from a workflow
 	As a Warewolf user
 	I want to be able to execute a workflow providing input data and receive data

@@ -19,6 +19,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Workflow
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
+    [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
     public partial class WorkflowExecutionFeature
     {
         
@@ -33,7 +34,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Workflow
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "WorkflowExecution", "In order to input data into a workflow and receive data from a workflow\r\nAs a War" +
                     "ewolf user\r\nI want to be able to execute a workflow providing input data and rec" +
-                    "eive data", ProgrammingLanguage.CSharp, ((string[])(null)));
+                    "eive data", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -73,33 +75,33 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Workflow
         public virtual void ExcuteWorkflowUsingDifferentVariableNotation(string name, string inputVar, string inValue, string outputVar, string outValue, string anError, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ExcuteWorkflow using different variable notation", exampleTags);
-#line 6
-this.ScenarioSetup(scenarioInfo);
 #line 7
- testRunner.Given("I have a \"SimpleWorkflow\" workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.And(string.Format("the input variable \"{0}\" as \"{1}\"", inputVar, inValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I have a \"SimpleWorkflow\" workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And(string.Format("output variable is \"{0}\"", outputVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("the input variable \"{0}\" as \"{1}\"", inputVar, inValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.When("I execute the workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("output variable is \"{0}\"", outputVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.Then(string.Format("the execution has \"{0}\" error", anError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I execute the workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 12
+ testRunner.Then(string.Format("the execution has \"{0}\" error", anError), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
  testRunner.And(string.Format("the output variable be \"{0}\"", outValue), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table1.AddRow(new string[] {
                         string.Format("{0} = {1}", inputVar, inValue)});
-#line 13
+#line 14
  testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table2.AddRow(new string[] {
                         string.Format("{0} = {1}", outputVar, outValue)});
-#line 16
+#line 17
  testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();

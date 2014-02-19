@@ -3,6 +3,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using netDumbster.smtp;
@@ -44,6 +45,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             var server = SimpleSmtpServer.Start(25);
             ScenarioContext.Current.Add("server", server);
 
+            var selectedEmailSource = new EmailSource
+            {
+                Host = "localhost",
+                Port = 25,
+                UserName = "",
+                Password = "",
+                ResourceName = Guid.NewGuid().ToString(),
+                ResourceID = Guid.NewGuid()
+            };
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, selectedEmailSource);
             var sendEmail = new DsfSendEmailActivity
                 {
                     Result = ResultVariable,
@@ -51,13 +62,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
                     Subject = string.IsNullOrEmpty(subject) ? "" : subject,
                     FromAccount = string.IsNullOrEmpty(fromAccount) ? "" : fromAccount,
                     To = string.IsNullOrEmpty(to) ? "" : to,
-                    SelectedEmailSource = new EmailSource
-                        {
-                            Host = "localhost",
-                            Port = 25,
-                            UserName = "",
-                            Password = ""
-                        }
+                    SelectedEmailSource = selectedEmailSource
                 };
 
             TestStartNode = new FlowStep
