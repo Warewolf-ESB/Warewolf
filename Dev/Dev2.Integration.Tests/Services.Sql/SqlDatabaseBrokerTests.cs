@@ -36,22 +36,21 @@ namespace Dev2.Integration.Tests.Services.Sql
         {
             Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
-                Exception exception = null;
                 var dbSource = SqlServerTests.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
                 try
                 {
                     broker.GetServiceMethods(dbSource);
+                    Assert.Fail();
                 }
                 catch(Exception ex)
                 {
-                    // Need to do this because exceptions get swallowed by impersonator
-                    exception = ex;
+                    Assert.IsNotNull(ex);
+                    Assert.IsInstanceOfType(ex, typeof(SqlException));
+                    Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", ex.Message);
                 }
 
-                Assert.IsNotNull(exception);
-                Assert.IsInstanceOfType(exception, typeof(SqlException));
-                Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
+
             });
         }
 

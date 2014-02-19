@@ -200,17 +200,17 @@ namespace Dev2.Activities.Specs.BaseTypes
                     Type component = Type.GetType("System." + type);
                     if(component != null)
                     {
-                    TypeConverter converter = TypeDescriptor.GetConverter(component);
+                        TypeConverter converter = TypeDescriptor.GetConverter(component);
 
-                    try
-                    {
-                        converter.ConvertFrom(actualValue);
+                        try
+                        {
+                            converter.ConvertFrom(actualValue);
+                        }
+                        catch
+                        {
+                            Assert.Fail("Value is not expected type");
+                        }
                     }
-                    catch
-                    {
-                        Assert.Fail("Value is not expected type");
-                    }
-                }
                 }
 
             }
@@ -422,18 +422,18 @@ namespace Dev2.Activities.Specs.BaseTypes
                 Type component = Type.GetType("System." + type);
                 if(component != null)
                 {
-                TypeConverter converter = TypeDescriptor.GetConverter(component);
+                    TypeConverter converter = TypeDescriptor.GetConverter(component);
 
-                try
-                {
-                    converter.ConvertFrom(actualValue);
-                }
-                catch
-                {
-                    Assert.Fail("Value is not expected type");
+                    try
+                    {
+                        converter.ConvertFrom(actualValue);
+                    }
+                    catch
+                    {
+                        Assert.Fail("Value is not expected type");
+                    }
                 }
             }
-        }
         }
 
         static void RemoveTralingAndLeadingSpaces(List<DebugItemResult> expectedDebugItems, List<DebugItemResult> inputDebugItems)
