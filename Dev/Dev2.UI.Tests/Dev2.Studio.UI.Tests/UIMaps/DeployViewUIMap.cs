@@ -1,7 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
 namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
@@ -27,10 +27,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             UITestControl sourceServerList = GetSourceServerList(theTab);
             WpfComboBox wpfComboList = (WpfComboBox)sourceServerList;
-            
-            foreach (WpfListItem theItem in wpfComboList.Items)
+
+            foreach(WpfListItem theItem in wpfComboList.Items)
             {
-                if (theItem.AutomationId == "U_UI_SourceServer_AutoID" + serverName )
+                if(theItem.AutomationId == "U_UI_SourceServer_AutoID" + serverName)
                 {
                     theItem.Select();
                     break;
@@ -41,15 +41,39 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         public void ChooseDestinationServer(UITestControl theTab, string serverName)
         {
             UITestControl destinationServerList = GetDestinationServerList(theTab);
-            WpfComboBox wpfComboList = (WpfComboBox)destinationServerList;
-            Mouse.Click(wpfComboList, new Point(5, 5));
-            foreach (WpfListItem theItem in wpfComboList.Items)
+
+
+            //Wait for the connect control to be ready
+            int counter = 0;
+            while(!destinationServerList.Enabled && counter < 5)
             {
-                if (theItem.AutomationId == "U_UI_DestinationServercbx_AutoID_" + serverName)
-                {
-                    theItem.Select();
-                    break;
-                }
+                Playback.Wait(2000);
+                counter++;
+            }
+            if(!destinationServerList.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
+
+            // Click it to expand it
+            Mouse.Click(destinationServerList, new Point(10, 10));
+            Playback.Wait(500);
+
+            VisualTreeWalker vsw = new VisualTreeWalker();
+            var item = vsw.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID" + serverName);
+
+            Mouse.Click(item, new Point(5, 5));
+
+            //Wait for the connect control to be ready
+            int afterCounter = 0;
+            while(!destinationServerList.Enabled && afterCounter < 5)
+            {
+                Playback.Wait(2000);
+                afterCounter++;
+            }
+            if(!destinationServerList.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
             }
         }
 
@@ -58,7 +82,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             int sourceCount = GetSelectedDeployCount(theTab);
             int destinationCount = GetSelectedDeploySummaryCount(theTab);
 
-            if (sourceCount == destinationCount)
+            if(sourceCount == destinationCount)
             {
                 return true;
             }

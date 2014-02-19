@@ -44,7 +44,7 @@
             <Setter Property="CanUserSortColumns"
                     Value="True" />
             <Setter Property="Background"
-                    Value="Transparent" />
+                    Value="#C1C3C5" />
         </Style>
 
         <Style x:Key="PermissionsGridHeaderStyle"
@@ -221,7 +221,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"
                            MinHeight="150" />
-            <RowDefinition Height="5" />
+            <RowDefinition Height="8" />
             <RowDefinition Height="*"
                            MinHeight="150" />
         </Grid.RowDefinitions>
@@ -256,6 +256,7 @@
                       ItemsSource="{Binding ServerPermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
                       RowStyle="{StaticResource PermissionsGridRowServerStyle}"
+                      Height="Auto"
                       Sorting="OnDataGridSorting">
 
                 <DataGrid.Columns>
@@ -426,7 +427,7 @@
                       Background="#C1C3C5"
                       HorizontalAlignment=" Stretch"
                       VerticalAlignment="Center"
-                      Height="5"></GridSplitter>
+                      Height="8"></GridSplitter>
 
         <Grid Grid.Row="2"
               Grid.Column="0"
@@ -458,6 +459,7 @@
                       ItemsSource="{Binding ResourcePermissions}"
                       Style="{StaticResource PermissionsGridStyle}"
                       RowStyle="{StaticResource PermissionsGridRowStyle}"
+                      Height="Auto"
                       Sorting="OnDataGridSorting">
 
                 <DataGrid.Columns>

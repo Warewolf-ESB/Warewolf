@@ -121,7 +121,7 @@
                                     </customControls:SplitterExpansionButton.ToolTip>
                                 </customControls:SplitterExpansionButton>
                             </Grid>
-                            <GridSplitter Grid.Column="1" x:Name="TheSplitter" Background="{TemplateBinding SplitterBackground}" Width="4" HorizontalAlignment="Left" VerticalAlignment="Stretch" Height="Auto" />
+                            <GridSplitter Grid.Column="1" x:Name="TheSplitter" Background="{TemplateBinding SplitterBackground}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Height="Auto" />
                             <ContentPresenter Grid.Column="1" Margin="3,0,0,0" Content="{TemplateBinding ContentRight}"></ContentPresenter>
                         </Grid>
                     </Border>
