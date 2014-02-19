@@ -49,8 +49,6 @@ namespace Dev2.Integration.Tests.Services.Sql
                     Assert.IsInstanceOfType(ex, typeof(SqlException));
                     Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", ex.Message);
                 }
-
-
             });
         }
 
