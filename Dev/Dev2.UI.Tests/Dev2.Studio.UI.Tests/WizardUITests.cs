@@ -67,7 +67,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
             if(uiTestControl != null)
             {
-            uiTestControl.WaitForControlEnabled();
+                uiTestControl.WaitForControlEnabled();
             }
             WizardsUIMap.WaitForWizard();
             SendKeys.SendWait("{ESC}");
@@ -80,6 +80,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewDatabaseServiceShortcutKeyExpectedDatabaseServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
+            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}D");
             WizardsUIMap.WaitForWizard();
             DatabaseServiceWizardUIMap.ClickCancel();
@@ -89,6 +90,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewPluginServiceShortcutKeyExpectedPluginServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
+            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}P");
             WizardsUIMap.WaitForWizard();
             PluginServiceWizardUIMap.ClickCancel();
@@ -98,6 +100,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void NewWebServiceShortcutKeyExpectedWebServiceOpens()
         {
             StudioWindow.WaitForControlReady(1000);
+            ExplorerUIMap.EnterExplorerSearchText("test");
             Keyboard.SendKeys(StudioWindow, "{CTRL}{SHIFT}W");
             if(!WizardsUIMap.TryWaitForWizard(10000))
             {
@@ -332,10 +335,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var getDecisionText = getDecision.GetChildren()[0] as WpfEdit;
             if(getDecisionText != null)
             {
-            var displayValue = getDecisionText.Text;
+                var displayValue = getDecisionText.Text;
 
-            Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
-        }
+                Assert.AreEqual(expected, displayValue, "Decision intellisense doesnt work when using the keyboard to select intellisense results");
+            }
             else
             {
                 Assert.Fail();
