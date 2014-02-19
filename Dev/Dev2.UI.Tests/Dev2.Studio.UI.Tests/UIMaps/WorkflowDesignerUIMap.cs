@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Dev2.CodedUI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Common;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -49,8 +48,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <param name="theTab">A tab from TabManagerUIMap.FindTabByName</param>
         /// <param name="controlAutomationId">The automation ID of the control you are looking for</param>
         /// <returns>Returns the control as a UITestControl object</returns>
-        public UITestControl FindControlByAutomationId(UITestControl theTab, string controlAutomationId)
+        public UITestControl FindControlByAutomationId(UITestControl theTab, string controlAutomationId, int waitAmt = 0)
         {
+            // wait before the search ;)
+            Playback.Wait(waitAmt);
+
             var workflowDesigner = GetFlowchartDesigner(theTab);
             foreach(UITestControl theControl in workflowDesigner.GetChildren())
             {

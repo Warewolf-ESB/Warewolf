@@ -121,6 +121,7 @@
     <Compile Include="Tests\Activities\WebServiceTests.cs" />
     <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
+    <Compile Include="Utils\MouseCommands.cs" />
     <Compile Include="UIMaps\Settings\SecuritySettingsUiMap.cs" />
     <Compile Include="Utils\Bootstrap.cs" />
     <Compile Include="Tests\Activities\DsfActivityTests.cs" />
@@ -138,7 +139,7 @@
     <Compile Include="MenuUITests.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
-    <Compile Include="KeyboardCommands.cs" />
+    <Compile Include="Utils\KeyboardCommands.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIMap.cs" />
     <Compile Include="UIMap.Designer.cs">

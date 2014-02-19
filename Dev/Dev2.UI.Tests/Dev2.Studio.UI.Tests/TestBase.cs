@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Dev2.Studio.UI.Tests.Enums;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -88,8 +89,7 @@ namespace Dev2.CodedUI.Tests
                                                                            "Open Large View");
 
             // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            MouseCommands.MoveAndClick(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
 
             // Add the data!
             WorkflowDesignerUIMap.AssignControl_LargeViewClickLeftTextboxInRow(theTab, "Assign", 0);
@@ -97,21 +97,15 @@ namespace Dev2.CodedUI.Tests
             for(int j = 0; j < 20; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
-                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                Playback.Wait(15);
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(15);
-                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-                Playback.Wait(15);
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(15);
+                KeyboardCommands.SendKey("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendKey(j.ToString(CultureInfo.InvariantCulture));
+                KeyboardCommands.SendTab();
             }
 
             // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            MouseCommands.MoveAndClick(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5), 500);
 
-            Playback.Wait(500);
             var leftTextBoxInRowLastRow = WorkflowDesignerUIMap.AssignControl_GetLeftTextboxInRow("Assign", 19) as WpfEdit;
             if(leftTextBoxInRowLastRow != null)
             {
@@ -140,15 +134,10 @@ namespace Dev2.CodedUI.Tests
             for(int j = 0; j < 20; j++)
             {
                 // Sleeps are due to the delay when adding a lot of items
-                Playback.Wait(15);
-                SendKeys.SendWait("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
-                Playback.Wait(15);
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(15);
-                SendKeys.SendWait(j.ToString(CultureInfo.InvariantCulture));
-                Playback.Wait(15);
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(15);
+                KeyboardCommands.SendKey("[[theVar" + j.ToString(CultureInfo.InvariantCulture) + "]]");
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendKey(j.ToString(CultureInfo.InvariantCulture));
+                KeyboardCommands.SendTab();
             }
 
             Playback.Wait(500);
@@ -187,8 +176,7 @@ namespace Dev2.CodedUI.Tests
 
             //Click the show affected button
             ResourceChangedPopUpUIMap.ClickViewDependancies();
-
-            Playback.Wait(2000);
+            ResourceChangedPopUpUIMap.WaitForDependencyTab();
 
             var result = TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest");
             Assert.IsTrue(result, "Affected workflow not shown after show affected workflow button pressed.");
@@ -200,7 +188,6 @@ namespace Dev2.CodedUI.Tests
             //------------Setup for test--------------------------
             RibbonUIMap.CreateNewWorkflow();
             // Get some data
-            Playback.Wait(100);
             var tabName = TabManagerUIMap.GetActiveTabName();
             UITestControl theTab = TabManagerUIMap.FindTabByName(tabName);
             UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
@@ -210,9 +197,8 @@ namespace Dev2.CodedUI.Tests
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, workflowPoint1);
 
             // Click away
-            Mouse.Click(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50));
+            MouseCommands.ClickPoint(new Point(workflowPoint1.X + 50, workflowPoint1.Y + 50), 500);
 
-            Playback.Wait(500);
             //------------Execute Test---------------------------
             var theUnsavedTab = TabManagerUIMap.GetActiveTab();
             //------------Assert Results-------------------------
@@ -234,11 +220,9 @@ namespace Dev2.CodedUI.Tests
             // Drag a Calculate control on
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
 
-            Playback.Wait(500);
-            Mouse.Click();
+            MouseCommands.WaitAndClick(500);
 
-            Playback.Wait(500);
-            SendKeys.SendWait("sum{(}");
+            KeyboardCommands.SendKey("sum{(}");
 
             // Find the control
             UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Calculate");
@@ -296,8 +280,7 @@ namespace Dev2.CodedUI.Tests
         public void ValidDatalistSearchTest()
         {
             // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-            Playback.Wait(1000);
+            RibbonUIMap.CreateNewWorkflow(1000);
 
             // Open the Variables tab, and enter the invalid value
             VariablesUIMap.ClickScalarVariableName(0);
@@ -343,12 +326,7 @@ namespace Dev2.CodedUI.Tests
 
             // Get the location of the ForEach box
             UITestControl forEachControl = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "ForEach");
-
-            // Move the mouse to the contained CalculateTaxReturns box
-            Mouse.Move(new Point(forEachControl.BoundingRectangle.X + 175, forEachControl.BoundingRectangle.Y + 75));
-
-            // Click it
-            Mouse.Click();
+            MouseCommands.MoveAndClick(new Point(forEachControl.BoundingRectangle.X + 175, forEachControl.BoundingRectangle.Y + 75));
 
             // And drag it down
             Mouse.StartDragging();
@@ -386,28 +364,26 @@ namespace Dev2.CodedUI.Tests
         [TestMethod]
         public void ClickHelpFeedback_Expected_FeedbackWindowOpens()
         {
-            RibbonUIMap.ClickRibbonMenuItem("Feedback");
-            Playback.Wait(500);
+            RibbonUIMap.ClickRibbonMenuItem("Feedback", 600);
             var dialogPrompt = StudioWindow.GetChildren()[0];
             if(dialogPrompt.GetType() != typeof(WpfWindow))
             {
                 Assert.Fail("Error - Clicking the Feedback button does not create the Feedback Window");
             }
 
-            SendKeys.SendWait("{ENTER}");
-            SendKeys.SendWait("{ENTER}");
+            KeyboardCommands.SendEnter();
+            KeyboardCommands.SendEnter();
 
             // Wait for the init, then click around a bit
 
             // Click stop, then make sure the Feedback window has appeared.
             FeedbackUIMap.ClickStartStopRecordingButton();
-            Playback.Wait(1500);
+
             if(!FeedbackUIMap.DoesFeedbackWindowExist())
             {
                 Assert.Fail("The Feedback window did not appear after the recording has been stopped.");
             }
 
-            Playback.Wait(500);
             FeedbackUIMap.FeedbackWindow_ClickCancel();
         }
 

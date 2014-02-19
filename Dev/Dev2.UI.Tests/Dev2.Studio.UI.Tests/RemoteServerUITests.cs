@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Dev2.Studio.UI.Tests.Utils;
@@ -105,8 +104,8 @@ namespace Dev2.Studio.UI.Tests
         {
 
             ExplorerUIMap.DoubleClickWorkflow("Find Records", "TESTS", RemoteServerName);
-            SendKeys.SendWait("{F7}");
-            Playback.Wait(5000);
+            KeyboardCommands.SendKey("{F7}");
+            PopupDialogUIMap.WaitForDialog();
             //assert error dialog not showing
             var child = StudioWindow.GetChildren()[0];
             if(child != null)
@@ -229,7 +228,7 @@ namespace Dev2.Studio.UI.Tests
             //Edit remote web source
             ExplorerUIMap.DoubleClickSource(TextToSearchWith, "WEB SRC", RemoteServerName);
             WebSourceWizardUIMap.EnterDefaultQuery("?extension=json&prefix=b");
-            Playback.Wait(100);
+
             WebSourceWizardUIMap.ClickSave();
             SaveDialogUIMap.ClickSave();
 

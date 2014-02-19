@@ -9,12 +9,6 @@ namespace Dev2.Studio.UI.Tests
     [CodedUITest]
     public class DesignTimeErrorHandlingTests : UIMapBase
     {
-        #region Fields
-
-        const string ExplorerTab = "Explorer";
-
-        #endregion
-
         #region Cleanup
 
         [ClassInitialize]
@@ -64,14 +58,10 @@ namespace Dev2.Studio.UI.Tests
             // Tab to mappings
             DatabaseServiceWizardUIMap.TabToOutputMappings();
             // Remove column 1+2's mapping
-            Playback.Wait(200);
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{DEL}");
-            SendKeys.SendWait("{TAB}");
-            SendKeys.SendWait("{DEL}");
+            KeyboardCommands.SendTabs(4);
+            KeyboardCommands.SendDel();
+            KeyboardCommands.SendTab();
+            KeyboardCommands.SendDel();
 
             // Save
             DatabaseServiceWizardUIMap.ClickOK();
@@ -116,9 +106,8 @@ namespace Dev2.Studio.UI.Tests
             DatabaseServiceWizardUIMap.ClickMappingTab(450); // over-ride cuz silly chickens like long names in test ;(
 
             //set the first input to required
-            Keyboard.SendKeys("{TAB}{TAB}");
-            Playback.Wait(150);
-            Keyboard.SendKeys("{SPACE}");
+            KeyboardCommands.SendTabs(2, 50);
+            KeyboardCommands.SendSpace();
 
             // Save
             DatabaseServiceWizardUIMap.ClickOK();

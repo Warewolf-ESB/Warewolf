@@ -369,8 +369,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
             {
-                SendKeys.SendWait("{TAB}{TAB}{ENTER}");
-                Playback.Wait(100);
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendEnter(100);
 
                 Assert.Fail("Got droped ;(");
             }
@@ -398,10 +399,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             // Cancel Decision Wizard
             if(WizardsUIMap.TryWaitForWizard(3000))
             {
-                Playback.Wait(200);
-
-                SendKeys.SendWait("{TAB}{TAB}{ENTER}");
-                Playback.Wait(100);
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendTab();
+                KeyboardCommands.SendEnter(100);
 
                 Assert.Fail("Got dropped ;(");
             }
@@ -429,8 +429,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             var clickPoint = new Point(newPoint.X, newPoint.Y);
 
             ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, newPoint);
-            WizardsUIMap.WaitForWizard();
-            Playback.Wait(3000);
+            WizardsUIMap.WaitForWizard(7000);
 
             _decisionWizardUiMap.HitDoneWithKeyboard();
 
@@ -463,15 +462,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
         {
-            ExplorerUIMap.ClickNewServerButton();
+            ExplorerUIMap.ClickNewServerButton(3000);
             UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
             if(uiTestControl == null)
             {
                 Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
             }
-            Playback.Wait(2500);
-            SendKeys.SendWait("{ESC}");
-            Playback.Wait(100);
+
+            KeyboardCommands.SendEsc(100);
         }
 
         #endregion

@@ -16,6 +16,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void EnterDefaultQuery(string textToEnter)
         {
             Keyboard.SendKeys("{TAB}{TAB}{TAB}" + textToEnter);
+            Playback.Wait(100);
         }
 
 

@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
+﻿using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -43,15 +42,15 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "BUGS", "ServiceExecutionTest");
 
-            Playback.Wait(5000);
-            SendKeys.SendWait("{F5}");
             PopupDialogUIMap.WaitForDialog();
-            SendKeys.SendWait("{F6}");
-            Playback.Wait(5000);
+            KeyboardCommands.SendKey("{F5}");
+            PopupDialogUIMap.WaitForDialog();
+            KeyboardCommands.SendKey("{F6}");
+            PopupDialogUIMap.WaitForDialog();
 
             var uiControl = RibbonUIMap.GetControlByName("Save");
 
-            Playback.Wait(2500);
+            uiControl.WaitForControlReady();
 
             Assert.IsTrue(uiControl.Enabled);
         }

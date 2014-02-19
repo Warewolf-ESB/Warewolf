@@ -25,10 +25,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             Point theButtonPosition = StartRecordingButtonPoint();
             Mouse.Click(theButtonPosition);
+            Playback.Wait(1500);
         }
 
         public void FeedbackWindow_ClickCancel()
         {
+            Playback.Wait(500);
             WpfButton theButton = FeedbackWindow_CancelButton();
             Mouse.Click(theButton, new Point(5, 5));
         }

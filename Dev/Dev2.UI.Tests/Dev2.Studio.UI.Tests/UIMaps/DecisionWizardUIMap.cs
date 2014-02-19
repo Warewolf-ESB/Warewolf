@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
 {
@@ -16,6 +15,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
         /// </summary>
         public void ClickCancel()
         {
+            Playback.Wait(3500);
             var win = StudioWindow.GetChildren()[0].GetChildren()[0];
             win.WaitForControlEnabled();
 
@@ -80,7 +80,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             //wait for intellisense to drop down
             Playback.Wait(500);
 
-            if (relativeToWizard != default(Point) )
+            if(relativeToWizard != default(Point))
             {
                 Playback.Wait(1000);
                 // nasty fixed sizing, but no other real choice to test what  I need to ;(
@@ -90,10 +90,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DecisionWizardUIMapClasses
             {
                 Keyboard.SendKeys(wizard, "{DOWN}");
                 Playback.Wait(250);
-                Keyboard.SendKeys(wizard, "{ENTER}");     
+                Keyboard.SendKeys(wizard, "{ENTER}");
             }
 
-            if (deleteText)
+            if(deleteText)
             {
                 SendKeys.SendWait("^a");
                 Playback.Wait(150);

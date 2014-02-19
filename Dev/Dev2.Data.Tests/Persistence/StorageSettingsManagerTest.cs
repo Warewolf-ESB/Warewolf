@@ -42,15 +42,14 @@ namespace Dev2.Data.Tests.Persistence
         //
         #endregion
 
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("StorageSettingManager_GetSegmentSize")]
         public void StorageSettingManager_GetSegmentSize_WhenConfigurationFilePresent_ExpectConfigurationValue()
         {
             //------------Setup for test--------------------------
-            
-            
+
+
             //------------Execute Test---------------------------
             var segmentCount = StorageSettingManager.GetSegmentSize();
 
@@ -122,13 +121,13 @@ namespace Dev2.Data.Tests.Persistence
             StorageSettingManager.TotalFreeMemory = () => 1;
 
             //------------Execute Test---------------------------
-            
+
             StorageSettingManager.GetSegmentSize();
 
             //------------Assert Results-------------------------
 
         }
 
-        
+
     }
 }

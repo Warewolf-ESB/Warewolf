@@ -50,12 +50,12 @@ namespace Dev2.Studio.UI.Tests
 
             // Open the Workflow
             ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
-            Playback.Wait(1500);
+            Playback.Wait(1500); // Sorted with framework ;)
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
-            var allTools = designer.GetChildren();
+            designer.GetChildren();
 
             #region Scroll All Items Into View
 
@@ -136,7 +136,7 @@ namespace Dev2.Studio.UI.Tests
                 WorkflowDesignerUIMap.ScrollControlIntoView(theTab, child);
 
                 Mouse.Move(child, new Point(15, 15));
-                Playback.Wait(2500);
+                Playback.Wait(2500); // Sorted with framework ;)
 
                 var toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Open Large View") as WpfToggleButton;
                 if(toggleButton == null)
@@ -145,7 +145,7 @@ namespace Dev2.Studio.UI.Tests
                 }
 
                 Mouse.Click(toggleButton);
-                Playback.Wait(2500);
+                Playback.Wait(2500); // Sorted with framework ;)
 
                 toggleButton = WorkflowDesignerUIMap.Adorner_GetButton(theTab, child.FriendlyName, "Close Large View") as WpfToggleButton;
                 if(toggleButton == null)
@@ -195,7 +195,7 @@ namespace Dev2.Studio.UI.Tests
                     //might already be scrolled
                     var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                     WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top < 200)
+                    if(getTop != null && getTop.Top < 200)
                     {
                         //Look low
                         Mouse.StartDragging(scrollBar);
@@ -207,7 +207,7 @@ namespace Dev2.Studio.UI.Tests
                     //might already be scrolled
                     var scrollBar = WorkflowDesignerUIMap.ScrollViewer_GetVerticalScrollBar(theTab);
                     WpfControl getTop = scrollBar as WpfControl;
-                    if(getTop.Top > 200)
+                    if(getTop != null && getTop.Top > 200)
                     {
                         //Look high
                         Mouse.StartDragging(scrollBar);
@@ -250,12 +250,12 @@ namespace Dev2.Studio.UI.Tests
                 Point pointOnDropDownControl = new Point(dbDropDownControl.BoundingRectangle.X + 25,
                                                          dbDropDownControl.BoundingRectangle.Y + 5);
                 Mouse.Click(pointOnDropDownControl);
-                Playback.Wait(1000);
+                Playback.Wait(1000); // Sorted with framework ;)
                 var comboBoxList = dbDropDownControl.Items.Select(i => i as WpfListItem).ToList();
                 var selectedItem = comboBoxList[1];
                 selectedItems.Add(selectedItem);
                 Mouse.Click(selectedItem, new Point(5, 5));
-                Playback.Wait(1000);
+                Playback.Wait(1000); // Sorted with framework ;)
             }
             return selectedItems;
         }

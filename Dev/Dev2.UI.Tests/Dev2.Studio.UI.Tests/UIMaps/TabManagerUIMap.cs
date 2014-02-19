@@ -140,8 +140,11 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             try
             {
                 // first try closing wizards ;)
-                Playback.Wait(150);
-                SendKeys.SendWait("{ESC}");
+                for(var i = 0; i < 5; i++)
+                {
+                    Playback.Wait(150);
+                    SendKeys.SendWait("{ESC}");
+                }
 
                 // fetch the darn thing once ;)
                 var tabManager = GetManager();

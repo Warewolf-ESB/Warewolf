@@ -672,6 +672,17 @@ namespace Dev2.Studio.UI.Tests
             Keyboard.SendKeys("{CTRL}c");
         }
 
+        public void WaitForDependencyTab()
+        {
+            Playback.Wait(2000);
+        }
+
+        public void WaitForResourcesToLoad()
+        {
+            //wait for resource tree to load
+            Playback.Wait(10000);
+        }
+
         public void EnterTextIntoWizardTextBox(int numberOfTabsToGetToTextBox, string textToEnter, int waitAftertextEntered = 0)
         {
             for(int i = 0; i < numberOfTabsToGetToTextBox; i++)

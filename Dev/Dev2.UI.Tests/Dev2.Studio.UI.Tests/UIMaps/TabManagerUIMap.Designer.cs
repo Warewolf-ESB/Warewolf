@@ -39,9 +39,10 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
             return null;
         }
 
-        public UITestControl FindTabByName(string name)
+        public UITestControl FindTabByName(string name, int waitAmt = 0)
         {
             UITestControl control = _tabManager.GetTab(name);
+            Playback.Wait(waitAmt);
             return control;
         }
 

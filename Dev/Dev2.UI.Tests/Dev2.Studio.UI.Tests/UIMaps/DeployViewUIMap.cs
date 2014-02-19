@@ -7,8 +7,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
     using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
     public partial class DeployViewUIMap : UIMapBase
@@ -27,7 +27,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             UITestControl sourceServerList = GetSourceServerList(theTab);
             WpfComboBox wpfComboList = (WpfComboBox)sourceServerList;
-
+            
             foreach(WpfListItem theItem in wpfComboList.Items)
             {
                 if(theItem.AutomationId == "U_UI_SourceServer_AutoID" + serverName)
@@ -67,10 +67,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             //Wait for the connect control to be ready
             int afterCounter = 0;
             while(!destinationServerList.Enabled && afterCounter < 5)
-            {
+                {
                 Playback.Wait(2000);
                 afterCounter++;
-            }
+                }
             if(!destinationServerList.Enabled)
             {
                 throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
@@ -128,6 +128,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             WpfEdit theBox = GetSourceServerFilterBox(theTab);
             Mouse.Click(new Point(theBox.BoundingRectangle.X + 15, theBox.BoundingRectangle.Y + 15));
             SendKeys.SendWait(text);
+            Playback.Wait(1500);
         }
 
         public void EnterTextInDestinationServerFilterBox(UITestControl theTab, string text)

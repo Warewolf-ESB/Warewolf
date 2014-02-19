@@ -630,12 +630,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             SendKeys.SendWait("{ENTER}");
         }
 
-        public void ClickNewServerButton()
+        public void ClickNewServerButton(int waitAmt = 200)
         {
             var firstConnectControlButton = GetConnectControl("Button");
             var nextConnectControlButtonPosition = new Point(firstConnectControlButton.Left + 35, firstConnectControlButton.Top + 10);
             Mouse.Click(nextConnectControlButtonPosition);
-            Playback.Wait(200);
+            Playback.Wait(waitAmt);
         }
 
         private bool ValidateResourceExists(string resourceName, string folderName, ServiceType serviceType, string serverName = "localhost")

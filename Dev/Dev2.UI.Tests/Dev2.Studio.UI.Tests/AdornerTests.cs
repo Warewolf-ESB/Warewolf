@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests.Enums;
+using Dev2.Studio.UI.Tests.UIMaps;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
@@ -123,8 +124,7 @@ namespace Dev2.Studio.UI.Tests
             int numberOfTabsToLastTextbox = 7;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                KeyboardCommands.SendTab(50);
             }
             //Assert that the focus is in the last textbox
             Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
@@ -213,11 +213,10 @@ namespace Dev2.Studio.UI.Tests
             allTextBoxesFromLargeView[0].SetFocus();
 
             //Tab through the controlls
-            int numberOfTabsToLastTextbox = 7;
+            const int numberOfTabsToLastTextbox = 7;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                KeyboardCommands.SendTab(50);
             }
             //Assert that the focus is in the last textbox
             Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
@@ -309,8 +308,7 @@ namespace Dev2.Studio.UI.Tests
             int numberOfTabsToLastTextbox = 8;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                KeyboardCommands.SendTab(50);
             }
             //Assert that the focus is in the last textbox
             Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
@@ -400,8 +398,7 @@ namespace Dev2.Studio.UI.Tests
             int numberOfTabsToLastTextbox = 7;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                KeyboardCommands.SendTab(50);
             }
             //Assert that the focus is in the last textbox
             Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
@@ -493,8 +490,7 @@ namespace Dev2.Studio.UI.Tests
             int numberOfTabsToLastTextbox = 8;
             for(int i = 0; i < numberOfTabsToLastTextbox; i++)
             {
-                SendKeys.SendWait("{TAB}");
-                Playback.Wait(50);
+                KeyboardCommands.SendTab(50);
             }
             //Assert that the focus is in the last textbox
             Assert.IsTrue(allTextBoxesFromLargeView[allTextBoxesFromLargeView.Count - 1].HasFocus, "The tabbing is out of order");
@@ -530,8 +526,7 @@ namespace Dev2.Studio.UI.Tests
             var count = 10;
             while(waitForTabToOpen == null && count > 0)
             {
-                waitForTabToOpen = TabManagerUIMap.FindTabByName("Utility - Assign");
-                Playback.Wait(500);
+                waitForTabToOpen = TabManagerUIMap.FindTabByName("Utility - Assign", 500);
                 count--;
             }
 
@@ -623,9 +618,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
             ExplorerUIMap.DragControlToWorkflowDesigner("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse, workflowPoint1);
 
-            Playback.Wait(100);
-
-            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse);
+            UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse, 100);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));
 
             UITestControlCollection controlCollection = controlOnWorkflow.GetChildren();
@@ -688,8 +681,7 @@ namespace Dev2.Studio.UI.Tests
             UITestControl button = WorkflowDesignerUIMap.Adorner_GetButton(theTab, "Assign", "Open Quick Variable Input");
 
             // Click it
-            Mouse.Move(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
-            Mouse.Click();
+            MouseCommands.MoveAndClick(new Point(button.BoundingRectangle.X + 5, button.BoundingRectangle.Y + 5));
 
             // Enter some invalid data
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_EnterData(theTab, "Assign", ",",
@@ -704,10 +696,10 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
             // Assert clicking an error focusses the correct textbox
-            Mouse.Click(errorControl.GetChildren()[0]);
+            MouseCommands.ClickControl(errorControl.GetChildren()[0]);
 
             // enter some correct data
-            SendKeys.SendWait("^a^xpre_");
+            KeyboardCommands.SendKey("^a^xpre_", 100);
 
             WorkflowDesignerUIMap.AssignControl_QuickVariableInputControl_ClickAdd(theTab, "Assign");
 

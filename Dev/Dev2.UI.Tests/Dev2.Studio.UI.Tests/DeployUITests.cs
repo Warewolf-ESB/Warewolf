@@ -40,8 +40,7 @@ namespace Dev2.Studio.UI.Tests
         public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
         {
             // Click the Deploy button in the Ribbon
-            RibbonUIMap.ClickRibbonMenuItem("Deploy");
-            Playback.Wait(2000);
+            RibbonUIMap.ClickRibbonMenuItem("Deploy", 20000);
 
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
 
@@ -94,8 +93,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.RightClickDeployProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
             var theTab = TabManagerUIMap.GetActiveTab();
 
-            //wait for resource tree to load
-            Playback.Wait(10000);
+            ExplorerUIMap.WaitForResourcesToLoad();
 
             // Assert All Service Types Visible
             var sourceResources = DeployUIMap.GetSourceNavigationTree();
@@ -106,7 +104,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.AreEqual("UI_SourceServer_SOURCES_AutoID", environmentNode.Nodes[2].FriendlyName, "Third service type is not sources");
 
             DeployUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
-            Playback.Wait(1500);
+
             var result = DeployUIMap.DoesSourceServerHaveDeployItems(theTab);
 
             TabManagerUIMap.CloseTab("Deploy");

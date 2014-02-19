@@ -1,11 +1,11 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using System;
-using System.Drawing;
-using System.Linq;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 // ReSharper disable CheckNamespace
@@ -119,7 +119,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             return ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
         }
 
-        public UITestControl ClickRibbonMenuItem(string itemName)
+        public UITestControl ClickRibbonMenuItem(string itemName, int waitAmt = 100)
         {
             var ribbonButtons = StudioWindow.GetChildren();
             var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName.Contains(itemName)));
@@ -132,11 +132,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             control.WaitForControlEnabled();
             var p = new Point(control.BoundingRectangle.X + 5, control.BoundingRectangle.Y + 5);
             Mouse.Click(p);
-            Playback.Wait(100);
+            Playback.Wait(waitAmt);
             return control;
         }
 
-        public UITestControl CreateNewWorkflow()
+        public UITestControl CreateNewWorkflow(int waitAmt = 0)
         {
             var uiTestControlCollection = StudioWindow.GetChildren();
             var control = uiTestControlCollection.FirstOrDefault(c => c.FriendlyName == "UI_RibbonHomeTabWorkflowBtn_AutoID");
@@ -150,7 +150,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             Mouse.Click(p);
             Playback.Wait(500);
 
-            return TabManagerUIMap.GetActiveTab();
+            var tab = TabManagerUIMap.GetActiveTab();
+
+            Playback.Wait(waitAmt);
+
+            return tab;
         }
 
         public UITestControl GetControlByName(string name)
