@@ -14,7 +14,13 @@ namespace Dev2.Data.Storage
     {
         const double _pressureFactor = 0.8;
 
+        const double _lowPhysicalMemoryPressure = 0.3;
+
+        const long _lowPhysicalMemoryLimit = 3221225472;
+
         public static Func<ulong> TotalFreeMemory { get; set; }
+
+        public static Func<ulong> TotalPhysicalMemory { get; set; }
 
         public static Func<string> StorageLayerSegments { get; set; }
 
@@ -32,6 +38,15 @@ namespace Dev2.Data.Storage
                 return result;
             };
 
+            TotalPhysicalMemory = () =>
+            {
+                var computerInfo = new ComputerInfo();
+
+                var result = computerInfo.TotalPhysicalMemory;
+
+                return result;
+            };
+
             StorageLayerSegments = () => ConfigurationManager.AppSettings["StorageLayerSegments"];
 
             StorageLayerSegmentSize = () => ConfigurationManager.AppSettings["StorageLayerSegmentSize"];
@@ -43,7 +58,6 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public static int GetSegmentCount()
         {
-
             var tmp = StorageLayerSegments();
 
             int result;
@@ -54,7 +68,6 @@ namespace Dev2.Data.Storage
             {
                 result = GlobalConstants.DefaultStorageSegments;
             }
-
 
             return result;
         }
@@ -84,7 +97,6 @@ namespace Dev2.Data.Storage
                 return adjustmentValue;
             }
 
-
             return result;
         }
 
@@ -102,19 +114,35 @@ namespace Dev2.Data.Storage
             {
                 ServerLogger.LogMessage("Memory Pressure...");
 
-                var usableMemeory = totalFreeMemory * _pressureFactor;
+                var totalMemory = TotalPhysicalMemory();
+
+                var factor = _pressureFactor;
+
+                // 3 GB is our boundary for stepping down to 1/3 of free ;)
+                if(totalMemory <= _lowPhysicalMemoryLimit)
+                {
+                    ServerLogger.LogMessage("** Low Physical Memory **");
+                    factor = _lowPhysicalMemoryPressure;
+                    totalSegments = 2; // set low number of segments in this case ;)
+                    StorageLayerSegments = () => "1";
+                }
+
+                var usableMemeory = totalFreeMemory * factor;
 
                 int result = (int)(usableMemeory / totalSegments);
 
+                ServerLogger.LogMessage("Total Free Memory [ " + result + " ]");
+
                 if(result < GlobalConstants.DefaultStorageSegmentSize)
                 {
-                    const string Msg = "Too little memory to start server, at least 16 MB should be free.";
+                    const string Msg = "Too little memory to start server, at least 8 MB / slab should be free.";
                     var ex = new Exception(Msg);
                     ServerLogger.LogError("StorageSettingManager", ex);
                     throw ex;
                 }
 
                 return result;
+
             }
 
             return -1;
@@ -146,12 +174,12 @@ namespace Dev2.Data.Storage
             }
 
             // 32-bit programs run on both 32-bit and 64-bit Windows
-                // Detect whether the current process is a 32-bit process 
-                // running on a 64-bit system.
-                bool flag;
-                return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
-                         IsWow64Process(GetCurrentProcess(), out flag)) && flag);
-            }
+            // Detect whether the current process is a 32-bit process 
+            // running on a 64-bit system.
+            bool flag;
+            return ((DoesWin32MethodExist("kernel32.dll", "IsWow64Process") &&
+                     IsWow64Process(GetCurrentProcess(), out flag)) && flag);
+        }
 
         /// <summary>
         /// The function determines whether a method exists in the export 

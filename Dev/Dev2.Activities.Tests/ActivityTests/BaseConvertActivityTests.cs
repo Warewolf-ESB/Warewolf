@@ -275,18 +275,18 @@ namespace ActivityUnitTests.ActivityTests
         {
             //------------Setup for test--------------------------
             List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
-	        {
-		        new BaseConvertTO( "[[rs(*).val]] [[result]]","text", "hex", "[[result]]",1)
-	        };
+            {
+                new BaseConvertTO( "[[rs(*).val]] [[result]]","text", "hex", "[[result]]",1)
+            };
 
 
             var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-	        {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
 
             //------------Assert Results-------------------------
 
@@ -302,18 +302,18 @@ namespace ActivityUnitTests.ActivityTests
         {
             //------------Setup for test--------------------------
             List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
-	        {
-		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
-	        };
+            {
+                new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+            };
 
 
             var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             dsfBaseConvert.UpdateForEachInputs(new List<Tuple<string, string>>()
-	        {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
 
             //------------Assert Results-------------------------
 
@@ -329,18 +329,18 @@ namespace ActivityUnitTests.ActivityTests
         {
             //------------Setup for test--------------------------
             List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
-	        {
-		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "abc",1)
-	        };
+            {
+                new BaseConvertTO( "[[rs(*).val]]","text", "hex", "abc",1)
+            };
 
 
             var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
             dsfBaseConvert.UpdateForEachOutputs(new List<Tuple<string, string>>()
-	        {
-		        new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
-	        }, null);
+            {
+                new Tuple<string, string>("[[rs(*).val]]", "[[rs(1).val]]"),
+            }, null);
 
             //------------Assert Results-------------------------
 
@@ -356,10 +356,10 @@ namespace ActivityUnitTests.ActivityTests
         {
             //------------Setup for test--------------------------
             List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
-	        {
-		        // "[[result]]", "[[rs(*).val]] [[result]]", 1
-		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
-	        };
+            {
+                // "[[result]]", "[[rs(*).val]] [[result]]", 1
+                new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+            };
 
 
             var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };
@@ -383,10 +383,10 @@ namespace ActivityUnitTests.ActivityTests
         {
             //------------Setup for test--------------------------
             List<BaseConvertTO> fieldsCollection = new List<BaseConvertTO>
-	        {
-		        // "[[result]]", "[[rs(*).val]] [[result]]", 1
-		        new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
-	        };
+            {
+                // "[[result]]", "[[rs(*).val]] [[result]]", 1
+                new BaseConvertTO( "[[rs(*).val]]","text", "hex", "[[result]]",1)
+            };
 
 
             var dsfBaseConvert = new DsfBaseConvertActivity() { ConvertCollection = fieldsCollection };

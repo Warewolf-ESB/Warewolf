@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf")]
-[assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
+[assembly: AssemblyCopyright("Copyright © Warewolf 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
@@ -52,4 +52,4 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 //[assembly: AssemblyVersion("0.4.1.6")]
-[assembly: AssemblyFileVersion("0.4.2.0")]
+[assembly: AssemblyFileVersion("0.4.2.4")]

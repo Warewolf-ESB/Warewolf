@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -90,7 +89,6 @@ namespace Dev2
             catch(Exception ex)
             {
                 this.LogError(ex);
-                Debug.WriteLine(new UnlimitedObject(ex).XmlString);
             }
 
             return string.Format("<Error>{0}</Error>", "Input data was in incorrect format");
@@ -119,7 +117,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                Debug.WriteLine(new UnlimitedObject(ex).XmlString);
+                this.LogError(ex);
             }
 
             return string.Format("<Error>{0}</Error>", "Input data was in incorrect format");
@@ -168,7 +166,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                Debug.WriteLine(new UnlimitedObject(ex).XmlString);
+                this.LogError(ex);
             }
 
             return string.Format("<Error>{0}</Error>", "Input data was in incorrect format");
@@ -220,7 +218,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                Debug.WriteLine(new UnlimitedObject(ex).XmlString);
+                this.LogError(ex);
             }
 
             return string.Format("<Error>{0}</Error>", "Input data was in incorrect format");
@@ -278,7 +276,7 @@ namespace Dev2
             {
                 string errorXml = new UnlimitedObject(ex).XmlString;
                 data.Error = errorXml;
-                Debug.WriteLine(errorXml);
+                this.LogError(errorXml);
             }
 
             return data.XmlString;

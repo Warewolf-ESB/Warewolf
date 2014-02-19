@@ -153,8 +153,6 @@ namespace Dev2.Tests.Runtime.Util
 
                 foreach(var actualPath in shape.Paths)
                 {
-                    //Debug.WriteLine("new XmlPath(\"{0}\", \"{1}\", \"\", \"{2}\"),", actualPath.ActualPath, actualPath.DisplayPath, actualPath.SampleData);
-
                     var expectedPath = expectedPaths.FirstOrDefault(p => p.ActualPath == actualPath.ActualPath);
                     Assert.IsNotNull(expectedPath);
 

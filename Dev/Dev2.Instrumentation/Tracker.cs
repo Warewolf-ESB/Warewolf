@@ -95,9 +95,6 @@ namespace Dev2.Instrumentation
         {
 #if !TEST
             Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
-            //Perform(() => string.IsNullOrEmpty(eventValue)
-            //    ? TBApp.EventTrack(eventGroup.ToString(), customText, null)
-            //    : TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
 #endif
         }
 
@@ -110,7 +107,6 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !TEST
-            //Perform(() => TBApp.ExceptionTrack(className, methodName, ex), true);
             var idx = className.LastIndexOf('.');
             var newClassName = className.Substring(idx + 1);
             newClassName = newClassName.Replace("`", "").Replace("1", "");
@@ -122,16 +118,16 @@ namespace Dev2.Instrumentation
         {
             try
             {
-                if(async)
-                {
-                    Task.Run(action).ContinueWith(t => WriteError(t.Result));
-                }
-                else
-                {
-                    var result = action();
-                    WriteError(result);
-                }
+            if(async)
+            {
+                Task.Run(action).ContinueWith(t => WriteError(t.Result));
             }
+            else
+            {
+                var result = action();
+                WriteError(result);
+            }
+        }
             // ReSharper disable EmptyGeneralCatchClause
             catch
             // ReSharper restore EmptyGeneralCatchClause

@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Warewolf")]
 [assembly: AssemblyProduct("Warewolf")]
-[assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
+[assembly: AssemblyCopyright("Copyright © Warewolf 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,4 +31,4 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 //[assembly: AssemblyVersion("0.4.1.6")]
-[assembly: AssemblyFileVersion("0.4.2.0")]
+[assembly: AssemblyFileVersion("0.4.2.4")]
