@@ -6,7 +6,7 @@ namespace Dev2.Services.Security
     public class WindowsGroupPermission : ObservableObject
     {
         public const string BuiltInAdministratorsText = "BuiltIn\\Administrators";
-        public const string BuiltInGuestsText = "BuiltIn\\Public";
+        public const string BuiltInGuestsText = "Public";
 
         bool _isServer;
         Guid _resourceID;

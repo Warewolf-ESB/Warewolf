@@ -152,8 +152,9 @@ By specifying a resource here, it will not inherit permissions from the server (
 Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
   </data>
   <data name="SettingsSecurityResourceHelpWindowsGroup" xml:space="preserve">
-    <value>Type in the Windows Group (or click the ellipsis) to specify permissions at a resource level for items on this server.
-Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
+    <value>To set resource specific permissions, enter the Windows Group name or "Public" here followed by the system access for that group. 
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.
+Public is an internal Warewolf group that applies to everyone.</value>
   </data>
   <data name="SettingsSecurityResourceToolTipContribute" xml:space="preserve">
     <value>Edit and Delete this workflow</value>
@@ -172,7 +173,8 @@ Permissions are cumulative in nature e.g. If someone is a member of two groups a
   </data>
   <data name="SettingsSecurityServerHelpAdministrator" xml:space="preserve">
     <value>Administrators can amend security permissions and change server settings.
-The local machine Administrators are automatically given this permission.</value>
+The local machine Administrators are automatically given this permission.
+Giving Public access to this permission is akin to turning security off and is not recommended.</value>
   </data>
   <data name="SettingsSecurityServerHelpContribute" xml:space="preserve">
     <value>By Default this group will be able to Add New resources, Edit resources and Delete existing resources on this server. 
@@ -193,9 +195,10 @@ Deploy may mean overwriting existing work and can be done without Contribute pri
 Typically this is used by Business Analysts to sign off work and participate in the development process.</value>
   </data>
   <data name="SettingsSecurityServerHelpWindowsGroup" xml:space="preserve">
-    <value>To set server wide permissions for security, enter the windows group name here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct Group.
+    <value>To set server wide permissions for security, enter the Windows Group name or "Public" here followed by the system access for that group. You can click on the ellipsis for help with identifying the correct windows group.
 By Default these permissions will permeate all resources on the server, unless specified below in Resource Permissions.
-Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission.</value>
+Permissions are cumulative in nature e.g. If someone is a member of two groups and only one of those groups has Contribute permission, then that member WILL have Contribute permission. 
+The Public group grants any and every user those permissions.</value>
   </data>
   <data name="SettingsSecurityServerToolTipAdministrator" xml:space="preserve">
     <value>Amend security and admin tasks</value>
