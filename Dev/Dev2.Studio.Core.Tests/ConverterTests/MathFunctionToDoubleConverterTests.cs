@@ -5,7 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class MathFunctionToDoubleConverterTests
     {
         [TestMethod]
@@ -17,7 +18,7 @@ namespace Dev2.Core.Tests.ConverterTests
             var converter = new MathFunctionDoubleToThicknessConverter();
             converter.Function = MathFunction.Max;
             converter.Offset = 0;
-            var actual = converter.Convert(new object[] {50, 100}, typeof(Thickness), null, null);
+            var actual = converter.Convert(new object[] { 50, 100 }, typeof(Thickness), null, null);
             var expected = new Thickness(100, 0, 0, 0);
             Assert.AreEqual(actual, expected);
         }

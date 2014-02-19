@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Windows;
+using System.Xml.Linq;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Windows;
-using System.Xml.Linq;
 using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class MainViewModelTests
     {
         [TestMethod]
@@ -134,7 +135,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
 
             mainViewModel.SelectedSettingsObjects = mainViewModel.SettingsObjects[0];
 
-            Assert.IsNotNull(mainViewModel.ActiveItem,"When a settings object is selected the viewmodel isnt activated");
+            Assert.IsNotNull(mainViewModel.ActiveItem, "When a settings object is selected the viewmodel isnt activated");
         }
 
         [TestMethod]

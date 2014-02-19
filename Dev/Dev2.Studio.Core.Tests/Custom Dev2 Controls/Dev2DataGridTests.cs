@@ -9,7 +9,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls
     /// <summary>
     /// Summary description for Dev2DataGridTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2DataGridTests
     {
         /// <summary>

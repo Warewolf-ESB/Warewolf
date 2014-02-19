@@ -5,9 +5,12 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Models.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Core.Tests.ModelTests {
-    [TestClass][ExcludeFromCodeCoverage]
-    public class DataListItemModelTest {
+namespace Dev2.Core.Tests.ModelTests
+{
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class DataListItemModelTest
+    {
 
         #region Test Fields
 
@@ -18,14 +21,16 @@ namespace Dev2.Core.Tests.ModelTests {
         #region CTOR Tests
 
         [TestMethod]
-        public void DataListItemModelCTOR_Expected_DataListItemModelCreatedWithRespectiveFieldsPopulated() {
+        public void DataListItemModelCTOR_Expected_DataListItemModelCreatedWithRespectiveFieldsPopulated()
+        {
             string dataListItemDisplayName = "TestItem";
             TestDataListItemModelSet(dataListItemDisplayName);
             Assert.AreEqual(dataListItemDisplayName, _testDataListItemModel.Name);
         }
 
         [TestMethod]
-        public void DataListItemModelCTORWithRecords_Expected_DataListItemModelCreatedWithRespectiveFieldsPopulated() {
+        public void DataListItemModelCTORWithRecords_Expected_DataListItemModelCreatedWithRespectiveFieldsPopulated()
+        {
             IDataListItemModel parent = CreateDataListItemModel("TestItem");
             TestDataListItemModelSet("UnitTestDataListItem", true, parent);
             Assert.IsTrue(_testDataListItemModel.IsRecordset && _testDataListItemModel.Children.Count == 10);
@@ -39,7 +44,8 @@ namespace Dev2.Core.Tests.ModelTests {
         /// Checks that the name validation does not incorrectly validate names
         /// </summary>
         [TestMethod]
-        public void SetName_ValidName_Expected_NoValidationErrorMessageOnNameSet() {
+        public void SetName_ValidName_Expected_NoValidationErrorMessageOnNameSet()
+        {
             IDataListItemModel dataListItemModel = new DataListItemModel("MyDisplayName");
             dataListItemModel.DisplayName = "UnitTestDisplayName";
             Assert.IsTrue(string.IsNullOrEmpty(dataListItemModel.ErrorMessage));
@@ -50,7 +56,8 @@ namespace Dev2.Core.Tests.ModelTests {
         /// Checks that the name validation identifies invalid names
         /// </summary>
         [TestMethod]
-        public void SetName_InvalidName_Expected_ValidationErrorMessageOnNameSet() {
+        public void SetName_InvalidName_Expected_ValidationErrorMessageOnNameSet()
+        {
             IDataListItemModel dataListItemModel = new DataListItemModel("MyDisplayName");
             dataListItemModel.DisplayName = "UnitTestWith&amp;&lt;&gt;&quot;&apos;";
             Assert.IsTrue(!string.IsNullOrEmpty(dataListItemModel.ErrorMessage));
@@ -60,7 +67,8 @@ namespace Dev2.Core.Tests.ModelTests {
         /// Checks that the name validation identifies escaped characters names
         /// </summary>
         [TestMethod]
-        public void SetName_XmlEscapeCharactersInName_Expected_ValidationErrorMessageOnNameSet() {
+        public void SetName_XmlEscapeCharactersInName_Expected_ValidationErrorMessageOnNameSet()
+        {
             IDataListItemModel dataListItemModel = new DataListItemModel("MyDisplayName");
             dataListItemModel.DisplayName = "UnitTestWith<>";
             Assert.IsTrue(!string.IsNullOrEmpty(dataListItemModel.ErrorMessage));
@@ -70,8 +78,10 @@ namespace Dev2.Core.Tests.ModelTests {
 
         #region Private Test Methods
 
-        private void TestDataListItemModelSet(string name, bool populateAllFields = false, IDataListItemModel parent = null) {
-            if(populateAllFields) {
+        private void TestDataListItemModelSet(string name, bool populateAllFields = false, IDataListItemModel parent = null)
+        {
+            if(populateAllFields)
+            {
                 _testDataListItemModel = new DataListItemModel(name, enDev2ColumnArgumentDirection.None
                                                              , "Test Description"
                                                              , parent
@@ -83,22 +93,26 @@ namespace Dev2.Core.Tests.ModelTests {
                                                              , false
                                                              , false);
             }
-            else {
+            else
+            {
                 _testDataListItemModel = new DataListItemModel(name);
             }
 
         }
 
-        private OptomizedObservableCollection<IDataListItemModel> CreateChildren(IDataListItemModel parent, int numberOfChildrenToCreate) {
+        private OptomizedObservableCollection<IDataListItemModel> CreateChildren(IDataListItemModel parent, int numberOfChildrenToCreate)
+        {
             OptomizedObservableCollection<IDataListItemModel> children = new OptomizedObservableCollection<IDataListItemModel>();
-            for(int i = 1; i <= numberOfChildrenToCreate; i++) {
+            for(int i = 1; i <= numberOfChildrenToCreate; i++)
+            {
                 children.Add(new DataListItemModel("child" + i.ToString(), enDev2ColumnArgumentDirection.None, "", parent));
             }
 
             return children;
         }
 
-        private IDataListItemModel CreateDataListItemModel(string name) {
+        private IDataListItemModel CreateDataListItemModel(string name)
+        {
             return new DataListItemModel(name);
         }
 

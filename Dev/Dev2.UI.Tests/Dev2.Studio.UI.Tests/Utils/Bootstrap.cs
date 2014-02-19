@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Net;
 using System.Threading;
-using Ionic.Zip;
+using BuildEventLogging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -18,10 +17,6 @@ namespace Dev2.Studio.UI.Tests.Utils
     {
         private static Process _serverProc;
         private static Process _studioProc;
-        private static string ChangesetID;
-        private static TestContext testCtx;
-        private static CredentialCache cc;
-        private static string LoggingURL = string.Empty;
 
         private const string ServerName = "Warewolf Server.exe";
         private const string StudioName = "Warewolf Studio.exe";
@@ -29,10 +24,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string StudioProcName = "Warewolf Studio";
         private const int ServerTimeOut = 30000;
         private const int StudioTimeOut = 30000;
-        private const string ChangesetIDPathFileName = "BuildID.txt";//For getting the changeset ID (.testsettings file describes its deployment, build process describes its creation)
-        private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
-        private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
-        private const int WebRequestTimeout = 60000;
 
         public static string ServerLocation;
         public static Process ServerProc;
@@ -41,6 +32,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
 
         private static object _tumbler = new object();
+        private static TestContext testCtx;
 
         /// <summary>
         /// Inits the specified test CTX.
@@ -50,149 +42,97 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static void Init(TestContext textCtx)
         {
             testCtx = textCtx;
-
             lock(_tumbler)
             {
                 var serverProcess = TryGetProcess(ServerProcName);
                 var studioProcess = TryGetProcess(StudioProcName);
                 if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901")
                 {
+                    //Local, assume server is running
                     ServerLocation = GetProcessPath(serverProcess);
                     StudioLocation = GetProcessPath(studioProcess);
                     return;
                 }
 
-                // term any existing studio processes ;)
-                KillProcess(studioProcess);
-
-                // term any existing server processes ;)
-                KillProcess(serverProcess);
-
-                //init logging
-                cc = new CredentialCache();
-                cc.Add(new Uri("http://RSAKLFSVRWRWBLD:3142/"), "NTLM", new NetworkCredential("IntegrationTester", "I73573r0", "DEV2"));
-
-                var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
-                ReadBuildLabel(getChangesetIDPathFilePath);
-
-                if(LoggingURL == string.Empty)
+                var deployLocation = textCtx.DeploymentDirectory;
+                ServerLocation = deployLocation + @"\" + ServerName;
+                StudioLocation = deployLocation + @"\" + StudioName;
+                if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
                 {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started downloading build for coded ui testing");
-                }
-                GetChangesetBuild(ChangesetID);
-                if(LoggingURL == string.Empty)
-                {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " finished downloading build for coded ui testing");
-                }
+                    // term any existing studio processes ;)
+                    KillProcess(studioProcess);
 
-                var serverLoc = Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), ChangesetID, "Binaries", ServerName);
-                var studioLoc = Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), ChangesetID, "Binaries", StudioName);
+                    // term any existing server processes ;)
+                    KillProcess(serverProcess);
 
-                var args = "-t";
+                    var args = "-t";
 
-                ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
-                //startInfo.RedirectStandardOutput = true;
-                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args };
+                    //startInfo.RedirectStandardOutput = true;
+                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-                var started = false;
-                var startCnt = 0;
-                startInfo.FileName = serverLoc;
+                    var started = false;
+                    var startCnt = 0;
+                    startInfo.FileName = ServerLocation;
 
-                while(!started && startCnt < 5)
-                {
-                    try
+                    while(!started && startCnt < 5)
                     {
-                        _serverProc = Process.Start(startInfo);
-
-                        // Wait for server to start
-                        Thread.Sleep(ServerTimeOut); // wait for server to start ;)
-                        if(_serverProc != null && !_serverProc.HasExited)
+                        try
                         {
-                            serverProcess = TryGetProcess(ServerProcName);
-                            ServerLocation = GetProcessPath(serverProcess);
-                            started = true;
+                            _serverProc = Process.Start(startInfo);
+
+                            // Wait for server to start
+                            Thread.Sleep(ServerTimeOut); // wait for server to start ;)
+                            if(_serverProc != null && !_serverProc.HasExited)
+                            {
+                                ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
+                                started = true;
+                            }
+                        }
+                        catch
+                        {
+                            // most likely a server is already running, kill it and try again ;)
+                            startCnt++;
                         }
                     }
-                    catch
+
+                    started = false;
+                    startCnt = 0;
+                    startInfo.FileName = StudioLocation;
+
+                    while(!started && startCnt < 5)
                     {
-                        // most likely a server is already running, kill it and try again ;)
-                        startCnt++;
-                    }
-                }
-                if(LoggingURL == string.Empty)
-                {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " has started running server for coded ui testing");
-                }
-
-                started = false;
-                startCnt = 0;
-                startInfo.FileName = studioLoc;
-
-                while(!started && startCnt < 5)
-                {
-                    try
-                    {
-                        _studioProc = Process.Start(startInfo);
-
-                        // Wait for studio to start
-                        Thread.Sleep(StudioTimeOut); // wait for server to start ;)
-                        if(_studioProc != null && !_studioProc.HasExited)
+                        try
                         {
-                            studioProcess = TryGetProcess(StudioProcName);
-                            StudioLocation = GetProcessPath(studioProcess);
-                            started = true;
+                            _studioProc = Process.Start(startInfo);
+
+                            // Wait for studio to start
+                            Thread.Sleep(StudioTimeOut); // wait for server to start ;)
+                            if(_studioProc != null && !_studioProc.HasExited)
+                            {
+                                StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+                                started = true;
+                            }
+                        }
+                        catch
+                        {
+                            // most likely a studio is already running, kill it and try again ;)
+                            startCnt++;
                         }
                     }
-                    catch
+                }
+                else
+                {
+                    //Remote, assume server is running
+                    ServerLocation = GetProcessPath(serverProcess);
+                    StudioLocation = GetProcessPath(studioProcess);
+                    var buildLabel = new BuildLabel(textCtx.DeploymentDirectory);
+                    //Remote by a build agent
+                    if(buildLabel.LoggingURL != string.Empty)
                     {
-                        // most likely a studio is already running, kill it and try again ;)
-                        startCnt++;
+                        BuildEventLogger.LogBuildEvent(buildLabel, "Started coded UI testing.");
                     }
                 }
-                if(LoggingURL == string.Empty)
-                {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " has started running studio for coded ui testing");
-                }
-            }
-        }
-
-        static void LogBuildEvent(string LogData)
-        {
-            try
-            {
-                var URL = LoggingURL + "&BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
-                var webRequest = WebRequest.Create(URL);
-                webRequest.Credentials = cc;
-                webRequest.Timeout = WebRequestTimeout;
-                webRequest.GetResponse();
-            }
-            catch
-            {
-                // best effort
-            }
-        }
-
-        static void ReadBuildLabel(string getChangesetIDPathFilePath)
-        {
-            var Lines = File.ReadAllLines(getChangesetIDPathFilePath);
-            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("LoggingURL: "))
-            {
-                ChangesetID = Lines[0].Replace("BuildID: ", string.Empty);
-                LoggingURL = Lines[0].Replace("Logging: ", string.Empty);
-            }
-            else
-            {
-                throw new Exception("Unrecognized build label format.");
-            }
-        }
-
-        static void GetChangesetBuild(string changesetID)
-        {
-            var remoteBuildPath = Path.Combine(Path.GetDirectoryName(RemoteBuildDirectory), changesetID + ".zip");
-
-            using(var zippedBuild = ZipFile.Read(remoteBuildPath))
-            {
-                zippedBuild.ExtractAll(Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), changesetID), ExtractExistingFileAction.OverwriteSilently);
             }
         }
 
@@ -210,17 +150,19 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 _studioProc.Kill();
             }
-            try
-            {
-                Directory.Delete(LocalBuildRunDirectory, true);
-            }
-            catch(Exception)
-            {
 
-            }
-            if(LoggingURL == string.Empty)
+            if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName) && File.Exists(testCtx.DeploymentDirectory + @"\" + StudioName))
             {
-                LogBuildEvent("Test agent " + testCtx.Properties["AgentName"] + " finished coded ui testing");
+                //Server and studio were deployed and started, stop them now.
+                KillProcess(TryGetProcess(ServerProcName));
+                KillProcess(TryGetProcess(StudioProcName));
+            }
+
+            var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+            //Remote by a build agent
+            if(buildLabel.LoggingURL != string.Empty)
+            {
+                BuildEventLogger.LogBuildEvent(buildLabel, "Finished coded UI testing.");
             }
         }
 

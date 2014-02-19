@@ -7,7 +7,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ContexttualResourceModelEqualityComparerTests
     {
         [TestMethod]
@@ -23,7 +24,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var secondEnvironment = new Mock<IEnvironmentModel>();
             var firstConnection = new Mock<IEnvironmentConnection>();
             var secondConnection = new Mock<IEnvironmentConnection>();
-            
+
             firstConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
             secondConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.2"));
             firstEnvironment.Setup(env => env.Connection).Returns(firstConnection.Object);

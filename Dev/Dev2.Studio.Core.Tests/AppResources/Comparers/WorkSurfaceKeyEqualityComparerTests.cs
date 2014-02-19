@@ -15,7 +15,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
     /// <summary>
     /// Summary description for WorkSurfaceKeyEqualityComparerTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkSurfaceKeyEqualityComparerTests
     {
         /// <summary>
@@ -59,12 +60,12 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var enviroId = Guid.NewGuid();
 
             var resource1 = Dev2MockFactory.SetupResourceModelMock();
-            resource1.Setup(c=>c.ID).Returns(resId);
-            resource1.Setup(c=>c.ServerID).Returns(serverId);
-            resource1.Setup(c=>c.Environment.ID).Returns(enviroId);
-            
+            resource1.Setup(c => c.ID).Returns(resId);
+            resource1.Setup(c => c.ServerID).Returns(serverId);
+            resource1.Setup(c => c.Environment.ID).Returns(enviroId);
+
             var key1 = WorkSurfaceKeyFactory.CreateKey(resource1.Object);
-                        
+
             var enviroId2 = Guid.NewGuid();
 
             var resource2 = Dev2MockFactory.SetupResourceModelMock();
@@ -72,19 +73,19 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             resource2.Setup(c => c.ServerID).Returns(serverId);
             resource2.Setup(c => c.Environment.ID).Returns(enviroId2);
 
-            var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);            
-            if (WorkSurfaceKeyEqualityComparer.Current.Equals(key1,key2))
-             {
-                 Assert.Fail("The keys should not be the same as they are from two different environments.");
-             }            
-        } 
-        
+            var key2 = WorkSurfaceKeyFactory.CreateKey(resource2.Object);
+            if(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2))
+            {
+                Assert.Fail("The keys should not be the same as they are from two different environments.");
+            }
+        }
+
         [TestMethod]
         public void CreateKeysWithDebugStateExpectedKeysCreatedWhenNoWorkspaceID()
         {
             var resId = Guid.NewGuid();
             var serverId = Guid.NewGuid();
-            
+
 
             var debugState = new Mock<IDebugState>();
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
@@ -92,7 +93,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             debugState.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
 
             var key1 = WorkSurfaceKeyFactory.CreateKey(debugState.Object);
-                        
+
 
             var debugState2 = new Mock<IDebugState>();
             debugState2.Setup(c => c.OriginatingResourceID).Returns(resId);
@@ -100,8 +101,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             debugState2.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
 
             var key2 = WorkSurfaceKeyFactory.CreateKey(debugState2.Object);
-            Assert.IsTrue(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2),"keys should be equal");
-                        
+            Assert.IsTrue(WorkSurfaceKeyEqualityComparer.Current.Equals(key1, key2), "keys should be equal");
+
         }
 
         [TestMethod]
@@ -134,8 +135,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             debugState.Setup(c => c.WorkspaceID).Returns(enviroId);
 
             var key1 = WorkSurfaceKeyFactory.CreateKey(debugState.Object);
-                        
-            
+
+
 
             var debugState2 = new Mock<IDebugState>();
             debugState2.Setup(c => c.OriginatingResourceID).Returns(resId);

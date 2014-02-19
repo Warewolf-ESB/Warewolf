@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Net;
 using System.Threading;
+using BuildEventLogging;
 using Dev2.Common;
-using Ionic.Zip;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nuane.Net;
 
 namespace Dev2.Integration.Tests
 {
@@ -20,171 +20,116 @@ namespace Dev2.Integration.Tests
         private const string ServerName = "Warewolf Server.exe";
         private const string ServerProcName = "Warewolf Server";
         private const int ServerTimeOut = 30000;
-        private const string ChangesetIDPathFileName = "BuildID.txt";//For getting the changeset ID (.testsettings file describes its deployment, build process describes its creation)
         private const string LocalBuildRunDirectory = "C:\\TestDeploy\\";//Local run directory
-        private const string RemoteBuildDirectory = "\\\\rsaklfsvrtfsbld\\Automated Builds\\TestRunStaging\\";//Where the zipped build has been staged
-        private static string LoggingURL = string.Empty;
-        private const int WebRequestTimeout = 60000;
 
         public static string ServerLocation;
         public static Process ServerProc;
-        private static string ChangesetID;
-        private static TestContext testCtx;
-        private static CredentialCache cc;
 
         private static readonly object _tumbler = new object();
+
+        private static TestContext testCtx;
 
         /// <summary>
         /// Inits the specified test CTX.
         /// </summary>
-        /// <param name="textCtx">The test CTX.</param>
-        [AssemblyInitialize]
+        /// <param name="testCtx">The test CTX.</param>
+        [AssemblyInitialize()]
         public static void Init(TestContext textCtx)
         {
             testCtx = textCtx;
             lock(_tumbler)
             {
                 var serverProcess = TryGetProcess(ServerProcName);
-                if(textCtx.Properties["ControllerName"] == null || textCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+                if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
                 {
+                    //Local, assume server is running
                     ServerLocation = GetProcessPath(serverProcess);
                     return;
                 }
 
-                //init logging
-                cc = new CredentialCache { { new Uri("http://RSAKLFSVRWRWBLD:3142/"), "NTLM", new NetworkCredential("IntegrationTester", "I73573r0", "DEV2") } };
-
-                // term any existing server processes ;)
-                KillProcess(serverProcess);
-
-                //get binaries to test against
-                var getChangesetIDPathFilePath = Path.Combine(Path.GetDirectoryName(textCtx.DeploymentDirectory), "Deployment", ChangesetIDPathFileName);
-                ReadBuildLabel(getChangesetIDPathFilePath);
-
-                if(LoggingURL == string.Empty)
+                var deployLocation = testCtx.DeploymentDirectory;
+                //Server was deployed
+                ServerLocation = deployLocation + @"\" + ServerName;
+                if(File.Exists(ServerLocation))
                 {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started downloading build for integration testing");
-                }
-                var timeBefore = DateTime.Now;
-                GetChangesetBuild(ChangesetID);
-                if(LoggingURL == string.Empty)
-                {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " finished downloading build for integration testing");
-                }
-                ServerLogger.LogMessage("Downloaded build " + ChangesetID + " in -> " + (DateTime.Now - timeBefore).Seconds + " seconds");
+                    // term any existing server processes ;)
+                    KillProcess(serverProcess);
 
-                ServerLocation = Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), ChangesetID, "Binaries", ServerName);
+                    ServerLogger.LogMessage("Server Loc -> " + ServerLocation);
+                    ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
 
-                ServerLogger.LogMessage("Server Loc -> " + ServerLocation);
-                ServerLogger.LogMessage("App Server Path -> " + EnvironmentVariables.ApplicationPath);
+                    var args = "-t";
 
-                const string args = "-t";
+                    ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = ServerLocation, Arguments = args };
+                    //startInfo.RedirectStandardOutput = true;
+                    //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
-                ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = ServerLocation, Arguments = args };
-                //startInfo.RedirectStandardOutput = true;
-                //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    var started = false;
+                    var startCnt = 0;
 
-                var started = false;
-                var startCnt = 0;
-
-                while(!started && startCnt < 5)
-                {
-                    try
+                    while(!started && startCnt < 5)
                     {
-                        ServerProc = Process.Start(startInfo);
-
-                        // Wait for server to start
-                        Thread.Sleep(ServerTimeOut); // wait for server to start ;)
-                        if(ServerProc != null && !ServerProc.HasExited)
+                        try
                         {
-                            started = true;
-                            ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                            ServerProc = Process.Start(startInfo);
+
+                            // Wait for server to start
+                            Thread.Sleep(ServerTimeOut); // wait for server to start ;)
+                            if(ServerProc != null && !ServerProc.HasExited)
+                            {
+                                started = true;
+                                ServerLogger.LogMessage("** Server Started for Integration Test Run");
+                            }
                         }
-                    }
-                    catch(Exception e)
-                    {
-                        ServerLogger.LogMessage("Exception : " + e.Message);
-
-                        // most likely a server is already running, kill it and try again ;)
-                        startCnt++;
-                    }
-                    finally
-                    {
-                        if(!started)
+                        catch(Exception e)
                         {
-                            ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
-                            // term any existing server processes ;)
-                            KillProcess(TryGetProcess(ServerProcName));
+                            ServerLogger.LogMessage("Exception : " + e.Message);
+
+                            // most likely a server is already running, kill it and try again ;)
+                            startCnt++;
+                        }
+                        finally
+                        {
+                            if(!started)
+                            {
+                                ServerLogger.LogMessage("** Server Failed to Start for Integration Test Run");
+                                // term any existing server processes ;)
+                                KillProcess(TryGetProcess(ServerProcName));
+                            }
                         }
                     }
                 }
-                if(LoggingURL == string.Empty)
+                else
                 {
-                    LogBuildEvent("Test agent " + textCtx.Properties["AgentName"] + " started running server for integration testing");
+                    //Remote, assume server is running
+                    ServerLocation = GetProcessPath(serverProcess);
+                    var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+                    //Remote by a build agent
+                    if(buildLabel.LoggingURL != string.Empty)
+                    {
+                        BuildEventLogger.LogBuildEvent(buildLabel, "Started integration testing.");
+                    }
                 }
-            }
-        }
-
-        static void LogBuildEvent(string LogData)
-        {
-            var URL = LoggingURL + "&BuildID=" + ChangesetID + "&data=" + System.Web.HttpUtility.UrlEncode(LogData);
-            var webRequest = WebRequest.Create(URL);
-            webRequest.Credentials = cc;
-            webRequest.Timeout = WebRequestTimeout;
-            webRequest.GetResponse();
-        }
-
-        static void ReadBuildLabel(string getChangesetIDPathFilePath)
-        {
-            var Lines = File.ReadAllLines(getChangesetIDPathFilePath);
-            if(Lines[0] != null && Lines[0].StartsWith("BuildID: ") && Lines[1] != null && Lines[1].StartsWith("LoggingURL: "))
-            {
-                ChangesetID = Lines[0].Replace("BuildID: ", string.Empty);
-                LoggingURL = Lines[0].Replace("LoggingURL: ", string.Empty);
-            }
-            else
-            {
-                throw new Exception("Unrecognized build label format.");
-            }
-        }
-
-        static void GetChangesetBuild(string changesetID)
-        {
-            // ReSharper disable AssignNullToNotNullAttribute
-            var remoteBuildPath = Path.Combine(Path.GetDirectoryName(RemoteBuildDirectory), changesetID + ".zip");
-            // ReSharper restore AssignNullToNotNullAttribute
-
-            using(var zippedBuild = ZipFile.Read(remoteBuildPath))
-            {
-                zippedBuild.ExtractAll(Path.Combine(Path.GetDirectoryName(LocalBuildRunDirectory), changesetID), ExtractExistingFileAction.OverwriteSilently);
             }
         }
 
         /// <summary>
         /// Teardowns this instance.
         /// </summary>
-        [AssemblyCleanup]
+        [AssemblyCleanup()]
         public static void Teardown()
         {
-            if(ServerProc != null)
+            if(File.Exists(testCtx.DeploymentDirectory + @"\" + ServerName))
             {
-                ServerProc.Kill();
-                ServerLogger.LogMessage("Server Terminated");
+                //Server was deployed and started, stop it now.
+                KillProcess(TryGetProcess(ServerProcName));
             }
 
-            try
+            var buildLabel = new BuildLabel(testCtx.DeploymentDirectory);
+            //Remote by a build agent
+            if(buildLabel.LoggingURL != string.Empty)
             {
-                Directory.Delete(LocalBuildRunDirectory, true);
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-
-            }
-            if(LoggingURL == string.Empty)
-            {
-                LogBuildEvent("Test agent " + testCtx.Properties["AgentName"] + " finished integration testing");
+                BuildEventLogger.LogBuildEvent(buildLabel, "Finished integration testing.");
             }
         }
 
@@ -238,9 +183,7 @@ namespace Dev2.Integration.Tests
                 {
                     proc.Kill();
                 }
-                // ReSharper disable EmptyGeneralCatchClause
                 catch
-                // ReSharper restore EmptyGeneralCatchClause
                 {
                     // Do nothing
                 }

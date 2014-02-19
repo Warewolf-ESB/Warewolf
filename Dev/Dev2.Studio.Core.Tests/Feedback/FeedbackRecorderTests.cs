@@ -9,7 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FeedbackRecorderTests
     {
         #region Class Members
@@ -47,34 +48,34 @@ namespace Dev2.Core.Tests.Feedback
         //
         // Use ClassInitialize to run code before running the first test in the class
         [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext) 
+        public static void MyClassInitialize(TestContext testContext)
         {
             _tempTestFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
             Directory.CreateDirectory(_tempTestFolder);
         }
-        
+
         // Use ClassCleanup to run code after all tests in a class have run
         [ClassCleanup]
-        public static void MyClassCleanup() 
+        public static void MyClassCleanup()
         {
             EnsureProcessIsntRunning(false);
             DeleteTempTestFolder();
         }
-        
+
         // Use TestInitialize to run code before running each test 
         [TestInitialize]
-        public void MyTestInitialize() 
+        public void MyTestInitialize()
         {
             EnsureProcessIsntRunning(true);
         }
-        
+
         // Use TestCleanup to run code after each test has run
         [TestCleanup]
-        public void MyTestCleanup() 
+        public void MyTestCleanup()
         {
             EnsureProcessIsntRunning(true);
         }
-        
+
         #endregion
 
         #region Support Methods
@@ -83,14 +84,14 @@ namespace Dev2.Core.Tests.Feedback
         {
             Process[] processes = Process.GetProcessesByName("psr");
 
-            if (processes.Length == 0)
+            if(processes.Length == 0)
             {
                 return;
             }
 
-            foreach (Process process in processes)
+            foreach(Process process in processes)
             {
-                if (process!=null && process.Id!=0)
+                if(process != null && process.Id != 0)
                 {
 
                     try
@@ -103,9 +104,9 @@ namespace Dev2.Core.Tests.Feedback
                         // best effort ;)
                     }
 
-                    if (waitForExit)
+                    if(waitForExit)
                     {
-                        if (!process.HasExited)
+                        if(!process.HasExited)
                         {
                             throw new Exception(
                                 "Couldn't exit all pse.exe processes. This step is necessary in order to properly run this test.");
@@ -128,8 +129,8 @@ namespace Dev2.Core.Tests.Feedback
         private static bool CheckIfProcessIsRunning()
         {
             Process[] processes = Process.GetProcessesByName("psr");
-            if (processes.Length > 0)
-                Thread.Sleep(30); 
+            if(processes.Length > 0)
+                Thread.Sleep(30);
             processes = Process.GetProcessesByName("psr");
             return processes.Length > 0;
         }
@@ -140,7 +141,7 @@ namespace Dev2.Core.Tests.Feedback
             {
                 Directory.Delete(_tempTestFolder, true);
             }
-            catch (Exception)
+            catch(Exception)
             {
                 //Fail silently if folder couldn't be deleted.
             }
@@ -165,7 +166,7 @@ namespace Dev2.Core.Tests.Feedback
 
             recorder.StartRecording(outputPath);
 
-            if (!CheckIfProcessIsRunning())
+            if(!CheckIfProcessIsRunning())
             {
                 Assert.Fail("Recording process failed to start!");
             }
@@ -259,7 +260,7 @@ namespace Dev2.Core.Tests.Feedback
                 EnsureProcessIsntRunning(false);
             }
 
-            if (CheckIfProcessIsRunning())
+            if(CheckIfProcessIsRunning())
             {
                 Assert.Fail("Failed to kill all running recording processes!");
             }

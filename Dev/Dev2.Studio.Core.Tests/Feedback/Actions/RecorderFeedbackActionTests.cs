@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Studio.AppResources.Exceptions;
@@ -9,12 +11,11 @@ using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Windows;
 
 namespace Dev2.Core.Tests.Feedback.Actions
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RecorderFeedbackActionTests
     {
         #region Class Members
@@ -121,12 +122,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
                 {
                     callCount++;
 
-                    if (callCount == 1)
+                    if(callCount == 1)
                     {
                         throw new FeedbackRecordingInprogressException();
                     }
 
-                    if (callCount > 2)
+                    if(callCount > 2)
                     {
                         throw new Exception("Error in test mock logic, this point should never be reached. This exception's purpose is to end a potential infinite loop.");
                     }
@@ -157,12 +158,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
             {
                 callCount++;
 
-                if (callCount == 1)
+                if(callCount == 1)
                 {
                     throw new FeedbackRecordingInprogressException();
                 }
 
-                if (callCount > 2)
+                if(callCount > 2)
                 {
                     throw new Exception("Error in test mock logic, this point should never be reached. This exception's purpose is to end a potential infinite loop.");
                 }
@@ -191,12 +192,12 @@ namespace Dev2.Core.Tests.Feedback.Actions
             {
                 callCount++;
 
-                if (callCount == 1)
+                if(callCount == 1)
                 {
                     throw new FeedbackRecordingInprogressException();
                 }
 
-                if (callCount > 2)
+                if(callCount > 2)
                 {
                     throw new Exception("Error in test mock logic, this point should never be reached. This exception's purpose is to end a potential infinite loop.");
                 }
@@ -245,7 +246,7 @@ namespace Dev2.Core.Tests.Feedback.Actions
         public void FinshFeedback_Where_NoProcessesToStop_Expected_RecordingStoppedInvoked()
         {
             Mock<IFeedBackRecorder> feedbackRecorder = new Mock<IFeedBackRecorder>();
-            feedbackRecorder.Setup(r => r.StopRecording()).Callback(() => 
+            feedbackRecorder.Setup(r => r.StopRecording()).Callback(() =>
             {
                 throw new FeedbackRecordingNoProcessesExcpetion();
             }).Verifiable();

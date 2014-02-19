@@ -5,12 +5,15 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
     /// <summary>
     /// A set of test cases to test the functionality of the DataListSingleton
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class DataListSingletonTest {
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class DataListSingletonTest
+    {
 
         public static readonly object DataListSingletonTestGuard = new object();
         private TestContext testContextInstance;
@@ -19,11 +22,14 @@ namespace Dev2.Core.Tests {
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext {
-            get {
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -47,7 +53,8 @@ namespace Dev2.Core.Tests {
         #region SetDataList Tests
 
         [TestMethod]
-        public void SetDataList_Expected_CurrentDataListSetInSingleton() {
+        public void SetDataList_Expected_CurrentDataListSetInSingleton()
+        {
             Mock<IDataListViewModel> mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
             Assert.AreEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
@@ -58,7 +65,8 @@ namespace Dev2.Core.Tests {
         #region UpdateActiveDataList Tests
 
         [TestMethod]
-        public void UpdateActiveDataList_Expected_NewActiveDataList() {
+        public void UpdateActiveDataList_Expected_NewActiveDataList()
+        {
             Mock<IDataListViewModel> mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
             Mock<IDataListViewModel> mock_newDataListViewModel = new Mock<IDataListViewModel>();

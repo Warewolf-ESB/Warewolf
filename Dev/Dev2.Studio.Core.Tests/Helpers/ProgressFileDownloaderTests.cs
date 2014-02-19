@@ -7,7 +7,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Helpers
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ProgressFileDownloaderTests
     {
         [TestMethod]
@@ -20,13 +21,13 @@ namespace Dev2.Core.Tests.Helpers
         {
             //init
             var mockWebClient = new Mock<IDev2WebClient>();
-            mockWebClient.Setup(c=>c.DownloadFileAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockWebClient.Setup(c => c.DownloadFileAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.ShowDialog()).Verifiable();
             var testProgressFileDownloader = new ProgressFileDownloader(mockWebClient.Object, mockProgressDialog.Object);
 
             //exe
-            testProgressFileDownloader.Download(It.IsAny<Uri>(), It.IsAny<string>(),false);
+            testProgressFileDownloader.Download(It.IsAny<Uri>(), It.IsAny<string>(), false);
 
             //assert
             mockWebClient.Verify(c => c.DownloadFileAsync(It.IsAny<Uri>(), It.IsAny<string>(), It.IsAny<string>()));
@@ -72,7 +73,7 @@ namespace Dev2.Core.Tests.Helpers
             var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, mockProgressDialog.Object);
 
             //exe
-            testProgressFileDownloader.TestRehydrateDialog("test file", 50, 2000 );
+            testProgressFileDownloader.TestRehydrateDialog("test file", 50, 2000);
             var actual = testProgressFileDownloader.GetProgressDialog();
 
             //assert
@@ -98,7 +99,7 @@ namespace Dev2.Core.Tests.Helpers
             testProgressFileDownloader.TestStartUpdate("test file", true);
 
             //assert
-            mockProgressDialog.Verify(c=>c.Close());
+            mockProgressDialog.Verify(c => c.Close());
         }
     }
 }

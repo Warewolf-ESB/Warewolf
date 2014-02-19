@@ -1,13 +1,15 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Unlimited.Applications.BusinessDesignStudio.Undo;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 namespace UndoFramework.Tests
 {
     /// <summary>
     /// Summary description for ActionManagerTests
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActionManagerTests
     {
         Mock<AbstractAction> mockAction = new Mock<AbstractAction>();
@@ -33,13 +35,13 @@ namespace UndoFramework.Tests
         // Use TestInitialize to run code before running each test 
         [TestInitialize()]
         public void MyTestInitialize()
-        {            
+        {
             mockAction.Setup(c => c.CanExecute()).Returns(true).Verifiable();
             mockAction.Setup(c => c.CanUnExecute()).Returns(true).Verifiable();
             mockAction.Setup(c => c.Execute()).Verifiable();
             mockAction.Setup(c => c.UnExecute()).Verifiable();
 
-           
+
         }
         //
         // Use TestCleanup to run code after each test has run
@@ -64,7 +66,7 @@ namespace UndoFramework.Tests
             ActionManager actManager = new ActionManager();
             actManager.RecordAction(mockAction.Object);
             actManager.Undo();
-            actManager.Redo();           
+            actManager.Redo();
             Assert.IsTrue(actManager.CanUndo);
         }
 
@@ -72,10 +74,10 @@ namespace UndoFramework.Tests
         public void Two_Actions_One_Undo_Expected_CanUndo_true()
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(mockAction.Object);   
-            actManager.RecordAction(mockAction.Object);            
+            actManager.RecordAction(mockAction.Object);
+            actManager.RecordAction(mockAction.Object);
             actManager.Undo();
-            
+
             Assert.IsTrue(actManager.CanUndo && actManager.CanRedo);
         }
 
@@ -95,18 +97,18 @@ namespace UndoFramework.Tests
         public void RecordAction_Null_Action_Expected_No_Action()
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(null);                      
+            actManager.RecordAction(null);
             Assert.IsTrue(!actManager.CanUndo && !actManager.CanRedo);
         }
 
         [TestMethod]
         public void RecordAction_ExecutingAction_Expected_No_Action()
-        {            
+        {
             ActionManager actManager = new ActionManager();
             actManager.ExecuteImmediatelyWithoutRecording = true;
             actManager.RecordAction(mockAction.Object);
 
             Assert.IsTrue(!actManager.CanUndo && !actManager.CanRedo);
-        }       
+        }
     }
 }

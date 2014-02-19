@@ -12,7 +12,8 @@ using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class LoggingViewModelTests
     {
         [TestMethod]
@@ -31,9 +32,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             var commService = new Mock<ICommunicationService>();
 
             commService.Setup(s => s.GetResources(It.IsAny<string>()))
-                .Returns(new List<WorkflowDescriptor>{ postWorkflow });
+                .Returns(new List<WorkflowDescriptor> { postWorkflow });
             commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(new List<DataListVariable>{ new DataListVariable {Name = "TestInput"}});
+                .Returns(new List<DataListVariable> { new DataListVariable { Name = "TestInput" } });
             vm.CommunicationService = commService.Object;
 
             vm.Object = settings;
@@ -50,7 +51,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             settings.PostWorkflow = postWorkflow;
 
             var vm = GetVM();
-            
+
             vm.Object = settings;
 
             Assert.IsFalse(vm.HasServiceInputOptions);
@@ -89,7 +90,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         {
             //Setup
             var descriptors = GetWorkFlowDescriptors(3, true).ToList();
-            var settings = GetSettingsObject(descriptors);         
+            var settings = GetSettingsObject(descriptors);
             var vm = GetVM(descriptors);
             vm.LogAll = true;
 
@@ -160,7 +161,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         private static ILoggingSettings GetSettingsObject(IEnumerable<IWorkflowDescriptor> workflows = null)
         {
             var settings = new LoggingSettings("InvalidUri");
-            if (workflows != null)
+            if(workflows != null)
             {
                 workflows.ToList().ForEach(wf => settings.Workflows.Add(wf));
             }
@@ -170,7 +171,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         private static IEnumerable<WorkflowDescriptor> GetWorkFlowDescriptors(int number, bool isSelected = false)
         {
             var descriptors = new List<WorkflowDescriptor>();
-            for (int i = 0; i < number; i++)
+            for(int i = 0; i < number; i++)
             {
                 descriptors.Add(GetWorkFlowDescriptor(isSelected));
             }
@@ -179,7 +180,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
 
         private static WorkflowDescriptor GetWorkFlowDescriptor(bool isSelected = false)
         {
-            var descriptor = new WorkflowDescriptor() { IsSelected = isSelected, ResourceID = Guid.NewGuid().ToString()};
+            var descriptor = new WorkflowDescriptor() { IsSelected = isSelected, ResourceID = Guid.NewGuid().ToString() };
             return descriptor;
         }
 
@@ -187,10 +188,10 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         {
             var vm = new LoggingViewModel();
             var commService = new Mock<ICommunicationService>();
-            if (descriptors == null)
+            if(descriptors == null)
                 descriptors = new List<WorkflowDescriptor>();
             commService.Setup(s => s.GetResources(It.IsAny<string>())).Returns(descriptors);
-            commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(),It.IsAny<string>())).Returns(new List<DataListVariable>());
+            commService.Setup(s => s.GetDataListInputs(It.IsAny<string>(), It.IsAny<string>())).Returns(new List<DataListVariable>());
             vm.CommunicationService = commService.Object;
             return vm;
         }

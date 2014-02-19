@@ -10,7 +10,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;
@@ -118,7 +119,7 @@ namespace Dev2.Core.Tests.Diagnostics
             const string uniqueTxt = "Unique.txt";
             ExceptionFactory.GetUniqueOutputPath = (ext) => uniqueTxt;
             const string severTxt = "Sever.txt";
-            ExceptionFactory.GetServerLogTempPath = (evn) => severTxt; 
+            ExceptionFactory.GetServerLogTempPath = (evn) => severTxt;
             //Execute
             var vm = ExceptionFactory.CreateViewModel(e, _contextModel.Object, ErrorSeverity.Critical);
             //Assert
@@ -146,7 +147,7 @@ namespace Dev2.Core.Tests.Diagnostics
             string exceptionResult = ExceptionFactory.CreateStringValue(GetException(), null, true).ToString();
             StringAssert.Contains(exceptionResult, StringResources.CriticalExceptionMessage, "Error - Additional Trace Info is missing from the exception!");
         }
-        
+
         #endregion
 
         #region Private Test Methods

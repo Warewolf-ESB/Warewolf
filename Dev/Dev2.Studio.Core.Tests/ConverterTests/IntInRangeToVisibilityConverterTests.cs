@@ -7,7 +7,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class IntInRangeToVisibilityConverterTests
     {
         [TestMethod]
@@ -20,7 +21,7 @@ namespace Dev2.Core.Tests.ConverterTests
             var converter = new IntInRangeToVisibilityConverter();
 
             //------------Execute Test---------------------------
-            var result = converter.ConvertBack(null, new Type[] {typeof(int)}, null, CultureInfo.CurrentCulture);
+            var result = converter.ConvertBack(null, new Type[] { typeof(int) }, null, CultureInfo.CurrentCulture);
 
             //------------Assert Results-------------------------
         }

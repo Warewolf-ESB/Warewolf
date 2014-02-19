@@ -11,7 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Configuration
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RuntimeConfigurationAssemblyRepositoryTests
     {
         #region Fields
@@ -67,10 +68,10 @@ namespace Dev2.Core.Tests.Configuration
             string assemblyPath = Path.Combine(repositoryPath, hash);
             assemblyPath = Path.Combine(assemblyPath, GlobalConstants.Dev2RuntimeConfigurationAssemblyName);
             RuntimeConfigurationAssemblyRepository configurationAssemblyRepository = new RuntimeConfigurationAssemblyRepository(repositoryPath);
-            
+
             // Ensure repository is empty
             Assert.AreEqual(0, configurationAssemblyRepository.AllHashes().Count(), "The repository isn't empty, this test requries an empty repository.");
-            
+
             // Add assembly
             configurationAssemblyRepository.Add(hash, assemblyData);
 
@@ -92,7 +93,7 @@ namespace Dev2.Core.Tests.Configuration
             RuntimeConfigurationAssemblyRepository configurationAssemblyRepository = new RuntimeConfigurationAssemblyRepository(repositoryPath);
 
             // Create hash paths
-            foreach (string hash in expectedHashes)
+            foreach(string hash in expectedHashes)
             {
                 string hashPath = Path.Combine(repositoryPath, hash);
                 Directory.CreateDirectory(hashPath);
@@ -158,7 +159,7 @@ namespace Dev2.Core.Tests.Configuration
 
             // Load assembly
             Assembly actualAssembly = configurationAssemblyRepository.Load(hash);
-            
+
             // Check that loaded assembly macthes the expected
             Assembly expectedAssembly = typeof(RuntimeConfigurationAssemblyRepositoryTests).Assembly;
             Assert.AreEqual(expectedAssembly.FullName, actualAssembly.FullName, "The incorrect assembly loaded from disk.");
@@ -204,11 +205,11 @@ namespace Dev2.Core.Tests.Configuration
         [TestMethod]
         public void GetUserControlReturnsNullIfNotExist()
         {
-            string hash = "ABC"; 
-            string repositoryPath = GetUniqueRepositoryPath();     
+            string hash = "ABC";
+            string repositoryPath = GetUniqueRepositoryPath();
             var repo = new RuntimeConfigurationAssemblyRepository(repositoryPath);
             var control = new UserControl();
-            repo.UserControlCache.Add(hash,control);
+            repo.UserControlCache.Add(hash, control);
             var retrievedcontrol = repo.GetUserControlForAssembly("DEF");
             Assert.IsNull(retrievedcontrol);
         }

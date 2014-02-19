@@ -11,7 +11,8 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for Dev2DialogueTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2DialogueTest
     {
 
@@ -49,20 +50,20 @@ namespace Dev2.Core.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            
+
         }
 
         private void createFile(string fileName)
         {
             System.Drawing.Bitmap flag = new System.Drawing.Bitmap(10, 10);
-            for (int x = 0; x < flag.Height; ++x)
+            for(int x = 0; x < flag.Height; ++x)
             {
-                for (int y = 0; y < flag.Width; ++y)
+                for(int y = 0; y < flag.Width; ++y)
                 {
                     flag.SetPixel(x, y, Color.White);
                 }
             }
-            for (int x = 0; x < flag.Height; ++x)
+            for(int x = 0; x < flag.Height; ++x)
             {
                 flag.SetPixel(x, x, Color.Red);
             }
@@ -95,7 +96,8 @@ namespace Dev2.Core.Tests
         #region Negative Test Cases
 
         [TestMethod]
-        public void Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull() {
+        public void Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull()
+        {
             IDialogueViewModel dev2Dialogue = new DialogueViewModel();
             string newFileName = _filePath.Replace(".png", "Dev2Dialogue_NullTitle_ValidDescriptionImgSourceDecsriptionTitle_Expected_DialogueSetup_TitleSetToEmptyStringNotNull.png");
             createFile(newFileName);

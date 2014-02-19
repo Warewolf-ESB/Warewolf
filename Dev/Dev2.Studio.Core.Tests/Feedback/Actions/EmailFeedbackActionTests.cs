@@ -16,7 +16,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Feedback.Actions
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EmailFeedbackActionTests
     {
         private SystemInfoTO GetMockSysInfo()

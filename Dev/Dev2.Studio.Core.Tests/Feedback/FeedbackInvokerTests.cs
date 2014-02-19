@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FeedbackInvokerTests
     {
         #region Class Members
@@ -81,7 +82,7 @@ namespace Dev2.Core.Tests.Feedback
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-            
+
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
             ImportService.SatisfyImports(feedbackInvoker);
 
@@ -168,7 +169,7 @@ namespace Dev2.Core.Tests.Feedback
 
             Mock<IPopupController> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
             Mock<IPopupController> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-            
+
             // If it's already recording, display a box to confirm if the user wants to stop the recording, and click Yes
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
             ImportService.SatisfyImports(theInvoker);
@@ -190,7 +191,7 @@ namespace Dev2.Core.Tests.Feedback
             ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(noPopup);
             ImportService.SatisfyImports(theInvoker);
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
-            
+
             // Check all popups showed the correct amount of times
             yesPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking yes
             noPopup.Verify(p => p.Show(), Times.Exactly(2)); // Once for already recording, once for not recording, and clicking no

@@ -5,7 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EmptyStringToVisibilityConverterTests
     {
         [TestMethod]
@@ -73,7 +74,11 @@ namespace Dev2.Core.Tests.ConverterTests
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod] [Owner("Jurie Smit")] [TestCategory("EmptyStringToVisibilityConverter")] [Description("When a string is null, expect false when istrueisempty equals false")] public void
+        [TestMethod]
+        [Owner("Jurie Smit")]
+        [TestCategory("EmptyStringToVisibilityConverter")]
+        [Description("When a string is null, expect false when istrueisempty equals false")]
+        public void
             EmptyStringToVisibilityConverter_UnitTest_VisibleWhenEmptyStringNull_ExpectsVisible()
         {
             var converter = new EmptyStringToVisibilityConverter();
